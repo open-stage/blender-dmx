@@ -3,7 +3,7 @@
 
 *This project is in an early alpha stage. If you're willing to contribute, please check the issues.*
 
-*This addon will always be free and open source, if you can donate and help me keep developing this and other tools I'd be really grateful. [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](YOUR_EMAIL_CODE)*
+*This addon will always be free and open source, if you can donate and help me keep developing this and other tools I'd be really grateful. [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?cmd=_s-xclick&hosted_button_id=ZC6UQ8TKWZVZU)*
 
 #### INTRODUCTION
 
