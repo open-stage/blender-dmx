@@ -18,6 +18,8 @@ import bmesh
 #   Setup
 ##
 
+MESH_PATH = 'C:\\Users\\Aboud\\Desktop\\LAB\\BlenderDMX\\mesh\\'
+
 def getBodyMaterial():
     if ('FixtureBody' not in bpy.data.materials):
         material = bpy.data.materials.new("FixtureBody")
@@ -26,17 +28,64 @@ def getBodyMaterial():
         material = bpy.data.materials['FixtureBody']
     return material
 
+def getMesh(model):
+    mesh = {}
+    if (model+"_body" not in bpy.data.meshes and model+"_body" not in bpy.data.meshes):
+        imported_object = bpy.ops.import_scene.obj(filepath=MESH_PATH+model+'.obj')
+        for i in range(len(bpy.context.selected_objects)):
+            obj = bpy.context.selected_objects[i]
+            # delete materials
+            for m in obj.data.materials:
+                if (m): bpy.data.materials.remove(m)
+            obj.data.materials.clear()
+            # rename mesh
+            if ("Body" in obj.name):
+                obj.data.name = model+"_body"
+                mesh['body'] = bpy.data.meshes[model+"_body"]
+            elif ("Emitter" in obj.name):
+                obj.data.name = model+"_emitter"
+                mesh['emitter'] = bpy.data.meshes[model+"_emitter"]
+            elif ("Surface" in obj.name):
+                obj.data.name = model+"_surface"
+                mesh['surface'] = bpy.data.meshes[model+"_surface"]
+        bpy.ops.object.delete()
+    else:
+        if (model+"_body" in bpy.data.meshes): mesh['body'] = bpy.data.meshes[model+"_body"]
+        if (model+"_emitter" in bpy.data.meshes): mesh['emitter'] = bpy.data.meshes[model+"_emitter"]
+        if (model+"_surface" in bpy.data.meshes): mesh['surface'] = bpy.data.meshes[model+"_surface"]
+    return mesh
+
+def getSceneRect():
+    min = [float("inf"),float("inf"),float("inf")]
+    max = [-float("inf"),-float("inf"),-float("inf")]
+
+    for obj in bpy.context.scene.objects:
+        if (obj.data and hasattr(obj.data, 'vertices')):
+            for vertex in obj.data.vertices:
+                vtx = obj.matrix_world @ vertex.co
+                for i in range(3):
+                    if (vtx[i] < min[i]): min[i] = vtx[i]
+                    if (vtx[i] > max[i]): max[i] = vtx[i]
+        else:
+            for i in range(3):
+                if (obj.location[i] < min[i]): min[i] = obj.location[i]
+                if (obj.location[i] > max[i]): max[i] = obj.location[i]
+
+    return (min, max)
+
 ##
 #   Fixture: interactive constrained lights and objects that can be controlled
 #   by the DMX tab or Art-Net
 ##
 
 class Fixture:
-    def __init__(self, dmx, name, address, model):
+    def __init__(self, dmx, name, address, model, emission, createObjs):
+        print("AM I RUNNING")
         self.dmx = dmx
         self.name = name
         self.address = address
         self.model = model
+        self.emission = emission
 
         # Fixture (collection) with this name already exists, delete it
         if (name in bpy.data.collections):
@@ -53,6 +102,57 @@ class Fixture:
         for c in self.collection.children:
             self.collection.children.unlink(c)
 
+        # Create Objects
+        if not createObjs: return
+
+        # Mesh
+        mesh = getMesh(self.model)
+
+        # Body
+        self.body = bpy.data.objects.new('Body', mesh['body'])
+        self.collection.objects.link(self.body)
+
+        if (not len(self.body.data.materials)):
+            self.body.data.materials.append(getBodyMaterial())
+
+        # Emitter
+        self.emitter = bpy.data.objects.new('Emitter', mesh['emitter'])
+        self.collection.objects.link(self.emitter)
+
+        if (name in bpy.data.materials):
+            bpy.data.materials.remove(bpy.data.materials[name])
+        material = bpy.data.materials.new(name)
+        material.use_nodes = True
+        material.node_tree.nodes.remove(material.node_tree.nodes[1])
+        material.node_tree.nodes.new("ShaderNodeEmission")
+        material.node_tree.links.new(material.node_tree.nodes[0].inputs[0], material.node_tree.nodes[1].outputs[0])
+
+        self.emitter_power = material.node_tree.nodes[1].inputs['Strength']
+        self.emitter_power.default_value = emission
+        self.emitter_color = material.node_tree.nodes[1].inputs['Color']
+        self.emitter_color.default_value = (1,1,1,1)
+
+        self.emitter.active_material = material
+        self.emitter.material_slots[0].link = 'OBJECT'
+        self.emitter.material_slots[0].material = material
+
+        self.emitter.cycles_visibility.shadow = False
+
+        # Surface
+        self.surface = None
+        if ('surface' in mesh):
+            self.surface = bpy.data.objects.new('Surface', mesh['surface'])
+            self.collection.objects.link(self.surface)
+
+            if (not len(self.surface.data.materials)):
+                self.surface.data.materials.append(getBodyMaterial())
+
+            self.surface.cycles_visibility.shadow = False
+
+            constraint = self.surface.constraints.new('COPY_LOCATION')
+            constraint.target = self.body
+
+
     def icon(self):
         return ''
     def setDimmer(self, dimmer):
@@ -61,30 +161,17 @@ class Fixture:
         pass
 
 class SpotFixture(Fixture):
-    def __init__(self, dmx, name, address, model, power, emission, angle, color):
+    def __init__(self, dmx, name, address, model, emission, power, angle, color):
         # base
-        super().__init__(dmx, name, address, model)
+        print("PLS RUN")
+        super().__init__(dmx, name, address, model, emission, True)
 
+        print("SPOT MODEL " + model)
         self.power = power
-        self.emission = emission
         self.angle = angle
 
-        if (model == 'par64'):
-            resolution = 16
-            radius = 0.13
-            depth = 0.41
-
-        elif (model == 'parled64'):
-            resolution = 16
-            radius = 0.1
-            depth = 0.07
-
-        # Unlink any leftovers (I can't figure out why, but sometimes Blender will
-        # link some existing objects to the new collection)
-        for c in self.  collection.objects:
-            self.collection.objects.unlink(c)
-        for c in self.collection.children:
-            self.collection.children.unlink(c)
+        if (model == 'par64'): radius = 0.1
+        elif (model == 'parled64'): radius = 0.12
 
         # Target
         bpy.ops.object.empty_add(type='PLAIN_AXES',radius=radius,location=(0,0,-1))
@@ -96,37 +183,12 @@ class SpotFixture(Fixture):
         #bpy.context.scene.collection.objects.unlink(self.target)
 
         # Body
-        bpy.ops.mesh.primitive_cylinder_add(vertices=resolution, radius=radius, depth=depth)
-        self.body = bpy.context.active_object
-        self.body.name = "Body"
-
-        bpy.ops.object.mode_set(mode="EDIT")
-        mesh = bmesh.from_edit_mesh(self.body.data)
-        mesh.faces.ensure_lookup_table()
-        bmesh.ops.delete(mesh, geom=[mesh.faces[resolution+1]], context='FACES_KEEP_BOUNDARY')
-        bpy.ops.object.mode_set(mode="OBJECT")
-
         constraint = self.body.constraints.new('TRACK_TO')
         constraint.target = self.target
         constraint.track_axis = 'TRACK_NEGATIVE_Z'
         constraint.up_axis = 'UP_Y'
 
-        self.body.data.materials.append(getBodyMaterial())
-        bpy.ops.collection.objects_remove_all()
-        self.collection.objects.link(self.body)
-        #bpy.context.scene.collection.objects.unlink(self.body)
-
         # Emitter
-        bpy.ops.mesh.primitive_cylinder_add(vertices=resolution, radius=radius, depth=depth)
-        self.emitter = bpy.context.active_object
-        self.emitter.name = "Emitter"
-
-        bpy.ops.object.mode_set(mode="EDIT")
-        mesh = bmesh.from_edit_mesh(self.emitter.data)
-        mesh.faces.ensure_lookup_table()
-        bmesh.ops.delete(mesh, geom=mesh.faces[:resolution+1], context='FACES_KEEP_BOUNDARY')
-        bpy.ops.object.mode_set(mode="OBJECT")
-
         constraint = self.emitter.constraints.new('COPY_LOCATION')
         constraint.target = self.body
         constraint = self.emitter.constraints.new('TRACK_TO')
@@ -134,28 +196,12 @@ class SpotFixture(Fixture):
         constraint.track_axis = 'TRACK_NEGATIVE_Z'
         constraint.up_axis = 'UP_Y'
 
-        bpy.ops.collection.objects_remove_all()
-
-        if (name in bpy.data.materials):
-            bpy.data.materials.remove(bpy.data.materials[name])
-        material = bpy.data.materials.new(name)
-        material.use_nodes = True
-
-        material.node_tree.nodes.remove(material.node_tree.nodes[1])
-        material.node_tree.nodes.new("ShaderNodeEmission")
-        material.node_tree.links.new(material.node_tree.nodes[0].inputs[0], material.node_tree.nodes[1].outputs[0])
-
-        self.emitter_power = material.node_tree.nodes[1].inputs['Strength']
-        self.emitter_power.default_value = emission
-
-        self.emitter_color = material.node_tree.nodes[1].inputs['Color']
-        self.emitter_color.default_value = (1,1,1,1)
-
-        self.emitter.data.materials.append(material)
-        self.emitter.hide_select = True
-        self.emitter.cycles_visibility.shadow = False
-        self.collection.objects.link(self.emitter)
-        #bpy.context.scene.collection.objects.unlink(self.emitter)
+        # Surface
+        if (self.surface):
+            constraint = self.surface.constraints.new('TRACK_TO')
+            constraint.target = self.target
+            constraint.track_axis = 'TRACK_NEGATIVE_Z'
+            constraint.up_axis = 'UP_Y'
 
         # Spot
         light_data = bpy.data.lights.new(name="Spot", type='SPOT')
@@ -200,11 +246,10 @@ class SpotFixture(Fixture):
         self.emitter_color.default_value = color
 
 class TubeFixture(Fixture):
-    def __init__(self, dmx, name, address, model, length, emission, color):
+    def __init__(self, dmx, name, address, model, emission, length, color):
         # DMX
-        super().__init__(dmx, name, address, model)
+        super().__init__(dmx, name, address, model, emission, False)
         self.length = length
-        self.emission = emission
 
         resolution = 8
         if (model == 'T8'):
@@ -344,6 +389,90 @@ class DMX_Setup_Panel(Panel):
         dmx = context.scene.dmx
         if (not dmx.collection): layout.operator("dmx.blank_show")
 
+class DMX_Setup_Volume_Create(Operator):
+    bl_label = "Create Volume Box"
+    bl_idname = "dmx.create_volume"
+
+    def execute(self, context):
+        dmx = context.scene.dmx
+        # Get scene bounds
+        min, max = getSceneRect()
+        pos = [min[i]+(max[i]-min[i])/2 for i in range(3)]
+        scale = [max[i]-min[i] for i in range(3)]
+        # Remove old DMX collection if present
+        if ("VolumeScatter" not in bpy.data.objects):
+            bpy.ops.mesh.primitive_cube_add(size=1.0)
+            dmx.volume = bpy.context.selected_objects[0]
+            dmx.volume.name = "VolumeScatter"
+            dmx.volume.display_type = 'WIRE'
+
+            material = bpy.data.materials.new("VolumeScatter")
+            material.use_nodes = True
+            material.node_tree.nodes.remove(material.node_tree.nodes[1])
+            material.node_tree.nodes.new("ShaderNodeVolumeScatter")
+            material.node_tree.links.new(material.node_tree.nodes[0].inputs[1], material.node_tree.nodes[1].outputs[0])
+
+            dmx.volume_density = material.node_tree.nodes[1].inputs['Density']
+            dmx.volume.data.materials.append(material)
+
+        else:
+            dmx.volume = bpy.data.objects["VolumeScatter"]
+
+        dmx.volume.location = pos
+        dmx.volume.scale = scale
+
+        bpy.ops.object.select_all(action='DESELECT')
+        dmx.volume.select_set(True)
+        bpy.ops.collection.objects_remove_all()
+        bpy.context.scene.collection.objects.link(dmx.volume)
+
+        return {'FINISHED'}
+
+class DMX_Setup_Background_Panel(Panel):
+    bl_label = "Background"
+    bl_idname = "setup_background_panel"
+    bl_parent_id = "setup_panel"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_category = "DMX"
+    bl_context = "objectmode"
+    bl_options = {'DEFAULT_CLOSED'}
+
+    @classmethod
+    def poll(self,context):
+        return context.object is not None
+
+    def draw(self, context):
+        layout = self.layout
+        dmx = context.scene.dmx
+        layout.prop(context.scene.dmx_props,'background_color',text='')
+
+class DMX_Setup_Volume_Panel(Panel):
+    bl_label = "Volume Scatter"
+    bl_idname = "setup_volume_panel"
+    bl_parent_id = "setup_panel"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_category = "DMX"
+    bl_context = "objectmode"
+    bl_options = {'DEFAULT_CLOSED'}
+
+    @classmethod
+    def poll(self,context):
+        return context.object is not None
+
+    def draw(self, context):
+        layout = self.layout
+        dmx = context.scene.dmx
+        layout.operator("dmx.create_volume", text = ('Update Volume Box' if dmx.volume else 'Create Volume Box'), icon='MESH_CUBE')
+
+        row = layout.row()
+        row.prop(context.scene.dmx_props, 'volume_enabled')
+        row.enabled = (dmx.volume != None)
+
+        row = layout.row()
+        row.prop(context.scene.dmx_props, 'volume_density')
+        row.enabled = (dmx.volume != None)
 
 ##
 #   "Fixtures" panel
@@ -431,16 +560,16 @@ class DMX_Fixture_AddSpot(Operator):
     power: FloatProperty(
         name = "Power",
         description = "Spot Fixture Power",
-        default = 1000,
+        default = 100,
         min = 1,
         max = 10000)
 
     emission: FloatProperty(
         name = "Emission",
         description = "Spot Fixture Emission",
-        default = 1,
+        default = 10,
         min = 1,
-        max = 10)
+        max = 1000)
 
     def draw(self, context):
         layout = self.layout
@@ -455,7 +584,9 @@ class DMX_Fixture_AddSpot(Operator):
     def execute(self, context):
         scene = context.scene
         dmx = scene.dmx
-        dmx.addFixture(SpotFixture(dmx, self.name, self.address, self.model, self.power, self.emission, self.angle, (1,1,1,1)))
+        if (self.name in [coll.name for coll in bpy.data.collections]):
+            return {'CANCELLED'}
+        dmx.addFixture(SpotFixture(dmx, self.name, self.address, self.model, self.emission, self.power, self.angle, (1,1,1,1)))
         return {'FINISHED'}
 
     def invoke(self, context, event):
@@ -494,16 +625,16 @@ class DMX_Fixture_EditSpot(Operator):
     power: FloatProperty(
         name = "Power",
         description = "Spot Fixture Power",
-        default = 1000,
+        default = 100,
         min = 1,
         max = 10000)
 
     emission: FloatProperty(
         name = "Emission",
         description = "Spot Fixture Emission",
-        default = 1,
+        default = 10,
         min = 1,
-        max = 10)
+        max = 1000)
 
     def draw(self, context):
         layout = self.layout
@@ -551,7 +682,7 @@ class DMX_Fixture_AddTube(Operator):
     model: EnumProperty(
         name = "Model",
         description = "Tube Fixture Model",
-        items=(('T8','T8','Tubular Light, diam 1"','EVENT_F8',0),('T5','T5','Tubular Light, diam 5/8"','EVENT_F5',1))
+        items=(('T8','T8','Tubular Light, diam 1"'),('T5','T5','Tubular Light, diam 5/8"'))
     )
 
     length: FloatProperty(
@@ -564,9 +695,9 @@ class DMX_Fixture_AddTube(Operator):
     emission: FloatProperty(
         name = "Emission",
         description = "Tube Fixture Emission",
-        default = 3,
+        default = 10,
         min = 1,
-        max = 10)
+        max = 1000)
 
     def draw(self, context):
         layout = self.layout
@@ -580,7 +711,7 @@ class DMX_Fixture_AddTube(Operator):
     def execute(self, context):
         scene = context.scene
         dmx = scene.dmx
-        dmx.addFixture(TubeFixture(dmx, self.name, self.address, self.model, self.length, self.emission, (1,1,1,1)))
+        dmx.addFixture(TubeFixture(dmx, self.name, self.address, self.model, self.emission, self.length, (1,1,1,1)))
         return {'FINISHED'}
 
     def invoke(self, context, event):
@@ -619,9 +750,9 @@ class DMX_Fixture_EditTube(Operator):
     emission: FloatProperty(
         name = "Emission",
         description = "Tube Fixture Emission",
-        default = 3,
+        default = 10,
         min = 1,
-        max = 10)
+        max = 1000)
 
     def draw(self, context):
         layout = self.layout
@@ -802,6 +933,7 @@ class DMX_Group_Panel(Panel):
     bl_region_type = "UI"
     bl_category = "DMX"
     bl_context = "objectmode"
+    bl_options = {'DEFAULT_CLOSED'}
 
     @classmethod
     def poll(self,context):
@@ -853,6 +985,39 @@ class DMX_Programmer_Panel(Panel):
 
 class DMX_Properties(PropertyGroup):
 
+    def onBackgroundColor(self, context):
+        context.scene.dmx.onBackgroundColor(self.background_color)
+
+    background_color: FloatVectorProperty(
+        name = "Background Color",
+        subtype = "COLOR",
+        size = 4,
+        min = 0.0,
+        max = 1.0,
+        default = (0.0,0.0,0.0,1.0),
+        update = onBackgroundColor
+        )
+
+    def onVolumeEnabled(self, context):
+        context.scene.dmx.onVolumeEnabled(self.volume_enabled)
+
+    volume_enabled: BoolProperty(
+        name = "Enabled",
+        description = "Volume Scatter Enabled",
+        default = True,
+        update = onVolumeEnabled)
+
+    def onVolumeDensity(self, context):
+        context.scene.dmx.onVolumeDensity(self.volume_density)
+
+    volume_density: FloatProperty(
+        name = "Density",
+        description="Volume Scatter Density",
+        default = 1,
+        min = 0,
+        max = 1,
+        update = onVolumeDensity)
+
     def onFixtureList(self, context):
         context.scene.dmx.onFixtureList(self.fixture_list_i)
 
@@ -902,7 +1067,10 @@ class DMX():
     classes_setup = (DMX_Setup_BlankShow,
                     DMX_Setup_Panel)
 
-    classes = (DMX_Fixture_UL_List,
+    classes = (DMX_Setup_Volume_Create,
+              DMX_Setup_Background_Panel,
+              DMX_Setup_Volume_Panel,
+              DMX_Fixture_UL_List,
               DMX_Fixture_MenuAdd,
               DMX_Fixture_Menu,
               DMX_Fixture_AddSpot,
@@ -924,6 +1092,8 @@ class DMX():
 
     def __init__(self):
         self.collection = None
+        self.volume = None
+        self.volume_density = 1.0
         self.fixtures = []
         self.groups = []
 
@@ -943,6 +1113,9 @@ class DMX():
         # Create group list and clear leftovers from past runs
         bpy.types.Scene.group_list = CollectionProperty(type=DMX_Group_ListItem)
         context.scene.group_list.clear()
+
+        # Set background to black (to match with menu)
+        bpy.context.scene.world.node_tree.nodes['Background'].inputs[0].default_value = (0,0,0,0)
 
     def register(self):
         for cls in self.classes_setup:
@@ -982,6 +1155,15 @@ class DMX():
     def removeGroup(self, context, i):
         del self.groups[i]
         context.scene.group_list.remove(i)
+
+    def onBackgroundColor(self, color):
+        bpy.context.scene.world.node_tree.nodes['Background'].inputs[0].default_value = color
+
+    def onVolumeEnabled(self, enabled):
+        self.volume.hide_set(not enabled)
+
+    def onVolumeDensity(self, density):
+        self.volume_density.default_value = density
 
     def onFixtureList(self, i):
         self.fixtures[i].body.select_set(True)
