@@ -171,7 +171,7 @@ class SpotFixture(Fixture):
         self.angle = angle
 
         if (model == 'par64'): radius = 0.1
-        elif (model == 'parled64'): radius = 0.12
+        elif (model == 'parled64' or model == 'sourcefour'): radius = 0.12
 
         # Target
         bpy.ops.object.empty_add(type='PLAIN_AXES',radius=radius,location=(0,0,-1))
@@ -195,6 +195,7 @@ class SpotFixture(Fixture):
         constraint.target = self.target
         constraint.track_axis = 'TRACK_NEGATIVE_Z'
         constraint.up_axis = 'UP_Y'
+        self.emitter.hide_select = True
 
         # Surface
         if (self.surface):
@@ -202,6 +203,7 @@ class SpotFixture(Fixture):
             constraint.target = self.target
             constraint.track_axis = 'TRACK_NEGATIVE_Z'
             constraint.up_axis = 'UP_Y'
+            self.surface.hide_select = True
 
         # Spot
         light_data = bpy.data.lights.new(name="Spot", type='SPOT')
@@ -547,7 +549,7 @@ class DMX_Fixture_AddSpot(Operator):
     model: EnumProperty(
         name = "Model",
         description = "Spot Fixture Model",
-        items=(('par64','PAR 64','Par Can, diam: 8"','ANTIALIASED',0),('parled64','PAR LED 64','PAR LED 64','ALIASED',1))
+        items=(('par64','PAR 64','Par Can, diam: 8"','ANTIALIASED',0),('sourcefour','SOURCE FOUR','Source Four PAR','ALIASED',1),('parled64','PAR LED 64','PAR LED 64','SEQ_CHROMA_SCOPE',2))
     )
 
     angle: FloatProperty(
@@ -612,7 +614,7 @@ class DMX_Fixture_EditSpot(Operator):
     model: EnumProperty(
         name = "Model",
         description = "Spot Fixture Model",
-        items=(('par64','PAR 64','Par Can, diam: 8"','ANTIALIASED',0),('parled64','PAR LED 64','PAR LED 64','ALIASED',1))
+        items=(('par64','PAR 64','Par Can, diam: 8"','ANTIALIASED',0),('sourcefour','SOURCE FOUR','Source Four PAR','ALIASED',1),('parled64','PAR LED 64','PAR LED 64','SEQ_CHROMA_SCOPE',2))
     )
 
     angle: FloatProperty(
