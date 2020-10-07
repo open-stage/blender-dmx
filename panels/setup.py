@@ -18,41 +18,21 @@ from dmx.util import getSceneRect
 # Operators #
 
 class DMX_OT_Setup_NewShow(Operator):
-    bl_label = "Create New Show"
+    bl_label = "DMX: Create New Show"
     bl_description = "Clear any existing DMX data and create a new show."
     bl_idname = "dmx.new_show"
+    bl_options = {'UNDO'}
 
     def execute(self, context):
-        print("EXECUTING")
-        # Remove old DMX collection if present
-        if ("DMX" in bpy.data.collections):
-            bpy.data.collections.remove(bpy.data.collections["DMX"])
-
-        # Remove old VolumeScatter object if present
-        if ("DMX_VolumeScatter" in bpy.data.objects):
-            bpy.data.objects.remove(bpy.data.objects["DMX_VolumeScatter"])
-
-        # Create a new DMX collection
-        bpy.ops.collection.create(name="DMX")
-
-        collection = bpy.data.collections["DMX"]
-        # Unlink any objects or collections
-        for c in collection.objects:
-            collection.objects.unlink(c)
-        for c in collection.children:
-            collection.children.unlink(c)
-
-        # Link collection to scene
-        bpy.context.scene.collection.children.link(collection)
-
         # DMX setup
-        context.scene.dmx.setup(collection)
+        context.scene.dmx.new()
         return {'FINISHED'}
 
 class DMX_OT_Setup_Volume_Create(Operator):
-    bl_label = "Create Volume Box"
+    bl_label = "DMX: Create Volume Box"
     bl_description = "Create/Update a Box on the scene bounds with a Volume Scatter shader"
     bl_idname = "dmx.create_volume"
+    bl_options = {'UNDO'}
 
     def execute(self, context):
         dmx = context.scene.dmx
@@ -61,13 +41,13 @@ class DMX_OT_Setup_Volume_Create(Operator):
         pos = [min[i]+(max[i]-min[i])/2 for i in range(3)]
         scale = [max[i]-min[i] for i in range(3)]
         # Remove old DMX collection if present
-        if ("DMX_VolumeScatter" not in bpy.data.objects):
+        if ("DMX_Volume" not in bpy.data.objects):
             bpy.ops.mesh.primitive_cube_add(size=1.0)
             dmx.volume = bpy.context.selected_objects[0]
-            dmx.volume.name = "DMX_VolumeScatter"
+            dmx.volume.name = "DMX_Volume"
             dmx.volume.display_type = 'WIRE'
 
-            material = bpy.data.materials.new("DMX_VolumeScatter")
+            material = bpy.data.materials.new("DMX_Volume")
             material.use_nodes = True
             material.node_tree.nodes.remove(material.node_tree.nodes[1])
             material.node_tree.nodes.new("ShaderNodeVolumeScatter")
@@ -77,7 +57,7 @@ class DMX_OT_Setup_Volume_Create(Operator):
             dmx.volume.data.materials.append(material)
 
         else:
-            dmx.volume = bpy.data.objects["DMX_VolumeScatter"]
+            dmx.volume = bpy.data.objects["DMX_Volume"]
 
         dmx.volume.location = pos
         dmx.volume.scale = scale
@@ -157,4 +137,4 @@ class DMX_PT_Setup(Panel):
     def draw(self, context):
         layout = self.layout
         dmx = context.scene.dmx
-        if (not dmx.collection): layout.operator("dmx.new_show")
+        if (not dmx.collection): layout.operator("dmx.new_show", text="Create New Show", icon="LIGHT")

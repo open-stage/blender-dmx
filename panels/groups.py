@@ -14,15 +14,9 @@ from bpy.props import (StringProperty)
 from bpy.types import (Panel,
                        Menu,
                        Operator,
-                       PropertyGroup,
                        UIList)
 
 # List #
-
-class DMX_ListItem_Group(PropertyGroup):
-    name: StringProperty(
-        name="Name",
-        default="Group")
 
 class DMX_UL_Group(UIList):
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
@@ -63,8 +57,9 @@ class DMX_MT_Group(Menu):
 # Operators #
 
 class DMX_OT_Group_Create(Operator):
-    bl_label = "Create Group"
+    bl_label = "DMX: Create Group"
     bl_idname = "dmx.create_group"
+    bl_options = {'UNDO'}
 
     name: StringProperty(
         name = "Name",
@@ -79,7 +74,7 @@ class DMX_OT_Group_Create(Operator):
     def execute(self, context):
         scene = context.scene
         dmx = scene.dmx
-        dmx.createGroup(context, self.name)
+        dmx.createGroup(self.name)
         return {'FINISHED'}
 
     def invoke(self, context, event):
@@ -88,18 +83,19 @@ class DMX_OT_Group_Create(Operator):
         return wm.invoke_props_dialog(self)
 
 class DMX_OT_Group_Update(Operator):
-    bl_label = "Update Group"
+    bl_label = "DMX: Update Group"
     bl_idname = "dmx.update_group"
+    bl_options = {'UNDO'}
 
     def execute(self, context):
-        scene = context.scene
-        dmx = scene.dmx
-        dmx.updateGroup(scene.dmx.group_list_i)
+        dmx = context.scene.dmx
+        dmx.updateGroup(dmx.group_list_i)
         return {'FINISHED'}
 
 class DMX_OT_Group_Rename(Operator):
-    bl_label = "Edit Tube"
+    bl_label = "DMX: Rename Group"
     bl_idname = "dmx.rename_group"
+    bl_options = {'UNDO'}
 
     name: StringProperty(
         name="Name",
@@ -113,8 +109,7 @@ class DMX_OT_Group_Rename(Operator):
     def execute(self, context):
         scene = context.scene
         dmx = scene.dmx
-        dmx.groups[scene.dmx.group_list_i].name = self.name
-        scene.group_list[scene.dmx.group_list_i].name = self.name
+        dmx.renameGroup(dmx.group_list_i, self.name)
         return {'FINISHED'}
 
     def invoke(self, context, event):
@@ -124,13 +119,13 @@ class DMX_OT_Group_Rename(Operator):
         return wm.invoke_props_dialog(self)
 
 class DMX_OT_Group_Remove(Operator):
-    bl_label = "Remove Group"
+    bl_label = "DMX: Remove Group"
     bl_idname = "dmx.remove_group"
+    bl_options = {'UNDO'}
 
     def execute(self, context):
-        scene = context.scene
-        dmx = scene.dmx
-        dmx.removeGroup(context, scene.dmx.group_list_i)
+        dmx = context.scene.dmx
+        dmx.removeGroup(dmx.group_list_i)
         return {'FINISHED'}
 
 # Panel #
@@ -153,6 +148,6 @@ class DMX_PT_Groups(Panel):
         scene = context.scene
         dmx = scene.dmx
 
-        layout.template_list("DMX_UL_Group", "", scene, "group_list", scene.dmx, "group_list_i", rows=4)
+        layout.template_list("DMX_UL_Group", "", scene.dmx, "groups", scene.dmx, "group_list_i", rows=4)
 
         layout.menu("dmx.menu.group", text="...", icon="STICKY_UVS_LOC")

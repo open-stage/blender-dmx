@@ -52,9 +52,9 @@ class DMX_MT_Fixture(Menu):
         row = layout.row()
         if (len(dmx.fixtures) and scene.dmx.fixture_list_i >= 0 and scene.dmx.fixture_list_i < len(dmx.fixtures)):
             fixture = dmx.fixtures[scene.dmx.fixture_list_i]
-            if (isinstance(fixture, SpotFixture)):
+            if (fixture.subclass == 'DMX_SpotFixture'):
                 row.operator("dmx.edit_spot_fixture", text = "Edit", icon="GREASEPENCIL")
-            elif (isinstance(fixture, TubeFixture)):
+            elif (fixture.subclass == 'DMX_TubeFixture'):
                 row.operator("dmx.edit_tube_fixture", text = "Edit", icon="GREASEPENCIL")
         else:
             row.label(text="Edit", icon="GREASEPENCIL")
@@ -142,7 +142,7 @@ class DMX_OT_Fixture_AddSpot(Operator):
         dmx = scene.dmx
         if (self.name in [coll.name for coll in bpy.data.collections]):
             return {'CANCELLED'}
-        dmx.addFixture(SpotFixture(dmx, self.name, self.address, self.model, self.emission, self.power, self.angle, list(self.default_color)))
+        dmx.addSpotFixture(self.name, self.address, self.model, self.emission, self.power, self.angle, list(self.default_color))
         return {'FINISHED'}
 
     def invoke(self, context, event):
@@ -286,7 +286,7 @@ class DMX_OT_Fixture_AddTube(Operator):
     def execute(self, context):
         scene = context.scene
         dmx = scene.dmx
-        dmx.addFixture(TubeFixture(dmx, self.name, self.address, self.model, self.emission, self.length, list(self.default_color)))
+        dmx.addTubeFixture(self.name, self.address, self.model, self.emission, self.length, list(self.default_color))
         return {'FINISHED'}
 
     def invoke(self, context, event):

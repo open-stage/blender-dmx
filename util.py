@@ -8,8 +8,6 @@
 import bpy
 import bmesh
 
-MESH_PATH = 'C:\\Users\\Aboud\\Desktop\\LAB\\BlenderDMX\\mesh\\'
-
 # <get Body Material>
 #   Create a diffuse material with dark gray color if it doesn't exist
 # and return it
@@ -34,37 +32,6 @@ def getSurfaceMaterial():
     else:
         material = bpy.data.materials['FixtureSurface']
     return material
-
-# <get Mesh>
-# Load the mesh for a given model if it wasn't already loaded
-# model is the .obj file name on the "models/" folder
-
-def getMesh(model):
-    mesh = {}
-    if (model+"_body" not in bpy.data.meshes and model+"_body" not in bpy.data.meshes):
-        imported_object = bpy.ops.import_scene.obj(filepath=MESH_PATH+model+'.obj')
-        for i in range(len(bpy.context.selected_objects)):
-            obj = bpy.context.selected_objects[i]
-            # delete materials
-            for m in obj.data.materials:
-                if (m): bpy.data.materials.remove(m)
-            obj.data.materials.clear()
-            # rename mesh
-            if ("Body" in obj.name):
-                obj.data.name = model+"_body"
-                mesh['body'] = bpy.data.meshes[model+"_body"]
-            elif ("Emitter" in obj.name):
-                obj.data.name = model+"_emitter"
-                mesh['emitter'] = bpy.data.meshes[model+"_emitter"]
-            elif ("Surface" in obj.name):
-                obj.data.name = model+"_surface"
-                mesh['surface'] = bpy.data.meshes[model+"_surface"]
-        bpy.ops.object.delete()
-    else:
-        if (model+"_body" in bpy.data.meshes): mesh['body'] = bpy.data.meshes[model+"_body"]
-        if (model+"_emitter" in bpy.data.meshes): mesh['emitter'] = bpy.data.meshes[model+"_emitter"]
-        if (model+"_surface" in bpy.data.meshes): mesh['surface'] = bpy.data.meshes[model+"_surface"]
-    return mesh
 
 # <get Scene Rect>
 # Calculate the minimum and maximum coordinate of the scene objects

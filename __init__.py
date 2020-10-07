@@ -11,9 +11,10 @@ bl_info = {
     "category": "Lighting"
 }
 
+import sys
 import bpy
 
-from dmx.util import getMesh, getBodyMaterial
+from dmx.util import getBodyMaterial
 
 from dmx.fixture import *
 from dmx.fixtures.spot import *
@@ -41,12 +42,26 @@ from bpy.types import (PropertyGroup,
 
 class DMX(PropertyGroup):
 
+    # Base classes to be registered
+    # These should be registered before the DMX class, so it can register properly
+
+    classes_base = (DMX_Param,
+                    DMX_Model_Param,
+                    DMX_Fixture_Object,
+                    DMX_Fixture,
+                    DMX_Group_Fixture,
+                    DMX_Group)
+
+    classes_fixture = (DMX_SpotFixture,
+                        DMX_TubeFixture)
+
     # Classes to be registered
     # The registration is done in two steps. The second only runs
     # after the user requests to setup the addon.
 
+
     classes_setup = (DMX_OT_Setup_NewShow,
-                    DMX_PT_Setup)
+                     DMX_PT_Setup)
 
     classes = ( DMX_OT_Setup_Volume_Create,
                 DMX_PT_Setup_Background,
@@ -60,7 +75,6 @@ class DMX(PropertyGroup):
                 DMX_OT_Fixture_EditTube,
                 DMX_OT_Fixture_Remove,
                 DMX_PT_Fixtures,
-                DMX_ListItem_Group,
                 DMX_UL_Group,
                 DMX_MT_Group,
                 DMX_OT_Group_Create,
@@ -72,6 +86,8 @@ class DMX(PropertyGroup):
                 DMX_OT_Programmer_Clear,
                 DMX_PT_Programmer  )
 
+    linkedToFile = False
+
     def register():
         for cls in DMX.classes_setup:
             bpy.utils.register_class(cls)
@@ -79,11 +95,12 @@ class DMX(PropertyGroup):
     def unregister():
         for cls in DMX.classes_setup:
             bpy.utils.unregister_class(cls)
-            if (self.collection):
-                for cls in DMX.classes:
-                    bpy.utils.unregister_class(cls)
+        if (DMX.linkedToFile):
+            for cls in DMX.classes:
+                bpy.utils.unregister_class(cls)
+            DMX.linkedToFile = False
 
-    # Base Properties
+    # Blender RNA Properties
 
     collection: PointerProperty(
         name = "DMX Collection",
@@ -97,43 +114,104 @@ class DMX(PropertyGroup):
         name = "Volume Scatter Shader Node Tree",
         type = NodeTree)
 
-    # Internal data (static)
+    # DMX Properties
     # This should be parsed to file
 
-    fixtures = []
-    groups = []
+    fixtures: CollectionProperty(
+        name = "DMX Fixtures",
+        type = DMX_Fixture)
 
-    # Setup the DMX scene
+    groups: CollectionProperty(
+        name = "DMX Groups",
+        type = DMX_Group)
 
-    def setup(self, collection):
+    # New DMX Scene
+    # - Remove any previous DMX objects/collections
+    # - Create DMX collection
+    def new(self):
+        # Remove old DMX collection from file if present
+        if ("DMX" in bpy.data.collections):
+            bpy.data.collections.remove(bpy.data.collections["DMX"])
 
-        # Store collection created by the operator
-        self.collection = collection
+        # Remove old Volume object from file if present
+        if ("DMX_Volume" in bpy.data.objects):
+            bpy.data.objects.remove(bpy.data.objects["DMX_Volume"])
 
-        # Second step registration
-        for cls in self.classes:
-            bpy.utils.register_class(cls)
+        # Create a new DMX collection on the file
+        bpy.ops.collection.create(name="DMX")
+        collection = bpy.data.collections["DMX"]
+        # Unlink any objects or collections
+        for c in collection.objects:
+            collection.objects.unlink(c)
+        for c in collection.children:
+            collection.children.unlink(c)
+        # Link collection to scene
+        bpy.context.scene.collection.children.link(collection)
 
-        # Create group list RNA and clear leftovers from past runs
-        bpy.types.Scene.group_list = CollectionProperty(type=DMX_ListItem_Group)
-        bpy.context.scene.group_list.clear()
-
-        # Set background to black (to match with menu)
+        # Set background to black (so it match the panel)
         bpy.context.scene.world.node_tree.nodes['Background'].inputs[0].default_value = (0,0,0,0)
 
-        # Append handlers
-        #bpy.app.handlers.undo_post.append(onUndo)
-        #bpy.app.handlers.depsgraph_update_post.append(onDepsGraph)
+        # Link addon to file
+        self.linkFile()
 
-    # Handlers
+    # Link Add-on to file
+    # This is only called on two situations: "Create New Show" or "onLoadFile"
+    # - Link DMX Collection (if present)
+    # - Link Volume Object (if present)
+    # - If DMX collection was linked, register addon
+    def linkFile(self):
+        print("DMX", "Linking to file")
 
-    def onUndo(self, scene):
-        #print("UNDO")
-        pass
+        # Link pointer properties to file objects
+        if ("DMX" in bpy.data.collections):
+            self.collection = bpy.data.collections["DMX"]
+        else:
+            self.collection = None
 
-    def onDepsGraph(self, scene):
-        #print("DEPS GRAPH")
-        pass
+        if ("DMX_Volume" in bpy.data.objects):
+            self.volume = bpy.data.objects["DMX_Volume"]
+        else:
+            self.volume = None
+
+        print("DMX", "\tDMX collection:", self.collection)
+        print("DMX", "\tDMX_Volume object:", self.volume)
+
+        if (self.collection):
+            # Second step registration (if not already registered)
+            if (not DMX.linkedToFile):
+                for cls in self.classes:
+                    bpy.utils.register_class(cls)
+                for cls in self.classes_setup:
+                    bpy.utils.unregister_class(cls)
+                DMX.linkedToFile = True
+
+        # Relink fixture custom annotations (quick access to components)
+        for fixture in self.fixtures:
+            fixture.__annotations__['subcls'] = getattr(sys.modules['dmx.fixtures.spot'],fixture.subclass)
+
+            emitter = fixture.objects['emitter'].object
+            fixture.__annotations__['emitter_strength'] = emitter.active_material.node_tree.nodes[1].inputs['Strength']
+            fixture.__annotations__['emitter_color'] = emitter.active_material.node_tree.nodes[1].inputs['Color']
+
+    # Unlink Add-on from file
+    # This is only called when the DMX collection is externally removed
+    def unlinkFile(self):
+        print("DMX", "Unlinking from file")
+
+        # Unlink pointer properties
+        #self.collection = None -> since this is only called when
+        #externally removed, this would cause a recursion loop
+        #any use of this method should remove the collection first
+        self.collection  = None
+        self.volume = None
+
+        # Second step unregistration
+        if (DMX.linkedToFile):
+            for cls in self.classes_setup:
+                bpy.utils.register_class(cls)
+            for cls in self.classes:
+                bpy.utils.unregister_class(cls)
+            DMX.linkedToFile = False
 
     # Callback Properties
 
@@ -190,7 +268,7 @@ class DMX(PropertyGroup):
     # # Fixtures > List
 
     def onFixtureList(self, context):
-        self.fixtures[self.fixture_list_i].body.select_set(True)
+        self.fixtures[self.fixture_list_i].select()
 
     fixture_list_i : IntProperty(
         name = "Fixture List Item",
@@ -203,7 +281,7 @@ class DMX(PropertyGroup):
 
     def onGroupList(self, context):
         for fixture in self.groups[self.group_list_i].fixtures:
-            fixture.body.select_set(True)
+            fixture.get_fixture().select()
 
     group_list_i : IntProperty(
         name = "Group List i",
@@ -218,7 +296,7 @@ class DMX(PropertyGroup):
         for fixture in self.fixtures:
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
-                    fixture.setColor(self.programmer_color)
+                    fixture.setDMX({'R':self.programmer_color[0],'G':self.programmer_color[1],'B':self.programmer_color[2]})
 
     programmer_color: FloatVectorProperty(
         name = "Programmer Color",
@@ -227,8 +305,7 @@ class DMX(PropertyGroup):
         min = 0.0,
         max = 1.0,
         default = (1.0,1.0,1.0,1.0),
-        update = onProgrammerColor
-        )
+        update = onProgrammerColor)
 
     # # Programmer > Dimmer
 
@@ -236,7 +313,7 @@ class DMX(PropertyGroup):
         for fixture in self.fixtures:
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
-                    fixture.setDimmer(self.programmer_dimmer)
+                    fixture.setDMX({'dimmer':self.programmer_dimmer})
 
     programmer_dimmer: FloatProperty(
         name = "Programmer Dimmer",
@@ -249,8 +326,18 @@ class DMX(PropertyGroup):
 
     # # Fixtures
 
-    def addFixture(self, fixture):
-        self.fixtures.append(fixture)
+    def addSpotFixture(self, name, address, model, emission, power, angle, default_color):
+        dmx = bpy.context.scene.dmx
+        dmx.fixtures.add()
+        fixture = dmx.fixtures[-1]
+        DMX_SpotFixture.create(fixture, model, name, address, emission, default_color, angle, power)
+
+    def addTubeFixture(self, name, address, model, emission, length, default_color):
+        dmx = bpy.context.scene.dmx
+        dmx.fixtures.add()
+        dmx.fixtures[-1] = PointerProperty(type=DMX_TubeFixture)
+        fixture = dmx.fixtures[-1]
+        fixture.set(name, address, model, emission, length, default_color, False)
 
     def removeFixture(self, i):
         if (i >= 0 and i < len(self.fixtures)):
@@ -264,50 +351,72 @@ class DMX(PropertyGroup):
 
     # # Groups
 
-    def createGroup(self, context, name):
-        group = Group(self,name)
+    def createGroup(self, name):
+        dmx = bpy.context.scene.dmx
+        dmx.groups.add()
+        group = dmx.groups[-1]
+        group.name = name
+        group.update()
         if (len(group.fixtures)):
-            self.groups.append(group)
-            context.scene.group_list.add()
-            context.scene.group_list[-1].name = name
+            group.name = name
+        else:
+            del dmx.groups[-1]
 
     def updateGroup(self, i):
+        dmx = bpy.context.scene.dmx
         if (i >= 0 and i < len(self.groups)):
-            self.groups[i].update()
+            dmx.groups[i].update()
 
-    def removeGroup(self, context, i):
-        del self.groups[i]
-        context.scene.group_list.remove(i)
+    def renameGroup(self, i, name):
+        dmx = bpy.context.scene.dmx
+        if (i >= 0 and i < len(self.groups)):
+            dmx.groups[i].name = name
+
+    def removeGroup(self, i):
+        bpy.context.scene.dmx.groups.remove(i)
 
 # Handlers #
 
 @bpy.app.handlers.persistent
 def onLoadFile(scene):
-    print("FILE LOADED")
-    if (hasattr(bpy.context.scene, 'dmx')):
-        print("HAS DMX")
-        bpy.context.scene.dmx.setup(bpy.data.collections["DMX"])
+    if (hasattr(bpy.data.scenes['Scene'], 'dmx')):
+        print("DMX", "File contains DMX show, linking...")
+        bpy.context.scene.dmx.linkFile()
 
+@bpy.app.handlers.persistent
 def onUndo(scene):
-    scene.dmx.onUndo(scene)
-
-def onDepsGraph(scene):
-    scene.dmx.onDepsGraph(scene)
+    print("UNDO")
+    if (not scene.dmx.collection and DMX.linkedToFile):
+        scene.dmx.unlinkFile()
 
 #
 # Blender Add-On
 #
 
 def register():
+    # Register Base Classes
+    for cls in DMX.classes_base:
+        bpy.utils.register_class(cls)
+
+    # Register addon main class
     bpy.utils.register_class(DMX)
     bpy.types.Scene.dmx = PointerProperty(type=DMX)
 
+    # Append handlers
     bpy.app.handlers.load_post.append(onLoadFile)
+    bpy.app.handlers.undo_post.append(onUndo)
 
 def unregister():
-    bpy.types.Scene.dmx.unregister()
+    # Unregister Base Classes
+    for cls in DMX.classes_base:
+        bpy.utils.unregister_class(cls)
 
+    # Unregister addon main class
+    bpy.utils.unregister_class(DMX)
+
+    # Append handlers
     bpy.app.handlers.load_post.clear()
+    bpy.app.handlers.undo_post.clear()
 
 if __name__ == "__main__":
     register()

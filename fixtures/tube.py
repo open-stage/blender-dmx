@@ -8,12 +8,12 @@
 #
 
 import bpy
-from dmx.fixture import Fixture
+from dmx.fixture import *
 
-class TubeFixture(Fixture):
-    def __init__(self, dmx, name, address, model, emission, length, default_color):
+class DMX_TubeFixture():
+    def __init__(self, name, address, model, emission, length, default_color):
         # DMX
-        super().__init__(dmx, name, address, model, emission, default_color, False)
+        super().__init__(name, address, model, emission, default_color, False)
         self.length = length
 
         resolution = 8
@@ -46,8 +46,8 @@ class TubeFixture(Fixture):
         bpy.ops.collection.objects_remove_all()
         self.collection.objects.link(self.body)
 
-        # Link collection to scene
-        dmx.collection.children.link(self.collection)
+        # Link collection to DMX collection
+        bpy.context.scene.dmx.collection.children.link(self.collection)
 
         self.setColor(default_color)
 
