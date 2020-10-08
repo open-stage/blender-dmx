@@ -9,11 +9,9 @@ import bpy
 
 from dmx.util import getBodyMaterial, getSurfaceMaterial
 
-from dmx.model import populateCollection
+from dmx.model import populateModel
 
 from dmx.param import DMX_Param, DMX_Model_Param
-
-from dmx.fixtures.spot import DMX_SpotFixture
 
 from bpy.props import (IntProperty,
                        FloatProperty,
@@ -25,7 +23,7 @@ from bpy.props import (IntProperty,
 from bpy.types import (PropertyGroup,
                        Collection,
                        Object,
-                       NodeTree)
+                       Material)
 
 class DMX_Fixture_Object(PropertyGroup):
     object: PointerProperty(
@@ -33,6 +31,11 @@ class DMX_Fixture_Object(PropertyGroup):
         type = Object)
 
 class DMX_Fixture(PropertyGroup):
+
+    # Used to get class type from name faster
+    # The values are registered by the subclasses when an object of that
+    # subclass is created
+    subclasses = {}
 
     # Blender RNA #
 
@@ -45,9 +48,9 @@ class DMX_Fixture(PropertyGroup):
         type = DMX_Fixture_Object
     )
 
-    emitter_nodes: PointerProperty(
+    emitter_material: PointerProperty(
         name = "Fixture > Emitter Nodes",
-        type = NodeTree)
+        type = Material)
 
     # Model properties
 
@@ -80,25 +83,17 @@ class DMX_Fixture(PropertyGroup):
 
     # A fixture should not be created with this method. Instead, use the
     # create method from the fixtures subclasses
-    def _create(self, model, name, address, emission, default_color):
+    def _create(self, name, model, address, emission, default_color):
 
         # Data Properties
-        self.model = model
         self.name = name
+        self.model = model
 
         # Create default model parameters
         self.model_params.add()
         self.model_params[-1].name = 'emission'
         self.model_params[-1].value = emission
         self.model_params.add()
-        self.model_params[-1].name = 'default_R'
-        self.model_params[-1].value = default_color[0]
-        self.model_params.add()
-        self.model_params[-1].name = 'default_G'
-        self.model_params[-1].value = default_color[1]
-        self.model_params.add()
-        self.model_params[-1].name = 'default_B'
-        self.model_params[-1].value = default_color[2]
 
         # DMX Properties
         self.address = address
@@ -125,17 +120,22 @@ class DMX_Fixture(PropertyGroup):
         # in the future, only dimmer
         self.dmx_params.add()
         self.dmx_params[-1].name = 'dimmer'
+        self.dmx_params[-1].default = 0
         self.dmx_params.add()
         self.dmx_params[-1].name = 'R'
+        self.dmx_params[-1].default = default_color[0]
         self.dmx_params.add()
         self.dmx_params[-1].name = 'G'
+        self.dmx_params[-1].default = default_color[1]
         self.dmx_params.add()
         self.dmx_params[-1].name = 'B'
+        self.dmx_params[-1].default = default_color[2]
 
         # Populate collection with objects loaded from the model
-        components = populateCollection(self.collection, model)
+        components = populateModel(self.collection, model)
 
-        # No components means the object will be generated using primitives
+        # No components means there's no mesh with this name or
+        # the object will be generated using primitives
         # by the fixture sub class, so nothing to link here
         if (not components):
             return
@@ -144,13 +144,10 @@ class DMX_Fixture(PropertyGroup):
         self.objects.add()
         self.objects[-1].name = 'emitter'
         self.objects[-1].object = components['emitter']
-        emitter = self.objects[-1].object
-        fixture.__annotations__['emitter_strength'] = emitter.active_material.node_tree.nodes[1].inputs['Strength']
-        fixture.__annotations__['emitter_color'] = emitter.active_material.node_tree.nodes[1].inputs['Color']
+        self.emitter_material = self.objects[-1].object.material_slots[0].material
 
-        # Set emission and default color (white)
-        fixture.__annotations__['emitter_strength'].default_value = self.model_params['emission'].value
-        fixture.__annotations__['emitter_color'].default_value = (self.model_params['default_R'].value,self.model_params['default_G'].value,self.model_params['default_B'].value,1)
+        # Set emission (white)
+        self.emitter_material.node_tree.nodes[1].inputs['Strength'].default_value = self.model_params['emission'].value
 
         # Body (optional)
         self.body = None
@@ -166,32 +163,50 @@ class DMX_Fixture(PropertyGroup):
             self.objects[-1].name = 'surface'
             self.objects[-1].object = components['surface']
 
-        # Clear fixture
-        self.clear()
+    def edit(self, name, model, address, model_params, default_color):
+        self.name = name
+        self.collection.name = name
+        #self.model = model
+        self.address = address
+        for param in model_params.keys():
+            if (param in self.model_params):
+                self.model_params[param].value = model_params[param ]
+        self.dmx_params['R'].default = default_color[0]
+        self.dmx_params['G'].default = default_color[1]
+        self.dmx_params['B'].default = default_color[2]
+
+        self.emitter_material.node_tree.nodes[1].inputs['Strength'].default_value = self.model_params['emission'].value*self.dmx_params['dimmer'].value
+
+        self.subclasses[self.subclass].edit(self)
+
+        self.update()
+
 
     # Interface Methods #
 
     def icon(self):
-        return self.__annotations__['subcls'].icon()
+        return self.subclasses[self.subclass].icon()
 
     def setDMX(self, pvalues):
-        self.__annotations__['subcls'].setDMX(self, pvalues)
+        self.subclasses[self.subclass].setDMX(self, pvalues)
+
+    def update(self):
+        self.subclasses[self.subclass].update(self)
 
     def updateDimmer(self):
         dimmer = self.dmx_params['dimmer'].value
-        self.__annotations__['emitter_strength'].default_value = self.model_params['emission'].value*dimmer
+        self.emitter_material.node_tree.nodes[1].inputs['Strength'].default_value = self.model_params['emission'].value*dimmer
         return dimmer
 
     def updateColor(self):
         color = [self.dmx_params['R'].value,self.dmx_params['G'].value,self.dmx_params['B'].value,1]
-        self.__annotations__['emitter_color'].default_value = color
+        self.emitter_material.node_tree.nodes[1].inputs['Color'].default_value = color
         return color
 
     def select(self):
-        self.__annotations__['subcls'].select(self)
+        self.subclasses[self.subclass].select(self)
 
     def clear(self):
-        self.dmx_params['dimmer'].value = 0
-        self.dmx_params['R'].value = self.model_params['default_R'].value
-        self.dmx_params['G'].value = self.model_params['default_G'].value
-        self.dmx_params['B'].value = self.model_params['default_B'].value
+        for dmx_param in self.dmx_params:
+            dmx_param.toDefault()
+        self.update()

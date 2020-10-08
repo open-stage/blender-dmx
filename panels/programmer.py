@@ -29,6 +29,7 @@ class DMX_OT_Programmer_Clear(Operator):
 
     def execute(self, context):
         scene = context.scene
+        bpy.ops.object.select_all(action='DESELECT')
         for fixture in scene.dmx.fixtures:
             fixture.clear()
         scene.dmx.programmer_color = (1.0, 1.0, 1.0, 1.0)

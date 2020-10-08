@@ -13,10 +13,19 @@ from bpy.types import PropertyGroup
 class DMX_Param(PropertyGroup):
     value: FloatProperty(
         name = "DMX: DMX Parameter",
-        default = 0,
+        default = 1,
         min = 0,
         max = 1
     )
+    default: FloatProperty(
+        name = "DMX: DMX Parameter Default Value",
+        default = 1,
+        min = 0,
+        max = 1
+    )
+    def toDefault(self):
+        self.value = self.default
+
 
 class DMX_Model_Param(PropertyGroup):
     value: FloatProperty(

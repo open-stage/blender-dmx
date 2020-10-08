@@ -5,9 +5,10 @@
 #   http://www.github.com/hugoaboud/BlenderDMX
 #
 
+import os.path
 import bpy
 
-from dmx.util import getBodyMaterial, getSurfaceMaterial
+from dmx.util import getEmitterMaterial, getBodyMaterial, getSurfaceMaterial
 
 MESH_PATH = 'C:\\Users\\Aboud\\Desktop\\LAB\\BlenderDMX\\mesh\\'
 
@@ -18,9 +19,10 @@ MESH_PATH = 'C:\\Users\\Aboud\\Desktop\\LAB\\BlenderDMX\\mesh\\'
 def getMesh(model):
     mesh = {}
     if (model+"_emitter" not in bpy.data.meshes):
-        imported_object = bpy.ops.import_scene.obj(filepath=MESH_PATH+model+'.obj')
-        if (not imported_object):
+        path = MESH_PATH+model+'.obj'
+        if (not os.path.exists(path) or not os.path.isfile(path)):
             return None
+        imported_object = bpy.ops.import_scene.obj(filepath=path)
         for i in range(len(bpy.context.selected_objects)):
             obj = bpy.context.selected_objects[i]
             # delete materials
@@ -44,14 +46,14 @@ def getMesh(model):
         if (model+"_surface" in bpy.data.meshes): mesh['surface'] = bpy.data.meshes[model+"_surface"]
     return mesh
 
-def populateCollection(collection, model):
+def populateModel(collection, model):
     name = collection.name
     mesh = getMesh(model)
     if (not mesh):
-        print("DMX: No mesh named " + model)
+        print("DMX", "No mesh named " + model)
         return
     if (not len(mesh)):
-        print("DMX: Invalid mesh")
+        print("DMX", "Invalid mesh")
         return
 
     components = {}
@@ -60,15 +62,7 @@ def populateCollection(collection, model):
     emitter = bpy.data.objects.new('Emitter', mesh['emitter'])
     collection.objects.link(emitter)
     components['emitter'] = emitter
-
-    if (name in bpy.data.materials):
-        bpy.data.materials.remove(bpy.data.materials[name])
-    material = bpy.data.materials.new(name)
-    material.use_nodes = True
-    material.node_tree.nodes.remove(material.node_tree.nodes[1])
-    material.node_tree.nodes.new("ShaderNodeEmission")
-    material.node_tree.links.new(material.node_tree.nodes[0].inputs[0], material.node_tree.nodes[1].outputs[0])
-    material.shadow_method = 'NONE'
+    material = getEmitterMaterial(name)
     emitter.active_material = material
     emitter.material_slots[0].link = 'OBJECT'
     emitter.material_slots[0].material = material

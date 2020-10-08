@@ -52,9 +52,6 @@ class DMX(PropertyGroup):
                     DMX_Group_Fixture,
                     DMX_Group)
 
-    classes_fixture = (DMX_SpotFixture,
-                        DMX_TubeFixture)
-
     # Classes to be registered
     # The registration is done in two steps. The second only runs
     # after the user requests to setup the addon.
@@ -185,13 +182,12 @@ class DMX(PropertyGroup):
                     bpy.utils.unregister_class(cls)
                 DMX.linkedToFile = True
 
-        # Relink fixture custom annotations (quick access to components)
+        # Rebuild subclass dictionary
         for fixture in self.fixtures:
-            fixture.__annotations__['subcls'] = getattr(sys.modules['dmx.fixtures.spot'],fixture.subclass)
-
-            emitter = fixture.objects['emitter'].object
-            fixture.__annotations__['emitter_strength'] = emitter.active_material.node_tree.nodes[1].inputs['Strength']
-            fixture.__annotations__['emitter_color'] = emitter.active_material.node_tree.nodes[1].inputs['Color']
+            if (fixture.subclass not in DMX_Fixture.subclasses):
+                print("DMX", "\tLinking fixture subclass ", fixture.subclass)
+                subcls = fixture.subclass.split('.')
+                DMX_Fixture.subclasses[fixture.subclass] = getattr(getattr(sys.modules['dmx.fixtures'],subcls[0]),subcls[1])
 
     # Unlink Add-on from file
     # This is only called when the DMX collection is externally removed
@@ -199,9 +195,6 @@ class DMX(PropertyGroup):
         print("DMX", "Unlinking from file")
 
         # Unlink pointer properties
-        #self.collection = None -> since this is only called when
-        #externally removed, this would cause a recursion loop
-        #any use of this method should remove the collection first
         self.collection  = None
         self.volume = None
 
@@ -234,8 +227,8 @@ class DMX(PropertyGroup):
 
     def onVolumePreview(self, context):
         for fixture in self.fixtures:
-            if (fixture.spot):
-                fixture.spot.data.show_cone = self.volume_preview
+            if ('spot' in fixture.objects):
+                fixture.objects['spot'].object.data.show_cone = self.volume_preview
 
     volume_preview: BoolProperty(
         name = "Preview Volume",
@@ -326,23 +319,22 @@ class DMX(PropertyGroup):
 
     # # Fixtures
 
-    def addSpotFixture(self, name, address, model, emission, power, angle, default_color):
+    def addSpotFixture(self, name, model, address, emission, angle, power, default_color):
         dmx = bpy.context.scene.dmx
         dmx.fixtures.add()
         fixture = dmx.fixtures[-1]
-        DMX_SpotFixture.create(fixture, model, name, address, emission, default_color, angle, power)
+        DMX_SpotFixture.create(fixture, name, model, address, emission, angle, power, default_color)
 
-    def addTubeFixture(self, name, address, model, emission, length, default_color):
+    def addTubeFixture(self, name, model, address, emission, length, default_color):
         dmx = bpy.context.scene.dmx
         dmx.fixtures.add()
-        dmx.fixtures[-1] = PointerProperty(type=DMX_TubeFixture)
         fixture = dmx.fixtures[-1]
-        fixture.set(name, address, model, emission, length, default_color, False)
+        DMX_TubeFixture.create(fixture, name, model, address, emission, length, default_color)
 
     def removeFixture(self, i):
         if (i >= 0 and i < len(self.fixtures)):
             bpy.data.collections.remove(self.fixtures[i].collection)
-            del self.fixtures[i]
+            self.fixtures.remove(i)
 
     def getFixture(self, collection):
         for fixture in self.fixtures:
@@ -379,13 +371,14 @@ class DMX(PropertyGroup):
 
 @bpy.app.handlers.persistent
 def onLoadFile(scene):
-    if (hasattr(bpy.data.scenes['Scene'], 'dmx')):
+    if ('DMX' in bpy.data.scenes['Scene'].collection.children):
         print("DMX", "File contains DMX show, linking...")
         bpy.context.scene.dmx.linkFile()
+    else:
+        bpy.context.scene.dmx.unlinkFile()
 
 @bpy.app.handlers.persistent
 def onUndo(scene):
-    print("UNDO")
     if (not scene.dmx.collection and DMX.linkedToFile):
         scene.dmx.unlinkFile()
 
