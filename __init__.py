@@ -2,7 +2,7 @@ bl_info = {
     "name": "DMX",
     "description": "Create and control DMX fixtures",
     "author": "hugoaboud",
-    "version": (0, 0, 5),
+    "version": (0, 0, 8),
     "blender": (2, 80, 0),
     "location": "3D View > DMX",
     "warning": "", # used for warning icon and text in addons panel
