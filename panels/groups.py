@@ -74,8 +74,10 @@ class DMX_OT_Group_Create(Operator):
     def execute(self, context):
         scene = context.scene
         dmx = scene.dmx
-        dmx.createGroup(self.name)
-        return {'FINISHED'}
+        if (self.name not in dmx.groups):
+            if (dmx.createGroup(self.name)):
+                return {'FINISHED'}
+        return {'CANCELLED'}
 
     def invoke(self, context, event):
         self.name = "Group " + str(len(context.scene.dmx.groups)+1)
@@ -109,8 +111,10 @@ class DMX_OT_Group_Rename(Operator):
     def execute(self, context):
         scene = context.scene
         dmx = scene.dmx
-        dmx.renameGroup(dmx.group_list_i, self.name)
-        return {'FINISHED'}
+        if (self.name not in dmx.groups):
+            dmx.renameGroup(dmx.group_list_i, self.name)
+            return {'FINISHED'}
+        return {'CANCELLED'}    
 
     def invoke(self, context, event):
         group = context.scene.dmx.groups[context.scene.dmx.group_list_i]

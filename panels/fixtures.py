@@ -53,9 +53,9 @@ class DMX_MT_Fixture(Menu):
         row = layout.row()
         if (len(dmx.fixtures) and scene.dmx.fixture_list_i >= 0 and scene.dmx.fixture_list_i < len(dmx.fixtures)):
             fixture = dmx.fixtures[scene.dmx.fixture_list_i]
-            if (fixture.subclass == 'DMX_SpotFixture'):
+            if (fixture.subclass == 'spot.DMX_SpotFixture'):
                 row.operator("dmx.edit_spot_fixture", text = "Edit", icon="GREASEPENCIL")
-            elif (fixture.subclass == 'DMX_TubeFixture'):
+            elif (fixture.subclass == 'tube.DMX_TubeFixture'):
                 row.operator("dmx.edit_tube_fixture", text = "Edit", icon="GREASEPENCIL")
         else:
             row.label(text="Edit", icon="GREASEPENCIL")

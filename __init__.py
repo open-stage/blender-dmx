@@ -49,7 +49,6 @@ class DMX(PropertyGroup):
                     DMX_Model_Param,
                     DMX_Fixture_Object,
                     DMX_Fixture,
-                    DMX_Group_Fixture,
                     DMX_Group)
 
     # Classes to be registered
@@ -182,12 +181,17 @@ class DMX(PropertyGroup):
                     bpy.utils.unregister_class(cls)
                 DMX.linkedToFile = True
 
-        # Rebuild subclass dictionary
+        # Rebuild fixture subclass dictionary
         for fixture in self.fixtures:
             if (fixture.subclass not in DMX_Fixture.subclasses):
                 print("DMX", "\tLinking fixture subclass ", fixture.subclass)
                 subcls = fixture.subclass.split('.')
                 DMX_Fixture.subclasses[fixture.subclass] = getattr(getattr(sys.modules['dmx.fixtures'],subcls[0]),subcls[1])
+
+        # Rebuild group runtime dictionary
+        DMX_Group.runtime = {}
+        for group in self.groups:
+            group.rebuild()
 
     # Unlink Add-on from file
     # This is only called when the DMX collection is externally removed
@@ -273,8 +277,7 @@ class DMX(PropertyGroup):
     # # Groups > List
 
     def onGroupList(self, context):
-        for fixture in self.groups[self.group_list_i].fixtures:
-            fixture.get_fixture().select()
+        self.groups[self.group_list_i].select()
 
     group_list_i : IntProperty(
         name = "Group List i",
@@ -349,10 +352,10 @@ class DMX(PropertyGroup):
         group = dmx.groups[-1]
         group.name = name
         group.update()
-        if (len(group.fixtures)):
-            group.name = name
-        else:
-            del dmx.groups[-1]
+        if (name not in DMX_Group.runtime):
+            dmx.groups.remove(len(dmx.groups)-1)
+            return False
+        return True
 
     def updateGroup(self, i):
         dmx = bpy.context.scene.dmx
