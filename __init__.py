@@ -2,8 +2,8 @@ bl_info = {
     "name": "DMX",
     "description": "Create and control DMX fixtures",
     "author": "hugoaboud",
-    "version": (0, 0, 8),
-    "blender": (2, 80, 0),
+    "version": (0, 0, 9),
+    "blender": (2, 90, 0),
     "location": "3D View > DMX",
     "warning": "", # used for warning icon and text in addons panel
     "wiki_url": "http://www.github.com/hugoaboud/BlenderDMX",
@@ -13,8 +13,7 @@ bl_info = {
 
 import sys
 import bpy
-
-from dmx.util import getBodyMaterial
+import os
 
 from dmx.fixture import *
 from dmx.fixtures.spot import *
@@ -49,15 +48,15 @@ class DMX(PropertyGroup):
                     DMX_Model_Param,
                     DMX_Fixture_Object,
                     DMX_Fixture,
-                    DMX_Group)
+                    DMX_Group,
+                    DMX_PT_Setup)
 
     # Classes to be registered
     # The registration is done in two steps. The second only runs
     # after the user requests to setup the addon.
 
 
-    classes_setup = (DMX_OT_Setup_NewShow,
-                     DMX_PT_Setup)
+    classes_setup = (DMX_OT_Setup_NewShow,)
 
     classes = ( DMX_OT_Setup_Volume_Create,
                 DMX_PT_Setup_Background,
@@ -80,6 +79,7 @@ class DMX(PropertyGroup):
                 DMX_PT_Groups,
                 DMX_OT_Programmer_DeselectAll,
                 DMX_OT_Programmer_Clear,
+                DMX_OT_Programmer_SelectTargets,
                 DMX_PT_Programmer  )
 
     linkedToFile = False
@@ -231,8 +231,8 @@ class DMX(PropertyGroup):
 
     def onVolumePreview(self, context):
         for fixture in self.fixtures:
-            if ('spot' in fixture.objects):
-                fixture.objects['spot'].object.data.show_cone = self.volume_preview
+            for light in fixture.lights:
+                light.object.data.show_cone = self.volume_preview
 
     volume_preview: BoolProperty(
         name = "Preview Volume",

@@ -7,9 +7,8 @@
 
 import bpy
 
-from dmx.util import getBodyMaterial, getSurfaceMaterial
-
-from dmx.model import populateModel
+from dmx.material import getEmitterMaterial
+from dmx.model import getFixtureModelCollection
 
 from dmx.param import DMX_Param, DMX_Model_Param
 
@@ -27,7 +26,7 @@ from bpy.types import (PropertyGroup,
 
 class DMX_Fixture_Object(PropertyGroup):
     object: PointerProperty(
-        name = "Fixture > Collection",
+        name = "Fixture > Object",
         type = Object)
 
 class DMX_Fixture(PropertyGroup):
@@ -48,8 +47,13 @@ class DMX_Fixture(PropertyGroup):
         type = DMX_Fixture_Object
     )
 
+    lights: CollectionProperty(
+        name = "Fixture > Lights",
+        type = DMX_Fixture_Object
+    )
+
     emitter_material: PointerProperty(
-        name = "Fixture > Emitter Nodes",
+        name = "Fixture > Emitter Material",
         type = Material)
 
     # Model properties
@@ -87,7 +91,6 @@ class DMX_Fixture(PropertyGroup):
 
         # Data Properties
         self.name = name
-        self.model = model
 
         # Create default model parameters
         self.model_params.add()
@@ -102,16 +105,58 @@ class DMX_Fixture(PropertyGroup):
         if (name in bpy.data.collections):
             bpy.data.collections.remove(bpy.data.collections[name])
 
-        # Create collection
+        # Create clean Collection
+        # (Blender creates the collection with selected objects/collections)
         bpy.ops.collection.create(name=name)
         self.collection = bpy.data.collections[name]
 
-        # Unlink any objects/collections
-        # (Blender creates the collection with selected objects/collections)
         for c in self.collection.objects:
             self.collection.objects.unlink(c)
         for c in self.collection.children:
             self.collection.children.unlink(c)
+
+        # Import and deep copy Fixture Model Collection
+        if (model):
+            self.model = model
+            model_collection = getFixtureModelCollection(model)
+            links = {}
+            for obj in model_collection.objects:
+                # Copy object
+                links[obj] = obj.copy()
+                # If light, copy object data
+                if (obj.type == 'LIGHT'):
+                    links[obj].data = obj.data.copy()
+                # Store reference to body and target
+                if ('Body' in obj.name):
+                    self.objects.add()
+                    self.objects[-1].name = 'Body'
+                    self.objects['Body'].object = links[obj]
+                elif ('Target' in obj.name):
+                    self.objects.add()
+                    self.objects[-1].name = 'Target'
+                    self.objects['Target'].object = links[obj]
+                # Link new object to collection
+                self.collection.objects.link(links[obj])
+
+            # Relink constraints
+            for obj in self.collection.objects:
+                for constraint in obj.constraints:
+                    constraint.target = links[constraint.target]
+
+            # Setup emitter
+            for obj in self.collection.objects:
+                if ('Emitter' in obj.name):
+                    emitter = obj
+            assert emitter
+
+            material = getEmitterMaterial(name)
+            emitter.active_material = material
+            emitter.material_slots[0].link = 'OBJECT'
+            emitter.material_slots[0].material = material
+            emitter.material_slots[0].material.shadow_method = 'NONE' # eevee
+
+            self.emitter_material = emitter.material_slots[0].material
+            self.emitter_material.node_tree.nodes[1].inputs['Strength'].default_value = self.model_params['emission'].value
 
         # Link collection to DMX collection
         bpy.context.scene.dmx.collection.children.link(self.collection)
@@ -130,38 +175,6 @@ class DMX_Fixture(PropertyGroup):
         self.dmx_params.add()
         self.dmx_params[-1].name = 'B'
         self.dmx_params[-1].default = default_color[2]
-
-        # Populate collection with objects loaded from the model
-        components = populateModel(self.collection, model)
-
-        # No components means there's no mesh with this name or
-        # the object will be generated using primitives
-        # by the fixture sub class, so nothing to link here
-        if (not components):
-            return
-
-        # Emitter
-        self.objects.add()
-        self.objects[-1].name = 'emitter'
-        self.objects[-1].object = components['emitter']
-        self.emitter_material = self.objects[-1].object.material_slots[0].material
-
-        # Set emission (white)
-        self.emitter_material.node_tree.nodes[1].inputs['Strength'].default_value = self.model_params['emission'].value
-
-        # Body (optional)
-        self.body = None
-        if ('body' in components):
-            self.objects.add()
-            self.objects[-1].name = 'body'
-            self.objects[-1].object = components['body']
-
-        # Surface (optional)
-        self.surface = None
-        if ('surface' in components):
-            self.objects.add()
-            self.objects[-1].name = 'surface'
-            self.objects[-1].object = components['surface']
 
     def edit(self, name, model, address, model_params, default_color):
         self.name = name

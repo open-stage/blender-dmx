@@ -13,6 +13,7 @@ import bpy
 from bpy.props import PointerProperty
 from bpy.types import (Panel, Operator)
 
+from dmx.material import getVolumeScatterMaterial
 from dmx.util import getSceneRect
 
 # Operators #
@@ -47,11 +48,7 @@ class DMX_OT_Setup_Volume_Create(Operator):
             dmx.volume.name = "DMX_Volume"
             dmx.volume.display_type = 'WIRE'
 
-            material = bpy.data.materials.new("DMX_Volume")
-            material.use_nodes = True
-            material.node_tree.nodes.remove(material.node_tree.nodes[1])
-            material.node_tree.nodes.new("ShaderNodeVolumeScatter")
-            material.node_tree.links.new(material.node_tree.nodes[0].inputs[1], material.node_tree.nodes[1].outputs[0])
+            material = getVolumeScatterMaterial()
 
             dmx.volume_nodetree = material.node_tree
             dmx.volume.data.materials.append(material)
@@ -64,7 +61,7 @@ class DMX_OT_Setup_Volume_Create(Operator):
 
         bpy.ops.object.select_all(action='DESELECT')
         dmx.volume.select_set(True)
-        bpy.ops.collection.objects_remove_all()
+        #bpy.ops.collection.objects_remove_all()
         bpy.context.scene.collection.objects.link(dmx.volume)
 
         return {'FINISHED'}

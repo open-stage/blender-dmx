@@ -7,12 +7,19 @@
 
 import bpy
 
-from bpy.props import FloatProperty
+from bpy.props import (FloatProperty,
+                       IntProperty)
+
 from bpy.types import PropertyGroup
 
 class DMX_Param(PropertyGroup):
+    index: IntProperty(
+        name = "DMX: DMX Parameter Index",
+        min = 1,
+        max = 512
+    )
     value: FloatProperty(
-        name = "DMX: DMX Parameter",
+        name = "DMX: DMX Parameter Value",
         default = 1,
         min = 0,
         max = 1

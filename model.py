@@ -8,79 +8,43 @@
 import os.path
 import bpy
 
-from dmx.util import getEmitterMaterial, getBodyMaterial, getSurfaceMaterial
+from dmx.material import getEmitterMaterial
 
-MESH_PATH = 'C:\\Users\\Aboud\\Desktop\\LAB\\BlenderDMX\\mesh\\'
+def getModelPath():
+    ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
+    return ADDON_PATH+'\\data\\models\\'
 
-# <get Mesh>
-# Load the mesh for a given model if it wasn't already loaded
-# model is the .obj file name on the "models/" folder
+#   Return the fixture model collection by name
+#   If not imported, find the .blend file on dmx/data/models/
+#   and copy it's "Fixture" collection
 
-def getMesh(model):
-    mesh = {}
-    if (model+"_emitter" not in bpy.data.meshes):
-        path = MESH_PATH+model+'.obj'
-        if (not os.path.exists(path) or not os.path.isfile(path)):
-            return None
-        imported_object = bpy.ops.import_scene.obj(filepath=path)
-        for i in range(len(bpy.context.selected_objects)):
-            obj = bpy.context.selected_objects[i]
-            # delete materials
-            for m in obj.data.materials:
-                if (m): bpy.data.materials.remove(m)
-            obj.data.materials.clear()
-            # rename mesh
-            if ("Body" in obj.name):
-                obj.data.name = model+"_body"
-                mesh['body'] = bpy.data.meshes[model+"_body"]
-            elif ("Emitter" in obj.name):
-                obj.data.name = model+"_emitter"
-                mesh['emitter'] = bpy.data.meshes[model+"_emitter"]
-            elif ("Surface" in obj.name):
-                obj.data.name = model+"_surface"
-                mesh['surface'] = bpy.data.meshes[model+"_surface"]
-        bpy.ops.object.delete()
-    else:
-        if (model+"_body" in bpy.data.meshes): mesh['body'] = bpy.data.meshes[model+"_body"]
-        if (model+"_emitter" in bpy.data.meshes): mesh['emitter'] = bpy.data.meshes[model+"_emitter"]
-        if (model+"_surface" in bpy.data.meshes): mesh['surface'] = bpy.data.meshes[model+"_surface"]
-    return mesh
+#   This collection is then deep-copied by the Fixture class
+#   to create a fixture collection.
 
-def populateModel(collection, model):
-    name = collection.name
-    mesh = getMesh(model)
-    if (not mesh):
-        print("DMX", "No mesh named " + model)
-        return
-    if (not len(mesh)):
-        print("DMX", "Invalid mesh")
-        return
+def getFixtureModelCollection(model):
 
-    components = {}
+    # If the fixture collection was already imported for this model
+    # just return it
+    if (model in bpy.data.collections):
+        return bpy.data.collections[model]
 
-    # Emitter
-    emitter = bpy.data.objects.new('Emitter', mesh['emitter'])
-    collection.objects.link(emitter)
-    components['emitter'] = emitter
-    material = getEmitterMaterial(name)
-    emitter.active_material = material
-    emitter.material_slots[0].link = 'OBJECT'
-    emitter.material_slots[0].material = material
+    path = getModelPath()+model+'.blend'
 
-    # Body (optional)
-    if ('body' in mesh):
-        body = bpy.data.objects.new('Body', mesh['body'])
-        collection.objects.link(body)
-        if (not len(body.data.materials)):
-            body.data.materials.append(getBodyMaterial())
-        components['body'] = body
+    # Make sure the file exists, otherwise return None
+    if (not os.path.exists(path) or not os.path.isfile(path)):
+        raise OSError("Model not found: " + path)
 
-    # Surface (optional)
-    if ('surface' in mesh):
-        surface = bpy.data.objects.new('Surface', mesh['surface'])
-        collection.objects.link(surface)
-        if (not len(surface.data.materials)):
-            surface.data.materials.append(getSurfaceMaterial())
-            components['surface'] = surface
+    # Load fixture collection from .blend model file
+    with bpy.data.libraries.load(path) as (data_from, data_to):
+        for coll in data_from.collections:
+            if (coll == "Fixture"):
+                data_to.collections = ["Fixture"]
 
-    return components
+    # Make sure a fixture collection was found
+    if (len(data_to.collections) == 0):
+        raise SyntaxError("No 'Fixture' collection found on model: " + path)
+
+    # Rename collection
+    data_to.collections[0].name = model
+
+    return data_to.collections[0]

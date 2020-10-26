@@ -19,7 +19,7 @@ from bpy.props import (IntProperty,
 
 from bpy.types import Operator
 
-from dmx.util import getEmitterMaterial
+from dmx.material import getEmitterMaterial
 
 class DMX_TubeFixture():
 
@@ -46,10 +46,9 @@ class DMX_TubeFixture():
         if (fixture.subclass not in DMX_Fixture.subclasses):
             DMX_Fixture.subclasses[fixture.subclass] = DMX_TubeFixture
 
-        fixture['banana'] = 2
-
         # Create generic fixture
-        fixture._create(name, model, address, emission, default_color)
+        fixture._create(name, None, address, emission, default_color)
+        fixture.model = model
 
         # Model Parameters
         fixture.model_params.add()
@@ -69,9 +68,9 @@ class DMX_TubeFixture():
         # Emitter from Primitive
         bpy.ops.mesh.primitive_cylinder_add(vertices=resolution, radius=radius, depth=length)
         fixture.objects.add()
-        fixture.objects[-1].name = 'emitter'
+        fixture.objects[-1].name = 'Emitter'
         fixture.objects[-1].object = bpy.context.active_object
-        emitter = fixture.objects['emitter'].object
+        emitter = fixture.objects['Emitter'].object
         bpy.ops.collection.objects_remove_all()
         fixture.collection.objects.link(emitter)
 

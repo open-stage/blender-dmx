@@ -43,13 +43,11 @@ class DMX_Group(PropertyGroup):
         if (len(sel_fixtures)):
             self.runtime[self.name] = sel_fixtures;
             self.dump = str([fixture.name for fixture in sel_fixtures])
-            print(self.dump)
 
     def select(self):
         for fixture in self.runtime[self.name]:
             fixture.select()
 
     def rebuild(self):
-        print("REBUILD")
         fixtures = bpy.context.scene.dmx.fixtures
         self.runtime[self.name] = [fixtures[fxt[1:-1]] for fxt in self.dump.strip('[]').split(', ')]

@@ -22,9 +22,10 @@ class DMX_SpotFixture():
     # Models that can be assigned to this type of fixture
 
     MODELS = (
-        ('par64','PAR 64','Par Can, diam: 8"','ANTIALIASED',0),
-        ('sourcefour','SOURCE FOUR','Source Four PAR','ALIASED',1),
-        ('parled64','PAR LED 64','PAR LED 64','SEQ_CHROMA_SCOPE',2)
+        ('par_64','PAR 64','Par Can, diam: 8"','ANTIALIASED',0),
+        ('source_four','SOURCE FOUR','Source Four PAR','ALIASED',1),
+        ('parled_64','PAR LED 64','PAR LED 64','SEQ_CHROMA_SCOPE',2),
+        ('moving_beam','MOVING BEAM 5R','MOVING BEAM 5R','CURSOR',3)
     )
 
     # Fixture Icon
@@ -54,89 +55,21 @@ class DMX_SpotFixture():
         fixture.model_params[-1].name = 'power'
         fixture.model_params[-1].value = power
 
-        # Set light radius from model
-        # TODO: take from model profile
-        if (model == 'par64'): radius = 0.1
-        elif (model == 'parled64' or model == 'sourcefour'): radius = 0.12
-
-        # Body (always present and main constrain object on spot models)
-        body = fixture.objects['body'].object
-
-        ## New Objects
-
-        # Target
-        bpy.ops.object.empty_add(type='PLAIN_AXES',radius=radius,location=(0,0,-1))
-        fixture.objects.add()
-        fixture.objects[-1].name = 'target'
-        fixture.objects[-1].object = bpy.context.active_object
-        target = fixture.objects['target'].object
-        target.name = "Target"
-        bpy.ops.collection.objects_remove_all()
-        fixture.collection.objects.link(target)
-
-        # Spot
-        light_data = bpy.data.lights.new(name="Spot", type='SPOT')
-        light_data.energy = power
-        light_data.spot_size = (angle/180.0)*3.141516
-        light_data.shadow_soft_size = radius
-
-        fixture.objects.add()
-        fixture.objects[-1].name = 'spot'
-        fixture.objects[-1].object = bpy.data.objects.new(name="Spot", object_data=light_data)
-        spot = fixture.objects[-1].object
-
-        constraint = spot.constraints.new('COPY_LOCATION')
-        constraint.target = body
-        constraint = spot.constraints.new('TRACK_TO')
-        constraint.target = target
-        constraint.track_axis = 'TRACK_NEGATIVE_Z'
-        constraint.up_axis = 'UP_Y'
-
-        spot.data.color = (fixture.dmx_params['R'].default,fixture.dmx_params['G'].default,fixture.dmx_params['B'].default)
-
-        spot.hide_select = True
-        fixture.collection.objects.link(spot)
-
-        ## Default objects
-
-        # Emitter
-        emitter = fixture.objects['emitter'].object
-        constraint = emitter.constraints.new('COPY_LOCATION')
-        constraint.target = body
-        constraint = emitter.constraints.new('TRACK_TO')
-        constraint.target = target
-        constraint.track_axis = 'TRACK_NEGATIVE_Z'
-        constraint.up_axis = 'UP_Y'
-        emitter.hide_select = True
-        emitter.material_slots[0].material.shadow_method = 'NONE' # eevee
-        emitter.cycles_visibility.shadow = False # cycles
-
-        # Body
-        body = fixture.objects['body'].object
-        constraint = body.constraints.new('TRACK_TO')
-        constraint.target = target
-        constraint.track_axis = 'TRACK_NEGATIVE_Z'
-        constraint.up_axis = 'UP_Y'
-
-        # Surface (optional)
-        if ('surface' in fixture.objects):
-            surface = fixture.objects['surface'].object
-            constraint = surface.constraints.new('COPY_LOCATION')
-            constraint.target = body
-            constraint = surface.constraints.new('TRACK_TO')
-            constraint.target = target
-            constraint.track_axis = 'TRACK_NEGATIVE_Z'
-            constraint.up_axis = 'UP_Y'
-            surface.hide_select = True
-            surface.material_slots[0].material.shadow_method = 'NONE' # eevee
-            surface.cycles_visibility.shadow = False # cycles
-
+        # Light source settings
+        for obj in fixture.collection.objects:
+            if (obj.type == 'LIGHT'):
+                obj.data.energy = power
+                obj.data.spot_size = (angle/180.0)*3.141516
+                obj.data.color = (fixture.dmx_params['R'].default,fixture.dmx_params['G'].default,fixture.dmx_params['B'].default)
+                fixture.lights.add()
+                fixture.lights[-1].object = obj
         fixture.clear()
 
     @classmethod
     def edit(self, fixture):
-        fixture.objects['spot'].object.data.spot_size = (fixture.model_params['angle'].value/180.0)*3.141516
-        fixture.objects['spot'].object.data.energy = fixture.model_params['power'].value
+        fixture.lights[0].object.data.spot_size = (fixture.model_params['angle'].value/180.0)*3.141516
+        fixture.lights[0].object.data.energy = fixture.model_params['power'].value
+        # TODO: change model (?)
 
     # DMX
 
@@ -166,16 +99,16 @@ class DMX_SpotFixture():
     @classmethod
     def updateDimmer(self, fixture):
         dimmer = fixture.updateDimmer()
-        fixture.objects['spot'].object.data.energy = fixture.model_params['power'].value*dimmer
+        fixture.lights[0].object.data.energy = fixture.model_params['power'].value*dimmer
 
     @classmethod
     def updateColor(self, fixture):
         color = fixture.updateColor()
-        fixture.objects['spot'].object.data.color = color[:3]
+        fixture.lights[0].object.data.color = color[:3]
 
     @classmethod
     def select(self, fixture):
-        fixture.objects['body'].object.select_set(True)
+        fixture.objects['Body'].object.select_set(True)
 
 # Operators
 
@@ -225,6 +158,13 @@ class DMX_SpotFixture_Operator():
         max = 1.0,
         default = (1.0,1.0,1.0,1.0))
 
+    units: IntProperty(
+        name = "Units",
+        description = "How many units of this light to add",
+        default = 1,
+        min = 1,
+        max = 1024)
+
     def draw(self, context):
         layout = self.layout
         col = layout.column()
@@ -235,6 +175,8 @@ class DMX_SpotFixture_Operator():
         col.prop(self, "angle")
         col.prop(self, "power")
         col.prop(self, "default_color")
+        if (self.units > 0):
+            col.prop(self, "units")
 
 class DMX_OT_Fixture_AddSpot(Operator, DMX_SpotFixture_Operator):
     bl_label = "Add Spot"
@@ -245,11 +187,13 @@ class DMX_OT_Fixture_AddSpot(Operator, DMX_SpotFixture_Operator):
         dmx = scene.dmx
         if (self.name in bpy.data.collections):
             return {'CANCELLED'}
-        dmx.addSpotFixture(self.name, self.model, self.address, self.emission, self.angle, self.power, list(self.default_color))
+        for i in range(self.units):
+            dmx.addSpotFixture(self.name+str(i+1), self.model, self.address, self.emission, self.angle, self.power, list(self.default_color))
         return {'FINISHED'}
 
     def invoke(self, context, event):
         self.name = "Spot "+str(len(context.scene.dmx.fixtures)+1)
+        self.units = 1
         wm = context.window_manager
         return wm.invoke_props_dialog(self)
 
@@ -277,5 +221,6 @@ class DMX_OT_Fixture_EditSpot(Operator, DMX_SpotFixture_Operator):
         self.emission = fixture.model_params['emission'].value
         self.angle = fixture.model_params['angle'].value
         self.default_color = (fixture.dmx_params['R'].default,fixture.dmx_params['G'].default,fixture.dmx_params['B'].default,1)
+        self.units = 0
         wm = context.window_manager
         return wm.invoke_props_dialog(self)
