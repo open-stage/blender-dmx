@@ -36,6 +36,27 @@ class DMX_OT_Programmer_Clear(Operator):
         scene.dmx.programmer_dimmer = 0.0
         return {'FINISHED'}
 
+class DMX_OT_Programmer_SelectBodies(Operator):
+    bl_label = "Select Bodies"
+    bl_idname = "dmx.select_bodies"
+
+    def execute(self, context):
+        dmx = context.scene.dmx
+        bodies = []
+        for fixture in dmx.fixtures:
+            for obj in fixture.collection.objects:
+                if (obj in bpy.context.selected_objects):
+                    if ('Body' in fixture.objects):
+                        bodies.append(fixture.objects['Body'].object)
+                    elif ('Emitter' in fixture.objects):
+                        bodies.append(fixture.objects['Emitter'].object)
+
+        if (len(bodies)):
+            bpy.ops.object.select_all(action='DESELECT')
+            for body in bodies:
+                body.select_set(True)
+        return {'FINISHED'}
+
 class DMX_OT_Programmer_SelectTargets(Operator):
     bl_label = "Select Targets"
     bl_idname = "dmx.select_targets"
@@ -54,6 +75,7 @@ class DMX_OT_Programmer_SelectTargets(Operator):
             for target in targets:
                 target.select_set(True)
         return {'FINISHED'}
+
 # Panels #
 
 class DMX_PT_Programmer(Panel):
@@ -75,7 +97,11 @@ class DMX_PT_Programmer(Panel):
 
         #layout.prop(mytool, "programmer_color", text="")
         layout.operator("dmx.deselect_all")
-        layout.operator("dmx.select_targets")
+
+        row = layout.row()
+        row.operator("dmx.select_bodies")
+        row.operator("dmx.select_targets")
+
         layout.prop(scene.dmx,"programmer_color", text="")
         layout.prop(scene.dmx,"programmer_dimmer", text="Dimmer")
         layout.operator("dmx.clear")

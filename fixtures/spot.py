@@ -22,10 +22,11 @@ class DMX_SpotFixture():
     # Models that can be assigned to this type of fixture
 
     MODELS = (
-        ('par_64','PAR 64','Par Can, diam: 8"','ANTIALIASED',0),
-        ('source_four','SOURCE FOUR','Source Four PAR','ALIASED',1),
-        ('parled_64','PAR LED 64','PAR LED 64','SEQ_CHROMA_SCOPE',2),
-        ('moving_beam','MOVING BEAM 5R','MOVING BEAM 5R','CURSOR',3)
+        ('par_64','Par 64','Par Can, diam: 8"','ANTIALIASED',0),
+        ('source_four','Ellipsoidal','ETC Source Four, Ellipsoidal Reflector Spotlight','PMARKER_SEL',1),
+        ('source_four_par','Source Par','ETC Source Four PAR','ALIASED',2),
+        ('parled_64','Par LED 64','Par LED 64','SEQ_CHROMA_SCOPE',3),
+        ('moving_beam','Moving Beam 5R','Moving Beam 5R','CURSOR',4)
     )
 
     # Fixture Icon
@@ -37,7 +38,7 @@ class DMX_SpotFixture():
     # Create / Edit
 
     @classmethod
-    def create(self, fixture, name, model, address, emission, angle, power, default_color):
+    def create(self, fixture, name, model, address, emission, power, angle, focus, default_color):
 
         # Define subclass so the DMX_Fixture class can store a reference to it
         fixture.subclass = 'spot.DMX_SpotFixture'
@@ -49,17 +50,21 @@ class DMX_SpotFixture():
 
         # Model Parameters
         fixture.model_params.add()
+        fixture.model_params[-1].name = 'power'
+        fixture.model_params[-1].value = power
+        fixture.model_params.add()
         fixture.model_params[-1].name = 'angle'
         fixture.model_params[-1].value = angle
         fixture.model_params.add()
-        fixture.model_params[-1].name = 'power'
-        fixture.model_params[-1].value = power
+        fixture.model_params[-1].name = 'focus'
+        fixture.model_params[-1].value = focus
 
         # Light source settings
         for obj in fixture.collection.objects:
             if (obj.type == 'LIGHT'):
                 obj.data.energy = power
                 obj.data.spot_size = (angle/180.0)*3.141516
+                obj.data.spot_blend = focus
                 obj.data.color = (fixture.dmx_params['R'].default,fixture.dmx_params['G'].default,fixture.dmx_params['B'].default)
                 fixture.lights.add()
                 fixture.lights[-1].object = obj
@@ -67,8 +72,9 @@ class DMX_SpotFixture():
 
     @classmethod
     def edit(self, fixture):
-        fixture.lights[0].object.data.spot_size = (fixture.model_params['angle'].value/180.0)*3.141516
         fixture.lights[0].object.data.energy = fixture.model_params['power'].value
+        fixture.lights[0].object.data.spot_size = (fixture.model_params['angle'].value/180.0)*3.141516
+        fixture.lights[0].object.data.spot_blend = fixture.model_params['focus'].value
         # TODO: change model (?)
 
     # DMX
@@ -136,6 +142,13 @@ class DMX_SpotFixture_Operator():
         min = 1,
         max = 1000)
 
+    power: FloatProperty(
+        name = "Power",
+        description = "Spot Fixture Power",
+        default = 100,
+        min = 1,
+        max = 10000)
+
     angle: FloatProperty(
         name = "Angle",
         description = "Spot Fixture Angle",
@@ -143,12 +156,12 @@ class DMX_SpotFixture_Operator():
         min = 1,
         max = 180)
 
-    power: FloatProperty(
-        name = "Power",
-        description = "Spot Fixture Power",
-        default = 100,
-        min = 1,
-        max = 10000)
+    focus: FloatProperty(
+        name = "Focus",
+        description = "Spot Fixture Focus",
+        default = 0.15,
+        min = 0,
+        max = 1)
 
     default_color: FloatVectorProperty(
         name = "Default Color",
@@ -172,8 +185,9 @@ class DMX_SpotFixture_Operator():
         col.prop(self, "model")
         col.prop(self, "address")
         col.prop(self, "emission")
-        col.prop(self, "angle")
         col.prop(self, "power")
+        col.prop(self, "angle")
+        col.prop(self, "focus")
         col.prop(self, "default_color")
         if (self.units > 0):
             col.prop(self, "units")
@@ -188,7 +202,7 @@ class DMX_OT_Fixture_AddSpot(Operator, DMX_SpotFixture_Operator):
         if (self.name in bpy.data.collections):
             return {'CANCELLED'}
         for i in range(self.units):
-            dmx.addSpotFixture(self.name+str(i+1), self.model, self.address, self.emission, self.angle, self.power, list(self.default_color))
+            dmx.addSpotFixture(self.name+str(i+1), self.model, self.address, self.emission, self.power, self.angle, self.focus, list(self.default_color))
         return {'FINISHED'}
 
     def invoke(self, context, event):
@@ -207,7 +221,7 @@ class DMX_OT_Fixture_EditSpot(Operator, DMX_SpotFixture_Operator):
         fixture = dmx.fixtures[scene.dmx.fixture_list_i]
         if (self.name != fixture.name and self.name in bpy.data.collections):
             return {'CANCELLED'}
-        model_params = {'emission':self.emission, 'angle':self.angle, 'power':self.power}
+        model_params = {'emission':self.emission, 'power':self.power, 'angle':self.angle, 'focus':self.focus}
         fixture.edit(self.name, self.model, self.address, model_params, list(self.default_color))
         return {'FINISHED'}
 
@@ -217,9 +231,10 @@ class DMX_OT_Fixture_EditSpot(Operator, DMX_SpotFixture_Operator):
         self.name = fixture.name
         self.model = fixture.model
         self.address = fixture.address
-        self.power = fixture.model_params['power'].value
         self.emission = fixture.model_params['emission'].value
+        self.power = fixture.model_params['power'].value
         self.angle = fixture.model_params['angle'].value
+        self.focus = fixture.model_params['focus'].value
         self.default_color = (fixture.dmx_params['R'].default,fixture.dmx_params['G'].default,fixture.dmx_params['B'].default,1)
         self.units = 0
         wm = context.window_manager

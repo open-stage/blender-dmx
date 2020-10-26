@@ -79,6 +79,7 @@ class DMX(PropertyGroup):
                 DMX_PT_Groups,
                 DMX_OT_Programmer_DeselectAll,
                 DMX_OT_Programmer_Clear,
+                DMX_OT_Programmer_SelectBodies,
                 DMX_OT_Programmer_SelectTargets,
                 DMX_PT_Programmer  )
 
@@ -322,11 +323,11 @@ class DMX(PropertyGroup):
 
     # # Fixtures
 
-    def addSpotFixture(self, name, model, address, emission, angle, power, default_color):
+    def addSpotFixture(self, name, model, address, emission, power, angle, focus, default_color):
         dmx = bpy.context.scene.dmx
         dmx.fixtures.add()
         fixture = dmx.fixtures[-1]
-        DMX_SpotFixture.create(fixture, name, model, address, emission, angle, power, default_color)
+        DMX_SpotFixture.create(fixture, name, model, address, emission, power, angle, focus, default_color)
 
     def addTubeFixture(self, name, model, address, emission, length, default_color):
         dmx = bpy.context.scene.dmx
