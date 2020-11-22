@@ -21,6 +21,8 @@ However, when it comes to final render quality, it's hard to achieve true photor
 4. `Edit > Preferences > Add-ons > Install`
 5. Pick the addon `dmx.zip` file
 
+> **WARNING:** The addon uses English words to identify some objects on the world, so if your Blender is not in English it will break. This should be fixed soon. For now,  you  can just change Blender language to English and restart it.
+
 To enable the addon, go to `Edit > Preferences > Add-ons`, search for "DMX" and toggle the checkbox on.
 
 ![Install](https://i.imgur.com/Q1R0AzP.gif)
