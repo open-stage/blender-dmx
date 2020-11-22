@@ -16,12 +16,10 @@ However, when it comes to final render quality, it's hard to achieve true photor
 #### INSTALL
 
 1. Make sure you have installed [Blender 2.9](https://www.blender.org/download/) or higher;
-2. Download the addon `.zip` file:
-   * *Stable*: download the [latest release](https://github.com/hugoaboud/BlenderDMX/releases/tag/v0.2.5-alpha)
-   * *Unstable*: download the zipped repository
+2. Download the [latest release](https://github.com/hugoaboud/BlenderDMX/releases/tag/v0.2.5-alpha) `dmx.zip` file
 3. Open Blender
 4. `Edit > Preferences > Add-ons > Install`
-5. Pick the addon `.zip` file
+5. Pick the addon `dmx.zip` file
 
 To enable the addon, go to `Edit > Preferences > Add-ons`, search for "DMX" and toggle the checkbox on.
 
