@@ -15,6 +15,7 @@ def getEmitterMaterial(name):
         bpy.data.materials.remove(bpy.data.materials[name])
     material = bpy.data.materials.new(name)
     material.use_nodes = True
+    # BUG: Internationalization
     material.node_tree.nodes.remove(material.node_tree.nodes['Principled BSDF'])
     material.node_tree.nodes.new("ShaderNodeEmission")
     material.node_tree.links.new(material.node_tree.nodes['Material Output'].inputs[0], material.node_tree.nodes['Emission'].outputs[0])
@@ -28,6 +29,7 @@ def getVolumeScatterMaterial():
 
     material = bpy.data.materials.new("DMX_Volume")
     material.use_nodes = True
+    # BUG: Internationalization
     material.node_tree.nodes.remove(material.node_tree.nodes['Principled BSDF'])
     material.node_tree.nodes.new("ShaderNodeVolumeScatter")
     material.node_tree.links.new(material.node_tree.nodes['Material Output'].inputs[1], material.node_tree.nodes['Volume Scatter'].outputs[0])
