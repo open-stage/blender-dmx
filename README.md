@@ -1,8 +1,11 @@
 # BlenderDMX
 #### Blender addon to design DMX lighting.
 
+*Click on the image below to watch the video!*
 
-*This addon will always be free and open source, if you can donate and help me keep developing this and other tools I'd be really grateful. [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?cmd=_s-xclick&hosted_button_id=ZC6UQ8TKWZVZU)*
+[![v0.2.5 video](https://img.youtube.com/vi/_Nh3hbscjJo/0.jpg)](https://www.youtube.com/watch?v=_Nh3hbscjJo)
+
+*This addon will always be free and open source, if you can donate and help me keep developing this and other tools I'd be really grateful. [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate?hosted_button_id=ZC6UQ8TKWZVZU)*
 
 #### INTRODUCTION
 
@@ -12,7 +15,7 @@ However, when it comes to final render quality, it's hard to achieve true photor
 
 #### INSTALL
 
-1. Make sure you have Blender 2.9 or higher;
+1. Make sure you have installed [Blender 2.9](https://www.blender.org/download/) or higher;
 2. Download the addon `.zip` file:
    * *Stable*: download the latest release from the right menu (on GitHub)
    * *Unstable*: download the zipped repository
@@ -55,4 +58,4 @@ The beta version will mainly introduce Fixture Profiles, a "Channels" toolbox (s
 
 Once this is done, the final step towards the vanilla release is the "ArtNet" panel, to allow the manipulation of such values by any ArtNet system.
 
-Please feel free to make suggestions on the Issues section and to pull improvements on the code.
+Please feel free to make suggestions on the Issues section and to pull improvements to the code.
