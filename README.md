@@ -17,7 +17,7 @@ However, when it comes to final render quality, it's hard to achieve true photor
 
 1. Make sure you have installed [Blender 2.9](https://www.blender.org/download/) or higher;
 2. Download the addon `.zip` file:
-   * *Stable*: download the latest release from the right menu (on GitHub)
+   * *Stable*: download the [latest release](https://github.com/hugoaboud/BlenderDMX/releases/tag/v0.2.5-alpha)
    * *Unstable*: download the zipped repository
 3. Open Blender
 4. `Edit > Preferences > Add-ons > Install`
