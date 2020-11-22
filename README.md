@@ -1,10 +1,8 @@
 # BlenderDMX
 #### Blender addon to design DMX lighting.
-#### v0.0.9 "pre-alpha"
+
 
 *This addon will always be free and open source, if you can donate and help me keep developing this and other tools I'd be really grateful. [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?cmd=_s-xclick&hosted_button_id=ZC6UQ8TKWZVZU)*
-
-*This project is in alpha stage. If you're willing to contribute, please check the issues.*
 
 #### INTRODUCTION
 
@@ -14,9 +12,13 @@ However, when it comes to final render quality, it's hard to achieve true photor
 
 #### INSTALL
 
-While on alpha, this addon can only be installed manually.
-- Download the latest release or clone the repository for the unstable version.
-- Place the whole folder on your [Blender Addons Directory](https://docs.blender.org/manual/en/latest/advanced/blender_directory_layout.html).
+1. Make sure you have Blender 2.9 or higher;
+2. Download the addon `.zip` file:
+   * *Stable*: download the latest release from the right menu (on GitHub)
+   * *Unstable*: download the zipped repository
+3. Open Blender
+4. `Edit > Preferences > Add-ons > Install`
+5. Pick the addon `.zip` file
 
 To enable the addon, go to `Edit > Preferences > Add-ons`, search for "DMX" and toggle the checkbox on.
 
@@ -46,11 +48,11 @@ You can either use Eevee or Cycles.
 
 #### WHAT'S NEXT?
 
-The alpha version contains no real DMX features. The main focus is to create the DMX-like workflow inside Blender.
+The alpha version offers no real DMX features. The main focus is to create the workflow of DMX softwares inside Blender.
 A few features such as Pan/Tilt are missing, also a performance review is needed in order to optimize some parts of the code (mainly the DMX messaging system).
 
 The beta version will mainly introduce Fixture Profiles, a "Channels" toolbox (so the 512 channels can be manually manipulated individually) and a Scene recorder.
 
-Once this is done, the final step towards the first release version is the "ArtNet" panel, to allow the manipulation of such values by any DMX system.
+Once this is done, the final step towards the vanilla release is the "ArtNet" panel, to allow the manipulation of such values by any ArtNet system.
 
-Please feel free to make suggestions on the Issues section and pull request improvements on the code.
+Please feel free to make suggestions on the Issues section and to pull improvements on the code.
