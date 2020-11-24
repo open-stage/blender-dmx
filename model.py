@@ -13,7 +13,7 @@ from dmx.material import getEmitterMaterial
 def getModelPath():
     ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
     # BUG: cross-platform directory names (won't work outside Windows)
-    return ADDON_PATH+'\\data\\models\\'
+    return os.path.join(ADDON_PATH,'data','models')
 
 #   Return the fixture model collection by name
 #   If not imported, find the .blend file on dmx/data/models/
@@ -29,7 +29,7 @@ def getFixtureModelCollection(model):
     if (model in bpy.data.collections):
         return bpy.data.collections[model]
 
-    path = getModelPath()+model+'.blend'
+    path = os.path.join(getModelPath(),model+'.blend')
 
     # Make sure the file exists, otherwise return None
     if (not os.path.exists(path) or not os.path.isfile(path)):
