@@ -61,7 +61,7 @@ class DMX_OT_Setup_Volume_Create(Operator):
 
         bpy.ops.object.select_all(action='DESELECT')
         dmx.volume.select_set(True)
-        #bpy.ops.collection.objects_remove_all()
+        bpy.ops.collection.objects_remove_all()
         bpy.context.scene.collection.objects.link(dmx.volume)
 
         return {'FINISHED'}

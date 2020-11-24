@@ -8,6 +8,16 @@
 import bpy
 import bmesh
 
+# Shader Nodes default labels
+# Blender API naming convention is inconsistent for internationalization
+# Every label used is listed here, so it's easier to fix it on new API updates
+PRINCIPLED_BSDF = "Principled BSDF"
+MATERIAL_OUTPUT = "Material Output"
+SHADER_NODE_EMISSION = "ShaderNodeEmission"
+SHADER_NODE_VOLUMESCATTER = "ShaderNodeVolumeScatter"
+VOLUME_SCATTER = bpy.app.translations.pgettext("Volume Scatter")
+EMISSION = bpy.app.translations.pgettext("Emission")
+
 # <get Emitter Material>
 #   Create an emissive material with given name, remove if already present
 def getEmitterMaterial(name):
@@ -16,9 +26,9 @@ def getEmitterMaterial(name):
     material = bpy.data.materials.new(name)
     material.use_nodes = True
     # BUG: Internationalization
-    material.node_tree.nodes.remove(material.node_tree.nodes['Principled BSDF'])
-    material.node_tree.nodes.new("ShaderNodeEmission")
-    material.node_tree.links.new(material.node_tree.nodes['Material Output'].inputs[0], material.node_tree.nodes['Emission'].outputs[0])
+    material.node_tree.nodes.remove(material.node_tree.nodes[PRINCIPLED_BSDF])
+    material.node_tree.nodes.new(SHADER_NODE_EMISSION)
+    material.node_tree.links.new(material.node_tree.nodes[MATERIAL_OUTPUT].inputs[0], material.node_tree.nodes[EMISSION].outputs[0])
     return material
 
 # <get Volume Scatter Material>
@@ -30,7 +40,7 @@ def getVolumeScatterMaterial():
     material = bpy.data.materials.new("DMX_Volume")
     material.use_nodes = True
     # BUG: Internationalization
-    material.node_tree.nodes.remove(material.node_tree.nodes['Principled BSDF'])
-    material.node_tree.nodes.new("ShaderNodeVolumeScatter")
-    material.node_tree.links.new(material.node_tree.nodes['Material Output'].inputs[1], material.node_tree.nodes['Volume Scatter'].outputs[0])
+    material.node_tree.nodes.remove(material.node_tree.nodes[PRINCIPLED_BSDF])
+    material.node_tree.nodes.new(SHADER_NODE_VOLUMESCATTER)
+    material.node_tree.links.new(material.node_tree.nodes[MATERIAL_OUTPUT].inputs[1], material.node_tree.nodes[VOLUME_SCATTER].outputs[0])
     return material

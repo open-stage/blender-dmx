@@ -24,6 +24,12 @@ from bpy.types import (PropertyGroup,
                        Object,
                        Material)
 
+# Shader Nodes default labels
+# Blender API naming convention is inconsistent for internationalization
+# Every label used is listed here, so it's easier to fix it on new API updates
+STRENGTH = "Strength"
+COLOR = "Color"
+
 class DMX_Fixture_Object(PropertyGroup):
     object: PointerProperty(
         name = "Fixture > Object",
@@ -156,7 +162,7 @@ class DMX_Fixture(PropertyGroup):
             emitter.material_slots[0].material.shadow_method = 'NONE' # eevee
 
             self.emitter_material = emitter.material_slots[0].material
-            self.emitter_material.node_tree.nodes[1].inputs['Strength'].default_value = self.model_params['emission'].value
+            self.emitter_material.node_tree.nodes[1].inputs[STRENGTH].default_value = self.model_params['emission'].value
 
         # Link collection to DMX collection
         bpy.context.scene.dmx.collection.children.link(self.collection)
@@ -188,7 +194,7 @@ class DMX_Fixture(PropertyGroup):
         self.dmx_params['G'].default = default_color[1]
         self.dmx_params['B'].default = default_color[2]
 
-        self.emitter_material.node_tree.nodes[1].inputs['Strength'].default_value = self.model_params['emission'].value*self.dmx_params['dimmer'].value
+        self.emitter_material.node_tree.nodes[1].inputs[STRENGTH].default_value = self.model_params['emission'].value*self.dmx_params['dimmer'].value
 
         self.subclasses[self.subclass].edit(self)
 
@@ -208,12 +214,12 @@ class DMX_Fixture(PropertyGroup):
 
     def updateDimmer(self):
         dimmer = self.dmx_params['dimmer'].value
-        self.emitter_material.node_tree.nodes[1].inputs['Strength'].default_value = self.model_params['emission'].value*dimmer
+        self.emitter_material.node_tree.nodes[1].inputs[STRENGTH].default_value = self.model_params['emission'].value*dimmer
         return dimmer
 
     def updateColor(self):
         color = [self.dmx_params['R'].value,self.dmx_params['G'].value,self.dmx_params['B'].value,1]
-        self.emitter_material.node_tree.nodes[1].inputs['Color'].default_value = color
+        self.emitter_material.node_tree.nodes[1].inputs[COLOR].default_value = color
         return color
 
     def select(self):
