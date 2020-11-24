@@ -12,6 +12,7 @@ from dmx.material import getEmitterMaterial
 
 def getModelPath():
     ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
+    # BUG: cross-platform directory names (won't work outside Windows)
     return ADDON_PATH+'\\data\\models\\'
 
 #   Return the fixture model collection by name
