@@ -2,7 +2,7 @@ bl_info = {
     "name": "DMX",
     "description": "Create and control DMX fixtures",
     "author": "hugoaboud",
-    "version": (0, 2, 5),
+    "version": (0, 2, 8),
     "blender": (2, 90, 0),
     "location": "3D View > DMX",
     "warning": "", # used for warning icon and text in addons panel
@@ -287,6 +287,22 @@ class DMX(PropertyGroup):
         update = onGroupList
         )
 
+
+    # # Programmer > Dimmer
+
+    def onProgrammerDimmer(self, context):
+        for fixture in self.fixtures:
+            for obj in fixture.collection.objects:
+                if (obj in bpy.context.selected_objects):
+                    fixture.setDMX({'dimmer':self.programmer_dimmer})
+
+    programmer_dimmer: FloatProperty(
+    name = "Programmer Dimmer",
+    default = 0,
+    min = 0,
+    max = 1,
+    update = onProgrammerDimmer)
+
     # # Programmer > Color
 
     def onProgrammerColor(self, context):
@@ -304,30 +320,43 @@ class DMX(PropertyGroup):
         default = (1.0,1.0,1.0,1.0),
         update = onProgrammerColor)
 
-    # # Programmer > Dimmer
+    # # Programmer > Pan/Tilt
 
-    def onProgrammerDimmer(self, context):
+    def onProgrammerPan(self, context):
         for fixture in self.fixtures:
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
-                    fixture.setDMX({'dimmer':self.programmer_dimmer})
+                    fixture.setDMX({'pan':(self.programmer_pan+1)/2})
 
-    programmer_dimmer: FloatProperty(
-        name = "Programmer Dimmer",
-        default = 1,
-        min = 0,
-        max = 1,
-        update = onProgrammerDimmer)
+    programmer_pan: FloatProperty(
+        name = "Programmer Pan",
+        min = -1.0,
+        max = 1.0,
+        default = 0.0,
+        update = onProgrammerPan)
+
+    def onProgrammerTilt(self, context):
+        for fixture in self.fixtures:
+            for obj in fixture.collection.objects:
+                if (obj in bpy.context.selected_objects):
+                    fixture.setDMX({'tilt':(self.programmer_tilt+1)/2})
+
+    programmer_tilt: FloatProperty(
+        name = "Programmer Tilt",
+        min = -1.0,
+        max = 1.0,
+        default = 0.0,
+        update = onProgrammerTilt)
 
     # Kernel Methods
 
     # # Fixtures
 
-    def addSpotFixture(self, name, model, address, emission, power, angle, focus, default_color):
+    def addSpotFixture(self, name, model, address, moving, emission, power, angle, focus, default_color):
         dmx = bpy.context.scene.dmx
         dmx.fixtures.add()
         fixture = dmx.fixtures[-1]
-        DMX_SpotFixture.create(fixture, name, model, address, emission, power, angle, focus, default_color)
+        DMX_SpotFixture.create(fixture, name, model, address, moving, emission, power, angle, focus, default_color)
 
     def addTubeFixture(self, name, model, address, emission, length, default_color):
         dmx = bpy.context.scene.dmx

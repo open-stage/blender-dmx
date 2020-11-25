@@ -178,7 +178,8 @@ class DMX_TubeFixture_Operator():
 class DMX_OT_Fixture_AddTube(Operator, DMX_TubeFixture_Operator):
     bl_label = "Add Tube"
     bl_idname = "dmx.add_tube_fixture"
-
+    bl_options = {'UNDO'}
+    
     def execute(self, context):
         scene = context.scene
         dmx = scene.dmx

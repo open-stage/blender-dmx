@@ -104,4 +104,8 @@ class DMX_PT_Programmer(Panel):
 
         layout.prop(scene.dmx,"programmer_color", text="")
         layout.prop(scene.dmx,"programmer_dimmer", text="Dimmer")
+
+        layout.prop(scene.dmx,"programmer_pan", text="Pan")
+        layout.prop(scene.dmx,"programmer_tilt", text="TIlt")
+
         layout.operator("dmx.clear")

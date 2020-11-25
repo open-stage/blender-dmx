@@ -7,9 +7,13 @@
 #
 
 import bpy
+from mathutils import Vector
+from math import sin, cos, pi
+
 from dmx.fixture import DMX_Fixture
 
-from bpy.props import (IntProperty,
+from bpy.props import (BoolProperty,
+                       IntProperty,
                        FloatProperty,
                        FloatVectorProperty,
                        EnumProperty,
@@ -38,7 +42,7 @@ class DMX_SpotFixture():
     # Create / Edit
 
     @classmethod
-    def create(self, fixture, name, model, address, emission, power, angle, focus, default_color):
+    def create(self, fixture, name, model, address, moving, emission, power, angle, focus, default_color):
 
         # Define subclass so the DMX_Fixture class can store a reference to it
         fixture.subclass = 'spot.DMX_SpotFixture'
@@ -47,6 +51,14 @@ class DMX_SpotFixture():
 
         # Create generic fixture from model
         fixture._create(name, model, address, emission, default_color)
+
+        # DMX Parameters
+        fixture.dmx_params.add()
+        fixture.dmx_params[-1].name = 'pan'
+        fixture.dmx_params[-1].default = 0.5
+        fixture.dmx_params.add()
+        fixture.dmx_params[-1].name = 'tilt'
+        fixture.dmx_params[-1].default = 0.5
 
         # Model Parameters
         fixture.model_params.add()
@@ -58,6 +70,9 @@ class DMX_SpotFixture():
         fixture.model_params.add()
         fixture.model_params[-1].name = 'focus'
         fixture.model_params[-1].value = focus
+        fixture.model_params.add()
+        fixture.model_params[-1].name = 'moving'
+        fixture.model_params[-1].value = moving
 
         # Light source settings
         for obj in fixture.collection.objects:
@@ -83,24 +98,29 @@ class DMX_SpotFixture():
     def setDMX(self, fixture, pvalues):
         # State variable to call update color only once if RGB change simultaneously
         updateColor = False
+        # State variable to call update pan/tilt only once if Pan/Tilt change simultaneously
+        updatePanTilt = False
 
         # Update dmx parameters if they are available on the fixture
         for param, value in pvalues.items():
             if (param in fixture.dmx_params):
                 fixture.dmx_params[param].value = value
-
                 # Update fixture parameters (single parameters)
                 if (param == 'dimmer'): self.updateDimmer(fixture)
-                # Mark cumulative parameters to be updated
+                # Mark cumulative color parameters to be updated
                 if (param == 'R' or param == 'G' or param == 'B'): updateColor = True
+                # If is moving fixture, mark cumulative parameters to be updated
+                if (fixture.model_params['moving'].value and (param == 'pan' or param == 'tilt')): updatePanTilt = True
 
         # Update fixture parameters (cumulative parameters)
         if (updateColor): self.updateColor(fixture)
+        if (updatePanTilt): self.updatePanTilt(fixture)
 
     @classmethod
     def update(self, fixture):
         self.updateDimmer(fixture)
         self.updateColor(fixture)
+        self.updatePanTilt(fixture)
 
     @classmethod
     def updateDimmer(self, fixture):
@@ -111,6 +131,18 @@ class DMX_SpotFixture():
     def updateColor(self, fixture):
         color = fixture.updateColor()
         fixture.lights[0].object.data.color = color[:3]
+
+    @classmethod
+    def updatePanTilt(self, fixture):
+
+        pan = fixture.dmx_params['pan'].value*2-1
+        tilt = fixture.dmx_params['tilt'].value*2-1
+
+        pan_axis = sin(pan*pi)*Vector((0,1,0))+cos(pan*pi)*Vector((1,0,0))
+        axis = sin(tilt*pi/2)*pan_axis+cos(tilt*pi/2)*Vector((0,0,-1))
+        axis *= 2
+
+        fixture.objects['Target'].object.location = fixture.objects['Body'].object.matrix_local @ axis
 
     @classmethod
     def select(self, fixture):
@@ -134,6 +166,11 @@ class DMX_SpotFixture_Operator():
         default = 1,
         min = 1,
         max = 512)
+
+    moving: BoolProperty(
+        name = "Moving",
+        description = "Spot Fixture Moving",
+        default = False)
 
     emission: FloatProperty(
         name = "Emission",
@@ -183,7 +220,12 @@ class DMX_SpotFixture_Operator():
         col = layout.column()
         col.prop(self, "name")
         col.prop(self, "model")
+
+        if (self.model == "moving_beam"):
+            self.moving = True;
+
         col.prop(self, "address")
+        col.prop(self, "moving")
         col.prop(self, "emission")
         col.prop(self, "power")
         col.prop(self, "angle")
@@ -193,8 +235,9 @@ class DMX_SpotFixture_Operator():
             col.prop(self, "units")
 
 class DMX_OT_Fixture_AddSpot(Operator, DMX_SpotFixture_Operator):
-    bl_label = "Add Spot"
+    bl_label = "DMX: Add Spot Fixture"
     bl_idname = "dmx.add_spot_fixture"
+    bl_options = {'UNDO'}
 
     def execute(self, context):
         scene = context.scene
@@ -202,7 +245,7 @@ class DMX_OT_Fixture_AddSpot(Operator, DMX_SpotFixture_Operator):
         if (self.name in bpy.data.collections):
             return {'CANCELLED'}
         for i in range(self.units):
-            dmx.addSpotFixture(self.name+str(i+1), self.model, self.address, self.emission, self.power, self.angle, self.focus, list(self.default_color))
+            dmx.addSpotFixture(self.name+str(i+1), self.model, self.address, self.moving, self.emission, self.power, self.angle, self.focus, list(self.default_color))
         return {'FINISHED'}
 
     def invoke(self, context, event):
@@ -231,6 +274,7 @@ class DMX_OT_Fixture_EditSpot(Operator, DMX_SpotFixture_Operator):
         self.name = fixture.name
         self.model = fixture.model
         self.address = fixture.address
+        self.moving = fixture.moving
         self.emission = fixture.model_params['emission'].value
         self.power = fixture.model_params['power'].value
         self.angle = fixture.model_params['angle'].value
