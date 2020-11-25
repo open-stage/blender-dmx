@@ -5,7 +5,9 @@
 
 [![v0.2.5 video](https://img.youtube.com/vi/_Nh3hbscjJo/0.jpg)](https://www.youtube.com/watch?v=_Nh3hbscjJo)
 
-*This addon will always be free and open source, if you can donate and help me keep developing this and other tools I'd be really grateful. [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate?hosted_button_id=ZC6UQ8TKWZVZU)*
+*This addon will always be free and open source, if you can donate and help me keep developing tools for artists I'd be really grateful.*
+- [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate?hosted_button_id=ZC6UQ8TKWZVZU)
+- Bitcon (BTC only): 1BApp5s16pEPk5oECtJJ7G8iYmbj7r2YrG
 
 #### INTRODUCTION
 
@@ -15,13 +17,24 @@ However, when it comes to final render quality, it's hard to achieve true photor
 
 #### INSTALL
 
-1. Make sure you have installed [Blender 2.9](https://www.blender.org/download/) or higher;
-2. Download the [latest release](https://github.com/hugoaboud/BlenderDMX/releases/tag/v0.2.5-alpha) `dmx.zip` file
-3. Open Blender
-4. `Edit > Preferences > Add-ons > Install`
-5. Pick the addon `dmx.zip` file
+First of all, make sure you have installed [Blender 2.9](https://www.blender.org/download/) or higher;
+Then, download the `zip` file:
 
-> **WARNING:** The addon uses English words to identify some objects on the world, so if your Blender is not in English it will break. This should be fixed soon. For now,  you  can just change Blender language to English and restart it.
+- **LATEST RELEASE (STABLE)**
+
+   1. Download the [latest release](https://github.com/hugoaboud/BlenderDMX/releases/tag/v0.2.5-alpha) `dmx.zip` file
+
+- **ROLLING RELEASE (UNSTABLE)**
+
+   1. Download the [repository ZIP](https://github.com/hugoaboud/BlenderDMX/archive/main.zip) `BlenderDMX-main.zip` file
+   2. Unzip it
+   3. Rename the folder `BlenderDMX-main` inside it to `dmx`
+   4. Zip it back, so you have: `dmx.zip/dmx/<contents>`
+
+Finally:
+   1. Open Blender
+   2. `Edit > Preferences > Add-ons > Install`
+   3. Pick the addon `zip` file
 
 To enable the addon, go to `Edit > Preferences > Add-ons`, search for "DMX" and toggle the checkbox on.
 
@@ -51,10 +64,9 @@ You can either use Eevee or Cycles.
 
 #### WHAT'S NEXT?
 
-The alpha version offers no real DMX features. The main focus is to create the workflow of DMX softwares inside Blender.
-A few features such as Pan/Tilt are missing, also a performance review is needed in order to optimize some parts of the code (mainly the DMX messaging system).
+The alpha version offers no real DMX features. The main focus is to create a productive workflow to place, focus and program DMX lighting inside Blender.
 
-The beta version will mainly introduce Fixture Profiles, a "Channels" toolbox (so the 512 channels can be manually manipulated individually) and a Scene recorder.
+The beta version will mainly introduce DTGF Fixture Profiles, a "Channels" toolbox (so the 512 channels can be manually manipulated individually) and a Scene recorder.
 
 Once this is done, the final step towards the vanilla release is the "ArtNet" panel, to allow the manipulation of such values by any ArtNet system.
 
