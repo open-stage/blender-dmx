@@ -274,7 +274,7 @@ class DMX_OT_Fixture_EditSpot(Operator, DMX_SpotFixture_Operator):
         self.name = fixture.name
         self.model = fixture.model
         self.address = fixture.address
-        self.moving = fixture.moving
+        self.moving = fixture.model_params['moving'].value
         self.emission = fixture.model_params['emission'].value
         self.power = fixture.model_params['power'].value
         self.angle = fixture.model_params['angle'].value
