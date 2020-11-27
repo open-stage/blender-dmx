@@ -25,8 +25,10 @@ class DMX_Group(PropertyGroup):
         name = "DMX Groups"
     )
 
-    # The actual groups are stored and acessed here
-    runtime = {}
+    # The current groups are stored and acessed here
+    # I'm not sure this data is safe for use with Undo
+    # Commenting until a veredict is reached
+    #runtime = {}
 
     # <update>
     # Iterate all selected objects looking for fixture components
@@ -41,13 +43,21 @@ class DMX_Group(PropertyGroup):
         # If there's any fixture selected, clear fixtures list
         # and repopulate it
         if (len(sel_fixtures)):
-            self.runtime[self.name] = sel_fixtures;
+            #self.runtime[self.name] = sel_fixtures;
             self.dump = str([fixture.name for fixture in sel_fixtures])
+        else:
+            self.dump = ''
 
     def select(self):
-        for fixture in self.runtime[self.name]:
+        # Rebuilding the groups array everytime takes a long time
+        # This was done to avoid inconsistencies on Undo of unrelated Operators,
+        # which seems to mess with the runtime volatile data declared as runtime
+        # However, a better way should be considered (a Blender String Array)
+        #for fixture in self.runtime[self.name]:
+        for fixture in self.rebuild():
             fixture.select()
 
     def rebuild(self):
         fixtures = bpy.context.scene.dmx.fixtures
-        self.runtime[self.name] = [fixtures[fxt[1:-1]] for fxt in self.dump.strip('[]').split(', ')]
+        #self.runtime[self.name] = [fixtures[fxt[1:-1]] for fxt in self.dump.strip('[]').split(', ')]
+        return [fixtures[fxt[1:-1]] for fxt in self.dump.strip('[]').split(', ')]

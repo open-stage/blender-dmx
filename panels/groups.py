@@ -30,7 +30,7 @@ class DMX_UL_Group(UIList):
 # Menus #
 
 class DMX_MT_Group(Menu):
-    bl_label = "Group Menu"
+    bl_label = "DMX > Group Menu"
     bl_idname = "dmx.menu.group"
 
     def draw(self, context):
@@ -57,8 +57,9 @@ class DMX_MT_Group(Menu):
 # Operators #
 
 class DMX_OT_Group_Create(Operator):
-    bl_label = "DMX: Create Group"
+    bl_label = "DMX > Group > Create"
     bl_idname = "dmx.create_group"
+    bl_description = "Create DMX group from selected fixtures"
     bl_options = {'UNDO'}
 
     name: StringProperty(
@@ -85,8 +86,9 @@ class DMX_OT_Group_Create(Operator):
         return wm.invoke_props_dialog(self)
 
 class DMX_OT_Group_Update(Operator):
-    bl_label = "DMX: Update Group"
+    bl_label = "DMX > Group > Update"
     bl_idname = "dmx.update_group"
+    bl_description = "Replace DMX group fixtures with selected ones"
     bl_options = {'UNDO'}
 
     def execute(self, context):
@@ -95,8 +97,9 @@ class DMX_OT_Group_Update(Operator):
         return {'FINISHED'}
 
 class DMX_OT_Group_Rename(Operator):
-    bl_label = "DMX: Rename Group"
+    bl_label = "DMX > Group > Rename"
     bl_idname = "dmx.rename_group"
+    bl_description = "Rename selected DMX group"
     bl_options = {'UNDO'}
 
     name: StringProperty(
@@ -114,7 +117,7 @@ class DMX_OT_Group_Rename(Operator):
         if (self.name not in dmx.groups):
             dmx.renameGroup(dmx.group_list_i, self.name)
             return {'FINISHED'}
-        return {'CANCELLED'}    
+        return {'CANCELLED'}
 
     def invoke(self, context, event):
         group = context.scene.dmx.groups[context.scene.dmx.group_list_i]
@@ -123,8 +126,9 @@ class DMX_OT_Group_Rename(Operator):
         return wm.invoke_props_dialog(self)
 
 class DMX_OT_Group_Remove(Operator):
-    bl_label = "DMX: Remove Group"
+    bl_label = "DMX > Group > Remove"
     bl_idname = "dmx.remove_group"
+    bl_description = "Remove selected DMX group"
     bl_options = {'UNDO'}
 
     def execute(self, context):

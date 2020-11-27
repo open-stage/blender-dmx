@@ -41,7 +41,7 @@ class DMX_UL_Fixture(UIList):
 # Menus #
 
 class DMX_MT_Fixture(Menu):
-    bl_label = "Fixture Menu"
+    bl_label = "DMX > Fixture Menu"
     bl_idname = "dmx.menu.fixture"
 
     def draw(self, context):
@@ -66,20 +66,23 @@ class DMX_MT_Fixture(Menu):
         row.enabled = (len(dmx.fixtures) and scene.dmx.fixture_list_i >= 0 and scene.dmx.fixture_list_i < len(dmx.fixtures))
 
 class DMX_MT_Fixture_Add(Menu):
-    bl_label = "Add Fixture"
+    bl_label = "DMX > Fixture > Add"
     bl_idname = "dmx.menu.add_fixture"
+    bl_description = "Add DMX fixture to Scene"
+    bl_options = {'UNDO'}
 
     def draw(self, context):
         layout = self.layout
         layout.operator("dmx.add_spot_fixture", text="Fixed Spot", icon="LIGHT_SPOT")
         layout.operator("dmx.add_tube_fixture", text="Tubular", icon="MESH_CYLINDER")
 
-
 # Operators #
 
 class DMX_OT_Fixture_Remove(Operator):
-    bl_label = "Remove Fixture"
+    bl_label = "DMX > Fixture > Remove"
     bl_idname = "dmx.remove_fixture"
+    bl_description = "Remove selected DMX fixture from Scene"
+    bl_options = {'UNDO'}
 
     def execute(self, context):
         scene = context.scene

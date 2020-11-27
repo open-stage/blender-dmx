@@ -16,16 +16,20 @@ from bpy.types import (Panel,
 # Operators #
 
 class DMX_OT_Programmer_DeselectAll(Operator):
-    bl_label = "Deselect All"
+    bl_label = "DMX > Programmer > Deselect All"
     bl_idname = "dmx.deselect_all"
+    bl_description = "Deselect every object in the Scene"
+    bl_options = {'UNDO'}
 
     def execute(self, context):
         bpy.ops.object.select_all(action='DESELECT')
         return {'FINISHED'}
 
 class DMX_OT_Programmer_Clear(Operator):
-    bl_label = "Clear"
+    bl_label = "DMX > Programmer > Clear"
     bl_idname = "dmx.clear"
+    bl_description = "Clear all DMX values to default and update fixtures"
+    bl_options = {'UNDO'}
 
     def execute(self, context):
         scene = context.scene
@@ -37,8 +41,10 @@ class DMX_OT_Programmer_Clear(Operator):
         return {'FINISHED'}
 
 class DMX_OT_Programmer_SelectBodies(Operator):
-    bl_label = "Select Bodies"
+    bl_label = "DMX > Programmer > Select Bodies"
     bl_idname = "dmx.select_bodies"
+    bl_description = "Select body from every fixture element selected"
+    bl_options = {'UNDO'}
 
     def execute(self, context):
         dmx = context.scene.dmx
@@ -58,8 +64,10 @@ class DMX_OT_Programmer_SelectBodies(Operator):
         return {'FINISHED'}
 
 class DMX_OT_Programmer_SelectTargets(Operator):
-    bl_label = "Select Targets"
+    bl_label = "DMX > Programmer > Select Targets"
     bl_idname = "dmx.select_targets"
+    bl_description = "Select target from every fixture element selected"
+    bl_options = {'UNDO'}
 
     def execute(self, context):
         dmx = context.scene.dmx
@@ -96,16 +104,16 @@ class DMX_PT_Programmer(Panel):
         dmx = scene.dmx
 
         #layout.prop(mytool, "programmer_color", text="")
-        layout.operator("dmx.deselect_all")
+        layout.operator("dmx.deselect_all", text="Deselect All")
 
         row = layout.row()
-        row.operator("dmx.select_bodies")
-        row.operator("dmx.select_targets")
+        row.operator("dmx.select_bodies", text="Bodies")
+        row.operator("dmx.select_targets", text="Targets")
 
         layout.prop(scene.dmx,"programmer_color", text="")
         layout.prop(scene.dmx,"programmer_dimmer", text="Dimmer")
 
         layout.prop(scene.dmx,"programmer_pan", text="Pan")
-        layout.prop(scene.dmx,"programmer_tilt", text="TIlt")
+        layout.prop(scene.dmx,"programmer_tilt", text="Tilt")
 
-        layout.operator("dmx.clear")
+        layout.operator("dmx.clear", text="Clear")

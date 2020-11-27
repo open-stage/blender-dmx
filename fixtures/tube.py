@@ -42,7 +42,7 @@ class DMX_TubeFixture():
     def create(self, fixture, name, model, address, emission, length, default_color):
 
         # Define subclass so the DMX_Fixture class can store a reference to it
-        fixture.subclass = 'tube.DMX_TubeFixture'
+        fixture.subclass = 'Tube'
         if (fixture.subclass not in DMX_Fixture.subclasses):
             DMX_Fixture.subclasses[fixture.subclass] = DMX_TubeFixture
 
@@ -65,15 +65,17 @@ class DMX_TubeFixture():
         elif (model == 't5'):
             radius = 0.0079
 
-        # Emitter from Primitive
+        # Create emitter from Primitive
         bpy.ops.mesh.primitive_cylinder_add(vertices=resolution, radius=radius, depth=length)
         fixture.objects.add()
         fixture.objects[-1].name = 'Emitter'
         fixture.objects[-1].object = bpy.context.active_object
         emitter = fixture.objects['Emitter'].object
+        emitter.name = 'Emitter'
         bpy.ops.collection.objects_remove_all()
         fixture.collection.objects.link(emitter)
 
+        # Assign material to emitter
         material = getEmitterMaterial(name)
         emitter.active_material = material
         emitter.material_slots[0].link = 'OBJECT'
@@ -122,7 +124,7 @@ class DMX_TubeFixture():
 
     @classmethod
     def select(self, fixture):
-        fixture.objects['emitter'].object.select_set(True)
+        fixture.objects['Emitter'].object.select_set(True)
 
 # Operators
 
@@ -165,6 +167,13 @@ class DMX_TubeFixture_Operator():
         max = 1.0,
         default = (1.0,1.0,1.0,1.0))
 
+    units: IntProperty(
+        name = "Units",
+        description = "How many units of this light to add",
+        default = 1,
+        min = 1,
+        max = 1024)
+
     def draw(self, context):
         layout = self.layout
         col = layout.column()
@@ -174,22 +183,26 @@ class DMX_TubeFixture_Operator():
         col.prop(self, "emission")
         col.prop(self, "length")
         col.prop(self, "default_color")
+        if (self.units > 0):
+            col.prop(self, "units")
 
 class DMX_OT_Fixture_AddTube(Operator, DMX_TubeFixture_Operator):
     bl_label = "Add Tube"
     bl_idname = "dmx.add_tube_fixture"
     bl_options = {'UNDO'}
-    
+
     def execute(self, context):
         scene = context.scene
         dmx = scene.dmx
         if (self.name in bpy.data.collections):
             return {'CANCELLED'}
-        dmx.addTubeFixture(self.name, self.model, self.address, self.emission, self.length, list(self.default_color))
+        for i in range(self.units):
+            dmx.addTubeFixture(self.name+str(i+1), self.model, self.address, self.emission, self.length, list(self.default_color))
         return {'FINISHED'}
 
     def invoke(self, context, event):
         self.name = "Tube "+str(len(context.scene.dmx.fixtures)+1)
+        self.units = 1
         wm = context.window_manager
         return wm.invoke_props_dialog(self)
 
@@ -216,5 +229,6 @@ class DMX_OT_Fixture_EditTube(Operator, DMX_TubeFixture_Operator):
         self.emission = fixture.model_params['emission'].value
         self.length = fixture.model_params['length'].value
         self.default_color = (fixture.dmx_params['R'].default,fixture.dmx_params['G'].default,fixture.dmx_params['B'].default,1)
+        self.units = 0
         wm = context.window_manager
         return wm.invoke_props_dialog(self)

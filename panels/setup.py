@@ -19,7 +19,7 @@ from dmx.util import getSceneRect
 # Operators #
 
 class DMX_OT_Setup_NewShow(Operator):
-    bl_label = "DMX: Create New Show"
+    bl_label = "DMX > Setup > New Show"
     bl_description = "Clear any existing DMX data and create a new show."
     bl_idname = "dmx.new_show"
     bl_options = {'UNDO'}
@@ -30,7 +30,7 @@ class DMX_OT_Setup_NewShow(Operator):
         return {'FINISHED'}
 
 class DMX_OT_Setup_Volume_Create(Operator):
-    bl_label = "DMX: Create Volume Box"
+    bl_label = "DMX > Setup > Create/Update Volume Box"
     bl_description = "Create/Update a Box on the scene bounds with a Volume Scatter shader"
     bl_idname = "dmx.create_volume"
     bl_options = {'UNDO'}
@@ -47,22 +47,23 @@ class DMX_OT_Setup_Volume_Create(Operator):
             dmx.volume = bpy.context.selected_objects[0]
             dmx.volume.name = "DMX_Volume"
             dmx.volume.display_type = 'WIRE'
-
             material = getVolumeScatterMaterial()
-
-            dmx.volume_nodetree = material.node_tree
             dmx.volume.data.materials.append(material)
-
         else:
             dmx.volume = bpy.data.objects["DMX_Volume"]
+
+        dmx.volume_nodetree = dmx.volume.data.materials[0].node_tree
+        if (dmx.volume.name in bpy.context.scene.collection.objects):
+            bpy.ops.object.select_all(action='DESELECT')
+            dmx.volume.select_set(True)
+            bpy.ops.collection.objects_remove_all()
+
+        bpy.context.scene.collection.objects.link(dmx.volume)
 
         dmx.volume.location = pos
         dmx.volume.scale = scale
 
-        bpy.ops.object.select_all(action='DESELECT')
-        dmx.volume.select_set(True)
-        bpy.ops.collection.objects_remove_all()
-        bpy.context.scene.collection.objects.link(dmx.volume)
+
 
         return {'FINISHED'}
 

@@ -2,7 +2,7 @@ bl_info = {
     "name": "DMX",
     "description": "Create and control DMX fixtures",
     "author": "hugoaboud",
-    "version": (0, 2, 8),
+    "version": (0, 3, 0),
     "blender": (2, 90, 0),
     "location": "3D View > DMX",
     "warning": "", # used for warning icon and text in addons panel
@@ -189,10 +189,10 @@ class DMX(PropertyGroup):
                 subcls = fixture.subclass.split('.')
                 DMX_Fixture.subclasses[fixture.subclass] = getattr(getattr(sys.modules['dmx.fixtures'],subcls[0]),subcls[1])
 
-        # Rebuild group runtime dictionary
-        DMX_Group.runtime = {}
-        for group in self.groups:
-            group.rebuild()
+        # Rebuild group runtime dictionary (evaluating if this is gonna stay here)
+        #DMX_Group.runtime = {}
+        #for group in self.groups:
+        #    group.rebuild()
 
     # Unlink Add-on from file
     # This is only called when the DMX collection is externally removed
@@ -253,6 +253,8 @@ class DMX(PropertyGroup):
     # #  Setup > Volume > Density
 
     def onVolumeDensity(self, context):
+        if (not self.volume_nodetree):
+            self.volume_nodetree = self.volume.data.materials[0].node_tree
         self.volume_nodetree.nodes[1].inputs['Density'].default_value = self.volume_density
 
     volume_density: FloatProperty(
@@ -382,7 +384,8 @@ class DMX(PropertyGroup):
         group = dmx.groups[-1]
         group.name = name
         group.update()
-        if (name not in DMX_Group.runtime):
+        if (not len(group.dump)):
+            print("DMX Group: no fixture selected!")
             dmx.groups.remove(len(dmx.groups)-1)
             return False
         return True

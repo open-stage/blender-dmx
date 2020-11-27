@@ -45,7 +45,7 @@ class DMX_SpotFixture():
     def create(self, fixture, name, model, address, moving, emission, power, angle, focus, default_color):
 
         # Define subclass so the DMX_Fixture class can store a reference to it
-        fixture.subclass = 'spot.DMX_SpotFixture'
+        fixture.subclass = 'Spot'
         if (fixture.subclass not in DMX_Fixture.subclasses):
             DMX_Fixture.subclasses[fixture.subclass] = DMX_SpotFixture
 
