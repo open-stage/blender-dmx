@@ -42,7 +42,7 @@ class DMX_TubeFixture():
     def create(self, fixture, name, model, address, emission, length, default_color):
 
         # Define subclass so the DMX_Fixture class can store a reference to it
-        fixture.subclass = 'Tube'
+        fixture.subclass = 'tube.DMX_TubeFixture'
         if (fixture.subclass not in DMX_Fixture.subclasses):
             DMX_Fixture.subclasses[fixture.subclass] = DMX_TubeFixture
 
