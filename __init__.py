@@ -37,6 +37,9 @@ from bpy.types import (PropertyGroup,
                        Collection,
                        NodeTree)
 
+from dmx.fixtures.spot import DMX_SpotFixture
+from dmx.fixtures.tube import DMX_TubeFixture
+
 # Main Class #
 
 class DMX(PropertyGroup):
@@ -63,11 +66,7 @@ class DMX(PropertyGroup):
                 DMX_PT_Setup_Volume,
                 DMX_UL_Fixture,
                 DMX_MT_Fixture,
-                DMX_MT_Fixture_Add,
-                DMX_OT_Fixture_AddSpot,
-                DMX_OT_Fixture_EditSpot,
-                DMX_OT_Fixture_AddTube,
-                DMX_OT_Fixture_EditTube,
+                DMX_OT_Fixture_Add,
                 DMX_OT_Fixture_Remove,
                 DMX_PT_Fixtures,
                 DMX_UL_Group,
@@ -354,17 +353,12 @@ class DMX(PropertyGroup):
 
     # # Fixtures
 
-    def addSpotFixture(self, name, model, address, moving, emission, power, angle, focus, default_color):
+    def addFixture(self, name, profile, model, address, default_color):
         dmx = bpy.context.scene.dmx
         dmx.fixtures.add()
         fixture = dmx.fixtures[-1]
-        DMX_SpotFixture.create(fixture, name, model, address, moving, emission, power, angle, focus, default_color)
-
-    def addTubeFixture(self, name, model, address, emission, length, default_color):
-        dmx = bpy.context.scene.dmx
-        dmx.fixtures.add()
-        fixture = dmx.fixtures[-1]
-        DMX_TubeFixture.create(fixture, name, model, address, emission, length, default_color)
+        profile = DMX_GDTF.loadProfile(profile)
+        DMX_SpotFixture.create(fixture, name, model, address, False, 10, 1000, 30, 0, default_color)
 
     def removeFixture(self, i):
         if (i >= 0 and i < len(self.fixtures)):

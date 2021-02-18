@@ -1,3 +1,5 @@
 __pycache__
 fixtures/__pycache__
 panels/__pycache__
+data/profiles/*
+pygdtf

@@ -24,11 +24,12 @@ from dmx.material import getEmitterMaterial
 class DMX_TubeFixture():
 
     # Models that can be assigned to this type of fixture
-
+    # If this is None, the models will be loaded based on the prefix
     MODELS = (
         ('t8','T8','T8, diam: 1"','',0),
         ('t5','t5','T5, diam: 5/8"','',1),
     )
+    PREFIX = "Tube"
 
     # Fixture Icon
 
@@ -125,110 +126,3 @@ class DMX_TubeFixture():
     @classmethod
     def select(self, fixture):
         fixture.objects['Emitter'].object.select_set(True)
-
-# Operators
-
-class DMX_TubeFixture_Operator():
-    name: StringProperty(
-        name="Name",
-        default="Tube")
-
-    model: EnumProperty(
-        name = "Model",
-        description = "Tube Fixture Model",
-        items=DMX_TubeFixture.MODELS)
-
-    address: IntProperty(
-        name = "Address",
-        description = "DMX Address",
-        default = 1,
-        min = 1,
-        max = 512)
-
-    emission: FloatProperty(
-        name = "Emission",
-        description = "Tube Fixture Emission",
-        default = 10,
-        min = 1,
-        max = 1000)
-
-    length: FloatProperty(
-        name = "Length",
-        description = "Tube Fixture Length",
-        default = 1.2,
-        min = 0.1,
-        max = 10)
-
-    default_color: FloatVectorProperty(
-        name = "Default Color",
-        subtype = "COLOR",
-        size = 4,
-        min = 0.0,
-        max = 1.0,
-        default = (1.0,1.0,1.0,1.0))
-
-    units: IntProperty(
-        name = "Units",
-        description = "How many units of this light to add",
-        default = 1,
-        min = 1,
-        max = 1024)
-
-    def draw(self, context):
-        layout = self.layout
-        col = layout.column()
-        col.prop(self, "name")
-        col.prop(self, "model")
-        col.prop(self, "address")
-        col.prop(self, "emission")
-        col.prop(self, "length")
-        col.prop(self, "default_color")
-        if (self.units > 0):
-            col.prop(self, "units")
-
-class DMX_OT_Fixture_AddTube(Operator, DMX_TubeFixture_Operator):
-    bl_label = "Add Tube"
-    bl_idname = "dmx.add_tube_fixture"
-    bl_options = {'UNDO'}
-
-    def execute(self, context):
-        scene = context.scene
-        dmx = scene.dmx
-        if (self.name in bpy.data.collections):
-            return {'CANCELLED'}
-        for i in range(self.units):
-            dmx.addTubeFixture(self.name+str(i+1), self.model, self.address, self.emission, self.length, list(self.default_color))
-        return {'FINISHED'}
-
-    def invoke(self, context, event):
-        self.name = "Tube "+str(len(context.scene.dmx.fixtures)+1)
-        self.units = 1
-        wm = context.window_manager
-        return wm.invoke_props_dialog(self)
-
-class DMX_OT_Fixture_EditTube(Operator, DMX_TubeFixture_Operator):
-    bl_label = "DMX: Edit Tube"
-    bl_idname = "dmx.edit_tube_fixture"
-
-    def execute(self, context):
-        scene = context.scene
-        dmx = scene.dmx
-        fixture = dmx.fixtures[scene.dmx.fixture_list_i]
-        if (self.name != fixture.name and self.name in bpy.data.collections):
-            return {'CANCELLED'}
-        model_params = {'emission':self.emission, 'length':self.length}
-        fixture.edit(self.name, self.model, self.address, model_params, list(self.default_color))
-        return {'FINISHED'}
-
-    def invoke(self, context, event):
-        scene = context.scene
-        fixture = scene.dmx.fixtures[scene.dmx.fixture_list_i]
-        self.name = fixture.name
-        self.model = fixture.model
-        self.address = fixture.address
-        self.emission = fixture.model_params['emission'].value
-        self.length = fixture.model_params['length'].value
-        self.default_color = (fixture.dmx_params['R'].default,fixture.dmx_params['G'].default,fixture.dmx_params['B'].default,1)
-        self.units = 0
-        wm = context.window_manager
-        return wm.invoke_props_dialog(self)

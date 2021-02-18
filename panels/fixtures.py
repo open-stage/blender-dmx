@@ -21,8 +21,8 @@ from bpy.types import (Panel,
                        UIList,
                        PropertyGroup)
 
-from dmx.fixtures.spot import DMX_SpotFixture
-from dmx.fixtures.tube import DMX_TubeFixture
+from dmx.model import DMX_Model
+from dmx.gdtf import DMX_GDTF
 
 # List #
 
@@ -48,8 +48,13 @@ class DMX_MT_Fixture(Menu):
         layout = self.layout
         scene = context.scene
         dmx = scene.dmx
-        layout.menu("dmx.menu.add_fixture", text="Add", icon="ADD")
 
+        # "Add"
+        row = layout.row()
+        row.operator("dmx.add_fixture", text="Add", icon="ADD")
+
+        # "Edit"
+        """
         row = layout.row()
         if (len(dmx.fixtures) and scene.dmx.fixture_list_i >= 0 and scene.dmx.fixture_list_i < len(dmx.fixtures)):
             fixture = dmx.fixtures[scene.dmx.fixture_list_i]
@@ -60,23 +65,135 @@ class DMX_MT_Fixture(Menu):
         else:
             row.label(text="Edit", icon="GREASEPENCIL")
             row.enabled = False
+        """
 
+        # "Remove"
         row = layout.row()
         row.operator("dmx.remove_fixture", text="Remove", icon="REMOVE")
         row.enabled = (len(dmx.fixtures) and scene.dmx.fixture_list_i >= 0 and scene.dmx.fixture_list_i < len(dmx.fixtures))
 
-class DMX_MT_Fixture_Add(Menu):
+# Operators #
+
+
+class DMX_Fixture_AddEdit():
     bl_label = "DMX > Fixture > Add"
-    bl_idname = "dmx.menu.add_fixture"
-    bl_description = "Add DMX fixture to Scene"
+    bl_idname = "dmx.add_fixture"
+    bl_description = "Adds a new DMX fixture to the Scene"
     bl_options = {'UNDO'}
+
+    name: StringProperty(
+        name="Name",
+        default="Fixture")
+
+    # Callback to load Profile items only once for each invoke
+    profile_list_items = []
+    def profileListItems(self, context):
+        if (not len(DMX_Fixture_AddEdit.profile_list_items)):
+            DMX_Fixture_AddEdit.profile_list_items = DMX_GDTF.getProfileList()
+        return DMX_Fixture_AddEdit.profile_list_items
+
+    profile: EnumProperty(
+        name = "Profile",
+        description = "Fixture GDTF Profile",
+        items=profileListItems)
+
+    # Callback to load Profile models only once for each invoke
+    last_profile = None
+    model_list_items = []
+    def modelListItems(self, context):
+        if (self.profile != DMX_Fixture_AddEdit.last_profile):
+            DMX_Fixture_AddEdit.last_profile = self.profile
+            fixtureClass = DMX_GDTF.getProfileClass(self.profile)
+            DMX_Fixture_AddEdit.model_list_items = DMX_Model.getModelList(fixtureClass)
+        return DMX_Fixture_AddEdit.model_list_items
+
+    model: EnumProperty(
+        name = "Model",
+        description = "Fixture 3D Model",
+        items=modelListItems)
+
+    address: IntProperty(
+        name = "Address",
+        description = "DMX Address",
+        default = 1,
+        min = 1,
+        max = 512)
+
+    default_color: FloatVectorProperty(
+        name = "Default Color",
+        subtype = "COLOR",
+        size = 4,
+        min = 0.0,
+        max = 1.0,
+        default = (1.0,1.0,1.0,1.0))
+
+    units: IntProperty(
+        name = "Units",
+        description = "How many units of this light to add",
+        default = 1,
+        min = 1,
+        max = 1024)
 
     def draw(self, context):
         layout = self.layout
-        layout.operator("dmx.add_spot_fixture", text="Fixed Spot", icon="LIGHT_SPOT")
-        layout.operator("dmx.add_tube_fixture", text="Tubular", icon="MESH_CYLINDER")
+        col = layout.column()
+        col.prop(self, "name")
+        col.prop(self, "profile")
+        col.prop(self, "model")
+        col.prop(self, "address")
+        col.prop(self, "default_color")
+        if (self.units > 0):
+            col.prop(self, "units")
 
-# Operators #
+class DMX_OT_Fixture_Add(Operator, DMX_Fixture_AddEdit):
+    bl_label = "DMX: Add Fixture"
+    bl_idname = "dmx.add_fixture"
+    bl_options = {'UNDO'}
+
+    def execute(self, context):
+        scene = context.scene
+        dmx = scene.dmx
+        # TODO: Check every name (when adding multiple fixtures)
+        if (self.name in bpy.data.collections):
+            return {'CANCELLED'}
+
+        for i in range(self.units):
+            dmx.addFixture(self.name+" "+str(i+1), self.profile, self.model, self.address, list(self.default_color))
+        return {'FINISHED'}
+
+    def invoke(self, context, event):
+        self.name = "Fixture "+str(len(context.scene.dmx.fixtures)+1)
+        self.units = 1
+        DMX_Fixture_AddEdit.profile_list_items = []
+        wm = context.window_manager
+        return wm.invoke_props_dialog(self)
+
+class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
+    bl_label = "DMX: Edit Fixture"
+    bl_idname = "dmx.edit_fixture"
+    bl_options = {'UNDO'}
+
+    def execute(self, context):
+        scene = context.scene
+        dmx = scene.dmx
+        fixture = dmx.fixtures[scene.dmx.fixture_list_i]
+        if (self.name != fixture.name and self.name in bpy.data.collections):
+            return {'CANCELLED'}
+        model_params = {'emission':self.emission, 'power':self.power, 'angle':self.angle, 'focus':self.focus}
+        fixture.edit(self.name, self.model, self.address, model_params, list(self.default_color))
+        return {'FINISHED'}
+
+    def invoke(self, context, event):
+        scene = context.scene
+        fixture = scene.dmx.fixtures[scene.dmx.fixture_list_i]
+        self.name = fixture.name
+        self.profile = fixture.profile
+        self.model = fixture.model
+        self.address = fixture.address
+        self.default_color = (fixture.dmx_params['R'].default,fixture.dmx_params['G'].default,fixture.dmx_params['B'].default,1)
+        self.units = 0
+        wm = context.window_manager
+        return wm.invoke_props_dialog(self)
 
 class DMX_OT_Fixture_Remove(Operator):
     bl_label = "DMX > Fixture > Remove"

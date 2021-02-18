@@ -1,6 +1,6 @@
 #
 #   BlendexDMX > Fixture
-#   Base class for a light fixture
+#   Base class for a lighting fixture
 #
 #   http://www.github.com/hugoaboud/BlenderDMX
 #
@@ -8,7 +8,7 @@
 import bpy
 
 from dmx.material import getEmitterMaterial
-from dmx.model import getFixtureModelCollection
+from dmx.model import DMX_Model
 
 from dmx.param import DMX_Param, DMX_Model_Param
 
@@ -124,7 +124,7 @@ class DMX_Fixture(PropertyGroup):
         # Import and deep copy Fixture Model Collection
         if (model):
             self.model = model
-            model_collection = getFixtureModelCollection(model)
+            model_collection = DMX_Model.getFixtureModelCollection(model)
             links = {}
             for obj in model_collection.objects:
                 # Copy object
