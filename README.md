@@ -22,7 +22,7 @@ Then, download the `zip` file:
 
 - **LATEST RELEASE (STABLE)**
 
-   1. Download the [latest release](https://github.com/hugoaboud/BlenderDMX/releases/tag/v0.2.5-alpha) `dmx.zip` file
+   1. Download the [latest release](https://github.com/hugoaboud/BlenderDMX/releases/tag/v0.3.0-alpha) `dmx.zip` file
 
 - **ROLLING RELEASE (UNSTABLE)**
 
