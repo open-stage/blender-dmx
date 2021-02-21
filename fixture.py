@@ -62,21 +62,6 @@ class DMX_Fixture(PropertyGroup):
         name = "Fixture > Emitter Material",
         type = Material)
 
-    # Model properties
-
-    subclass : StringProperty(
-        name = "Fixture > Subclass",
-        description="Fixture Subclass Type Name")
-
-    model : StringProperty(
-        name = "Fixture > Model",
-        description="Fixture 3D Model")
-
-    model_params : CollectionProperty(
-        name = "Fixture > Model Parameters",
-        type = DMX_Model_Param
-    )
-
     # DMX properties
 
     address : IntProperty(
@@ -91,18 +76,10 @@ class DMX_Fixture(PropertyGroup):
         type = DMX_Param
     )
 
-    # A fixture should not be created with this method. Instead, use the
-    # create method from the fixtures subclasses
-    def _create(self, name, model, address, emission, default_color):
+    def create(self, name, profile, address, gel_color):
 
         # Data Properties
         self.name = name
-
-        # Create default model parameters
-        self.model_params.add()
-        self.model_params[-1].name = 'emission'
-        self.model_params[-1].value = emission
-        self.model_params.add()
 
         # DMX Properties
         self.address = address
@@ -122,47 +99,45 @@ class DMX_Fixture(PropertyGroup):
             self.collection.children.unlink(c)
 
         # Import and deep copy Fixture Model Collection
-        if (model):
-            self.model = model
-            model_collection = DMX_Model.getFixtureModelCollection(model)
-            links = {}
-            for obj in model_collection.objects:
-                # Copy object
-                links[obj] = obj.copy()
-                # If light, copy object data
-                if (obj.type == 'LIGHT'):
-                    links[obj].data = obj.data.copy()
-                # Store reference to body and target
-                if ('Body' in obj.name):
-                    self.objects.add()
-                    self.objects[-1].name = 'Body'
-                    self.objects['Body'].object = links[obj]
-                elif ('Target' in obj.name):
-                    self.objects.add()
-                    self.objects[-1].name = 'Target'
-                    self.objects['Target'].object = links[obj]
-                # Link new object to collection
-                self.collection.objects.link(links[obj])
+        model_collection = DMX_Model.getFixtureModelCollection(profile)
+        links = {}
+        for obj in model_collection.objects:
+            # Copy object
+            links[obj] = obj.copy()
+            # If light, copy object data
+            if (obj.type == 'LIGHT'):
+                links[obj].data = obj.data.copy()
+            # Store reference to body and target
+            if ('Body' in obj.name):
+                self.objects.add()
+                self.objects[-1].name = 'Body'
+                self.objects['Body'].object = links[obj]
+            elif ('Target' in obj.name):
+                self.objects.add()
+                self.objects[-1].name = 'Target'
+                self.objects['Target'].object = links[obj]
+            # Link new object to collection
+            self.collection.objects.link(links[obj])
 
-            # Relink constraints
-            for obj in self.collection.objects:
-                for constraint in obj.constraints:
-                    constraint.target = links[constraint.target]
+        # Relink constraints
+        for obj in self.collection.objects:
+            for constraint in obj.constraints:
+                constraint.target = links[constraint.target]
 
-            # Setup emitter
-            for obj in self.collection.objects:
-                if ('Emitter' in obj.name):
-                    emitter = obj
-            assert emitter
+        # Setup emitter
+        for obj in self.collection.objects:
+            if ('Pixel' in obj.name):
+                emitter = obj
+        assert emitter
 
-            material = getEmitterMaterial(name)
-            emitter.active_material = material
-            emitter.material_slots[0].link = 'OBJECT'
-            emitter.material_slots[0].material = material
-            emitter.material_slots[0].material.shadow_method = 'NONE' # eevee
+        material = getEmitterMaterial(name)
+        emitter.active_material = material
+        emitter.material_slots[0].link = 'OBJECT'
+        emitter.material_slots[0].material = material
+        emitter.material_slots[0].material.shadow_method = 'NONE' # eevee
 
-            self.emitter_material = emitter.material_slots[0].material
-            self.emitter_material.node_tree.nodes[1].inputs[STRENGTH].default_value = self.model_params['emission'].value
+        self.emitter_material = emitter.material_slots[0].material
+        #self.emitter_material.node_tree.nodes[1].inputs[STRENGTH].default_value = self.model_params['emission'].value
 
         # Link collection to DMX collection
         bpy.context.scene.dmx.collection.children.link(self.collection)
@@ -174,13 +149,13 @@ class DMX_Fixture(PropertyGroup):
         self.dmx_params[-1].default = 0
         self.dmx_params.add()
         self.dmx_params[-1].name = 'R'
-        self.dmx_params[-1].default = default_color[0]
+        #self.dmx_params[-1].default = default_color[0]
         self.dmx_params.add()
         self.dmx_params[-1].name = 'G'
-        self.dmx_params[-1].default = default_color[1]
+        #self.dmx_params[-1].default = default_color[1]
         self.dmx_params.add()
         self.dmx_params[-1].name = 'B'
-        self.dmx_params[-1].default = default_color[2]
+        #self.dmx_params[-1].default = default_color[2]
 
     def edit(self, name, model, address, model_params, default_color):
         self.name = name
@@ -204,7 +179,8 @@ class DMX_Fixture(PropertyGroup):
     # Interface Methods #
 
     def icon(self):
-        return self.subclasses[self.subclass].icon()
+        return 'LIGHT_SPOT'
+        #self.subclasses[self.subclass].icon()
 
     def setDMX(self, pvalues):
         self.subclasses[self.subclass].setDMX(self, pvalues)

@@ -16,8 +16,6 @@ import bpy
 import os
 
 from dmx.fixture import *
-from dmx.fixtures.spot import *
-from dmx.fixtures.tube import *
 from dmx.group import *
 
 from dmx.panels.setup import *
@@ -36,9 +34,6 @@ from bpy.types import (PropertyGroup,
                        Object,
                        Collection,
                        NodeTree)
-
-from dmx.fixtures.spot import DMX_SpotFixture
-from dmx.fixtures.tube import DMX_TubeFixture
 
 # Main Class #
 
@@ -230,9 +225,7 @@ class DMX(PropertyGroup):
     # # Setup > Volume > Preview
 
     def onVolumePreview(self, context):
-        for fixture in self.fixtures:
-            for light in fixture.lights:
-                light.object.data.show_cone = self.volume_preview
+        self.updatePreviewVolume()
 
     volume_preview: BoolProperty(
         name = "Preview Volume",
@@ -353,12 +346,11 @@ class DMX(PropertyGroup):
 
     # # Fixtures
 
-    def addFixture(self, name, profile, model, address, default_color):
+    def addFixture(self, name, profile, address, gel_color):
+        profile = DMX_GDTF.loadProfile(profile)
         dmx = bpy.context.scene.dmx
         dmx.fixtures.add()
-        fixture = dmx.fixtures[-1]
-        profile = DMX_GDTF.loadProfile(profile)
-        DMX_SpotFixture.create(fixture, name, model, address, False, 10, 1000, 30, 0, default_color)
+        dmx.fixtures[-1].create(name, profile, address, gel_color)
 
     def removeFixture(self, i):
         if (i >= 0 and i < len(self.fixtures)):
@@ -397,10 +389,23 @@ class DMX(PropertyGroup):
     def removeGroup(self, i):
         bpy.context.scene.dmx.groups.remove(i)
 
+    # # Preview Volume
+    def updatePreviewVolume(self):
+        for fixture in self.fixtures:
+            if (bpy.context.active_object.name in fixture.collection.objects):
+                for light in fixture.lights:
+                    light.object.data.show_cone = self.volume_preview
+            else:
+                for light in fixture.lights:
+                    light.object.data.show_cone = False
+
 # Handlers #
 
 @bpy.app.handlers.persistent
 def onLoadFile(scene):
+    #profile = DMX_GDTF.loadProfile("BlenderDMX@LED_PAR_64_RGBW@v0.1.gdtf")
+    #objs = DMX_GDTF.buildCollection(profile)
+
     if ('DMX' in bpy.data.scenes['Scene'].collection.children):
         print("DMX", "File contains DMX show, linking...")
         bpy.context.scene.dmx.linkFile()
@@ -411,6 +416,14 @@ def onLoadFile(scene):
 def onUndo(scene):
     if (not scene.dmx.collection and DMX.linkedToFile):
         scene.dmx.unlinkFile()
+
+# Callbacks #
+
+def onActiveChanged(*args):
+    print("SELECT CHANGED")
+    dmx = bpy.context.scene.dmx
+    if (dmx.volume_preview):
+        dmx.updatePreviewVolume()
 
 #
 # Blender Add-On
@@ -428,6 +441,17 @@ def register():
     # Append handlers
     bpy.app.handlers.load_post.append(onLoadFile)
     bpy.app.handlers.undo_post.append(onUndo)
+
+    # Selection callback
+    handle = object()
+    subscribe_to = bpy.types.LayerObjects, "active"
+    bpy.msgbus.subscribe_rna(
+        key=subscribe_to,
+        owner=handle,
+        args=(None,),
+        notify=onActiveChanged,
+    )
+    bpy.msgbus.publish_rna(key=subscribe_to)
 
 def unregister():
     # Unregister Base Classes

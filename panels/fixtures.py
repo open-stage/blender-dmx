@@ -97,21 +97,6 @@ class DMX_Fixture_AddEdit():
         description = "Fixture GDTF Profile",
         items=profileListItems)
 
-    # Callback to load Profile models only once for each invoke
-    last_profile = None
-    model_list_items = []
-    def modelListItems(self, context):
-        if (self.profile != DMX_Fixture_AddEdit.last_profile):
-            DMX_Fixture_AddEdit.last_profile = self.profile
-            fixtureClass = DMX_GDTF.getProfileClass(self.profile)
-            DMX_Fixture_AddEdit.model_list_items = DMX_Model.getModelList(fixtureClass)
-        return DMX_Fixture_AddEdit.model_list_items
-
-    model: EnumProperty(
-        name = "Model",
-        description = "Fixture 3D Model",
-        items=modelListItems)
-
     address: IntProperty(
         name = "Address",
         description = "DMX Address",
@@ -119,8 +104,8 @@ class DMX_Fixture_AddEdit():
         min = 1,
         max = 512)
 
-    default_color: FloatVectorProperty(
-        name = "Default Color",
+    gel_color: FloatVectorProperty(
+        name = "Gel Color",
         subtype = "COLOR",
         size = 4,
         min = 0.0,
@@ -139,9 +124,8 @@ class DMX_Fixture_AddEdit():
         col = layout.column()
         col.prop(self, "name")
         col.prop(self, "profile")
-        col.prop(self, "model")
         col.prop(self, "address")
-        col.prop(self, "default_color")
+        col.prop(self, "gel_color")
         if (self.units > 0):
             col.prop(self, "units")
 
@@ -158,7 +142,7 @@ class DMX_OT_Fixture_Add(Operator, DMX_Fixture_AddEdit):
             return {'CANCELLED'}
 
         for i in range(self.units):
-            dmx.addFixture(self.name+" "+str(i+1), self.profile, self.model, self.address, list(self.default_color))
+            dmx.addFixture(self.name+" "+str(i+1), self.profile, self.address, list(self.gel_color))
         return {'FINISHED'}
 
     def invoke(self, context, event):
@@ -179,8 +163,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
         fixture = dmx.fixtures[scene.dmx.fixture_list_i]
         if (self.name != fixture.name and self.name in bpy.data.collections):
             return {'CANCELLED'}
-        model_params = {'emission':self.emission, 'power':self.power, 'angle':self.angle, 'focus':self.focus}
-        fixture.edit(self.name, self.model, self.address, model_params, list(self.default_color))
+        fixture.edit(self.name, self.profile, self.address, list(self.gel_color))
         return {'FINISHED'}
 
     def invoke(self, context, event):
@@ -188,9 +171,8 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
         fixture = scene.dmx.fixtures[scene.dmx.fixture_list_i]
         self.name = fixture.name
         self.profile = fixture.profile
-        self.model = fixture.model
         self.address = fixture.address
-        self.default_color = (fixture.dmx_params['R'].default,fixture.dmx_params['G'].default,fixture.dmx_params['B'].default,1)
+        self.gel_color = (fixture.dmx_params['R'].default,fixture.dmx_params['G'].default,fixture.dmx_params['B'].default,1)
         self.units = 0
         wm = context.window_manager
         return wm.invoke_props_dialog(self)
