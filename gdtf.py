@@ -7,6 +7,9 @@
 
 import os
 import bpy
+
+from mathutils import Euler
+
 from dmx import pygdtf
 
 from dmx.io_scene_3ds.import_3ds import load_3ds
@@ -17,6 +20,11 @@ class DMX_GDTF():
     def getProfilesPath():
         ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
         return os.path.join(ADDON_PATH,'data','profiles')
+
+    @staticmethod
+    def getPrimitivesPath():
+        ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
+        return os.path.join(ADDON_PATH,'data','primitives')
 
     @staticmethod
     def getProfileList():
@@ -39,6 +47,41 @@ class DMX_GDTF():
         return profile
 
     @staticmethod
+    def loadBlenderPrimitive(model):
+        primitive = str(model.primitive_type)
+
+        if (primitive == 'Cube'):
+            bpy.ops.mesh.primitive_cube_add(size=1.0)
+        elif (primitive == 'Cylinder'):
+            bpy.ops.mesh.primitive_cylinder_add(vertices=16, radius=0.5, depth=1.0)
+        elif (primitive == 'Sphere'):
+            bpy.ops.mesh.primitive_uv_sphere_add(segments=16, ring_count=16, radius=0.5)
+
+        obj = bpy.context.view_layer.objects.selected[0]
+        obj.users_collection[0].objects.unlink(obj)
+        obj.scale = (model.length, model.width, model.height)
+        return obj
+
+    @staticmethod
+    def loadPrimitive(model):
+        primitive = str(model.primitive_type)
+        path = os.path.join(DMX_GDTF.getPrimitivesPath(), primitive+'.obj')
+        bpy.ops.import_scene.obj(filepath=path)
+        obj = bpy.context.view_layer.objects.selected[0]
+        obj.users_collection[0].objects.unlink(obj)
+        obj.rotation_euler = Euler((0, 0, 0), 'XYZ')
+        return obj
+
+    @staticmethod
+    def load3ds(profile, model):
+        filename = 'models/3ds/'+model.file.name+'.3ds'
+        file_3ds = profile._package.open(filename)
+        load_3ds(file_3ds, bpy.context)
+        obj = bpy.context.view_layer.objects.selected[0]
+        obj.users_collection[0].objects.unlink(obj)
+        return obj
+
+    @staticmethod
     def buildCollection(profile):
 
         # Create model collection
@@ -47,16 +90,25 @@ class DMX_GDTF():
         # Load 3ds objects from the GDTF profile
         objs = {}
         for model in profile.models:
+            obj = None
+            # Normalize 1.1 PrimitiveTypes
+            primitive = str(model.primitive_type)
+            if (primitive[-3:] == '1_1'):
+                primitive = primitive[:-3]
+                model.primitive_type = pygdtf.PrimitiveType(primitive)
+            # Blender primitives
+            if (str(model.primitive_type) == 'Conventional'):
+                obj = DMX_GDTF.loadPrimitive(model)
+            elif (str(model.primitive_type) == 'Cylinder'):
+                obj = DMX_GDTF.loadBlenderPrimitive(model)
             # No primitives: load from 3ds
-            if (str(model.primitive_type) == 'Undefined'):
-                filename = 'models/3ds/'+model.file.name+'.3ds'
-                file_3ds = profile._package.open(filename)
-                load_3ds(file_3ds, bpy.context)
-                obj = bpy.context.view_layer.objects.selected[0]
-                obj.users_collection[0].objects.unlink(obj)
+            elif (str(model.primitive_type) == 'Undefined'):
+                obj = DMX_GDTF.load3ds(profile, model)
+            # If object was created
+            if (obj != None):
                 obj.name = model.name
-            objs[model.name] = obj
-            obj.hide_select = True
+                objs[model.name] = obj
+                obj.hide_select = True
 
         # Recursively update object position, rotation and scale
         def updateGeom(geom, d=0):
@@ -98,8 +150,6 @@ class DMX_GDTF():
 
         updateGeom(profile)
 
-        print(objs)
-
         # Add target for manipulating fixture
         target = bpy.data.objects.new(name="Target", object_data=None)
         collection.objects.link(target)
@@ -137,7 +187,7 @@ class DMX_GDTF():
 
     @staticmethod
     def getName(profile):
-        return profile.manufacturer + ", " + profile.name + ", " + profile.revisions[-1].text
+        return profile.manufacturer + ", " + profile.name + ", " + (profile.revisions[-1].text if len(profile.revisions) else '')
 
     @staticmethod
     def TESTE():

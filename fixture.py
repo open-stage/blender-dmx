@@ -126,7 +126,7 @@ class DMX_Fixture(PropertyGroup):
 
         # Setup emitter
         for obj in self.collection.objects:
-            if ('Pixel' in obj.name):
+            if ('Beam' in obj.name):
                 emitter = obj
         assert emitter
 
