@@ -19,24 +19,39 @@ class DMX_GDTF():
     @staticmethod
     def getProfilesPath():
         ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
-        return os.path.join(ADDON_PATH,'data','profiles')
+        return os.path.join(ADDON_PATH,'assets','profiles')
 
     @staticmethod
     def getPrimitivesPath():
         ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
-        return os.path.join(ADDON_PATH,'data','primitives')
+        return os.path.join(ADDON_PATH,'assets','primitives')
 
     @staticmethod
-    def getProfileList():
+    def getManufacturerList():
+        # List profiles in folder
+        manufacturers = set([])
+        for file in os.listdir(DMX_GDTF.getProfilesPath()):
+            # Parse info from file name: Company@Model.gdtf
+            info = file.split('@')
+            # Remove ".gdtf" from the end of the string
+            info[-1] = info[-1][:-5]
+            # Add to list (identifier, short name, full name)
+            manufacturers.add((info[0], info[0], ''))
+
+        return tuple(sorted(manufacturers))
+
+    @staticmethod
+    def getProfileList(manufacturer):
         # List profiles in folder
         profiles = []
         for file in os.listdir(DMX_GDTF.getProfilesPath()):
             # Parse info from file name: Company@Model.gdtf
             info = file.split('@')
-            if (len(info) == 2): info[1] = info[1][:-5]
-            if (len(info) == 3): info[2] = info[2][:-5]
-            # Add to list (identifier, short name, full name)
-            profiles.append((file, info[1], info[0]+" | "+info[1]))
+            if (info[0] == manufacturer):
+                # Remove ".gdtf" from the end of the string
+                info[-1] = info[-1][:-5]
+                # Add to list (identifier, short name, full name)
+                profiles.append((file, info[1], (info[2] if len(info) > 2 else '')))
 
         return tuple(profiles)
 
@@ -70,6 +85,7 @@ class DMX_GDTF():
         obj = bpy.context.view_layer.objects.selected[0]
         obj.users_collection[0].objects.unlink(obj)
         obj.rotation_euler = Euler((0, 0, 0), 'XYZ')
+        obj.scale = (model.length/obj.dimensions.x,model.width/obj.dimensions.y,model.height/obj.dimensions.z)
         return obj
 
     @staticmethod
@@ -91,19 +107,21 @@ class DMX_GDTF():
         objs = {}
         for model in profile.models:
             obj = None
-            # Normalize 1.1 PrimitiveTypes
             primitive = str(model.primitive_type)
+            # Normalize 1.1 PrimitiveTypes
+            # (From GDTF v1.1 on, the 1_1 was added to the end of primitive names, we just ignore them and use the same primitives)
             if (primitive[-3:] == '1_1'):
                 primitive = primitive[:-3]
                 model.primitive_type = pygdtf.PrimitiveType(primitive)
-            # Blender primitives
-            if (str(model.primitive_type) == 'Conventional'):
+            # BlenderDMX primitives
+            if (str(model.primitive_type) in ['Base','Conventional','Head','Yoke']):
                 obj = DMX_GDTF.loadPrimitive(model)
-            elif (str(model.primitive_type) == 'Cylinder'):
-                obj = DMX_GDTF.loadBlenderPrimitive(model)
-            # No primitives: load from 3ds
+            # 'Undefined': load from 3ds
             elif (str(model.primitive_type) == 'Undefined'):
                 obj = DMX_GDTF.load3ds(profile, model)
+            # Blender primitives
+            else:
+                obj = DMX_GDTF.loadBlenderPrimitive(model)
             # If object was created
             if (obj != None):
                 obj.name = model.name
@@ -112,21 +130,6 @@ class DMX_GDTF():
 
         # Recursively update object position, rotation and scale
         def updateGeom(geom, d=0):
-            print("geom " + str(geom))
-            if (len(geom.geometries) > 0):
-                for child_geom in geom.geometries:
-                    if (d > 0):
-                        # Constrain child to parent
-                        obj_child = objs[child_geom.name]
-                        print(obj_child)
-                        constraint = obj_child.constraints.new('CHILD_OF')
-                        constraint.target = objs[geom.name]
-                        # Add parent position
-                        position = [geom.position.matrix[c][3] for c in range(3)]
-                        obj_child.location[0] += position[0]
-                        obj_child.location[1] += position[1]
-                        obj_child.location[2] += position[2]
-                    updateGeom(child_geom, d+1)
             if (d > 0):
                 # Add child position
                 position = [geom.position.matrix[c][3] for c in range(3)]
@@ -137,6 +140,7 @@ class DMX_GDTF():
 
                 # Beam geometry: add light source and emitter material
                 if (isinstance(geom, pygdtf.GeometryBeam)):
+                    obj_child.cycles_visibility.shadow = False
                     light_data = bpy.data.lights.new(name="Spot", type='SPOT')
                     light_data.energy = geom.power_consumption
                     light_data.spot_size = geom.beam_angle*3.1415/180.0
@@ -148,6 +152,24 @@ class DMX_GDTF():
                     constraint.target = obj_child
                     collection.objects.link(light_object)
 
+            if (len(geom.geometries) > 0):
+                for child_geom in geom.geometries:
+                    if (d > 0):
+                        # Constrain child to parent
+                        obj_parent = objs[geom.name]
+                        obj_child = objs[child_geom.name]
+                        constraint = obj_child.constraints.new('CHILD_OF')
+                        constraint.target = obj_parent
+                        constraint.use_scale_x = False
+                        constraint.use_scale_y = False
+                        constraint.use_scale_z = False
+                        # Add parent position
+                        position = [geom.position.matrix[c][3] for c in range(3)]
+                        obj_child.location[0] += obj_parent.location[0]
+                        obj_child.location[1] += obj_parent.location[1]
+                        obj_child.location[2] += obj_parent.location[2]
+                    updateGeom(child_geom, d+1)
+
         updateGeom(profile)
 
         # Add target for manipulating fixture
@@ -157,18 +179,18 @@ class DMX_GDTF():
         target.empty_display_type = 'PLAIN_AXES'
         target.location = (0,0,-2)
 
-        # If there's no Head, this is a conventional fixture
+        # If there's no Head, this is a static fixture
         if ('Head' not in objs):
+            print("Static Fixture")
+
             # If body has a Yoke child, set Z rotation constraint
-            # This should be reviewed for other conventional fixtures
             for name, obj in objs.items():
                 if (name == 'Yoke' and len(obj.constraints)):
-                    print(obj)
-                    print(obj.constraints)
                     constraint = obj.constraints[0]
                     if (constraint.target == objs['Body']):
                         constraint.use_rotation_x = False
                         constraint.use_rotation_y = False
+                    break
 
             # Track body to the target
             constraint = objs['Body'].constraints.new('TRACK_TO')
@@ -177,7 +199,26 @@ class DMX_GDTF():
             # Make body selectable
             objs['Body'].hide_select = False
 
-            print("CONVENTIONAL!")
+        # There'sa Head! This is a moving fixture
+        else:
+            print("Moving Fixture")
+
+            # If base has a Yoke child, create Z rotation constraint
+            for name, obj in objs.items():
+                if (name == 'Yoke' and len(obj.constraints)):
+                    constraint = obj.constraints[0]
+                    if (constraint.target == objs['Base']):
+                        constraint = obj.constraints.new('LOCKED_TRACK')
+                        constraint.target = target
+                        constraint.lock_axis = "LOCK_Z"
+                    break
+
+            # Track body to the target
+            constraint = objs['Head'].constraints.new('TRACK_TO')
+            constraint.target = target
+
+            # Make body selectable
+            objs['Base'].hide_select = False
 
         # Link objects to collection
         for name, obj in objs.items():
@@ -188,30 +229,3 @@ class DMX_GDTF():
     @staticmethod
     def getName(profile):
         return profile.manufacturer + ", " + profile.name + ", " + (profile.revisions[-1].text if len(profile.revisions) else '')
-
-    @staticmethod
-    def TESTE():
-        handle = object()
-
-        # all branches below work
-        if 1:
-            # To get some properties we need to prevent them being coerced into native Py types.
-            subscribe_to = bpy.context.object.path_resolve("name", False)
-        elif 0:
-            subscribe_to = bpy.context.object.location
-        else:
-            # all object locations
-            subscribe_to = bpy.types.Object, "location"
-
-        def notify_test(*args):
-            print("Notify changed!", args)
-
-        bpy.msgbus.subscribe_rna(
-            key=subscribe_to,
-            owner=handle,
-            args=(1, 2, 3),
-            notify=notify_test,
-        )
-
-        # In general we won't need to explicitly publish, nevertheless - support it.
-        bpy.msgbus.publish_rna(key=subscribe_to)

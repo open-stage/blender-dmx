@@ -17,8 +17,11 @@ import os
 
 from dmx.fixture import *
 from dmx.group import *
+from dmx.universe import *
+from dmx.data import *
 
 from dmx.panels.setup import *
+from dmx.panels.dmx import *
 from dmx.panels.fixtures import *
 from dmx.panels.groups import *
 from dmx.panels.programmer import *
@@ -47,21 +50,30 @@ class DMX(PropertyGroup):
                     DMX_Fixture_Object,
                     DMX_Fixture,
                     DMX_Group,
+                    DMX_Universe,
                     DMX_PT_Setup)
 
     # Classes to be registered
     # The registration is done in two steps. The second only runs
     # after the user requests to setup the addon.
 
-
     classes_setup = (DMX_OT_Setup_NewShow,)
 
-    classes = ( DMX_OT_Setup_Volume_Create,
+    classes = ( DMX_UL_Universe,
+                DMX_MT_Universe,
+                DMX_PT_DMX,
+                DMX_PT_DMX_Universes,
+                DMX_PT_DMX_ArtNet,
+                DMX_OT_Setup_Volume_Create,
                 DMX_PT_Setup_Background,
                 DMX_PT_Setup_Volume,
                 DMX_UL_Fixture,
                 DMX_MT_Fixture,
+                DMX_MT_Fixture_Manufacturers,
+                DMX_MT_Fixture_Profiles,
+                DMX_OT_Fixture_Profiles,
                 DMX_OT_Fixture_Add,
+                DMX_OT_Fixture_Edit,
                 DMX_OT_Fixture_Remove,
                 DMX_PT_Fixtures,
                 DMX_UL_Group,
@@ -116,9 +128,15 @@ class DMX(PropertyGroup):
         name = "DMX Groups",
         type = DMX_Group)
 
+    universes : CollectionProperty(
+        name = "DMX Groups",
+        type = DMX_Universe)
+
     # New DMX Scene
     # - Remove any previous DMX objects/collections
     # - Create DMX collection
+    # - Create DMX universes
+    # - Link to file
     def new(self):
         # Remove old DMX collection from file if present
         if ("DMX" in bpy.data.collections):
@@ -142,6 +160,9 @@ class DMX(PropertyGroup):
         # Set background to black (so it match the panel)
         bpy.context.scene.world.node_tree.nodes['Background'].inputs[0].default_value = (0,0,0,0)
 
+        # Create a DMX universe
+        self.addUniverse()
+
         # Link addon to file
         self.linkFile()
 
@@ -150,6 +171,7 @@ class DMX(PropertyGroup):
     # - Link DMX Collection (if present)
     # - Link Volume Object (if present)
     # - If DMX collection was linked, register addon
+    # - Allocate static universe data
     def linkFile(self):
         print("DMX", "Linking to file")
 
@@ -177,11 +199,20 @@ class DMX(PropertyGroup):
                 DMX.linkedToFile = True
 
         # Rebuild fixture subclass dictionary
+        # OLD should go away on the next sprint
+        """
         for fixture in self.fixtures:
             if (fixture.subclass not in DMX_Fixture.subclasses):
                 print("DMX", "\tLinking fixture subclass ", fixture.subclass)
                 subcls = fixture.subclass.split('.')
                 DMX_Fixture.subclasses[fixture.subclass] = getattr(getattr(sys.modules['dmx.fixtures'],subcls[0]),subcls[1])
+        """
+
+        # Sync number of universes
+        self.universes_n = len(self.universes)
+
+        # Allocate universes data
+        DMX_Data.setup(self.universes_n)
 
         # Rebuild group runtime dictionary (evaluating if this is gonna stay here)
         #DMX_Group.runtime = {}
@@ -222,7 +253,7 @@ class DMX(PropertyGroup):
         update = onBackgroundColor
         )
 
-    # # Setup > Volume > Preview
+    # # Setup > Volume > Preview Volume
 
     def onVolumePreview(self, context):
         self.updatePreviewVolume()
@@ -231,6 +262,23 @@ class DMX(PropertyGroup):
         name = "Preview Volume",
         default = False,
         update = onVolumePreview)
+
+    # # Setup > Volume > Disable Overlays
+
+    def onDisableOverlays(self, context):
+        for area in bpy.context.screen.areas:
+            if area.type == 'VIEW_3D':
+                for space in area.spaces:
+                    if space.type == 'VIEW_3D':
+                        space.overlay.show_extras = not self.disable_overlays
+                        space.overlay.show_relationship_lines = not self.disable_overlays
+                        break
+
+
+    disable_overlays: BoolProperty(
+        name = "Disable Overlays",
+        default = False,
+        update = onDisableOverlays)
 
     # # Setup > Volume > Enabled
 
@@ -257,6 +305,40 @@ class DMX(PropertyGroup):
         max = 1,
         update = onVolumeDensity)
 
+    # # DMX > Number of Universes
+
+    def onUniverseN(self, context):
+        n = self.universes_n
+        old_n = len(self.universes)
+        # Shrinking
+        if (n < old_n):
+            for _ in range(n, old_n):
+                self.removeUniverse(n)
+        # Growing
+        elif (n > old_n):
+            for _ in range(old_n, n):
+                self.addUniverse()
+        # Set data
+        DMX_Data.setup(n)
+
+
+    universes_n : IntProperty(
+        name = "Number of universes",
+        description="The number of universes set on the panel",
+        default = 0,
+        min = 0,
+        soft_min = 1,
+        max = 511,
+        update = onUniverseN)
+
+    # # DMX > Universes > List
+
+    universe_list_i : IntProperty(
+        name = "Universe List Item",
+        description="The selected element on the universe list",
+        default = 0
+        )
+
     # # Fixtures > List
 
     def onFixtureList(self, context):
@@ -281,14 +363,13 @@ class DMX(PropertyGroup):
         update = onGroupList
         )
 
-
     # # Programmer > Dimmer
 
     def onProgrammerDimmer(self, context):
         for fixture in self.fixtures:
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
-                    fixture.setDMX({'dimmer':self.programmer_dimmer})
+                    fixture.setDMX({'Dimmer':self.programmer_dimmer})
 
     programmer_dimmer: FloatProperty(
     name = "Programmer Dimmer",
@@ -320,7 +401,7 @@ class DMX(PropertyGroup):
         for fixture in self.fixtures:
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
-                    fixture.setDMX({'pan':(self.programmer_pan+1)/2})
+                    fixture.setDMX({'Pan':(self.programmer_pan+1)/2})
 
     programmer_pan: FloatProperty(
         name = "Programmer Pan",
@@ -333,7 +414,7 @@ class DMX(PropertyGroup):
         for fixture in self.fixtures:
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
-                    fixture.setDMX({'tilt':(self.programmer_tilt+1)/2})
+                    fixture.setDMX({'Tilt':(self.programmer_tilt+1)/2})
 
     programmer_tilt: FloatProperty(
         name = "Programmer Tilt",
@@ -346,11 +427,11 @@ class DMX(PropertyGroup):
 
     # # Fixtures
 
-    def addFixture(self, name, profile, address, gel_color):
-        profile = DMX_GDTF.loadProfile(profile)
+    def addFixture(self, name, profile, universe, address, gel_color):
+        gdtf_profile = DMX_GDTF.loadProfile(profile)
         dmx = bpy.context.scene.dmx
         dmx.fixtures.add()
-        dmx.fixtures[-1].create(name, profile, address, gel_color)
+        dmx.fixtures[-1].create(name, profile, gdtf_profile, universe, address, gel_color)
 
     def removeFixture(self, i):
         if (i >= 0 and i < len(self.fixtures)):
@@ -399,6 +480,19 @@ class DMX(PropertyGroup):
                 for light in fixture.lights:
                     light.object.data.show_cone = False
 
+    # # Universes
+
+    def addUniverse(self):
+        id = len(self.universes)
+        universe = DMX_Universe.new(self, id, "DMX %d"%id)
+        print("DMX", "DMX_Universe created: ", universe)
+        return universe
+
+    def removeUniverse(self, i):
+        if (i >= 0 and i < len(self.universes)):
+            self.universes.remove(i)
+
+
 # Handlers #
 
 @bpy.app.handlers.persistent
@@ -412,6 +506,17 @@ def onLoadFile(scene):
     else:
         bpy.context.scene.dmx.unlinkFile()
 
+    # Selection callback
+    handle = object()
+    subscribe_to = bpy.types.LayerObjects, "active"
+    bpy.msgbus.subscribe_rna(
+        key=subscribe_to,
+        owner=handle,
+        args=(None,),
+        notify=onActiveChanged,
+        options={"PERSISTENT",}
+    )
+
 @bpy.app.handlers.persistent
 def onUndo(scene):
     if (not scene.dmx.collection and DMX.linkedToFile):
@@ -420,7 +525,6 @@ def onUndo(scene):
 # Callbacks #
 
 def onActiveChanged(*args):
-    print("SELECT CHANGED")
     dmx = bpy.context.scene.dmx
     if (dmx.volume_preview):
         dmx.updatePreviewVolume()
@@ -441,17 +545,6 @@ def register():
     # Append handlers
     bpy.app.handlers.load_post.append(onLoadFile)
     bpy.app.handlers.undo_post.append(onUndo)
-
-    # Selection callback
-    handle = object()
-    subscribe_to = bpy.types.LayerObjects, "active"
-    bpy.msgbus.subscribe_rna(
-        key=subscribe_to,
-        owner=handle,
-        args=(None,),
-        notify=onActiveChanged,
-    )
-    bpy.msgbus.publish_rna(key=subscribe_to)
 
 def unregister():
     # Unregister Base Classes

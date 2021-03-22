@@ -52,10 +52,14 @@ class DMX_OT_Programmer_SelectBodies(Operator):
         for fixture in dmx.fixtures:
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
-                    if ('Body' in fixture.objects):
-                        bodies.append(fixture.objects['Body'].object)
-                    elif ('Emitter' in fixture.objects):
-                        bodies.append(fixture.objects['Emitter'].object)
+                    for body in fixture.collection.objects:
+                        if ('Body' in body.name):
+                            bodies.append(body)
+                        elif ('Base' in body.name):
+                            bodies.append(body)
+                        elif ('Emitter' in body.name):
+                            bodies.append(body)
+                    break
 
         if (len(bodies)):
             bpy.ops.object.select_all(action='DESELECT')
@@ -93,10 +97,6 @@ class DMX_PT_Programmer(Panel):
     bl_region_type = "UI"
     bl_category = "DMX"
     bl_context = "objectmode"
-
-    @classmethod
-    def poll(self,context):
-        return context.object is not None
 
     def draw(self, context):
         layout = self.layout

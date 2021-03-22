@@ -147,10 +147,6 @@ class DMX_PT_Groups(Panel):
     bl_context = "objectmode"
     bl_options = {'DEFAULT_CLOSED'}
 
-    @classmethod
-    def poll(self,context):
-        return context.object is not None
-
     def draw(self, context):
         layout = self.layout
         scene = context.scene

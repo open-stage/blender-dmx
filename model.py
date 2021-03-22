@@ -20,7 +20,7 @@ class DMX_Model():
     @staticmethod
     def getFixtureModelCollection(profile):
 
-        # Make sure the profile exists, otherwise return None
+        # Make sure the profile was passed as an argument, otherwise return None
         if (profile == None):
             return None
 

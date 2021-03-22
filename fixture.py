@@ -12,6 +12,8 @@ from dmx.model import DMX_Model
 
 from dmx.param import DMX_Param, DMX_Model_Param
 
+from dmx.gdtf import DMX_GDTF
+
 from bpy.props import (IntProperty,
                        FloatProperty,
                        FloatVectorProperty,
@@ -64,6 +66,17 @@ class DMX_Fixture(PropertyGroup):
 
     # DMX properties
 
+    profile: StringProperty(
+        name = "Fixture > Profile",
+        default = "")
+
+    universe : IntProperty(
+        name = "Fixture > DMX Universe",
+        description="Fixture DMX Universe",
+        default = 0,
+        min = 0,
+        max = 511)
+
     address : IntProperty(
         name = "Fixture > DMX Address",
         description="Fixture DMX Address",
@@ -76,12 +89,14 @@ class DMX_Fixture(PropertyGroup):
         type = DMX_Param
     )
 
-    def create(self, name, profile, address, gel_color):
+    def create(self, name, profile, gdtf_profile, universe, address, gel_color):
 
         # Data Properties
         self.name = name
+        self.profile = profile
 
         # DMX Properties
+        self.universe = universe
         self.address = address
 
         # Collection with this name already exists, delete it
@@ -99,7 +114,7 @@ class DMX_Fixture(PropertyGroup):
             self.collection.children.unlink(c)
 
         # Import and deep copy Fixture Model Collection
-        model_collection = DMX_Model.getFixtureModelCollection(profile)
+        model_collection = DMX_Model.getFixtureModelCollection(gdtf_profile)
         links = {}
         for obj in model_collection.objects:
             # Copy object
@@ -107,6 +122,9 @@ class DMX_Fixture(PropertyGroup):
             # If light, copy object data
             if (obj.type == 'LIGHT'):
                 links[obj].data = obj.data.copy()
+                self.lights.add()
+                self.lights[-1].name = 'Light'
+                self.lights['Light'].object = links[obj]
             # Store reference to body and target
             if ('Body' in obj.name):
                 self.objects.add()
@@ -157,36 +175,15 @@ class DMX_Fixture(PropertyGroup):
         self.dmx_params[-1].name = 'B'
         #self.dmx_params[-1].default = default_color[2]
 
-    def edit(self, name, model, address, model_params, default_color):
-        self.name = name
-        self.collection.name = name
-        #self.model = model
-        self.address = address
-        for param in model_params.keys():
-            if (param in self.model_params):
-                self.model_params[param].value = model_params[param ]
-        self.dmx_params['R'].default = default_color[0]
-        self.dmx_params['G'].default = default_color[1]
-        self.dmx_params['B'].default = default_color[2]
-
-        self.emitter_material.node_tree.nodes[1].inputs[STRENGTH].default_value = self.model_params['emission'].value*self.dmx_params['dimmer'].value
-
-        self.subclasses[self.subclass].edit(self)
-
-        self.update()
-
+    def edit(self, name, profile, universe, address, gel_color):
+        gdtf_profile = DMX_GDTF.loadProfile(profile)
+        self.create(name, profile, gdtf_profile, universe, address, gel_color)
 
     # Interface Methods #
 
-    def icon(self):
-        return 'LIGHT_SPOT'
-        #self.subclasses[self.subclass].icon()
-
     def setDMX(self, pvalues):
-        self.subclasses[self.subclass].setDMX(self, pvalues)
-
-    def update(self):
-        self.subclasses[self.subclass].update(self)
+        pass
+        #self.subclasses[self.subclass].setDMX(self, pvalues)
 
     def updateDimmer(self):
         dimmer = self.dmx_params['dimmer'].value
@@ -199,7 +196,8 @@ class DMX_Fixture(PropertyGroup):
         return color
 
     def select(self):
-        self.subclasses[self.subclass].select(self)
+        pass
+        #self.subclasses[self.subclass].select(self)
 
     def clear(self):
         for dmx_param in self.dmx_params:
