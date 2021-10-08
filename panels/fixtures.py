@@ -97,6 +97,21 @@ class DMX_MT_Fixture_Profiles(Menu):
             row.context_pointer_set("add_edit_panel", context.add_edit_panel)
             row.operator(DMX_OT_Fixture_Profiles.bl_idname, text=profile[1].replace("_"," ")).profile = profile[0]
 
+class DMX_MT_Fixture_Mode(Menu):
+    bl_label = "DMX > Fixture > Add > Mode"
+    bl_idname = "dmx.fixture.add.mode"
+
+    def draw(self, context):
+        layout = self.layout
+        scene = context.scene
+        dmx = scene.dmx
+        profile = context.add_edit_panel.profile
+        if (not profile): return
+        for mode in DMX_GDTF.getModes(profile):
+            row = layout.row()
+            row.context_pointer_set("add_edit_panel", context.add_edit_panel)
+            row.operator(DMX_OT_Fixture_Mode.bl_idname, text=mode).mode = mode
+
 # Operators #
 
 class DMX_OT_Fixture_Profiles(Operator):
@@ -113,10 +128,25 @@ class DMX_OT_Fixture_Profiles(Operator):
         context.add_edit_panel.profile = self.profile
         return {'FINISHED'}
 
+class DMX_OT_Fixture_Mode(Operator):
+    bl_label = "DMX > Fixture > Add > Mode"
+    bl_idname = "dmx.fixture_pick_mode"
+
+    mode: StringProperty(
+        name = "Mode",
+        description = "Fixture GDTF Mode",
+        default = ""
+    )
+
+    def execute(self, context):
+        context.add_edit_panel.mode = self.mode
+        return {'FINISHED'}
+
 
 class DMX_Fixture_AddEdit():
 
     manufacturer_list_items = DMX_GDTF.getManufacturerList()
+
     manufacturers: EnumProperty(
         name = "Manufacturers",
         description = "Fixture GDTF Manufacturers",
@@ -147,6 +177,12 @@ class DMX_Fixture_AddEdit():
         min = 1,
         max = 512)
 
+    mode: StringProperty(
+        name = "Mode",
+        description = "DMX Mode",
+        default = ""
+    )
+
     gel_color: FloatVectorProperty(
         name = "Gel Color",
         subtype = "COLOR",
@@ -172,6 +208,10 @@ class DMX_Fixture_AddEdit():
             text_profile = self.profile[:-5].replace('_',' ').split('@')
             text_profile = text_profile[0] + " > " + text_profile[1]
         col.menu("dmx.fixture.add.manufacturers", text = text_profile)
+        text_mode = "DMX Mode"
+        if (self.mode != ""):
+            text_mode = self.mode
+        col.menu("dmx.fixture.add.mode", text = text_mode)
         col.prop(self, "universe")
         col.prop(self, "address")
         col.prop(self, "gel_color")
@@ -189,7 +229,7 @@ class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
         if (self.name in bpy.data.collections):
             return {'CANCELLED'}
         for i in range(self.units):
-            dmx.addFixture(self.name+" "+str(i+1), self.profile, self.universe, self.address, list(self.gel_color))
+            dmx.addFixture(self.name+" "+str(i+1), self.profile, self.universe, self.address, self.mode, list(self.gel_color))
         return {'FINISHED'}
 
     def invoke(self, context, event):
@@ -210,7 +250,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
         fixture = dmx.fixtures[scene.dmx.fixture_list_i]
         if (self.name != fixture.name and self.name in bpy.data.collections):
             return {'CANCELLED'}
-        fixture.edit(self.name, self.profile, self.universe, self.address, list(self.gel_color))
+        fixture.edit(self.name, self.profile, self.universe, self.address, self.mode, list(self.gel_color))
         return {'FINISHED'}
 
     def invoke(self, context, event):
@@ -220,7 +260,8 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
         self.profile = fixture.profile
         self.universe = fixture.universe
         self.address = fixture.address
-        self.gel_color = (fixture.dmx_params['R'].default,fixture.dmx_params['G'].default,fixture.dmx_params['B'].default,1)
+        self.mode = fixture.mode
+        self.gel_color = fixture.gel_color
         self.units = 0
         wm = context.window_manager
         return wm.invoke_props_dialog(self)

@@ -56,6 +56,34 @@ class DMX_GDTF():
         return tuple(profiles)
 
     @staticmethod
+    def getModes(profile):
+        gdtf_profile = DMX_GDTF.loadProfile(profile)
+        return tuple([mode.name for mode in gdtf_profile.dmx_modes])
+
+    @staticmethod
+    def getChannels(gdtf_profile, mode):
+        dmx_mode = None
+        for m in gdtf_profile.dmx_modes:
+            if (m.name == mode):
+                dmx_mode = m
+                break
+        if (not dmx_mode): return []
+        
+        channels = dmx_mode.dmx_channels
+        footprint = max([max([o for o in ch.offset]) for ch in channels])
+        dmx_channels = [None]*footprint
+        for ch in channels:
+            dmx_channels[ch.offset[0]-1] = str(ch.logical_channels[0].channel_functions[0].attribute)
+            if (len(ch.offset) > 1):
+                dmx_channels[ch.offset[1]-1] = '+'+str(ch.logical_channels[0].channel_functions[0].attribute)
+        
+        for i, ch in enumerate(dmx_channels):
+            if ('ColorAdd_' in ch):
+                dmx_channels[i] = ch[9:]
+
+        return dmx_channels
+        
+    @staticmethod
     def loadProfile(filename):
         path = os.path.join(DMX_GDTF.getProfilesPath(), filename)
         profile = pygdtf.FixtureType(path)
@@ -199,7 +227,7 @@ class DMX_GDTF():
             # Make body selectable
             objs['Body'].hide_select = False
 
-        # There'sa Head! This is a moving fixture
+        # There's a Head! This is a moving fixture
         else:
             print("Moving Fixture")
 

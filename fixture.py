@@ -13,6 +13,7 @@ from dmx.model import DMX_Model
 from dmx.param import DMX_Param, DMX_Model_Param
 
 from dmx.gdtf import DMX_GDTF
+from dmx.data import DMX_Data
 
 from bpy.props import (IntProperty,
                        FloatProperty,
@@ -37,12 +38,11 @@ class DMX_Fixture_Object(PropertyGroup):
         name = "Fixture > Object",
         type = Object)
 
-class DMX_Fixture(PropertyGroup):
+# Static cache for faster lookup of channels for each fixture profile
+class DMX_Channels():
+    cache = {}
 
-    # Used to get class type from name faster
-    # The values are registered by the subclasses when an object of that
-    # subclass is created
-    subclasses = {}
+class DMX_Fixture(PropertyGroup):
 
     # Blender RNA #
 
@@ -83,13 +83,21 @@ class DMX_Fixture(PropertyGroup):
         default = 1,
         min = 1,
         max = 512)
+    
+    mode : StringProperty(
+        name = "Fixture > DMX Mode",
+        description="Fixture DMX Mode",
+        default = '')
+    
+    gel_color: FloatVectorProperty(
+        name = "Gel Color",
+        subtype = "COLOR",
+        size = 4,
+        min = 0.0,
+        max = 1.0,
+        default = (1.0,1.0,1.0,1.0))
 
-    dmx_params : CollectionProperty(
-        name = "Fixture > DMX Parameters",
-        type = DMX_Param
-    )
-
-    def create(self, name, profile, gdtf_profile, universe, address, gel_color):
+    def create(self, name, profile, gdtf_profile, universe, address, mode, gel_color):
 
         # Data Properties
         self.name = name
@@ -98,6 +106,8 @@ class DMX_Fixture(PropertyGroup):
         # DMX Properties
         self.universe = universe
         self.address = address
+        self.mode = mode
+        self.gel_color = gel_color
 
         # Collection with this name already exists, delete it
         if (name in bpy.data.collections):
@@ -148,58 +158,69 @@ class DMX_Fixture(PropertyGroup):
                 emitter = obj
         assert emitter
 
-        material = getEmitterMaterial(name)
-        emitter.active_material = material
+        self.emitter_material = getEmitterMaterial(name)
+        emitter.active_material = self.emitter_material
         emitter.material_slots[0].link = 'OBJECT'
-        emitter.material_slots[0].material = material
+        emitter.material_slots[0].material = self.emitter_material
         emitter.material_slots[0].material.shadow_method = 'NONE' # eevee
 
-        self.emitter_material = emitter.material_slots[0].material
+        
         #self.emitter_material.node_tree.nodes[1].inputs[STRENGTH].default_value = self.model_params['emission'].value
 
         # Link collection to DMX collection
         bpy.context.scene.dmx.collection.children.link(self.collection)
 
-        # Create default DMX params (dimmer + color)
-        # in the future, only dimmer
-        self.dmx_params.add()
-        self.dmx_params[-1].name = 'dimmer'
-        self.dmx_params[-1].default = 0
-        self.dmx_params.add()
-        self.dmx_params[-1].name = 'R'
-        #self.dmx_params[-1].default = default_color[0]
-        self.dmx_params.add()
-        self.dmx_params[-1].name = 'G'
-        #self.dmx_params[-1].default = default_color[1]
-        self.dmx_params.add()
-        self.dmx_params[-1].name = 'B'
-        #self.dmx_params[-1].default = default_color[2]
+        # Build DMX channels cache
+        DMX_Channels.cache[self.profile] = DMX_GDTF.getChannels(gdtf_profile, self.mode)
+        
 
-    def edit(self, name, profile, universe, address, gel_color):
+    def edit(self, name, profile, universe, address, mode, gel_color):
         gdtf_profile = DMX_GDTF.loadProfile(profile)
-        self.create(name, profile, gdtf_profile, universe, address, gel_color)
+        self.create(name, profile, gdtf_profile, universe, address, mode, gel_color)
 
     # Interface Methods #
 
     def setDMX(self, pvalues):
-        pass
-        #self.subclasses[self.subclass].setDMX(self, pvalues)
+        dmx_channels = DMX_Channels.cache[self.profile]
+        for param, value in pvalues.items():
+            if (param not in dmx_channels): return
+            p = dmx_channels.index(param)
+            DMX_Data.set(self.universe, self.address+p, value)
+        self.render()
 
-    def updateDimmer(self):
-        dimmer = self.dmx_params['dimmer'].value
-        self.emitter_material.node_tree.nodes[1].inputs[STRENGTH].default_value = self.model_params['emission'].value*dimmer
+    def render(self):
+        dmx_channels = DMX_Channels.cache[self.profile]
+        data = DMX_Data.get(self.universe, self.address, len(dmx_channels))
+        panTilt = [None,None]
+        rgb = [None,None,None]
+        for c in range(len(dmx_channels)):
+            if (dmx_channels[c] == 'Dimmer'): self.updateDimmer(data[c])
+            elif (dmx_channels[c] == 'R'): rgb[0] = data[c]
+            elif (dmx_channels[c] == 'G'): rgb[1] = data[c]
+            elif (dmx_channels[c] == 'B'): rgb[2] = data[c]
+        
+        if (rgb[0] or rgb[1] or rgb[2]):
+            self.updateRGB(rgb)
+
+    def updateDimmer(self, dimmer):
+        self.emitter_material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer/255.0)
         return dimmer
 
-    def updateColor(self):
-        color = [self.dmx_params['R'].value,self.dmx_params['G'].value,self.dmx_params['B'].value,1]
-        self.emitter_material.node_tree.nodes[1].inputs[COLOR].default_value = color
-        return color
+    def updateRGB(self, rgb):
+        old = self.emitter_material.node_tree.nodes[1].inputs[COLOR].default_value
+        rgb = [(rgb[i]/255.0 if rgb[i] else old[i]) for i in range(3)]
+        self.emitter_material.node_tree.nodes[1].inputs[COLOR].default_value = rgb + [1]
+        return rgb
 
     def select(self):
         pass
         #self.subclasses[self.subclass].select(self)
 
     def clear(self):
-        for dmx_param in self.dmx_params:
+        pass
+        """
+        dmx_channels = DMX_Channels.cache[self.profile]
+        for dmx_param in dmx_channels:
             dmx_param.toDefault()
         self.update()
+        """

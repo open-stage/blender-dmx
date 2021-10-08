@@ -71,7 +71,9 @@ class DMX(PropertyGroup):
                 DMX_MT_Fixture,
                 DMX_MT_Fixture_Manufacturers,
                 DMX_MT_Fixture_Profiles,
+                DMX_MT_Fixture_Mode,
                 DMX_OT_Fixture_Profiles,
+                DMX_OT_Fixture_Mode,
                 DMX_OT_Fixture_Add,
                 DMX_OT_Fixture_Edit,
                 DMX_OT_Fixture_Remove,
@@ -197,16 +199,6 @@ class DMX(PropertyGroup):
                 for cls in self.classes_setup:
                     bpy.utils.unregister_class(cls)
                 DMX.linkedToFile = True
-
-        # Rebuild fixture subclass dictionary
-        # OLD should go away on the next sprint
-        """
-        for fixture in self.fixtures:
-            if (fixture.subclass not in DMX_Fixture.subclasses):
-                print("DMX", "\tLinking fixture subclass ", fixture.subclass)
-                subcls = fixture.subclass.split('.')
-                DMX_Fixture.subclasses[fixture.subclass] = getattr(getattr(sys.modules['dmx.fixtures'],subcls[0]),subcls[1])
-        """
 
         # Sync number of universes
         self.universes_n = len(self.universes)
@@ -369,7 +361,9 @@ class DMX(PropertyGroup):
         for fixture in self.fixtures:
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
-                    fixture.setDMX({'Dimmer':self.programmer_dimmer})
+                    fixture.setDMX({
+                        'Dimmer':int(255*self.programmer_dimmer)
+                    })
 
     programmer_dimmer: FloatProperty(
     name = "Programmer Dimmer",
@@ -384,7 +378,11 @@ class DMX(PropertyGroup):
         for fixture in self.fixtures:
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
-                    fixture.setDMX({'R':self.programmer_color[0],'G':self.programmer_color[1],'B':self.programmer_color[2]})
+                    fixture.setDMX({
+                        'R':int(255*self.programmer_color[0]),
+                        'G':int(255*self.programmer_color[1]),
+                        'B':int(255*self.programmer_color[2])
+                    })
 
     programmer_color: FloatVectorProperty(
         name = "Programmer Color",
@@ -401,7 +399,9 @@ class DMX(PropertyGroup):
         for fixture in self.fixtures:
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
-                    fixture.setDMX({'Pan':(self.programmer_pan+1)/2})
+                    fixture.setDMX({
+                        'Pan':int(255*(self.programmer_pan+1)/2)
+                    })
 
     programmer_pan: FloatProperty(
         name = "Programmer Pan",
@@ -414,7 +414,9 @@ class DMX(PropertyGroup):
         for fixture in self.fixtures:
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
-                    fixture.setDMX({'Tilt':(self.programmer_tilt+1)/2})
+                    fixture.setDMX({
+                        'Tilt':int(255*(self.programmer_tilt+1)/2)
+                    })
 
     programmer_tilt: FloatProperty(
         name = "Programmer Tilt",
@@ -427,11 +429,11 @@ class DMX(PropertyGroup):
 
     # # Fixtures
 
-    def addFixture(self, name, profile, universe, address, gel_color):
+    def addFixture(self, name, profile, universe, address, mode, gel_color):
         gdtf_profile = DMX_GDTF.loadProfile(profile)
         dmx = bpy.context.scene.dmx
         dmx.fixtures.add()
-        dmx.fixtures[-1].create(name, profile, gdtf_profile, universe, address, gel_color)
+        dmx.fixtures[-1].create(name, profile, gdtf_profile, universe, address, mode, gel_color)
 
     def removeFixture(self, i):
         if (i >= 0 and i < len(self.fixtures)):
@@ -471,6 +473,7 @@ class DMX(PropertyGroup):
         bpy.context.scene.dmx.groups.remove(i)
 
     # # Preview Volume
+
     def updatePreviewVolume(self):
         for fixture in self.fixtures:
             if (bpy.context.active_object.name in fixture.collection.objects):
@@ -497,9 +500,6 @@ class DMX(PropertyGroup):
 
 @bpy.app.handlers.persistent
 def onLoadFile(scene):
-    #profile = DMX_GDTF.loadProfile("BlenderDMX@LED_PAR_64_RGBW@v0.1.gdtf")
-    #objs = DMX_GDTF.buildCollection(profile)
-
     if ('DMX' in bpy.data.scenes['Scene'].collection.children):
         print("DMX", "File contains DMX show, linking...")
         bpy.context.scene.dmx.linkFile()

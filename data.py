@@ -28,8 +28,15 @@ class DMX_Data():
                 DMX_Data._data.append("".join(['%c'%0]*512))
 
     @staticmethod
-    def get(universe, addr, len):
-        return [int(c) for c in DMX_Data._data[universe][addr:addr+len]]
+    def get(universe, addr, n):
+        if (universe > len(DMX_Data._data)): return [0]*n
+        if (addr + n > 512): return [0]*n
+        return [ord(c) for c in DMX_Data._data[universe-1][addr-1:addr+n-1]]
+    
+    @staticmethod
+    def set(universe, addr, val):
+        if (universe > len(DMX_Data._data)): return
+        DMX_Data._data[universe-1] = DMX_Data._data[universe-1][:addr-1] + ('%c' % val) + DMX_Data._data[universe-1][addr:]
 
     @staticmethod
     def set_string(universe, string):
