@@ -71,15 +71,15 @@ class DMX_GDTF():
         
         channels = dmx_mode.dmx_channels
         footprint = max([max([o for o in ch.offset]) for ch in channels])
-        dmx_channels = [None]*footprint
+        dmx_channels = [{'id':'', 'default':0}]*footprint
         for ch in channels:
-            dmx_channels[ch.offset[0]-1] = str(ch.logical_channels[0].channel_functions[0].attribute)
+            dmx_channels[ch.offset[0]-1] = {'id':str(ch.logical_channels[0].channel_functions[0].attribute), 'default':ch.default.value}
             if (len(ch.offset) > 1):
-                dmx_channels[ch.offset[1]-1] = '+'+str(ch.logical_channels[0].channel_functions[0].attribute)
+                dmx_channels[ch.offset[1]-1] = {'id':'+'+str(ch.logical_channels[0].channel_functions[0].attribute), 'default':ch.default.value}
         
         for i, ch in enumerate(dmx_channels):
-            if ('ColorAdd_' in ch):
-                dmx_channels[i] = ch[9:]
+            if ('ColorAdd_' in ch['id']):
+                dmx_channels[i]['id'] = ch['id'][9:]
 
         return dmx_channels
         

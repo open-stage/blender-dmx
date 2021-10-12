@@ -2,7 +2,7 @@ bl_info = {
     "name": "DMX",
     "description": "Create and control DMX fixtures",
     "author": "hugoaboud",
-    "version": (0, 3, 6),
+    "version": (0, 4, 0),
     "blender": (2, 90, 0),
     "location": "3D View > DMX",
     "warning": "", # used for warning icon and text in addons panel
@@ -49,6 +49,7 @@ class DMX(PropertyGroup):
     classes_base = (DMX_Param,
                     DMX_Model_Param,
                     DMX_Fixture_Object,
+                    DMX_Fixture_Channel,
                     DMX_Fixture,
                     DMX_Group,
                     DMX_Universe,
@@ -450,10 +451,9 @@ class DMX(PropertyGroup):
     # # Fixtures
 
     def addFixture(self, name, profile, universe, address, mode, gel_color):
-        gdtf_profile = DMX_GDTF.loadProfile(profile)
         dmx = bpy.context.scene.dmx
         dmx.fixtures.add()
-        dmx.fixtures[-1].create(name, profile, gdtf_profile, universe, address, mode, gel_color)
+        dmx.fixtures[-1].create(name, profile, mode, universe, address, gel_color)
 
     def removeFixture(self, i):
         if (i >= 0 and i < len(self.fixtures)):
@@ -507,9 +507,8 @@ class DMX(PropertyGroup):
 
     def addUniverse(self):
         id = len(self.universes)
-        universe = DMX_Universe.new(self, id, "DMX %d"%id)
+        self.universes.append(DMX_Universe.new(self, id, "DMX %d"%id))
         print("DMX", "DMX_Universe created: ", universe)
-        return universe
 
     def removeUniverse(self, i):
         if (i >= 0 and i < len(self.universes)):

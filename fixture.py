@@ -38,9 +38,13 @@ class DMX_Fixture_Object(PropertyGroup):
         name = "Fixture > Object",
         type = Object)
 
-# Static cache for faster lookup of channels for each fixture profile
-class DMX_Channels():
-    cache = {}
+class DMX_Fixture_Channel(PropertyGroup):
+    id: StringProperty(
+        name = "Fixture > Channel > ID",
+        default = '')
+    default: IntProperty(
+        name = "Fixture > Channel > Default",
+        default = 0)
 
 class DMX_Fixture(PropertyGroup):
 
@@ -69,26 +73,31 @@ class DMX_Fixture(PropertyGroup):
     profile: StringProperty(
         name = "Fixture > Profile",
         default = "")
+    
+    mode : StringProperty(
+        name = "Fixture > Mode",
+        description="Fixture DMX Mode",
+        default = '')
+    
+    channels: CollectionProperty(
+        name = "Fixture > Channels",
+        type = DMX_Fixture_Channel
+    )
 
     universe : IntProperty(
-        name = "Fixture > DMX Universe",
+        name = "Fixture > Universe",
         description="Fixture DMX Universe",
         default = 0,
         min = 0,
         max = 511)
 
     address : IntProperty(
-        name = "Fixture > DMX Address",
+        name = "Fixture > Address",
         description="Fixture DMX Address",
         default = 1,
         min = 1,
         max = 512)
-    
-    mode : StringProperty(
-        name = "Fixture > DMX Mode",
-        description="Fixture DMX Mode",
-        default = '')
-    
+        
     gel_color: FloatVectorProperty(
         name = "Gel Color",
         subtype = "COLOR",
@@ -97,16 +106,16 @@ class DMX_Fixture(PropertyGroup):
         max = 1.0,
         default = (1.0,1.0,1.0,1.0))
 
-    def create(self, name, profile, gdtf_profile, universe, address, mode, gel_color):
+    def create(self, name, profile, mode, universe, address, gel_color):
 
         # Data Properties
         self.name = name
         self.profile = profile
+        self.mode = mode
 
         # DMX Properties
         self.universe = universe
         self.address = address
-        self.mode = mode
         self.gel_color = gel_color
 
         # Collection with this name already exists, delete it
@@ -124,6 +133,7 @@ class DMX_Fixture(PropertyGroup):
             self.collection.children.unlink(c)
 
         # Import and deep copy Fixture Model Collection
+        gdtf_profile = DMX_GDTF.loadProfile(profile)
         model_collection = DMX_Model.getFixtureModelCollection(gdtf_profile)
         links = {}
         for obj in model_collection.objects:
@@ -171,7 +181,10 @@ class DMX_Fixture(PropertyGroup):
         bpy.context.scene.dmx.collection.children.link(self.collection)
 
         # Build DMX channels cache
-        DMX_Channels.cache[self.profile] = DMX_GDTF.getChannels(gdtf_profile, self.mode)
+        for ch in DMX_GDTF.getChannels(gdtf_profile, self.mode):
+            self.channels.add()
+            self.channels[-1].id = ch['id']
+            self.channels[-1].default = ch['default']
         
 
     def edit(self, name, profile, universe, address, mode, gel_color):
@@ -181,22 +194,22 @@ class DMX_Fixture(PropertyGroup):
     # Interface Methods #
 
     def setDMX(self, pvalues):
-        dmx_channels = DMX_Channels.cache[self.profile]
+        channels = [c.id for c in self.channels]
         for param, value in pvalues.items():
-            if (param not in dmx_channels): return
-            p = dmx_channels.index(param)
+            if (param not in channels): return
+            p = channels.index(param)
             DMX_Data.set(self.universe, self.address+p, value)
 
     def render(self):
-        dmx_channels = DMX_Channels.cache[self.profile]
-        data = DMX_Data.get(self.universe, self.address, len(dmx_channels))
+        channels = [c.id for c in self.channels]
+        data = DMX_Data.get(self.universe, self.address, len(channels))
         panTilt = [None,None]
         rgb = [None,None,None]
-        for c in range(len(dmx_channels)):
-            if (dmx_channels[c] == 'Dimmer'): self.updateDimmer(data[c])
-            elif (dmx_channels[c] == 'R'): rgb[0] = data[c]
-            elif (dmx_channels[c] == 'G'): rgb[1] = data[c]
-            elif (dmx_channels[c] == 'B'): rgb[2] = data[c]
+        for c in range(len(channels)):
+            if (channels[c] == 'Dimmer'): self.updateDimmer(data[c])
+            elif (channels[c] == 'R'): rgb[0] = data[c]
+            elif (channels[c] == 'G'): rgb[1] = data[c]
+            elif (channels[c] == 'B'): rgb[2] = data[c]
         
         if (rgb[0] != None and rgb[1] != None and rgb[2] != None):
             self.updateRGB(rgb)
@@ -221,8 +234,8 @@ class DMX_Fixture(PropertyGroup):
     def clear(self):
         pass
         """
-        dmx_channels = DMX_Channels.cache[self.profile]
-        for dmx_param in dmx_channels:
+        self.channels = DMX_Fixture_Channels.cache[self.profile]
+        for dmx_param in self.channels:
             dmx_param.toDefault()
         self.update()
         """

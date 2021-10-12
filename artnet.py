@@ -65,8 +65,15 @@ class DMX_ArtNet(threading.Thread):
             try:
                 data, _ = self._socket.recvfrom(1024)
                 packet = ArtnetPacket.build(data)
-                DMX_Data.set_universe(packet.universe, packet.data)
+
+                if (packet.universe >= len(self._dmx.universes)):
+                    continue
+                if (self._dmx.universes[packet.universe].input != 'ARTNET'):
+                    continue
+
+                DMX_Data.set_universe(packet.universe, bytearray(packet.data))
                 self._dmx.render()
+                
                 #print(packet)
             except Exception as e:
                 print(e)
