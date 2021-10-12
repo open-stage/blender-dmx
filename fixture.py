@@ -186,7 +186,6 @@ class DMX_Fixture(PropertyGroup):
             if (param not in dmx_channels): return
             p = dmx_channels.index(param)
             DMX_Data.set(self.universe, self.address+p, value)
-        self.render()
 
     def render(self):
         dmx_channels = DMX_Channels.cache[self.profile]
@@ -199,22 +198,25 @@ class DMX_Fixture(PropertyGroup):
             elif (dmx_channels[c] == 'G'): rgb[1] = data[c]
             elif (dmx_channels[c] == 'B'): rgb[2] = data[c]
         
-        if (rgb[0] or rgb[1] or rgb[2]):
+        if (rgb[0] != None and rgb[1] != None and rgb[2] != None):
             self.updateRGB(rgb)
 
     def updateDimmer(self, dimmer):
         self.emitter_material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer/255.0)
+        for light in self.lights:
+            light.object.data.energy = (dimmer/255.0) * light.object.data['flux']
         return dimmer
 
     def updateRGB(self, rgb):
-        old = self.emitter_material.node_tree.nodes[1].inputs[COLOR].default_value
-        rgb = [(rgb[i]/255.0 if rgb[i] else old[i]) for i in range(3)]
+        rgb = [c/255.0 for c in rgb]
         self.emitter_material.node_tree.nodes[1].inputs[COLOR].default_value = rgb + [1]
+        for light in self.lights:
+            light.object.data.color = rgb
         return rgb
 
     def select(self):
-        pass
-        #self.subclasses[self.subclass].select(self)
+        if ('Body' in self.objects):
+            self.objects['Body'].object.select_set(True)
 
     def clear(self):
         pass

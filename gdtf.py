@@ -170,7 +170,8 @@ class DMX_GDTF():
                 if (isinstance(geom, pygdtf.GeometryBeam)):
                     obj_child.cycles_visibility.shadow = False
                     light_data = bpy.data.lights.new(name="Spot", type='SPOT')
-                    light_data.energy = geom.power_consumption
+                    light_data['flux'] = geom.luminous_flux
+                    light_data.energy = geom.luminous_flux
                     light_data.spot_size = geom.beam_angle*3.1415/180.0
                     light_data.shadow_soft_size = geom.beam_radius
                     light_object = bpy.data.objects.new(name="Spot", object_data=light_data)

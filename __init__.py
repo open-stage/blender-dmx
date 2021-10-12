@@ -2,7 +2,7 @@ bl_info = {
     "name": "DMX",
     "description": "Create and control DMX fixtures",
     "author": "hugoaboud",
-    "version": (0, 3, 0),
+    "version": (0, 3, 6),
     "blender": (2, 90, 0),
     "location": "3D View > DMX",
     "warning": "", # used for warning icon and text in addons panel
@@ -14,11 +14,14 @@ bl_info = {
 import sys
 import bpy
 import os
+import atexit
 
 from dmx.fixture import *
 from dmx.group import *
 from dmx.universe import *
 from dmx.data import *
+from dmx.artnet import *
+from dmx.thread import DMX_Lock
 
 from dmx.panels.setup import *
 from dmx.panels.dmx import *
@@ -37,8 +40,6 @@ from bpy.types import (PropertyGroup,
                        Object,
                        Collection,
                        NodeTree)
-
-# Main Class #
 
 class DMX(PropertyGroup):
 
@@ -120,7 +121,7 @@ class DMX(PropertyGroup):
         type = NodeTree)
 
     # DMX Properties
-    # This should be parsed to file
+    # These should be parsed to file
 
     fixtures: CollectionProperty(
         name = "DMX Fixtures",
@@ -297,7 +298,7 @@ class DMX(PropertyGroup):
         max = 1,
         update = onVolumeDensity)
 
-    # # DMX > Number of Universes
+    # # DMX > Universes > Number of Universes
 
     def onUniverseN(self, context):
         n = self.universes_n
@@ -330,6 +331,21 @@ class DMX(PropertyGroup):
         description="The selected element on the universe list",
         default = 0
         )
+
+    # # DMX > Universes > List
+
+    def onArtNetEnable(self, context):
+        if (self.artnet_enabled):
+            DMX_ArtNet.enable(self, '10.0.0.1')
+        else:
+            DMX_ArtNet.disable()
+
+    artnet_enabled : BoolProperty(
+        name = "Enable Art-Net Input",
+        description="Enables the input of DMX data throught Art-Net.",
+        default = 0,
+        update = onArtNetEnable
+    )
 
     # # Fixtures > List
 
@@ -364,13 +380,14 @@ class DMX(PropertyGroup):
                     fixture.setDMX({
                         'Dimmer':int(255*self.programmer_dimmer)
                     })
+        self.render()
 
     programmer_dimmer: FloatProperty(
-    name = "Programmer Dimmer",
-    default = 0,
-    min = 0,
-    max = 1,
-    update = onProgrammerDimmer)
+        name = "Programmer Dimmer",
+        default = 0,
+        min = 0,
+        max = 1,
+        update = onProgrammerDimmer)
 
     # # Programmer > Color
 
@@ -383,6 +400,7 @@ class DMX(PropertyGroup):
                         'G':int(255*self.programmer_color[1]),
                         'B':int(255*self.programmer_color[2])
                     })
+        self.render()
 
     programmer_color: FloatVectorProperty(
         name = "Programmer Color",
@@ -402,6 +420,7 @@ class DMX(PropertyGroup):
                     fixture.setDMX({
                         'Pan':int(255*(self.programmer_pan+1)/2)
                     })
+        self.render()
 
     programmer_pan: FloatProperty(
         name = "Programmer Pan",
@@ -417,6 +436,7 @@ class DMX(PropertyGroup):
                     fixture.setDMX({
                         'Tilt':int(255*(self.programmer_tilt+1)/2)
                     })
+        self.render()
 
     programmer_tilt: FloatProperty(
         name = "Programmer Tilt",
@@ -495,6 +515,13 @@ class DMX(PropertyGroup):
         if (i >= 0 and i < len(self.universes)):
             self.universes.remove(i)
 
+    # # Render
+
+    def render(self):
+        with DMX_Lock:
+            for fixture in self.fixtures:
+                fixture.render()
+
 
 # Handlers #
 
@@ -545,6 +572,9 @@ def register():
     # Append handlers
     bpy.app.handlers.load_post.append(onLoadFile)
     bpy.app.handlers.undo_post.append(onUndo)
+
+    # Kill ArtNet Thread at exit
+    atexit.register(DMX_ArtNet.disable)
 
 def unregister():
     # Unregister Base Classes
