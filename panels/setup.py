@@ -71,8 +71,8 @@ class DMX_OT_Setup_Volume_Create(Operator):
 
 class DMX_PT_Setup_Background(Panel):
     bl_label = "Background"
-    bl_idname = "dmx.panel.setup.background"
-    bl_parent_id = "dmx.panel.setup"
+    bl_idname = "DMX_PT_Setup_Background"
+    bl_parent_id = "DMX_PT_Setup"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_category = "DMX"
@@ -86,8 +86,8 @@ class DMX_PT_Setup_Background(Panel):
 
 class DMX_PT_Setup_Volume(Panel):
     bl_label = "Volume"
-    bl_idname = "dmx.panel.setup.volume"
-    bl_parent_id = "dmx.panel.setup"
+    bl_idname = "DMX_PT_Setup_Volume"
+    bl_parent_id = "DMX_PT_Setup"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_category = "DMX"
@@ -115,7 +115,7 @@ class DMX_PT_Setup_Volume(Panel):
 
 class DMX_PT_Setup(Panel):
     bl_label = "Setup"
-    bl_idname = "dmx.panel.setup"
+    bl_idname = "DMX_PT_Setup"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_category = "DMX"

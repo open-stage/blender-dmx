@@ -42,7 +42,7 @@ class DMX_UL_Fixture(UIList):
 
 class DMX_MT_Fixture(Menu):
     bl_label = "DMX > Fixture Menu"
-    bl_idname = "dmx.menu.fixture"
+    bl_idname = "DMX_MT_Fixture"
 
     def draw(self, context):
         layout = self.layout
@@ -70,7 +70,7 @@ class DMX_MT_Fixture(Menu):
 
 class DMX_MT_Fixture_Manufacturers(Menu):
     bl_label = "DMX > Fixture > Add > Manufacturers"
-    bl_idname = "dmx.fixture.add.manufacturers"
+    bl_idname = "DMX_MT_Fixture_Manufacturers"
 
     def draw(self, context):
         layout = self.layout
@@ -85,7 +85,7 @@ class DMX_MT_Fixture_Manufacturers(Menu):
 
 class DMX_MT_Fixture_Profiles(Menu):
     bl_label = "DMX > Fixture > Add > Profiles"
-    bl_idname = "dmx.fixture.add.profiles"
+    bl_idname = "DMX_MT_Fixture_Profiles"
 
     def draw(self, context):
         layout = self.layout
@@ -99,7 +99,7 @@ class DMX_MT_Fixture_Profiles(Menu):
 
 class DMX_MT_Fixture_Mode(Menu):
     bl_label = "DMX > Fixture > Add > Mode"
-    bl_idname = "dmx.fixture.add.mode"
+    bl_idname = "DMX_MT_Fixture_Mode"
 
     def draw(self, context):
         layout = self.layout
@@ -207,11 +207,11 @@ class DMX_Fixture_AddEdit():
         if (self.profile != ""):
             text_profile = self.profile[:-5].replace('_',' ').split('@')
             text_profile = text_profile[0] + " > " + text_profile[1]
-        col.menu("dmx.fixture.add.manufacturers", text = text_profile)
+        col.menu("DMX_MT_Fixture_Manufacturers", text = text_profile)
         text_mode = "DMX Mode"
         if (self.mode != ""):
             text_mode = self.mode
-        col.menu("dmx.fixture.add.mode", text = text_mode)
+        col.menu("DMX_MT_Fixture_Mode", text = text_mode)
         col.prop(self, "universe")
         col.prop(self, "address")
         col.prop(self, "gel_color")
@@ -282,7 +282,7 @@ class DMX_OT_Fixture_Remove(Operator):
 
 class DMX_PT_Fixtures(Panel):
     bl_label = "Fixtures"
-    bl_idname = "dmx.panel.fixtures"
+    bl_idname = "DMX_PT_Fixtures"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_category = "DMX"
@@ -294,7 +294,7 @@ class DMX_PT_Fixtures(Panel):
         dmx = scene.dmx
 
         layout.template_list("DMX_UL_Fixture", "", scene.dmx.collection, "children", scene.dmx, "fixture_list_i")
-        layout.menu("dmx.menu.fixture", text="...", icon="OUTLINER_DATA_LIGHT")
+        layout.menu('DMX_MT_Fixture', text="...", icon="OUTLINER_DATA_LIGHT")
 
         #row = layout.row()
         #row.operator("dmx.remove_fixture")

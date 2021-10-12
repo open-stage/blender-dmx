@@ -92,7 +92,7 @@ class DMX_OT_Programmer_SelectTargets(Operator):
 
 class DMX_PT_Programmer(Panel):
     bl_label = "Programmer"
-    bl_idname = "dmx.panel.programmer"
+    bl_idname = "DMX_PT_Programmer"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_category = "DMX"

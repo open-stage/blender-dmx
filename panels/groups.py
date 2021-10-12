@@ -31,7 +31,7 @@ class DMX_UL_Group(UIList):
 
 class DMX_MT_Group(Menu):
     bl_label = "DMX > Group Menu"
-    bl_idname = "dmx.menu.group"
+    bl_idname = "DMX_MT_Group"
 
     def draw(self, context):
         layout = self.layout
@@ -140,7 +140,7 @@ class DMX_OT_Group_Remove(Operator):
 
 class DMX_PT_Groups(Panel):
     bl_label = "Groups"
-    bl_idname = "dmx.panel.groups"
+    bl_idname = "DMX_PT_Groups"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_category = "DMX"
@@ -154,4 +154,4 @@ class DMX_PT_Groups(Panel):
 
         layout.template_list("DMX_UL_Group", "", scene.dmx, "groups", scene.dmx, "group_list_i", rows=4)
 
-        layout.menu("dmx.menu.group", text="...", icon="STICKY_UVS_LOC")
+        layout.menu("DMX_MT_Group", text="...", icon="STICKY_UVS_LOC")

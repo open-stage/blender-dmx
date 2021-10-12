@@ -36,7 +36,7 @@ class DMX_UL_Universe(UIList):
 
 class DMX_MT_Universe(Menu):
     bl_label = "DMX > Universe Menu"
-    bl_idname = "dmx.menu.universe"
+    bl_idname = "DMX_MT_Universe"
 
     def draw(self, context):
         layout = self.layout
@@ -53,8 +53,8 @@ class DMX_MT_Universe(Menu):
 
 class DMX_PT_DMX_Universes(Panel):
     bl_label = "Universes"
-    bl_idname = "dmx.panel.dmx.universes"
-    bl_parent_id = "dmx.panel.dmx"
+    bl_idname = "DMX_PT_DMX_Universes"
+    bl_parent_id = "DMX_PT_DMX"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_category = "DMX"
@@ -78,8 +78,8 @@ class DMX_PT_DMX_Universes(Panel):
 
 class DMX_PT_DMX_ArtNet(Panel):
     bl_label = "ArtNet"
-    bl_idname = "dmx.panel.dmx.artnet"
-    bl_parent_id = "dmx.panel.dmx"
+    bl_idname = "DMX_PT_DMX_ArtNet"
+    bl_parent_id = "DMX_PT_DMX"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_category = "DMX"
@@ -90,12 +90,14 @@ class DMX_PT_DMX_ArtNet(Panel):
         layout = self.layout
         dmx = context.scene.dmx
 
+        layout.prop(dmx, "artnet_enabled")
+
 
 # Panel #
 
 class DMX_PT_DMX(Panel):
     bl_label = "DMX"
-    bl_idname = "dmx.panel.dmx"
+    bl_idname = "DMX_PT_DMX"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_category = "DMX"
