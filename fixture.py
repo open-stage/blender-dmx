@@ -210,9 +210,14 @@ class DMX_Fixture(PropertyGroup):
             elif (channels[c] == 'R'): rgb[0] = data[c]
             elif (channels[c] == 'G'): rgb[1] = data[c]
             elif (channels[c] == 'B'): rgb[2] = data[c]
+            elif (channels[c] == 'Pan'): panTilt[0] = data[c]
+            elif (channels[c] == 'Tilt'): panTilt[1] = data[c]
         
         if (rgb[0] != None and rgb[1] != None and rgb[2] != None):
             self.updateRGB(rgb)
+
+        if (panTilt[0] != None and panTilt[1] != None):
+            self.updatePanTilt(panTilt)
 
     def updateDimmer(self, dimmer):
         self.emitter_material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer/255.0)
@@ -226,6 +231,9 @@ class DMX_Fixture(PropertyGroup):
         for light in self.lights:
             light.object.data.color = rgb
         return rgb
+
+    def updatePanTilt(self, panTilt):
+        panTilt = [c/255.0 for c in panTilt]
 
     def select(self):
         if ('Body' in self.objects):

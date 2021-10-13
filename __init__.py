@@ -22,6 +22,7 @@ from dmx.universe import *
 from dmx.data import *
 from dmx.artnet import *
 from dmx.thread import DMX_Lock
+from dmx.network import *
 
 from dmx.panels.setup import *
 from dmx.panels.dmx import *
@@ -63,6 +64,8 @@ class DMX(PropertyGroup):
 
     classes = ( DMX_UL_Universe,
                 DMX_MT_Universe,
+                DMX_MT_NetworkCard,
+                DMX_OT_Network_Card,
                 DMX_PT_DMX,
                 DMX_PT_DMX_Universes,
                 DMX_PT_DMX_ArtNet,
@@ -325,7 +328,7 @@ class DMX(PropertyGroup):
         max = 511,
         update = onUniverseN)
 
-    # # DMX > Universes > List
+    # # DMX > Universes > List Index
 
     universe_list_i : IntProperty(
         name = "Universe List Item",
@@ -333,19 +336,34 @@ class DMX(PropertyGroup):
         default = 0
         )
 
-    # # DMX > Universes > List
+    # # DMX > ArtNet > Network Cards
+
+    artnet_ipaddr : EnumProperty(
+        name = "Art-Net IPv4 Address",
+        description="The network card/interface to listen for ArtNet data",
+        items = DMX_Network.cards()
+    )
+
+    # # DMX > ArtNet > Enable
 
     def onArtNetEnable(self, context):
         if (self.artnet_enabled):
-            DMX_ArtNet.enable(self, '10.0.0.1')
+            DMX_ArtNet.enable()
         else:
             DMX_ArtNet.disable()
 
     artnet_enabled : BoolProperty(
         name = "Enable Art-Net Input",
         description="Enables the input of DMX data throught Art-Net.",
-        default = 0,
+        default = False,
         update = onArtNetEnable
+    )
+
+    # # DMX > ArtNet > Status
+
+    artnet_status : EnumProperty(
+        name = "Art-Net Status",
+        items = DMX_ArtNet.status()
     )
 
     # # Fixtures > List
@@ -507,12 +525,11 @@ class DMX(PropertyGroup):
 
     def addUniverse(self):
         id = len(self.universes)
-        self.universes.append(DMX_Universe.new(self, id, "DMX %d"%id))
+        DMX_Universe.add(self, id, "DMX %d"%id)
         print("DMX", "DMX_Universe created: ", universe)
 
     def removeUniverse(self, i):
-        if (i >= 0 and i < len(self.universes)):
-            self.universes.remove(i)
+        DMX_Universe.remove(self, i)
 
     # # Render
 

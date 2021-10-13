@@ -41,9 +41,14 @@ class DMX_Universe(PropertyGroup):
     )
 
     @staticmethod
-    def new(dmx, id, name):
+    def add(dmx, id, name):
         dmx.universes.add()
         universe = dmx.universes[-1]
         universe.id = id
         universe.name = name
         return universe
+
+    @staticmethod
+    def remove(dmx, i):
+         if (i >= 0 and i < len(dmx.universes)):
+            dmx.universes.remove(i)

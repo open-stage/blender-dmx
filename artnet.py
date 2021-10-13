@@ -1,4 +1,6 @@
-from socket import (socket, AF_INET, SOCK_DGRAM)
+import bpy
+
+from socket import (socket, AF_INET, SOCK_DGRAM, SHUT_RDWR)
 from struct import unpack
 import threading
 
@@ -50,14 +52,16 @@ class DMX_ArtNet(threading.Thread):
 
     _thread = None
 
-    def __init__(self, dmx, ip_addr, *args, **kwargs):
+    def __init__(self, ip_addr, *args, **kwargs):
         super(DMX_ArtNet, self).__init__(*args, **kwargs)
-        self._dmx = dmx
+        self._dmx = bpy.context.scene.dmx
         self._socket = socket(AF_INET, SOCK_DGRAM)
         self._socket.bind((ip_addr, ARTNET_PORT))
+        self._socket.settimeout(1)
         self._stop = False
 
     def stop(self):
+        self._socket.shutdown(SHUT_RDWR)
         self._stop = True           
 
     def run(self):
@@ -65,6 +69,7 @@ class DMX_ArtNet(threading.Thread):
             try:
                 data, _ = self._socket.recvfrom(1024)
                 packet = ArtnetPacket.build(data)
+                self._dmx.artnet_status = 'online'
 
                 if (packet.universe >= len(self._dmx.universes)):
                     continue
@@ -78,26 +83,47 @@ class DMX_ArtNet(threading.Thread):
             except Exception as e:
                 print(e)
                 #self._socket.close()
+        print('Closing socket...')
+        self._dmx.artnet_status = 'socket_close'
         self._socket.close()
+        self._dmx.artnet_status = 'offline'
     
     @staticmethod
-    def enable(dmx, ip_addr):
+    def enable():
         if (DMX_ArtNet._thread):
             return print('ArtNet client already started.')
+        
+        dmx = bpy.context.scene.dmx
             
         print('Starting ArtNet client...')
-        print('\t%s:%s' % (ip_addr, ARTNET_PORT))
+        print('\t%s:%s' % (dmx.artnet_ipaddr, ARTNET_PORT))
+        dmx.artnet_status = 'socket_open'
 
-        DMX_ArtNet._thread = DMX_ArtNet(dmx, ip_addr)
+        DMX_ArtNet._thread = DMX_ArtNet(dmx.artnet_ipaddr)
         DMX_ArtNet._thread.start()
 
+        dmx.artnet_status = 'listen'
         print('ArtNet client started.')
     
     @staticmethod
     def disable():
         if (not DMX_ArtNet._thread):
             return
+
+        dmx = bpy.context.scene.dmx
         print('Stopping ArtNet client...', end='', flush=True)
+        dmx.artnet_status = 'stop'
         DMX_ArtNet._thread.stop()
         DMX_ArtNet._thread = None
         print('DONE')
+    
+    @staticmethod
+    def status():
+        return [
+            ('offline', 'Offline', ''),
+            ('socket_open', 'Opening socket...', ''),
+            ('listen', 'Waiting for data...', ''),
+            ('online', 'Online', ''),
+            ('stop', 'Stopping thread...', ''),
+            ('socket_close', 'Closing socket...', ''),
+        ]
