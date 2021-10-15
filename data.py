@@ -9,7 +9,6 @@
 #
 
 import bpy
-from dmx.thread import DMX_Lock
 
 class DMX_Data():
 
@@ -38,12 +37,14 @@ class DMX_Data():
     @staticmethod
     def set(universe, addr, val):
         if (universe > len(DMX_Data._universes)): return
-        #DMX_Data._universes[universe-1] = DMX_Data._universes[universe-1][:addr-1] + ('%c' % val) + DMX_Data._universes[universe-1][addr:]
+        if (bpy.context.scene.dmx.universes[universe].input != 'BLENDERDMX'): return
         DMX_Data._universes[universe-1][addr-1] = val
 
     @staticmethod
     def set_universe(universe, data):
         if (universe >= len(DMX_Data._universes)):
             return
-        with DMX_Lock:
+        if (DMX_Data._universes[universe] != data):
             DMX_Data._universes[universe] = data
+            return True
+        return False

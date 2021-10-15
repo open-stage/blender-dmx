@@ -21,7 +21,6 @@ from dmx.group import *
 from dmx.universe import *
 from dmx.data import *
 from dmx.artnet import *
-from dmx.thread import DMX_Lock
 from dmx.network import *
 
 from dmx.panels.setup import *
@@ -471,7 +470,7 @@ class DMX(PropertyGroup):
     def addFixture(self, name, profile, universe, address, mode, gel_color):
         dmx = bpy.context.scene.dmx
         dmx.fixtures.add()
-        dmx.fixtures[-1].create(name, profile, mode, universe, address, gel_color)
+        dmx.fixtures[-1].build(name, profile, mode, universe, address, gel_color)
 
     def removeFixture(self, i):
         if (i >= 0 and i < len(self.fixtures)):
@@ -534,9 +533,8 @@ class DMX(PropertyGroup):
     # # Render
 
     def render(self):
-        with DMX_Lock:
-            for fixture in self.fixtures:
-                fixture.render()
+        for fixture in self.fixtures:
+            fixture.render()
 
 
 # Handlers #
