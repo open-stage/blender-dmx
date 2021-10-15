@@ -106,7 +106,7 @@ class DMX_Fixture(PropertyGroup):
         max = 1.0,
         default = (1.0,1.0,1.0,1.0))
 
-    def create(self, name, profile, mode, universe, address, gel_color):
+    def build(self, name, profile, mode, universe, address, gel_color):
 
         # Data Properties
         self.name = name
@@ -116,11 +116,21 @@ class DMX_Fixture(PropertyGroup):
         # DMX Properties
         self.universe = universe
         self.address = address
-        self.gel_color = gel_color
+        self.gel_color = list(gel_color)
 
-        # Collection with this name already exists, delete it
+        # (Edit) Store objects positions
+        old_pos = {obj.name:obj.object.location.copy() for obj in self.objects}
+        
+        # (Edit) Collection with this name already exists, delete it
         if (name in bpy.data.collections):
+            for obj in bpy.data.collections[name].objects:
+                bpy.data.objects.remove(obj)
             bpy.data.collections.remove(bpy.data.collections[name])
+
+        # (Edit) Clear links and channel cache
+        self.lights.clear()
+        self.objects.clear()
+        self.channels.clear()
 
         # Create clean Collection
         # (Blender creates the collection with selected objects/collections)
@@ -138,29 +148,46 @@ class DMX_Fixture(PropertyGroup):
         links = {}
         for obj in model_collection.objects:
             # Copy object
-            links[obj] = obj.copy()
+            links[obj.name] = obj.copy()
             # If light, copy object data
             if (obj.type == 'LIGHT'):
-                links[obj].data = obj.data.copy()
+                links[obj.name].data = obj.data.copy()
                 self.lights.add()
                 self.lights[-1].name = 'Light'
-                self.lights['Light'].object = links[obj]
-            # Store reference to body and target
-            if ('Body' in obj.name):
+                self.lights['Light'].object = links[obj.name]
+            # Store reference to body, base and target
+            if ('Base' in obj.name):
+                self.objects.add()
+                self.objects[-1].name = 'Base'
+                self.objects['Base'].object = links[obj.name]
+            elif ('Body' in obj.name):
                 self.objects.add()
                 self.objects[-1].name = 'Body'
-                self.objects['Body'].object = links[obj]
+                self.objects['Body'].object = links[obj.name]
             elif ('Target' in obj.name):
                 self.objects.add()
                 self.objects[-1].name = 'Target'
-                self.objects['Target'].object = links[obj]
+                self.objects['Target'].object = links[obj.name]
             # Link new object to collection
-            self.collection.objects.link(links[obj])
+            self.collection.objects.link(links[obj.name])
 
         # Relink constraints
         for obj in self.collection.objects:
             for constraint in obj.constraints:
-                constraint.target = links[constraint.target]
+                constraint.target = links[constraint.target.name]
+
+        # (Edit) Reload old position
+        bpy.context.view_layer.update()
+        for obj in self.objects:
+            print(old_pos, obj.name)
+            if (obj.name in old_pos):
+                obj.object.location = old_pos[obj.name]
+            elif (obj.name == 'Base'):
+                if ('Body' in old_pos):
+                    obj.object.location = old_pos['Body']
+            elif (obj.name == 'Body'):
+                if ('Base' in old_pos):
+                    obj.object.location = old_pos['Base']
 
         # Setup emitter
         for obj in self.collection.objects:
@@ -174,9 +201,6 @@ class DMX_Fixture(PropertyGroup):
         emitter.material_slots[0].material = self.emitter_material
         emitter.material_slots[0].material.shadow_method = 'NONE' # eevee
 
-        
-        #self.emitter_material.node_tree.nodes[1].inputs[STRENGTH].default_value = self.model_params['emission'].value
-
         # Link collection to DMX collection
         bpy.context.scene.dmx.collection.children.link(self.collection)
 
@@ -186,11 +210,8 @@ class DMX_Fixture(PropertyGroup):
             self.channels[-1].id = ch['id']
             self.channels[-1].default = ch['default']
         
-
-    def edit(self, name, profile, universe, address, mode, gel_color):
-        gdtf_profile = DMX_GDTF.loadProfile(profile)
-        self.create(name, profile, gdtf_profile, universe, address, mode, gel_color)
-
+        self.render()
+        
     # Interface Methods #
 
     def setDMX(self, pvalues):
@@ -215,6 +236,8 @@ class DMX_Fixture(PropertyGroup):
         
         if (rgb[0] != None and rgb[1] != None and rgb[2] != None):
             self.updateRGB(rgb)
+        else:
+            self.updateRGB([255,255,255])
 
         if (panTilt[0] != None and panTilt[1] != None):
             self.updatePanTilt(panTilt)
@@ -226,7 +249,8 @@ class DMX_Fixture(PropertyGroup):
         return dimmer
 
     def updateRGB(self, rgb):
-        rgb = [c/255.0 for c in rgb]
+        rgb = [c/255.0-(1-gel) for (c, gel) in zip(rgb, self.gel_color[:3])]
+        #rgb = [c/255.0 for c in rgb]
         self.emitter_material.node_tree.nodes[1].inputs[COLOR].default_value = rgb + [1]
         for light in self.lights:
             light.object.data.color = rgb

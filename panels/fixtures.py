@@ -153,10 +153,15 @@ class DMX_Fixture_AddEdit():
         items=manufacturer_list_items
     )
 
+    def onProfile(self, context):
+        if hasattr(context,'add_edit_panel'):
+            context.add_edit_panel.mode = DMX_GDTF.getModes(context.add_edit_panel.profile)[0]
+
     profile: StringProperty(
         name = "Profile",
         description = "Fixture GDTF Profile",
-        default = ""
+        default = "",
+        update = onProfile
     )
 
     name: StringProperty(
@@ -221,15 +226,22 @@ class DMX_Fixture_AddEdit():
 class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
     bl_label = "DMX: Add Fixture"
     bl_idname = "dmx.add_fixture"
-    bl_options = {'UNDO'}
+    bl_options = {'REGISTER','UNDO'}
 
     def execute(self, context):
         scene = context.scene
         dmx = scene.dmx
         if (self.name in bpy.data.collections):
+            self.report({'ERROR'}, "Fixture named " + self.name + " already exists")
+            return {'CANCELLED'}
+        if (not len(self.profile)):
+            self.report({'ERROR'}, "No GDTF Profile selected.")
+            return {'CANCELLED'}
+        if (not len(self.mode)):
+            self.report({'ERROR'}, "No DMX Mode selected.")
             return {'CANCELLED'}
         for i in range(self.units):
-            dmx.addFixture(self.name+" "+str(i+1), self.profile, self.universe, self.address, self.mode, list(self.gel_color))
+            dmx.addFixture(self.name+" "+str(i+1), self.profile, self.universe, self.address, self.mode, self.gel_color)
         return {'FINISHED'}
 
     def invoke(self, context, event):
@@ -250,7 +262,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
         fixture = dmx.fixtures[scene.dmx.fixture_list_i]
         if (self.name != fixture.name and self.name in bpy.data.collections):
             return {'CANCELLED'}
-        fixture.edit(self.name, self.profile, self.universe, self.address, self.mode, list(self.gel_color))
+        fixture.build(self.name, self.profile, self.mode, self.universe, self.address, self.gel_color)
         return {'FINISHED'}
 
     def invoke(self, context, event):
