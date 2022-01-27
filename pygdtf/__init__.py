@@ -642,6 +642,7 @@ class ChannelFunction(BaseNode):
 
     def __init__(self, name: str = None, attribute: 'NodeLink' = 'NoFeature',
                  original_attribute: str = None, dmx_from: 'DmxValue' = DmxValue('0/1'),
+                 default: 'DmxValue' = DmxValue('0/1'),
                  physical_from: float = 0, physical_to: float = 1, real_fade: float = 0,
                  wheel: 'NodeLink' = None, emitter: 'NodeLink' = None, chn_filter: 'NodeLink' = None,
                  dmx_invert: 'DmxInvert' = DmxInvert(None), mode_master: 'NodeLink' = None,
@@ -651,6 +652,7 @@ class ChannelFunction(BaseNode):
         self.attribute = attribute
         self.original_attribute = original_attribute
         self.dmx_from = dmx_from
+        self.default = default
         self.physical_from = physical_from
         self.physical_to = physical_to
         self.real_fade = real_fade
@@ -672,6 +674,7 @@ class ChannelFunction(BaseNode):
         self.attribute = NodeLink('Attributes', xml_node.attrib.get('Attribute', 'NoFeature'))
         self.original_attribute = xml_node.attrib.get('OriginalAttribute')
         self.dmx_from = DmxValue(xml_node.attrib.get('DMXFrom', '0/1'))
+        self.default = DmxValue(xml_node.attrib.get('Default', '0/1'))
         self.physical_from = float(xml_node.attrib.get('PhysicalFrom', 0))
         self.physical_to = float(xml_node.attrib.get('PhysicalTo', 1))
         self.real_fade = float(xml_node.attrib.get('RealFade', 0))
