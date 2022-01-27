@@ -168,7 +168,7 @@ class DMX_GDTF():
 
                 # Beam geometry: add light source and emitter material
                 if (isinstance(geom, pygdtf.GeometryBeam)):
-                    obj_child.cycles_visibility.shadow = False
+                    obj_child.visible_shadow = False
                     light_data = bpy.data.lights.new(name="Spot", type='SPOT')
                     light_data['flux'] = geom.luminous_flux
                     light_data.energy = 0
