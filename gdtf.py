@@ -61,6 +61,15 @@ class DMX_GDTF():
         return tuple([mode.name for mode in gdtf_profile.dmx_modes])
 
     @staticmethod
+    def getValue(dmx_value, fine=False):
+        if (dmx_value.byte_count == 1): return dmx_value.value
+        f = dmx_value.value/255.0
+        msb = int(f)
+        if (not fine): return msb
+        lsb = int((f-msb)*255)
+        return lsb
+
+    @staticmethod
     def getChannels(gdtf_profile, mode):
         dmx_mode = None
         for m in gdtf_profile.dmx_modes:
@@ -73,9 +82,15 @@ class DMX_GDTF():
         footprint = max([max([o for o in ch.offset]) for ch in channels])
         dmx_channels = [{'id':'', 'default':0}]*footprint
         for ch in channels:
-            dmx_channels[ch.offset[0]-1] = {'id':str(ch.logical_channels[0].channel_functions[0].attribute), 'default':ch.default.value}
+            dmx_channels[ch.offset[0]-1] = {
+                'id':str(ch.logical_channels[0].channel_functions[0].attribute),
+                'default':DMX_GDTF.getValue(ch.logical_channels[0].channel_functions[0].default)
+            }
             if (len(ch.offset) > 1):
-                dmx_channels[ch.offset[1]-1] = {'id':'+'+str(ch.logical_channels[0].channel_functions[0].attribute), 'default':ch.default.value}
+                dmx_channels[ch.offset[1]-1] = {
+                    'id':'+'+str(ch.logical_channels[0].channel_functions[0].attribute),
+                    'default':DMX_GDTF.getValue(ch.logical_channels[0].channel_functions[0].default, True)
+                }
         
         for i, ch in enumerate(dmx_channels):
             if ('ColorAdd_' in ch['id']):
