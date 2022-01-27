@@ -57,7 +57,7 @@ class DMX_ArtNet(threading.Thread):
         self._dmx = bpy.context.scene.dmx
         self._socket = socket(AF_INET, SOCK_DGRAM)
         self._socket.bind((ip_addr, ARTNET_PORT))
-        self._socket.settimeout(1)
+        self._socket.settimeout(30)
         self._stop = False
 
     def stop(self):
