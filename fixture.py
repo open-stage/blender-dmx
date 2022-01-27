@@ -190,6 +190,7 @@ class DMX_Fixture(PropertyGroup):
                     obj.object.location = old_pos['Base']
 
         # Setup emitter
+        emitter = None
         for obj in self.collection.objects:
             if ('Beam' in obj.name):
                 emitter = obj
