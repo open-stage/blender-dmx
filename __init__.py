@@ -597,6 +597,9 @@ def register():
     atexit.register(DMX_ArtNet.disable)
 
 def unregister():
+    # Stop ArtNet
+    DMX_ArtNet.disable()
+
     # Unregister Base Classes
     for cls in DMX.classes_base:
         bpy.utils.unregister_class(cls)
