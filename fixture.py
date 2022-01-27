@@ -110,6 +110,15 @@ class DMX_Fixture(PropertyGroup):
 
     def build(self, name, profile, mode, universe, address, gel_color):
 
+        # (Edit) Store objects positions
+        old_pos = {obj.name:obj.object.location.copy() for obj in self.objects}
+        
+        # (Edit) Collection with this name already exists, delete it
+        if (self.name in bpy.data.collections):
+            for obj in bpy.data.collections[self.name].objects:
+                bpy.data.objects.remove(obj)
+            bpy.data.collections.remove(bpy.data.collections[self.name])
+
         # Data Properties
         self.name = name
         self.profile = profile
@@ -119,15 +128,6 @@ class DMX_Fixture(PropertyGroup):
         self.universe = universe
         self.address = address
         self.gel_color = list(gel_color)
-
-        # (Edit) Store objects positions
-        old_pos = {obj.name:obj.object.location.copy() for obj in self.objects}
-        
-        # (Edit) Collection with this name already exists, delete it
-        if (name in bpy.data.collections):
-            for obj in bpy.data.collections[name].objects:
-                bpy.data.objects.remove(obj)
-            bpy.data.collections.remove(bpy.data.collections[name])
 
         # (Edit) Clear links and channel cache
         self.lights.clear()
@@ -185,7 +185,6 @@ class DMX_Fixture(PropertyGroup):
         # (Edit) Reload old position
         bpy.context.view_layer.update()
         for obj in self.objects:
-            print(old_pos, obj.name)
             if (obj.name in old_pos):
                 obj.object.location = old_pos[obj.name]
             elif (obj.name == 'Base'):
@@ -218,8 +217,8 @@ class DMX_Fixture(PropertyGroup):
             self.channels[-1].default = ch['default']
         
         self.clear()
-        self.render()
-        
+        bpy.context.scene.dmx.render()
+    
     # Interface Methods #
 
     def setDMX(self, pvalues):
@@ -278,6 +277,14 @@ class DMX_Fixture(PropertyGroup):
 
         target.location = vec + head_location
 
+    def getProgrammerData(self):
+        channels = [c.id for c in self.channels]
+        data = DMX_Data.get(self.universe, self.address, len(channels))
+        params = {}
+        for c in range(len(channels)):
+            params[channels[c]] = data[c]
+        return params
+
     def select(self):
         if ('Body' in self.objects):
             self.objects['Body'].object.select_set(True)
@@ -301,7 +308,13 @@ class DMX_Fixture(PropertyGroup):
         if (selected): self.unselect()
         else: self.select()
 
-
     def clear(self):
         for i, ch in enumerate(self.channels):
             data = DMX_Data.set(self.universe, self.address+i, ch.default)
+
+    def onDepsgraphUpdate(self):
+        # Check if any object was deleted
+        for obj in self.objects:
+            if (not len(obj.object.users_collection)):
+                bpy.context.scene.dmx.removeFixture(self)
+                break

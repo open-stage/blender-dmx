@@ -48,8 +48,7 @@ class DMX_MT_Fixture(Menu):
             if (selected): break
 
         # "Edit"
-        row = layout.row()
-        fixture = dmx.fixtures[scene.dmx.fixture_list_i]
+        row = layout.row()  
         row.operator("dmx.edit_fixture", text = "Edit", icon="GREASEPENCIL")
         row.enabled = len(dmx.fixtures) and selected
 
@@ -250,24 +249,52 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
     def execute(self, context):
         scene = context.scene
         dmx = scene.dmx
-        fixture = dmx.fixtures[scene.dmx.fixture_list_i]
-        if (self.name != fixture.name and self.name in bpy.data.collections):
-            return {'CANCELLED'}
-        fixture.build(self.name, self.profile, self.mode, self.universe, self.address, self.gel_color)
+        selected = scene.dmx.selectedFixtures()
+        # Single fixture
+        if (len(selected) == 1):
+            fixture = selected[0]
+            if (self.name != fixture.name and self.name in bpy.data.collections):
+                return {'CANCELLED'}
+            fixture.build(self.name, self.profile, self.mode, self.universe, self.address, self.gel_color)
+        # Multiple fixtures
+        else:
+            address = self.address
+            for i, fixture in enumerate(selected):
+                name = self.name + ' ' + str(i+1)
+                if (name != fixture.name and name in bpy.data.collections):
+                    return {'CANCELLED'}
+            for i, fixture in enumerate(selected):
+                name = (self.name + ' ' + str(i+1)) if (self.name != '*') else fixture.name
+                profile = self.profile if (self.profile != '') else fixture.profile
+                mode = self.mode if (self.mode != '') else fixture.mode
+                fixture.build(name, profile, mode, self.universe, address, self.gel_color)
+                address += len(fixture.channels)
         return {'FINISHED'}
 
     def invoke(self, context, event):
         scene = context.scene
-        print(scene.dmx.fixtures)
-        print(scene.dmx.fixture_list_i)
-        fixture = scene.dmx.fixtures[scene.dmx.fixture_list_i]
-        self.name = fixture.name
-        self.profile = fixture.profile
-        self.universe = fixture.universe
-        self.address = fixture.address
-        self.mode = fixture.mode
-        self.gel_color = fixture.gel_color
-        self.units = 0
+        selected = scene.dmx.selectedFixtures()
+
+        # Single fixture
+        if (len(selected) == 1):
+            fixture = selected[0]
+            self.name = fixture.name
+            self.profile = fixture.profile
+            self.universe = fixture.universe
+            self.address = fixture.address
+            self.mode = fixture.mode
+            self.gel_color = fixture.gel_color
+            self.units = 0
+        # Multiple fixtures
+        else:
+            self.name = '*'
+            self.profile = ''
+            self.universe = 0
+            self.address = selected[0].address
+            self.mode = ''
+            self.gel_color = (255,255,255,255)
+            self.units = 0
+
         wm = context.window_manager
         return wm.invoke_props_dialog(self)
 
@@ -280,7 +307,11 @@ class DMX_OT_Fixture_Remove(Operator):
     def execute(self, context):
         scene = context.scene
         dmx = scene.dmx
-        dmx.removeFixture(scene.dmx.fixture_list_i)
+        selected = dmx.selectedFixtures()
+        while len(selected):
+            dmx.removeFixture(selected[0])
+            # needed since removeFixture alters dmx.fixtures
+            selected = dmx.selectedFixtures()
         return {'FINISHED'}
 
 # Panel #
@@ -308,26 +339,21 @@ class DMX_PT_Fixtures(Panel):
         scene = context.scene
         dmx = scene.dmx
 
-        box = layout.box()
-        col = box.column()
-        for fixture in scene.dmx.fixtures:
+        if (len(scene.dmx.fixtures)):
+            box = layout.box()
+            col = box.column()
+            for fixture in scene.dmx.fixtures:
+                selected = False
+                for obj in fixture.collection.objects:
+                    if (obj in bpy.context.selected_objects):
+                        selected = True
+                        break
 
-            selected = False
-            for obj in fixture.collection.objects:
-                if (obj in bpy.context.selected_objects):
-                    selected = True
-                    break
-
-            row = col.row()
-            row.context_pointer_set("fixture", fixture)
-            row.operator('dmx.fixture_item', text=fixture.name, depress=selected, icon='OUTLINER_DATA_LIGHT')
-            c = row.column()
-            c.label(text=str(fixture.universe)+'.'+str(fixture.address))
-            c.ui_units_x = 2  
+                row = col.row()
+                row.context_pointer_set("fixture", fixture)
+                row.operator('dmx.fixture_item', text=fixture.name, depress=selected, icon='OUTLINER_DATA_LIGHT')
+                c = row.column()
+                c.label(text=str(fixture.universe)+'.'+str(fixture.address))
+                c.ui_units_x = 2  
             
-        #layout.template_list("DMX_UL_Fixture", "", scene.dmx, "fixtures", scene.dmx, "fixture_list_i")
-        layout.menu('DMX_MT_Fixture', text="...", icon="OUTLINER_DATA_LIGHT")
-
-        #row = layout.row()
-        #row.operator("dmx.remove_fixture")
-        #row.enabled = (len(dmx.fixtures) and scene.dmx.fixture_list_i >= 0 and scene.dmx.fixture_list_i < len(dmx.fixtures))
+        layout.menu('DMX_MT_Fixture', text="Fixtures", icon="OUTLINER_DATA_LIGHT")

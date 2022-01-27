@@ -371,18 +371,6 @@ class DMX(PropertyGroup):
         items = DMX_ArtNet.status()
     )
 
-    # # Fixtures > List
-
-    def onFixtureList(self, context):
-        self.fixtures[self.fixture_list_i].select()
-
-    fixture_list_i : IntProperty(
-        name = "Fixture List Item",
-        description="The selected element on the fixture list",
-        default = 0,
-        update = onFixtureList
-        )
-
     # # Groups > List
 
     def onGroupList(self, context):
@@ -468,25 +456,70 @@ class DMX(PropertyGroup):
         max = 1.0,
         default = 0.0,
         update = onProgrammerTilt)
+    
+    # # Programmer > Sync
+
+    def syncProgrammer(self):
+        n = len(bpy.context.selected_objects)
+        if (n < 1):
+            self.programmer_dimmer = 0
+            self.programmer_color = (255,255,255,255)
+            self.programmer_pan = 0
+            self.programmer_tilt = 0
+            return
+        elif (n > 1): return
+        if (not bpy.context.active_object): return
+        active = self.findFixture(bpy.context.active_object)
+        if (not active): return
+        data = active.getProgrammerData()
+        self.programmer_dimmer = data['Dimmer']/256.0
+        if ('R' in data and 'G' in data and 'B' in data):
+            self.programmer_color = (data['R'],data['G'],data['B'],255)
+        if ('Pan' in data):
+            self.programmer_pan = data['Pan']/127.5-1
+        if ('Tilt' in data):
+            self.programmer_tilt = data['Tilt']/127.5-1
+
 
     # Kernel Methods
 
     # # Fixtures
 
     def addFixture(self, name, profile, universe, address, mode, gel_color):
+        bpy.app.handlers.depsgraph_update_post.clear()
         dmx = bpy.context.scene.dmx
         dmx.fixtures.add()
         dmx.fixtures[-1].build(name, profile, mode, universe, address, gel_color)
+        bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
-    def removeFixture(self, i):
-        if (i >= 0 and i < len(self.fixtures)):
-            bpy.data.collections.remove(self.fixtures[i].collection)
-            self.fixtures.remove(i)
+    def removeFixture(self, fixture):
+        for obj in fixture.collection.objects:
+            bpy.data.objects.remove(obj)
+        for obj in fixture.objects:
+            if (obj.object):
+                bpy.data.objects.remove(obj.object)
+        bpy.data.collections.remove(fixture.collection)
+        self.fixtures.remove(self.fixtures.find(fixture.name))
 
     def getFixture(self, collection):
         for fixture in self.fixtures:
             if (fixture.collection == collection):
                 return fixture
+    
+    def findFixture(self, object):
+        for fixture in self.fixtures:
+            if (object.name in fixture.collection.objects):
+                return fixture
+        return None
+
+    def selectedFixtures(self):
+        selected = []
+        for fixture in self.fixtures:
+            for obj in fixture.collection.objects:
+                if (obj in bpy.context.selected_objects):
+                    selected.append(fixture)
+                    break
+        return selected
 
     # # Groups
 
@@ -545,6 +578,28 @@ class DMX(PropertyGroup):
 
 # Handlers #
 
+
+def onDepsgraph(scene):
+    scene = bpy.context.scene
+    depsgraph = bpy.context.evaluated_depsgraph_get()
+
+    for update in depsgraph.updates:
+        obj = update.id.evaluated_get(depsgraph)
+        # Selection changed, sync programmer
+        if (obj.rna_type.name == 'Scene'):
+            scene.dmx.syncProgrammer()
+            continue
+        # Fixture updated
+        found = False
+        for fixture in scene.dmx.fixtures:
+            for f_obj in fixture.objects:
+                if (obj.name == f_obj.object.name):
+                    fixture.onDepsgraphUpdate()
+                    found = True
+                    break
+            if found: break
+
+
 @bpy.app.handlers.persistent
 def onLoadFile(scene):
     if ('DMX' in bpy.data.scenes['Scene'].collection.children):
@@ -563,6 +618,8 @@ def onLoadFile(scene):
         notify=onActiveChanged,
         options={"PERSISTENT",}
     )
+
+    bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
 @bpy.app.handlers.persistent
 def onUndo(scene):
