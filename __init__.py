@@ -386,6 +386,7 @@ class DMX(PropertyGroup):
     # # Programmer > Dimmer
 
     def onProgrammerDimmer(self, context):
+        bpy.app.handlers.depsgraph_update_post.clear()
         for fixture in self.fixtures:
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
@@ -393,6 +394,7 @@ class DMX(PropertyGroup):
                         'Dimmer':int(255*self.programmer_dimmer)
                     })
         self.render()
+        bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
     programmer_dimmer: FloatProperty(
         name = "Programmer Dimmer",
@@ -404,6 +406,7 @@ class DMX(PropertyGroup):
     # # Programmer > Color
 
     def onProgrammerColor(self, context):
+        bpy.app.handlers.depsgraph_update_post.clear()
         for fixture in self.fixtures:
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
@@ -413,6 +416,7 @@ class DMX(PropertyGroup):
                         'B':int(255*self.programmer_color[2])
                     })
         self.render()
+        bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
     programmer_color: FloatVectorProperty(
         name = "Programmer Color",
@@ -426,6 +430,7 @@ class DMX(PropertyGroup):
     # # Programmer > Pan/Tilt
 
     def onProgrammerPan(self, context):
+        bpy.app.handlers.depsgraph_update_post.clear()
         for fixture in self.fixtures:
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
@@ -433,6 +438,7 @@ class DMX(PropertyGroup):
                         'Pan':int(255*(self.programmer_pan+1)/2)
                     })
         self.render()
+        bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
     programmer_pan: FloatProperty(
         name = "Programmer Pan",
@@ -442,6 +448,7 @@ class DMX(PropertyGroup):
         update = onProgrammerPan)
 
     def onProgrammerTilt(self, context):
+        bpy.app.handlers.depsgraph_update_post.clear()
         for fixture in self.fixtures:
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
@@ -449,6 +456,7 @@ class DMX(PropertyGroup):
                         'Tilt':int(255*(self.programmer_tilt+1)/2)
                     })
         self.render()
+        bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
     programmer_tilt: FloatProperty(
         name = "Programmer Tilt",
@@ -476,9 +484,9 @@ class DMX(PropertyGroup):
         if ('R' in data and 'G' in data and 'B' in data):
             self.programmer_color = (data['R'],data['G'],data['B'],255)
         if ('Pan' in data):
-            self.programmer_pan = data['Pan']/127.5-1
+            self.programmer_pan = data['Pan']/127.0-1
         if ('Tilt' in data):
-            self.programmer_tilt = data['Tilt']/127.5-1
+            self.programmer_tilt = data['Tilt']/127.0-1
 
 
     # Kernel Methods

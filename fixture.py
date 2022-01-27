@@ -264,8 +264,8 @@ class DMX_Fixture(PropertyGroup):
         return rgb
 
     def updatePanTilt(self, pan, tilt):
-        pan = (pan/127.5-1)*355*(math.pi/360)
-        tilt = (tilt/127.5-1)*130*(math.pi/180)
+        pan = (pan/127.0-1)*355*(math.pi/360)
+        tilt = (tilt/127.0-1)*130*(math.pi/180)
 
         base = self.objects['Base'].object
         head_location = self.objects['Head'].object.matrix_world.translation
