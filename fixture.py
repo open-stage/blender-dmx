@@ -6,6 +6,8 @@
 #
 
 import bpy
+import math
+import mathutils
 
 from dmx.material import getEmitterMaterial
 from dmx.model import DMX_Model
@@ -164,6 +166,10 @@ class DMX_Fixture(PropertyGroup):
                 self.objects.add()
                 self.objects[-1].name = 'Body'
                 self.objects['Body'].object = links[obj.name]
+            elif ('Head' in obj.name):
+                self.objects.add()
+                self.objects[-1].name = 'Head'
+                self.objects['Head'].object = links[obj.name]
             elif ('Target' in obj.name):
                 self.objects.add()
                 self.objects[-1].name = 'Target'
@@ -211,6 +217,7 @@ class DMX_Fixture(PropertyGroup):
             self.channels[-1].id = ch['id']
             self.channels[-1].default = ch['default']
         
+        self.clear()
         self.render()
         
     # Interface Methods #
@@ -241,7 +248,7 @@ class DMX_Fixture(PropertyGroup):
             self.updateRGB([255,255,255])
 
         if (panTilt[0] != None and panTilt[1] != None):
-            self.updatePanTilt(panTilt)
+            self.updatePanTilt(panTilt[0], panTilt[1])
 
     def updateDimmer(self, dimmer):
         self.emitter_material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer/255.0)
@@ -257,18 +264,25 @@ class DMX_Fixture(PropertyGroup):
             light.object.data.color = rgb
         return rgb
 
-    def updatePanTilt(self, panTilt):
-        panTilt = [c/255.0 for c in panTilt]
+    def updatePanTilt(self, pan, tilt):
+        pan = (pan/127.5-1)*355*(math.pi/360)
+        tilt = (tilt/127.5-1)*130*(math.pi/180)
+
+        base = self.objects['Base'].object
+        head_location = self.objects['Head'].object.matrix_world.translation
+        target = self.objects['Target'].object
+        
+        eul = mathutils.Euler((0.0,base.rotation_euler[1]+tilt,base.rotation_euler[0]+pan), 'XYZ')
+        vec = mathutils.Vector((0.0,0.0,-(target.location-head_location).length))
+        vec.rotate(eul)
+
+        target.location = vec + head_location
 
     def select(self):
         if ('Body' in self.objects):
             self.objects['Body'].object.select_set(True)
 
     def clear(self):
-        pass
-        """
-        self.channels = DMX_Fixture_Channels.cache[self.profile]
-        for dmx_param in self.channels:
-            dmx_param.toDefault()
-        self.update()
-        """
+        for i, ch in enumerate(self.channels):
+            print(ch.id, ch.default)
+            data = DMX_Data.set(self.universe, self.address+i, ch.default)
