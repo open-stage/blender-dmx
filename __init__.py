@@ -210,6 +210,12 @@ class DMX(PropertyGroup):
         # Allocate universes data
         DMX_Data.setup(self.universes_n)
 
+        # Reset ArtNet status
+        dmx = bpy.context.scene.dmx
+        if (dmx.artnet_enabled and dmx.artnet_status != 'online'):
+            dmx.artnet_enabled = False
+            dmx.artnet_status = 'offline'
+
         # Rebuild group runtime dictionary (evaluating if this is gonna stay here)
         #DMX_Group.runtime = {}
         #for group in self.groups:
