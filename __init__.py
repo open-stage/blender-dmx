@@ -2,7 +2,7 @@ bl_info = {
     "name": "DMX",
     "description": "Create and control DMX fixtures",
     "author": "hugoaboud",
-    "version": (0, 3, 0),
+    "version": (0, 4, 0),
     "blender": (2, 90, 0),
     "location": "3D View > DMX",
     "warning": "", # used for warning icon and text in addons panel
@@ -14,13 +14,17 @@ bl_info = {
 import sys
 import bpy
 import os
+import atexit
 
 from dmx.fixture import *
-from dmx.fixtures.spot import *
-from dmx.fixtures.tube import *
 from dmx.group import *
+from dmx.universe import *
+from dmx.data import *
+from dmx.artnet import *
+from dmx.network import *
 
 from dmx.panels.setup import *
+from dmx.panels.dmx import *
 from dmx.panels.fixtures import *
 from dmx.panels.groups import *
 from dmx.panels.programmer import *
@@ -37,8 +41,6 @@ from bpy.types import (PropertyGroup,
                        Collection,
                        NodeTree)
 
-# Main Class #
-
 class DMX(PropertyGroup):
 
     # Base classes to be registered
@@ -47,27 +49,37 @@ class DMX(PropertyGroup):
     classes_base = (DMX_Param,
                     DMX_Model_Param,
                     DMX_Fixture_Object,
+                    DMX_Fixture_Channel,
                     DMX_Fixture,
                     DMX_Group,
+                    DMX_Universe,
                     DMX_PT_Setup)
 
     # Classes to be registered
     # The registration is done in two steps. The second only runs
     # after the user requests to setup the addon.
 
-
     classes_setup = (DMX_OT_Setup_NewShow,)
 
-    classes = ( DMX_OT_Setup_Volume_Create,
+    classes = ( DMX_UL_Universe,
+                DMX_MT_Universe,
+                DMX_MT_NetworkCard,
+                DMX_OT_Network_Card,
+                DMX_PT_DMX,
+                DMX_PT_DMX_Universes,
+                DMX_PT_DMX_ArtNet,
+                DMX_OT_Setup_Volume_Create,
                 DMX_PT_Setup_Background,
                 DMX_PT_Setup_Volume,
-                DMX_UL_Fixture,
                 DMX_MT_Fixture,
-                DMX_MT_Fixture_Add,
-                DMX_OT_Fixture_AddSpot,
-                DMX_OT_Fixture_EditSpot,
-                DMX_OT_Fixture_AddTube,
-                DMX_OT_Fixture_EditTube,
+                DMX_MT_Fixture_Manufacturers,
+                DMX_MT_Fixture_Profiles,
+                DMX_MT_Fixture_Mode,
+                DMX_OT_Fixture_Item,
+                DMX_OT_Fixture_Profiles,
+                DMX_OT_Fixture_Mode,
+                DMX_OT_Fixture_Add,
+                DMX_OT_Fixture_Edit,
                 DMX_OT_Fixture_Remove,
                 DMX_PT_Fixtures,
                 DMX_UL_Group,
@@ -112,7 +124,7 @@ class DMX(PropertyGroup):
         type = NodeTree)
 
     # DMX Properties
-    # This should be parsed to file
+    # These should be parsed to file
 
     fixtures: CollectionProperty(
         name = "DMX Fixtures",
@@ -122,9 +134,15 @@ class DMX(PropertyGroup):
         name = "DMX Groups",
         type = DMX_Group)
 
+    universes : CollectionProperty(
+        name = "DMX Groups",
+        type = DMX_Universe)
+
     # New DMX Scene
     # - Remove any previous DMX objects/collections
     # - Create DMX collection
+    # - Create DMX universes
+    # - Link to file
     def new(self):
         # Remove old DMX collection from file if present
         if ("DMX" in bpy.data.collections):
@@ -148,6 +166,9 @@ class DMX(PropertyGroup):
         # Set background to black (so it match the panel)
         bpy.context.scene.world.node_tree.nodes['Background'].inputs[0].default_value = (0,0,0,0)
 
+        # Create a DMX universe
+        self.addUniverse()
+
         # Link addon to file
         self.linkFile()
 
@@ -156,6 +177,7 @@ class DMX(PropertyGroup):
     # - Link DMX Collection (if present)
     # - Link Volume Object (if present)
     # - If DMX collection was linked, register addon
+    # - Allocate static universe data
     def linkFile(self):
         print("DMX", "Linking to file")
 
@@ -182,12 +204,17 @@ class DMX(PropertyGroup):
                     bpy.utils.unregister_class(cls)
                 DMX.linkedToFile = True
 
-        # Rebuild fixture subclass dictionary
-        for fixture in self.fixtures:
-            if (fixture.subclass not in DMX_Fixture.subclasses):
-                print("DMX", "\tLinking fixture subclass ", fixture.subclass)
-                subcls = fixture.subclass.split('.')
-                DMX_Fixture.subclasses[fixture.subclass] = getattr(getattr(sys.modules['dmx.fixtures'],subcls[0]),subcls[1])
+        # Sync number of universes
+        self.universes_n = len(self.universes)
+
+        # Allocate universes data
+        DMX_Data.setup(self.universes_n)
+
+        # Reset ArtNet status
+        dmx = bpy.context.scene.dmx
+        if (dmx.artnet_enabled and dmx.artnet_status != 'online'):
+            dmx.artnet_enabled = False
+            dmx.artnet_status = 'offline'
 
         # Rebuild group runtime dictionary (evaluating if this is gonna stay here)
         #DMX_Group.runtime = {}
@@ -228,17 +255,32 @@ class DMX(PropertyGroup):
         update = onBackgroundColor
         )
 
-    # # Setup > Volume > Preview
+    # # Setup > Volume > Preview Volume
 
     def onVolumePreview(self, context):
-        for fixture in self.fixtures:
-            for light in fixture.lights:
-                light.object.data.show_cone = self.volume_preview
+        self.updatePreviewVolume()
 
     volume_preview: BoolProperty(
         name = "Preview Volume",
         default = False,
         update = onVolumePreview)
+
+    # # Setup > Volume > Disable Overlays
+
+    def onDisableOverlays(self, context):
+        for area in bpy.context.screen.areas:
+            if area.type == 'VIEW_3D':
+                for space in area.spaces:
+                    if space.type == 'VIEW_3D':
+                        space.overlay.show_extras = not self.disable_overlays
+                        space.overlay.show_relationship_lines = not self.disable_overlays
+                        break
+
+
+    disable_overlays: BoolProperty(
+        name = "Disable Overlays",
+        default = False,
+        update = onDisableOverlays)
 
     # # Setup > Volume > Enabled
 
@@ -265,17 +307,69 @@ class DMX(PropertyGroup):
         max = 1,
         update = onVolumeDensity)
 
-    # # Fixtures > List
+    # # DMX > Universes > Number of Universes
 
-    def onFixtureList(self, context):
-        self.fixtures[self.fixture_list_i].select()
+    def onUniverseN(self, context):
+        n = self.universes_n
+        old_n = len(self.universes)
+        # Shrinking
+        if (n < old_n):
+            for _ in range(n, old_n):
+                self.removeUniverse(n)
+        # Growing
+        elif (n > old_n):
+            for _ in range(old_n, n):
+                self.addUniverse()
+        # Set data
+        DMX_Data.setup(n)
 
-    fixture_list_i : IntProperty(
-        name = "Fixture List Item",
-        description="The selected element on the fixture list",
+
+    universes_n : IntProperty(
+        name = "Number of universes",
+        description="The number of universes set on the panel",
         default = 0,
-        update = onFixtureList
+        min = 0,
+        soft_min = 1,
+        max = 511,
+        update = onUniverseN)
+
+    # # DMX > Universes > List Index
+
+    universe_list_i : IntProperty(
+        name = "Universe List Item",
+        description="The selected element on the universe list",
+        default = 0
         )
+
+    # # DMX > ArtNet > Network Cards
+
+    artnet_ipaddr : EnumProperty(
+        name = "Art-Net IPv4 Address",
+        description="The network card/interface to listen for ArtNet data",
+        items = DMX_Network.cards()
+    )
+
+    # # DMX > ArtNet > Enable
+
+    def onArtNetEnable(self, context):
+        if (self.artnet_enabled):
+            DMX_ArtNet.enable()
+        else:
+            DMX_ArtNet.disable()
+
+    artnet_enabled : BoolProperty(
+        name = "Enable Art-Net Input",
+        description="Enables the input of DMX data throught Art-Net.",
+        default = False,
+        update = onArtNetEnable
+    )
+
+    # # DMX > ArtNet > Status
+
+    artnet_status : EnumProperty(
+        name = "Art-Net Status",
+        items = DMX_ArtNet.status()
+    )
 
     # # Groups > List
 
@@ -289,21 +383,23 @@ class DMX(PropertyGroup):
         update = onGroupList
         )
 
-
     # # Programmer > Dimmer
 
     def onProgrammerDimmer(self, context):
         for fixture in self.fixtures:
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
-                    fixture.setDMX({'dimmer':self.programmer_dimmer})
+                    fixture.setDMX({
+                        'Dimmer':int(255*self.programmer_dimmer)
+                    })
+        self.render()
 
     programmer_dimmer: FloatProperty(
-    name = "Programmer Dimmer",
-    default = 0,
-    min = 0,
-    max = 1,
-    update = onProgrammerDimmer)
+        name = "Programmer Dimmer",
+        default = 0,
+        min = 0,
+        max = 1,
+        update = onProgrammerDimmer)
 
     # # Programmer > Color
 
@@ -311,7 +407,12 @@ class DMX(PropertyGroup):
         for fixture in self.fixtures:
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
-                    fixture.setDMX({'R':self.programmer_color[0],'G':self.programmer_color[1],'B':self.programmer_color[2]})
+                    fixture.setDMX({
+                        'R':int(255*self.programmer_color[0]),
+                        'G':int(255*self.programmer_color[1]),
+                        'B':int(255*self.programmer_color[2])
+                    })
+        self.render()
 
     programmer_color: FloatVectorProperty(
         name = "Programmer Color",
@@ -328,7 +429,10 @@ class DMX(PropertyGroup):
         for fixture in self.fixtures:
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
-                    fixture.setDMX({'pan':(self.programmer_pan+1)/2})
+                    fixture.setDMX({
+                        'Pan':int(255*(self.programmer_pan+1)/2)
+                    })
+        self.render()
 
     programmer_pan: FloatProperty(
         name = "Programmer Pan",
@@ -341,7 +445,10 @@ class DMX(PropertyGroup):
         for fixture in self.fixtures:
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
-                    fixture.setDMX({'tilt':(self.programmer_tilt+1)/2})
+                    fixture.setDMX({
+                        'Tilt':int(255*(self.programmer_tilt+1)/2)
+                    })
+        self.render()
 
     programmer_tilt: FloatProperty(
         name = "Programmer Tilt",
@@ -349,32 +456,70 @@ class DMX(PropertyGroup):
         max = 1.0,
         default = 0.0,
         update = onProgrammerTilt)
+    
+    # # Programmer > Sync
+
+    def syncProgrammer(self):
+        n = len(bpy.context.selected_objects)
+        if (n < 1):
+            self.programmer_dimmer = 0
+            self.programmer_color = (255,255,255,255)
+            self.programmer_pan = 0
+            self.programmer_tilt = 0
+            return
+        elif (n > 1): return
+        if (not bpy.context.active_object): return
+        active = self.findFixture(bpy.context.active_object)
+        if (not active): return
+        data = active.getProgrammerData()
+        self.programmer_dimmer = data['Dimmer']/256.0
+        if ('R' in data and 'G' in data and 'B' in data):
+            self.programmer_color = (data['R'],data['G'],data['B'],255)
+        if ('Pan' in data):
+            self.programmer_pan = data['Pan']/127.5-1
+        if ('Tilt' in data):
+            self.programmer_tilt = data['Tilt']/127.5-1
+
 
     # Kernel Methods
 
     # # Fixtures
 
-    def addSpotFixture(self, name, model, address, moving, emission, power, angle, focus, default_color):
+    def addFixture(self, name, profile, universe, address, mode, gel_color):
+        bpy.app.handlers.depsgraph_update_post.clear()
         dmx = bpy.context.scene.dmx
         dmx.fixtures.add()
-        fixture = dmx.fixtures[-1]
-        DMX_SpotFixture.create(fixture, name, model, address, moving, emission, power, angle, focus, default_color)
+        dmx.fixtures[-1].build(name, profile, mode, universe, address, gel_color)
+        bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
-    def addTubeFixture(self, name, model, address, emission, length, default_color):
-        dmx = bpy.context.scene.dmx
-        dmx.fixtures.add()
-        fixture = dmx.fixtures[-1]
-        DMX_TubeFixture.create(fixture, name, model, address, emission, length, default_color)
-
-    def removeFixture(self, i):
-        if (i >= 0 and i < len(self.fixtures)):
-            bpy.data.collections.remove(self.fixtures[i].collection)
-            self.fixtures.remove(i)
+    def removeFixture(self, fixture):
+        for obj in fixture.collection.objects:
+            bpy.data.objects.remove(obj)
+        for obj in fixture.objects:
+            if (obj.object):
+                bpy.data.objects.remove(obj.object)
+        bpy.data.collections.remove(fixture.collection)
+        self.fixtures.remove(self.fixtures.find(fixture.name))
 
     def getFixture(self, collection):
         for fixture in self.fixtures:
             if (fixture.collection == collection):
                 return fixture
+    
+    def findFixture(self, object):
+        for fixture in self.fixtures:
+            if (object.name in fixture.collection.objects):
+                return fixture
+        return None
+
+    def selectedFixtures(self):
+        selected = []
+        for fixture in self.fixtures:
+            for obj in fixture.collection.objects:
+                if (obj in bpy.context.selected_objects):
+                    selected.append(fixture)
+                    break
+        return selected
 
     # # Groups
 
@@ -403,7 +548,57 @@ class DMX(PropertyGroup):
     def removeGroup(self, i):
         bpy.context.scene.dmx.groups.remove(i)
 
+    # # Preview Volume
+
+    def updatePreviewVolume(self):
+        for fixture in self.fixtures:
+            if (bpy.context.active_object.name in fixture.collection.objects):
+                for light in fixture.lights:
+                    light.object.data.show_cone = self.volume_preview
+            else:
+                for light in fixture.lights:
+                    light.object.data.show_cone = False
+
+    # # Universes
+
+    def addUniverse(self):
+        id = len(self.universes)
+        DMX_Universe.add(self, id, "DMX %d"%id)
+        print("DMX", "DMX_Universe created: ", universe)
+
+    def removeUniverse(self, i):
+        DMX_Universe.remove(self, i)
+
+    # # Render
+
+    def render(self):
+        for fixture in self.fixtures:
+            fixture.render()
+
+
 # Handlers #
+
+
+def onDepsgraph(scene):
+    scene = bpy.context.scene
+    depsgraph = bpy.context.evaluated_depsgraph_get()
+
+    for update in depsgraph.updates:
+        obj = update.id.evaluated_get(depsgraph)
+        # Selection changed, sync programmer
+        if (obj.rna_type.name == 'Scene'):
+            scene.dmx.syncProgrammer()
+            continue
+        # Fixture updated
+        found = False
+        for fixture in scene.dmx.fixtures:
+            for f_obj in fixture.objects:
+                if (obj.name == f_obj.object.name):
+                    fixture.onDepsgraphUpdate()
+                    found = True
+                    break
+            if found: break
+
 
 @bpy.app.handlers.persistent
 def onLoadFile(scene):
@@ -413,10 +608,30 @@ def onLoadFile(scene):
     else:
         bpy.context.scene.dmx.unlinkFile()
 
+    # Selection callback
+    handle = object()
+    subscribe_to = bpy.types.LayerObjects, "active"
+    bpy.msgbus.subscribe_rna(
+        key=subscribe_to,
+        owner=handle,
+        args=(None,),
+        notify=onActiveChanged,
+        options={"PERSISTENT",}
+    )
+
+    bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
+
 @bpy.app.handlers.persistent
 def onUndo(scene):
     if (not scene.dmx.collection and DMX.linkedToFile):
         scene.dmx.unlinkFile()
+
+# Callbacks #
+
+def onActiveChanged(*args):
+    dmx = bpy.context.scene.dmx
+    if (dmx.volume_preview):
+        dmx.updatePreviewVolume()
 
 #
 # Blender Add-On
@@ -435,7 +650,13 @@ def register():
     bpy.app.handlers.load_post.append(onLoadFile)
     bpy.app.handlers.undo_post.append(onUndo)
 
+    # Kill ArtNet Thread at exit
+    atexit.register(DMX_ArtNet.disable)
+
 def unregister():
+    # Stop ArtNet
+    DMX_ArtNet.disable()
+
     # Unregister Base Classes
     for cls in DMX.classes_base:
         bpy.utils.unregister_class(cls)

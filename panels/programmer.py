@@ -33,11 +33,19 @@ class DMX_OT_Programmer_Clear(Operator):
 
     def execute(self, context):
         scene = context.scene
-        bpy.ops.object.select_all(action='DESELECT')
-        for fixture in scene.dmx.fixtures:
-            fixture.clear()
+        if (not len(bpy.context.selected_objects)):
+            for fixture in scene.dmx.fixtures:
+                fixture.clear()
+        else:
+            for fixture in scene.dmx.fixtures:
+                for obj in fixture.collection.objects:
+                    if (obj in bpy.context.selected_objects):
+                        fixture.clear()
+                        break
         scene.dmx.programmer_color = (1.0, 1.0, 1.0, 1.0)
         scene.dmx.programmer_dimmer = 0.0
+        scene.dmx.programmer_pan = 0.0
+        scene.dmx.programmer_tilt = 0.0
         return {'FINISHED'}
 
 class DMX_OT_Programmer_SelectBodies(Operator):
@@ -52,10 +60,14 @@ class DMX_OT_Programmer_SelectBodies(Operator):
         for fixture in dmx.fixtures:
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
-                    if ('Body' in fixture.objects):
-                        bodies.append(fixture.objects['Body'].object)
-                    elif ('Emitter' in fixture.objects):
-                        bodies.append(fixture.objects['Emitter'].object)
+                    for body in fixture.collection.objects:
+                        if ('Body' in body.name):
+                            bodies.append(body)
+                        elif ('Base' in body.name):
+                            bodies.append(body)
+                        elif ('Emitter' in body.name):
+                            bodies.append(body)
+                    break
 
         if (len(bodies)):
             bpy.ops.object.select_all(action='DESELECT')
@@ -77,6 +89,7 @@ class DMX_OT_Programmer_SelectTargets(Operator):
                 if (obj in bpy.context.selected_objects):
                     if ('Target' in fixture.objects):
                         targets.append(fixture.objects['Target'].object)
+                    break
 
         if (len(targets)):
             bpy.ops.object.select_all(action='DESELECT')
@@ -88,32 +101,35 @@ class DMX_OT_Programmer_SelectTargets(Operator):
 
 class DMX_PT_Programmer(Panel):
     bl_label = "Programmer"
-    bl_idname = "dmx.panel.programmer"
+    bl_idname = "DMX_PT_Programmer"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_category = "DMX"
     bl_context = "objectmode"
-
-    @classmethod
-    def poll(self,context):
-        return context.object is not None
 
     def draw(self, context):
         layout = self.layout
         scene = context.scene
         dmx = scene.dmx
 
-        #layout.prop(mytool, "programmer_color", text="")
-        layout.operator("dmx.deselect_all", text="Deselect All")
+        selected = len(bpy.context.selected_objects) > 0
+
+        row = layout.row()
+        row.operator("dmx.deselect_all", text="Deselect All")
+        row.enabled = selected
 
         row = layout.row()
         row.operator("dmx.select_bodies", text="Bodies")
         row.operator("dmx.select_targets", text="Targets")
+        row.enabled = selected
 
-        layout.prop(scene.dmx,"programmer_color", text="")
+        layout.template_color_picker(scene.dmx,"programmer_color")
         layout.prop(scene.dmx,"programmer_dimmer", text="Dimmer")
 
         layout.prop(scene.dmx,"programmer_pan", text="Pan")
         layout.prop(scene.dmx,"programmer_tilt", text="Tilt")
 
-        layout.operator("dmx.clear", text="Clear")
+        if (selected):
+            layout.operator("dmx.clear", text="Clear")
+        else:
+            layout.operator("dmx.clear", text="Clear All")

@@ -9,42 +9,27 @@ import os.path
 import bpy
 
 from dmx.material import getEmitterMaterial
+from dmx.gdtf import DMX_GDTF
 
-def getModelPath():
-    ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
-    return os.path.join(ADDON_PATH,'data','models')
+class DMX_Model():
 
-#   Return the fixture model collection by name
-#   If not imported, find the .blend file on dmx/data/models/
-#   and copy it's "Fixture" collection
+    #   Return the fixture model collection by profile
+    #   If not imported, build the collection from the GDTF profile
+    #   This collection is then deep-copied by the Fixture class
+    #   to create a fixture collection.
+    @staticmethod
+    def getFixtureModelCollection(profile):
 
-#   This collection is then deep-copied by the Fixture class
-#   to create a fixture collection.
+        # Make sure the profile was passed as an argument, otherwise return None
+        if (profile == None):
+            return None
 
-def getFixtureModelCollection(model):
+        name = DMX_GDTF.getName(profile)
 
-    # If the fixture collection was already imported for this model
-    # just return it
-    if (model in bpy.data.collections):
-        return bpy.data.collections[model]
+        # If the fixture collection was already imported for this model
+        # just return it
+        if (name in bpy.data.collections):
+            return bpy.data.collections[name]
 
-    path = os.path.join(getModelPath(),model+'.blend')
-
-    # Make sure the file exists, otherwise return None
-    if (not os.path.exists(path) or not os.path.isfile(path)):
-        raise OSError("Model not found: " + path)
-
-    # Load fixture collection from .blend model file
-    with bpy.data.libraries.load(path) as (data_from, data_to):
-        for coll in data_from.collections:
-            if (coll == "Fixture"):
-                data_to.collections = ["Fixture"]
-
-    # Make sure a fixture collection was found
-    if (len(data_to.collections) == 0):
-        raise SyntaxError("No 'Fixture' collection found on model: " + path)
-
-    # Rename collection
-    data_to.collections[0].name = model
-
-    return data_to.collections[0]
+        # Otherwise, build it from profile
+        return DMX_GDTF.buildCollection(profile)

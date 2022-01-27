@@ -71,17 +71,13 @@ class DMX_OT_Setup_Volume_Create(Operator):
 
 class DMX_PT_Setup_Background(Panel):
     bl_label = "Background"
-    bl_idname = "dmx.panel.setup.background"
-    bl_parent_id = "dmx.panel.setup"
+    bl_idname = "DMX_PT_Setup_Background"
+    bl_parent_id = "DMX_PT_Setup"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_category = "DMX"
     bl_context = "objectmode"
     bl_options = {'DEFAULT_CLOSED'}
-
-    @classmethod
-    def poll(self,context):
-        return context.object is not None
 
     def draw(self, context):
         layout = self.layout
@@ -90,23 +86,20 @@ class DMX_PT_Setup_Background(Panel):
 
 class DMX_PT_Setup_Volume(Panel):
     bl_label = "Volume"
-    bl_idname = "dmx.panel.setup.volume"
-    bl_parent_id = "dmx.panel.setup"
+    bl_idname = "DMX_PT_Setup_Volume"
+    bl_parent_id = "DMX_PT_Setup"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_category = "DMX"
     bl_context = "objectmode"
     bl_options = {'DEFAULT_CLOSED'}
 
-    @classmethod
-    def poll(self,context):
-        return context.object is not None
-
     def draw(self, context):
         layout = self.layout
         dmx = context.scene.dmx
 
         layout.prop(context.scene.dmx, 'volume_preview')
+        layout.prop(context.scene.dmx, 'disable_overlays')
 
         layout.operator("dmx.create_volume", text = ('Update Volume Box' if dmx.volume else 'Create Volume Box'), icon='MESH_CUBE')
 
@@ -122,15 +115,12 @@ class DMX_PT_Setup_Volume(Panel):
 
 class DMX_PT_Setup(Panel):
     bl_label = "Setup"
-    bl_idname = "dmx.panel.setup"
+    bl_idname = "DMX_PT_Setup"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_category = "DMX"
     bl_context = "objectmode"
-
-    @classmethod
-    def poll(self,context):
-        return context.object is not None
+    bl_options = {'DEFAULT_CLOSED'}
 
     def draw(self, context):
         layout = self.layout
