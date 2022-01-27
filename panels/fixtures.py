@@ -24,20 +24,6 @@ from bpy.types import (Panel,
 from dmx.model import DMX_Model
 from dmx.gdtf import DMX_GDTF
 
-# List #
-
-class DMX_UL_Fixture(UIList):
-    def draw_item(self, context, layout, data, item, icon, active_data, active_propname):
-        ob = data
-        fixture = context.scene.dmx.getFixture(item)
-        icon = "LIGHT_SPOT"
-        if self.layout_type in {'DEFAULT', 'COMPACT'}:
-            layout.prop(item, "name", text="", emboss=False, icon=icon)
-            layout.label(text="(DMX %d.%d)"%(fixture.universe,fixture.address))
-        elif self.layout_type in {'GRID'}:
-            layout.alignment = 'CENTER'
-            layout.label(text="", icon=icon)
-
 # Menus #
 
 class DMX_MT_Fixture(Menu):
@@ -53,19 +39,24 @@ class DMX_MT_Fixture(Menu):
         row = layout.row()
         row.operator("dmx.add_fixture", text="Add", icon="ADD")
 
+        selected = False
+        for fixture in dmx.fixtures:
+            for obj in fixture.collection.objects:
+                if (obj in bpy.context.selected_objects):
+                    selected = True
+                    break
+            if (selected): break
+
         # "Edit"
         row = layout.row()
-        if (len(dmx.fixtures) and scene.dmx.fixture_list_i >= 0 and scene.dmx.fixture_list_i < len(dmx.fixtures)):
-            fixture = dmx.fixtures[scene.dmx.fixture_list_i]
-            row.operator("dmx.edit_fixture", text = "Edit", icon="GREASEPENCIL")
-        else:
-            row.label(text="Edit", icon="GREASEPENCIL")
-            row.enabled = False
+        fixture = dmx.fixtures[scene.dmx.fixture_list_i]
+        row.operator("dmx.edit_fixture", text = "Edit", icon="GREASEPENCIL")
+        row.enabled = len(dmx.fixtures) and selected
 
         # "Remove"
         row = layout.row()
         row.operator("dmx.remove_fixture", text="Remove", icon="REMOVE")
-        row.enabled = (len(dmx.fixtures) and scene.dmx.fixture_list_i >= 0 and scene.dmx.fixture_list_i < len(dmx.fixtures))
+        row.enabled = len(dmx.fixtures) and selected
 
 
 class DMX_MT_Fixture_Manufacturers(Menu):
@@ -267,6 +258,8 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
 
     def invoke(self, context, event):
         scene = context.scene
+        print(scene.dmx.fixtures)
+        print(scene.dmx.fixture_list_i)
         fixture = scene.dmx.fixtures[scene.dmx.fixture_list_i]
         self.name = fixture.name
         self.profile = fixture.profile
@@ -292,6 +285,16 @@ class DMX_OT_Fixture_Remove(Operator):
 
 # Panel #
 
+class DMX_OT_Fixture_Item(Operator):
+    bl_label = "DMX > Fixture > Item"
+    bl_idname = "dmx.fixture_item"
+    bl_description = "Select Fixture"
+    bl_options = {'UNDO'}
+
+    def execute(self, context):
+        context.fixture.toggleSelect()
+        return {'FINISHED'}
+
 class DMX_PT_Fixtures(Panel):
     bl_label = "Fixtures"
     bl_idname = "DMX_PT_Fixtures"
@@ -305,7 +308,24 @@ class DMX_PT_Fixtures(Panel):
         scene = context.scene
         dmx = scene.dmx
 
-        layout.template_list("DMX_UL_Fixture", "", scene.dmx.collection, "children", scene.dmx, "fixture_list_i")
+        box = layout.box()
+        col = box.column()
+        for fixture in scene.dmx.fixtures:
+
+            selected = False
+            for obj in fixture.collection.objects:
+                if (obj in bpy.context.selected_objects):
+                    selected = True
+                    break
+
+            row = col.row()
+            row.context_pointer_set("fixture", fixture)
+            row.operator('dmx.fixture_item', text=fixture.name, depress=selected, icon='OUTLINER_DATA_LIGHT')
+            c = row.column()
+            c.label(text=str(fixture.universe)+'.'+str(fixture.address))
+            c.ui_units_x = 2  
+            
+        #layout.template_list("DMX_UL_Fixture", "", scene.dmx, "fixtures", scene.dmx, "fixture_list_i")
         layout.menu('DMX_MT_Fixture', text="...", icon="OUTLINER_DATA_LIGHT")
 
         #row = layout.row()

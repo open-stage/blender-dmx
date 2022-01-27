@@ -281,8 +281,27 @@ class DMX_Fixture(PropertyGroup):
     def select(self):
         if ('Body' in self.objects):
             self.objects['Body'].object.select_set(True)
+        elif ('Base' in self.objects):
+            self.objects['Base'].object.select_set(True)
+    
+    def unselect(self):
+        if ('Body' in self.objects):
+            self.objects['Body'].object.select_set(False)
+        elif ('Base' in self.objects):
+            self.objects['Base'].object.select_set(False)
+        if ('Target' in self.objects):
+            self.objects['Target'].object.select_set(False)
+
+    def toggleSelect(self):
+        selected = False
+        for obj in self.objects:
+            if (obj.object in bpy.context.selected_objects):
+                selected = True
+                break
+        if (selected): self.unselect()
+        else: self.select()
+
 
     def clear(self):
         for i, ch in enumerate(self.channels):
-            print(ch.id, ch.default)
             data = DMX_Data.set(self.universe, self.address+i, ch.default)
