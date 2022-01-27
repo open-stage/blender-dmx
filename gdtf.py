@@ -225,8 +225,6 @@ class DMX_GDTF():
 
         # If there's no Head, this is a static fixture
         if ('Head' not in objs):
-            print("Static Fixture")
-
             # If body has a Yoke child, set Z rotation constraint
             for name, obj in objs.items():
                 if (name == 'Yoke' and len(obj.constraints)):
@@ -245,8 +243,6 @@ class DMX_GDTF():
 
         # There's a Head! This is a moving fixture
         else:
-            print("Moving Fixture")
-
             # If base has a Yoke child, create Z rotation constraint
             for name, obj in objs.items():
                 if (name == 'Yoke' and len(obj.constraints)):
