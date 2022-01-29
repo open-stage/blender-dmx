@@ -13,9 +13,9 @@ A DMX visualization tool inside `Blender`, designed to offer a free, easy and fu
 First of all, make sure you have installed [Blender 3.0](https://www.blender.org/download/) or higher;
 Then, download the `zip` file:
 
-- **LATEST RELEASE (STABLE)**
+- **LATEST RELEASE (STABLE): v0.5.0 Beta**
 
-   1. Download the [latest release](https://github.com/hugoaboud/BlenderDMX/releases/tag/v0.3.0-alpha) `dmx.zip` file
+   1. Download the [latest release](https://github.com/hugoaboud/BlenderDMX/releases/tag/v0.5.0-beta) `dmx.zip` file
 
 - **ROLLING RELEASE (UNSTABLE)**
 
