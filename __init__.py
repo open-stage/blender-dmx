@@ -630,6 +630,9 @@ def onLoadFile(scene):
 
     bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
+    # Stop ArtNet
+    DMX_ArtNet.disable()
+
 @bpy.app.handlers.persistent
 def onUndo(scene):
     if (not scene.dmx.collection and DMX.linkedToFile):

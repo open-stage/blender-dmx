@@ -107,14 +107,17 @@ class DMX_ArtNet(threading.Thread):
     
     @staticmethod
     def disable():
-        if (not DMX_ArtNet._thread):
-            return
-
         dmx = bpy.context.scene.dmx
+
+        if (not DMX_ArtNet._thread):
+            dmx.artnet_status = 'offline'
+            return
+            
         print('Stopping ArtNet client...', end='', flush=True)
         dmx.artnet_status = 'stop'
         DMX_ArtNet._thread.stop()
         DMX_ArtNet._thread = None
+        dmx.artnet_status = 'offline'
         print('DONE')
     
     @staticmethod
