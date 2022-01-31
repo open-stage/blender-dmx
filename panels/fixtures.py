@@ -8,12 +8,15 @@
 #
 
 import bpy
+import os
+import shutil
 
 from bpy.props import (IntProperty,
                        FloatProperty,
                        FloatVectorProperty,
                        EnumProperty,
-                       StringProperty)
+                       StringProperty,
+                       CollectionProperty)
 
 from bpy.types import (Panel,
                        Menu,
@@ -56,6 +59,10 @@ class DMX_MT_Fixture(Menu):
         row = layout.row()
         row.operator("dmx.remove_fixture", text="Remove", icon="REMOVE")
         row.enabled = len(dmx.fixtures) and selected
+        
+        # "Import GDTF Profile"
+        row = layout.row()
+        row.operator("dmx.import_gdtf_profile", text="Import GDTF Profile", icon="IMPORT")
 
 
 class DMX_MT_Fixture_Manufacturers(Menu):
@@ -82,6 +89,7 @@ class DMX_MT_Fixture_Profiles(Menu):
         scene = context.scene
         dmx = scene.dmx
         manufacturer = context.manufacturer.identifier
+        print('oy')
         for profile in DMX_GDTF.getProfileList(manufacturer):
             row = layout.row()
             row.context_pointer_set("add_edit_panel", context.add_edit_panel)
@@ -216,6 +224,7 @@ class DMX_Fixture_AddEdit():
 class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
     bl_label = "DMX: Add Fixture"
     bl_idname = "dmx.add_fixture"
+    bl_description = "Add fixtures to the show"
     bl_options = {'REGISTER','UNDO'}
 
     def execute(self, context):
@@ -244,6 +253,7 @@ class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
 class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
     bl_label = "DMX: Edit Fixture"
     bl_idname = "dmx.edit_fixture"
+    bl_description = "Edit selected fixtures"
     bl_options = {'UNDO'}
 
     def execute(self, context):
@@ -301,7 +311,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
 class DMX_OT_Fixture_Remove(Operator):
     bl_label = "DMX > Fixture > Remove"
     bl_idname = "dmx.remove_fixture"
-    bl_description = "Remove selected DMX fixture from Scene"
+    bl_description = "Remove selected fixtures from Scene"
     bl_options = {'UNDO'}
 
     def execute(self, context):
@@ -312,6 +322,45 @@ class DMX_OT_Fixture_Remove(Operator):
             dmx.removeFixture(selected[0])
             # needed since removeFixture alters dmx.fixtures
             selected = dmx.selectedFixtures()
+        return {'FINISHED'}
+
+class DMX_OT_Fixture_Import_GDTF(Operator):
+    bl_label = "Import GDTF Profile"
+    bl_idname = "dmx.import_gdtf_profile"
+    bl_description = "Import fixture from GDTF Profile"
+    bl_options = {'UNDO'}
+
+    filter_glob: StringProperty(default="*.gdtf", options={'HIDDEN'})
+
+    directory: StringProperty(
+        name="File Path",
+        maxlen= 1024,
+        default= "" )
+
+    files: CollectionProperty(
+        name="Files",
+        type=bpy.types.OperatorFileListElement
+    )
+
+    def draw(self, context):
+        layout = self.layout
+        col = layout.column()
+        col.prop(self, "files")
+
+    def invoke(self, context, event):
+        wm = context.window_manager
+        wm.fileselect_add(self)
+        return {'RUNNING_MODAL'}
+
+    def execute(self, context):
+        folder_path = os.path.dirname(os.path.realpath(__file__))
+        folder_path = os.path.join(folder_path, '..', 'assets', 'profiles')
+        for file in self.files:
+            file_path = os.path.join(self.directory, file.name)
+            print('Importing GDTF Profile: %s' % file_path)
+            shutil.copy(file_path, folder_path)
+        # https://developer.blender.org/T86803
+        self.report({'WARNING'}, 'Restart Blender to load the profiles.')
         return {'FINISHED'}
 
 # Panel #

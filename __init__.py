@@ -1,12 +1,12 @@
 bl_info = {
     "name": "DMX",
-    "description": "Create and control DMX fixtures",
+    "description": "DMX Visualization, with GDTF and ArtNet support.",
     "author": "hugoaboud",
-    "version": (0, 4, 0),
+    "version": (0, 5, 0),
     "blender": (2, 90, 0),
     "location": "3D View > DMX",
     "warning": "", # used for warning icon and text in addons panel
-    "wiki_url": "http://www.github.com/hugoaboud/BlenderDMX",
+    "wiki_url": "http://www.github.com/hugoaboud/blenderDMX/wiki",
     "tracker_url": "",
     "category": "Lighting"
 }
@@ -81,6 +81,7 @@ class DMX(PropertyGroup):
                 DMX_OT_Fixture_Add,
                 DMX_OT_Fixture_Edit,
                 DMX_OT_Fixture_Remove,
+                DMX_OT_Fixture_Import_GDTF,
                 DMX_PT_Fixtures,
                 DMX_UL_Group,
                 DMX_MT_Group,
