@@ -45,5 +45,5 @@ We also have a `Discord` server for sharing knowledge: [discord server link](htt
 ## Donate
 
 *This addon will always be free and open source, if you can donate and help me keep developing tools for artists I'd be really grateful.*
-- [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?hosted_button_id=KT2ND6WAP3Y86)
+- [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?hosted_button_id=K2DRRKRFE583J)
 - Bitcon (BTC only): 1BApp5s16pEPk5oECtJJ7G8iYmbj7r2YrG
