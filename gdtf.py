@@ -138,6 +138,11 @@ class DMX_GDTF():
         load_3ds(file_3ds, bpy.context)
         obj = bpy.context.view_layer.objects.selected[0]
         obj.users_collection[0].objects.unlink(obj)
+        obj.rotation_euler = Euler((0, 0, 0), 'XYZ')
+        obj.scale = (
+            obj.scale.x*model.length/obj.dimensions.x,
+            obj.scale.y*model.width/obj.dimensions.y,
+            obj.scale.z*model.height/obj.dimensions.z)
         return obj
 
     @staticmethod
@@ -162,6 +167,9 @@ class DMX_GDTF():
             # 'Undefined': load from 3ds
             elif (str(model.primitive_type) == 'Undefined'):
                 obj = DMX_GDTF.load3ds(profile, model)
+            # 'Pigtail': ignore
+            elif (str(model.primitive_type) == 'Pigtail'):
+                pass
             # Blender primitives
             else:
                 obj = DMX_GDTF.loadBlenderPrimitive(model)
@@ -180,6 +188,10 @@ class DMX_GDTF():
                 obj_child.location[0] += position[0]
                 obj_child.location[1] += position[1]
                 obj_child.location[2] += position[2]
+                scale = [geom.position.matrix[c][c] for c in range(3)]
+                obj_child.scale[0] *= scale[0]
+                obj_child.scale[1] *= scale[1]
+                obj_child.scale[2] *= scale[2]
 
                 # Beam geometry: add light source and emitter material
                 if (isinstance(geom, pygdtf.GeometryBeam)):
@@ -201,6 +213,7 @@ class DMX_GDTF():
                     if (d > 0):
                         # Constrain child to parent
                         obj_parent = objs[geom.name]
+                        if (not child_geom.name in objs): continue
                         obj_child = objs[child_geom.name]
                         constraint = obj_child.constraints.new('CHILD_OF')
                         constraint.target = obj_parent
