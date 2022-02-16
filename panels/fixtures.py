@@ -89,7 +89,6 @@ class DMX_MT_Fixture_Profiles(Menu):
         scene = context.scene
         dmx = scene.dmx
         manufacturer = context.manufacturer.identifier
-        print('oy')
         for profile in DMX_GDTF.getProfileList(manufacturer):
             row = layout.row()
             row.context_pointer_set("add_edit_panel", context.add_edit_panel)
