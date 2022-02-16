@@ -37,13 +37,13 @@ To enable the addon, go to `Edit > Preferences > Add-ons`, search for "DMX" and 
 
 For details on how to use the Addon, check our [Wiki](https://github.com/hugoaboud/BlenderDMX/wiki).
 
-There's also a quick video tutorial available:
-[video tutorial](http://future)
+Check the demonstration video:
+[demonstration video](https://www.youtube.com/watch?v=uzZQhcqSjS4)
 
-We also have a `Discord` server for sharing knowledge: [discord server link]()
+We also have a `Discord` server for sharing knowledge: [discord server link](https://discord.gg/FQVVyc45T9)
 
 ## Donate
 
 *This addon will always be free and open source, if you can donate and help me keep developing tools for artists I'd be really grateful.*
-- [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate?hosted_button_id=ZC6UQ8TKWZVZU)
+- [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?hosted_button_id=K2DRRKRFE583J)
 - Bitcon (BTC only): 1BApp5s16pEPk5oECtJJ7G8iYmbj7r2YrG
