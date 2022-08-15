@@ -37,7 +37,7 @@ class DMX_Data():
     @staticmethod
     def set(universe, addr, val):
         if (universe >= len(DMX_Data._universes)): return
-        if (bpy.context.scene.dmx.universes[universe].input != 'BLENDERDMX'): return
+        if (not bpy.context.scene.dmx.universes[universe] or bpy.context.scene.dmx.universes[universe].input != 'BLENDERDMX'): return
         DMX_Data._universes[universe-1][addr-1] = val
 
     @staticmethod
