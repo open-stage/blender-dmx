@@ -129,7 +129,7 @@ class DMX_ArtNet(threading.Thread):
             DMX_ArtNet._thread = None
             dmx.artnet_status = 'offline'
             print('DONE')
-        elif:
+        elif(dmx):
             dmx.artnet_status = 'offline'
                 
     @staticmethod
