@@ -76,7 +76,9 @@ class DMX_ArtNet(threading.Thread):
 
                 if (packet.universe >= len(self._dmx.universes)):
                     continue
-                if (not self._dmx.universes[packet.universe] or self._dmx.universes[packet.universe].input != 'ARTNET'):
+                if (not self._dmx.universes[packet.universe]):
+                    continue
+                if (self._dmx.universes[packet.universe].input != 'ARTNET'):
                     continue
                 
                 DMX_Data.set_universe(packet.universe, bytearray(packet.data))
