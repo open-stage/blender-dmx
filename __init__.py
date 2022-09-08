@@ -663,7 +663,7 @@ def register():
     bpy.app.handlers.undo_post.append(onUndo)
 
     # since 2.91.0 unregister is called also on Blender exit
-    if (2, 91, 0) > bpy.app.version:
+    if bpy.app.version <= (2, 91, 0):
         atexit.register(DMX_ArtNet.disable)
 
 def unregister():
