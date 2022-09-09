@@ -58,14 +58,17 @@ class DMX_ArtNet(threading.Thread):
         self._socket = socket(AF_INET, SOCK_DGRAM)
         self._socket.bind((ip_addr, ARTNET_PORT))
         self._socket.settimeout(30)
-        self._stop = False
+        self._stopped = False
 
     def stop(self):
-        self._socket.shutdown(SHUT_RDWR)
-        self._stop = True           
+        try:
+            self._socket.shutdown(SHUT_RDWR)
+        except Exception as e:
+            print(e)
+        self._stopped = True
 
     def run(self):
-        while not self._stop:
+        while not self._stopped:
             try:
                 data, _ = self._socket.recvfrom(1024)
                 packet = ArtnetPacket.build(data)
@@ -73,11 +76,12 @@ class DMX_ArtNet(threading.Thread):
 
                 if (packet.universe >= len(self._dmx.universes)):
                     continue
+                if (not self._dmx.universes[packet.universe]):
+                    continue
                 if (self._dmx.universes[packet.universe].input != 'ARTNET'):
                     continue
-
-                if (DMX_Data.set_universe(packet.universe, bytearray(packet.data))):
-                    self._dmx.render()
+                
+                DMX_Data.set_universe(packet.universe, bytearray(packet.data))
                 
                 #print(packet)
             except Exception as e:
@@ -87,6 +91,11 @@ class DMX_ArtNet(threading.Thread):
         self._dmx.artnet_status = 'socket_close'
         self._socket.close()
         self._dmx.artnet_status = 'offline'
+    
+    @staticmethod
+    def run_render():
+        bpy.context.scene.dmx.render()
+        return (1.0/60.0)
     
     @staticmethod
     def enable():
@@ -101,25 +110,30 @@ class DMX_ArtNet(threading.Thread):
 
         DMX_ArtNet._thread = DMX_ArtNet(dmx.artnet_ipaddr)
         DMX_ArtNet._thread.start()
+        
+        bpy.app.timers.register(DMX_ArtNet.run_render)
 
         dmx.artnet_status = 'listen'
         print('ArtNet client started.')
     
     @staticmethod
     def disable():
+        if (bpy.app.timers.is_registered(DMX_ArtNet.run_render)):
+            bpy.app.timers.unregister(DMX_ArtNet.run_render)
+            
         dmx = bpy.context.scene.dmx
 
-        if (not DMX_ArtNet._thread):
+        if (DMX_ArtNet._thread):
+            print('Stopping ArtNet client...', end='', flush=True)
+            dmx.artnet_status = 'stop'
+            DMX_ArtNet._thread.stop()
+            DMX_ArtNet._thread.join()
+            DMX_ArtNet._thread = None
             dmx.artnet_status = 'offline'
-            return
-            
-        print('Stopping ArtNet client...', end='', flush=True)
-        dmx.artnet_status = 'stop'
-        DMX_ArtNet._thread.stop()
-        DMX_ArtNet._thread = None
-        dmx.artnet_status = 'offline'
-        print('DONE')
-    
+            print('DONE')
+        elif(dmx):
+            dmx.artnet_status = 'offline'
+                
     @staticmethod
     def status():
         return [

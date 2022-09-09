@@ -662,19 +662,23 @@ def register():
     bpy.app.handlers.load_post.append(onLoadFile)
     bpy.app.handlers.undo_post.append(onUndo)
 
-    # Kill ArtNet Thread at exit
-    atexit.register(DMX_ArtNet.disable)
+    # since 2.91.0 unregister is called also on Blender exit
+    if bpy.app.version <= (2, 91, 0):
+        atexit.register(DMX_ArtNet.disable)
 
 def unregister():
     # Stop ArtNet
     DMX_ArtNet.disable()
 
-    # Unregister Base Classes
-    for cls in DMX.classes_base:
-        bpy.utils.unregister_class(cls)
+    try:
+        # Unregister Base Classes
+        for cls in DMX.classes_base:
+            bpy.utils.unregister_class(cls)
 
-    # Unregister addon main class
-    bpy.utils.unregister_class(DMX)
+        # Unregister addon main class
+        bpy.utils.unregister_class(DMX)
+    except Exception as e:
+        print(e)
 
     # Append handlers
     bpy.app.handlers.load_post.clear()
