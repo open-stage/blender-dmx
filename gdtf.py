@@ -132,6 +132,24 @@ class DMX_GDTF():
         return obj
 
     @staticmethod
+    def loadglb(profile, model):
+        #glbs must be loaded from a file, so we must unzip them
+        folder_path = os.path.dirname(os.path.realpath(__file__))
+        folder_path = os.path.join(folder_path, 'assets', 'models', profile.fixture_type_id)
+        filename = f"models/gltf/{model.file.name}.glb"
+        profile._package.extract(filename, folder_path)
+        file_glb=os.path.join(folder_path, filename)
+        bpy.ops.import_scene.gltf(filepath=file_glb)
+        obj = bpy.context.view_layer.objects.selected[0]
+        obj.users_collection[0].objects.unlink(obj)
+        obj.rotation_euler = Euler((0, 0, 0), 'XYZ')
+        obj.scale = (
+            obj.scale.x*model.length/obj.dimensions.x,
+            obj.scale.y*model.width/obj.dimensions.y,
+            obj.scale.z*model.height/obj.dimensions.z)
+        return obj
+
+    @staticmethod
     def load3ds(profile, model):
         filename = 'models/3ds/'+model.file.name+'.3ds'
         file_3ds = profile._package.open(filename)
@@ -166,7 +184,10 @@ class DMX_GDTF():
                 obj = DMX_GDTF.loadPrimitive(model)
             # 'Undefined': load from 3ds
             elif (str(model.primitive_type) == 'Undefined'):
-                obj = DMX_GDTF.load3ds(profile, model)
+                if f"models/gltf/{model.file.name}.glb" in profile._package.namelist():
+                    obj = DMX_GDTF.loadglb(profile, model)
+                else:
+                    obj = DMX_GDTF.load3ds(profile, model)
             # 'Pigtail': ignore
             elif (str(model.primitive_type) == 'Pigtail'):
                 pass
