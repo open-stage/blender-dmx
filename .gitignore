@@ -3,4 +3,5 @@ fixtures/__pycache__
 panels/__pycache__
 
 assets/profiles/*
+assets/models/*/*
 !assets/profiles/BlenderDMX*
