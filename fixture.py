@@ -199,13 +199,16 @@ class DMX_Fixture(PropertyGroup):
         for obj in self.collection.objects:
             if ('Beam' in obj.name):
                 emitter = obj
-        assert emitter
+        try:
+            assert emitter
+            self.emitter_material = getEmitterMaterial(name)
+            emitter.active_material = self.emitter_material
+            emitter.material_slots[0].link = 'OBJECT'
+            emitter.material_slots[0].material = self.emitter_material
+            emitter.material_slots[0].material.shadow_method = 'NONE' # eevee
+        except Exception as e:
+            print("Emitter required", e)
 
-        self.emitter_material = getEmitterMaterial(name)
-        emitter.active_material = self.emitter_material
-        emitter.material_slots[0].link = 'OBJECT'
-        emitter.material_slots[0].material = self.emitter_material
-        emitter.material_slots[0].material.shadow_method = 'NONE' # eevee
 
         # Link collection to DMX collection
         bpy.context.scene.dmx.collection.children.link(self.collection)

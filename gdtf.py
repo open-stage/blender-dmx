@@ -79,9 +79,17 @@ class DMX_GDTF():
         if (not dmx_mode): return []
         
         channels = dmx_mode.dmx_channels
-        footprint = max([max([o for o in ch.offset]) for ch in channels])
+        _fp=[]
+        for ch in channels:
+            if ch.offset is None:
+                continue
+            _fp.append(max(o for o in ch.offset))
+        footprint=max(_fp)
+
         dmx_channels = [{'id':'', 'default':0}]*footprint
         for ch in channels:
+            if ch.offset is None:
+                continue
             dmx_channels[ch.offset[0]-1] = {
                 'id':str(ch.logical_channels[0].channel_functions[0].attribute),
                 'default':DMX_GDTF.getValue(ch.logical_channels[0].channel_functions[0].default)
@@ -210,7 +218,6 @@ class DMX_GDTF():
                 obj_child.location[1] += position[1]
                 obj_child.location[2] += position[2]
                 scale = [geom.position.matrix[c][c] for c in range(3)]
-                obj_child.scale[0] *= scale[0]
                 obj_child.scale[1] *= scale[1]
                 obj_child.scale[2] *= scale[2]
 
@@ -246,9 +253,17 @@ class DMX_GDTF():
                         obj_child.location[0] += obj_parent.location[0]
                         obj_child.location[1] += obj_parent.location[1]
                         obj_child.location[2] += obj_parent.location[2]
-                    updateGeom(child_geom, d+1)
+                    try:
+                        updateGeom(child_geom, d+1)
+                    except Exception as e:
+                        #breakpoint()
+                        print("Update error", e), child_geom, d
 
-        updateGeom(profile)
+        try:
+            updateGeom(profile)
+        except Exception as e:
+            #breakpoint()
+            print("another error", e, profile)
 
         # Add target for manipulating fixture
         target = bpy.data.objects.new(name="Target", object_data=None)

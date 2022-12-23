@@ -602,8 +602,8 @@ class DmxChannel(BaseNode):
         except ValueError:
             self.dmx_break = 'Overwrite'
         _offset = xml_node.attrib.get('Offset')
-        if _offset is None or _offset == 'None':
-            self.offset = 'None'
+        if _offset is None or _offset == 'None' or _offset =="":
+            self.offset = None
         else:
             self.offset = [int(i) for i in xml_node.attrib.get('Offset').split(',')]
         self.default = DmxValue(xml_node.attrib.get('Default', '0/1'))
