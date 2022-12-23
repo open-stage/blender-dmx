@@ -118,6 +118,8 @@ class DMX_GDTF():
 
         if (primitive == 'Cube'):
             bpy.ops.mesh.primitive_cube_add(size=1.0)
+        elif (primitive == 'Pigtail'):
+            bpy.ops.mesh.primitive_cube_add(size=1.0)
         elif (primitive == 'Cylinder'):
             bpy.ops.mesh.primitive_cylinder_add(vertices=16, radius=0.5, depth=1.0)
         elif (primitive == 'Sphere'):
@@ -196,9 +198,6 @@ class DMX_GDTF():
                     obj = DMX_GDTF.loadglb(profile, model)
                 else:
                     obj = DMX_GDTF.load3ds(profile, model)
-            # 'Pigtail': ignore
-            elif (str(model.primitive_type) == 'Pigtail'):
-                pass
             # Blender primitives
             else:
                 obj = DMX_GDTF.loadBlenderPrimitive(model)
@@ -220,6 +219,11 @@ class DMX_GDTF():
                 scale = [geom.position.matrix[c][c] for c in range(3)]
                 obj_child.scale[1] *= scale[1]
                 obj_child.scale[2] *= scale[2]
+                if 'Pigtail' in geom.model:
+                    if not bpy.context.scene.dmx.display_pigtails:
+                        obj_child.scale[0] *= 0
+                        obj_child.scale[1] *= 0
+                        obj_child.scale[2] *= 0
 
                 # Beam geometry: add light source and emitter material
                 if (isinstance(geom, pygdtf.GeometryBeam)):

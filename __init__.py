@@ -71,6 +71,7 @@ class DMX(PropertyGroup):
                 DMX_OT_Setup_Volume_Create,
                 DMX_PT_Setup_Background,
                 DMX_PT_Setup_Volume,
+                DMX_PT_Setup_Models,
                 DMX_MT_Fixture,
                 DMX_MT_Fixture_Manufacturers,
                 DMX_MT_Fixture_Profiles,
@@ -255,6 +256,19 @@ class DMX(PropertyGroup):
         default = (0.0,0.0,0.0,1.0),
         update = onBackgroundColor
         )
+
+    # # Setup > Models > Display Pigtails
+
+    def onDisplayPigtails(self, context):
+        #self.updateDisplayPigtails()
+        #breakpoint()
+        ...
+
+    display_pigtails: BoolProperty(
+        name = "Display pigtails",
+        default = False,
+        update = onDisplayPigtails)
+
 
     # # Setup > Volume > Preview Volume
 

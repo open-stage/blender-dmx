@@ -111,6 +111,21 @@ class DMX_PT_Setup_Volume(Panel):
         row.prop(context.scene.dmx, 'volume_density')
         row.enabled = (dmx.volume != None)
 
+class DMX_PT_Setup_Models(Panel):
+    bl_label = "Models"
+    bl_idname = "DMX_PT_Setup_Models"
+    bl_parent_id = "DMX_PT_Setup"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_category = "DMX"
+    bl_context = "objectmode"
+    bl_options = {'DEFAULT_CLOSED'}
+
+    def draw(self, context):
+        layout = self.layout
+        dmx = context.scene.dmx
+        layout.prop(context.scene.dmx,'display_pigtails')
+
 # Panel #
 
 class DMX_PT_Setup(Panel):
