@@ -473,6 +473,17 @@ class DMX(PropertyGroup):
         self.render()
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
+    def onProgrammerZoom(self, context):
+        bpy.app.handlers.depsgraph_update_post.clear()
+        for fixture in self.fixtures:
+            for obj in fixture.collection.objects:
+                if (obj in bpy.context.selected_objects):
+                    fixture.setDMX({
+                        'Zoom':int((255/180)*self.programmer_zoom)
+                    })
+        self.render()
+        bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
+
     programmer_tilt: FloatProperty(
         name = "Programmer Tilt",
         min = -1.0,
@@ -480,6 +491,12 @@ class DMX(PropertyGroup):
         default = 0.0,
         update = onProgrammerTilt)
     
+    programmer_zoom: IntProperty(
+        name = "Programmer Zoom",
+        min = 1,
+        max = 180,
+        default = 25,
+        update = onProgrammerZoom)
     # # Programmer > Sync
 
     def syncProgrammer(self):
@@ -489,6 +506,7 @@ class DMX(PropertyGroup):
             self.programmer_color = (255,255,255,255)
             self.programmer_pan = 0
             self.programmer_tilt = 0
+            self.programmer_zoom = 25
             return
         elif (n > 1): return
         if (not bpy.context.active_object): return
@@ -496,6 +514,8 @@ class DMX(PropertyGroup):
         if (not active): return
         data = active.getProgrammerData()
         self.programmer_dimmer = data['Dimmer']/256.0
+        if ('Zoom' in data):
+            self.programmer_zoom = data['Zoom']/256.0
         if ('R' in data and 'G' in data and 'B' in data):
             self.programmer_color = (data['R'],data['G'],data['B'],255)
         if ('Pan' in data):
