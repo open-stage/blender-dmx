@@ -167,10 +167,13 @@ class DMX_GDTF():
         obj = bpy.context.view_layer.objects.selected[0]
         obj.users_collection[0].objects.unlink(obj)
         obj.rotation_euler = Euler((0, 0, 0), 'XYZ')
+        z=obj.dimensions.z
+        if z==0:
+            z=1
         obj.scale = (
             obj.scale.x*model.length/obj.dimensions.x,
             obj.scale.y*model.width/obj.dimensions.y,
-            obj.scale.z*model.height/obj.dimensions.z)
+            obj.scale.z*model.height/z)
         return obj
 
     @staticmethod
