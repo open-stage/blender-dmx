@@ -99,10 +99,11 @@ class DMX_GDTF():
                     'id':'+'+str(ch.logical_channels[0].channel_functions[0].attribute),
                     'default':DMX_GDTF.getValue(ch.logical_channels[0].channel_functions[0].default, True)
                 }
-        
-        for i, ch in enumerate(dmx_channels):
-            if ('ColorAdd_' in ch['id']):
-                dmx_channels[i]['id'] = ch['id'][9:]
+        # ------------ stop shortening attribute names---------------
+        #for i, ch in enumerate(dmx_channels):
+        #    if ('ColorAdd_' in ch['id']):
+        #        dmx_channels[i]['id'] = ch['id'][9:]
+        # -----------------------------------------------------------
 
         return dmx_channels
         
@@ -165,6 +166,7 @@ class DMX_GDTF():
         file_3ds = profile._package.open(filename)
         load_3ds(file_3ds, bpy.context)
         obj = bpy.context.view_layer.objects.selected[0]
+        #breakpoint()
         obj.users_collection[0].objects.unlink(obj)
         obj.rotation_euler = Euler((0, 0, 0), 'XYZ')
         z=obj.dimensions.z

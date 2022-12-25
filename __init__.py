@@ -420,15 +420,46 @@ class DMX(PropertyGroup):
 
     # # Programmer > Color
 
+    def cmy_to_rgb(self, cmy):
+        rgb=[0,0,0]
+        rgb[0] = int(255 * (1.0 - cmy[0] / 255))
+        rgb[1] = int(255 * (1.0 - cmy[1] / 255))
+        rgb[2] = int(255 * (1.0 - cmy[2] / 255))
+        return rgb
+
     def onProgrammerColor(self, context):
+        
+        def rgb_to_cmy(rgb):
+            if (rgb) == [0,0,0]:
+                return [255,255,255]
+
+            c = 1 - rgb[0] / 255
+            m = 1 - rgb[1] / 255
+            y = 1 - rgb[2] / 255
+
+            min_cmy = min(c, m, y)
+            c = (c - min_cmy) / (1 - min_cmy)
+            m = (m - min_cmy) / (1 - min_cmy)
+            y = (y - min_cmy) / (1 - min_cmy)
+
+            return [int(c * 255), int(m * 255), int(y * 255)]
+
         bpy.app.handlers.depsgraph_update_post.clear()
         for fixture in self.fixtures:
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
+                    rgb=[int(255*x) for x in self.programmer_color]
+                    cmy=rgb_to_cmy(rgb)
+                    print("rgb:", rgb)
+                    print("cmy:", cmy)
+
                     fixture.setDMX({
-                        'R':int(255*self.programmer_color[0]),
-                        'G':int(255*self.programmer_color[1]),
-                        'B':int(255*self.programmer_color[2])
+                        'ColorAdd_R':rgb[0],
+                        'ColorAdd_G':rgb[1],
+                        'ColorAdd_B':rgb[2],
+                        'ColorSub_C':cmy[0],
+                        'ColorSub_M':cmy[1],
+                        'ColorSub_Y':cmy[2]
                     })
         self.render()
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
@@ -515,9 +546,9 @@ class DMX(PropertyGroup):
         data = active.getProgrammerData()
         self.programmer_dimmer = data['Dimmer']/256.0
         if ('Zoom' in data):
-            self.programmer_zoom = data['Zoom']/256.0
-        if ('R' in data and 'G' in data and 'B' in data):
-            self.programmer_color = (data['R'],data['G'],data['B'],255)
+            self.programmer_zoom = int(data['Zoom']/256.0)
+        if ('ColorAdd_R' in data and 'ColorAdd_G' in data and 'ColorAdd_B' in data):
+            self.programmer_color = (data['ColorAdd_R'],data['ColorAdd_G'],data['ColorAdd_B'],255)
         if ('Pan' in data):
             self.programmer_pan = data['Pan']/127.0-1
         if ('Tilt' in data):

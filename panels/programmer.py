@@ -46,7 +46,7 @@ class DMX_OT_Programmer_Clear(Operator):
         scene.dmx.programmer_dimmer = 0.0
         scene.dmx.programmer_pan = 0.0
         scene.dmx.programmer_tilt = 0.0
-        scene.dmx.programmer_zoom = 0.0
+        scene.dmx.programmer_zoom = 0
         return {'FINISHED'}
 
 class DMX_OT_Programmer_SelectBodies(Operator):

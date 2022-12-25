@@ -227,7 +227,8 @@ class DMX_Fixture(PropertyGroup):
     def setDMX(self, pvalues):
         channels = [c.id for c in self.channels]
         for param, value in pvalues.items():
-            if (param not in channels): return
+            if (param not in channels): 
+                continue
             p = channels.index(param)
             DMX_Data.set(self.universe, self.address+p, value)
 
@@ -236,20 +237,26 @@ class DMX_Fixture(PropertyGroup):
         data = DMX_Data.get(self.universe, self.address, len(channels))
         panTilt = [None,None]
         rgb = [None,None,None]
+        cmy = [None,None,None]
         zoom = None
+        #breakpoint()
         for c in range(len(channels)):
             if (channels[c] == 'Dimmer'): self.updateDimmer(data[c])
-            elif (channels[c] == 'R'): rgb[0] = data[c]
-            elif (channels[c] == 'G'): rgb[1] = data[c]
-            elif (channels[c] == 'B'): rgb[2] = data[c]
+            elif (channels[c] == 'ColorAdd_R'): rgb[0] = data[c]
+            elif (channels[c] == 'ColorAdd_G'): rgb[1] = data[c]
+            elif (channels[c] == 'ColorAdd_B'): rgb[2] = data[c]
+            elif (channels[c] == 'ColorSub_C'): cmy[0] = data[c]
+            elif (channels[c] == 'ColorSub_M'): cmy[1] = data[c]
+            elif (channels[c] == 'ColorSub_Y'): cmy[2] = data[c]
             elif (channels[c] == 'Pan'): panTilt[0] = data[c]
             elif (channels[c] == 'Tilt'): panTilt[1] = data[c]
             elif (channels[c] == 'Zoom'): zoom = data[c]
         
         if (rgb[0] != None and rgb[1] != None and rgb[2] != None):
             self.updateRGB(rgb)
-        else:
-            self.updateRGB([255,255,255])
+        
+        if (cmy[0] != None and cmy[1] != None and cmy[2] != None):
+            self.updateCMY(cmy)
 
         if (panTilt[0] != None and panTilt[1] != None):
             self.updatePanTilt(panTilt[0], panTilt[1])
@@ -269,6 +276,25 @@ class DMX_Fixture(PropertyGroup):
         for light in self.lights:
             light.object.data.color = rgb
         return rgb
+
+
+    def updateCMY(self, cmy):
+        print("update cmy: ", cmy)
+        rgb=[0,0,0]
+
+        def cmy_to_rgb(cmy):
+            rgb[0] = int(255 * (1.0 - cmy[0] / 255))
+            rgb[1] = int(255 * (1.0 - cmy[1] / 255))
+            rgb[2] = int(255 * (1.0 - cmy[2] / 255))
+            return rgb
+
+        rgb=cmy_to_rgb(cmy)
+        rgb = [c/255.0-(1-gel) for (c, gel) in zip(rgb, self.gel_color[:3])]
+        #rgb = [c/255.0 for c in rgb]
+        self.emitter_material.node_tree.nodes[1].inputs[COLOR].default_value = rgb + [1]
+        for light in self.lights:
+            light.object.data.color = rgb
+        return cmy
 
     def updateZoom(self, zoom):
         spot_size=zoom*3.1415/180.0
