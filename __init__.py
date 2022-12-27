@@ -28,6 +28,7 @@ from dmx.panels.dmx import *
 from dmx.panels.fixtures import *
 from dmx.panels.groups import *
 from dmx.panels.programmer import *
+from dmx.util import rgb_to_cmy
 
 from bpy.props import (BoolProperty,
                        IntProperty,
@@ -260,9 +261,7 @@ class DMX(PropertyGroup):
     # # Setup > Models > Display Pigtails
 
     def onDisplayPigtails(self, context):
-        #self.updateDisplayPigtails()
-        #breakpoint()
-        ...
+        self.updateDisplayPigtails()
 
     display_pigtails: BoolProperty(
         name = "Display pigtails",
@@ -420,29 +419,8 @@ class DMX(PropertyGroup):
 
     # # Programmer > Color
 
-    def cmy_to_rgb(self, cmy):
-        rgb=[0,0,0]
-        rgb[0] = int(255 * (1.0 - cmy[0] / 255))
-        rgb[1] = int(255 * (1.0 - cmy[1] / 255))
-        rgb[2] = int(255 * (1.0 - cmy[2] / 255))
-        return rgb
-
     def onProgrammerColor(self, context):
         
-        def rgb_to_cmy(rgb):
-            if (rgb) == [0,0,0]:
-                return [255,255,255]
-
-            c = 1 - rgb[0] / 255
-            m = 1 - rgb[1] / 255
-            y = 1 - rgb[2] / 255
-
-            min_cmy = min(c, m, y)
-            c = (c - min_cmy) / (1 - min_cmy)
-            m = (m - min_cmy) / (1 - min_cmy)
-            y = (y - min_cmy) / (1 - min_cmy)
-
-            return [int(c * 255), int(m * 255), int(y * 255)]
 
         bpy.app.handlers.depsgraph_update_post.clear()
         for fixture in self.fixtures:

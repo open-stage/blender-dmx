@@ -16,6 +16,7 @@ from dmx.param import DMX_Param, DMX_Model_Param
 
 from dmx.gdtf import DMX_GDTF
 from dmx.data import DMX_Data
+from dmx.util import cmy_to_rgb
 
 from bpy.props import (IntProperty,
                        FloatProperty,
@@ -239,7 +240,6 @@ class DMX_Fixture(PropertyGroup):
         rgb = [None,None,None]
         cmy = [None,None,None]
         zoom = None
-        #breakpoint()
         for c in range(len(channels)):
             if (channels[c] == 'Dimmer'): self.updateDimmer(data[c])
             elif (channels[c] == 'ColorAdd_R'): rgb[0] = data[c]
@@ -281,13 +281,6 @@ class DMX_Fixture(PropertyGroup):
     def updateCMY(self, cmy):
         print("update cmy: ", cmy)
         rgb=[0,0,0]
-
-        def cmy_to_rgb(cmy):
-            rgb[0] = int(255 * (1.0 - cmy[0] / 255))
-            rgb[1] = int(255 * (1.0 - cmy[1] / 255))
-            rgb[2] = int(255 * (1.0 - cmy[2] / 255))
-            return rgb
-
         rgb=cmy_to_rgb(cmy)
         rgb = [c/255.0-(1-gel) for (c, gel) in zip(rgb, self.gel_color[:3])]
         #rgb = [c/255.0 for c in rgb]

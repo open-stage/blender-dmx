@@ -28,3 +28,25 @@ def getSceneRect():
                 if (obj.location[i] > max[i]): max[i] = obj.location[i]
 
     return (min, max)
+
+def rgb_to_cmy(rgb):
+    if (rgb) == [0,0,0]:
+        return [255,255,255]
+
+    c = 1 - rgb[0] / 255
+    m = 1 - rgb[1] / 255
+    y = 1 - rgb[2] / 255
+
+    min_cmy = min(c, m, y)
+    c = (c - min_cmy) / (1 - min_cmy)
+    m = (m - min_cmy) / (1 - min_cmy)
+    y = (y - min_cmy) / (1 - min_cmy)
+
+    return [int(c * 255), int(m * 255), int(y * 255)]
+
+def cmy_to_rgb(cmy):
+    rgb=[0,0,0]
+    rgb[0] = int(255 * (1.0 - cmy[0] / 255))
+    rgb[1] = int(255 * (1.0 - cmy[1] / 255))
+    rgb[2] = int(255 * (1.0 - cmy[2] / 255))
+    return rgb

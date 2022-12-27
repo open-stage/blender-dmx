@@ -143,7 +143,7 @@ class DMX_GDTF():
         return obj
 
     @staticmethod
-    def loadglb(profile, model):
+    def loadGlb(profile, model):
         #glbs must be loaded from a file, so we must unzip them
         folder_path = os.path.dirname(os.path.realpath(__file__))
         folder_path = os.path.join(folder_path, 'assets', 'models', profile.fixture_type_id)
@@ -166,7 +166,6 @@ class DMX_GDTF():
         file_3ds = profile._package.open(filename)
         load_3ds(file_3ds, bpy.context)
         obj = bpy.context.view_layer.objects.selected[0]
-        #breakpoint()
         obj.users_collection[0].objects.unlink(obj)
         obj.rotation_euler = Euler((0, 0, 0), 'XYZ')
         z=obj.dimensions.z
@@ -200,7 +199,7 @@ class DMX_GDTF():
             # 'Undefined': load from 3ds
             elif (str(model.primitive_type) == 'Undefined'):
                 if f"models/gltf/{model.file.name}.glb" in profile._package.namelist():
-                    obj = DMX_GDTF.loadglb(profile, model)
+                    obj = DMX_GDTF.loadGlb(profile, model)
                 else:
                     obj = DMX_GDTF.load3ds(profile, model)
             # Blender primitives
@@ -265,14 +264,12 @@ class DMX_GDTF():
                     try:
                         updateGeom(child_geom, d+1)
                     except Exception as e:
-                        #breakpoint()
-                        print("Update error", e), child_geom, d
+                        print("Error during geometry updates:", e), child_geom, d
 
         try:
             updateGeom(profile)
         except Exception as e:
-            #breakpoint()
-            print("another error", e, profile)
+            print("Another possible error during geometry updates:", e, profile)
 
         # Add target for manipulating fixture
         target = bpy.data.objects.new(name="Target", object_data=None)
