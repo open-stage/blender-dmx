@@ -105,7 +105,7 @@ class DMX_PT_DMX_Universes(Panel):
         #layout.menu("dmx.menu.universe", text="...", icon="FILE_VOLUME")
 
 class DMX_PT_DMX_ArtNet(Panel):
-    bl_label = "ArtNet"
+    bl_label = "Ethernet"
     bl_idname = "DMX_PT_DMX_ArtNet"
     bl_parent_id = "DMX_PT_DMX"
     bl_space_type = "VIEW_3D"
@@ -124,6 +124,8 @@ class DMX_PT_DMX_ArtNet(Panel):
         
         row = layout.row()
         row.prop(dmx, "artnet_enabled")
+        row = layout.row()
+        row.prop(dmx, "sacn_enabled")
         row.enabled = (dmx.artnet_status == 'offline' or dmx.artnet_status == 'listen' or dmx.artnet_status == 'online')
 
         layout.label(text='Status: ' + layout.enum_item_name(dmx, 'artnet_status', dmx.artnet_status))

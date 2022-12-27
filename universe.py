@@ -33,7 +33,7 @@ class DMX_Universe(PropertyGroup):
         name = "Input",
         description = "Input source of the universe",
         default = "BLENDERDMX",
-        items = (("BLENDERDMX", "BlenderDMX", "Set DMX buffer from the Programmer"), ("ARTNET", "ArtNet", "Read DMX buffer from ArtNet"))
+        items = (("BLENDERDMX", "BlenderDMX", "Set DMX buffer from the Programmer"), ("ARTNET", "ArtNet", "Read DMX buffer from ArtNet"), ("sACN", "sACN", "Read DMX buffer from sACN"))
     )
 
     input_settings: StringProperty (

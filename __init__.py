@@ -21,6 +21,7 @@ from dmx.group import *
 from dmx.universe import *
 from dmx.data import *
 from dmx.artnet import *
+from dmx.acn import *
 from dmx.network import *
 
 from dmx.panels.setup import *
@@ -218,6 +219,9 @@ class DMX(PropertyGroup):
         if (dmx.artnet_enabled and dmx.artnet_status != 'online'):
             dmx.artnet_enabled = False
             dmx.artnet_status = 'offline'
+        if (dmx.sacn_enabled and dmx.artnet_status != 'online'):
+            dmx.sacn_enabled = False
+            dmx.artnet_status = 'offline'
 
         # Rebuild group runtime dictionary (evaluating if this is gonna stay here)
         #DMX_Group.runtime = {}
@@ -363,6 +367,18 @@ class DMX(PropertyGroup):
         items = DMX_Network.cards()
     )
 
+    # # DMX > sACN > Enable
+
+    def onsACNEnable(self, context):
+        dmx = bpy.context.scene.dmx
+        if (self.sacn_enabled):
+            DMX_ACN.enable()
+            dmx.artnet_status = 'online'
+            
+        else:
+            DMX_ACN.disable()
+            dmx.artnet_status = 'online'
+            
     # # DMX > ArtNet > Enable
 
     def onArtNetEnable(self, context):
@@ -378,6 +394,12 @@ class DMX(PropertyGroup):
         update = onArtNetEnable
     )
 
+    sacn_enabled : BoolProperty(
+        name = "Enable sACN Input",
+        description="Enables the input of DMX data throught sACN.",
+        default = False,
+        update = onsACNEnable
+    )
     # # DMX > ArtNet > Status
 
     artnet_status : EnumProperty(
@@ -673,6 +695,7 @@ def onLoadFile(scene):
 
     # Stop ArtNet
     DMX_ArtNet.disable()
+    DMX_ACN.disable()
 
 @bpy.app.handlers.persistent
 def onUndo(scene):
@@ -706,10 +729,12 @@ def register():
     # since 2.91.0 unregister is called also on Blender exit
     if bpy.app.version <= (2, 91, 0):
         atexit.register(DMX_ArtNet.disable)
+        atexit.register(DMX_ACN.disable)
 
 def unregister():
     # Stop ArtNet
     DMX_ArtNet.disable()
+    DMX_ACN.disable()
 
     try:
         # Unregister Base Classes
