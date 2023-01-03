@@ -763,7 +763,7 @@ class MacroDmxStep(BaseNode):
         super().__init__(*args, **kwargs)
 
     def _read_xml(self, xml_node: 'Element'):
-        self.duration = int(xml_node.attrib.get('Duration'))
+        self.duration = float(xml_node.attrib.get('Duration'))
         self.dmx_values = [MacroDmxValue(xml_node=i) for i in xml_node.findall('MacroDMXValue')]
 
 
