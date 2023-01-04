@@ -279,7 +279,6 @@ class DMX_Fixture(PropertyGroup):
 
 
     def updateCMY(self, cmy):
-        print("update cmy: ", cmy)
         rgb=[0,0,0]
         rgb=cmy_to_rgb(cmy)
         rgb = [c/255.0-(1-gel) for (c, gel) in zip(rgb, self.gel_color[:3])]

@@ -70,6 +70,16 @@ class DMX_GDTF():
         return lsb
 
     @staticmethod
+    def getFootprint(channels):
+        #FIXME: for devices with GeometryReferences and DMX Brakes
+        dmx_offsets = []
+        for ch in channels:
+            if ch.offset is None:
+                continue
+            dmx_offsets.append(max(o for o in ch.offset))
+        return max(dmx_offsets)
+
+    @staticmethod
     def getChannels(gdtf_profile, mode):
         dmx_mode = None
         for m in gdtf_profile.dmx_modes:
@@ -79,12 +89,7 @@ class DMX_GDTF():
         if (not dmx_mode): return []
         
         channels = dmx_mode.dmx_channels
-        _fp=[]
-        for ch in channels:
-            if ch.offset is None:
-                continue
-            _fp.append(max(o for o in ch.offset))
-        footprint=max(_fp)
+        footprint = DMX_GDTF.getFootprint(channels)
 
         dmx_channels = [{'id':'', 'default':0}]*footprint
         for ch in channels:
@@ -99,11 +104,6 @@ class DMX_GDTF():
                     'id':'+'+str(ch.logical_channels[0].channel_functions[0].attribute),
                     'default':DMX_GDTF.getValue(ch.logical_channels[0].channel_functions[0].default, True)
                 }
-        # ------------ stop shortening attribute names---------------
-        #for i, ch in enumerate(dmx_channels):
-        #    if ('ColorAdd_' in ch['id']):
-        #        dmx_channels[i]['id'] = ch['id'][9:]
-        # -----------------------------------------------------------
 
         return dmx_channels
         
@@ -168,9 +168,7 @@ class DMX_GDTF():
         obj = bpy.context.view_layer.objects.selected[0]
         obj.users_collection[0].objects.unlink(obj)
         obj.rotation_euler = Euler((0, 0, 0), 'XYZ')
-        z=obj.dimensions.z
-        if z==0:
-            z=1
+        z=obj.dimensions.z or 1
         obj.scale = (
             obj.scale.x*model.length/obj.dimensions.x,
             obj.scale.y*model.width/obj.dimensions.y,
@@ -221,6 +219,7 @@ class DMX_GDTF():
                 obj_child.location[1] += position[1]
                 obj_child.location[2] += position[2]
                 scale = [geom.position.matrix[c][c] for c in range(3)]
+                obj_child.scale[0] *= scale[0]
                 obj_child.scale[1] *= scale[1]
                 obj_child.scale[2] *= scale[2]
                 if 'Pigtail' in geom.model:
@@ -264,12 +263,12 @@ class DMX_GDTF():
                     try:
                         updateGeom(child_geom, d+1)
                     except Exception as e:
-                        print("Error during geometry updates:", e), child_geom, d
+                        print("Error during recursive geometry updates", e), child_geom, d
 
         try:
             updateGeom(profile)
         except Exception as e:
-            print("Another possible error during geometry updates:", e, profile)
+            print("Error during geometry updates", e, profile)
 
         # Add target for manipulating fixture
         target = bpy.data.objects.new(name="Target", object_data=None)

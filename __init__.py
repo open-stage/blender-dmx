@@ -428,8 +428,6 @@ class DMX(PropertyGroup):
                 if (obj in bpy.context.selected_objects):
                     rgb=[int(255*x) for x in self.programmer_color]
                     cmy=rgb_to_cmy(rgb)
-                    print("rgb:", rgb)
-                    print("cmy:", cmy)
 
                     fixture.setDMX({
                         'ColorAdd_R':rgb[0],
