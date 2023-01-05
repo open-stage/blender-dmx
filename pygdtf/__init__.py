@@ -104,6 +104,12 @@ class FixtureType:
         model_collect = self._root.find('Models')
         if model_collect:
             self.models = [Model(xml_node=i) for i in model_collect.findall('Model')]
+        for model in self.models:
+            if f"models/gltf/{model.file.name}.glb" in self._package.namelist():
+                model.file.extension='glb'
+            else:
+                model.file.extension='3ds'
+
         self.geometries = []
         geometry_collect = self._root.find('Geometries')
         if geometry_collect:
@@ -123,6 +129,7 @@ class FixtureType:
                 self.geometries.append(GeometryBeam(xml_node=i))
             for i in geometry_collect.findall('GeometryReference'):
                 self.geometries.append(GeometryReference(xml_node=i))
+        
         dmx_mode_collect = self._root.find('DMXModes')
         if dmx_mode_collect:
             self.dmx_modes = [DmxMode(xml_node=i) for i in dmx_mode_collect.findall('DMXMode')]
@@ -134,16 +141,48 @@ class FixtureType:
         else:
             self.revisions = []
 
-    def get_geometry_by_type(self, geometry_class):
+
+    def get_dmx_mode_by_name(self, mode_name):
+        """Find mode by name"""
+        for mode in self.dmx_modes:
+            if mode.name == mode_name:
+                return mode
+            
+
+    def get_geometry_by_name(self, geometry_name):
+        """Recursively find a geometry of a given name"""
+        
+        def iterate_geometries(collector):
+            if collector.name == geometry_name:
+                matched.append(collector)
+            for g in collector.geometries:
+                if g.name == geometry_name:
+                    matched.append(g)
+                if hasattr(g, "geometries"):
+                    iterate_geometries(g)
+        matched = []
+        iterate_geometries(self)
+        if matched:
+            return matched[0]
+
+
+    def get_geometry_by_type(self, root, geometry_class):
         """Recursively find all geometries of a given type"""
         def iterate_geometries(collector):
             for g in collector.geometries:
                 if type(g) == geometry_class:
                     matched.append(g)
-                iterate_geometries(g)
+                if hasattr(g, "geometries"):
+                    iterate_geometries(g)
         matched = []
-        iterate_geometries(self)
+        iterate_geometries(root)
         return matched
+
+    def get_model_by_name(self, model_name):
+        """Find model by name"""
+        for model in self.models:
+            if model.name==model_name:
+                return model
 
 
 class BaseNode:
@@ -466,6 +505,10 @@ class Geometry(BaseNode):
         for i in xml_node.findall('GeometryReference'):
             self.geometries.append(GeometryReference(xml_node=i))
 
+    def __str__(self):
+        return f"{self.name} ({self.model})"
+
+
 
 class GeometryAxis(Geometry):
     pass
@@ -535,6 +578,8 @@ class GeometryReference(BaseNode):
         self.model = xml_node.attrib.get('Model')
         self.breaks = [Break(xml_node=i) for i in xml_node.findall('Break')]
 
+    def __str__(self):
+        return f"{self.name} ({self.model})"
 
 class Break(BaseNode):
 

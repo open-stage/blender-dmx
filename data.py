@@ -39,6 +39,7 @@ class DMX_Data():
         if (universe >= len(DMX_Data._universes)): return
         if (not bpy.context.scene.dmx.universes[universe]): return
         if (bpy.context.scene.dmx.universes[universe].input != 'BLENDERDMX'): return
+        if val > 255: return
         DMX_Data._universes[universe-1][addr-1] = val
 
     @staticmethod

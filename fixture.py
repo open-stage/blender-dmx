@@ -147,7 +147,7 @@ class DMX_Fixture(PropertyGroup):
 
         # Import and deep copy Fixture Model Collection
         gdtf_profile = DMX_GDTF.loadProfile(profile)
-        model_collection = DMX_Model.getFixtureModelCollection(gdtf_profile)
+        model_collection = DMX_Model.getFixtureModelCollection(gdtf_profile, self.mode)
         links = {}
         for obj in model_collection.objects:
             # Copy object
@@ -264,17 +264,24 @@ class DMX_Fixture(PropertyGroup):
             self.updateZoom(zoom)
 
     def updateDimmer(self, dimmer):
-        self.emitter_material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer/255.0)
-        for light in self.lights:
-            light.object.data.energy = (dimmer/255.0) * light.object.data['flux']
+        try:
+            self.emitter_material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer/255.0)
+            for light in self.lights:
+                light.object.data.energy = (dimmer/255.0) * light.object.data['flux']
+        except Exception as e:
+            print("Error updating dimmer", e)
+                
         return dimmer
 
     def updateRGB(self, rgb):
-        rgb = [c/255.0-(1-gel) for (c, gel) in zip(rgb, self.gel_color[:3])]
-        #rgb = [c/255.0 for c in rgb]
-        self.emitter_material.node_tree.nodes[1].inputs[COLOR].default_value = rgb + [1]
-        for light in self.lights:
-            light.object.data.color = rgb
+        try:
+            rgb = [c/255.0-(1-gel) for (c, gel) in zip(rgb, self.gel_color[:3])]
+            #rgb = [c/255.0 for c in rgb]
+            self.emitter_material.node_tree.nodes[1].inputs[COLOR].default_value = rgb + [1]
+            for light in self.lights:
+                light.object.data.color = rgb
+        except Exception as e:
+            print("Error updating RGB", e)
         return rgb
 
 
@@ -289,9 +296,12 @@ class DMX_Fixture(PropertyGroup):
         return cmy
 
     def updateZoom(self, zoom):
-        spot_size=zoom*3.1415/180.0
-        for light in self.lights:
-            light.object.data.spot_size=spot_size
+        try:
+            spot_size=zoom*3.1415/180.0
+            for light in self.lights:
+                light.object.data.spot_size=spot_size
+        except Exception as e:
+            print("Error updating zoom", e)
         return zoom
 
 
