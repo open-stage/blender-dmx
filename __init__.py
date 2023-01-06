@@ -28,6 +28,7 @@ from dmx.panels.dmx import *
 from dmx.panels.fixtures import *
 from dmx.panels.groups import *
 from dmx.panels.programmer import *
+from dmx.util import rgb_to_cmy
 
 from bpy.props import (BoolProperty,
                        IntProperty,
@@ -71,6 +72,7 @@ class DMX(PropertyGroup):
                 DMX_OT_Setup_Volume_Create,
                 DMX_PT_Setup_Background,
                 DMX_PT_Setup_Volume,
+                DMX_PT_Setup_Models,
                 DMX_MT_Fixture,
                 DMX_MT_Fixture_Manufacturers,
                 DMX_MT_Fixture_Profiles,
@@ -256,6 +258,17 @@ class DMX(PropertyGroup):
         update = onBackgroundColor
         )
 
+    # # Setup > Models > Display Pigtails
+
+    def onDisplayPigtails(self, context):
+        self.updateDisplayPigtails()
+
+    display_pigtails: BoolProperty(
+        name = "Display pigtails",
+        default = False,
+        update = onDisplayPigtails)
+
+
     # # Setup > Volume > Preview Volume
 
     def onVolumePreview(self, context):
@@ -407,14 +420,22 @@ class DMX(PropertyGroup):
     # # Programmer > Color
 
     def onProgrammerColor(self, context):
+        
+
         bpy.app.handlers.depsgraph_update_post.clear()
         for fixture in self.fixtures:
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
+                    rgb=[int(255*x) for x in self.programmer_color]
+                    cmy=rgb_to_cmy(rgb)
+
                     fixture.setDMX({
-                        'R':int(255*self.programmer_color[0]),
-                        'G':int(255*self.programmer_color[1]),
-                        'B':int(255*self.programmer_color[2])
+                        'ColorAdd_R':rgb[0],
+                        'ColorAdd_G':rgb[1],
+                        'ColorAdd_B':rgb[2],
+                        'ColorSub_C':cmy[0],
+                        'ColorSub_M':cmy[1],
+                        'ColorSub_Y':cmy[2]
                     })
         self.render()
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
@@ -459,6 +480,17 @@ class DMX(PropertyGroup):
         self.render()
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
+    def onProgrammerZoom(self, context):
+        bpy.app.handlers.depsgraph_update_post.clear()
+        for fixture in self.fixtures:
+            for obj in fixture.collection.objects:
+                if (obj in bpy.context.selected_objects):
+                    fixture.setDMX({
+                        'Zoom':int((255/180)*self.programmer_zoom)
+                    })
+        self.render()
+        bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
+
     programmer_tilt: FloatProperty(
         name = "Programmer Tilt",
         min = -1.0,
@@ -466,6 +498,12 @@ class DMX(PropertyGroup):
         default = 0.0,
         update = onProgrammerTilt)
     
+    programmer_zoom: IntProperty(
+        name = "Programmer Zoom",
+        min = 1,
+        max = 180,
+        default = 25,
+        update = onProgrammerZoom)
     # # Programmer > Sync
 
     def syncProgrammer(self):
@@ -475,6 +513,7 @@ class DMX(PropertyGroup):
             self.programmer_color = (255,255,255,255)
             self.programmer_pan = 0
             self.programmer_tilt = 0
+            self.programmer_zoom = 25
             return
         elif (n > 1): return
         if (not bpy.context.active_object): return
@@ -482,8 +521,10 @@ class DMX(PropertyGroup):
         if (not active): return
         data = active.getProgrammerData()
         self.programmer_dimmer = data['Dimmer']/256.0
-        if ('R' in data and 'G' in data and 'B' in data):
-            self.programmer_color = (data['R'],data['G'],data['B'],255)
+        if ('Zoom' in data):
+            self.programmer_zoom = int(data['Zoom']/256.0)
+        if ('ColorAdd_R' in data and 'ColorAdd_G' in data and 'ColorAdd_B' in data):
+            self.programmer_color = (data['ColorAdd_R'],data['ColorAdd_G'],data['ColorAdd_B'],255)
         if ('Pan' in data):
             self.programmer_pan = data['Pan']/127.0-1
         if ('Tilt' in data):

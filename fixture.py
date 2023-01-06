@@ -16,6 +16,7 @@ from dmx.param import DMX_Param, DMX_Model_Param
 
 from dmx.gdtf import DMX_GDTF
 from dmx.data import DMX_Data
+from dmx.util import cmy_to_rgb
 
 from bpy.props import (IntProperty,
                        FloatProperty,
@@ -199,13 +200,16 @@ class DMX_Fixture(PropertyGroup):
         for obj in self.collection.objects:
             if ('Beam' in obj.name):
                 emitter = obj
-        assert emitter
+        try:
+            assert emitter
+            self.emitter_material = getEmitterMaterial(name)
+            emitter.active_material = self.emitter_material
+            emitter.material_slots[0].link = 'OBJECT'
+            emitter.material_slots[0].material = self.emitter_material
+            emitter.material_slots[0].material.shadow_method = 'NONE' # eevee
+        except Exception as e:
+            print("Emitter required", e)
 
-        self.emitter_material = getEmitterMaterial(name)
-        emitter.active_material = self.emitter_material
-        emitter.material_slots[0].link = 'OBJECT'
-        emitter.material_slots[0].material = self.emitter_material
-        emitter.material_slots[0].material.shadow_method = 'NONE' # eevee
 
         # Link collection to DMX collection
         bpy.context.scene.dmx.collection.children.link(self.collection)
@@ -224,7 +228,8 @@ class DMX_Fixture(PropertyGroup):
     def setDMX(self, pvalues):
         channels = [c.id for c in self.channels]
         for param, value in pvalues.items():
-            if (param not in channels): return
+            if (param not in channels): 
+                continue
             p = channels.index(param)
             DMX_Data.set(self.universe, self.address+p, value)
 
@@ -233,21 +238,30 @@ class DMX_Fixture(PropertyGroup):
         data = DMX_Data.get(self.universe, self.address, len(channels))
         panTilt = [None,None]
         rgb = [None,None,None]
+        cmy = [None,None,None]
+        zoom = None
         for c in range(len(channels)):
             if (channels[c] == 'Dimmer'): self.updateDimmer(data[c])
-            elif (channels[c] == 'R'): rgb[0] = data[c]
-            elif (channels[c] == 'G'): rgb[1] = data[c]
-            elif (channels[c] == 'B'): rgb[2] = data[c]
+            elif (channels[c] == 'ColorAdd_R'): rgb[0] = data[c]
+            elif (channels[c] == 'ColorAdd_G'): rgb[1] = data[c]
+            elif (channels[c] == 'ColorAdd_B'): rgb[2] = data[c]
+            elif (channels[c] == 'ColorSub_C'): cmy[0] = data[c]
+            elif (channels[c] == 'ColorSub_M'): cmy[1] = data[c]
+            elif (channels[c] == 'ColorSub_Y'): cmy[2] = data[c]
             elif (channels[c] == 'Pan'): panTilt[0] = data[c]
             elif (channels[c] == 'Tilt'): panTilt[1] = data[c]
+            elif (channels[c] == 'Zoom'): zoom = data[c]
         
         if (rgb[0] != None and rgb[1] != None and rgb[2] != None):
             self.updateRGB(rgb)
-        else:
-            self.updateRGB([255,255,255])
+        
+        if (cmy[0] != None and cmy[1] != None and cmy[2] != None):
+            self.updateCMY(cmy)
 
         if (panTilt[0] != None and panTilt[1] != None):
             self.updatePanTilt(panTilt[0], panTilt[1])
+        if (zoom != None):
+            self.updateZoom(zoom)
 
     def updateDimmer(self, dimmer):
         self.emitter_material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer/255.0)
@@ -262,6 +276,24 @@ class DMX_Fixture(PropertyGroup):
         for light in self.lights:
             light.object.data.color = rgb
         return rgb
+
+
+    def updateCMY(self, cmy):
+        rgb=[0,0,0]
+        rgb=cmy_to_rgb(cmy)
+        rgb = [c/255.0-(1-gel) for (c, gel) in zip(rgb, self.gel_color[:3])]
+        #rgb = [c/255.0 for c in rgb]
+        self.emitter_material.node_tree.nodes[1].inputs[COLOR].default_value = rgb + [1]
+        for light in self.lights:
+            light.object.data.color = rgb
+        return cmy
+
+    def updateZoom(self, zoom):
+        spot_size=zoom*3.1415/180.0
+        for light in self.lights:
+            light.object.data.spot_size=spot_size
+        return zoom
+
 
     def updatePanTilt(self, pan, tilt):
         pan = (pan/127.0-1)*355*(math.pi/360)

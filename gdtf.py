@@ -70,6 +70,16 @@ class DMX_GDTF():
         return lsb
 
     @staticmethod
+    def getFootprint(channels):
+        #FIXME: for devices with GeometryReferences and DMX Brakes
+        dmx_offsets = []
+        for ch in channels:
+            if ch.offset is None:
+                continue
+            dmx_offsets.append(max(o for o in ch.offset))
+        return max(dmx_offsets)
+
+    @staticmethod
     def getChannels(gdtf_profile, mode):
         dmx_mode = None
         for m in gdtf_profile.dmx_modes:
@@ -79,9 +89,12 @@ class DMX_GDTF():
         if (not dmx_mode): return []
         
         channels = dmx_mode.dmx_channels
-        footprint = max([max([o for o in ch.offset]) for ch in channels])
+        footprint = DMX_GDTF.getFootprint(channels)
+
         dmx_channels = [{'id':'', 'default':0}]*footprint
         for ch in channels:
+            if ch.offset is None:
+                continue
             dmx_channels[ch.offset[0]-1] = {
                 'id':str(ch.logical_channels[0].channel_functions[0].attribute),
                 'default':DMX_GDTF.getValue(ch.logical_channels[0].channel_functions[0].default)
@@ -91,10 +104,6 @@ class DMX_GDTF():
                     'id':'+'+str(ch.logical_channels[0].channel_functions[0].attribute),
                     'default':DMX_GDTF.getValue(ch.logical_channels[0].channel_functions[0].default, True)
                 }
-        
-        for i, ch in enumerate(dmx_channels):
-            if ('ColorAdd_' in ch['id']):
-                dmx_channels[i]['id'] = ch['id'][9:]
 
         return dmx_channels
         
@@ -109,6 +118,8 @@ class DMX_GDTF():
         primitive = str(model.primitive_type)
 
         if (primitive == 'Cube'):
+            bpy.ops.mesh.primitive_cube_add(size=1.0)
+        elif (primitive == 'Pigtail'):
             bpy.ops.mesh.primitive_cube_add(size=1.0)
         elif (primitive == 'Cylinder'):
             bpy.ops.mesh.primitive_cylinder_add(vertices=16, radius=0.5, depth=1.0)
@@ -132,7 +143,7 @@ class DMX_GDTF():
         return obj
 
     @staticmethod
-    def loadglb(profile, model):
+    def loadGlb(profile, model):
         #glbs must be loaded from a file, so we must unzip them
         folder_path = os.path.dirname(os.path.realpath(__file__))
         folder_path = os.path.join(folder_path, 'assets', 'models', profile.fixture_type_id)
@@ -157,10 +168,11 @@ class DMX_GDTF():
         obj = bpy.context.view_layer.objects.selected[0]
         obj.users_collection[0].objects.unlink(obj)
         obj.rotation_euler = Euler((0, 0, 0), 'XYZ')
+        z=obj.dimensions.z or 1
         obj.scale = (
             obj.scale.x*model.length/obj.dimensions.x,
             obj.scale.y*model.width/obj.dimensions.y,
-            obj.scale.z*model.height/obj.dimensions.z)
+            obj.scale.z*model.height/z)
         return obj
 
     @staticmethod
@@ -185,12 +197,9 @@ class DMX_GDTF():
             # 'Undefined': load from 3ds
             elif (str(model.primitive_type) == 'Undefined'):
                 if f"models/gltf/{model.file.name}.glb" in profile._package.namelist():
-                    obj = DMX_GDTF.loadglb(profile, model)
+                    obj = DMX_GDTF.loadGlb(profile, model)
                 else:
                     obj = DMX_GDTF.load3ds(profile, model)
-            # 'Pigtail': ignore
-            elif (str(model.primitive_type) == 'Pigtail'):
-                pass
             # Blender primitives
             else:
                 obj = DMX_GDTF.loadBlenderPrimitive(model)
@@ -213,6 +222,11 @@ class DMX_GDTF():
                 obj_child.scale[0] *= scale[0]
                 obj_child.scale[1] *= scale[1]
                 obj_child.scale[2] *= scale[2]
+                if 'Pigtail' in geom.model:
+                    if not bpy.context.scene.dmx.display_pigtails:
+                        obj_child.scale[0] *= 0
+                        obj_child.scale[1] *= 0
+                        obj_child.scale[2] *= 0
 
                 # Beam geometry: add light source and emitter material
                 if (isinstance(geom, pygdtf.GeometryBeam)):
@@ -246,9 +260,15 @@ class DMX_GDTF():
                         obj_child.location[0] += obj_parent.location[0]
                         obj_child.location[1] += obj_parent.location[1]
                         obj_child.location[2] += obj_parent.location[2]
-                    updateGeom(child_geom, d+1)
+                    try:
+                        updateGeom(child_geom, d+1)
+                    except Exception as e:
+                        print("Error during recursive geometry updates", e), child_geom, d
 
-        updateGeom(profile)
+        try:
+            updateGeom(profile)
+        except Exception as e:
+            print("Error during geometry updates", e, profile)
 
         # Add target for manipulating fixture
         target = bpy.data.objects.new(name="Target", object_data=None)
