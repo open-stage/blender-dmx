@@ -109,7 +109,7 @@ class DMX_Fixture(PropertyGroup):
         max = 1.0,
         default = (1.0,1.0,1.0,1.0))
 
-    def build(self, name, profile, mode, universe, address, gel_color):
+    def build(self, name, profile, mode, universe, address, gel_color, mvr_position = None):
 
         # (Edit) Store objects positions
         old_pos = {obj.name:obj.object.location.copy() for obj in self.objects}
@@ -195,10 +195,18 @@ class DMX_Fixture(PropertyGroup):
                 if ('Base' in old_pos):
                     obj.object.location = old_pos['Base']
 
+        # Set position from MVR
+        if mvr_position is not None:
+            for obj in self.objects:
+                if (obj.name == 'Base'):
+                    obj.object.matrix_world=mvr_position.matrix
+                elif (obj.name == 'Body'):
+                    obj.object.matrix_world=mvr_position.matrix
+
         # Setup emitter
         emitter = None
         for obj in self.collection.objects:
-            if ('Beam' in obj.name):
+            if any(beam in obj.name.lower() for beam in ['beam', 'pixel', 'lens', 'zone']):
                 emitter = obj
         try:
             assert emitter

@@ -15,6 +15,9 @@ import sys
 import bpy
 import os
 import atexit
+from operator import attrgetter
+
+from dmx.pymvr import *
 
 from dmx.fixture import *
 from dmx.group import *
@@ -85,6 +88,7 @@ class DMX(PropertyGroup):
                 DMX_OT_Fixture_Edit,
                 DMX_OT_Fixture_Remove,
                 DMX_OT_Fixture_Import_GDTF,
+                DMX_OT_Fixture_Import_MVR,
                 DMX_PT_Fixtures,
                 DMX_UL_Group,
                 DMX_MT_Group,
@@ -557,11 +561,11 @@ class DMX(PropertyGroup):
 
     # # Fixtures
 
-    def addFixture(self, name, profile, universe, address, mode, gel_color):
+    def addFixture(self, name, profile, universe, address, mode, gel_color, position=None):
         bpy.app.handlers.depsgraph_update_post.clear()
         dmx = bpy.context.scene.dmx
         dmx.fixtures.add()
-        dmx.fixtures[-1].build(name, profile, mode, universe, address, gel_color)
+        dmx.fixtures[-1].build(name, profile, mode, universe, address, gel_color, position)
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
     def removeFixture(self, fixture):
@@ -592,6 +596,23 @@ class DMX(PropertyGroup):
                     selected.append(fixture)
                     break
         return selected
+
+    def addMVR(self, file_name):
+        mvr_scene = pymvr.GeneralSceneDescription(file_name)
+        current_path = os.path.dirname(os.path.realpath(__file__))
+        extract_to_folder_path = os.path.join(current_path, 'assets', 'profiles')
+        for layer_index, layer in enumerate(mvr_scene.layers):
+            for fixture_index, fixture in enumerate(layer.fixtures):
+                mvr_scene._package.extract(fixture.gdtf_spec, extract_to_folder_path)
+                self.ensureUniverseExists(fixture.addresses[0].universe)
+                self.addFixture(f"{fixture.name} {layer_index}-{fixture_index}", fixture.gdtf_spec, fixture.addresses[0].universe, fixture.addresses[0].address, fixture.gdtf_mode, (1.0,1.0,1.0,1.0), position=fixture.matrix)
+
+    def ensureUniverseExists(self, universe):
+        # Allocate universes to be able to control devices
+        dmx = bpy.context.scene.dmx
+        for _ in range(len(dmx.universes), universe+1):
+            self.addUniverse()
+        self.universes_n = len(self.universes)
 
     # # Groups
 

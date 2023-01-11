@@ -25,7 +25,11 @@ class DMX_ACN:
             print("This DMX universe is not set to accept sACN data")
             return
         DMX_Data.set_universe(packet.universe, bytearray(packet.dmxData))
-        dmx.artnet_status = "online"
+        try:
+            dmx.artnet_status = "online"
+        except Exception as e:
+            print(e)
+
 
     @staticmethod
     def enable():

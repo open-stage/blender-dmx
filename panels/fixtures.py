@@ -63,6 +63,10 @@ class DMX_MT_Fixture(Menu):
         # "Import GDTF Profile"
         row = layout.row()
         row.operator("dmx.import_gdtf_profile", text="Import GDTF Profile", icon="IMPORT")
+        
+        # "Import MVR scene"
+        row = layout.row()
+        row.operator("dmx.import_mvr_scene", text="Import MVR scene", icon="IMPORT")
 
 
 class DMX_MT_Fixture_Manufacturers(Menu):
@@ -208,7 +212,10 @@ class DMX_Fixture_AddEdit():
         text_profile = "GDTF Profile"
         if (self.profile != ""):
             text_profile = self.profile[:-5].replace('_',' ').split('@')
-            text_profile = text_profile[0] + " > " + text_profile[1]
+            if len(text_profile) > 1:
+                text_profile = text_profile[0] + " > " + text_profile[1]
+            else:
+                text_profile = "Unknown manufacturer" + " > " + text_profile[0]
         col.menu("DMX_MT_Fixture_Manufacturers", text = text_profile)
         text_mode = "DMX Mode"
         if (self.mode != ""):
@@ -361,6 +368,49 @@ class DMX_OT_Fixture_Import_GDTF(Operator):
         # https://developer.blender.org/T86803
         self.report({'WARNING'}, 'Restart Blender to load the profiles.')
         return {'FINISHED'}
+
+
+class DMX_OT_Fixture_Import_MVR(Operator):
+    bl_label = "Import MVR scene"
+    bl_idname = "dmx.import_mvr_scene"
+    bl_description = "Import fixtures from MVR scene file"
+    bl_options = {'UNDO'}
+
+    filter_glob: StringProperty(default="*.mvr", options={'HIDDEN'})
+
+    directory: StringProperty(
+        name="File Path",
+        maxlen= 1024,
+        default= "" )
+
+    files: CollectionProperty(
+        name="Files",
+        type=bpy.types.OperatorFileListElement
+    )
+
+    def draw(self, context):
+        layout = self.layout
+        col = layout.column()
+        col.prop(self, "files")
+
+    def invoke(self, context, event):
+        wm = context.window_manager
+        wm.fileselect_add(self)
+        return {'RUNNING_MODAL'}
+
+    def execute(self, context):
+        folder_path = os.path.dirname(os.path.realpath(__file__))
+        folder_path = os.path.join(folder_path, '..', 'assets', 'profiles')
+        for file in self.files:
+            file_path = os.path.join(self.directory, file.name)
+            print(f'Processing MVR file: {file_path}')
+            dmx = context.scene.dmx
+            dmx.addMVR(file_path)
+            #shutil.copy(file_path, folder_path)
+        # https://developer.blender.org/T86803
+        #self.report({'WARNING'}, 'Restart Blender to load the profiles.')
+        return {'FINISHED'}
+
 
 # Panel #
 
