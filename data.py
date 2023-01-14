@@ -30,9 +30,9 @@ class DMX_Data():
 
     @staticmethod
     def get(universe, addr, n):
-        if (universe > len(DMX_Data._universes)): return bytearray([0]*n)
+        if (universe >= len(DMX_Data._universes)): return bytearray([0]*n)
         if (addr + n > 512): return bytearray([0]*n)
-        return DMX_Data._universes[universe-1][addr-1:addr+n-1]
+        return DMX_Data._universes[universe][addr-1:addr+n-1]
     
     @staticmethod
     def set(universe, addr, val):
@@ -40,7 +40,7 @@ class DMX_Data():
         if (not bpy.context.scene.dmx.universes[universe]): return
         if (bpy.context.scene.dmx.universes[universe].input != 'BLENDERDMX'): return
         if val > 255: return
-        DMX_Data._universes[universe-1][addr-1] = val
+        DMX_Data._universes[universe][addr-1] = val
 
     @staticmethod
     def set_universe(universe, data):
