@@ -41,6 +41,7 @@ class ArtnetPacket:
         packet = ArtnetPacket()
         (packet.op_code, packet.ver, packet.sequence, packet.physical,
             packet.universe, packet.length) = unpack('!HHBBHH', udp_data[8:18])
+        (packet.universe,) = unpack('<H', udp_data[14:16])
 
         packet.data = unpack(
             '{0}s'.format(int(packet.length)),
