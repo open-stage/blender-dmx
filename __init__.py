@@ -269,7 +269,10 @@ class DMX(PropertyGroup):
     # # Setup > Models > Display Pigtails
 
     def onDisplayPigtails(self, context):
-        self.updateDisplayPigtails()
+        for fixture in self.fixtures:
+            for obj in fixture.collection.objects:
+                if "Pigtail" in obj.name:
+                    obj.hide_set(not self.display_pigtails)
 
     display_pigtails: BoolProperty(
         name = "Display pigtails",

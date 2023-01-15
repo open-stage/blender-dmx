@@ -247,13 +247,7 @@ class DMX_GDTF():
             obj_child.scale[1] *= scale[1]
             obj_child.scale[2] *= scale[2]
 
-            if 'Pigtail' in geometry.model:
-                if not bpy.context.scene.dmx.display_pigtails:
-                    obj_child.scale[0] *= 0
-                    obj_child.scale[1] *= 0
-                    obj_child.scale[2] *= 0
-
-            if isinstance(geometry, pygdtf.GeometryBeam) or isinstance(geometry, pygdtf.GeometryReference):
+            if isinstance(geometry, (pygdtf.GeometryBeam, pygdtf.GeometryReference)):
                 if isinstance(geometry, pygdtf.GeometryReference):
                     geometry = profile.get_geometry_by_name(geometry.geometry)
 
@@ -344,6 +338,7 @@ class DMX_GDTF():
 
             # Make body selectable
             objs['Base'].hide_select = False
+
 
         # Link objects to collection
         for name, obj in objs.items():

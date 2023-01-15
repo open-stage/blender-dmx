@@ -222,6 +222,11 @@ class DMX_Fixture(PropertyGroup):
         # Link collection to DMX collection
         bpy.context.scene.dmx.collection.children.link(self.collection)
 
+        # Set Pigtail visibility
+        for obj in self.collection.objects:
+            if "Pigtail" in obj.name:
+                obj.hide_set(not bpy.context.scene.dmx.display_pigtails)
+
         # Build DMX channels cache
         for ch in DMX_GDTF.getChannels(gdtf_profile, self.mode):
             self.channels.add()
