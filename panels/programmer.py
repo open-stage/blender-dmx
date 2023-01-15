@@ -25,6 +25,18 @@ class DMX_OT_Programmer_DeselectAll(Operator):
         bpy.ops.object.select_all(action='DESELECT')
         return {'FINISHED'}
 
+class DMX_OT_Programmer_SelectAll(Operator):
+    bl_label = "DMX > Programmer > Select All"
+    bl_idname = "dmx.select_all"
+    bl_description = "Select every object in the Scene"
+    bl_options = {'UNDO'}
+
+    def execute(self, context):
+        dmx = context.scene.dmx
+        for fixture in dmx.fixtures:
+            fixture.select()
+        return {'FINISHED'}
+
 class DMX_OT_Programmer_Clear(Operator):
     bl_label = "DMX > Programmer > Clear"
     bl_idname = "dmx.clear"
@@ -112,6 +124,10 @@ class DMX_PT_Programmer(Panel):
         layout = self.layout
         scene = context.scene
         dmx = scene.dmx
+
+
+        row = layout.row()
+        row.operator("dmx.select_all", text="Select All")
 
         selected = len(bpy.context.selected_objects) > 0
 
