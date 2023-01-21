@@ -54,6 +54,7 @@ class DMX(PropertyGroup):
     classes_base = (DMX_Param,
                     DMX_Model_Param,
                     DMX_Fixture_Object,
+                    DMX_Emitter_Material,
                     DMX_Fixture_Channel,
                     DMX_Fixture,
                     DMX_Group,

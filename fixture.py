@@ -41,6 +41,11 @@ class DMX_Fixture_Object(PropertyGroup):
         name = "Fixture > Object",
         type = Object)
 
+class DMX_Emitter_Material(PropertyGroup):
+    material: PointerProperty(
+        name = "Emitter > Material",
+        type = Material)
+
 class DMX_Fixture_Channel(PropertyGroup):
     id: StringProperty(
         name = "Fixture > Channel > ID",
@@ -48,6 +53,9 @@ class DMX_Fixture_Channel(PropertyGroup):
     default: IntProperty(
         name = "Fixture > Channel > Default",
         default = 0)
+    geometry: StringProperty(
+        name = "Fixture > Geometry",
+        default = '')
 
 class DMX_Fixture(PropertyGroup):
 
@@ -66,9 +74,10 @@ class DMX_Fixture(PropertyGroup):
         name = "Fixture > Lights",
         type = DMX_Fixture_Object
     )
-    emitter_material: PointerProperty(
-        name = "Fixture > Emitter Material",
-        type = Material)
+
+    emitter_materials: CollectionProperty(
+        name = "Fixture > Materials",
+        type = DMX_Emitter_Material)
 
     # DMX properties
 
@@ -155,8 +164,9 @@ class DMX_Fixture(PropertyGroup):
             if (obj.type == 'LIGHT'):
                 links[obj.name].data = obj.data.copy()
                 self.lights.add()
-                self.lights[-1].name = f'Light{len(self.lights)}'
-                self.lights[f"Light{len(self.lights)}"].object = links[obj.name]
+                light_name=f'Light{len(self.lights)}'
+                self.lights[-1].name = light_name
+                self.lights[light_name].object = links[obj.name]
             # Store reference to body, base and target
             if ('Base' in obj.name):
                 self.objects.add()
@@ -206,14 +216,15 @@ class DMX_Fixture(PropertyGroup):
         for obj in self.collection.objects:
             if "beam" in obj.name.lower():
                 emitter = obj
-                if self.emitter_material is None:
-                    self.emitter_material = getEmitterMaterial(name)
-                    emitter.active_material = self.emitter_material
-                    emitter.material_slots[0].link = 'OBJECT'
-                    emitter.material_slots[0].material = self.emitter_material
-                    emitter.material_slots[0].material.shadow_method = 'NONE' # eevee
-                else:
-                    emitter.active_material = self.emitter_material
+                self.emitter_materials.add()
+                self.emitter_materials[-1].name = obj.name
+
+                emitter_material = getEmitterMaterial(obj.name)
+                emitter.active_material = emitter_material
+                emitter.material_slots[0].link = 'OBJECT'
+                emitter.material_slots[0].material = emitter_material
+                emitter.material_slots[0].material.shadow_method = 'NONE' # eevee
+                self.emitter_materials[-1].material = emitter_material
 
 
         # Link collection to DMX collection
@@ -229,6 +240,7 @@ class DMX_Fixture(PropertyGroup):
             self.channels.add()
             self.channels[-1].id = ch['id']
             self.channels[-1].default = ch['default']
+            self.channels[-1].geometry = ch['geometry']
         
         self.clear()
         bpy.context.scene.dmx.render()
@@ -249,20 +261,29 @@ class DMX_Fixture(PropertyGroup):
         rgb = [None,None,None]
         cmy = [None,None,None]
         zoom = None
+        mixing={} #for now, only RGB mixing is per geometry
         for c in range(len(channels)):
+            geometry=self.channels[c].geometry
+            if geometry not in mixing.keys():
+                mixing[geometry]=[None, None, None]
             if (channels[c] == 'Dimmer'): self.updateDimmer(data[c])
-            elif (channels[c] == 'ColorAdd_R'): rgb[0] = data[c]
-            elif (channels[c] == 'ColorAdd_G'): rgb[1] = data[c]
-            elif (channels[c] == 'ColorAdd_B'): rgb[2] = data[c]
+            elif (channels[c] == 'ColorAdd_R'): mixing[geometry][0] = data[c]
+            elif (channels[c] == 'ColorAdd_G'): mixing[geometry][1] = data[c]
+            elif (channels[c] == 'ColorAdd_B'): mixing[geometry][2] = data[c]
             elif (channels[c] == 'ColorSub_C'): cmy[0] = data[c]
             elif (channels[c] == 'ColorSub_M'): cmy[1] = data[c]
             elif (channels[c] == 'ColorSub_Y'): cmy[2] = data[c]
             elif (channels[c] == 'Pan'): panTilt[0] = data[c]
             elif (channels[c] == 'Tilt'): panTilt[1] = data[c]
             elif (channels[c] == 'Zoom'): zoom = data[c]
-        
-        if (rgb[0] != None and rgb[1] != None and rgb[2] != None):
-            self.updateRGB(rgb)
+       
+        for geometry, rgb in mixing.items():
+            if (rgb[0] != None and rgb[1] != None and rgb[2] != None):
+                if len(mixing) == 1 or not self.light_object_for_geometry_exists(mixing): 
+                    # do not apply for simple devices as trickle down is not implemented...
+                    self.updateRGB(rgb, None)
+                else:
+                    self.updateRGB(rgb, geometry)
         
         if (cmy[0] != None and cmy[1] != None and cmy[2] != None):
             self.updateCMY(cmy)
@@ -272,9 +293,21 @@ class DMX_Fixture(PropertyGroup):
         if (zoom != None):
             self.updateZoom(zoom)
 
+    def light_object_for_geometry_exists(self, mixing):
+        """Check if there is any light or emitter matching geometry name of a color attribute"""
+        for geo in mixing.keys():
+            for light in self.lights:
+                if geo in light.object.data.name:
+                    return True
+            for emitter_material in self.emitter_materials:
+                if geo in emitter_material.name:
+                    return True
+        return False
+
     def updateDimmer(self, dimmer):
         try:
-            self.emitter_material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer/255.0)
+            for emitter_material in self.emitter_materials:
+                emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer/255.0)
             for light in self.lights:
                 light.object.data.energy = (dimmer/255.0) * light.object.data['flux']
         except Exception as e:
@@ -282,13 +315,27 @@ class DMX_Fixture(PropertyGroup):
                 
         return dimmer
 
-    def updateRGB(self, rgb):
+    def updateRGB(self, rgb, geometry):
+        print("color change for geometry", geometry)
         try:
             rgb = [c/255.0-(1-gel) for (c, gel) in zip(rgb, self.gel_color[:3])]
             #rgb = [c/255.0 for c in rgb]
-            self.emitter_material.node_tree.nodes[1].inputs[COLOR].default_value = rgb + [1]
+            for emitter_material in self.emitter_materials:
+                print("emitter:", emitter_material.name)
+                if geometry is not None:
+                    if f"{geometry}" in emitter_material.name:
+                        print("matched emitter")
+                        emitter_material.material.node_tree.nodes[1].inputs[COLOR].default_value = rgb + [1]
+                else:
+                    emitter_material.material.node_tree.nodes[1].inputs[COLOR].default_value = rgb + [1]
             for light in self.lights:
-                light.object.data.color = rgb
+                if geometry is not None:
+                    print("light:", light.object.data.name)
+                    if f"{geometry}" in light.object.data.name:
+                        print("matched light")
+                        light.object.data.color = rgb
+                else:
+                    light.object.data.color = rgb
         except Exception as e:
             print("Error updating RGB", e)
         return rgb
@@ -299,7 +346,8 @@ class DMX_Fixture(PropertyGroup):
         rgb=cmy_to_rgb(cmy)
         rgb = [c/255.0-(1-gel) for (c, gel) in zip(rgb, self.gel_color[:3])]
         #rgb = [c/255.0 for c in rgb]
-        self.emitter_material.node_tree.nodes[1].inputs[COLOR].default_value = rgb + [1]
+        for emitter_material in self.emitter_materials:
+            emitter_material.material.node_tree.nodes[1].inputs[COLOR].default_value = rgb + [1]
         for light in self.lights:
             light.object.data.color = rgb
         return cmy

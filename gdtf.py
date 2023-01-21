@@ -71,43 +71,82 @@ class DMX_GDTF():
         return lsb
 
     @staticmethod
-    def getFootprint(channels):
-        #FIXME: for devices with GeometryReferences and DMX Brakes
-        dmx_offsets = []
-        for ch in channels:
-            if ch.offset is None:
-                continue
-            dmx_offsets.append(max(o for o in ch.offset))
-        return max(dmx_offsets)
+    def get_channels_for_geometry(gdtf_profile, geometry, dmx_channels, channel_list):
+        """get all channels for the device"""
+        print(geometry.name)
+        name = geometry.name
+
+        if isinstance(geometry, pygdtf.GeometryReference):
+            name=geometry.geometry
+
+        for channel in gdtf_profile.get_channels_by_geometry(name, dmx_channels):
+            channel_list.append((channel, geometry))
+        if hasattr(geometry, "geometries"):
+            for sub_geometry in geometry.geometries:
+                channel_list = DMX_GDTF.get_channels_for_geometry(gdtf_profile, sub_geometry, dmx_channels, channel_list)
+        return channel_list
 
     @staticmethod
     def getChannels(gdtf_profile, mode):
         dmx_mode = None
-        for m in gdtf_profile.dmx_modes:
-            if (m.name == mode):
-                dmx_mode = m
-                break
-        if (not dmx_mode): return []
+        dmx_mode = gdtf_profile.get_dmx_mode_by_name(mode)
+        root_geometry = gdtf_profile.get_geometry_by_name(dmx_mode.geometry)
+        device_channels=DMX_GDTF.get_channels_for_geometry(gdtf_profile, root_geometry, dmx_mode.dmx_channels, [])
+        #breakpoint()
         
-        channels = dmx_mode.dmx_channels
-        footprint = DMX_GDTF.getFootprint(channels)
+        dmx_channels = []
+         
+        for channel, geometry in device_channels:
+            #print(channel.logical_channels[0].attribute, channel.offset, geometry.name)
 
-        dmx_channels = [{'id':'', 'default':0}]*footprint
-        for ch in channels:
-            if ch.offset is None:
+            #breakpoint()
+            if channel.offset is None:
                 continue
-            dmx_channels[ch.offset[0]-1] = {
-                'id':str(ch.logical_channels[0].channel_functions[0].attribute),
-                'default':DMX_GDTF.getValue(ch.logical_channels[0].channel_functions[0].default)
-            }
-            if (len(ch.offset) > 1):
-                dmx_channels[ch.offset[1]-1] = {
-                    'id':'+'+str(ch.logical_channels[0].channel_functions[0].attribute),
-                    'default':DMX_GDTF.getValue(ch.logical_channels[0].channel_functions[0].default, True)
-                }
+            if len(dmx_channels) < channel.dmx_break:
+                dmx_channels = dmx_channels + [[]]*(channel.dmx_break-len(dmx_channels))
 
-        return dmx_channels
+            break_channels = dmx_channels[channel.dmx_break-1] # off by one...
+
+            break_addition=0
         
+            if hasattr(geometry, "breaks"):
+                dmx_offset = gdtf_profile.get_address_by_break(geometry.breaks, channel.dmx_break)
+                if dmx_offset is not None:
+                    break_addition = dmx_offset.address - 1
+            
+            offset0 = channel.offset[0] + break_addition
+            offset1 = 0
+            if len(channel.offset) > 1:
+                offset1 = channel.offset[1] + break_addition
+
+            max_offset = max([offset0, offset1])
+
+            if len(break_channels) < max_offset:
+                #print(len(break_channels), break_channels)
+                break_channels = break_channels + [{'dmx':'','id':'', 'default':0, 'geometry':'', 'break':''}]*(max_offset-len(break_channels))
+            
+            break_channels[offset0-1] = {
+                'dmx':offset0,
+                'id':str(channel.logical_channels[0].channel_functions[0].attribute),
+                'default':DMX_GDTF.getValue(channel.logical_channels[0].channel_functions[0].default),
+                'geometry': geometry.name,
+                'break':channel.dmx_break
+            }
+            if offset1 > 0:
+                break_channels[offset1-1] = {
+                    'dmx':offset1,
+                    'id':'+'+str(channel.logical_channels[0].channel_functions[0].attribute),
+                    'default':DMX_GDTF.getValue(channel.logical_channels[0].channel_functions[0].default, True),
+                    'geometry': geometry.name,
+                    'break':channel.dmx_break
+                }
+            dmx_channels[channel.dmx_break-1] = break_channels
+        #breakpoint()
+        print([channel for break_channels in dmx_channels for channel in break_channels])
+        print(len([channel for break_channels in dmx_channels for channel in break_channels]))
+        return [channel for break_channels in dmx_channels for channel in break_channels]
+       
+     
     @staticmethod
     def loadProfile(filename):
         path = os.path.join(DMX_GDTF.getProfilesPath(), filename)
@@ -255,13 +294,13 @@ class DMX_GDTF():
                     obj_child.name=f"Beam {obj_child.name}"
 
                 obj_child.visible_shadow = False
-                light_data = bpy.data.lights.new(name="Spot", type='SPOT')
+                light_data = bpy.data.lights.new(name=f"Spot {obj_child.name}", type='SPOT')
                 light_data['flux'] = geometry.luminous_flux
                 light_data.energy = light_data['flux'] #set by default to full brightness for devices without dimmer
                 light_data.spot_size = geometry.beam_angle
                 light_data.spot_size = geometry.beam_angle*3.1415/180.0
                 light_data.shadow_soft_size = geometry.beam_radius
-                light_object = bpy.data.objects.new(name="Spot", object_data=light_data)
+                light_object = bpy.data.objects.new(name=f"Spot", object_data=light_data)
                 light_object.location = obj_child.location
                 light_object.hide_select = True
                 constraint = light_object.constraints.new('CHILD_OF')

@@ -184,6 +184,20 @@ class FixtureType:
             if model.name==model_name:
                 return model
 
+    def get_channels_by_geometry(self, geometry_name, channels):
+        """Find channels for a given geometry"""
+        matched = []
+        for channel in channels:
+            if channel.geometry == geometry_name:
+                matched.append(channel)
+
+        return matched
+
+    def get_address_by_break(self, dmx_breaks, value):
+        for item in dmx_breaks:
+            if item.dmx_break == value:
+                return item.dmx_offset
+
 
 class BaseNode:
 
