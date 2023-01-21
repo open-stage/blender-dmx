@@ -251,10 +251,14 @@ class DMX_GDTF():
                 if isinstance(geometry, pygdtf.GeometryReference):
                     geometry = profile.get_geometry_by_name(geometry.geometry)
 
+                if "beam" not in obj_child.name.lower():
+                    obj_child.name=f"Beam {obj_child.name}"
+
                 obj_child.visible_shadow = False
                 light_data = bpy.data.lights.new(name="Spot", type='SPOT')
                 light_data['flux'] = geometry.luminous_flux
-                light_data.energy = 0
+                light_data.energy = light_data['flux'] #set by default to full brightness for devices without dimmer
+                light_data.spot_size = geometry.beam_angle
                 light_data.spot_size = geometry.beam_angle*3.1415/180.0
                 light_data.shadow_soft_size = geometry.beam_radius
                 light_object = bpy.data.objects.new(name="Spot", object_data=light_data)

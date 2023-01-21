@@ -66,7 +66,6 @@ class DMX_Fixture(PropertyGroup):
         name = "Fixture > Lights",
         type = DMX_Fixture_Object
     )
-
     emitter_material: PointerProperty(
         name = "Fixture > Emitter Material",
         type = Material)
@@ -156,8 +155,8 @@ class DMX_Fixture(PropertyGroup):
             if (obj.type == 'LIGHT'):
                 links[obj.name].data = obj.data.copy()
                 self.lights.add()
-                self.lights[-1].name = 'Light'
-                self.lights['Light'].object = links[obj.name]
+                self.lights[-1].name = f'Light{len(self.lights)}'
+                self.lights[f"Light{len(self.lights)}"].object = links[obj.name]
             # Store reference to body, base and target
             if ('Base' in obj.name):
                 self.objects.add()
@@ -204,19 +203,17 @@ class DMX_Fixture(PropertyGroup):
                     obj.object.matrix_world=mvr_position.matrix
 
         # Setup emitter
-        emitter = None
         for obj in self.collection.objects:
-            if any(beam in obj.name.lower() for beam in ['beam', 'pixel', 'lens', 'zone']):
+            if "beam" in obj.name.lower():
                 emitter = obj
-        try:
-            assert emitter
-            self.emitter_material = getEmitterMaterial(name)
-            emitter.active_material = self.emitter_material
-            emitter.material_slots[0].link = 'OBJECT'
-            emitter.material_slots[0].material = self.emitter_material
-            emitter.material_slots[0].material.shadow_method = 'NONE' # eevee
-        except Exception as e:
-            print("Emitter required", e)
+                if self.emitter_material is None:
+                    self.emitter_material = getEmitterMaterial(name)
+                    emitter.active_material = self.emitter_material
+                    emitter.material_slots[0].link = 'OBJECT'
+                    emitter.material_slots[0].material = self.emitter_material
+                    emitter.material_slots[0].material.shadow_method = 'NONE' # eevee
+                else:
+                    emitter.active_material = self.emitter_material
 
 
         # Link collection to DMX collection
@@ -241,10 +238,9 @@ class DMX_Fixture(PropertyGroup):
     def setDMX(self, pvalues):
         channels = [c.id for c in self.channels]
         for param, value in pvalues.items():
-            if (param not in channels): 
-                continue
-            p = channels.index(param)
-            DMX_Data.set(self.universe, self.address+p, value)
+            for idx, channel in enumerate(channels):
+                if channel == param:
+                    DMX_Data.set(self.universe, self.address+idx, value)
 
     def render(self):
         channels = [c.id for c in self.channels]

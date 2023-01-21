@@ -140,7 +140,7 @@ class DMX_PT_Programmer(Panel):
         row.operator("dmx.select_targets", text="Targets")
         row.enabled = selected
 
-        layout.template_color_picker(scene.dmx,"programmer_color")
+        layout.template_color_picker(scene.dmx,"programmer_color", value_slider=True)
         layout.prop(scene.dmx,"programmer_dimmer", text="Dimmer")
 
         layout.prop(scene.dmx,"programmer_pan", text="Pan")
