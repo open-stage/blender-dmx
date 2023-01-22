@@ -1,6 +1,7 @@
 import bpy
 from dmx.sacn import sACNreceiver
 from dmx.data import DMX_Data
+from dmx.logging import DMX_LOG
 
 
 class DMX_ACN:
@@ -16,13 +17,13 @@ class DMX_ACN:
     def callback(packet):  # packet type: sacn.DataPacket
         dmx = bpy.context.scene.dmx
         if packet.universe >= len(dmx.universes):
-            print("Not enough DMX universes set in BlenderDMX")
+            DMX_LOG.log.info("Not enough DMX universes set in BlenderDMX")
             return
         if not dmx.universes[packet.universe]:
-            print("sACN universe doesn't exist in BlenderDMX")
+            DMX_LOG.log.info("sACN universe doesn't exist in BlenderDMX")
             return
         if dmx.universes[packet.universe].input != "sACN":
-            print("This DMX universe is not set to accept sACN data")
+            DMX_LOG.log.info("This DMX universe is not set to accept sACN data")
             return
         DMX_Data.set_universe(packet.universe, bytearray(packet.dmxData))
         try:
@@ -36,6 +37,7 @@ class DMX_ACN:
         DMX_ACN._instance = DMX_ACN()
         dmx = bpy.context.scene.dmx
         DMX_ACN._instance.receiver.start()  # start the receiving thread
+        DMX_LOG.log.info("enabling ACN")
 
         for universe in range(1, len(dmx.universes) + 1):
             DMX_ACN._instance.receiver.register_listener(

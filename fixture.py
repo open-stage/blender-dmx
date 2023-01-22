@@ -11,6 +11,7 @@ import mathutils
 
 from dmx.material import getEmitterMaterial
 from dmx.model import DMX_Model
+from dmx.logging import DMX_LOG
 
 from dmx.param import DMX_Param, DMX_Model_Param
 
@@ -316,23 +317,23 @@ class DMX_Fixture(PropertyGroup):
         return dimmer
 
     def updateRGB(self, rgb, geometry):
-        print("color change for geometry", geometry)
+        DMX_LOG.log.info(("color change for geometry", geometry))
         try:
             rgb = [c/255.0-(1-gel) for (c, gel) in zip(rgb, self.gel_color[:3])]
             #rgb = [c/255.0 for c in rgb]
             for emitter_material in self.emitter_materials:
-                print("emitter:", emitter_material.name)
+                DMX_LOG.log.info(("emitter:", emitter_material.name))
                 if geometry is not None:
                     if f"{geometry}" in emitter_material.name:
-                        print("matched emitter")
+                        DMX_LOG.log.info("matched emitter")
                         emitter_material.material.node_tree.nodes[1].inputs[COLOR].default_value = rgb + [1]
                 else:
                     emitter_material.material.node_tree.nodes[1].inputs[COLOR].default_value = rgb + [1]
             for light in self.lights:
                 if geometry is not None:
-                    print("light:", light.object.data.name)
+                    DMX_LOG.log.info(("light:", light.object.data.name))
                     if f"{geometry}" in light.object.data.name:
-                        print("matched light")
+                        DMX_LOG.log.info("matched light")
                         light.object.data.color = rgb
                 else:
                     light.object.data.color = rgb

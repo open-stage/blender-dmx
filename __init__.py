@@ -26,6 +26,7 @@ from dmx.data import *
 from dmx.artnet import *
 from dmx.acn import *
 from dmx.network import *
+from dmx.logging import *
 
 from dmx.panels.setup import *
 from dmx.panels.dmx import *
@@ -77,7 +78,7 @@ class DMX(PropertyGroup):
                 DMX_OT_Setup_Volume_Create,
                 DMX_PT_Setup_Background,
                 DMX_PT_Setup_Volume,
-                DMX_PT_Setup_Models,
+                DMX_PT_Setup_Debug,
                 DMX_MT_Fixture,
                 DMX_MT_Fixture_Manufacturers,
                 DMX_MT_Fixture_Profiles,
@@ -190,6 +191,9 @@ class DMX(PropertyGroup):
     # - Allocate static universe data
     def linkFile(self):
         print("DMX", "Linking to file")
+        DMX_LOG.enable(self.logging_level)
+        DMX_LOG.log.info("DMX", "Linking to file")
+
 
         # Link pointer properties to file objects
         if ("DMX" in bpy.data.collections):
@@ -281,6 +285,24 @@ class DMX(PropertyGroup):
         default = False,
         update = onDisplayPigtails)
 
+    # # Logging levels
+
+    def onLoggingLevel(self, context):
+        DMX_LOG.log.setLevel(self.logging_level)
+
+    logging_level: bpy.props.EnumProperty(
+        name= "Logging level",
+        description= "logging level",
+        default = "ERROR",
+        items= [
+                ('CRITICAL', "Critical", ""),
+                ('ERROR', "Error", ""),
+                ('WARNING', "Warning", ""),
+                ('INFO', "Info", ""),
+                ('DEBUG', "Debug", ""),
+        ],
+        update = onLoggingLevel
+        )
 
     # # Setup > Volume > Preview Volume
 
