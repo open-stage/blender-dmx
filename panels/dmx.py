@@ -105,7 +105,7 @@ class DMX_PT_DMX_Universes(Panel):
         #layout.menu("dmx.menu.universe", text="...", icon="FILE_VOLUME")
 
 class DMX_PT_DMX_ArtNet(Panel):
-    bl_label = "Ethernet"
+    bl_label = "Network"
     bl_idname = "DMX_PT_DMX_ArtNet"
     bl_parent_id = "DMX_PT_DMX"
     bl_space_type = "VIEW_3D"

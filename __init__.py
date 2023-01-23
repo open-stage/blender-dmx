@@ -24,7 +24,7 @@ from dmx.group import *
 from dmx.universe import *
 from dmx.data import *
 from dmx.artnet import *
-from dmx.acn import *
+from dmx.acn import DMX_sACN
 from dmx.network import *
 from dmx.logging import *
 
@@ -191,8 +191,8 @@ class DMX(PropertyGroup):
     # - Allocate static universe data
     def linkFile(self):
         print("DMX", "Linking to file")
-        DMX_LOG.enable(self.logging_level)
-        DMX_LOG.log.info("DMX", "Linking to file")
+        DMX_Log.enable(self.logging_level)
+        DMX_Log.log.info("DMX", "Linking to file")
 
 
         # Link pointer properties to file objects
@@ -288,18 +288,18 @@ class DMX(PropertyGroup):
     # # Logging levels
 
     def onLoggingLevel(self, context):
-        DMX_LOG.log.setLevel(self.logging_level)
+        DMX_Log.log.setLevel(self.logging_level)
 
     logging_level: bpy.props.EnumProperty(
         name= "Logging level",
         description= "logging level",
         default = "ERROR",
         items= [
-                ('CRITICAL', "Critical", ""),
-                ('ERROR', "Error", ""),
-                ('WARNING', "Warning", ""),
-                ('INFO', "Info", ""),
-                ('DEBUG', "Debug", ""),
+                ('CRITICAL', "Critical", "", "ACTION", 0),
+                ('ERROR', "Error", "", 'ERROR', 0),
+                ('WARNING', "Warning", "", "CANCEL", 0),
+                ('DEBUG', "Debug", "", "TEXT",0),
+                ('INFO', "Info", "", "INFO", 0),
         ],
         update = onLoggingLevel
         )
@@ -403,11 +403,11 @@ class DMX(PropertyGroup):
     def onsACNEnable(self, context):
         dmx = bpy.context.scene.dmx
         if (self.sacn_enabled):
-            DMX_ACN.enable()
+            DMX_sACN.enable()
             dmx.artnet_status = 'online'
             
         else:
-            DMX_ACN.disable()
+            DMX_sACN.disable()
             dmx.artnet_status = 'online'
             
     # # DMX > ArtNet > Enable
@@ -743,7 +743,7 @@ def onLoadFile(scene):
 
     # Stop ArtNet
     DMX_ArtNet.disable()
-    DMX_ACN.disable()
+    DMX_sACN.disable()
 
 @bpy.app.handlers.persistent
 def onUndo(scene):
@@ -777,12 +777,12 @@ def register():
     # since 2.91.0 unregister is called also on Blender exit
     if bpy.app.version <= (2, 91, 0):
         atexit.register(DMX_ArtNet.disable)
-        atexit.register(DMX_ACN.disable)
+        atexit.register(DMX_sACN.disable)
 
 def unregister():
     # Stop ArtNet
     DMX_ArtNet.disable()
-    DMX_ACN.disable()
+    DMX_sACN.disable()
 
     try:
         # Unregister Base Classes

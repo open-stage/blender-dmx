@@ -9,7 +9,7 @@
 #
 
 import bpy
-from dmx.logging import DMX_LOG
+from dmx.logging import DMX_Log
 
 class DMX_Data():
 
@@ -37,7 +37,7 @@ class DMX_Data():
     
     @staticmethod
     def set(universe, addr, val):
-        DMX_LOG.log.debug((universe, addr, val))
+        DMX_Log.log.debug((universe, addr, val))
         if (universe >= len(DMX_Data._universes)): return
         if (not bpy.context.scene.dmx.universes[universe]): return
         if (bpy.context.scene.dmx.universes[universe].input != 'BLENDERDMX'): return
@@ -46,7 +46,7 @@ class DMX_Data():
 
     @staticmethod
     def set_universe(universe, data):
-        DMX_LOG.log.debug((universe, data))
+        DMX_Log.log.debug((universe, data))
         if (universe >= len(DMX_Data._universes)):
             return
         if (DMX_Data._universes[universe] != data):

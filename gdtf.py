@@ -12,7 +12,7 @@ import copy
 from mathutils import Euler, Matrix
 
 from dmx import pygdtf
-from dmx.logging import DMX_LOG
+from dmx.logging import DMX_Log
 from dmx.io_scene_3ds.import_3ds import load_3ds
 
 class DMX_GDTF():
@@ -73,7 +73,7 @@ class DMX_GDTF():
     @staticmethod
     def get_channels_for_geometry(gdtf_profile, geometry, dmx_channels, channel_list):
         """get all channels for the device"""
-        DMX_LOG.log.info(geometry.name)
+        DMX_Log.log.info(geometry.name)
         name = geometry.name
 
         if isinstance(geometry, pygdtf.GeometryReference):
@@ -142,8 +142,8 @@ class DMX_GDTF():
                 }
             dmx_channels[channel.dmx_break-1] = break_channels
         #breakpoint()
-        DMX_LOG.log.info([channel for break_channels in dmx_channels for channel in break_channels])
-        DMX_LOG.log.info("len([channel for break_channels in dmx_channels for channel in break_channels])")
+        DMX_Log.log.info([channel for break_channels in dmx_channels for channel in break_channels])
+        DMX_Log.log.info("len([channel for break_channels in dmx_channels for channel in break_channels])")
         return [channel for break_channels in dmx_channels for channel in break_channels]
        
      

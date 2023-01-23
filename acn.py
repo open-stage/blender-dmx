@@ -1,15 +1,15 @@
 import bpy
 from dmx.sacn import sACNreceiver
 from dmx.data import DMX_Data
-from dmx.logging import DMX_LOG
+from dmx.logging import DMX_Log
 
 
-class DMX_ACN:
+class DMX_sACN:
 
     _instance = None
 
     def __init__(self):
-        super(DMX_ACN, self).__init__()
+        super(DMX_sACN, self).__init__()
         self.data = None
         self.receiver = sACNreceiver()
         self._dmx = bpy.context.scene.dmx
@@ -17,13 +17,13 @@ class DMX_ACN:
     def callback(packet):  # packet type: sacn.DataPacket
         dmx = bpy.context.scene.dmx
         if packet.universe >= len(dmx.universes):
-            DMX_LOG.log.info("Not enough DMX universes set in BlenderDMX")
+            DMX_Log.log.info("Not enough DMX universes set in BlenderDMX")
             return
         if not dmx.universes[packet.universe]:
-            DMX_LOG.log.info("sACN universe doesn't exist in BlenderDMX")
+            DMX_Log.log.info("sACN universe doesn't exist in BlenderDMX")
             return
         if dmx.universes[packet.universe].input != "sACN":
-            DMX_LOG.log.info("This DMX universe is not set to accept sACN data")
+            DMX_Log.log.info("This DMX universe is not set to accept sACN data")
             return
         DMX_Data.set_universe(packet.universe, bytearray(packet.dmxData))
         try:
@@ -34,31 +34,31 @@ class DMX_ACN:
 
     @staticmethod
     def enable():
-        DMX_ACN._instance = DMX_ACN()
+        DMX_sACN._instance = DMX_sACN()
         dmx = bpy.context.scene.dmx
-        DMX_ACN._instance.receiver.start()  # start the receiving thread
-        DMX_LOG.log.info("enabling ACN")
+        DMX_sACN._instance.receiver.start()  # start the receiving thread
+        DMX_Log.log.info("enabling ACN")
 
         for universe in range(1, len(dmx.universes) + 1):
-            DMX_ACN._instance.receiver.register_listener(
-                "universe", DMX_ACN.callback, universe=universe
+            DMX_sACN._instance.receiver.register_listener(
+                "universe", DMX_sACN.callback, universe=universe
             )
-        DMX_ACN._instance.receiver.join_multicast(1)
-        bpy.app.timers.register(DMX_ACN.run_render)
+        DMX_sACN._instance.receiver.join_multicast(1)
+        bpy.app.timers.register(DMX_sACN.run_render)
         dmx.artnet_status = "listen"
 
     @staticmethod
     def disable():
         dmx = bpy.context.scene.dmx
-        if DMX_ACN._instance:
-            DMX_ACN._instance.receiver.leave_multicast(1)
-            DMX_ACN._instance.receiver.remove_listener(DMX_ACN.callback)
-            DMX_ACN._instance.receiver.stop()
-            DMX_ACN._instance.data = None
+        if DMX_sACN._instance:
+            DMX_sACN._instance.receiver.leave_multicast(1)
+            DMX_sACN._instance.receiver.remove_listener(DMX_sACN.callback)
+            DMX_sACN._instance.receiver.stop()
+            DMX_sACN._instance.data = None
             dmx.artnet_status = "offline"
 
-        if bpy.app.timers.is_registered(DMX_ACN.run_render):
-            bpy.app.timers.unregister(DMX_ACN.run_render)
+        if bpy.app.timers.is_registered(DMX_sACN.run_render):
+            bpy.app.timers.unregister(DMX_sACN.run_render)
 
     @staticmethod
     def run_render():

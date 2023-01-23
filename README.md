@@ -48,26 +48,5 @@ We also have a `Discord` server for sharing knowledge: [discord server link](htt
 - [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?hosted_button_id=K2DRRKRFE583J)
 - Bitcon (BTC only): 1BApp5s16pEPk5oECtJJ7G8iYmbj7r2YrG
 
-## Development
-
-### Logging
-
-Use [predefined python logging module](https://docs.python.org/3/library/logging.html?highlight=logging#module-logging) instead of print. If not imported yet, import it into your class:
-
-```python
-from dmx.logging import DMX_LOG
-```
-
-Then use it. Choose appropriate level. Default level is `Error`, which means `Error` and `Critical` messages will be displayed. Following logging levels are available:
-
-```python
-DMX_LOG.log.critical("Logging critical message here, level 50")
-DMX_LOG.log.error("Logging error message here, level 40")
-DMX_LOG.log.warning("Logging warning message here, level 30")
-DMX_LOG.log.debug("Logging debug message here, level 20")
-DMX_LOG.log.info("Logging info message here, level 10")
-```
-
-
 
 

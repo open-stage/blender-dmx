@@ -1,15 +1,15 @@
 import logging
 
 
-class DMX_LOG:
+class DMX_Log:
     log = None
 
     def __init__(self):
-        super(DMX_LOG, self).__init__()
+        super(DMX_Log, self).__init__()
 
     @staticmethod
     def enable(level):
-        # DMX_LOG._instance = DMX_LOG()
+        # DMX_Log._instance = DMX_Log()
         log = logging.getLogger("blenderDMX")
         log.setLevel(level)
 
@@ -28,4 +28,4 @@ class DMX_LOG:
         log_handler2.setFormatter(log_formatter)
         # log.addHandler(log_handler)
         log.addHandler(log_handler2)
-        DMX_LOG.log = log
+        DMX_Log.log = log
