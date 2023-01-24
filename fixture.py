@@ -21,6 +21,7 @@ from dmx.util import cmy_to_rgb
 
 from bpy.props import (IntProperty,
                        FloatProperty,
+                       BoolProperty,
                        FloatVectorProperty,
                        PointerProperty,
                        StringProperty,
@@ -110,6 +111,11 @@ class DMX_Fixture(PropertyGroup):
         min = 1,
         max = 512)
         
+    display_beams: BoolProperty(
+        name = "Display beams",
+        description="Display beam projection and cone",
+        default = True)
+
     gel_color: FloatVectorProperty(
         name = "Gel Color",
         subtype = "COLOR",
@@ -118,7 +124,7 @@ class DMX_Fixture(PropertyGroup):
         max = 1.0,
         default = (1.0,1.0,1.0,1.0))
 
-    def build(self, name, profile, mode, universe, address, gel_color, mvr_position = None):
+    def build(self, name, profile, mode, universe, address, gel_color, display_beams, mvr_position = None):
 
         # (Edit) Store objects positions
         old_pos = {obj.name:obj.object.location.copy() for obj in self.objects}
@@ -138,6 +144,7 @@ class DMX_Fixture(PropertyGroup):
         self.universe = universe
         self.address = address
         self.gel_color = list(gel_color)
+        self.display_beams = display_beams
 
         # (Edit) Clear links and channel cache
         self.lights.clear()
@@ -156,7 +163,7 @@ class DMX_Fixture(PropertyGroup):
 
         # Import and deep copy Fixture Model Collection
         gdtf_profile = DMX_GDTF.loadProfile(profile)
-        model_collection = DMX_Model.getFixtureModelCollection(gdtf_profile, self.mode)
+        model_collection = DMX_Model.getFixtureModelCollection(gdtf_profile, self.mode, self.display_beams)
         links = {}
         for obj in model_collection.objects:
             # Copy object

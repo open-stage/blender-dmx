@@ -101,6 +101,8 @@ class DMX(PropertyGroup):
                 DMX_PT_Groups,
                 DMX_OT_Programmer_DeselectAll,
                 DMX_OT_Programmer_SelectAll,
+                DMX_OT_Programmer_SelectInvert,
+                DMX_OT_Programmer_SelectEveryOther,
                 DMX_OT_Programmer_Clear,
                 DMX_OT_Programmer_SelectBodies,
                 DMX_OT_Programmer_SelectTargets,
@@ -295,11 +297,11 @@ class DMX(PropertyGroup):
         description= "logging level",
         default = "ERROR",
         items= [
-                ('CRITICAL', "Critical", "", "ACTION", 0),
-                ('ERROR', "Error", "", 'ERROR', 0),
-                ('WARNING', "Warning", "", "CANCEL", 0),
-                ('DEBUG', "Debug", "", "TEXT",0),
-                ('INFO', "Info", "", "INFO", 0),
+                ('CRITICAL', "Critical", "", "TOOL_SETTINGS", 0),
+                ('ERROR', "Error", "", 'ERROR', 1),
+                ('WARNING', "Warning", "", "CANCEL", 2),
+                ('DEBUG', "Debug", "", "OUTLINER_OB_LIGHT",3),
+                ('INFO', "Info", "", "INFO", 4),
         ],
         update = onLoggingLevel
         )

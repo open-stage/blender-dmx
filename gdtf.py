@@ -208,7 +208,7 @@ class DMX_GDTF():
         return obj
 
     @staticmethod
-    def buildCollection(profile, mode):
+    def buildCollection(profile, mode, display_beams):
 
         # Create model collection
         collection = bpy.data.collections.new(DMX_GDTF.getName(profile, mode))
@@ -292,6 +292,9 @@ class DMX_GDTF():
 
                 if "beam" not in obj_child.name.lower():
                     obj_child.name=f"Beam {obj_child.name}"
+
+                if not display_beams: # Don't even create beam objects to save resources
+                    return
 
                 obj_child.visible_shadow = False
                 light_data = bpy.data.lights.new(name=f"Spot {obj_child.name}", type='SPOT')

@@ -13,6 +13,7 @@ import shutil
 
 from bpy.props import (IntProperty,
                        FloatProperty,
+                       BoolProperty,
                        FloatVectorProperty,
                        EnumProperty,
                        StringProperty,
@@ -197,6 +198,11 @@ class DMX_Fixture_AddEdit():
         max = 1.0,
         default = (1.0,1.0,1.0,1.0))
 
+    display_beams: BoolProperty(
+        name = "Display beams",
+        description="Display beam projection and cone",
+        default = True)
+
     units: IntProperty(
         name = "Units",
         description = "How many units of this light to add",
@@ -223,6 +229,7 @@ class DMX_Fixture_AddEdit():
         col.menu("DMX_MT_Fixture_Mode", text = text_mode)
         col.prop(self, "universe")
         col.prop(self, "address")
+        col.prop(self, "display_beams")
         col.prop(self, "gel_color")
         if (self.units > 0):
             col.prop(self, "units")
@@ -246,7 +253,7 @@ class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
             self.report({'ERROR'}, "No DMX Mode selected.")
             return {'CANCELLED'}
         for i in range(self.units):
-            dmx.addFixture(self.name+" "+str(i+1), self.profile, self.universe, self.address, self.mode, self.gel_color)
+            dmx.addFixture(self.name+" "+str(i+1), self.profile, self.universe, self.address, self.mode, self.gel_color, self.display_beams)
         return {'FINISHED'}
 
     def invoke(self, context, event):
@@ -271,7 +278,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             fixture = selected[0]
             if (self.name != fixture.name and self.name in bpy.data.collections):
                 return {'CANCELLED'}
-            fixture.build(self.name, self.profile, self.mode, self.universe, self.address, self.gel_color)
+            fixture.build(self.name, self.profile, self.mode, self.universe, self.address, self.gel_color, self.display_beams)
         # Multiple fixtures
         else:
             address = self.address
@@ -283,7 +290,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                 name = (self.name + ' ' + str(i+1)) if (self.name != '*') else fixture.name
                 profile = self.profile if (self.profile != '') else fixture.profile
                 mode = self.mode if (self.mode != '') else fixture.mode
-                fixture.build(name, profile, mode, self.universe, address, self.gel_color)
+                fixture.build(name, profile, mode, self.universe, address, self.gel_color, self.display_beams)
                 address += len(fixture.channels)
         return {'FINISHED'}
 
@@ -300,6 +307,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             self.address = fixture.address
             self.mode = fixture.mode
             self.gel_color = fixture.gel_color
+            self.display_beams = fixture.display_beams
             self.units = 0
         # Multiple fixtures
         else:
@@ -310,6 +318,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             self.mode = ''
             self.gel_color = (255,255,255,255)
             self.units = 0
+            self.display_beams = True
 
         wm = context.window_manager
         return wm.invoke_props_dialog(self)
