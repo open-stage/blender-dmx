@@ -13,7 +13,10 @@ from bpy.props import (IntProperty,
 
 from bpy.types import (ID,
                        Property,
-                       PropertyGroup)
+                       PropertyGroup,
+                       CollectionProperty)
+
+network_options_list = (("BLENDERDMX", "BlenderDMX", "Set DMX buffer from the Programmer"), ("ARTNET", "ArtNet", "Read DMX buffer from ArtNet"), ("sACN", "sACN", "Read DMX buffer from sACN"))
 
 class DMX_Universe(PropertyGroup):
 
@@ -33,8 +36,7 @@ class DMX_Universe(PropertyGroup):
         name = "Input",
         description = "Input source of the universe",
         default = "BLENDERDMX",
-        items = (("BLENDERDMX", "BlenderDMX", "Set DMX buffer from the Programmer"), ("ARTNET", "ArtNet", "Read DMX buffer from ArtNet"), ("sACN", "sACN", "Read DMX buffer from sACN"))
-    )
+        items = network_options_list)
 
     input_settings: StringProperty (
         default = "Input Settings"

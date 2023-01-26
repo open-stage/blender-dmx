@@ -8,7 +8,9 @@
 #
 
 import bpy
+from dmx.data import DMX_Data
 from bpy.props import (PointerProperty,
+                       EnumProperty,
                        StringProperty)
 
 from bpy.types import (Panel,
@@ -130,6 +132,33 @@ class DMX_PT_DMX_ArtNet(Panel):
 
         layout.label(text='Status: ' + layout.enum_item_name(dmx, 'artnet_status', dmx.artnet_status))
 
+class DMX_UL_LiveDMX_items(UIList):
+    def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
+        layout.alignment = 'CENTER'
+        layout.label(text=f"{index+1}: {item.channel}")
+
+    def invoke(self, context, event):
+        pass
+
+class DMX_PT_DMX_LiveDMX(Panel):
+    bl_label = "Live DMX"
+    bl_idname = "DMX_PT_DMX_LiveDMX"
+    bl_parent_id = "DMX_PT_DMX"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_category = "DMX"
+    bl_context = "objectmode"
+    bl_options = {'DEFAULT_CLOSED'}
+
+
+    def draw(self, context):
+        layout = self.layout
+        dmx = context.scene.dmx
+
+        row = layout.row()
+        row.prop(dmx, "selected_live_dmx_source", text="Source")
+        row.prop(dmx, "selected_live_dmx_universe", text="Universe")
+        layout.template_list("DMX_UL_LiveDMX_items", "", dmx, "dmx_values", dmx, "dmx_value_index", type='GRID')
 
 # Panel #
 

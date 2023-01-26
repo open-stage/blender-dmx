@@ -25,7 +25,7 @@ class DMX_sACN:
         if dmx.universes[packet.universe].input != "sACN":
             DMX_Log.log.info("This DMX universe is not set to accept sACN data")
             return
-        DMX_Data.set_universe(packet.universe, bytearray(packet.dmxData))
+        DMX_Data.set_universe(packet.universe, bytearray(packet.dmxData), "sACN")
         try:
             dmx.artnet_status = "online"
         except Exception as e:

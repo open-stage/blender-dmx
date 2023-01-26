@@ -82,7 +82,7 @@ class DMX_ArtNet(threading.Thread):
                 if (self._dmx.universes[packet.universe].input != 'ARTNET'):
                     continue
                 
-                DMX_Data.set_universe(packet.universe, bytearray(packet.data))
+                DMX_Data.set_universe(packet.universe, bytearray(packet.data), "ARTNET")
                 
                 #print(packet)
             except Exception as e:

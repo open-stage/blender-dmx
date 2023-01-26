@@ -60,6 +60,7 @@ class DMX(PropertyGroup):
                     DMX_Fixture,
                     DMX_Group,
                     DMX_Universe,
+                    DMX_Value,
                     DMX_PT_Setup)
 
     # Classes to be registered
@@ -75,6 +76,7 @@ class DMX(PropertyGroup):
                 DMX_PT_DMX,
                 DMX_PT_DMX_Universes,
                 DMX_PT_DMX_ArtNet,
+                DMX_PT_DMX_LiveDMX,
                 DMX_OT_Setup_Volume_Create,
                 DMX_PT_Setup_Background,
                 DMX_PT_Setup_Volume,
@@ -86,6 +88,7 @@ class DMX(PropertyGroup):
                 DMX_OT_Fixture_Item,
                 DMX_OT_Fixture_Profiles,
                 DMX_OT_Fixture_Mode,
+                DMX_UL_LiveDMX_items,
                 DMX_OT_Fixture_Add,
                 DMX_OT_Fixture_Edit,
                 DMX_OT_Fixture_Remove,
@@ -150,6 +153,28 @@ class DMX(PropertyGroup):
     universes : CollectionProperty(
         name = "DMX Groups",
         type = DMX_Universe)
+
+    def prepare_empty_buffer(self, context):
+        # Clear the buffer on change of every protocol
+        DMX_Data.prepare_empty_buffer()
+
+    selected_live_dmx_source : EnumProperty(
+        name = "DMX Source",
+        description="The network protocol for which to show live DMX values",
+        default = "BLENDERDMX",
+        items = network_options_list,
+        update = prepare_empty_buffer
+    )
+    selected_live_dmx_universe: IntProperty(
+        min = 0,
+            )
+
+    dmx_values: CollectionProperty(
+        name = "DMX buffer",
+        type = DMX_Value
+    )
+
+    dmx_value_index: IntProperty() # Just a fake value, we need as the live DMX UI Panel requires it
 
     # New DMX Scene
     # - Remove any previous DMX objects/collections
