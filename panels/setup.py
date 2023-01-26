@@ -112,7 +112,7 @@ class DMX_PT_Setup_Volume(Panel):
         row.enabled = (dmx.volume != None)
 
 class DMX_PT_Setup_Debug(Panel):
-    bl_label = "Debug"
+    bl_label = "Extras"
     bl_idname = "DMX_PT_Setup_Debug"
     bl_parent_id = "DMX_PT_Setup"
     bl_space_type = "VIEW_3D"

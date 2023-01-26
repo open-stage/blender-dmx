@@ -60,93 +60,7 @@ class DMX_GDTF():
     def getModes(profile):
         gdtf_profile = DMX_GDTF.loadProfile(profile)
         return tuple([mode.name for mode in gdtf_profile.dmx_modes])
-
-    @staticmethod
-    def getValue(dmx_value, fine=False):
-        if (dmx_value.byte_count == 1): return dmx_value.value
-        f = dmx_value.value/255.0
-        msb = int(f)
-        if (not fine): return msb
-        lsb = int((f-msb)*255)
-        return lsb
-
-    @staticmethod
-    def get_channels_for_geometry(gdtf_profile, geometry, dmx_channels, channel_list):
-        """get all channels for the device"""
-        DMX_Log.log.info(geometry.name)
-        name = geometry.name
-
-        if isinstance(geometry, pygdtf.GeometryReference):
-            name=geometry.geometry
-
-        for channel in gdtf_profile.get_channels_by_geometry(name, dmx_channels):
-            channel_list.append((channel, geometry))
-        if hasattr(geometry, "geometries"):
-            for sub_geometry in geometry.geometries:
-                channel_list = DMX_GDTF.get_channels_for_geometry(gdtf_profile, sub_geometry, dmx_channels, channel_list)
-        return channel_list
-
-    @staticmethod
-    def getChannels(gdtf_profile, mode):
-        dmx_mode = None
-        dmx_mode = gdtf_profile.get_dmx_mode_by_name(mode)
-        root_geometry = gdtf_profile.get_geometry_by_name(dmx_mode.geometry)
-        device_channels=DMX_GDTF.get_channels_for_geometry(gdtf_profile, root_geometry, dmx_mode.dmx_channels, [])
-        #breakpoint()
-        
-        dmx_channels = []
-         
-        for channel, geometry in device_channels:
-            #print(channel.logical_channels[0].attribute, channel.offset, geometry.name)
-
-            #breakpoint()
-            if channel.offset is None:
-                continue
-            if len(dmx_channels) < channel.dmx_break:
-                dmx_channels = dmx_channels + [[]]*(channel.dmx_break-len(dmx_channels))
-
-            break_channels = dmx_channels[channel.dmx_break-1] # off by one...
-
-            break_addition=0
-        
-            if hasattr(geometry, "breaks"):
-                dmx_offset = gdtf_profile.get_address_by_break(geometry.breaks, channel.dmx_break)
-                if dmx_offset is not None:
-                    break_addition = dmx_offset.address - 1
-            
-            offset0 = channel.offset[0] + break_addition
-            offset1 = 0
-            if len(channel.offset) > 1:
-                offset1 = channel.offset[1] + break_addition
-
-            max_offset = max([offset0, offset1])
-
-            if len(break_channels) < max_offset:
-                #print(len(break_channels), break_channels)
-                break_channels = break_channels + [{'dmx':'','id':'', 'default':0, 'geometry':'', 'break':''}]*(max_offset-len(break_channels))
-            
-            break_channels[offset0-1] = {
-                'dmx':offset0,
-                'id':str(channel.logical_channels[0].channel_functions[0].attribute),
-                'default':DMX_GDTF.getValue(channel.logical_channels[0].channel_functions[0].default),
-                'geometry': geometry.name,
-                'break':channel.dmx_break
-            }
-            if offset1 > 0:
-                break_channels[offset1-1] = {
-                    'dmx':offset1,
-                    'id':'+'+str(channel.logical_channels[0].channel_functions[0].attribute),
-                    'default':DMX_GDTF.getValue(channel.logical_channels[0].channel_functions[0].default, True),
-                    'geometry': geometry.name,
-                    'break':channel.dmx_break
-                }
-            dmx_channels[channel.dmx_break-1] = break_channels
-        #breakpoint()
-        DMX_Log.log.info([channel for break_channels in dmx_channels for channel in break_channels])
-        DMX_Log.log.info("len([channel for break_channels in dmx_channels for channel in break_channels])")
-        return [channel for break_channels in dmx_channels for channel in break_channels]
-       
-     
+ 
     @staticmethod
     def loadProfile(filename):
         path = os.path.join(DMX_GDTF.getProfilesPath(), filename)
@@ -214,14 +128,14 @@ class DMX_GDTF():
         collection = bpy.data.collections.new(DMX_GDTF.getName(profile, mode))
         objs = {}
         # Get root geometry reference from the selected DMX Mode
-        dmx_mode = profile.get_dmx_mode_by_name(mode)
-        root_geometry = profile.get_geometry_by_name(dmx_mode.geometry)
+        dmx_mode = pygdtf.utils.get_dmx_mode_by_name(profile, mode)
+        root_geometry = pygdtf.utils.get_geometry_by_name(profile, dmx_mode.geometry)
 
         def load_geometries(geometry):
             """Load 3d models, primitives and shapes"""
             
             if isinstance(geometry, pygdtf.GeometryReference):
-                reference = profile.get_geometry_by_name(geometry.geometry)
+                reference = pygdtf.utils.get_geometry_by_name(profile, geometry.geometry)
                 geometry.model = reference.model
 
             if geometry.model is None:
@@ -234,7 +148,7 @@ class DMX_GDTF():
                 # Deepcopy the model because GeometryReference will modify the name
                 # Perhaps this could be done conditionally
                 # Also, we could maybe make a copy of the beam instance, if Blender supports it...
-                model = copy.deepcopy(profile.get_model_by_name(geometry.model))
+                model = copy.deepcopy(pygdtf.utils.get_model_by_name(profile, geometry.model))
 
             if isinstance(geometry, pygdtf.GeometryReference):
                 model.name=geometry.name
@@ -288,7 +202,7 @@ class DMX_GDTF():
 
             if isinstance(geometry, (pygdtf.GeometryBeam, pygdtf.GeometryReference)):
                 if isinstance(geometry, pygdtf.GeometryReference):
-                    geometry = profile.get_geometry_by_name(geometry.geometry)
+                    geometry = pygdtf.utils.get_geometry_by_name(profile, geometry.geometry)
 
                 if "beam" not in obj_child.name.lower():
                     obj_child.name=f"Beam {obj_child.name}"

@@ -3,6 +3,7 @@ from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 import zipfile
 from dmx.pygdtf.value import *
+from .utils import *
 
 
 # Standard predefined colour spaces: R, G, B, W-P
@@ -140,64 +141,6 @@ class FixtureType:
             self.revisions = [Revision(xml_node=i) for i in revision_collect.findall('Revision')]
         else:
             self.revisions = []
-
-
-    def get_dmx_mode_by_name(self, mode_name):
-        """Find mode by name"""
-        for mode in self.dmx_modes:
-            if mode.name == mode_name:
-                return mode
-            
-
-    def get_geometry_by_name(self, geometry_name):
-        """Recursively find a geometry of a given name"""
-        
-        def iterate_geometries(collector):
-            if collector.name == geometry_name:
-                matched.append(collector)
-            for g in collector.geometries:
-                if g.name == geometry_name:
-                    matched.append(g)
-                if hasattr(g, "geometries"):
-                    iterate_geometries(g)
-        matched = []
-        iterate_geometries(self)
-        if matched:
-            return matched[0]
-
-
-    def get_geometry_by_type(self, root, geometry_class):
-        """Recursively find all geometries of a given type"""
-        def iterate_geometries(collector):
-            for g in collector.geometries:
-                if type(g) == geometry_class:
-                    matched.append(g)
-                if hasattr(g, "geometries"):
-                    iterate_geometries(g)
-        matched = []
-        iterate_geometries(root)
-        return matched
-
-    def get_model_by_name(self, model_name):
-        """Find model by name"""
-        for model in self.models:
-            if model.name==model_name:
-                return model
-
-    def get_channels_by_geometry(self, geometry_name, channels):
-        """Find channels for a given geometry"""
-        matched = []
-        for channel in channels:
-            if channel.geometry == geometry_name:
-                matched.append(channel)
-
-        return matched
-
-    def get_address_by_break(self, dmx_breaks, value):
-        for item in dmx_breaks:
-            if item.dmx_break == value:
-                return item.dmx_offset
-
 
 class BaseNode:
 

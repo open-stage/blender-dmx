@@ -590,11 +590,11 @@ class DMX(PropertyGroup):
 
     # # Fixtures
 
-    def addFixture(self, name, profile, universe, address, mode, gel_color, position=None):
+    def addFixture(self, name, profile, universe, address, mode, gel_color, display_beams, position=None):
         bpy.app.handlers.depsgraph_update_post.clear()
         dmx = bpy.context.scene.dmx
         dmx.fixtures.add()
-        dmx.fixtures[-1].build(name, profile, mode, universe, address, gel_color, position)
+        dmx.fixtures[-1].build(name, profile, mode, universe, address, gel_color, display_beams, position)
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
     def removeFixture(self, fixture):
@@ -634,7 +634,7 @@ class DMX(PropertyGroup):
             for fixture_index, fixture in enumerate(layer.fixtures):
                 mvr_scene._package.extract(fixture.gdtf_spec, extract_to_folder_path)
                 self.ensureUniverseExists(fixture.addresses[0].universe)
-                self.addFixture(f"{fixture.name} {layer_index}-{fixture_index}", fixture.gdtf_spec, fixture.addresses[0].universe, fixture.addresses[0].address, fixture.gdtf_mode, (1.0,1.0,1.0,1.0), position=fixture.matrix)
+                self.addFixture(f"{fixture.name} {layer_index}-{fixture_index}", fixture.gdtf_spec, fixture.addresses[0].universe, fixture.addresses[0].address, fixture.gdtf_mode, (1.0,1.0,1.0,1.0), True, position=fixture.matrix)
 
     def ensureUniverseExists(self, universe):
         # Allocate universes to be able to control devices

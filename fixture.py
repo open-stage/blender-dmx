@@ -14,6 +14,7 @@ from dmx.model import DMX_Model
 from dmx.logging import DMX_Log
 
 from dmx.param import DMX_Param, DMX_Model_Param
+from dmx import pygdtf
 
 from dmx.gdtf import DMX_GDTF
 from dmx.data import DMX_Data
@@ -244,7 +245,10 @@ class DMX_Fixture(PropertyGroup):
                 obj.hide_set(not bpy.context.scene.dmx.display_pigtails)
 
         # Build DMX channels cache
-        for ch in DMX_GDTF.getChannels(gdtf_profile, self.mode):
+        dmx_channels = pygdtf.utils.get_dmx_channels(gdtf_profile, self.mode)
+        # Merge all DMX breaks together
+        dmx_channels_flattened = [channel for break_channels in dmx_channels for channel in break_channels]
+        for ch in dmx_channels_flattened:
             self.channels.add()
             self.channels[-1].id = ch['id']
             self.channels[-1].default = ch['default']
