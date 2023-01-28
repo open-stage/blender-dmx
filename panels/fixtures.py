@@ -10,6 +10,7 @@
 import bpy
 import os
 import shutil
+from dmx import pygdtf
 
 from bpy.props import (IntProperty,
                        FloatProperty,
@@ -109,10 +110,10 @@ class DMX_MT_Fixture_Mode(Menu):
         dmx = scene.dmx
         profile = context.add_edit_panel.profile
         if (not profile): return
-        for mode in DMX_GDTF.getModes(profile):
+        for mode, channel_count in DMX_GDTF.getModes(profile).items():
             row = layout.row()
             row.context_pointer_set("add_edit_panel", context.add_edit_panel)
-            row.operator(DMX_OT_Fixture_Mode.bl_idname, text=mode).mode = mode
+            row.operator(DMX_OT_Fixture_Mode.bl_idname, text=f"{mode}, {channel_count} channels").mode = mode
 
 # Operators #
 
@@ -157,7 +158,8 @@ class DMX_Fixture_AddEdit():
 
     def onProfile(self, context):
         if hasattr(context,'add_edit_panel'):
-            context.add_edit_panel.mode = DMX_GDTF.getModes(context.add_edit_panel.profile)[0]
+            mode, channel_count = list(DMX_GDTF.getModes(context.add_edit_panel.profile).items())[0]
+            context.add_edit_panel.mode =f"{mode}"
 
     profile: StringProperty(
         name = "Profile",

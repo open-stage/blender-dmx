@@ -58,8 +58,14 @@ class DMX_GDTF():
 
     @staticmethod
     def getModes(profile):
+        """Returns an array, keys are mode names, value is channel count"""
         gdtf_profile = DMX_GDTF.loadProfile(profile)
-        return tuple([mode.name for mode in gdtf_profile.dmx_modes])
+        modes = {}
+        for mode in gdtf_profile.dmx_modes:
+            dmx_channels = pygdtf.utils.get_dmx_channels(gdtf_profile, mode.name)
+            dmx_channels_flattened = [channel for break_channels in dmx_channels for channel in break_channels]
+            modes[mode.name] = len(dmx_channels_flattened)
+        return modes
  
     @staticmethod
     def loadProfile(filename):
