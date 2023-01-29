@@ -205,11 +205,16 @@ class DMX_Fixture_AddEdit():
         description="Display beam projection and cone",
         default = True)
 
+    re_address_only: BoolProperty(
+        name = "Re-address only",
+        description="Do not rebuild the model structure",
+        default = False)
+
     units: IntProperty(
         name = "Units",
         description = "How many units of this light to add",
         default = 1,
-        min = 1,
+        min = 0,
         max = 1024)
 
     def draw(self, context):
@@ -231,10 +236,13 @@ class DMX_Fixture_AddEdit():
         col.menu("DMX_MT_Fixture_Mode", text = text_mode)
         col.prop(self, "universe")
         col.prop(self, "address")
-        col.prop(self, "display_beams")
-        col.prop(self, "gel_color")
-        if (self.units > 0):
-            col.prop(self, "units")
+        if self.units == 0:                   # Edit fixtures:
+            col.prop(self, "re_address_only") #     Be default, only change address, don't rebuild models (slow)
+        else:                                 # Adding new fixtures:
+            col.prop(self, "units")           #     Allow to define how many
+        if not self.re_address_only:          # When adding and editing:
+            col.prop(self, "display_beams")   #     Allow not to create and draw Beams (faster, only for emitter views)
+            col.prop(self, "gel_color")       #     This works when both adding AND when editing
 
 class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
     bl_label = "DMX: Add Fixture"
@@ -280,10 +288,15 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             fixture = selected[0]
             if (self.name != fixture.name and self.name in bpy.data.collections):
                 return {'CANCELLED'}
-            fixture.build(self.name, self.profile, self.mode, self.universe, self.address, self.gel_color, self.display_beams)
+            if not self.re_address_only:
+                fixture.build(self.name, self.profile, self.mode, self.universe, self.address, self.gel_color, self.display_beams)
+            else:
+                fixture.address = self.address
+                fixture.universe = self.universe
         # Multiple fixtures
         else:
             address = self.address
+            universe = self.universe
             for i, fixture in enumerate(selected):
                 name = self.name + ' ' + str(i+1)
                 if (name != fixture.name and name in bpy.data.collections):
@@ -292,8 +305,18 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                 name = (self.name + ' ' + str(i+1)) if (self.name != '*') else fixture.name
                 profile = self.profile if (self.profile != '') else fixture.profile
                 mode = self.mode if (self.mode != '') else fixture.mode
-                fixture.build(name, profile, mode, self.universe, address, self.gel_color, self.display_beams)
-                address += len(fixture.channels)
+                if not self.re_address_only:
+                    fixture.build(name, profile, mode, self.universe, address, self.gel_color, self.display_beams)
+                else:
+                    fixture.address = address
+                    fixture.universe = universe
+                if (address + len(fixture.channels)) > 512:
+                    universe += 1
+                    address = 1
+                else:
+                    address += len(fixture.channels)
+
+
         return {'FINISHED'}
 
     def invoke(self, context, event):
@@ -309,6 +332,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             self.address = fixture.address
             self.mode = fixture.mode
             self.gel_color = fixture.gel_color
+            self.re_address_only = True
             self.display_beams = fixture.display_beams
             self.units = 0
         # Multiple fixtures
@@ -321,6 +345,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             self.gel_color = (255,255,255,255)
             self.units = 0
             self.display_beams = True
+            self.re_address_only = True
 
         wm = context.window_manager
         return wm.invoke_props_dialog(self)
