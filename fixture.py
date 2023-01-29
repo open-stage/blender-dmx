@@ -129,6 +129,7 @@ class DMX_Fixture(PropertyGroup):
 
         # (Edit) Store objects positions
         old_pos = {obj.name:obj.object.location.copy() for obj in self.objects}
+        old_rot = {obj.name:obj.object.rotation_euler.copy() for obj in self.objects}
         
         # (Edit) Collection with this name already exists, delete it
         if (self.name in bpy.data.collections):
@@ -201,25 +202,28 @@ class DMX_Fixture(PropertyGroup):
             for constraint in obj.constraints:
                 constraint.target = links[constraint.target.name]
 
-        # (Edit) Reload old position
+        # (Edit) Reload old positions and rotations
         bpy.context.view_layer.update()
         for obj in self.objects:
-            if (obj.name in old_pos):
+            if obj.name in old_pos:
                 obj.object.location = old_pos[obj.name]
-            elif (obj.name == 'Base'):
-                if ('Body' in old_pos):
-                    obj.object.location = old_pos['Body']
-            elif (obj.name == 'Body'):
-                if ('Base' in old_pos):
-                    obj.object.location = old_pos['Base']
+
+            if obj.name == 'Base':
+                if 'Base' in old_rot:
+                    obj.object.rotation_mode = 'XYZ'
+                    obj.object.rotation_euler = old_rot['Base']
+            elif obj.name == 'Body':
+                if 'Body' in old_rot:
+                    obj.object.rotation_mode = 'XYZ'
+                    obj.object.rotation_euler = old_rot['Body']
 
         # Set position from MVR
         if mvr_position is not None:
             for obj in self.objects:
                 if (obj.name == 'Base'):
-                    obj.object.matrix_world=mvr_position.matrix
+                    obj.object.matrix_world=mvr_position
                 elif (obj.name == 'Body'):
-                    obj.object.matrix_world=mvr_position.matrix
+                    obj.object.matrix_world=mvr_position
 
         # Setup emitter
         for obj in self.collection.objects:
