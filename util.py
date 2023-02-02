@@ -38,6 +38,9 @@ def rgb_to_cmy(rgb):
     y = 1 - rgb[2] / 255
 
     min_cmy = min(c, m, y)
+    if min_cmy == 1:
+        return [0,0,0]
+
     c = (c - min_cmy) / (1 - min_cmy)
     m = (m - min_cmy) / (1 - min_cmy)
     y = (y - min_cmy) / (1 - min_cmy)

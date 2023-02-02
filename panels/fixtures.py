@@ -10,9 +10,11 @@
 import bpy
 import os
 import shutil
+from dmx import pygdtf
 
 from bpy.props import (IntProperty,
                        FloatProperty,
+                       BoolProperty,
                        FloatVectorProperty,
                        EnumProperty,
                        StringProperty,
@@ -63,6 +65,10 @@ class DMX_MT_Fixture(Menu):
         # "Import GDTF Profile"
         row = layout.row()
         row.operator("dmx.import_gdtf_profile", text="Import GDTF Profile", icon="IMPORT")
+        
+        # "Import MVR scene"
+        row = layout.row()
+        row.operator("dmx.import_mvr_scene", text="Import MVR scene", icon="IMPORT")
 
 
 class DMX_MT_Fixture_Manufacturers(Menu):
@@ -104,10 +110,10 @@ class DMX_MT_Fixture_Mode(Menu):
         dmx = scene.dmx
         profile = context.add_edit_panel.profile
         if (not profile): return
-        for mode in DMX_GDTF.getModes(profile):
+        for mode, channel_count in DMX_GDTF.getModes(profile).items():
             row = layout.row()
             row.context_pointer_set("add_edit_panel", context.add_edit_panel)
-            row.operator(DMX_OT_Fixture_Mode.bl_idname, text=mode).mode = mode
+            row.operator(DMX_OT_Fixture_Mode.bl_idname, text=f"{mode}, {channel_count} channels").mode = mode
 
 # Operators #
 
@@ -152,7 +158,8 @@ class DMX_Fixture_AddEdit():
 
     def onProfile(self, context):
         if hasattr(context,'add_edit_panel'):
-            context.add_edit_panel.mode = DMX_GDTF.getModes(context.add_edit_panel.profile)[0]
+            mode, channel_count = list(DMX_GDTF.getModes(context.add_edit_panel.profile).items())[0]
+            context.add_edit_panel.mode =f"{mode}"
 
     profile: StringProperty(
         name = "Profile",
@@ -193,11 +200,21 @@ class DMX_Fixture_AddEdit():
         max = 1.0,
         default = (1.0,1.0,1.0,1.0))
 
+    display_beams: BoolProperty(
+        name = "Display beams",
+        description="Display beam projection and cone",
+        default = True)
+
+    re_address_only: BoolProperty(
+        name = "Re-address only",
+        description="Do not rebuild the model structure",
+        default = False)
+
     units: IntProperty(
         name = "Units",
         description = "How many units of this light to add",
         default = 1,
-        min = 1,
+        min = 0,
         max = 1024)
 
     def draw(self, context):
@@ -208,7 +225,10 @@ class DMX_Fixture_AddEdit():
         text_profile = "GDTF Profile"
         if (self.profile != ""):
             text_profile = self.profile[:-5].replace('_',' ').split('@')
-            text_profile = text_profile[0] + " > " + text_profile[1]
+            if len(text_profile) > 1:
+                text_profile = text_profile[0] + " > " + text_profile[1]
+            else:
+                text_profile = "Unknown manufacturer" + " > " + text_profile[0]
         col.menu("DMX_MT_Fixture_Manufacturers", text = text_profile)
         text_mode = "DMX Mode"
         if (self.mode != ""):
@@ -216,9 +236,13 @@ class DMX_Fixture_AddEdit():
         col.menu("DMX_MT_Fixture_Mode", text = text_mode)
         col.prop(self, "universe")
         col.prop(self, "address")
-        col.prop(self, "gel_color")
-        if (self.units > 0):
-            col.prop(self, "units")
+        if self.units == 0:                   # Edit fixtures:
+            col.prop(self, "re_address_only") #     Be default, only change address, don't rebuild models (slow)
+        else:                                 # Adding new fixtures:
+            col.prop(self, "units")           #     Allow to define how many
+        if not self.re_address_only:          # When adding and editing:
+            col.prop(self, "display_beams")   #     Allow not to create and draw Beams (faster, only for emitter views)
+            col.prop(self, "gel_color")       #     This works when both adding AND when editing
 
 class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
     bl_label = "DMX: Add Fixture"
@@ -239,7 +263,7 @@ class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
             self.report({'ERROR'}, "No DMX Mode selected.")
             return {'CANCELLED'}
         for i in range(self.units):
-            dmx.addFixture(self.name+" "+str(i+1), self.profile, self.universe, self.address, self.mode, self.gel_color)
+            dmx.addFixture(self.name+" "+str(i+1), self.profile, self.universe, self.address, self.mode, self.gel_color, self.display_beams)
         return {'FINISHED'}
 
     def invoke(self, context, event):
@@ -264,10 +288,15 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             fixture = selected[0]
             if (self.name != fixture.name and self.name in bpy.data.collections):
                 return {'CANCELLED'}
-            fixture.build(self.name, self.profile, self.mode, self.universe, self.address, self.gel_color)
+            if not self.re_address_only:
+                fixture.build(self.name, self.profile, self.mode, self.universe, self.address, self.gel_color, self.display_beams)
+            else:
+                fixture.address = self.address
+                fixture.universe = self.universe
         # Multiple fixtures
         else:
             address = self.address
+            universe = self.universe
             for i, fixture in enumerate(selected):
                 name = self.name + ' ' + str(i+1)
                 if (name != fixture.name and name in bpy.data.collections):
@@ -276,8 +305,18 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                 name = (self.name + ' ' + str(i+1)) if (self.name != '*') else fixture.name
                 profile = self.profile if (self.profile != '') else fixture.profile
                 mode = self.mode if (self.mode != '') else fixture.mode
-                fixture.build(name, profile, mode, self.universe, address, self.gel_color)
-                address += len(fixture.channels)
+                if not self.re_address_only:
+                    fixture.build(name, profile, mode, self.universe, address, self.gel_color, self.display_beams)
+                else:
+                    fixture.address = address
+                    fixture.universe = universe
+                if (address + len(fixture.channels)) > 512:
+                    universe += 1
+                    address = 1
+                else:
+                    address += len(fixture.channels)
+
+
         return {'FINISHED'}
 
     def invoke(self, context, event):
@@ -293,6 +332,8 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             self.address = fixture.address
             self.mode = fixture.mode
             self.gel_color = fixture.gel_color
+            self.re_address_only = True
+            self.display_beams = fixture.display_beams
             self.units = 0
         # Multiple fixtures
         else:
@@ -303,6 +344,8 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             self.mode = ''
             self.gel_color = (255,255,255,255)
             self.units = 0
+            self.display_beams = True
+            self.re_address_only = True
 
         wm = context.window_manager
         return wm.invoke_props_dialog(self)
@@ -361,6 +404,49 @@ class DMX_OT_Fixture_Import_GDTF(Operator):
         # https://developer.blender.org/T86803
         self.report({'WARNING'}, 'Restart Blender to load the profiles.')
         return {'FINISHED'}
+
+
+class DMX_OT_Fixture_Import_MVR(Operator):
+    bl_label = "Import MVR scene"
+    bl_idname = "dmx.import_mvr_scene"
+    bl_description = "Import fixtures from MVR scene file"
+    bl_options = {'UNDO'}
+
+    filter_glob: StringProperty(default="*.mvr", options={'HIDDEN'})
+
+    directory: StringProperty(
+        name="File Path",
+        maxlen= 1024,
+        default= "" )
+
+    files: CollectionProperty(
+        name="Files",
+        type=bpy.types.OperatorFileListElement
+    )
+
+    def draw(self, context):
+        layout = self.layout
+        col = layout.column()
+        col.prop(self, "files")
+
+    def invoke(self, context, event):
+        wm = context.window_manager
+        wm.fileselect_add(self)
+        return {'RUNNING_MODAL'}
+
+    def execute(self, context):
+        folder_path = os.path.dirname(os.path.realpath(__file__))
+        folder_path = os.path.join(folder_path, '..', 'assets', 'profiles')
+        for file in self.files:
+            file_path = os.path.join(self.directory, file.name)
+            print(f'Processing MVR file: {file_path}')
+            dmx = context.scene.dmx
+            dmx.addMVR(file_path)
+            #shutil.copy(file_path, folder_path)
+        # https://developer.blender.org/T86803
+        #self.report({'WARNING'}, 'Restart Blender to load the profiles.')
+        return {'FINISHED'}
+
 
 # Panel #
 

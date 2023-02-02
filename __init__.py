@@ -15,13 +15,18 @@ import sys
 import bpy
 import os
 import atexit
+from operator import attrgetter
+
+from dmx.pymvr import *
 
 from dmx.fixture import *
 from dmx.group import *
 from dmx.universe import *
 from dmx.data import *
 from dmx.artnet import *
+from dmx.acn import DMX_sACN
 from dmx.network import *
+from dmx.logging import *
 
 from dmx.panels.setup import *
 from dmx.panels.dmx import *
@@ -50,10 +55,12 @@ class DMX(PropertyGroup):
     classes_base = (DMX_Param,
                     DMX_Model_Param,
                     DMX_Fixture_Object,
+                    DMX_Emitter_Material,
                     DMX_Fixture_Channel,
                     DMX_Fixture,
                     DMX_Group,
                     DMX_Universe,
+                    DMX_Value,
                     DMX_PT_Setup)
 
     # Classes to be registered
@@ -69,10 +76,11 @@ class DMX(PropertyGroup):
                 DMX_PT_DMX,
                 DMX_PT_DMX_Universes,
                 DMX_PT_DMX_ArtNet,
+                DMX_PT_DMX_LiveDMX,
                 DMX_OT_Setup_Volume_Create,
                 DMX_PT_Setup_Background,
                 DMX_PT_Setup_Volume,
-                DMX_PT_Setup_Models,
+                DMX_PT_Setup_Debug,
                 DMX_MT_Fixture,
                 DMX_MT_Fixture_Manufacturers,
                 DMX_MT_Fixture_Profiles,
@@ -80,10 +88,12 @@ class DMX(PropertyGroup):
                 DMX_OT_Fixture_Item,
                 DMX_OT_Fixture_Profiles,
                 DMX_OT_Fixture_Mode,
+                DMX_UL_LiveDMX_items,
                 DMX_OT_Fixture_Add,
                 DMX_OT_Fixture_Edit,
                 DMX_OT_Fixture_Remove,
                 DMX_OT_Fixture_Import_GDTF,
+                DMX_OT_Fixture_Import_MVR,
                 DMX_PT_Fixtures,
                 DMX_UL_Group,
                 DMX_MT_Group,
@@ -93,6 +103,9 @@ class DMX(PropertyGroup):
                 DMX_OT_Group_Remove,
                 DMX_PT_Groups,
                 DMX_OT_Programmer_DeselectAll,
+                DMX_OT_Programmer_SelectAll,
+                DMX_OT_Programmer_SelectInvert,
+                DMX_OT_Programmer_SelectEveryOther,
                 DMX_OT_Programmer_Clear,
                 DMX_OT_Programmer_SelectBodies,
                 DMX_OT_Programmer_SelectTargets,
@@ -141,6 +154,28 @@ class DMX(PropertyGroup):
         name = "DMX Groups",
         type = DMX_Universe)
 
+    def prepare_empty_buffer(self, context):
+        # Clear the buffer on change of every protocol
+        DMX_Data.prepare_empty_buffer()
+
+    selected_live_dmx_source : EnumProperty(
+        name = "DMX Source",
+        description="The network protocol for which to show live DMX values",
+        default = "BLENDERDMX",
+        items = network_options_list,
+        update = prepare_empty_buffer
+    )
+    selected_live_dmx_universe: IntProperty(
+        min = 0,
+            )
+
+    dmx_values: CollectionProperty(
+        name = "DMX buffer",
+        type = DMX_Value
+    )
+
+    dmx_value_index: IntProperty() # Just a fake value, we need as the live DMX UI Panel requires it
+
     # New DMX Scene
     # - Remove any previous DMX objects/collections
     # - Create DMX collection
@@ -183,6 +218,9 @@ class DMX(PropertyGroup):
     # - Allocate static universe data
     def linkFile(self):
         print("DMX", "Linking to file")
+        DMX_Log.enable(self.logging_level)
+        DMX_Log.log.info("DMX", "Linking to file")
+
 
         # Link pointer properties to file objects
         if ("DMX" in bpy.data.collections):
@@ -217,6 +255,9 @@ class DMX(PropertyGroup):
         dmx = bpy.context.scene.dmx
         if (dmx.artnet_enabled and dmx.artnet_status != 'online'):
             dmx.artnet_enabled = False
+            dmx.artnet_status = 'offline'
+        if (dmx.sacn_enabled and dmx.artnet_status != 'online'):
+            dmx.sacn_enabled = False
             dmx.artnet_status = 'offline'
 
         # Rebuild group runtime dictionary (evaluating if this is gonna stay here)
@@ -261,13 +302,34 @@ class DMX(PropertyGroup):
     # # Setup > Models > Display Pigtails
 
     def onDisplayPigtails(self, context):
-        self.updateDisplayPigtails()
+        for fixture in self.fixtures:
+            for obj in fixture.collection.objects:
+                if "Pigtail" in obj.name:
+                    obj.hide_set(not self.display_pigtails)
 
     display_pigtails: BoolProperty(
         name = "Display pigtails",
         default = False,
         update = onDisplayPigtails)
 
+    # # Logging levels
+
+    def onLoggingLevel(self, context):
+        DMX_Log.log.setLevel(self.logging_level)
+
+    logging_level: bpy.props.EnumProperty(
+        name= "Logging level",
+        description= "logging level",
+        default = "ERROR",
+        items= [
+                ('CRITICAL', "Critical", "", "TOOL_SETTINGS", 0),
+                ('ERROR', "Error", "", 'ERROR', 1),
+                ('WARNING', "Warning", "", "CANCEL", 2),
+                ('DEBUG', "Debug", "", "OUTLINER_OB_LIGHT",3),
+                ('INFO', "Info", "", "INFO", 4),
+        ],
+        update = onLoggingLevel
+        )
 
     # # Setup > Volume > Preview Volume
 
@@ -363,6 +425,18 @@ class DMX(PropertyGroup):
         items = DMX_Network.cards()
     )
 
+    # # DMX > sACN > Enable
+
+    def onsACNEnable(self, context):
+        dmx = bpy.context.scene.dmx
+        if (self.sacn_enabled):
+            DMX_sACN.enable()
+            dmx.artnet_status = 'online'
+            
+        else:
+            DMX_sACN.disable()
+            dmx.artnet_status = 'online'
+            
     # # DMX > ArtNet > Enable
 
     def onArtNetEnable(self, context):
@@ -378,6 +452,12 @@ class DMX(PropertyGroup):
         update = onArtNetEnable
     )
 
+    sacn_enabled : BoolProperty(
+        name = "Enable sACN Input",
+        description="Enables the input of DMX data throught sACN.",
+        default = False,
+        update = onsACNEnable
+    )
     # # DMX > ArtNet > Status
 
     artnet_status : EnumProperty(
@@ -535,11 +615,11 @@ class DMX(PropertyGroup):
 
     # # Fixtures
 
-    def addFixture(self, name, profile, universe, address, mode, gel_color):
+    def addFixture(self, name, profile, universe, address, mode, gel_color, display_beams, position=None):
         bpy.app.handlers.depsgraph_update_post.clear()
         dmx = bpy.context.scene.dmx
         dmx.fixtures.add()
-        dmx.fixtures[-1].build(name, profile, mode, universe, address, gel_color)
+        dmx.fixtures[-1].build(name, profile, mode, universe, address, gel_color, display_beams, position)
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
     def removeFixture(self, fixture):
@@ -570,6 +650,23 @@ class DMX(PropertyGroup):
                     selected.append(fixture)
                     break
         return selected
+
+    def addMVR(self, file_name):
+        mvr_scene = pymvr.GeneralSceneDescription(file_name)
+        current_path = os.path.dirname(os.path.realpath(__file__))
+        extract_to_folder_path = os.path.join(current_path, 'assets', 'profiles')
+        for layer_index, layer in enumerate(mvr_scene.layers):
+            for fixture_index, fixture in enumerate(layer.fixtures):
+                mvr_scene._package.extract(fixture.gdtf_spec, extract_to_folder_path)
+                self.ensureUniverseExists(fixture.addresses[0].universe)
+                self.addFixture(f"{fixture.name} {layer_index}-{fixture_index}", fixture.gdtf_spec, fixture.addresses[0].universe, fixture.addresses[0].address, fixture.gdtf_mode, (1.0,1.0,1.0,1.0), True, position=fixture.matrix.matrix)
+
+    def ensureUniverseExists(self, universe):
+        # Allocate universes to be able to control devices
+        dmx = bpy.context.scene.dmx
+        for _ in range(len(dmx.universes), universe+1):
+            self.addUniverse()
+        self.universes_n = len(self.universes)
 
     # # Groups
 
@@ -673,6 +770,7 @@ def onLoadFile(scene):
 
     # Stop ArtNet
     DMX_ArtNet.disable()
+    DMX_sACN.disable()
 
 @bpy.app.handlers.persistent
 def onUndo(scene):
@@ -706,10 +804,12 @@ def register():
     # since 2.91.0 unregister is called also on Blender exit
     if bpy.app.version <= (2, 91, 0):
         atexit.register(DMX_ArtNet.disable)
+        atexit.register(DMX_sACN.disable)
 
 def unregister():
     # Stop ArtNet
     DMX_ArtNet.disable()
+    DMX_sACN.disable()
 
     try:
         # Unregister Base Classes

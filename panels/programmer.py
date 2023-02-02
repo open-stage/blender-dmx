@@ -25,6 +25,54 @@ class DMX_OT_Programmer_DeselectAll(Operator):
         bpy.ops.object.select_all(action='DESELECT')
         return {'FINISHED'}
 
+class DMX_OT_Programmer_SelectAll(Operator):
+    bl_label = "DMX > Programmer > Select All"
+    bl_idname = "dmx.select_all"
+    bl_description = "Select every object in the Scene"
+    bl_options = {'UNDO'}
+
+    def execute(self, context):
+        dmx = context.scene.dmx
+        for fixture in dmx.fixtures:
+            fixture.select()
+        return {'FINISHED'}
+
+class DMX_OT_Programmer_SelectInvert(Operator):
+    bl_label = "DMX > Programmer > Invert selection"
+    bl_idname = "dmx.select_invert"
+    bl_description = "Invert the selection"
+    bl_options = {'UNDO'}
+
+    def execute(self, context):
+        dmx = context.scene.dmx
+        selected = []
+        for fixture in dmx.fixtures:
+            for obj in fixture.collection.objects:
+                if (obj in bpy.context.selected_objects):
+                    selected.append(fixture)
+                    fixture.unselect() 
+
+        for fixture in dmx.fixtures:
+            if fixture not in selected:
+                fixture.select()
+
+        return {'FINISHED'}
+
+class DMX_OT_Programmer_SelectEveryOther(Operator):
+    bl_label = "DMX > Programmer > Select every other light"
+    bl_idname = "dmx.select_every_other"
+    bl_description = "Select every other light"
+    bl_options = {'UNDO'}
+
+    def execute(self, context):
+        bpy.ops.object.select_all(action='DESELECT')
+        dmx = context.scene.dmx
+        for idx, fixture in enumerate(dmx.fixtures):
+            if idx % 2 == 0:
+                fixture.select()
+
+        return {'FINISHED'}
+
 class DMX_OT_Programmer_Clear(Operator):
     bl_label = "DMX > Programmer > Clear"
     bl_idname = "dmx.clear"
@@ -113,18 +161,20 @@ class DMX_PT_Programmer(Panel):
         scene = context.scene
         dmx = scene.dmx
 
-        selected = len(bpy.context.selected_objects) > 0
 
         row = layout.row()
-        row.operator("dmx.deselect_all", text="Deselect All")
-        row.enabled = selected
+        row.operator("dmx.select_all", text='', icon='SELECT_EXTEND')
+        row.operator("dmx.select_invert", text='', icon='SELECT_SUBTRACT')
+        row.operator("dmx.select_every_other", text='', icon='SELECT_INTERSECT')
+        row.operator("dmx.deselect_all", text='', icon='SELECT_SET')
 
+        selected = len(bpy.context.selected_objects) > 0
         row = layout.row()
         row.operator("dmx.select_bodies", text="Bodies")
         row.operator("dmx.select_targets", text="Targets")
         row.enabled = selected
 
-        layout.template_color_picker(scene.dmx,"programmer_color")
+        layout.template_color_picker(scene.dmx,"programmer_color", value_slider=True)
         layout.prop(scene.dmx,"programmer_dimmer", text="Dimmer")
 
         layout.prop(scene.dmx,"programmer_pan", text="Pan")
