@@ -656,10 +656,18 @@ class DMX(PropertyGroup):
         current_path = os.path.dirname(os.path.realpath(__file__))
         extract_to_folder_path = os.path.join(current_path, 'assets', 'profiles')
         for layer_index, layer in enumerate(mvr_scene.layers):
-            for fixture_index, fixture in enumerate(layer.fixtures):
-                mvr_scene._package.extract(fixture.gdtf_spec, extract_to_folder_path)
-                self.ensureUniverseExists(fixture.addresses[0].universe)
-                self.addFixture(f"{fixture.name} {layer_index}-{fixture_index}", fixture.gdtf_spec, fixture.addresses[0].universe, fixture.addresses[0].address, fixture.gdtf_mode, (1.0,1.0,1.0,1.0), True, position=fixture.matrix.matrix)
+            self.process_mvr_child_list(layer.child_list, layer_index, extract_to_folder_path, mvr_scene)
+
+    def process_mvr_child_list(self, child_list, layer_index, extract_to_folder_path, mvr_scene):
+        for fixture_index, fixture in enumerate(child_list.fixtures):
+            self.add_mvr_fixture(mvr_scene, extract_to_folder_path, fixture, fixture_index, layer_index)
+        if child_list.group_object.child_list is not None:
+            self.process_mvr_child_list(child_list.group_object.child_list, layer_index, extract_to_folder_path, mvr_scene)
+
+    def add_mvr_fixture(self, mvr_scene, extract_to_folder_path, fixture, fixture_index, layer_index):
+        mvr_scene._package.extract(fixture.gdtf_spec, extract_to_folder_path)
+        self.ensureUniverseExists(fixture.addresses[0].universe)
+        self.addFixture(f"{fixture.name} {layer_index}-{fixture_index}", fixture.gdtf_spec, fixture.addresses[0].universe, fixture.addresses[0].address, fixture.gdtf_mode, (1.0,1.0,1.0,1.0), True, position=fixture.matrix.matrix)
 
     def ensureUniverseExists(self, universe):
         # Allocate universes to be able to control devices
