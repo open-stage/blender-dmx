@@ -121,6 +121,8 @@ class DMX_GDTF():
         obj.users_collection[0].objects.unlink(obj)
         obj.rotation_euler = Euler((0, 0, 0), 'XYZ')
         z=obj.dimensions.z or 1
+        if obj.dimensions.z <= 0:
+            DMX_Log.log.error(f"Model {obj.name} has no Z height, it will likely not work correctly.")
         obj.scale = (
             obj.scale.x*model.length/obj.dimensions.x,
             obj.scale.y*model.width/obj.dimensions.y,
