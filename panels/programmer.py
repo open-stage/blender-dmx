@@ -95,6 +95,7 @@ class DMX_OT_Programmer_Clear(Operator):
         scene.dmx.programmer_pan = 0.0
         scene.dmx.programmer_tilt = 0.0
         scene.dmx.programmer_zoom = 0
+        scene.dmx.programmer_shutter = 0
         return {'FINISHED'}
 
 class DMX_OT_Programmer_SelectBodies(Operator):
@@ -181,6 +182,7 @@ class DMX_PT_Programmer(Panel):
         layout.prop(scene.dmx,"programmer_tilt", text="Tilt")
 
         layout.prop(scene.dmx,"programmer_zoom", text="Zoom")
+        layout.prop(scene.dmx,"programmer_shutter", text="Strobe")
 
         if (selected):
             layout.operator("dmx.clear", text="Clear")

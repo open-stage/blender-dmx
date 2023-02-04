@@ -221,6 +221,9 @@ class DMX_GDTF():
                 obj_child.visible_shadow = False
                 light_data = bpy.data.lights.new(name=f"Spot {obj_child.name}", type='SPOT')
                 light_data['flux'] = geometry.luminous_flux
+                light_data['shutter_value'] = 0 # Here we will store values required for strobing
+                light_data['shutter_dimmer_value'] = 0
+                light_data['shutter_counter'] = 0
                 light_data.energy = light_data['flux'] #set by default to full brightness for devices without dimmer
                 light_data.spot_size = geometry.beam_angle
                 light_data.spot_size = geometry.beam_angle*3.1415/180.0

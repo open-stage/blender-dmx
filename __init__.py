@@ -571,6 +571,17 @@ class DMX(PropertyGroup):
         self.render()
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
+    def onProgrammerShutter(self, context):
+        bpy.app.handlers.depsgraph_update_post.clear()
+        for fixture in self.fixtures:
+            for obj in fixture.collection.objects:
+                if (obj in bpy.context.selected_objects):
+                    fixture.setDMX({
+                        'Shutter1':int(self.programmer_shutter)
+                    })
+        self.render()
+        bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
+
     programmer_tilt: FloatProperty(
         name = "Programmer Tilt",
         min = -1.0,
@@ -584,6 +595,13 @@ class DMX(PropertyGroup):
         max = 180,
         default = 25,
         update = onProgrammerZoom)
+
+    programmer_shutter: IntProperty(
+        name = "Programmer Shutter",
+        min = 0,
+        max = 255,
+        default = 0,
+        update = onProgrammerShutter)
     # # Programmer > Sync
 
     def syncProgrammer(self):
@@ -594,6 +612,7 @@ class DMX(PropertyGroup):
             self.programmer_pan = 0
             self.programmer_tilt = 0
             self.programmer_zoom = 25
+            self.programmer_shutter = 0
             return
         elif (n > 1): return
         if (not bpy.context.active_object): return
@@ -601,6 +620,8 @@ class DMX(PropertyGroup):
         if (not active): return
         data = active.getProgrammerData()
         self.programmer_dimmer = data['Dimmer']/256.0
+        if 'Shutter1' in data:
+            self.programmer_shutter = int(data['Shutter1']/256.0)
         if ('Zoom' in data):
             self.programmer_zoom = int(data['Zoom']/256.0)
         if ('ColorAdd_R' in data and 'ColorAdd_G' in data and 'ColorAdd_B' in data):
