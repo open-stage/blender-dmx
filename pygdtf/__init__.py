@@ -5,7 +5,6 @@ import zipfile
 from dmx.pygdtf.value import *
 from .utils import *
 
-
 # Standard predefined colour spaces: R, G, B, W-P
 COLOR_SPACE_SRGB = ColorSpaceDefinition(
     ColorCIE(0.6400, 0.3300, 0.2126), ColorCIE(0.3000, 0.6000, 0.7152),
@@ -20,14 +19,11 @@ COLOR_SPACE_ANSI = ColorSpaceDefinition(
 
 def _find_root(pkg: 'zipfile.ZipFile') -> 'ElementTree.Element':
     """Given a GDTF zip archive, find the FixtureType of the corresponding
-    description.xml file. The root element of a GDTF description file is
-    actually a GDTF node, however as the GDTF node only ever has one child, a
-    FixtureType node, and the library functions have no use for the GDTF
-    node, we simply return the FixtureType node here."""
+    description.xml file."""
 
     with pkg.open('description.xml', 'r') as f:
         description_str = f.read()
-    return ElementTree.fromstring(description_str).find('FixtureType')
+    return ElementTree.fromstring(description_str)
 
 
 class FixtureType:
@@ -38,11 +34,13 @@ class FixtureType:
         if path is not None:
             self._package = zipfile.ZipFile(path, 'r')
         if self._package is not None:
-            self._root = _find_root(self._package)
+            self._gdtf = _find_root(self._package)
+            self._root = self._gdtf.find('FixtureType')
         if self._root is not None:
             self._read_xml()
 
     def _read_xml(self):
+        self.data_version = self._gdtf.get('DataVersion')
         self.name = self._root.get('Name')
         self.short_name = self._root.get('ShortName')
         self.long_name = self._root.get('LongName')
@@ -56,54 +54,44 @@ class FixtureType:
         # the corresponding attribute for this class can be set to empty. Failing
         # to do this would result in AttributeError if we try to, for example, run
         # a findall on a non-existent collect
-        activation_collect = self._root.find('AttributeDefinitions').find('ActivationGroups')
-        if activation_collect:
+        if activation_collect := self._root.find('AttributeDefinitions').find('ActivationGroups'):
             self.activation_groups = [ActivationGroup(xml_node=i) for i in activation_collect.findall('ActivationGroup')]
         else:
             self.activation_groups = []
-        feature_collect = self._root.find('AttributeDefinitions').find('FeatureGroups')
-        if feature_collect:
+        if feature_collect := self._root.find('AttributeDefinitions').find('FeatureGroups'):
             self.feature_groups = [FeatureGroup(xml_node=i) for i in feature_collect.findall('FeatureGroup')]
         else:
             self.feature_groups = []
-        attribute_collect = self._root.find('AttributeDefinitions').find('Attributes')
-        if attribute_collect:
+        if attribute_collect := self._root.find('AttributeDefinitions').find('Attributes'):
             self.attributes = [Attribute(xml_node=i) for i in attribute_collect.findall('Attribute')]
         else:
             self.attributes = []
-        wheel_collect = self._root.find('Wheels')
-        if wheel_collect:
+        if wheel_collect := self._root.find('Wheels'):
             self.wheels = [Wheel(xml_node=i) for i in wheel_collect.findall('Wheel')]
         else:
             self.wheels = []
-        emitter_collect = self._root.find('PhysicalDescriptions').find('Emitters')
-        if emitter_collect:
+        if emitter_collect := self._root.find('PhysicalDescriptions').find('Emitters'):
             self.emitters = [Emitter(xml_node=i) for i in emitter_collect.findall('Emitter')]
         else:
             self.emitters = []
-        filter_collect = self._root.find('PhysicalDescriptions').find('Filters')
-        if filter_collect:
+        if filter_collect := self._root.find('PhysicalDescriptions').find('Filters'):
             self.filters = [Filter(xml_node=i) for i in filter_collect.findall('Filter')]
         else:
             self.filters = []
-        color_space = self._root.find('PhysicalDescriptions').find('ColorSpace')
-        if color_space:
+        if color_space := self._root.find('PhysicalDescriptions').find('ColorSpace'):
             self.color_space = ColorSpace(xml_node=color_space)
         else:
             # The default color space is sRGB if nothing else is defined
             self.color_space = ColorSpace(mode=ColorSpaceMode('sRGB'))
-        profiles_collect = self._root.find('PhysicalDescriptions').find('DMXProfiles')
-        if profiles_collect:
+        if profiles_collect := self._root.find('PhysicalDescriptions').find('DMXProfiles'):
             self.dmx_profiles = [DmxProfile(xml_node=i) for i in profiles_collect.findall('DMXProfile')]
         else:
             self.dmx_profiles = []
-        cri_collect = self._root.find('PhysicalDescriptions').find('CRIs')
-        if cri_collect:
+        if cri_collect := self._root.find('PhysicalDescriptions').find('CRIs'):
             self.cri_groups = [CriGroup(xml_node=i) for i in cri_collect.findall('CRIGroup')]
         else:
             self.cri_groups = []
-        model_collect = self._root.find('Models')
-        if model_collect:
+        if model_collect := self._root.find('Models'):
             self.models = [Model(xml_node=i) for i in model_collect.findall('Model')]
         for model in self.models:
             if f"models/gltf/{model.file.name}.glb" in self._package.namelist():
@@ -112,8 +100,7 @@ class FixtureType:
                 model.file.extension='3ds'
 
         self.geometries = []
-        geometry_collect = self._root.find('Geometries')
-        if geometry_collect:
+        if geometry_collect := self._root.find('Geometries'):
             for i in geometry_collect.findall('Geometry'):
                 self.geometries.append(Geometry(xml_node=i))
             for i in geometry_collect.findall('Axis'):
@@ -130,14 +117,11 @@ class FixtureType:
                 self.geometries.append(GeometryBeam(xml_node=i))
             for i in geometry_collect.findall('GeometryReference'):
                 self.geometries.append(GeometryReference(xml_node=i))
-        
-        dmx_mode_collect = self._root.find('DMXModes')
-        if dmx_mode_collect:
+        if dmx_mode_collect := self._root.find('DMXModes'):
             self.dmx_modes = [DmxMode(xml_node=i) for i in dmx_mode_collect.findall('DMXMode')]
         else:
             self.dmx_modes = []
-        revision_collect = self._root.find('Revisions')
-        if revision_collect:
+        if revision_collect := self._root.find('Revisions'):
             self.revisions = [Revision(xml_node=i) for i in revision_collect.findall('Revision')]
         else:
             self.revisions = []
