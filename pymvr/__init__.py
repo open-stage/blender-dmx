@@ -83,8 +83,15 @@ class Fixture(BaseNode):
     def _read_xml(self, xml_node: "Element"):
         self.name = xml_node.attrib.get("name")
         self.uuid = xml_node.attrib.get("uuid")
-        self.gdtf_spec = xml_node.find("GDTFSpec").text
-        self.gdtf_mode = xml_node.find("GDTFMode").text
+        _gdtf_spec = xml_node.find("GDTFSpec")
+        if _gdtf_spec is not None:
+            self.gdtf_spec = _gdtf_spec.text
+            if self.gdtf_spec is not None and len(self.gdtf_spec) > 5:
+                if self.gdtf_spec[-5:].lower() != ".gdtf":
+                    self.gdtf_spec = f"{self.gdtf_spec}.gdtf"
+        _gdtf_mode = xml_node.find("GDTFMode")
+        if _gdtf_mode is not None:
+            self.gdtf_mode = _gdtf_mode.text
         self.matrix = Matrix(str_repr=xml_node.find("Matrix").text)
         self.fixture_id = xml_node.find("FixtureID").text
         self.unit_number = xml_node.find("UnitNumber").text
@@ -96,6 +103,62 @@ class Fixture(BaseNode):
             Address(xml_node=i) for i in xml_node.find("Addresses").findall("Address")
         ]
 
+    def __str__(self):
+        return f"{self.name}"
+
+
+class GroupObject(BaseNode):
+    def __init__(
+        self,
+        name: str = None,
+        uuid: str = None,
+        classing: str = None,
+        child_list: "ChildList" = None,
+        matrix: Matrix = Matrix(0),
+        *args,
+        **kwargs,
+    ):
+        self.name = name
+        self.uuid = uuid
+        self.classing = classing
+        self.child_list = child_list
+        self.matrix = matrix
+
+        super().__init__(*args, **kwargs)
+
+    def _read_xml(self, xml_node: "Element"):
+        self.name = xml_node.attrib.get("name")
+        self.uuid = xml_node.attrib.get("uuid")
+        if _classing := xml_node.find("Classing"):
+            self.classing = _classing.text
+
+        self.child_list = ChildList(xml_node=xml_node.find("ChildList"))
+        if xml_node.find("Matrix"):
+            self.matrix = Matrix(str_repr=xml_node.find("Matrix").text)
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class ChildList(BaseNode):
+    def __init__(
+        self,
+        fixtures: List["Fixture"] = None,
+        group_object: "GroupObject" = None,
+        *args,
+        **kwargs,
+    ):
+        if fixtures is not None:
+            self.fixtures = fixtures
+        else:
+            self.fixtures = []
+        self.group_object = group_object
+        super().__init__(*args, **kwargs)
+
+    def _read_xml(self, xml_node: "Element"):
+        self.fixtures = [Fixture(xml_node=i) for i in xml_node.findall("Fixture")]
+        self.group_object = GroupObject(xml_node=xml_node.find("GroupObject"))
+
 
 class Layer(BaseNode):
     def __init__(
@@ -104,8 +167,8 @@ class Layer(BaseNode):
         uuid: str = None,
         gdtf_spec: str = None,
         gdtf_mode: str = None,
-        fixtures: List["Fixture"] = None,
         matrix: Matrix = Matrix(0),
+        child_list: ChildList = None,
         *args,
         **kwargs,
     ):
@@ -113,23 +176,30 @@ class Layer(BaseNode):
         self.uuid = uuid
         self.gdtf_spec = gdtf_spec
         self.gdtf_mode = gdtf_mode
+        self.child_list = child_list
+        self.matrix = matrix
 
-        if fixtures is not None:
-            self.fixtures = fixtures
-        else:
-            self.fixtures = []
         super().__init__(*args, **kwargs)
 
     def _read_xml(self, xml_node: "Element"):
         self.name = xml_node.attrib.get("name")
         self.uuid = xml_node.attrib.get("uuid")
-        self.gdtf_spec = xml_node.find("GDTFSpec").text
-        self.gdtf_mode = xml_node.find("GDTFMode").text
-        self.fixtures = [
-            Fixture(xml_node=i) for i in xml_node.find("ChildList").findall("Fixture")
-        ]
+        _gdtf_spec = xml_node.find("GDTFSpec")
+        if _gdtf_spec is not None:
+            self.gdtf_spec = _gdtf_spec.text
+            if self.gdtf_spec is not None and len(self.gdtf_spec) > 5:
+                if self.gdtf_spec[-5:].lower() != ".gdtf":
+                    self.gdtf_spec = f"{self.gdtf_spec}.gdtf"
+        _gdtf_mode = xml_node.find("GDTFMode")
+        if _gdtf_mode is not None:
+            self.gdtf_mode = _gdtf_mode.text
+
+        self.child_list = ChildList(xml_node=xml_node.find("ChildList"))
         if xml_node.find("Matrix"):
             self.matrix = Matrix(str_repr=xml_node.find("Matrix").text)
+
+    def __str__(self):
+        return f"{self.name}"
 
 
 class Address(BaseNode):
@@ -139,7 +209,6 @@ class Address(BaseNode):
         self.dmx_break = dmx_break
         self.address = address
         self.universe = universe
-
         super().__init__(*args, **kwargs)
 
     def _read_xml(self, xml_node: "Element"):

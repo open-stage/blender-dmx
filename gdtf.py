@@ -121,6 +121,8 @@ class DMX_GDTF():
         obj.users_collection[0].objects.unlink(obj)
         obj.rotation_euler = Euler((0, 0, 0), 'XYZ')
         z=obj.dimensions.z or 1
+        if obj.dimensions.z <= 0:
+            DMX_Log.log.error(f"Model {obj.name} has no Z height, it will likely not work correctly.")
         obj.scale = (
             obj.scale.x*model.length/obj.dimensions.x,
             obj.scale.y*model.width/obj.dimensions.y,
@@ -219,6 +221,9 @@ class DMX_GDTF():
                 obj_child.visible_shadow = False
                 light_data = bpy.data.lights.new(name=f"Spot {obj_child.name}", type='SPOT')
                 light_data['flux'] = geometry.luminous_flux
+                light_data['shutter_value'] = 0 # Here we will store values required for strobing
+                light_data['shutter_dimmer_value'] = 0
+                light_data['shutter_counter'] = 0
                 light_data.energy = light_data['flux'] #set by default to full brightness for devices without dimmer
                 light_data.spot_size = geometry.beam_angle
                 light_data.spot_size = geometry.beam_angle*3.1415/180.0

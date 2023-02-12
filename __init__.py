@@ -571,6 +571,17 @@ class DMX(PropertyGroup):
         self.render()
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
+    def onProgrammerShutter(self, context):
+        bpy.app.handlers.depsgraph_update_post.clear()
+        for fixture in self.fixtures:
+            for obj in fixture.collection.objects:
+                if (obj in bpy.context.selected_objects):
+                    fixture.setDMX({
+                        'Shutter1':int(self.programmer_shutter)
+                    })
+        self.render()
+        bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
+
     programmer_tilt: FloatProperty(
         name = "Programmer Tilt",
         min = -1.0,
@@ -584,6 +595,13 @@ class DMX(PropertyGroup):
         max = 180,
         default = 25,
         update = onProgrammerZoom)
+
+    programmer_shutter: IntProperty(
+        name = "Programmer Shutter",
+        min = 0,
+        max = 255,
+        default = 0,
+        update = onProgrammerShutter)
     # # Programmer > Sync
 
     def syncProgrammer(self):
@@ -594,6 +612,7 @@ class DMX(PropertyGroup):
             self.programmer_pan = 0
             self.programmer_tilt = 0
             self.programmer_zoom = 25
+            self.programmer_shutter = 0
             return
         elif (n > 1): return
         if (not bpy.context.active_object): return
@@ -601,6 +620,8 @@ class DMX(PropertyGroup):
         if (not active): return
         data = active.getProgrammerData()
         self.programmer_dimmer = data['Dimmer']/256.0
+        if 'Shutter1' in data:
+            self.programmer_shutter = int(data['Shutter1']/256.0)
         if ('Zoom' in data):
             self.programmer_zoom = int(data['Zoom']/256.0)
         if ('ColorAdd_R' in data and 'ColorAdd_G' in data and 'ColorAdd_B' in data):
@@ -656,10 +677,18 @@ class DMX(PropertyGroup):
         current_path = os.path.dirname(os.path.realpath(__file__))
         extract_to_folder_path = os.path.join(current_path, 'assets', 'profiles')
         for layer_index, layer in enumerate(mvr_scene.layers):
-            for fixture_index, fixture in enumerate(layer.fixtures):
-                mvr_scene._package.extract(fixture.gdtf_spec, extract_to_folder_path)
-                self.ensureUniverseExists(fixture.addresses[0].universe)
-                self.addFixture(f"{fixture.name} {layer_index}-{fixture_index}", fixture.gdtf_spec, fixture.addresses[0].universe, fixture.addresses[0].address, fixture.gdtf_mode, (1.0,1.0,1.0,1.0), True, position=fixture.matrix.matrix)
+            self.process_mvr_child_list(layer.child_list, layer_index, extract_to_folder_path, mvr_scene)
+
+    def process_mvr_child_list(self, child_list, layer_index, extract_to_folder_path, mvr_scene):
+        for fixture_index, fixture in enumerate(child_list.fixtures):
+            self.add_mvr_fixture(mvr_scene, extract_to_folder_path, fixture, fixture_index, layer_index)
+        if child_list.group_object.child_list is not None:
+            self.process_mvr_child_list(child_list.group_object.child_list, layer_index, extract_to_folder_path, mvr_scene)
+
+    def add_mvr_fixture(self, mvr_scene, extract_to_folder_path, fixture, fixture_index, layer_index):
+        mvr_scene._package.extract(fixture.gdtf_spec, extract_to_folder_path)
+        self.ensureUniverseExists(fixture.addresses[0].universe)
+        self.addFixture(f"{fixture.name} {layer_index}-{fixture_index}", fixture.gdtf_spec, fixture.addresses[0].universe, fixture.addresses[0].address, fixture.gdtf_mode, (1.0,1.0,1.0,1.0), True, position=fixture.matrix.matrix)
 
     def ensureUniverseExists(self, universe):
         # Allocate universes to be able to control devices

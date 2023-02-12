@@ -255,8 +255,15 @@ class DMX_Fixture(PropertyGroup):
         for ch in dmx_channels_flattened:
             self.channels.add()
             self.channels[-1].id = ch['id']
-            self.channels[-1].default = ch['default']
             self.channels[-1].geometry = ch['geometry']
+
+            # Set shutter to 0, we don't want strobing by default
+            # and are not reading real world values yet
+            if "shutter" in ch['id'].lower():
+                self.channels[-1].default = 0
+            else:
+                self.channels[-1].default = ch['default']
+
         
         self.clear()
         bpy.context.scene.dmx.render()
@@ -273,6 +280,7 @@ class DMX_Fixture(PropertyGroup):
     def render(self):
         channels = [c.id for c in self.channels]
         data = DMX_Data.get(self.universe, self.address, len(channels))
+        shutterDimmer = [None, None]
         panTilt = [None,None]
         rgb = [None,None,None]
         cmy = [None,None,None]
@@ -282,7 +290,8 @@ class DMX_Fixture(PropertyGroup):
             geometry=self.channels[c].geometry
             if geometry not in mixing.keys():
                 mixing[geometry]=[None, None, None]
-            if (channels[c] == 'Dimmer'): self.updateDimmer(data[c])
+            if (channels[c] == 'Dimmer'): shutterDimmer[1] = data[c]
+            elif (channels[c] == 'Shutter1'): shutterDimmer[0] = data[c]
             elif (channels[c] == 'ColorAdd_R'): mixing[geometry][0] = data[c]
             elif (channels[c] == 'ColorAdd_G'): mixing[geometry][1] = data[c]
             elif (channels[c] == 'ColorAdd_B'): mixing[geometry][2] = data[c]
@@ -306,8 +315,12 @@ class DMX_Fixture(PropertyGroup):
 
         if (panTilt[0] != None and panTilt[1] != None):
             self.updatePanTilt(panTilt[0], panTilt[1])
+
         if (zoom != None):
             self.updateZoom(zoom)
+
+        if shutterDimmer[0] is not None and shutterDimmer[1] is not None:
+            self.updateShutterDimmer(shutterDimmer[0], shutterDimmer[1])
 
     def light_object_for_geometry_exists(self, mixing):
         """Check if there is any light or emitter matching geometry name of a color attribute"""
@@ -320,16 +333,71 @@ class DMX_Fixture(PropertyGroup):
                     return True
         return False
 
-    def updateDimmer(self, dimmer):
+    def get_channel_by_attribute(self, attribute):
+        for channel in self.channels:
+            if channel.id == attribute:
+                return channel
+
+    def updateShutterDimmer(self, shutter, dimmer):
+        last_shutter_value = 0
+        last_dimmer_value = 0
         try:
             for emitter_material in self.emitter_materials:
+                if shutter > 0:
+                    break # no need to do the expensive value settings if we do this anyway in shutter timer
                 emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer/255.0)
+
             for light in self.lights:
+                last_shutter_value = light.object.data['shutter_value']
+                last_dimmer_value = light.object.data['shutter_dimmer_value']
+                light.object.data['shutter_value']=shutter
+                light.object.data['shutter_dimmer_value']=dimmer
+                if shutter > 0:
+                    break # no need to do the expensive value settings if we do this anyway in shutter timer
                 light.object.data.energy = (dimmer/255.0) * light.object.data['flux']
+
         except Exception as e:
             print("Error updating dimmer", e)
-                
+
+        if (last_shutter_value == 0 or last_dimmer_value == 0) and shutter != 0:
+                bpy.app.timers.register(self.runStrobe)
+                DMX_Log.log.info("Register shutter timer")
+
         return dimmer
+    
+    def runStrobe(self):
+        try:
+
+            exit_timer = False
+            dimmer_value = 0 # reused also for emitter
+
+            for light in self.lights:
+                if light.object.data['shutter_value'] == 0:
+                    exit_timer= True
+                if light.object.data['shutter_dimmer_value'] == 0:
+                    exit_timer = True
+                dimmer_value = 0
+                if light.object.data['shutter_counter'] == 1:
+                    dimmer_value = light.object.data['shutter_dimmer_value']
+                if light.object.data['shutter_counter'] > light.object.data['shutter_value']:
+                    light.object.data['shutter_counter'] = 0
+
+                light.object.data.energy = (dimmer_value/255.0) * light.object.data['flux']
+                light.object.data['shutter_counter'] +=1
+
+            # Here we can reuse data we got from the light object...
+            for emitter_material in self.emitter_materials:
+                emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer_value/255.0)
+
+            if exit_timer:
+                DMX_Log.log.info("Killing shutter timer")
+                return None # exit the timer
+
+        except Exception as e:
+            DMX_Log.log.error("Error updating lights and emitters", e)
+            DMX_Log.log.info("Killing shutter timer")
+            return None # kills the timer
+        return 1.0/24.0
 
     def updateRGB(self, rgb, geometry):
         DMX_Log.log.info(("color change for geometry", geometry))
