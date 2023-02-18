@@ -304,7 +304,7 @@ class DMX(PropertyGroup):
     def onDisplayPigtails(self, context):
         for fixture in self.fixtures:
             for obj in fixture.collection.objects:
-                if "Pigtail" in obj.name:
+                if "pigtail" in obj.get("geometry_type", ""):
                     obj.hide_set(not self.display_pigtails)
 
     display_pigtails: BoolProperty(

@@ -111,11 +111,7 @@ class DMX_OT_Programmer_SelectBodies(Operator):
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
                     for body in fixture.collection.objects:
-                        if ('Body' in body.name):
-                            bodies.append(body)
-                        elif ('Base' in body.name):
-                            bodies.append(body)
-                        elif ('Emitter' in body.name):
+                        if body.get("geometry_root", False):
                             bodies.append(body)
                     break
 

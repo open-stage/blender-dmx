@@ -53,3 +53,6 @@ def cmy_to_rgb(cmy):
     rgb[1] = int(255 * (1.0 - cmy[1] / 255))
     rgb[2] = int(255 * (1.0 - cmy[2] / 255))
     return rgb
+
+def sanitize_obj_name(name):
+    return name.replace(" ", "_")

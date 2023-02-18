@@ -14,6 +14,8 @@ from mathutils import Euler, Matrix
 from dmx import pygdtf
 from dmx.logging import DMX_Log
 from dmx.io_scene_3ds.import_3ds import load_3ds
+from dmx.util import sanitize_obj_name
+
 
 class DMX_GDTF():
 
@@ -149,7 +151,7 @@ class DMX_GDTF():
             if geometry.model is None:
                 # Empty geometries are allowed as of GDTF 1.2
                 # If the size is 0, Blender will discard it, set it to something tiny
-                model=pygdtf.Model(name=geometry.name,
+                model=pygdtf.Model(name=sanitize_obj_name(geometry.name),
                                    length=0.0001, width=0.0001, height=0.0001, primitive_type="Cube")
                 geometry.model = ""
             else:
@@ -159,7 +161,7 @@ class DMX_GDTF():
                 model = copy.deepcopy(pygdtf.utils.get_model_by_name(profile, geometry.model))
 
             if isinstance(geometry, pygdtf.GeometryReference):
-                model.name=geometry.name
+                model.name=sanitize_obj_name(geometry.name)
 
             obj = None
             primitive = str(model.primitive_type)
@@ -168,32 +170,72 @@ class DMX_GDTF():
             if (primitive[-3:] == '1_1'):
                 primitive = primitive[:-3]
                 model.primitive_type = pygdtf.PrimitiveType(primitive)
-            # BlenderDMX primitives
-            if (str(model.primitive_type) in ['Base','Conventional','Head','Yoke']):
-                obj = DMX_GDTF.loadPrimitive(model)
-            # 'Undefined': load from 3d
-            elif (str(model.primitive_type) == 'Undefined'):
+
+            # 'Undefined' of 'File': load from file
+            # Prefer File first, as some GDTFs have both File and PrimitiveType
+            if (str(model.primitive_type) == 'Undefined') or (model.file is not None and model.file.name != "" and (str(model.primitive_type) != 'Pigtail')):
                 try:
                     obj = DMX_GDTF.loadModel(profile, model)
                 except Exception as e:
                     print("Error importing 3D model:", e)
+                    model.primitive_type="Cube"
+                    obj = DMX_GDTF.loadBlenderPrimitive(model)
+            # BlenderDMX primitives
+            elif (str(model.primitive_type) in ['Base','Conventional','Head','Yoke']):
+                obj = DMX_GDTF.loadPrimitive(model)
             # Blender primitives
             else:
                 obj = DMX_GDTF.loadBlenderPrimitive(model)
+                
             # If object was created
             if (obj != None):
-                obj.name = model.name
-                objs[model.name] = obj
-                obj.hide_select = True
+                if sanitize_obj_name(geometry.name) == sanitize_obj_name(root_geometry.name):
+                    obj["geometry_root"]=True
+                    obj.hide_select = False
+                else:
+                    obj.hide_select = True
+                obj.name = sanitize_obj_name(geometry.name)
+                obj["geometry_type"]=get_geometry_type_as_string(geometry)
+                obj["original_name"]=geometry.name
+                if str(model.primitive_type) == 'Pigtail':
+                    # This is a bit ugly because of PrimitiveType (in model) and not Geometry type (in geometry)
+                    obj["geometry_type"]="pigtail"
+                objs[sanitize_obj_name(geometry.name)] = obj
+
+                # Apply transforms to ensure that models are correctly rendered
+                # even if their transformations have not been applied prior to saving
+                # This solves 99% of known issues when loading glbs
+
+                mb = obj.matrix_basis
+                if hasattr(obj.data, "transform"):
+                    obj.data.transform(mb)
+                for c in obj.children:
+                    c.matrix_local = mb @ c.matrix_local
+                obj.matrix_basis.identity()
 
             if hasattr(geometry, "geometries"):
                 for sub_geometry in geometry.geometries:
                     load_geometries(sub_geometry)
 
+        def get_geometry_type_as_string(geometry):
+            # From these, we end up using "beam" and "pigtail".
+            # The Pigtail is a special primitive type and we don't have access to 
+            # get to know this here
+            # Even axis is not needed, as we rotate the geometry based on attributes during controlling
+
+
+            if isinstance(geometry, pygdtf.GeometryBeam):
+                return "beam"
+            if isinstance(geometry, pygdtf.GeometryAxis):
+                return "axis"
+            if isinstance(geometry, pygdtf.GeometryReference):
+                geometry = pygdtf.utils.get_geometry_by_name(profile, geometry.geometry)
+                return get_geometry_type_as_string(geometry)
+            return "normal"
 
         def add_child_position(geometry):
             """Add a child, create a light source and emitter material for beams"""
-            obj_child = objs[geometry.name]
+            obj_child = objs[sanitize_obj_name(geometry.name)]
 
             position = Matrix(geometry.position.matrix).to_translation()
             obj_child.location[0] += (position[0]*-1) # bug in the pygdtf?
@@ -236,9 +278,9 @@ class DMX_GDTF():
                 collection.objects.link(light_object)
 
         def constraint_child_to_parent(parent_geometry, child_geometry):
-            obj_parent = objs[parent_geometry.name]
-            if (not child_geometry.name in objs): return
-            obj_child = objs[child_geometry.name]
+            obj_parent = objs[sanitize_obj_name(parent_geometry.name)]
+            if (not sanitize_obj_name(child_geometry.name) in objs): return
+            obj_child = objs[sanitize_obj_name(child_geometry.name)]
             constraint = obj_child.constraints.new('CHILD_OF')
             constraint.target = obj_parent
             constraint.use_scale_x = False
@@ -263,6 +305,11 @@ class DMX_GDTF():
                         update_geometry(child_geometry)
 
         # Load 3d objects from the GDTF profile
+        # The whole procedure is still quite simplified
+        # We could use more hierarchical approach inside Blender
+        # To represent the geometries in a kinematic chain rather then flat structure
+        # Also, we mostly omit links between geometry and channel function's geometry linking
+        # For places, where for example multiple yokes would exist...
         load_geometries(root_geometry)
         update_geometry(root_geometry)
 
@@ -273,43 +320,49 @@ class DMX_GDTF():
         target.empty_display_type = 'PLAIN_AXES'
         target.location = (0,0,-2)
 
-        # If there's no Head, this is a static fixture
-        if ('Head' not in objs):
-            # If body has a Yoke child, set Z rotation constraint
+        dmx_channels = pygdtf.utils.get_dmx_channels(profile, mode)
+        # Merge all DMX breaks together
+        dmx_channels_flattened = [channel for break_channels in dmx_channels for channel in break_channels]
+        # dmx_channels_flattened contain list of channel with id, geometry
+
+        def get_root():
+            for obj in objs.values():
+                if obj.get("geometry_root", False):
+                    return obj
+
+        def get_axis(attribute):
+            for obj in objs.values():
+                for channel in dmx_channels_flattened:
+                    if attribute == channel["id"] and channel["geometry"] == obj.get("original_name", "None"):
+                        return obj
+
+
+        # This could be moved to the processing up higher,but for now, it's easier here
+        head = get_axis("Tilt")
+        yoke = get_axis("Pan")
+        base = get_root()
+        DMX_Log.log.info(f"Head: {head}, Yoke: {yoke}, Base: {base}")
+
+
+        # If the root has a child with Pan, create Z rotation constraint
+        if yoke is not None:
             for name, obj in objs.items():
-                if (name == 'Yoke' and len(obj.constraints)):
+                if yoke.name == obj.name and len(obj.constraints):
                     constraint = obj.constraints[0]
-                    if (constraint.target == objs['Body']):
-                        constraint.use_rotation_x = False
-                        constraint.use_rotation_y = False
-                    break
-
-            # Track body to the target
-            constraint = objs['Body'].constraints.new('TRACK_TO')
-            constraint.target = target
-
-            # Make body selectable
-            objs['Body'].hide_select = False
-
-        # There's a Head! This is a moving fixture
-        else:
-            # If base has a Yoke child, create Z rotation constraint
-            for name, obj in objs.items():
-                if (name == 'Yoke' and len(obj.constraints)):
-                    constraint = obj.constraints[0]
-                    if (constraint.target == objs['Base']):
+                    if constraint.target == base:
                         constraint = obj.constraints.new('LOCKED_TRACK')
                         constraint.target = target
                         constraint.lock_axis = "LOCK_Z"
                     break
 
-            # Track body to the target
-            constraint = objs['Head'].constraints.new('TRACK_TO')
+        # Track head to the target
+        if head is not None:
+            constraint = head.constraints.new('TRACK_TO')
             constraint.target = target
-
-            # Make body selectable
-            objs['Base'].hide_select = False
-
+        else:
+            # make sure simple par fixtures can be controlled via Target
+            constraint = base.constraints.new('TRACK_TO')
+            constraint.target = target
 
         # Link objects to collection
         for name, obj in objs.items():

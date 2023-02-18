@@ -19,6 +19,7 @@ from dmx import pygdtf
 from dmx.gdtf import DMX_GDTF
 from dmx.data import DMX_Data
 from dmx.util import cmy_to_rgb
+from dmx.util import sanitize_obj_name
 
 from bpy.props import (IntProperty,
                        FloatProperty,
@@ -166,87 +167,6 @@ class DMX_Fixture(PropertyGroup):
         # Import and deep copy Fixture Model Collection
         gdtf_profile = DMX_GDTF.loadProfile(profile)
         model_collection = DMX_Model.getFixtureModelCollection(gdtf_profile, self.mode, self.display_beams)
-        links = {}
-        for obj in model_collection.objects:
-            # Copy object
-            links[obj.name] = obj.copy()
-            # If light, copy object data
-            if (obj.type == 'LIGHT'):
-                links[obj.name].data = obj.data.copy()
-                self.lights.add()
-                light_name=f'Light{len(self.lights)}'
-                self.lights[-1].name = light_name
-                self.lights[light_name].object = links[obj.name]
-            # Store reference to body, base and target
-            if ('Base' in obj.name):
-                self.objects.add()
-                self.objects[-1].name = 'Base'
-                self.objects['Base'].object = links[obj.name]
-            elif ('Body' in obj.name):
-                self.objects.add()
-                self.objects[-1].name = 'Body'
-                self.objects['Body'].object = links[obj.name]
-            elif ('Head' in obj.name):
-                self.objects.add()
-                self.objects[-1].name = 'Head'
-                self.objects['Head'].object = links[obj.name]
-            elif ('Target' in obj.name):
-                self.objects.add()
-                self.objects[-1].name = 'Target'
-                self.objects['Target'].object = links[obj.name]
-            # Link new object to collection
-            self.collection.objects.link(links[obj.name])
-
-        # Relink constraints
-        for obj in self.collection.objects:
-            for constraint in obj.constraints:
-                constraint.target = links[constraint.target.name]
-
-        # (Edit) Reload old positions and rotations
-        bpy.context.view_layer.update()
-        for obj in self.objects:
-            if obj.name in old_pos:
-                obj.object.location = old_pos[obj.name]
-
-            if obj.name == 'Base':
-                if 'Base' in old_rot:
-                    obj.object.rotation_mode = 'XYZ'
-                    obj.object.rotation_euler = old_rot['Base']
-            elif obj.name == 'Body':
-                if 'Body' in old_rot:
-                    obj.object.rotation_mode = 'XYZ'
-                    obj.object.rotation_euler = old_rot['Body']
-
-        # Set position from MVR
-        if mvr_position is not None:
-            for obj in self.objects:
-                if (obj.name == 'Base'):
-                    obj.object.matrix_world=mvr_position
-                elif (obj.name == 'Body'):
-                    obj.object.matrix_world=mvr_position
-
-        # Setup emitter
-        for obj in self.collection.objects:
-            if "beam" in obj.name.lower():
-                emitter = obj
-                self.emitter_materials.add()
-                self.emitter_materials[-1].name = obj.name
-
-                emitter_material = getEmitterMaterial(obj.name)
-                emitter.active_material = emitter_material
-                emitter.material_slots[0].link = 'OBJECT'
-                emitter.material_slots[0].material = emitter_material
-                emitter.material_slots[0].material.shadow_method = 'NONE' # eevee
-                self.emitter_materials[-1].material = emitter_material
-
-
-        # Link collection to DMX collection
-        bpy.context.scene.dmx.collection.children.link(self.collection)
-
-        # Set Pigtail visibility
-        for obj in self.collection.objects:
-            if "Pigtail" in obj.name:
-                obj.hide_set(not bpy.context.scene.dmx.display_pigtails)
 
         # Build DMX channels cache
         dmx_channels = pygdtf.utils.get_dmx_channels(gdtf_profile, self.mode)
@@ -264,7 +184,85 @@ class DMX_Fixture(PropertyGroup):
             else:
                 self.channels[-1].default = ch['default']
 
-        
+        links = {}
+        base = self.get_root(model_collection)
+        head = self.get_tilt(model_collection)
+        DMX_Log.log.info(f"Head: {head}, Base: {base}")
+
+        for obj in model_collection.objects:
+            # Copy object
+            links[obj.name] = obj.copy()
+            # If light, copy object data, 
+            # Cache access to base (root) and head for faster rendering.
+            # Fixtures with multiple pan/tilts will still have issues
+            # but that would anyway require geometry → attribute approach
+            if obj.type == 'LIGHT':
+                links[obj.name].data = obj.data.copy()
+                self.lights.add()
+                light_name=f'Light{len(self.lights)}'
+                self.lights[-1].name = light_name
+                self.lights[light_name].object = links[obj.name]
+            elif 'Target' in obj.name:
+                self.objects.add()
+                self.objects[-1].name = 'Target'
+                self.objects['Target'].object = links[obj.name]
+            elif base.name == obj.name:
+                self.objects.add()
+                self.objects[-1].name = "Root"
+                self.objects["Root"].object = links[obj.name]
+            elif head is not None and head.name == obj.name:
+                self.objects.add()
+                self.objects[-1].name = "Head"
+                self.objects["Head"].object = links[obj.name]
+
+            # Link all other object to collection
+            self.collection.objects.link(links[obj.name])
+
+        # Relink constraints
+        for obj in self.collection.objects:
+            for constraint in obj.constraints:
+                constraint.target = links[constraint.target.name]
+
+        # (Edit) Reload old positions and rotations
+        bpy.context.view_layer.update()
+        for obj in self.objects:
+            if obj.name in old_pos:
+                obj.object.location = old_pos[obj.name]
+
+            if obj.object.get("geometry_root", False):
+                if obj.name in old_rot:
+                    obj.object.rotation_mode = 'XYZ'
+                    obj.object.rotation_euler = old_rot[obj.name]
+
+        # Set position from MVR
+        if mvr_position is not None:
+            for obj in self.objects:
+                if obj.object.get("geometry_root", False):
+                    obj.object.matrix_world=mvr_position
+
+        # Setup emitter
+        for obj in self.collection.objects:
+            if "beam" in obj.get("geometry_type", ""):
+                emitter = obj
+                self.emitter_materials.add()
+                self.emitter_materials[-1].name = obj.name
+
+                emitter_material = getEmitterMaterial(obj.name)
+                emitter.active_material = emitter_material
+                emitter.material_slots[0].link = 'OBJECT'
+                emitter.material_slots[0].material = emitter_material
+                emitter.material_slots[0].material.shadow_method = 'NONE' # eevee
+                self.emitter_materials[-1].material = emitter_material
+
+
+        # Link collection to DMX collection
+        bpy.context.scene.dmx.collection.children.link(self.collection)
+
+        # Set Pigtail visibility
+        for obj in self.collection.objects:
+            if "pigtail" in obj.get("geometry_type", ""):
+                obj.hide_set(not bpy.context.scene.dmx.display_pigtails)
+ 
         self.clear()
         bpy.context.scene.dmx.render()
     
@@ -304,7 +302,7 @@ class DMX_Fixture(PropertyGroup):
        
         for geometry, rgb in mixing.items():
             if (rgb[0] != None and rgb[1] != None and rgb[2] != None):
-                if len(mixing) == 1 or not self.light_object_for_geometry_exists(mixing): 
+                if len(mixing) == 1 or not self.light_object_for_geometry_exists(mixing):
                     # do not apply for simple devices as trickle down is not implemented...
                     self.updateRGB(rgb, None)
                 else:
@@ -313,7 +311,12 @@ class DMX_Fixture(PropertyGroup):
         if (cmy[0] != None and cmy[1] != None and cmy[2] != None):
             self.updateCMY(cmy)
 
-        if (panTilt[0] != None and panTilt[1] != None):
+        if panTilt[0] != None or panTilt[1] != None:
+            if panTilt[0] == None:
+                panTilt[0] = 191 # if the device doesn't have pan, align head with base
+            if panTilt[1] == None:
+                panTilt[1] = 190 # FIXME maybe: adjust this if you find a device that doesn't have tilt
+
             self.updatePanTilt(panTilt[0], panTilt[1])
 
         if (zoom != None):
@@ -450,8 +453,15 @@ class DMX_Fixture(PropertyGroup):
         pan = (pan/127.0-1)*355*(math.pi/360)
         tilt = (tilt/127.0-1)*130*(math.pi/180)
 
-        base = self.objects['Base'].object
-        head_location = self.objects['Head'].object.matrix_world.translation
+        base = self.objects["Root"].object
+        try:
+            head = self.objects["Head"].object
+        except:
+            return
+
+        head_location = head.matrix_world.translation
+        pan = pan + base.rotation_euler[2] # take base z rotation into consideration
+
         target = self.objects['Target'].object
         
         eul = mathutils.Euler((0.0,base.rotation_euler[1]+tilt,base.rotation_euler[0]+pan), 'XYZ')
@@ -459,6 +469,18 @@ class DMX_Fixture(PropertyGroup):
         vec.rotate(eul)
 
         target.location = vec + head_location
+
+    def get_root(self, model_collection):
+        for obj in model_collection.objects:
+            if obj.get("geometry_root", False):
+                return obj
+
+    def get_tilt(self, model_collection):
+        for obj in model_collection.objects:
+            for channel in self.channels:
+                if "Tilt" == channel.id and channel.geometry == obj.get("original_name", "None"):
+                    return obj
+
 
     def getProgrammerData(self):
         channels = [c.id for c in self.channels]
@@ -469,16 +491,10 @@ class DMX_Fixture(PropertyGroup):
         return params
 
     def select(self):
-        if ('Body' in self.objects):
-            self.objects['Body'].object.select_set(True)
-        elif ('Base' in self.objects):
-            self.objects['Base'].object.select_set(True)
+        self.objects["Root"].object.select_set(True)
     
     def unselect(self):
-        if ('Body' in self.objects):
-            self.objects['Body'].object.select_set(False)
-        elif ('Base' in self.objects):
-            self.objects['Base'].object.select_set(False)
+        self.objects["Root"].object.select_set(False)
         if ('Target' in self.objects):
             self.objects['Target'].object.select_set(False)
 
