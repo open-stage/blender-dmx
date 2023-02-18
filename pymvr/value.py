@@ -57,12 +57,12 @@ class Matrix:
             str_repr = str_repr.replace("{", "")
             str_repr = str_repr.replace("}", "")
             component = str_repr.split(",")
-            component = [float(i) * 0.001 for i in component]
+            component = [float(i) for i in component]
             self.matrix = [
-                [component[0], component[1], component[2], 0],
-                [component[3], component[4], component[5], 0],
-                [component[6], component[7], component[8], 0],
-                [component[9], component[10], component[11], 0],
+                [component[0] , component[1] , component[2] , 0],
+                [component[3] , component[4] , component[5] , 0],
+                [component[6] , component[7] , component[8] , 0],
+                [component[9]* 0.001, component[10] * 0.001, component[11] * 0.001, 0],
             ]
 
 
