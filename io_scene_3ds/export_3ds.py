@@ -16,8 +16,6 @@
 #
 # ##### END GPL LICENSE BLOCK #####
 
-# <pep8 compliant>
-
 # Script copyright (C) Bob Holcomb
 # Contributors: Campbell Barton, Bob Holcomb, Richard Lärkäng, Damien McGinnes, Mark Stijnman, Sebastian Sille
 
@@ -647,8 +645,8 @@ def make_material_chunk(material, image):
 
     name_str = material.name if material else "None"
 
-    if image:
-        name_str += image.name
+    #if image:
+    #    name_str += image.name
 
     name.add_variable("name", _3ds_string(sane_name(name_str)))
     material_chunk.add_subchunk(name)
@@ -672,7 +670,10 @@ def make_material_chunk(material, image):
         material_chunk.add_subchunk(make_percent_subchunk(MATSHIN2, wrap.specular))
         material_chunk.add_subchunk(make_percent_subchunk(MATSHIN3, wrap.metallic))
         material_chunk.add_subchunk(make_percent_subchunk(MATTRANS, 1 - wrap.alpha))
+        material_chunk.add_subchunk(make_percent_subchunk(MATSELFILPCT, wrap.emission_strength))
         material_chunk.add_subchunk(shading)
+
+        primary_tex = False
 
         if wrap.base_color_texture:
             d_pct = 0.7 + sum(wrap.base_color[:]) * 0.1
@@ -680,6 +681,7 @@ def make_material_chunk(material, image):
             matmap = make_material_texture_chunk(MAT_DIFFUSEMAP, color, d_pct)
             if matmap:
                 material_chunk.add_subchunk(matmap)
+                primary_tex = True
 
         if wrap.specular_texture:
             spec = [wrap.specular_texture]
@@ -704,15 +706,11 @@ def make_material_chunk(material, image):
 
         if wrap.normalmap_texture:
             normal = [wrap.normalmap_texture]
-            bump = wrap.normalmap_strength
-            b_pct = min(bump, 1)
-            bumpval = min(999, (bump * 100))  # 3ds max bump = 999
-            strength = _3ds_chunk(MAT_BUMP_PERCENT)
-            strength.add_variable("bump_pct", _3ds_ushort(int(bumpval)))
+            b_pct = wrap.normalmap_strength
             matmap = make_material_texture_chunk(MAT_BUMPMAP, normal, b_pct)
             if matmap:
                 material_chunk.add_subchunk(matmap)
-                material_chunk.add_subchunk(strength)
+                material_chunk.add_subchunk(make_percent_subchunk(MAT_BUMP_PERCENT, b_pct))
 
         if wrap.roughness_texture:
             roughness = [wrap.roughness_texture]
@@ -722,7 +720,7 @@ def make_material_chunk(material, image):
                 material_chunk.add_subchunk(matmap)
 
         if wrap.emission_color_texture:
-            e_pct = sum(wrap.emission_color[:]) * .25
+            e_pct = wrap.emission_strength
             emission = [wrap.emission_color_texture]
             matmap = make_material_texture_chunk(MAT_SELFIMAP, emission, e_pct)
             if matmap:
@@ -737,7 +735,10 @@ def make_material_chunk(material, image):
                 diffuse = [link.from_node.image] if not wrap.normalmap_texture else None
 
         if diffuse:
-            matmap = make_texture_chunk(MAT_TEX2MAP, diffuse)
+            if primary_tex == False:
+                matmap = make_texture_chunk(MAT_DIFFUSEMAP, diffuse)
+            else:
+                matmap = make_texture_chunk(MAT_TEX2MAP, diffuse)
             if matmap:
                 material_chunk.add_subchunk(matmap)
 
@@ -909,8 +910,8 @@ def make_faces_chunk(tri_list, mesh, materialDict):
                 context_face_array = unique_mats[ma, img][1]
             except:
                 name_str = ma if ma else "None"
-                if img:
-                    name_str += img
+                #if img:
+                #    name_str += img
 
                 context_face_array = _3ds_array()
                 unique_mats[ma, img] = _3ds_string(sane_name(name_str)), context_face_array
@@ -1171,7 +1172,7 @@ def save(operator,
          ):
 
     import time
-    from bpy_extras.io_utils import create_derived_objects, free_derived_objects
+    #from bpy_extras.io_utils import create_derived_objects, free_derived_objects
 
     """Save the Blender scene to a 3ds file."""
 
@@ -1187,7 +1188,7 @@ def save(operator,
 
     scene = context.scene
     layer = context.view_layer
-    #depsgraph = context.evaluated_depsgraph_get()
+    depsgraph = context.evaluated_depsgraph_get()
 
     # Initialize the main chunk (primary):
     primary = _3ds_chunk(PRIMARY)
@@ -1235,7 +1236,9 @@ def save(operator,
 
     for ob in objects:
         # get derived objects
-        free, derived = create_derived_objects(scene, ob)
+        #free, derived = create_derived_objects(scene, ob)
+        derived_dict = bpy_extras.io_utils.create_derived_objects(depsgraph, [ob])
+        derived = derived_dict.get(ob)
 
         if derived is None:
             continue
@@ -1244,7 +1247,6 @@ def save(operator,
             if ob.type not in {'MESH', 'CURVE', 'SURFACE', 'FONT', 'META'}:
                 continue
 
-            #ob_derived_eval = ob_derived.evaluated_get(depsgraph)
             try:
                 data = ob_derived.to_mesh()
             except:
@@ -1288,8 +1290,8 @@ def save(operator,
 
                 # ob_derived_eval.to_mesh_clear()
 
-        if free:
-            free_derived_objects(ob)
+        #if free:
+        #    free_derived_objects(ob)
 
     # Make material chunks for all materials used in the meshes:
     for ma_image in materialDict.values():
