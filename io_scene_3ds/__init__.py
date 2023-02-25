@@ -16,8 +16,6 @@
 #
 # ##### END GPL LICENSE BLOCK #####
 
-# <pep8-80 compliant>
-
 from bpy_extras.io_utils import (
     ImportHelper,
     ExportHelper,
@@ -34,8 +32,8 @@ import bpy
 bl_info = {
     "name": "Autodesk 3DS format",
     "author": "Bob Holcomb, Campbell Barton, Andreas Atteneder, Sebastian Schrand",
-    "version": (2, 1, 0),
-    "blender": (2, 82, 0),
+    "version": (2, 2, 0),
+    "blender": (3, 0, 0),
     "location": "File > Import",
     "description": "Import 3DS, meshes, uvs, materials, textures, "
                    "cameras & lamps",
