@@ -273,6 +273,7 @@ class DMX_Fixture(PropertyGroup):
         for param, value in pvalues.items():
             for idx, channel in enumerate(channels):
                 if channel == param:
+                    DMX_Log.log.info(("Set DMX data", channel, value))
                     DMX_Data.set(self.universe, self.address+idx, value)
 
     def render(self):
@@ -312,9 +313,9 @@ class DMX_Fixture(PropertyGroup):
             self.updateCMY(cmy)
 
         if panTilt[0] != None or panTilt[1] != None:
-            if panTilt[0] == None:
+            if panTilt[0] is None:
                 panTilt[0] = 191 # if the device doesn't have pan, align head with base
-            if panTilt[1] == None:
+            if panTilt[1] is None:
                 panTilt[1] = 190 # FIXME maybe: adjust this if you find a device that doesn't have tilt
 
             self.updatePanTilt(panTilt[0], panTilt[1])
@@ -322,7 +323,9 @@ class DMX_Fixture(PropertyGroup):
         if (zoom != None):
             self.updateZoom(zoom)
 
-        if shutterDimmer[0] is not None and shutterDimmer[1] is not None:
+        if shutterDimmer[0] is not None or shutterDimmer[1] is not None:
+            if shutterDimmer[0] is None:
+                shutterDimmer[0] = 0 # if device doesn't have shutter, set default value
             self.updateShutterDimmer(shutterDimmer[0], shutterDimmer[1])
 
     def light_object_for_geometry_exists(self, mixing):
