@@ -98,6 +98,10 @@ class DMX_Fixture(PropertyGroup):
         name = "Fixture > Channels",
         type = DMX_Fixture_Channel
     )
+    virtual_channels: CollectionProperty(
+        name = "Fixture > Virtual Channels",
+        type = DMX_Fixture_Channel
+    )
 
     universe : IntProperty(
         name = "Fixture > Universe",
@@ -153,6 +157,7 @@ class DMX_Fixture(PropertyGroup):
         self.lights.clear()
         self.objects.clear()
         self.channels.clear()
+        self.virtual_channels.clear()
 
         # Create clean Collection
         # (Blender creates the collection with selected objects/collections)
@@ -183,6 +188,14 @@ class DMX_Fixture(PropertyGroup):
                 self.channels[-1].default = 0
             else:
                 self.channels[-1].default = ch['default']
+
+        # Build cache of virtual channels
+        _virtual_channels = pygdtf.utils.get_virtual_channels(gdtf_profile, self.mode)
+        for ch in _virtual_channels:
+            self.virtual_channels.add()
+            self.virtual_channels[-1].id = ch['id']
+            self.virtual_channels[-1].geometry = ch['geometry']
+            self.virtual_channels[-1].default = ch['default']
 
         links = {}
         base = self.get_root(model_collection)
@@ -270,21 +283,44 @@ class DMX_Fixture(PropertyGroup):
 
     def setDMX(self, pvalues):
         channels = [c.id for c in self.channels]
-        for param, value in pvalues.items():
+        virtuals = [c.id for c in self.virtual_channels]
+        for attribute, value in pvalues.items():
             for idx, channel in enumerate(channels):
-                if channel == param:
+                if channel == attribute:
                     DMX_Log.log.info(("Set DMX data", channel, value))
                     DMX_Data.set(self.universe, self.address+idx, value)
+            for vchannel in virtuals:
+                if vchannel == attribute:
+                    DMX_Log.log.info(("Set Virtual data", attribute, value))
+                    DMX_Data.set_virtual(self.name, attribute, value)
 
     def render(self):
         channels = [c.id for c in self.channels]
         data = DMX_Data.get(self.universe, self.address, len(channels))
+        data_virtual = DMX_Data.get_virtual(self.name)
+        virtual_channels = [c.id for c in self.virtual_channels]
         shutterDimmer = [None, None]
         panTilt = [None,None]
         rgb = [None,None,None]
         cmy = [None,None,None]
         zoom = None
         mixing={} #for now, only RGB mixing is per geometry
+        
+        for attribute in virtual_channels:
+            geometry = None # for now. But, no way to know, as BlenderDMX controls are universal
+            if attribute in data_virtual:
+                if attribute == "Shutter1": shutterDimmer[0] = data_virtual[attribute]
+                elif attribute == "Dimmer": shutterDimmer[1] = data_virtual[attribute]
+                elif attribute == "ColorAdd_R": mixing[geometry][0] = data_virtual[attribute]
+                elif attribute == "ColorAdd_G": mixing[geometry][1] = data_virtual[attribute]
+                elif attribute == "ColorAdd_B": mixing[geometry][2] = data_virtual[attribute]
+                elif attribute == "ColorSub_C": cmy[0] = data_virtual[attribute]
+                elif attribute == "ColorSub_M": cmy[1] = data_virtual[attribute]
+                elif attribute == "ColorSub_Y": cmy[2] = data_virtual[attribute]
+                elif attribute == "Pan": panTilt[0] = data_virtual[attribute]
+                elif attribute == "Tilt": panTilt[1] = data_virtual[attribute]
+                elif attribute == "Zoom": zoom = data_virtual[attribute]
+
         for c in range(len(channels)):
             geometry=self.channels[c].geometry
             if geometry not in mixing.keys():
@@ -453,6 +489,7 @@ class DMX_Fixture(PropertyGroup):
 
 
     def updatePanTilt(self, pan, tilt):
+        DMX_Log.log.info("Updating pan tilt")
         pan = (pan/127.0-1)*355*(math.pi/360)
         tilt = (tilt/127.0-1)*130*(math.pi/180)
 
@@ -460,6 +497,7 @@ class DMX_Fixture(PropertyGroup):
         try:
             head = self.objects["Head"].object
         except:
+            DMX_Log.log.info("Escaping pan tilt update, not enough data")
             return
 
         head_location = head.matrix_world.translation
@@ -481,6 +519,9 @@ class DMX_Fixture(PropertyGroup):
     def get_tilt(self, model_collection):
         for obj in model_collection.objects:
             for channel in self.channels:
+                if "Tilt" == channel.id and channel.geometry == obj.get("original_name", "None"):
+                    return obj
+            for channel in self.virtual_channels:
                 if "Tilt" == channel.id and channel.geometry == obj.get("original_name", "None"):
                     return obj
 

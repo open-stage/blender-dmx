@@ -322,6 +322,7 @@ class DMX_GDTF():
         target.location = (0,0,-2)
 
         dmx_channels = pygdtf.utils.get_dmx_channels(profile, mode)
+        virtual_channels = pygdtf.utils.get_virtual_channels(profile, mode)
         # Merge all DMX breaks together
         dmx_channels_flattened = [channel for break_channels in dmx_channels for channel in break_channels]
         # dmx_channels_flattened contain list of channel with id, geometry
@@ -334,6 +335,9 @@ class DMX_GDTF():
         def get_axis(attribute):
             for obj in objs.values():
                 for channel in dmx_channels_flattened:
+                    if attribute == channel["id"] and channel["geometry"] == obj.get("original_name", "None"):
+                        return obj
+                for channel in virtual_channels:
                     if attribute == channel["id"] and channel["geometry"] == obj.get("original_name", "None"):
                         return obj
 
