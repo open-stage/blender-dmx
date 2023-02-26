@@ -102,6 +102,30 @@ def get_channels_for_geometry(gdtf_profile: 'pygdtf.FixtureType' = None, geometr
     return channel_list
 
 
+def get_virtual_channels(gdtf_profile: 'pygdtf.FixtureType' = None, 
+                     mode: 'pygdtf.DmxMode' = None) -> List['Dict']:
+    """Returns virtual channels"""
+
+    dmx_mode = None
+    dmx_mode = get_dmx_mode_by_name(gdtf_profile, mode)
+    root_geometry = get_geometry_by_name(gdtf_profile, dmx_mode.geometry)
+    device_channels = get_channels_for_geometry(
+        gdtf_profile, root_geometry, dmx_mode.dmx_channels, []
+    )
+
+    virtual_channels = []
+
+    for channel, geometry in device_channels:
+        if channel.offset is None:
+            virtual_channels.append({
+            "id": str(channel.logical_channels[0].channel_functions[0].attribute),
+            "default": getValue(
+                channel.logical_channels[0].channel_functions[0].default
+            ),
+            "geometry": geometry.name,
+        })
+    return virtual_channels
+
 def get_dmx_channels(gdtf_profile: 'pygdtf.FixtureType' = None, 
                      mode: 'pygdtf.DmxMode' = None) -> List['Dict']:
     """Returns list of arrays, each array is one DMX Break,
