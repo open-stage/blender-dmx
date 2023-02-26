@@ -7,6 +7,8 @@
 
 import bpy
 import bmesh
+from dmx.logging import DMX_Log
+import logging
 
 # Shader Nodes default labels
 # Blender API naming convention is inconsistent for internationalization
@@ -26,7 +28,15 @@ def getEmitterMaterial(name):
     material = bpy.data.materials.new(name)
     material.use_nodes = True
     # BUG: Internationalization
-    material.node_tree.nodes.remove(material.node_tree.nodes[PRINCIPLED_BSDF])
+    if PRINCIPLED_BSDF in material.node_tree.nodes:
+        material.node_tree.nodes.remove(material.node_tree.nodes[PRINCIPLED_BSDF])
+    else:
+        DMX_Log.log.error("""BSDF material could not be removed when adding new Emitter,
+                         this could cause issues. Set Logging level to Info to get more details.""")
+        if DMX_Log.log.isEnabledFor(logging.INFO):
+            print("Nodes in material tree nodes:")
+            for node in material.node_tree.nodes:
+                print(node)
     material.node_tree.nodes.new(SHADER_NODE_EMISSION)
     material.node_tree.links.new(material.node_tree.nodes[MATERIAL_OUTPUT].inputs[0], material.node_tree.nodes[EMISSION].outputs[0])
     return material
@@ -40,6 +50,16 @@ def getVolumeScatterMaterial():
     material = bpy.data.materials.new("DMX_Volume")
     material.use_nodes = True
     # BUG: Internationalization
+    if PRINCIPLED_BSDF in material.node_tree.nodes:
+        material.node_tree.nodes.remove(material.node_tree.nodes[PRINCIPLED_BSDF])
+    else:
+        DMX_Log.log.error("""BSDF material could not be removed when adding creating Volume,
+                       this could cause issues. Set Logging level to Info to get more details.""")
+        if DMX_Log.log.isEnabledFor(logging.INFO):
+            print("Nodes in material tree nodes:")
+            for node in material.node_tree.nodes:
+                print(node)
+
     material.node_tree.nodes.remove(material.node_tree.nodes[PRINCIPLED_BSDF])
     material.node_tree.nodes.new(SHADER_NODE_VOLUMESCATTER)
     material.node_tree.links.new(material.node_tree.nodes[MATERIAL_OUTPUT].inputs[1], material.node_tree.nodes[VOLUME_SCATTER].outputs[0])
