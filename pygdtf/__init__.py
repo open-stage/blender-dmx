@@ -112,7 +112,9 @@ class FixtureType:
             for i in geometry_collect.findall('FilterGobo'):
                 self.geometries.append(GeometryFilterGobo(xml_node=i))
             for i in geometry_collect.findall('FilterShaper'):
-                self.geometries.append(GeometryFilterShaper(xml_node=i))
+               self.geometries.append(GeometryMediaServerCamera(xml_node=i))
+            for i in geometry_collect.findall('MediaServerCamera'):
+               self.geometries.append(GeometryFilterShaper(xml_node=i))
             for i in geometry_collect.findall('Beam'):
                 self.geometries.append(GeometryBeam(xml_node=i))
             for i in geometry_collect.findall('GeometryReference'):
@@ -439,6 +441,8 @@ class Geometry(BaseNode):
             self.geometries.append(GeometryFilterColor(xml_node=i))
         for i in xml_node.findall('FilterGobo'):
             self.geometries.append(GeometryFilterGobo(xml_node=i))
+        for i in xml_node.findall('MediaServerCamera'):
+            self.geometries.append(GeometryMediaServerCamera(xml_node=i))
         for i in xml_node.findall('FilterShaper'):
             self.geometries.append(GeometryFilterShaper(xml_node=i))
         for i in xml_node.findall('Beam'):
@@ -470,6 +474,8 @@ class GeometryFilterGobo(Geometry):
 class GeometryFilterShaper(Geometry):
     pass
 
+class GeometryMediaServerCamera(Geometry):
+    pass
 
 class GeometryBeam(Geometry):
 
