@@ -144,6 +144,7 @@ class DMX_GDTF():
 
         def load_geometries(geometry):
             """Load 3d models, primitives and shapes"""
+            DMX_Log.log.info(f"loading geometry {geometry.name}")
             
             if isinstance(geometry, pygdtf.GeometryReference):
                 reference = pygdtf.utils.get_geometry_by_name(profile, geometry.geometry)
@@ -224,7 +225,8 @@ class DMX_GDTF():
             # get to know this here
             # Even axis is not needed, as we rotate the geometry based on attributes during controlling
 
-
+            if isinstance(geometry, pygdtf.GeometryMediaServerCamera):
+                return "camera"
             if isinstance(geometry, pygdtf.GeometryBeam):
                 return "beam"
             if isinstance(geometry, pygdtf.GeometryAxis):
@@ -239,7 +241,7 @@ class DMX_GDTF():
             obj_child = objs[sanitize_obj_name(geometry.name)]
 
             position = Matrix(geometry.position.matrix).to_translation()
-            obj_child.location[0] += (position[0]*-1) # bug in the pygdtf?
+            obj_child.location[0] += (position[0]*-1) # a bug due to rotations of parents not being applied
             obj_child.location[1] += position[1]
             obj_child.location[2] += position[2]
 
@@ -250,7 +252,8 @@ class DMX_GDTF():
             obj_child.scale[0] *= scale[0]
             obj_child.scale[1] *= scale[1]
             obj_child.scale[2] *= scale[2]
-
+            
+            # TODO: move this to a separate function
             if isinstance(geometry, (pygdtf.GeometryBeam, pygdtf.GeometryReference)):
                 if isinstance(geometry, pygdtf.GeometryReference):
                     geometry = pygdtf.utils.get_geometry_by_name(profile, geometry.geometry)
@@ -277,6 +280,18 @@ class DMX_GDTF():
                 constraint = light_object.constraints.new('CHILD_OF')
                 constraint.target = obj_child
                 collection.objects.link(light_object)
+            
+            # TODO: move this to a separate function
+            if isinstance(geometry, (pygdtf.GeometryMediaServerCamera)):
+
+                camera_data = bpy.data.cameras.new(name=f"{obj_child.name}")
+                camera_object = bpy.data.objects.new('MediaCamera', camera_data)
+                camera_object.location = obj_child.location
+                #camera_object.location.z-=0.1
+                camera_object.hide_select = True
+                constraint = camera_object.constraints.new('CHILD_OF')
+                constraint.target = obj_child
+                collection.objects.link(camera_object)
 
         def constraint_child_to_parent(parent_geometry, child_geometry):
             obj_parent = objs[sanitize_obj_name(parent_geometry.name)]
@@ -292,12 +307,17 @@ class DMX_GDTF():
             obj_child.location[0] += obj_parent.location[0]
             obj_child.location[1] += obj_parent.location[1]
             obj_child.location[2] += obj_parent.location[2]
+                        
+            #obj_child.rotation_euler[0] += obj_parent.rotation_euler[0]
+            #obj_child.rotation_euler[1] += obj_parent.rotation_euler[1]
+            #obj_child.rotation_euler[2] += obj_parent.rotation_euler[2]
 
         def update_geometry(geometry):
             """Recursively update objects position, rotation and scale
                and define parent/child constraints"""
 
             add_child_position(geometry)
+            #TODO: apply rotation of parent AFTER we attached a child, so they rotate together
 
             if hasattr(geometry, "geometries"):
                 if len(geometry.geometries) > 0:

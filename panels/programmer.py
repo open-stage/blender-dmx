@@ -143,6 +143,29 @@ class DMX_OT_Programmer_SelectTargets(Operator):
                 target.select_set(True)
         return {'FINISHED'}
 
+class DMX_OT_Programmer_SelectCamera(Operator):
+    bl_label = "DMX > Programmer > Select Camera"
+    bl_idname = "dmx.toggle_camera"
+    bl_description = "Select camera of the selected fixture"
+    bl_options = {'UNDO'}
+
+    def execute(self, context):
+        dmx = context.scene.dmx
+        region = next(iter([area.spaces[0].region_3d for area in bpy.context.screen.areas if area.type == 'VIEW_3D']), None)
+        for fixture in dmx.fixtures:
+            for obj in fixture.collection.objects:
+                if (obj in bpy.context.selected_objects):
+                    for obj in fixture.collection.objects:
+                        if "MediaCamera" in obj.name:
+                            bpy.context.scene.camera=obj
+                            if region:
+                                if region.view_perspective == "CAMERA":
+                                    region.view_perspective = "PERSP"
+                                else:
+                                    region.view_perspective = "CAMERA"
+                            break
+        return {'FINISHED'}
+
 # Panels #
 
 class DMX_PT_Programmer(Panel):
@@ -169,6 +192,13 @@ class DMX_PT_Programmer(Panel):
         row = layout.row()
         row.operator("dmx.select_bodies", text="Bodies")
         row.operator("dmx.select_targets", text="Targets")
+        if len(bpy.context.selected_objects) == 1:
+            for fixture in dmx.fixtures:
+                for obj in fixture.collection.objects:
+                    if (obj in bpy.context.selected_objects):
+                        for obj in fixture.collection.objects:
+                            if "MediaCamera" in obj.name:
+                                row.operator("dmx.toggle_camera", text="Camera")
         row.enabled = selected
 
         layout.template_color_picker(scene.dmx,"programmer_color", value_slider=True)
