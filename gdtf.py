@@ -2,7 +2,7 @@
 #   BlendexDMX > GDTF
 #   Handles GDTF profiles
 #
-#   http://www.github.com/hugoaboud/BlenderDMX
+#   http://www.github.com/open-stage/BlenderDMX
 #
 
 import os

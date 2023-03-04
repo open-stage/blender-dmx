@@ -6,7 +6,7 @@
 #   - Create/Update a Box that fits the whole scene with a Volume Scatter
 #   shader, and control it's visibility and density (for simulating haze)
 #
-#   http://www.github.com/hugoaboud/BlenderDMX
+#   http://www.github.com/open-stage/BlenderDMX
 #
 
 import bpy

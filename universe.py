@@ -2,7 +2,7 @@
 #   BlendexDMX > Universe
 #   A DMX Universe, which contains a number ID, a name and an input source
 #
-#   http://www.github.com/hugoaboud/BlenderDMX
+#   http://www.github.com/open-stage/BlenderDMX
 #
 
 import bpy

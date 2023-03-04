@@ -2,7 +2,7 @@
 #   BlendexDMX > Group
 #   A group of fixtures
 #
-#   http://www.github.com/hugoaboud/BlenderDMX
+#   http://www.github.com/open-stage/BlenderDMX
 #
 
 import bpy

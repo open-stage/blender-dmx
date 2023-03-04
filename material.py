@@ -2,7 +2,7 @@
 #   BlendexDMX > Material
 #   Methods to create special materials (such as the default light emitter)
 #
-#   http://www.github.com/hugoaboud/BlenderDMX
+#   http://www.github.com/open-stage/BlenderDMX
 #
 
 import bpy

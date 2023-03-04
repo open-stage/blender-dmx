@@ -2,7 +2,7 @@
 #   BlendexDMX > Fixture
 #   Base class for a lighting fixture
 #
-#   http://www.github.com/hugoaboud/BlenderDMX
+#   http://www.github.com/open-stage/BlenderDMX
 #
 
 import bpy

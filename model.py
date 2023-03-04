@@ -2,7 +2,7 @@
 #   BlendexDMX > Model
 #   Handles the creation of different models
 #
-#   http://www.github.com/hugoaboud/BlenderDMX
+#   http://www.github.com/open-stage/BlenderDMX
 #
 
 import os.path
