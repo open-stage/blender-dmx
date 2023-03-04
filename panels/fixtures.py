@@ -4,7 +4,7 @@
 #   - Add/Edit/Remove Fixtures
 #   - Select Fixtures by name for programming
 #
-#   http://www.github.com/hugoaboud/BlenderDMX
+#   http://www.github.com/open-stage/BlenderDMX
 #
 
 import bpy

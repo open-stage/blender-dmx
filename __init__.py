@@ -1,12 +1,12 @@
 bl_info = {
     "name": "DMX",
     "description": "DMX Visualization, with GDTF and ArtNet support.",
-    "author": "hugoaboud",
-    "version": (0, 5, 0),
-    "blender": (2, 90, 0),
+    "author": "open-stage",
+    "version": (1, 0, 0),
+    "blender": (3, 0, 0),
     "location": "3D View > DMX",
     "warning": "", # used for warning icon and text in addons panel
-    "wiki_url": "http://www.github.com/hugoaboud/blenderDMX/wiki",
+    "wiki_url": "http://www.github.com/open-stage/blenderDMX/wiki",
     "tracker_url": "",
     "category": "Lighting"
 }
@@ -109,7 +109,7 @@ class DMX(PropertyGroup):
                 DMX_OT_Programmer_Clear,
                 DMX_OT_Programmer_SelectBodies,
                 DMX_OT_Programmer_SelectTargets,
-                DMX_OT_Programmer_SelectCamera,
+                #DMX_OT_Programmer_SelectCamera,
                 DMX_PT_Programmer  )
 
     linkedToFile = False
@@ -741,7 +741,6 @@ class DMX(PropertyGroup):
     def addUniverse(self):
         id = len(self.universes)
         DMX_Universe.add(self, id, "DMX %d"%id)
-        print("DMX", "DMX_Universe created: ", universe)
 
     def removeUniverse(self, i):
         DMX_Universe.remove(self, i)

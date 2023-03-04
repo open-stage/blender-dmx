@@ -2,7 +2,7 @@
 #   BlendexDMX > Utilities
 #   General utility functions
 #
-#   http://www.github.com/hugoaboud/BlenderDMX
+#   http://www.github.com/open-stage/BlenderDMX
 #
 
 import bpy

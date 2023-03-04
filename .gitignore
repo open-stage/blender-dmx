@@ -5,3 +5,5 @@ panels/__pycache__
 assets/profiles/*
 assets/models/*/*
 !assets/profiles/BlenderDMX*
+
+*.zip
