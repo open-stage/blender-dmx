@@ -13,13 +13,13 @@ A DMX visualization tool inside `Blender`, designed to offer a free, easy and fu
 First of all, make sure you have installed [Blender 3.0](https://www.blender.org/download/) or higher;
 Then, download the `zip` file:
 
-- **LATEST RELEASE (STABLE): v0.5.0 Beta**
+- **LATEST RELEASE (STABLE): v1.0.0 Vanilla**
 
-   1. Download the [latest release](https://github.com/hugoaboud/BlenderDMX/releases/tag/v0.5.0-beta) `dmx.zip` file
+   1. Download the [latest release](https://github.com/open-stage/BlenderDMX/releases/tag/v1.0.0) `dmx.zip` file
 
 - **ROLLING RELEASE (UNSTABLE)**
 
-   1. Download the [repository ZIP](https://github.com/hugoaboud/BlenderDMX/archive/main.zip) `BlenderDMX-main.zip` file
+   1. Download the [repository ZIP](https://github.com/open-stage/BlenderDMX/archive/main.zip) `BlenderDMX-main.zip` file
    2. Unzip it
    3. Rename the folder `BlenderDMX-main` inside it to `dmx`
    4. Zip it back, so you have: `dmx.zip/dmx/<contents>`
@@ -35,7 +35,7 @@ To enable the addon, go to `Edit > Preferences > Add-ons`, search for "DMX" and 
 
 ## How to Use
 
-For details on how to use the Addon, check our [Wiki](https://github.com/hugoaboud/BlenderDMX/wiki).
+For details on how to use the Addon, check our [Wiki](https://github.com/open-stage/BlenderDMX/wiki).
 
 Check the demonstration video:
 [demonstration video](https://www.youtube.com/watch?v=uzZQhcqSjS4)
