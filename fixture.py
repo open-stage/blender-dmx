@@ -158,6 +158,7 @@ class DMX_Fixture(PropertyGroup):
         self.objects.clear()
         self.channels.clear()
         self.virtual_channels.clear()
+        self.emitter_materials.clear()
 
         # Create clean Collection
         # (Blender creates the collection with selected objects/collections)
