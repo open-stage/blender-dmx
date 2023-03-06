@@ -16,6 +16,7 @@ import bpy
 import os
 import atexit
 from operator import attrgetter
+from threading import Timer
 
 from dmx.pymvr import *
 
@@ -119,12 +120,13 @@ class DMX(PropertyGroup):
             bpy.utils.register_class(cls)
 
     def unregister():
-        for cls in DMX.classes_setup:
-            bpy.utils.unregister_class(cls)
         if (DMX.linkedToFile):
             for cls in DMX.classes:
                 bpy.utils.unregister_class(cls)
             DMX.linkedToFile = False
+        else:
+            for cls in DMX.classes_setup:
+                bpy.utils.unregister_class(cls)
 
     # Blender RNA Properties
 
@@ -319,7 +321,7 @@ class DMX(PropertyGroup):
         DMX_Log.log.setLevel(self.logging_level)
 
     logging_level: bpy.props.EnumProperty(
-        name= "Logging level",
+        name= "Logging Level",
         description= "logging level",
         default = "ERROR",
         items= [
@@ -814,10 +816,27 @@ def onActiveChanged(*args):
         dmx.updatePreviewVolume()
 
 #
+# Hot-Reload
+#
+
+def clean_module_imports():
+    modules = dict(sys.modules)
+    for name in modules.keys():
+        if (name == __name__):
+            continue
+        if name.startswith(__name__):
+            del sys.modules[name]
+    return None 
+
+#
 # Blender Add-On
 #
 
+def onRegister():
+    onLoadFile(None)
+
 def register():
+
     # Register Base Classes
     for cls in DMX.classes_base:
         bpy.utils.register_class(cls)
@@ -834,6 +853,8 @@ def register():
     if bpy.app.version <= (2, 91, 0):
         atexit.register(DMX_ArtNet.disable)
         atexit.register(DMX_sACN.disable)
+    
+    Timer(1, onRegister, ()).start()
 
 def unregister():
     # Stop ArtNet
@@ -847,12 +868,15 @@ def unregister():
 
         # Unregister addon main class
         bpy.utils.unregister_class(DMX)
+
     except Exception as e:
         print(e)
 
     # Append handlers
     bpy.app.handlers.load_post.clear()
     bpy.app.handlers.undo_post.clear()
+
+    clean_module_imports()
 
 if __name__ == "__main__":
     register()
