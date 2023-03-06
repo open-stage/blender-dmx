@@ -141,7 +141,6 @@ class DMX_GDTF():
         # Get root geometry reference from the selected DMX Mode
         dmx_mode = pygdtf.utils.get_dmx_mode_by_name(profile, mode)
         root_geometry = pygdtf.utils.get_geometry_by_name(profile, dmx_mode.geometry)
-
         def load_geometries(geometry):
             """Load 3d models, primitives and shapes"""
             DMX_Log.log.info(f"loading geometry {geometry.name}")
@@ -150,10 +149,15 @@ class DMX_GDTF():
                 reference = pygdtf.utils.get_geometry_by_name(profile, geometry.geometry)
                 geometry.model = reference.model
 
+                if hasattr(reference, "geometries"):
+                    for sub_geometry in reference.geometries:
+                        setattr(sub_geometry, "reference_root", str(geometry.name))
+                        load_geometries(sub_geometry)
+
             if geometry.model is None:
                 # Empty geometries are allowed as of GDTF 1.2
                 # If the size is 0, Blender will discard it, set it to something tiny
-                model=pygdtf.Model(name=sanitize_obj_name(geometry.name),
+                model=pygdtf.Model(name=f"{sanitize_obj_name(geometry)}",
                                    length=0.0001, width=0.0001, height=0.0001, primitive_type="Cube")
                 geometry.model = ""
             else:
@@ -163,7 +167,7 @@ class DMX_GDTF():
                 model = copy.deepcopy(pygdtf.utils.get_model_by_name(profile, geometry.model))
 
             if isinstance(geometry, pygdtf.GeometryReference):
-                model.name=sanitize_obj_name(geometry.name)
+                model.name=f"{sanitize_obj_name(geometry)}"
 
             obj = None
             primitive = str(model.primitive_type)
@@ -191,18 +195,20 @@ class DMX_GDTF():
                 
             # If object was created
             if (obj != None):
-                if sanitize_obj_name(geometry.name) == sanitize_obj_name(root_geometry.name):
+                if sanitize_obj_name(geometry) == sanitize_obj_name(root_geometry):
                     obj["geometry_root"]=True
                     obj.hide_select = False
                 else:
                     obj.hide_select = True
-                obj.name = sanitize_obj_name(geometry.name)
+                obj.name = sanitize_obj_name(geometry)
                 obj["geometry_type"]=get_geometry_type_as_string(geometry)
                 obj["original_name"]=geometry.name
+                if isinstance(geometry, pygdtf.GeometryReference):
+                    obj["referenced_geometry"]=str(geometry.geometry)
                 if str(model.primitive_type) == 'Pigtail':
                     # This is a bit ugly because of PrimitiveType (in model) and not Geometry type (in geometry)
                     obj["geometry_type"]="pigtail"
-                objs[sanitize_obj_name(geometry.name)] = obj
+                objs[sanitize_obj_name(geometry)] = obj
 
                 # Apply transforms to ensure that models are correctly rendered
                 # even if their transformations have not been applied prior to saving
@@ -221,7 +227,7 @@ class DMX_GDTF():
 
         def get_geometry_type_as_string(geometry):
             # From these, we end up using "beam" and "pigtail".
-            # The Pigtail is a special primitive type and we don't have access to 
+            # The Pigtail is a special primitive type and we don't have access to
             # get to know this here
             # Even axis is not needed, as we rotate the geometry based on attributes during controlling
 
@@ -236,9 +242,49 @@ class DMX_GDTF():
                 return get_geometry_type_as_string(geometry)
             return "normal"
 
+        def create_camera(geometry):
+            if (not sanitize_obj_name(geometry) in objs): return
+            obj_child = objs[sanitize_obj_name(geometry)]
+            camera_data = bpy.data.cameras.new(name=f"{obj_child.name}")
+            camera_object = bpy.data.objects.new('MediaCamera', camera_data)
+            camera_object.location = obj_child.location
+            #camera_object.location.z-=0.1
+            camera_object.hide_select = True
+            constraint = camera_object.constraints.new('CHILD_OF')
+            constraint.target = obj_child
+            collection.objects.link(camera_object)
+
+        def create_beam(geometry):
+            if (not sanitize_obj_name(geometry) in objs): return
+            obj_child = objs[sanitize_obj_name(geometry)]
+            if "beam" not in obj_child.name.lower():
+                obj_child.name=f"Beam {obj_child.name}"
+
+            if not display_beams: # Don't even create beam objects to save resources
+                return
+
+            obj_child.visible_shadow = False
+            light_data = bpy.data.lights.new(name=f"Spot {obj_child.name}", type='SPOT')
+            light_data['flux'] = geometry.luminous_flux
+            light_data['shutter_value'] = 0 # Here we will store values required for strobing
+            light_data['shutter_dimmer_value'] = 0
+            light_data['shutter_counter'] = 0
+            light_data.energy = light_data['flux'] #set by default to full brightness for devices without dimmer
+            light_data.spot_size = geometry.beam_angle
+            light_data.spot_size = geometry.beam_angle*3.1415/180.0
+            light_data.shadow_soft_size = geometry.beam_radius
+            light_object = bpy.data.objects.new(name=f"Spot", object_data=light_data)
+            light_object.location = obj_child.location
+            light_object.hide_select = True
+            constraint = light_object.constraints.new('CHILD_OF')
+            constraint.target = obj_child
+            collection.objects.link(light_object)
+        
         def add_child_position(geometry):
             """Add a child, create a light source and emitter material for beams"""
-            obj_child = objs[sanitize_obj_name(geometry.name)]
+
+            #if (not sanitize_obj_name(geometry) in objs): return
+            obj_child = objs[sanitize_obj_name(geometry)]
 
             position = Matrix(geometry.position.matrix).to_translation()
             obj_child.location[0] += (position[0]*-1) # a bug due to rotations of parents not being applied
@@ -252,77 +298,61 @@ class DMX_GDTF():
             obj_child.scale[0] *= scale[0]
             obj_child.scale[1] *= scale[1]
             obj_child.scale[2] *= scale[2]
-            
-            # TODO: move this to a separate function
-            if isinstance(geometry, (pygdtf.GeometryBeam, pygdtf.GeometryReference)):
-                if isinstance(geometry, pygdtf.GeometryReference):
-                    geometry = pygdtf.utils.get_geometry_by_name(profile, geometry.geometry)
-
-                if "beam" not in obj_child.name.lower():
-                    obj_child.name=f"Beam {obj_child.name}"
-
-                if not display_beams: # Don't even create beam objects to save resources
-                    return
-
-                obj_child.visible_shadow = False
-                light_data = bpy.data.lights.new(name=f"Spot {obj_child.name}", type='SPOT')
-                light_data['flux'] = geometry.luminous_flux
-                light_data['shutter_value'] = 0 # Here we will store values required for strobing
-                light_data['shutter_dimmer_value'] = 0
-                light_data['shutter_counter'] = 0
-                light_data.energy = light_data['flux'] #set by default to full brightness for devices without dimmer
-                light_data.spot_size = geometry.beam_angle
-                light_data.spot_size = geometry.beam_angle*3.1415/180.0
-                light_data.shadow_soft_size = geometry.beam_radius
-                light_object = bpy.data.objects.new(name=f"Spot", object_data=light_data)
-                light_object.location = obj_child.location
-                light_object.hide_select = True
-                constraint = light_object.constraints.new('CHILD_OF')
-                constraint.target = obj_child
-                collection.objects.link(light_object)
-            
-            # TODO: move this to a separate function
-            if isinstance(geometry, (pygdtf.GeometryMediaServerCamera)):
-
-                camera_data = bpy.data.cameras.new(name=f"{obj_child.name}")
-                camera_object = bpy.data.objects.new('MediaCamera', camera_data)
-                camera_object.location = obj_child.location
-                #camera_object.location.z-=0.1
-                camera_object.hide_select = True
-                constraint = camera_object.constraints.new('CHILD_OF')
-                constraint.target = obj_child
-                collection.objects.link(camera_object)
 
         def constraint_child_to_parent(parent_geometry, child_geometry):
-            obj_parent = objs[sanitize_obj_name(parent_geometry.name)]
-            if (not sanitize_obj_name(child_geometry.name) in objs): return
-            obj_child = objs[sanitize_obj_name(child_geometry.name)]
+            if (not sanitize_obj_name(parent_geometry) in objs): return
+            obj_parent = objs[sanitize_obj_name(parent_geometry)]
+            if (not sanitize_obj_name(child_geometry) in objs): return
+            obj_child = objs[sanitize_obj_name(child_geometry)]
+
             constraint = obj_child.constraints.new('CHILD_OF')
             constraint.target = obj_parent
             constraint.use_scale_x = False
             constraint.use_scale_y = False
             constraint.use_scale_z = False
             # Add parent position
-            position = [parent_geometry.position.matrix[c][3] for c in range(3)]
             obj_child.location[0] += obj_parent.location[0]
             obj_child.location[1] += obj_parent.location[1]
             obj_child.location[2] += obj_parent.location[2]
-                        
-            #obj_child.rotation_euler[0] += obj_parent.rotation_euler[0]
-            #obj_child.rotation_euler[1] += obj_parent.rotation_euler[1]
-            #obj_child.rotation_euler[2] += obj_parent.rotation_euler[2]
 
         def update_geometry(geometry):
             """Recursively update objects position, rotation and scale
-               and define parent/child constraints"""
+               and define parent/child constraints. References are new
+               sub-trees that must be processed and their root marked."""
 
-            add_child_position(geometry)
-            #TODO: apply rotation of parent AFTER we attached a child, so they rotate together
+            if not isinstance(geometry, pygdtf.GeometryReference):
+                # geometry reference will have different geometry
+                add_child_position(geometry)
+
+            if isinstance(geometry, pygdtf.GeometryBeam):
+                create_beam(geometry)
+            elif isinstance(geometry, (pygdtf.GeometryMediaServerCamera)):
+                create_camera(geometry)
+
+            elif isinstance(geometry, pygdtf.GeometryReference):
+                reference = copy.deepcopy(pygdtf.utils.get_geometry_by_name(profile, geometry.geometry))
+                reference.name=sanitize_obj_name(geometry)
+                reference.position = geometry.position
+
+                add_child_position(reference)
+
+                if isinstance(reference, pygdtf.GeometryBeam):
+                    create_beam(reference)
+                elif isinstance(reference, (pygdtf.GeometryMediaServerCamera)):
+                    create_camera(reference)
+
+                if hasattr(reference, "geometries"):
+                    if len(reference.geometries) > 0:
+                        for child_geometry in reference.geometries:
+                            setattr(child_geometry, "reference_root", str(reference.name))
+                            constraint_child_to_parent(reference, child_geometry) # parent, child
+                            update_geometry(child_geometry)
+                return
 
             if hasattr(geometry, "geometries"):
                 if len(geometry.geometries) > 0:
                     for child_geometry in geometry.geometries:
-                        constraint_child_to_parent(geometry, child_geometry)
+                        constraint_child_to_parent(geometry, child_geometry) # parent, child
                         update_geometry(child_geometry)
 
         # Load 3d objects from the GDTF profile
