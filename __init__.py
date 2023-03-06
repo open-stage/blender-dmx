@@ -179,6 +179,11 @@ class DMX(PropertyGroup):
 
     dmx_value_index: IntProperty() # Just a fake value, we need as the live DMX UI Panel requires it
 
+    data_version: IntProperty(
+            name = "BlenderDMX data version, bump when changing RNA structure and provide migration script",
+            default = 2,
+            )
+
     # New DMX Scene
     # - Remove any previous DMX objects/collections
     # - Create DMX collection
@@ -268,6 +273,8 @@ class DMX(PropertyGroup):
         #for group in self.groups:
         #    group.rebuild()
 
+        self.migrations()
+
     # Unlink Add-on from file
     # This is only called when the DMX collection is externally removed
     def unlinkFile(self):
@@ -288,6 +295,30 @@ class DMX(PropertyGroup):
     # Callback Properties
 
     # # Setup > Background > Color
+
+    def migrations(self):
+        """Provide migration scripts when bumping the data_version"""
+        file_data_version = 1 # default data version before we started setting it up
+
+        if ("DMX_DataVersion" in self.collection):
+            file_data_version = self.collection["DMX_DataVersion"]
+        print("run", file_data_version)
+
+        if file_data_version < 2: # migration for sw. version 0.5 → 1.0
+            print("Running migration 1→2")
+            dmx = bpy.context.scene.dmx
+
+            for fixture in dmx.fixtures:
+                for obj in fixture.objects:
+                    if any(obj.name == name for name in ['Body', 'Base']):
+                        print("updating", obj.name)
+                        obj.name = 'Root'
+
+        # add here another if statement for next migration condition... like:
+        # if file_data_version < 3: #...
+
+        self.collection["DMX_DataVersion"] = self.data_version # set data version to current
+
 
     def onBackgroundColor(self, context):
         context.scene.world.node_tree.nodes['Background'].inputs[0].default_value = self.background_color
