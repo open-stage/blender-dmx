@@ -19,7 +19,6 @@ from dmx import pygdtf
 from dmx.gdtf import DMX_GDTF
 from dmx.data import DMX_Data
 from dmx.util import cmy_to_rgb
-from dmx.util import sanitize_obj_name
 
 from bpy.props import (IntProperty,
                        FloatProperty,

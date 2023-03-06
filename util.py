@@ -54,5 +54,9 @@ def cmy_to_rgb(cmy):
     rgb[2] = int(255 * (1.0 - cmy[2] / 255))
     return rgb
 
-def sanitize_obj_name(name):
-    return name.replace(" ", "_")
+def sanitize_obj_name(geometry):
+    name = geometry.name.replace(" ", "_")
+    root_name = ""
+    if hasattr(geometry, "reference_root"):
+        root_name=f"{geometry.reference_root.replace(' ', '_')}_"
+    return f"{root_name}{name}"
