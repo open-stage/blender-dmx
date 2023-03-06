@@ -53,17 +53,15 @@ class DMX_OT_Setup_Volume_Create(Operator):
             dmx.volume = bpy.data.objects["DMX_Volume"]
 
         dmx.volume_nodetree = dmx.volume.data.materials[0].node_tree
-        if (dmx.volume.name in bpy.context.scene.collection.objects):
-            bpy.ops.object.select_all(action='DESELECT')
-            dmx.volume.select_set(True)
-            bpy.ops.collection.objects_remove_all()
-
-        bpy.context.scene.collection.objects.link(dmx.volume)
+        
+        old_collections = dmx.volume.users_collection
+        if (dmx.collection not in old_collections):
+            dmx.collection.objects.link(dmx.volume)
+            for collection in old_collections:
+                collection.objects.unlink(dmx.volume)
 
         dmx.volume.location = pos
         dmx.volume.scale = scale
-
-
 
         return {'FINISHED'}
 
@@ -143,4 +141,5 @@ class DMX_PT_Setup(Panel):
     def draw(self, context):
         layout = self.layout
         dmx = context.scene.dmx
-        if (not dmx.collection): layout.operator("dmx.new_show", text="Create New Show", icon="LIGHT")
+        if (not dmx.collection):
+            layout.operator("dmx.new_show", text="Create New Show", icon="LIGHT")

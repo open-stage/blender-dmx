@@ -60,7 +60,6 @@ def getVolumeScatterMaterial():
             for node in material.node_tree.nodes:
                 print(node)
 
-    material.node_tree.nodes.remove(material.node_tree.nodes[PRINCIPLED_BSDF])
     material.node_tree.nodes.new(SHADER_NODE_VOLUMESCATTER)
     material.node_tree.links.new(material.node_tree.nodes[MATERIAL_OUTPUT].inputs[1], material.node_tree.nodes[VOLUME_SCATTER].outputs[0])
     return material
