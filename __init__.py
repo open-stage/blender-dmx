@@ -34,6 +34,7 @@ from dmx.panels.dmx import *
 from dmx.panels.fixtures import *
 from dmx.panels.groups import *
 from dmx.panels.programmer import *
+from dmx.panels.recorder import *
 from dmx.util import rgb_to_cmy
 
 from bpy.props import (BoolProperty,
@@ -111,7 +112,9 @@ class DMX(PropertyGroup):
                 DMX_OT_Programmer_SelectBodies,
                 DMX_OT_Programmer_SelectTargets,
                 #DMX_OT_Programmer_SelectCamera,
-                DMX_PT_Programmer  )
+                DMX_PT_Programmer,
+                DMX_OT_Recorder_AddKeyframe,
+                DMX_PT_Recorder  )
 
     linkedToFile = False
 
