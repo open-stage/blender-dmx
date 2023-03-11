@@ -1,10 +1,3 @@
-#
-#   BlendexDMX > Material
-#   Methods to create special materials (such as the default light emitter)
-#
-#   http://www.github.com/open-stage/BlenderDMX
-#
-
 import bpy
 import bmesh
 from dmx.logging import DMX_Log
@@ -22,7 +15,7 @@ EMISSION = bpy.app.translations.pgettext("Emission")
 
 # <get Emitter Material>
 #   Create an emissive material with given name, remove if already present
-def getEmitterMaterial(name):
+def get_emitter_material(name):
     if (name in bpy.data.materials):
         bpy.data.materials.remove(bpy.data.materials[name])
     material = bpy.data.materials.new(name)
@@ -41,9 +34,7 @@ def getEmitterMaterial(name):
     material.node_tree.links.new(material.node_tree.nodes[MATERIAL_OUTPUT].inputs[0], material.node_tree.nodes[EMISSION].outputs[0])
     return material
 
-# <get Volume Scatter Material>
-#
-def getVolumeScatterMaterial():
+def get_volume_scatter_material():
     if ("DMX_Volume" in bpy.data.materials):
         return bpy.data.materials["DMX_Volume"]
 

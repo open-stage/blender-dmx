@@ -1,53 +1,51 @@
-#
-#   BlendexDMX > GDTF
-#   Handles GDTF profiles
-#
-#   http://www.github.com/open-stage/BlenderDMX
-#
-
 import os
 import bpy
 import copy
-
 from mathutils import Euler, Matrix
 
-from dmx import pygdtf
-from dmx.logging import DMX_Log
-from dmx.io_scene_3ds.import_3ds import load_3ds
-from dmx.util import sanitize_obj_name
+from bpy.types import Object
 
+from lib import pygdtf
+from lib.io_scene_3ds.import_3ds import load_3ds
+from src.log import DMX_Log
+
+from src.util import sanitize_obj_name
 
 class DMX_GDTF():
 
-    @staticmethod
-    def getProfilesPath():
+    # Paths
+
+    @classmethod
+    def _get_profiles_path(self):
         ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
         return os.path.join(ADDON_PATH,'assets','profiles')
 
-    @staticmethod
-    def getPrimitivesPath():
+    @classmethod
+    def _get_primitives_path(self):
         ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
         return os.path.join(ADDON_PATH,'assets','primitives')
 
-    @staticmethod
-    def getManufacturerList():
+    # UI Utility
+    # TODO: review
+
+    @classmethod
+    def get_manufacturer_list(self):
         # List profiles in folder
-        manufacturers = set([])
-        for file in os.listdir(DMX_GDTF.getProfilesPath()):
+        manufacturers = set()
+        for file in os.listdir(DMX_GDTF._get_profiles_path()):
             # Parse info from file name: Company@Model.gdtf
             info = file.split('@')
             # Remove ".gdtf" from the end of the string
             info[-1] = info[-1][:-5]
             # Add to list (identifier, short name, full name)
             manufacturers.add((info[0], info[0], ''))
-
         return tuple(sorted(manufacturers))
 
-    @staticmethod
-    def getProfileList(manufacturer):
+    @classmethod
+    def get_profile_list(self, manufacturer):
         # List profiles in folder
         profiles = []
-        for file in os.listdir(DMX_GDTF.getProfilesPath()):
+        for file in os.listdir(DMX_GDTF._get_profiles_path()):
             # Parse info from file name: Company@Model.gdtf
             info = file.split('@')
             if (info[0] == manufacturer):
@@ -58,8 +56,8 @@ class DMX_GDTF():
 
         return tuple(profiles)
 
-    @staticmethod
-    def getModes(profile):
+    @classmethod
+    def get_modes(self, profile):
         """Returns an array, keys are mode names, value is channel count"""
         gdtf_profile = DMX_GDTF.loadProfile(profile)
         modes = {}
@@ -69,14 +67,17 @@ class DMX_GDTF():
             modes[mode.name] = len(dmx_channels_flattened)
         return modes
  
-    @staticmethod
-    def loadProfile(filename):
-        path = os.path.join(DMX_GDTF.getProfilesPath(), filename)
-        profile = pygdtf.FixtureType(path)
-        return profile
+    # Load GDTF file
 
-    @staticmethod
-    def loadBlenderPrimitive(model):
+    @classmethod
+    def load_fixture_type(self, filename: str) -> pygdtf.FixtureType:
+        path = os.path.join(DMX_GDTF._get_profiles_path(), filename)
+        return pygdtf.FixtureType(path)
+
+    # Load Geometries
+
+    @classmethod
+    def _load_geom_blender_primitive(model: pygdtf.Model) -> Object:
         primitive = str(model.primitive_type)
 
         if (primitive == 'Cube'):
@@ -93,10 +94,10 @@ class DMX_GDTF():
         obj.scale = (model.length, model.width, model.height)
         return obj
 
-    @staticmethod
-    def loadPrimitive(model):
+    @classmethod
+    def _load_geom_gdtf_primitive(model: pygdtf.Model) -> Object:
         primitive = str(model.primitive_type)
-        path = os.path.join(DMX_GDTF.getPrimitivesPath(), primitive+'.obj')
+        path = os.path.join(DMX_GDTF._get_primitives_path(), primitive+'.obj')
         bpy.ops.import_scene.obj(filepath=path)
         obj = bpy.context.view_layer.objects.selected[0]
         obj.users_collection[0].objects.unlink(obj)
@@ -104,19 +105,19 @@ class DMX_GDTF():
         obj.scale = (model.length/obj.dimensions.x,model.width/obj.dimensions.y,model.height/obj.dimensions.z)
         return obj
 
-    @staticmethod
-    def loadModel(profile, model):
+    @classmethod
+    def _load_geom_model(gdtf: pygdtf.FixtureType, model: pygdtf.Model) -> Object:
         current_path = os.path.dirname(os.path.realpath(__file__))
-        extract_to_folder_path = os.path.join(current_path, 'assets', 'models', profile.fixture_type_id)
+        extract_to_folder_path = os.path.join(current_path, 'assets', 'models', gdtf.fixture_type_id)
         
         if model.file.extension.lower() == "3ds":
             inside_zip_path =f"models/3ds/{model.file.name}.{model.file.extension}"
-            profile._package.extract(inside_zip_path, extract_to_folder_path)
+            gdtf._package.extract(inside_zip_path, extract_to_folder_path)
             file_name=os.path.join(extract_to_folder_path, inside_zip_path)
             load_3ds(file_name, bpy.context)
         else:
             inside_zip_path = f"models/gltf/{model.file.name}.{model.file.extension}"
-            profile._package.extract(inside_zip_path, extract_to_folder_path)
+            gdtf._package.extract(inside_zip_path, extract_to_folder_path)
             file_name=os.path.join(extract_to_folder_path, inside_zip_path)
             bpy.ops.import_scene.gltf(filepath=file_name)
 
@@ -132,12 +133,21 @@ class DMX_GDTF():
             obj.scale.z*model.height/z)
         return obj
 
-    @staticmethod
-    def buildCollection(profile, mode, display_beams):
+    # Build
+
+    @classmethod
+    def get_collection_name(profile, dmx_mode):
+        revision = profile.revisions[-1].text if len(profile.revisions) else ''
+        return f"{profile.manufacturer}, {profile.name}, {dmx_mode}, {revision}"
+
+    @classmethod
+    def build_collection(profile: pygdtf.FixtureType, mode: str, create_lights: bool):
 
         # Create model collection
-        collection = bpy.data.collections.new(DMX_GDTF.getName(profile, mode))
+        collection_name = DMX_GDTF.get_collection_name(profile, mode)
+        collection = bpy.data.collections.new(collection_name)
         objs = {}
+
         # Get root geometry reference from the selected DMX Mode
         dmx_mode = pygdtf.utils.get_dmx_mode_by_name(profile, mode)
         root_geometry = pygdtf.utils.get_geometry_by_name(profile, dmx_mode.geometry)
@@ -181,13 +191,13 @@ class DMX_GDTF():
                 except Exception as e:
                     print("Error importing 3D model:", e)
                     model.primitive_type="Cube"
-                    obj = DMX_GDTF.loadBlenderPrimitive(model)
+                    obj = DMX_GDTF._load_geom_blender_primitive(model)
             # BlenderDMX primitives
             elif (str(model.primitive_type) in ['Base','Conventional','Head','Yoke']):
-                obj = DMX_GDTF.loadPrimitive(model)
+                obj = DMX_GDTF._load_geom_gdtf_primitive(model)
             # Blender primitives
             else:
-                obj = DMX_GDTF.loadBlenderPrimitive(model)
+                obj = DMX_GDTF._load_geom_blender_primitive(model)
                 
             # If object was created
             if (obj != None):
@@ -261,7 +271,8 @@ class DMX_GDTF():
                 if "beam" not in obj_child.name.lower():
                     obj_child.name=f"Beam {obj_child.name}"
 
-                if not display_beams: # Don't even create beam objects to save resources
+                if not create_lights:
+                    # Don't even create beam objects to save resources
                     return
 
                 obj_child.visible_shadow = False
@@ -361,13 +372,11 @@ class DMX_GDTF():
                     if attribute == channel["id"] and channel["geometry"] == obj.get("original_name", "None"):
                         return obj
 
-
         # This could be moved to the processing up higher,but for now, it's easier here
         head = get_axis("Tilt")
         yoke = get_axis("Pan")
         base = get_root()
         DMX_Log.log.info(f"Head: {head}, Yoke: {yoke}, Base: {base}")
-
 
         # If the root has a child with Pan, create Z rotation constraint
         if yoke is not None:
@@ -394,8 +403,4 @@ class DMX_GDTF():
             collection.objects.link(obj)
 
         return collection
-
-    @staticmethod
-    def getName(profile, dmx_mode):
-        revision = profile.revisions[-1].text if len(profile.revisions) else ''
-        return f"{profile.manufacturer}, {profile.name}, {dmx_mode}, {revision}"
+    

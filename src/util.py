@@ -11,7 +11,7 @@ import bmesh
 # <get Scene Rect>
 # Calculate the minimum and maximum coordinate of the scene objects
 
-def getSceneRect():
+def get_scene_rect():
     min = [float("inf"),float("inf"),float("inf")]
     max = [-float("inf"),-float("inf"),-float("inf")]
 
