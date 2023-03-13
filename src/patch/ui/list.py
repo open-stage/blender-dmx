@@ -6,7 +6,8 @@ from src.i18n import DMX_i18n
 from src.icon import DMX_Icon
 
 from .operator import ( DMX_OP_Patch_Source_Configure,
-                        DMX_OP_Patch_Fixture_Remove )
+                        DMX_OP_Patch_Fixture_Remove,
+                        DMX_OP_Patch_Universe_Remove )
 from .menu import ( DMX_MT_Patch_SelectUniverse,
                     DMX_MT_Patch_SelectMode )
 
@@ -68,13 +69,16 @@ class DMX_UL_Patch_Fixtures(UIList):
 
     def draw_fixture_item(self, context, layout, data, item, icon, active_data, active_propname, index):
         patch = context.scene.dmx.patch
-               
-        col = layout.column()
+
+        main_col = layout.column()
+        row = main_col.row()
+
+        col = row.column()
         col.ui_units_x = 1
         col.alert = len(item.name) == 0 or len(item.profile) == 0
         col.label(icon=DMX_Icon.FIXTURE)
 
-        cols = self._split_row(layout, DMX_UL_Patch_Fixtures.cols)
+        cols = self._split_row(row, DMX_UL_Patch_Fixtures.cols)
         
         cols[0].emboss = 'NONE'
         cols[0].alert = len(item.name) == 0 or len(item.profile) == 0
@@ -91,15 +95,19 @@ class DMX_UL_Patch_Fixtures(UIList):
 
         cols[3].menu(
             DMX_MT_Patch_SelectMode.bl_idname,
-            text = item.get_mode_str(mini=True)
+            text = item.get_mode_str(mini=True) or ''
         )
 
-        cols[4].prop(item, 'address', text='')
+        if (len(item.breaks)):
+            cols[4].prop(item.breaks[0], 'address', text = '')
 
-        cols[5].menu(
-            DMX_MT_Patch_SelectUniverse.bl_idname,
-            text = item.get_universe_str(context, mini=True)
-        )
+            universe = item.get_universe_str(context, 0, mini=True)
+            cols[5].context_pointer_set("fixture_break", item.breaks[0])
+            cols[5].alert = (universe != None)
+            cols[5].menu(
+                DMX_MT_Patch_SelectUniverse.bl_idname,
+                text = universe or ''
+            )
         
         row = cols[6].row()
         col = row.column()
@@ -114,6 +122,28 @@ class DMX_UL_Patch_Fixtures(UIList):
             DMX_OP_Patch_Fixture_Remove.bl_idname,
             text='',
             icon=DMX_Icon.REMOVE
+        ).index = index
+
+        if (len(item.breaks) > 1):
+            for break_i in range(1,len(item.breaks)):
+                row = main_col.row()
+                self.draw_extra_break(context, row, item, break_i)
+
+    def draw_extra_break(self, context, layout, item, break_i):
+        col = layout.column()
+        col.ui_units_x = 1
+        col.label(icon=DMX_Icon.BREAK)
+
+        cols = self._split_row(layout, DMX_UL_Patch_Fixtures.cols)
+        
+        cols[4].prop(item.breaks[break_i], 'address', text = '')
+
+        universe = item.get_universe_str(context, break_i, mini=True)
+        cols[5].context_pointer_set("fixture_break", item.breaks[break_i])
+        cols[5].alert = (universe != None)
+        cols[5].menu(
+            DMX_MT_Patch_SelectUniverse.bl_idname,
+            text = universe or ''
         )
     
     def draw_batch_item(self, context, layout, item, is_root = False):
@@ -157,7 +187,7 @@ class DMX_UL_Patch_Fixtures(UIList):
             DMX_OP_Patch_Fixture_Remove.bl_idname,
             text='',
             icon=DMX_Icon.REMOVE
-        )
+        ).index = index
 
     def draw_batch_root_item(self, context, layout, data, item, icon, active_data, active_propname, index):
         patch = context.scene.dmx.patch
@@ -217,7 +247,7 @@ class DMX_UL_Patch_Fixtures(UIList):
             DMX_OP_Patch_Fixture_Remove.bl_idname,
             text='',
             icon=DMX_Icon.REMOVE
-        )
+        ).index = index
 
         if (batch.expand):
             row = main_col.row()
@@ -289,3 +319,10 @@ class DMX_UL_Patch_Universes(UIList):
             icon=DMX_Icon.CONFIGURE,
             text=''
         )
+
+        col = layout.column()
+        col.operator(
+            DMX_OP_Patch_Universe_Remove.bl_idname,
+            text='',
+            icon=DMX_Icon.REMOVE
+        ).index = index

@@ -4,6 +4,7 @@ from bpy.props import ( IntProperty,
                         StringProperty )
 
 from src.i18n import DMX_i18n
+from ..controller import DMX_Patch_Controller
 
 # [Select Universe]
 
@@ -14,7 +15,7 @@ class DMX_OP_MT_Patch_SelectUniverse(Operator):
     universe: IntProperty()
 
     def execute(self, context):
-        context.fixture.universe = self.universe + 1
+        context.fixture_break.universe = self.universe + 1
         return {'FINISHED'}
 
 class DMX_MT_Patch_SelectUniverse(Menu):
@@ -25,12 +26,14 @@ class DMX_MT_Patch_SelectUniverse(Menu):
         layout = self.layout
         patch = context.scene.dmx.patch
         layout.context_pointer_set("fixture", context.fixture)
+        layout.context_pointer_set("fixture_break", context.fixture_break)
         for i, universe in enumerate(patch.universes):
             row = layout.row()
             op = row.operator(
                 DMX_OP_MT_Patch_SelectUniverse.bl_idname,
                 text=f"{universe.number}: {universe.name}"
-            ).universe = i
+            )
+            op.universe = i
 
 # [Select Mode]
 
@@ -38,34 +41,43 @@ class DMX_OP_MT_Patch_SelectMode(Operator):
     bl_label = DMX_i18n.MENU_PATCH_SELECT_MODE_OP
     bl_idname = "dmx.patch_fixture_selectmode"
 
-    name: StringProperty()
-    n_channels: IntProperty()
+    mode: StringProperty()
 
     def execute(self, context):
-        context.fixture.mode = self.name
-        context.fixture.n_channels = self.n_channels
+        context.fixture.mode = self.mode
+        DMX_Patch_Controller.on_select_mode(context.fixture, context)
         return {'FINISHED'}
 
 class DMX_MT_Patch_SelectMode(Menu):
     bl_label = DMX_i18n.MENU_PATCH_SELECT_MODE
     bl_idname = "DMX_MT_Patch_SelectMode"
 
+    profile: StringProperty()
+
     def draw(self, context):
         layout = self.layout
         patch = context.scene.dmx.patch
         
-        # TODO: read modes from profile
-        modes = [
-            ('Default', 12),
-            ('Special', 24)
-        ]
+        profile_name = context.fixture.profile
+        if (len(profile_name) == 0):
+            layout.label(text='No Profile selected')
+            return
+
+        profile = patch.profiles[profile_name]
+        modes = profile.modes
 
         layout.context_pointer_set("fixture", context.fixture)
-        for name, n_channels in modes:
+        for mode in modes:
             row = layout.row()
+
+            breaks = [b.n_channels for b in mode.breaks]
+            if (len(breaks) == 1):
+                n_channels = str(breaks[0])
+            else:
+                n_channels = '+'.join(str(b) for b in breaks)
+
             op = row.operator(
                 DMX_OP_MT_Patch_SelectMode.bl_idname,
-                text=f'{name}, {n_channels} channels'
+                text=f'{mode.name}, {n_channels} channels'
             )
-            op.name = name
-            op.n_channels = n_channels
+            op.mode = mode.name

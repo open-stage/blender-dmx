@@ -3,9 +3,36 @@ from bpy.types import PropertyGroup
 from bpy.props import ( BoolProperty,
                         FloatVectorProperty,
                         IntProperty,
+                        CollectionProperty,
                         StringProperty )
 
 from src.i18n import DMX_i18n
+from ..controller import DMX_Patch_Controller
+
+class DMX_Patch_FixtureBreak(PropertyGroup):
+
+    n_channels: IntProperty(
+        name = DMX_i18n.PROP_PATCH_FIXTURE_NCHANNELS,
+        description = DMX_i18n.PROP_PATCH_FIXTURE_NCHANNELS_DESC,
+        default = 0
+    )
+
+    address: IntProperty(
+        name = DMX_i18n.PROP_PATCH_FIXTURE_ADDRESS,
+        description = DMX_i18n.PROP_PATCH_FIXTURE_ADDRESS_DESC,
+        default = 1,
+        min = 1,
+        max = 512
+    )
+
+    universe: IntProperty(
+        name = DMX_i18n.PROP_PATCH_FIXTURE_UNIVERSE,
+        description = DMX_i18n.PROP_PATCH_FIXTURE_UNIVERSE_DESC,
+        default = 1,
+        min = 1,
+        max = 512
+    )
+
 
 class DMX_Patch_Fixture(PropertyGroup):
 
@@ -27,7 +54,8 @@ class DMX_Patch_Fixture(PropertyGroup):
 
     profile: StringProperty(
         name = DMX_i18n.PROP_PATCH_FIXTURE_PROFILE,
-        description = DMX_i18n.PROP_PATCH_FIXTURE_PROFILE_DESC
+        description = DMX_i18n.PROP_PATCH_FIXTURE_PROFILE_DESC,
+        update = DMX_Patch_Controller.on_fixture_profile
     )
 
     mode: StringProperty(
@@ -35,28 +63,12 @@ class DMX_Patch_Fixture(PropertyGroup):
         description = DMX_i18n.PROP_PATCH_FIXTURE_MODE_DESC
     )
 
-    n_channels: IntProperty(
-        name = DMX_i18n.PROP_PATCH_FIXTURE_NCHANNELS,
-        description = DMX_i18n.PROP_PATCH_FIXTURE_NCHANNELS_DESC,
-        default = 0
-    )
-
     # DMX Addressing
 
-    address: IntProperty(
-        name = DMX_i18n.PROP_PATCH_FIXTURE_ADDRESS,
-        description = DMX_i18n.PROP_PATCH_FIXTURE_ADDRESS_DESC,
-        default = 1,
-        min = 1,
-        max = 512
-    )
-
-    universe: IntProperty(
-        name = DMX_i18n.PROP_PATCH_FIXTURE_UNIVERSE,
-        description = DMX_i18n.PROP_PATCH_FIXTURE_UNIVERSE_DESC,
-        default = 1,
-        min = 1,
-        max = 512
+    breaks: CollectionProperty(
+        name = DMX_i18n.PROP_PATCH_FIXTURE_NCHANNELS,
+        description = DMX_i18n.PROP_PATCH_FIXTURE_NCHANNELS_DESC,
+        type = DMX_Patch_FixtureBreak
     )
 
     # Settings
@@ -87,21 +99,49 @@ class DMX_Patch_Fixture(PropertyGroup):
 
     # Getters
 
-    def get_universe_str(self, context, mini=False):
+    def get_profile(self, context):
+        return context.scene.dmx.patch.profiles.get(self.profile, None)
+
+    def get_mode(self, context):
+        profile = self.get_profile(context)
+        return profile.modes.get(self.mode, None)
+
+    def get_address_str(self, context, break_i):
+        if (break_i >= len(self.breaks)):
+            return None
+
         patch = context.scene.dmx.patch
-        universe = patch.universes[self.universe-1]
+        address = self.breaks[break_i].address
+        
+        return str(address)
+        
+    def get_universe_str(self, context, break_i, mini=False):
+        if (break_i >= len(self.breaks)):
+            return None
+
+        patch = context.scene.dmx.patch
+        universe_i = self.breaks[break_i].universe
+        if universe_i > len(patch.universes):
+            return None
+
+        universe = patch.universes[universe_i-1]
         if (mini):
             return str(universe.number)
         else:
             return f'{universe.number}: {universe.name}'
 
     def get_mode_str(self, mini=False):
-        if (mini):
-            if (self.n_channels == 0):
-                return ''
-            return f'{self.n_channels} chs'
+        if (len(self.breaks) == 0):
+            return None
+        breaks = [b.n_channels for b in self.breaks]
+        if (len(breaks) == 1):
+            n_channels = str(breaks[0])
         else:
-            return f'{self.mode} ({self.n_channels} chs)'
+            n_channels = '+'.join(str(b) for b in breaks)
+        if (mini):
+            return f'{n_channels} chs'
+        else:
+            return f'{self.mode}, {n_channels} chs'
 
     def get_batch(self, context):
         if (self.batch == -1):

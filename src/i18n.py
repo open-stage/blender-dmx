@@ -84,6 +84,9 @@ class DMX_i18n:
     PROP_PATCH_PROFILE_NAME = 'Name'
     PROP_PATCH_PROFILE_NAME_DESC = 'The name of the DMX profile.'
 
+    PROP_PATCH_PROFILE_SHORT_NAME = 'Short Name'
+    PROP_PATCH_PROFILE_SHORT_NAME_DESC = 'The short name of the DMX profile, all caps, used as suggestion for fixture names.'
+
     # Patch > Properties > Source
 
     PROP_PATCH_SOURCE_TYPE = 'Type'

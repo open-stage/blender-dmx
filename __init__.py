@@ -50,41 +50,6 @@ class DMX(PropertyGroup):
 def on_register():
     Patch.DMX_Patch_Profile.load()
 
-    patch = bpy.context.scene.dmx.patch
-    patch.universes.clear()
-    for i in range(5):
-        patch.universes.add()
-        patch.universes[-1].number = i+1
-    patch.fixture_batches.clear()
-    patch.fixture_batches.add()
-    patch.fixture_batches[-1].units = 3
-    patch.fixture_batches.add()
-    patch.fixture_batches[-1].units = 2
-    patch.fixture_batches.add()
-    patch.fixture_batches[-1].units = 1
-    patch.fixtures.clear()
-    patch.fixtures.add()
-    patch.fixtures.add()
-    patch.fixtures.add()
-    patch.fixtures.add()
-    patch.fixtures[-1].batch = 0
-    patch.fixtures[-1].batch_index = 0
-    patch.fixtures.add()
-    patch.fixtures[-1].batch = 0
-    patch.fixtures[-1].batch_index = 1
-    patch.fixtures.add()
-    patch.fixtures[-1].batch = 0
-    patch.fixtures[-1].batch_index = 2
-    patch.fixtures.add()
-    patch.fixtures[-1].batch = 1
-    patch.fixtures[-1].batch_index = 0
-    patch.fixtures.add()
-    patch.fixtures[-1].batch = 1
-    patch.fixtures[-1].batch_index = 1
-    patch.fixtures.add()
-    patch.fixtures[-1].batch = 2
-    patch.fixtures[-1].batch_index = 0
-
 def clean_module_imports():
     modules = dict(sys.modules)
     for name in modules.keys():

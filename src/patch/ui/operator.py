@@ -1,6 +1,8 @@
 import bpy
 from bpy.types import Operator, Menu
 
+from bpy.props import ( IntProperty )
+
 from src.i18n import DMX_i18n
 
 # Source > Configure
@@ -24,7 +26,28 @@ class DMX_OP_Patch_Universe_Add(Operator):
     bl_options = {'UNDO'}
 
     def execute(self, context):
-        print('[OP: ADD UNIVERSE]')
+        universes = bpy.context.scene.dmx.patch.universes
+        universes.add()
+        universes[-1].name = f'Universe {len(universes)}'
+        for i, universe in enumerate(universes):
+            universe.number = i+1
+        return {'FINISHED'}
+
+# Universe > Remove
+
+class DMX_OP_Patch_Universe_Remove(Operator):
+    bl_label = DMX_i18n.OP_PATCH_FIXTURE_REMOVE
+    bl_description = DMX_i18n.OP_PATCH_FIXTURE_REMOVE_DESC
+    bl_idname = "dmx.patch_universe_remove"
+    bl_options = {'UNDO'}
+
+    index: IntProperty()
+
+    def execute(self, context):
+        universes = bpy.context.scene.dmx.patch.universes
+        universes.remove(self.index)
+        for i, universe in enumerate(universes):
+            universe.number = i+1
         return {'FINISHED'}
 
 # Fixture > Add
@@ -36,7 +59,10 @@ class DMX_OP_Patch_Fixture_Add(Operator):
     bl_options = {'UNDO'}
 
     def execute(self, context):
-        print('[OP: ADD FIXTURE]')
+        patch = bpy.context.scene.dmx.patch
+        fixtures = patch.fixtures
+        fixtures.add()
+        fixtures[-1].id = patch.new_fixture_id()
         return {'FINISHED'}
 
 # Fixture > Add Batch
@@ -59,8 +85,10 @@ class DMX_OP_Patch_Fixture_Remove(Operator):
     bl_idname = "dmx.patch_fixture_remove"
     bl_options = {'UNDO'}
 
+    index: IntProperty()
+
     def execute(self, context):
-        print('[OP: REMOVE FIXTURE]')
+        bpy.context.scene.dmx.patch.fixtures.remove(self.index)
         return {'FINISHED'}
 
 # Build Fixtures

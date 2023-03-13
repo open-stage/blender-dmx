@@ -1,5 +1,6 @@
 class DMX_Icon:
 
+    BREAK = 'DECORATE'
     FIXTURE = 'LIGHT'
     FIXTURE_BATCH = 'LIGHTPROBE_GRID'
     

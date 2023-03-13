@@ -55,13 +55,23 @@ class DMX_Patch(PropertyGroup):
         default = 0
     )
 
+    # IDs
+
+    def new_fixture_id(self):
+        if (len(self.fixtures) == 0):
+            return 1
+        return max([f.id for f in self.fixtures]) + 1
+
 # Add-on Module Registering
 
 classes = (
 
     # Data Structures
+    DMX_Patch_FixtureBreak,
     DMX_Patch_Fixture,
     DMX_Patch_FixtureBatch,
+    DMX_Patch_ProfileBreak,
+    DMX_Patch_ProfileMode,
     DMX_Patch_Profile,
     DMX_Patch_Source,
     DMX_Patch_Universe,
@@ -80,6 +90,7 @@ classes = (
     # Operators
     DMX_OP_Patch_Source_Configure,
     DMX_OP_Patch_Universe_Add,
+    DMX_OP_Patch_Universe_Remove,
     DMX_OP_Patch_Fixture_Add,
     DMX_OP_Patch_Fixture_AddBatch,
     DMX_OP_Patch_Fixture_Remove,
