@@ -1,6 +1,7 @@
 import os
 import bpy
 import copy
+import shutil
 from mathutils import Euler, Matrix
 
 from bpy.types import Object
@@ -12,35 +13,6 @@ from src.log import DMX_Log
 from src.util import sanitize_obj_name
 
 class DMX_GDTF():
-
-    # Paths
-
-    @classmethod
-    def _get_profiles_path(self):
-        ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
-        return os.path.join(ADDON_PATH,'..','..','assets','profiles')
-
-    @classmethod
-    def _get_primitive_path(self, primitive: str):
-        ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
-        return os.path.join(ADDON_PATH,'..','..','assets','primitives', primitive+'.obj')
-
-    @classmethod
-    def _get_fixture_models_path(self, fixture_type_id):
-        ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
-        return os.path.join(ADDON_PATH,'..','..','assets','models',fixture_type_id)
-
-    # File Utilities
-
-    @classmethod
-    def extract_model_file(self, gdtf: pygdtf.FixtureType, file: pygdtf.Resource):
-        extension = file.extension.lower()
-
-        inside_zip_path = f"models/{extension}/{file.name}.{file.extension}"
-        to_folder_path = DMX_GDTF._get_fixture_models_path(gdtf.fixture_type_id)       
-        gdtf._package.extract(inside_zip_path, to_folder_path)
-
-        return os.path.join(to_folder_path, inside_zip_path), extension
 
     # UI Utility
     # TODO: review usage
@@ -83,27 +55,68 @@ class DMX_GDTF():
             dmx_channels_flattened = [channel for break_channels in dmx_channels for channel in break_channels]
             modes[mode.name] = len(dmx_channels_flattened)
         return modes
- 
-    # Load GDTF file
+
+    # Paths
 
     @classmethod
-    def load_fixture_type(self, filename: str) -> pygdtf.FixtureType:
+    def _get_profiles_path(self):
+        ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
+        return os.path.join(ADDON_PATH,'..','..','assets','profiles')
+
+    @classmethod
+    def _get_primitive_path(self, primitive: str):
+        ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
+        return os.path.join(ADDON_PATH,'..','..','assets','primitives', primitive+'.obj')
+
+    @classmethod
+    def _get_fixture_models_path(self, fixture_type_id):
+        ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
+        return os.path.join(ADDON_PATH,'..','..','assets','models',fixture_type_id)
+
+    # Constructor
+
+    def __init__(self, filename: str):
         path = os.path.join(DMX_GDTF._get_profiles_path(), filename)
-        return pygdtf.FixtureType(path)
+        self.fixture_type = pygdtf.FixtureType(path)
+    
+    # Parsing Helpers
 
-    # Build
+    def extract_model_file(self, file: pygdtf.Resource):
+        extension = file.extension.lower()
 
-    @classmethod
-    def get_geometry_channel_metadata(self, gdtf: pygdtf.FixtureType, mode_name: str):
+        inside_zip_path = f"models/{extension}/{file.name}.{file.extension}"
+        to_folder_path = DMX_GDTF._get_fixture_models_path(self.fixture_type.fixture_type_id)       
+        self.fixture_type._package.extract(inside_zip_path, to_folder_path)
+
+        return os.path.join(to_folder_path, inside_zip_path), extension
+    
+    def delete_fixture_model_folder(self) -> None:
+        folder_path = DMX_GDTF._get_fixture_models_path(self.fixture_type.fixture_type_id)
+        shutil.rmtree(folder_path)
+
+    def get_model_primitive_type(self, model: pygdtf.Model):
+        primitive = str(model.primitive_type)
+        if (primitive.endswith('1_1')):
+            primitive = primitive[:-3]
+        if primitive == 'Undefined':
+            return 'file', None
+        elif primitive in ['Base','Conventional','Head','Yoke']:
+            return 'gdtf', primitive
+        else:
+            return 'primitive', primitive
+
+    # Build Helpers
+
+    def get_geometry_channel_metadata(self, mode_name: str):
         # Returns the channels and virtual channels by geometry name.
         # We assume a single logical channel by channel for now, which is 
         # exposed through the "attribute" string
         channels = {}
         virtual_channels = {}
-        mode = pygdtf.utils.get_dmx_mode_by_name(gdtf, mode_name)
+        mode = pygdtf.utils.get_dmx_mode_by_name(self.fixture_type, mode_name)
 
         if (mode == None):
-            raise Exception(f'Mode {mode_name} not found on profile {gdtf.name}.')
+            raise Exception(f'Mode {mode_name} not found on profile {self.fixture_type.name}.')
 
         for channel in mode.dmx_channels:
             geom = channel.geometry
@@ -135,25 +148,8 @@ class DMX_GDTF():
 
         return channels, virtual_channels
 
-    @classmethod
-    def get_collection_name(self, gdtf: pygdtf.FixtureType, mode: str):
-        revision = gdtf.revisions[-1].text if len(gdtf.revisions) else ''
-        return f"{gdtf.manufacturer}, {gdtf.name}, {mode}, {revision}"
+    def get_collection_name(self, mode_name: str):
+        return f'{self.fixture_type.fixture_type_id}-{mode_name}'
 
-    @classmethod
-    def get_model_name(self, gdtf: pygdtf.FixtureType, mode: str):
-        return self.get_collection_name(gdtf, mode) + ' MODEL'
-
-    @classmethod
-    def get_model_primitive_type(self, model: pygdtf.Model):
-        primitive = str(model.primitive_type)
-        if (primitive.endswith('1_1')):
-            primitive = primitive[:-3]
-        if primitive == 'Undefined':
-            return 'file', None
-        elif primitive in ['Base','Conventional','Head','Yoke']:
-            return 'gdtf', primitive
-        else:
-            return 'primitive', primitive
-        
-
+    def get_model_collection_name(self, mode_name: str):
+        return self.get_collection_name(mode_name) + '-MODEL'
