@@ -10,7 +10,7 @@ from .data.pointer import *
 from .data.fixture import *
 from .data.data import *
 
-from .builder import DMX_FixtureBuilder
+from .fixture_builder import DMX_FixtureBuilder
 
 # Module Data Structure
 

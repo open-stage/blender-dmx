@@ -104,7 +104,7 @@ class DMX_i18n:
 
     # Programmer > Panel
 
-    PANEL_PATCH = 'Programmer'
+    PANEL_PROGRAMMER = 'Programmer'
 
     # Programmer > Operators
 

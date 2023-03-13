@@ -2,7 +2,7 @@ from typing import List
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 import zipfile
-from dmx.pygdtf.value import *
+from .value import *
 from .utils import *
 
 # Standard predefined colour spaces: R, G, B, W-P

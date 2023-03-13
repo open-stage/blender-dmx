@@ -1,6 +1,5 @@
 from bpy.types import Collection
 
-from src.patch.data.fixture import DMX_Patch_Fixture
 from .data.fixture import DMX_Fixture
 from .gdtf import DMX_GDTF
 from .model import DMX_Model
@@ -171,7 +170,7 @@ class DMX_FixtureBuilder:
                 obj.hide_set(not bpy.context.scene.dmx.display_pigtails)
 
     @classmethod
-    def build(self, patch: DMX_Patch_Fixture, mvr = None):
+    def build(self, patch: 'DMX_Patch_Fixture', mvr = None):
         
         core = bpy.context.scene.dmx.core
         fixture = self._get_fixture(patch.id)
