@@ -7,7 +7,7 @@ from bpy.props import ( BoolProperty,
                         StringProperty )
 
 from src.i18n import DMX_i18n
-from ..controller import DMX_Patch_Controller
+from src.patch.controller import DMX_Patch_Controller
 
 class DMX_Patch_FixtureBreak(PropertyGroup):
 

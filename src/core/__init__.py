@@ -10,11 +10,11 @@ from .data.pointer import *
 from .data.fixture import *
 from .data.data import *
 
-from .fixture_builder import DMX_FixtureBuilder
+from .controller import DMX_Core_Controller
 
 # Module Data Structure
 
-class DMX_Core(PropertyGroup):
+class DMX_Core(PropertyGroup, DMX_Core_Controller):
     
     # 
 
@@ -31,12 +31,6 @@ class DMX_Core(PropertyGroup):
     display_pigtails: BoolProperty(
         default = False
     )
-
-    # Build methods
-    def build_patch(self):
-        patch = bpy.context.scene.dmx.patch
-        for fixture in patch.fixtures:
-            DMX_FixtureBuilder.build(fixture)
 
 # Add-on Module Registering
 

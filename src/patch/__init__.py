@@ -13,9 +13,11 @@ from .ui.menu import *
 from .ui.operator import *
 from .ui.panel import *
 
+from .controller import DMX_Patch_Controller
+
 # Module Data Structure
 
-class DMX_Patch(PropertyGroup):
+class DMX_Patch(PropertyGroup, DMX_Patch_Controller):
 
     # GDTF Profiles
 
@@ -54,13 +56,6 @@ class DMX_Patch(PropertyGroup):
     selected_universe: IntProperty(
         default = 0
     )
-
-    # IDs
-
-    def new_fixture_id(self):
-        if (len(self.fixtures) == 0):
-            return 1
-        return max([f.id for f in self.fixtures]) + 1
 
 # Add-on Module Registering
 

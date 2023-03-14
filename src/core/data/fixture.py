@@ -5,6 +5,7 @@ from bpy.types import ( PropertyGroup,
 from bpy.props import ( BoolProperty,
                         FloatVectorProperty,
                         IntProperty,
+                        IntVectorProperty,
                         CollectionProperty,
                         PointerProperty,
                         StringProperty )
@@ -15,26 +16,42 @@ from .pointer import DMX_Material, DMX_Object
 class DMX_FixtureChannel(PropertyGroup):
 
     id: StringProperty(
-        name = "Fixture > Channel > ID",
         default = ''
+    )
+
+    resolution: IntProperty(
+        min = 0,
+        max = 4,
+        default = 1
+    )
+
+    offset: IntVectorProperty(
+        size = 4,
+        default = (0,0,0,0)
+    )
+
+    function: StringProperty(
+        default = ''
+    )
+
+    geometry: PointerProperty(
+        type = Object
     )
 
     default: IntProperty(
-        name = "Fixture > Channel > Default",
         default = 0
     )
     
-    geometry: StringProperty(
-        name = "Fixture > Geometry",
-        default = ''
-    )
-
 class DMX_Fixture(PropertyGroup):
 
     # Identifier (Synced to Patch)
 
     id: IntProperty(
-        name = "Patch Id",
+        name = "Fixture > Id"
+    )
+
+    name: StringProperty(
+        name = "Fixture > Name"
     )
 
     # Blender Pointers
@@ -43,19 +60,29 @@ class DMX_Fixture(PropertyGroup):
         name = "Fixture > Collection",
         type = Collection)
 
-    objects: CollectionProperty(
-        name = "Fixture > Objects",
+    roots: CollectionProperty(
+        name = "Fixture > Roots",
         type = DMX_Object
     )
 
-    lights: CollectionProperty(
-        name = "Fixture > Lights",
-        type = DMX_Object
-    )
+    # mobiles: CollectionProperty(
+    #     name = "Fixture > Mobiles",
+    #     type = DMX_Object
+    # )
 
-    emitters: CollectionProperty(
-        name = "Fixture > Materials",
-        type = DMX_Material)
+    # targets: CollectionProperty(
+    #     name = "Fixture > Mobiles",
+    #     type = DMX_Object
+    # )
+
+    # emitters: CollectionProperty(
+    #     name = "Fixture > Materials",
+    #     type = DMX_Material)
+
+    # lights: CollectionProperty(
+    #     name = "Fixture > Lights",
+    #     type = DMX_Object
+    # )
 
     # Channels
 
@@ -63,13 +90,3 @@ class DMX_Fixture(PropertyGroup):
         name = "Fixture > Channels",
         type = DMX_FixtureChannel
     )
-
-    virtual_channels: CollectionProperty(
-        name = "Fixture > Virtual Channels",
-        type = DMX_FixtureChannel
-    )
-
-    # DMX State
-
-    def clear(self):
-        pass

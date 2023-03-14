@@ -4,7 +4,7 @@ from bpy.props import ( IntProperty,
                         StringProperty )
 
 from src.i18n import DMX_i18n
-from ..controller import DMX_Patch_Controller
+from src.patch.controller import DMX_Patch_Controller
 
 # [Select Universe]
 

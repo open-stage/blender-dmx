@@ -60,18 +60,18 @@ class DMX_GDTF():
 
     @classmethod
     def _get_profiles_path(self):
-        ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
-        return os.path.join(ADDON_PATH,'..','..','assets','profiles')
+        FILE_PATH = os.path.dirname(os.path.abspath(__file__))
+        return os.path.join(FILE_PATH,'..','..','..','assets','profiles')
 
     @classmethod
     def _get_primitive_path(self, primitive: str):
-        ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
-        return os.path.join(ADDON_PATH,'..','..','assets','primitives', primitive+'.obj')
+        FILE_PATH = os.path.dirname(os.path.abspath(__file__))
+        return os.path.join(FILE_PATH,'..','..','..','assets','primitives', primitive+'.obj')
 
     @classmethod
     def _get_fixture_models_path(self, fixture_type_id):
-        ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
-        return os.path.join(ADDON_PATH,'..','..','assets','models',fixture_type_id)
+        FILE_PATH = os.path.dirname(os.path.abspath(__file__))
+        return os.path.join(FILE_PATH,'..','..','..','assets','models',fixture_type_id)
 
     # Constructor
 
@@ -92,7 +92,8 @@ class DMX_GDTF():
     
     def delete_fixture_model_folder(self) -> None:
         folder_path = DMX_GDTF._get_fixture_models_path(self.fixture_type.fixture_type_id)
-        shutil.rmtree(folder_path)
+        if (os.path.exists(folder_path)):
+            shutil.rmtree(folder_path)
 
     def get_model_primitive_type(self, model: pygdtf.Model):
         primitive = str(model.primitive_type)
@@ -110,9 +111,8 @@ class DMX_GDTF():
     def get_geometry_channel_metadata(self, mode_name: str):
         # Returns the channels and virtual channels by geometry name.
         # We assume a single logical channel by channel for now, which is 
-        # exposed through the "attribute" string
+        # exposed through the "function" string
         channels = {}
-        virtual_channels = {}
         mode = pygdtf.utils.get_dmx_mode_by_name(self.fixture_type, mode_name)
 
         if (mode == None):
@@ -120,7 +120,9 @@ class DMX_GDTF():
 
         for channel in mode.dmx_channels:
             geom = channel.geometry
-            metadata = {
+            if (geom not in channels):
+                channels[geom] = []
+            channels[geom].append({
                 'dmx_break': channel.dmx_break,
                 'default': {
                     'byte_count': channel.default.byte_count,
@@ -130,23 +132,11 @@ class DMX_GDTF():
                     'byte_count': channel.highlight.byte_count,
                     'value': channel.highlight.value,
                 },
-                'attribute': channel.logical_channels[0].attribute.str_link
-            }
+                'function': channel.logical_channels[0].attribute.str_link,
+                'offset': channel.offset # None if virtual channel, or [coarse, fine, ultra, uber]
+            })
 
-            if (channel.offset == None):
-                if (geom not in virtual_channels):
-                    virtual_channels[geom] = []
-                virtual_channels[geom].append(metadata)
-            else:
-                if (geom not in channels):
-                    channels[geom] = []
-                channels[geom].append({
-                    **metadata,
-                    'coarse': channel.offset[0],
-                    'fine': channel.offset[1] if len(channel.offset) > 1 else None
-                })
-
-        return channels, virtual_channels
+        return channels
 
     def get_collection_name(self, mode_name: str):
         return f'{self.fixture_type.fixture_type_id}-{mode_name}'

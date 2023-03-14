@@ -6,36 +6,22 @@ from bpy.types import Object
 from lib import pygdtf
 from lib import io_scene_3ds
 
+from src.core import util
 from .gdtf import DMX_GDTF
 
 class DMX_GDTFBuilder:
 
      # Collections Management
 
-    def _delete_collection(self, name: str) -> None:
-        if (name in bpy.data.collections):
-            for obj in bpy.data.collections[name].objects:
-                bpy.data.objects.remove(obj)
-            bpy.data.collections.remove(bpy.data.collections[name])
-
     def _delete_geom_collection(self) -> None:
-        self._delete_collection(
+        util.delete_collection(
             self.gdtf.get_collection_name(self.mode_name)
         )
 
     def _delete_model_collection(self) -> None:
-        self._delete_collection(
+        util.delete_collection(
             self.gdtf.get_model_collection_name(self.mode_name)
         )
-
-    def _activate_collection(self, collection: 'Collection'):
-        # Activates the collection so new objects are created inside it
-        bpy.context.scene.collection.children.link(collection)
-        layer_collection = bpy.context.view_layer.layer_collection.children[collection.name]
-        bpy.context.view_layer.active_layer_collection = layer_collection
-
-    def _hide_collection(self, collection: 'Collection'):
-        bpy.context.scene.collection.children.unlink(collection)
 
     # [Objects]
     #
@@ -134,13 +120,13 @@ class DMX_GDTFBuilder:
     # to a temporary folder inside assets/models, that's also deleted
 
     def _new_model_collection(self) -> 'Collection':        
-        return bpy.data.collections.new(
+        return util.new_collection(
             self.gdtf.get_model_collection_name(self.mode_name)
         )
 
     def _build_models(self):
         collection = self._new_model_collection()
-        self._activate_collection(collection)
+        util.activate_collection(collection)
 
         for model in self.gdtf.fixture_type.models:
             model_type, primitive = self.gdtf.get_model_primitive_type(model)
@@ -152,7 +138,7 @@ class DMX_GDTFBuilder:
             elif model_type == 'primitive':
                 self.models[model.name] = self._create_obj_from_primitive(model, primitive)
 
-        self._hide_collection(collection)
+        util.hide_collection(collection)
 
     # [Geometry Building]
     #
@@ -162,7 +148,7 @@ class DMX_GDTFBuilder:
     # The objects are tagged with geometry metadada.
     
     def _new_geom_collection(self) -> 'Collection':
-        return bpy.data.collections.new(
+        return util.new_collection(
             self.gdtf.get_collection_name(self.mode_name)
         )
 
@@ -213,8 +199,6 @@ class DMX_GDTFBuilder:
         # These are used later to build the fixture controls
         if (geometry.name in self.geom_channels):
             obj['dmx_channels'] = self.geom_channels[geometry.name]
-        if (geometry.name in self.geom_virtual_channels):
-            obj['dmx_virtual_channels'] = self.geom_virtual_channels[geometry.name]
         
         # Build children
         for child_geometry in geometry.geometries:
@@ -227,20 +211,16 @@ class DMX_GDTFBuilder:
         return obj
 
     def _build_trees(self):
-        self._activate_collection(self.collection)
+        util.activate_collection(self.collection)
         for geometry in self.gdtf.fixture_type.geometries:
-            self._build_geometry(geometry)
+            self.roots.append(self._build_geometry(geometry))
 
     # [Special Geometry Helpers]
 
-    def _obj_has_channel(self, obj: 'Object', channel_attribute: str):
+    def _obj_has_channel(self, obj: 'Object', function: str):
         if 'dmx_channels' in obj:
             for ch in obj['dmx_channels']:
-                if (ch['attribute'] == channel_attribute):
-                    return True
-        if 'dmx_virtual_channels' in obj:
-            for ch in obj['dmx_virtual_channels']:
-                if (ch['attribute'] == channel_attribute):
+                if (ch['function'] == function):
                     return True
         return False
 
@@ -306,12 +286,15 @@ class DMX_GDTFBuilder:
     def _build_targets(self):
         mobile_objects = self._get_mobile_objects()
 
-        for pair in mobile_objects:
+        for index, pair in enumerate(mobile_objects):
             
             name = pair[0]['geometry_name']
             if (len(pair) > 1):
                 name += '|' + pair[1]['geometry_name']
             target = bpy.data.objects.new(f'Target.{name}', None)
+            target['geometry_name'] = f'Target{index}'
+            target['geometry_type'] = 'Target'
+            target['index'] = index
 
             target.empty_display_size = 0.1
             target.location = pair[0].location
@@ -321,6 +304,8 @@ class DMX_GDTFBuilder:
             for obj in pair:
                 has_pan = self._obj_has_channel(obj, 'Pan')
                 has_tilt = self._obj_has_channel(obj, 'Tilt')
+                obj['geometry_type'] = 'Mobile'
+                obj['target_index'] = index
 
                 if (has_pan or has_tilt):
                     constraint = obj.constraints.new(type='LOCKED_TRACK')
@@ -352,11 +337,11 @@ class DMX_GDTFBuilder:
         light = bpy.data.objects.new(name=f"Spot", object_data=data)
         light.hide_select = True
 
-        self._merge_special_obj(obj, light, 'SpotLight')
+        self._merge_special_obj(obj, light, 'Light')
 
     def _build_lights(self):
         beams = [obj for obj in self.objects.values()
-            if obj.get('geometry_type', None) == 'GeometryBeam'
+            if obj['geometry_type'] == 'GeometryBeam'
         ]
         for obj in beams:
             name = obj['geometry_name']
@@ -377,7 +362,7 @@ class DMX_GDTFBuilder:
 
     def _build_cameras(self):
         cameras = [obj for obj in self.objects.values()
-            if obj.get('geometry_type', None) == 'GeometryMediaServerCamera'
+            if obj['geometry_type'] == 'GeometryMediaServerCamera'
         ]
         for obj in cameras:
             name = obj['geometry_name']
@@ -395,7 +380,7 @@ class DMX_GDTFBuilder:
         self.objects = {}
         self.roots = []
 
-        self.geom_channels, self.geom_virtual_channels = gdtf.get_geometry_channel_metadata(mode_name)
+        self.geom_channels = gdtf.get_geometry_channel_metadata(mode_name)
 
         self._delete_geom_collection()
         self._delete_model_collection()
@@ -407,35 +392,13 @@ class DMX_GDTFBuilder:
         self._build_lights()
         self._build_cameras()
 
-        self._hide_collection(self.collection)
+        util.hide_collection(self.collection)
         self._delete_model_collection()
         gdtf.delete_fixture_model_folder()
 
     @staticmethod
-    def get_objects(collection: 'Collection'):
-        
-        def _get_children(obj: 'Object'):
-            name = obj.get('geometry_name', None)
-            if (name == None):
-                return {}
-
-            children = {}
-            for child in obj.children:
-                children = { **children, **_get_children(child) }
-
-            return {
-                name: obj,
-                **children
-            }
-
-        objects = {}
-        for root in collection.objects:
-            objects = { **objects, **_get_children(root) }
-        
-        return objects
-
-    @staticmethod
-    def get(gdtf: DMX_GDTF, mode_name: str):
+    def get(filename: str, mode_name: str):
+        gdtf = DMX_GDTF(filename)
         
         collection_name = gdtf.get_collection_name(mode_name)
         if (collection_name in bpy.data.collections):
@@ -443,8 +406,8 @@ class DMX_GDTFBuilder:
             # Name lengths are limited, and there's no standard to the revision string,
             # so it better be stored as a Custom Property.
             collection = bpy.data.collections[collection_name]
-            objects = DMX_GDTFBuilder.get_objects(collection)
-            return collection, objects
-        
+            # objects = DMX_GDTFBuilder.get_objects(collection)
+            return collection
+
         builder = DMX_GDTFBuilder(gdtf, mode_name)
-        return builder.collection, builder.objects
+        return builder.collection

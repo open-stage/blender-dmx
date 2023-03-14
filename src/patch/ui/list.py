@@ -93,10 +93,11 @@ class DMX_UL_Patch_Fixtures(UIList):
             icon = DMX_Icon.GDTF_PROFILE
         )
 
-        cols[3].menu(
-            DMX_MT_Patch_SelectMode.bl_idname,
-            text = item.get_mode_str(mini=True) or ''
-        )
+        if (len(item.profile)):
+            cols[3].menu(
+                DMX_MT_Patch_SelectMode.bl_idname,
+                text = item.get_mode_str(mini=True) or ''
+            )
 
         if (len(item.breaks)):
             cols[4].prop(item.breaks[0], 'address', text = '')

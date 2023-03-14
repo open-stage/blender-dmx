@@ -4,6 +4,7 @@ from bpy.types import Operator, Menu
 from bpy.props import ( IntProperty )
 
 from src.i18n import DMX_i18n
+from src.patch.controller import DMX_Patch_Controller
 
 # Source > Configure
 
@@ -14,7 +15,7 @@ class DMX_OP_Patch_Source_Configure(Operator):
     bl_options = {'UNDO'}
 
     def execute(self, context):
-        print('[OP: ADD UNIVERSE]')
+        context.scene.dmx.patch.configure_source()
         return {'FINISHED'}
 
 # Universe > Add
@@ -26,11 +27,7 @@ class DMX_OP_Patch_Universe_Add(Operator):
     bl_options = {'UNDO'}
 
     def execute(self, context):
-        universes = bpy.context.scene.dmx.patch.universes
-        universes.add()
-        universes[-1].name = f'Universe {len(universes)}'
-        for i, universe in enumerate(universes):
-            universe.number = i+1
+        context.scene.dmx.patch.add_universe()
         return {'FINISHED'}
 
 # Universe > Remove
@@ -44,10 +41,7 @@ class DMX_OP_Patch_Universe_Remove(Operator):
     index: IntProperty()
 
     def execute(self, context):
-        universes = bpy.context.scene.dmx.patch.universes
-        universes.remove(self.index)
-        for i, universe in enumerate(universes):
-            universe.number = i+1
+        context.scene.dmx.patch.remove_universe(self.index)
         return {'FINISHED'}
 
 # Fixture > Add
@@ -59,10 +53,7 @@ class DMX_OP_Patch_Fixture_Add(Operator):
     bl_options = {'UNDO'}
 
     def execute(self, context):
-        patch = bpy.context.scene.dmx.patch
-        fixtures = patch.fixtures
-        fixtures.add()
-        fixtures[-1].id = patch.new_fixture_id()
+        context.scene.dmx.patch.add_fixture()
         return {'FINISHED'}
 
 # Fixture > Add Batch
@@ -74,7 +65,7 @@ class DMX_OP_Patch_Fixture_AddBatch(Operator):
     bl_options = {'UNDO'}
 
     def execute(self, context):
-        print('[OP: ADD FIXTURE BATCH]')
+        context.scene.dmx.patch.add_fixture_batch()
         return {'FINISHED'}
 
 # Fixture > Remove
@@ -88,7 +79,7 @@ class DMX_OP_Patch_Fixture_Remove(Operator):
     index: IntProperty()
 
     def execute(self, context):
-        bpy.context.scene.dmx.patch.fixtures.remove(self.index)
+        context.scene.dmx.patch.remove_fixture(self.index)
         return {'FINISHED'}
 
 # Build Fixtures
