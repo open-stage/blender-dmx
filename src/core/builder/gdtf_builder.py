@@ -1,9 +1,9 @@
 from mathutils import Euler, Matrix
+from typing import List
 
 import bpy
-from bpy.types import Object
+from bpy.types import Object, Collection
 
-from lib import pygdtf
 from lib import io_scene_3ds
 
 from src.core import util
@@ -30,7 +30,7 @@ class DMX_GDTFBuilder:
     # - GDTF Primitive: GDTF offers a few standards primitives
     # - Primitive: a simple Blender primitive (ex. Cube, Sphere, etc)
 
-    def _get_created_obj(self):
+    def _get_created_obj(self) -> Object:
         objs = list(bpy.context.view_layer.objects.selected)
         for obj in objs:
             # gltf files sometimes include this mysterious object
@@ -40,7 +40,7 @@ class DMX_GDTFBuilder:
                 objs.remove(obj)
         return objs[0]
 
-    def _create_obj_from_file(self, model: pygdtf.Model) -> Object:
+    def _create_obj_from_file(self, model: 'pygdtf.Model') -> Object:
         filepath, extension = self.gdtf.extract_model_file(model.file)
         try:
             if extension == "3ds":
@@ -74,7 +74,7 @@ class DMX_GDTFBuilder:
         )
         return obj
 
-    def _create_obj_from_gdtf_primitive(self, model: pygdtf.Model, primitive: str) -> Object:
+    def _create_obj_from_gdtf_primitive(self, model: 'pygdtf.Model', primitive: str) -> Object:
         filepath = DMX_GDTF._get_primitive_path(primitive)
         bpy.ops.import_scene.obj(filepath=filepath)
 
@@ -90,7 +90,7 @@ class DMX_GDTFBuilder:
         )
         return obj
 
-    def _create_obj_from_primitive(self, model: pygdtf.Model, primitive: str) -> Object:
+    def _create_obj_from_primitive(self, model: 'pygdtf.Model', primitive: str) -> Object:
         if (primitive == 'Cube'):
             bpy.ops.mesh.primitive_cube_add(size=1.0)
         elif (primitive == 'Pigtail'):
@@ -119,7 +119,7 @@ class DMX_GDTFBuilder:
     # During this process, 3D files are extracted from the zip file
     # to a temporary folder inside assets/models, that's also deleted
 
-    def _new_model_collection(self) -> 'Collection':        
+    def _new_model_collection(self) -> Collection:        
         return util.new_collection(
             self.gdtf.get_model_collection_name(self.mode_name)
         )
@@ -147,18 +147,18 @@ class DMX_GDTFBuilder:
     # inside a collection.
     # The objects are tagged with geometry metadada.
     
-    def _new_geom_collection(self) -> 'Collection':
+    def _new_geom_collection(self) -> Collection:
         return util.new_collection(
             self.gdtf.get_collection_name(self.mode_name)
         )
 
-    def _build_empty_model(self, name: str) -> 'Object':
+    def _build_empty_model(self, name: str) -> Object:
         if not name in self.models:
             self.models[name] = bpy.data.objects.new(name, None)
             self.models[name].empty_display_size = 0
         return self.models[name]
 
-    def _apply_matrix(self, obj: 'Object', matrix: Matrix):
+    def _apply_matrix(self, obj: Object, matrix: Matrix):
         obj.location = Matrix(matrix).to_translation()
         obj.rotation_mode = "XYZ"
         obj.rotation_euler = Matrix(matrix).to_euler('XYZ')
@@ -168,7 +168,7 @@ class DMX_GDTFBuilder:
         obj.scale[1] *= scale[1]
         obj.scale[2] *= scale[2]
     
-    def _tag_obj(self, geometry: pygdtf.Geometry, obj: 'Object'):
+    def _tag_obj(self, geometry: 'pygdtf.Geometry', obj: Object):
         self.objects[geometry.name] = obj
         self.geometries[geometry.name] = geometry
 
@@ -179,7 +179,7 @@ class DMX_GDTFBuilder:
         if 'head' in geometry.name.lower():
             obj['mobile_type'] = 'head'
         
-    def _build_geometry(self, geometry: pygdtf.Geometry):
+    def _build_geometry(self, geometry: 'pygdtf.Geometry') -> Object:
         # Build Geometry object
         if (geometry.model == None):
             obj = self._build_empty_model(geometry.name)
@@ -210,21 +210,21 @@ class DMX_GDTFBuilder:
 
         return obj
 
-    def _build_trees(self):
+    def _build_trees(self) -> None:
         util.activate_collection(self.collection)
         for geometry in self.gdtf.fixture_type.geometries:
             self.roots.append(self._build_geometry(geometry))
 
     # [Special Geometry Helpers]
 
-    def _obj_has_channel(self, obj: 'Object', function: str):
+    def _obj_has_channel(self, obj: Object, function: str) -> bool:
         if 'dmx_channels' in obj:
             for ch in obj['dmx_channels']:
                 if (ch['function'] == function):
                     return True
         return False
 
-    def _merge_special_obj(self, parent: 'Object', child: 'Object', special_geometry_type: str):
+    def _merge_special_obj(self, parent: Object, child: Object, special_geometry_type: str) -> None:
         #  The geometry tree is built at a single pass, assuming all
         # nodes are Normal Geometry.
         #  Then, separate build stages populate the tree, by adding
@@ -243,7 +243,7 @@ class DMX_GDTFBuilder:
     #
     # Build the targets used to control fixture orientation.
 
-    def _get_mobile_objects(self): 
+    def _get_mobile_objects(self) -> List[Object]: 
         # Returns which objects should be tracked to a target
         # as a list of tuples. Objects inside the same tuple
         # should be tracked to the same target.
@@ -283,7 +283,7 @@ class DMX_GDTFBuilder:
 
         return yokes + heads + yoke_head_pairs
 
-    def _build_targets(self):
+    def _build_targets(self) -> None:
         mobile_objects = self._get_mobile_objects()
 
         for index, pair in enumerate(mobile_objects):
@@ -321,7 +321,7 @@ class DMX_GDTFBuilder:
     #
     # Build the lights of each GeometryBeam.
 
-    def _build_light(self, obj: 'Object', geometry: 'pygdtf.GeometryBeam'):
+    def _build_light(self, obj: Object, geometry: 'pygdtf.GeometryBeam') -> None:
         obj.visible_shadow = False
 
         data = bpy.data.lights.new(name=geometry.name, type='SPOT')
@@ -339,7 +339,7 @@ class DMX_GDTFBuilder:
 
         self._merge_special_obj(obj, light, 'Light')
 
-    def _build_lights(self):
+    def _build_lights(self) -> None:
         beams = [obj for obj in self.objects.values()
             if obj['geometry_type'] == 'GeometryBeam'
         ]
@@ -352,7 +352,7 @@ class DMX_GDTFBuilder:
     #
     # Build the cameras of each GeometryMediaServerCamera.
 
-    def _build_camera(self, obj: 'Object', geometry: 'pygdtf.GeometryBeam'):
+    def _build_camera(self, obj: Object, geometry: 'pygdtf.GeometryBeam') -> None:
         
         data = bpy.data.cameras.new(name=geometry.name)
         camera = bpy.data.objects.new(geometry.name, data)
@@ -360,7 +360,7 @@ class DMX_GDTFBuilder:
 
         self._merge_special_obj(obj, camera, 'Camera')
 
-    def _build_cameras(self):
+    def _build_cameras(self) -> None:
         cameras = [obj for obj in self.objects.values()
             if obj['geometry_type'] == 'GeometryMediaServerCamera'
         ]
@@ -371,7 +371,7 @@ class DMX_GDTFBuilder:
     
     # Constructor
 
-    def __init__(self, gdtf: DMX_GDTF, mode_name: str):
+    def __init__(self, gdtf: 'DMX_GDTF', mode_name: str) -> None:
         self.gdtf = gdtf
         self.mode_name = mode_name
        

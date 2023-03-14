@@ -1,17 +1,19 @@
+from typing import Optional
+
 import bpy
-from bpy.types import Collection
+from bpy.types import Collection, Object
 
 from src.core import util
 from .gdtf_builder import DMX_GDTFBuilder
 
 class DMX_FixtureBuilder:
 
-    def _get_fixture(self) -> 'DMX_Fixture' or None:
+    def _get_fixture(self) -> Optional['DMX_Fixture']:
         for fixture in self.core.fixtures:
             if (fixture.id == self.patch.id):
                 return fixture
 
-    def _save_positional_data(self) -> (object(),object()):
+    def _save_positional_data(self) -> object:
         pos_rot = {
             root.object['geometry_name']: (
                 root.object.location.copy(),
@@ -37,13 +39,13 @@ class DMX_FixtureBuilder:
         self.core.fixtures[-1].name = self.patch.name
         return self.core.fixtures[-1]
     
-    def _load_model(self):
+    def _load_model(self) -> Collection:
         return DMX_GDTFBuilder.get(self.profile.filename, self.patch.mode)
 
     def _create_collection(self) -> Collection:
         return util.new_collection(self.patch.name)
 
-    def _build_obj(self, obj):
+    def _build_obj(self, obj: Object) -> Object:
         if (obj['geometry_type'] == 'Light'):
             if (not self.patch.create_lights):
                 return None
@@ -57,7 +59,7 @@ class DMX_FixtureBuilder:
                 child_clone.matrix_parent_inverse = clone.matrix_world.inverted()
         return clone
 
-    def _build_from_model(self, model_collection):
+    def _build_from_model(self, model_collection: Collection) -> None:
         self.objects = []
         for obj in model_collection.objects:
             if (obj.parent == None):
@@ -76,7 +78,7 @@ class DMX_FixtureBuilder:
             root.object.rotation_euler = pos_rot[name][1]
             match = True
 
-    def _relink_mobiles(self):
+    def _relink_mobiles(self) -> None:
         mobiles = [
             obj for obj in self.objects
             if obj['geometry_type'] == 'Mobile'
@@ -90,7 +92,7 @@ class DMX_FixtureBuilder:
             target_index = mobile['target_index']
             mobile.constraints[0].target = targets[target_index]
 
-    def __init__(self, patch: 'DMX_Patch_Fixture', mvr = None):
+    def __init__(self, patch: 'DMX_Patch_Fixture', mvr = None) -> None:
         self.patch = patch
         self.core = bpy.context.scene.dmx.core
         self.profile = self.patch.get_profile(bpy.context)

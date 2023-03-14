@@ -3,6 +3,7 @@ import bpy
 import copy
 import shutil
 from mathutils import Euler, Matrix
+from typing import Tuple
 
 from bpy.types import Object
 
@@ -59,29 +60,29 @@ class DMX_GDTF():
     # Paths
 
     @classmethod
-    def _get_profiles_path(self):
+    def _get_profiles_path(self) -> str:
         FILE_PATH = os.path.dirname(os.path.abspath(__file__))
         return os.path.join(FILE_PATH,'..','..','..','assets','profiles')
 
     @classmethod
-    def _get_primitive_path(self, primitive: str):
+    def _get_primitive_path(self, primitive: str) -> str:
         FILE_PATH = os.path.dirname(os.path.abspath(__file__))
         return os.path.join(FILE_PATH,'..','..','..','assets','primitives', primitive+'.obj')
 
     @classmethod
-    def _get_fixture_models_path(self, fixture_type_id):
+    def _get_fixture_models_path(self, fixture_type_id) -> str:
         FILE_PATH = os.path.dirname(os.path.abspath(__file__))
         return os.path.join(FILE_PATH,'..','..','..','assets','models',fixture_type_id)
 
     # Constructor
 
-    def __init__(self, filename: str):
+    def __init__(self, filename: str) -> None:
         path = os.path.join(DMX_GDTF._get_profiles_path(), filename)
         self.fixture_type = pygdtf.FixtureType(path)
     
     # Parsing Helpers
 
-    def extract_model_file(self, file: pygdtf.Resource):
+    def extract_model_file(self, file: pygdtf.Resource) -> Tuple[str, str]:
         extension = file.extension.lower()
 
         inside_zip_path = f"models/{extension}/{file.name}.{file.extension}"
@@ -95,7 +96,7 @@ class DMX_GDTF():
         if (os.path.exists(folder_path)):
             shutil.rmtree(folder_path)
 
-    def get_model_primitive_type(self, model: pygdtf.Model):
+    def get_model_primitive_type(self, model: pygdtf.Model) -> None:
         primitive = str(model.primitive_type)
         if (primitive.endswith('1_1')):
             primitive = primitive[:-3]
@@ -108,7 +109,7 @@ class DMX_GDTF():
 
     # Build Helpers
 
-    def get_geometry_channel_metadata(self, mode_name: str):
+    def get_geometry_channel_metadata(self, mode_name: str) -> object:
         # Returns the channels and virtual channels by geometry name.
         # We assume a single logical channel by channel for now, which is 
         # exposed through the "function" string
@@ -138,8 +139,8 @@ class DMX_GDTF():
 
         return channels
 
-    def get_collection_name(self, mode_name: str):
+    def get_collection_name(self, mode_name: str) -> str:
         return f'{self.fixture_type.fixture_type_id}-{mode_name}'
 
-    def get_model_collection_name(self, mode_name: str):
+    def get_model_collection_name(self, mode_name: str) -> str:
         return self.get_collection_name(mode_name) + '-MODEL'
