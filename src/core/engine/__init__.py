@@ -4,8 +4,13 @@ from bpy.props import ( IntVectorProperty )
 
 from typing import Dict, List
 from .data_engine import DMX_DataEngine
+from .fixture_engine import DMX_FixtureEngine
 
-class DMX_Engine(PropertyGroup, DMX_DataEngine):
+class DMX_Engine(
+    PropertyGroup,
+    DMX_DataEngine,
+    DMX_FixtureEngine
+):
 
     buffer: IntVectorProperty(
         # default = [[0 for _ in range(32)] for _ in range(16)],
@@ -17,7 +22,7 @@ class DMX_Engine(PropertyGroup, DMX_DataEngine):
     def render(self, core: 'DMX_Core'):
         for fixture in core.fixtures:
             data = self._build_fixture_data(fixture)
-            print(data)
+            self.render_dimmer(fixture, data)
         
     def program(self, fixtures: List['DMX_Fixture'], data: Dict[str,float]):
         for fixture in fixtures:

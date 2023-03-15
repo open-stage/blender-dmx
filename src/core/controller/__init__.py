@@ -10,5 +10,3 @@ class DMX_Core_Controller:
         util.activate_collection(self.collection)
         DMX_Builder()
 
-    def render(self):
-        self.engine.render(self)

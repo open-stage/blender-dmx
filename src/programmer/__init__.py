@@ -7,6 +7,7 @@ from bpy.props import ( CollectionProperty,
 
 from .ui.operator import *
 from .ui.panel import *
+from src.programmer.controller import DMX_Programmer_Controller
 
 # Module Data Structure
 
@@ -24,14 +25,12 @@ class DMX_Programmer(PropertyGroup):
         update = _on_color
     )
 
-    def _on_dimmer(self, context):
-        pass
-
     dimmer: FloatProperty(
         default = 0,
         min = 0,
         max = 1,
-        update = _on_dimmer)
+        update = DMX_Programmer_Controller.on_dimmer
+    )
 
     def _on_pan(self, context):
         pass

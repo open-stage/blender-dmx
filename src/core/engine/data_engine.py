@@ -74,7 +74,7 @@ class DMX_DataEngine:
                 continue
             coords, res = self._get_coords(ch.universe, ch.offset)
 
-            data = int(data * (256 ** res))
+            data = int(data * (256 ** res - 1))
             value = [0]*res
             value[0] = (data >> 8*(res-1)) & 255
             if (res > 1):

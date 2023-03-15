@@ -41,6 +41,8 @@ class DMX_FixtureBuilder:
             if (not self.patch.create_lights):
                 return None
         clone = obj.copy()
+        if (obj.data):
+            clone.data = obj.data.copy()
         self.fixture.collection.objects.link(clone)
         self.objects.append(clone)
         for child in obj.children:
@@ -96,6 +98,48 @@ class DMX_FixtureBuilder:
             target_index = mobile['target_index']
             mobile.constraints[0].target = targets[target_index]
 
+    def _reset_emitter_material(self, geometry_name: str):
+        # Create material
+        name = f'{self.fixture.name}#{geometry_name}'
+        if name in bpy.data.materials:
+            bpy.data.materials.remove(bpy.data.materials[name])
+        
+        material = bpy.data.materials.new(name)
+        material.use_nodes = True
+        nodes = material.node_tree.nodes
+        links = material.node_tree.links
+
+        output = None
+        for node in nodes:
+            if node.bl_idname == 'ShaderNodeBsdfPrincipled':
+                nodes.remove(node)
+            elif node.bl_idname == 'ShaderNodeOutputMaterial':
+                output = node
+
+        if not output:
+            raise Exception(f'Output node not found while creating emitter material for fixture {self.fixture.name}')
+
+        emission_node = nodes.new('ShaderNodeEmission')
+        emission_node.name = 'DMX_Dimmer'
+        links.new(output.inputs[0], emission_node.outputs[0])
+
+        return material
+
+    def _add_emitter_materials(self) -> None:
+        beams = [
+            obj for obj in self.objects
+            if obj['geometry_type'] == 'GeometryBeam'
+        ]
+
+        for obj in beams:
+            geometry_name = obj['geometry_name']
+            material = self._reset_emitter_material(geometry_name)
+            if obj.data.materials:
+                obj.data.materials[0] = material
+            else:
+                obj.data.materials.append(material)
+        
+
     def _show_name(self):
         first_non_target = [r.object for r in self.fixture.roots if r.object['geometry_type'] != 'Target'][0]
         first_non_target.name = self.fixture.name
@@ -129,7 +173,6 @@ class DMX_FixtureBuilder:
                 continue
             for channel in obj['dmx_channels']:
                 self._build_channel(obj, channel)
-            a = 2
 
     def __init__(self, patch: 'DMX_Patch_Fixture', mvr = None) -> None:
         
@@ -160,7 +203,7 @@ class DMX_FixtureBuilder:
 
         # Decorate fixture
         self._relink_mobiles()
-        # self._add_emitter_materials()
+        self._add_emitter_materials()
         self._show_name()
         # self._hide_pigtails()
 
