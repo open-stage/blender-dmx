@@ -8,9 +8,9 @@ from bpy.props import ( CollectionProperty,
 
 from .data.pointer import *
 from .data.fixture import *
-from .data.data import *
 
 from .controller import DMX_Core_Controller
+from .engine import DMX_Engine
 
 # Module Data Structure
 
@@ -26,6 +26,12 @@ class DMX_Core(PropertyGroup, DMX_Core_Controller):
         type = DMX_Fixture
     )
 
+    # DMX Engine
+
+    engine: PointerProperty(
+        type = DMX_Engine
+    )
+
     # Render Settings
 
     display_pigtails: BoolProperty(
@@ -39,10 +45,9 @@ classes = (
     # Data Structures
     DMX_Material,
     DMX_Object,
-    DMX_Universe,
-    DMX_Data,
     DMX_FixtureChannel,
     DMX_Fixture,
+    DMX_Engine,
     DMX_Core
 
 )

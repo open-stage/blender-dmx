@@ -15,19 +15,13 @@ from .pointer import DMX_Material, DMX_Object
 
 class DMX_FixtureChannel(PropertyGroup):
 
-    id: StringProperty(
-        default = ''
-    )
-
-    resolution: IntProperty(
-        min = 0,
-        max = 4,
-        default = 1
-    )
-
     offset: IntVectorProperty(
         size = 4,
         default = (0,0,0,0)
+    )
+
+    universe: IntProperty(
+        min = 0
     )
 
     function: StringProperty(
@@ -41,6 +35,7 @@ class DMX_FixtureChannel(PropertyGroup):
     default: IntProperty(
         default = 0
     )
+
     
 class DMX_Fixture(PropertyGroup):
 

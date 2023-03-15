@@ -91,5 +91,10 @@ class DMX_OP_Patch_Build(Operator):
     bl_options = {'UNDO'}
 
     def execute(self, context):
-        bpy.context.scene.dmx.core.build_patch()
+        try:
+            bpy.context.scene.dmx.core.build_patch()
+        except Exception as e:
+            self.report({"ERROR"}, str(e))
+            raise e
+            return {'CANCELLED'}
         return {'FINISHED'}

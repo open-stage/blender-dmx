@@ -3,17 +3,16 @@ import bpy
 from src.core import util
 from .fixture_builder import DMX_FixtureBuilder
 
-class DMX_PatchBuilder:
+class DMX_Builder:
 
-
-    def check_unique_fixture_ids(self):
+    def _validate_unique_fixture_ids(self):
         ids = []
         for fixture in self.patch.fixtures:
             if fixture.id in ids:
                 raise Exception(f'Fixture ID {fixture.id} used in more than one Fixture.')
             ids.append(fixture.id)
     
-    def check_unique_fixture_names(self):
+    def _validate_unique_fixture_names(self):
         names = []
         for fixture in self.patch.fixtures:
             if fixture.name in names:
@@ -21,29 +20,29 @@ class DMX_PatchBuilder:
             names.append(fixture.name)
 
 
-    def check_empty_universe_names(self):
+    def _validate_empty_universe_names(self):
         for universe in self.patch.universes:
             if len(universe.name) == 0:
                 raise Exception(f'Universe {universe.name} has no name.')
 
-    def check_empty_fixture_names(self):
+    def _validate_empty_fixture_names(self):
         for fixture in self.patch.fixtures:
             if len(fixture.name) == 0:
-                raise Exception(f'Fixture {fixture.name} has no name.')
+                raise Exception(f'Fixture {fixture.id} has no name.')
 
 
-    def check_dmx_overlap(self):
+    def _validate_maximum_lights(self):
         pass
 
 
-    def check(self):
-        self.check_unique_fixture_ids()
-        self.check_unique_fixture_names()
-        self.check_empty_universe_names()
-        self.check_empty_fixture_names()
-        self.check_dmx_overlap()
+    def _validate(self):
+        self._validate_unique_fixture_ids()
+        self._validate_unique_fixture_names()
+        self._validate_empty_universe_names()
+        self._validate_empty_fixture_names()
+        self._validate_maximum_lights()
 
-    def clean_removed_fixtures(self):
+    def _clean_removed_fixtures(self):
         new_ids = [f.id for f in self.patch.fixtures]
         fixtures = self.core.fixtures
         to_remove = []
@@ -59,8 +58,8 @@ class DMX_PatchBuilder:
     def __init__(self):
         self.core = bpy.context.scene.dmx.core
         self.patch = bpy.context.scene.dmx.patch
-        self.check()
-        self.clean_removed_fixtures()
+        self._validate()
+        self._clean_removed_fixtures()
         for fixture_patch in self.patch.fixtures:
             DMX_FixtureBuilder(fixture_patch)
 
