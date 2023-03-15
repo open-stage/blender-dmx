@@ -1,24 +1,49 @@
+import gettext
+import os
+import bpy
+
+class DMX_Lang:
+    _ = None
+
+    @staticmethod
+    def enable():
+        locale = bpy.app.translations.locale
+        gettext.gettext._translations = {}
+        this_dir = os.path.dirname(os.path.abspath(__file__))
+        localedir = os.path.join(this_dir, "translations")
+        try:
+            print("Setting up language:", locale)
+            lang = gettext.translation( "messages", localedir=localedir, languages=[locale])
+        except:
+            lang = gettext.translation( "messages", localedir=localedir, languages=["en_US"]) #fallback
+            print(f"Setting language did not work, locale {locale} probably not created yet")
+        finally:
+            DMX_Lang._ = lang.gettext
+
+DMX_Lang.enable()
+_ = DMX_Lang._
+
 class DMX_i18n:
 
     # Patch
 
     # Patch > Menus
 
-    MENU_PATCH_SELECT_UNIVERSE = 'DMX Universe'
-    MENU_PATCH_SELECT_UNIVERSE_OP = 'Select DMX Universe'
+    MENU_PATCH_SELECT_UNIVERSE = _('DMX Universe')
+    MENU_PATCH_SELECT_UNIVERSE_OP = _('Select DMX Universe')
 
-    MENU_PATCH_SELECT_MODE = 'DMX Universe'
-    MENU_PATCH_SELECT_MODE_OP = 'Select DMX Universe'
+    MENU_PATCH_SELECT_MODE = _('DMX Universe')
+    MENU_PATCH_SELECT_MODE_OP = _('Select DMX Universe')
     
     # Patch > Operators
 
-    OP_PATCH_SOURCE_CONFIGURE = 'Configure Source'
-    OP_PATCH_SOURCE_CONFIGURE_DESC = 'Opens a dialog for configuring this Source.'
+    OP_PATCH_SOURCE_CONFIGURE = _('Configure Source')
+    OP_PATCH_SOURCE_CONFIGURE_DESC = _('Opens a dialog for configuring this Source.')
 
-    OP_PATCH_UNIVERSE_ADD = 'Add Universe'
-    OP_PATCH_UNIVERSE_ADD_DESC = 'Add a new Universe to the Patch.'
+    OP_PATCH_UNIVERSE_ADD = _('Add Universe')
+    OP_PATCH_UNIVERSE_ADD_DESC = _('Add a new Universe to the Patch.')
 
-    OP_PATCH_FIXTURE_ADD = 'Add Single Fixture'
+    OP_PATCH_FIXTURE_ADD = _('Add Single Fixture')
     OP_PATCH_FIXTURE_ADD_DESC = 'Add a single new Fixture to the Patch.'
     
     OP_PATCH_FIXTURE_ADDBATCH = 'Add Fixture Batch'
@@ -131,3 +156,6 @@ class DMX_i18n:
 
     OP_PROGRAMMER_CLEAR = 'Clear'
     OP_PROGRAMMER_CLEAR_DESC = 'Clears the selected fixtures.'
+
+    def __init__():
+        print("initing i18n")
