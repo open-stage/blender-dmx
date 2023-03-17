@@ -2,86 +2,74 @@ import bpy
 from bpy.types import ( PropertyGroup,
                         Object,
                         Collection )
-from bpy.props import ( BoolProperty,
-                        FloatVectorProperty,
-                        IntProperty,
+from bpy.props import ( IntProperty,
                         IntVectorProperty,
+                        BoolProperty,
                         CollectionProperty,
                         PointerProperty,
                         StringProperty )
 
-from src.i18n import DMX_i18n
-from .pointer import DMX_Material, DMX_Object
+from .pointer import DMX_Object
 
 class DMX_FixtureChannel(PropertyGroup):
+    '''
+    A channel that belongs to a dynamic fixture,
+    and acts as the interface between DMX channels and fixture geometry.
+    '''
 
-    offset: IntVectorProperty(
-        size = 4,
-        default = (0,0,0,0)
+    # The 3D coordinates of the channel on the buffer
+    coords: IntVectorProperty(
+        size = 12
     )
 
-    universe: IntProperty(
-        min = 0
+    # Channel resolution in bytes. 0 = virtual channel
+    resolution: IntProperty(
+        default = 1
     )
 
+    # The dmx function of the channel, ex: Dimmer, ColorAdd_R, etc.
     function: StringProperty(
         default = ''
     )
 
+    # The geometry to which this channel refers
+    # This geometry is often a parent to multiple geometries
+    # controlled by the channel
     geometry: PointerProperty(
         type = Object
     )
 
+    # The default value of the channel when it's cleared
     default: IntProperty(
         default = 0
     )
-
+    
     
 class DMX_Fixture(PropertyGroup):
+    '''
+    A dynamic fixture, built from a `PatchFixture` by the
+    `FixtureBuilder`, which controls a fixture collection.
+    '''
 
-    # Identifier (Synced to Patch)
+    # Unique ID (Sync to Patch)
+    id: IntProperty()
 
-    id: IntProperty(
-        name = "Fixture > Id"
-    )
+    # Unique Name (Sync to Patch)
+    name: StringProperty()
 
-    name: StringProperty(
-        name = "Fixture > Name"
-    )
-
-    # Blender Pointers
-
+    # Blender Collection
     collection: PointerProperty(
-        name = "Fixture > Collection",
-        type = Collection)
+        type = Collection
+    )
 
+    # Root Blender Objects
+    # Used for saving and restoring fixture position
+    # on rebuild
     roots: CollectionProperty(
-        name = "Fixture > Roots",
         type = DMX_Object
     )
 
-    # mobiles: CollectionProperty(
-    #     name = "Fixture > Mobiles",
-    #     type = DMX_Object
-    # )
-
-    # targets: CollectionProperty(
-    #     name = "Fixture > Mobiles",
-    #     type = DMX_Object
-    # )
-
-    # emitters: CollectionProperty(
-    #     name = "Fixture > Materials",
-    #     type = DMX_Material)
-
-    # lights: CollectionProperty(
-    #     name = "Fixture > Lights",
-    #     type = DMX_Object
-    # )
-
-    # Channels
-
+    # DMX Channels
     channels: CollectionProperty(
-        name = "Fixture > Channels",
         type = DMX_FixtureChannel
     )

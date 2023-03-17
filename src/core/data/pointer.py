@@ -1,13 +1,12 @@
 import bpy
 from bpy.types import ( PropertyGroup,
-                        Object,
-                        Material )
+                        Object )
 from bpy.props import PointerProperty
 
-from src.i18n import DMX_i18n
-
 class DMX_Object(PropertyGroup):
+    '''
+    A pointer to a Blender Object, used to build custom
+    collections of Objects.
+    '''
+    
     object: PointerProperty(type = Object)
-
-class DMX_Material(PropertyGroup):
-    material: PointerProperty(type = Material)

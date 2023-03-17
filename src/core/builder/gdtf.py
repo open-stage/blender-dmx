@@ -1,88 +1,55 @@
-import os
-import bpy
-import copy
-import shutil
-from mathutils import Euler, Matrix
 from typing import Tuple
 
-from bpy.types import Object
+import os
+import shutil
 
 from lib import pygdtf
-from lib.io_scene_3ds.import_3ds import load_3ds
-from src.log import DMX_Log
-
-from src.util import sanitize_obj_name
+from src.core.types import *
 
 class DMX_GDTF():
+    '''
+    A GDTF profile parsed by pygdtf, with helper methods.
+    '''
 
-    # UI Utility
-    # TODO: review usage
-
-    @classmethod
-    def get_manufacturer_list(self):
-        # List profiles in folder
-        manufacturers = set()
-        for file in os.listdir(DMX_GDTF._get_profiles_path()):
-            # Parse info from file name: Company@Model.gdtf
-            info = file.split('@')
-            # Remove ".gdtf" from the end of the string
-            info[-1] = info[-1][:-5]
-            # Add to list (identifier, short name, full name)
-            manufacturers.add((info[0], info[0], ''))
-        return tuple(sorted(manufacturers))
-
-    @classmethod
-    def get_profile_list(self, manufacturer):
-        # List profiles in folder
-        profiles = []
-        for file in os.listdir(DMX_GDTF._get_profiles_path()):
-            # Parse info from file name: Company@Model.gdtf
-            info = file.split('@')
-            if (info[0] == manufacturer):
-                # Remove ".gdtf" from the end of the string
-                info[-1] = info[-1][:-5]
-                # Add to list (identifier, short name, full name)
-                profiles.append((file, info[1], (info[2] if len(info) > 2 else '')))
-
-        return tuple(profiles)
-
-    @classmethod
-    def get_modes(self, profile):
-        """Returns an array, keys are mode names, value is channel count"""
-        gdtf_profile = DMX_GDTF.loadProfile(profile)
-        modes = {}
-        for mode in gdtf_profile.dmx_modes:
-            dmx_channels = pygdtf.utils.get_dmx_channels(gdtf_profile)
-            dmx_channels_flattened = [channel for break_channels in dmx_channels for channel in break_channels]
-            modes[mode.name] = len(dmx_channels_flattened)
-        return modes
-
-    # Paths
+    # [ Paths ]
 
     @classmethod
     def _get_profiles_path(self) -> str:
+        '''
+        Return the path to the "profiles" folder.
+        '''
         FILE_PATH = os.path.dirname(os.path.abspath(__file__))
         return os.path.join(FILE_PATH,'..','..','..','assets','profiles')
 
     @classmethod
     def _get_primitive_path(self, primitive: str) -> str:
+        '''
+        Return the path to the "primitives" folder.
+        '''
         FILE_PATH = os.path.dirname(os.path.abspath(__file__))
         return os.path.join(FILE_PATH,'..','..','..','assets','primitives', primitive+'.obj')
 
     @classmethod
     def _get_fixture_models_path(self, fixture_type_id) -> str:
+        '''
+        Return the path to the folder that stores GDTF Models for this Fixture.
+        '''
         FILE_PATH = os.path.dirname(os.path.abspath(__file__))
         return os.path.join(FILE_PATH,'..','..','..','assets','models',fixture_type_id)
 
-    # Constructor
+    # [ Constructor ]
 
     def __init__(self, filename: str) -> None:
         path = os.path.join(DMX_GDTF._get_profiles_path(), filename)
         self.fixture_type = pygdtf.FixtureType(path)
     
-    # Parsing Helpers
+    # [ Parsing Helpers ]
 
     def extract_model_file(self, file: pygdtf.Resource) -> Tuple[str, str]:
+        '''
+        Extract a given GDTF Resource from the GDTF zip file,
+        and return the extracted folder path + the file extension.
+        '''
         extension = file.extension.lower()
 
         inside_zip_path = f"models/{extension}/{file.name}.{file.extension}"
@@ -92,11 +59,18 @@ class DMX_GDTF():
         return os.path.join(to_folder_path, inside_zip_path), extension
     
     def delete_fixture_model_folder(self) -> None:
+        '''
+        Delete the folder that stores GDTF Models for this Fixture.
+        '''
         folder_path = DMX_GDTF._get_fixture_models_path(self.fixture_type.fixture_type_id)
         if (os.path.exists(folder_path)):
             shutil.rmtree(folder_path)
 
     def get_model_primitive_type(self, model: pygdtf.Model) -> None:
+        '''
+        Return the type of primitive of the given model.
+        Options: file, gdtf, primitive
+        '''
         primitive = str(model.primitive_type)
         if (primitive.endswith('1_1')):
             primitive = primitive[:-3]
@@ -107,12 +81,16 @@ class DMX_GDTF():
         else:
             return 'primitive', primitive
 
-    # Build Helpers
+    # [ Build Helpers ]
 
-    def get_geometry_channel_metadata(self, mode_name: str) -> object:
-        # Returns the channels and virtual channels by geometry name.
-        # We assume a single logical channel by channel for now, which is 
-        # exposed through the "function" string
+    def build_geometry_channel_metadata(self, mode_name: str) -> ChannelMetadata:
+        '''
+        Build and return the metadata that will be stored
+        into an Object of the Fixture Model.
+
+        We assume a single logical channel by channel for now,
+        which is  exposed through the "function" string.
+        '''
         channels = {}
         mode = pygdtf.utils.get_dmx_mode_by_name(self.fixture_type, mode_name)
 
@@ -140,7 +118,13 @@ class DMX_GDTF():
         return channels
 
     def get_collection_name(self, mode_name: str) -> str:
+        '''
+        Get the Fixture Collection name for a given mode.
+        '''
         return f'{self.fixture_type.fixture_type_id}-{mode_name}'
 
     def get_model_collection_name(self, mode_name: str) -> str:
+        '''
+        Get the Model Collection name for a given mode.
+        '''
         return self.get_collection_name(mode_name) + '-MODEL'

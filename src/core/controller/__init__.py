@@ -5,8 +5,11 @@ from src.core.builder import DMX_Builder
 
 class DMX_Core_Controller:
     
-    def build_patch(self):
+    def build_patch(self) -> None:
+        '''
+        Rebuild all DMX fixtures from the Patch.
+        '''
         self.collection = util.new_collection('DMX')
         util.activate_collection(self.collection)
-        DMX_Builder()
+        DMX_Builder().build()
 

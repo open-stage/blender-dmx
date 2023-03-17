@@ -16,8 +16,6 @@ from .engine import DMX_Engine
 
 class DMX_Core(PropertyGroup, DMX_Core_Controller):
     
-    # 
-
     collection: PointerProperty(
         type = Collection
     )
@@ -43,7 +41,6 @@ class DMX_Core(PropertyGroup, DMX_Core_Controller):
 classes = (
 
     # Data Structures
-    DMX_Material,
     DMX_Object,
     DMX_FixtureChannel,
     DMX_Fixture,
