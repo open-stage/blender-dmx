@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-03-15 23:03+0100\n"
+"POT-Creation-Date: 2023-03-18 20:01+0100\n"
 "PO-Revision-Date: 2023-03-15 22:55+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: cs_CZ\n"
@@ -18,32 +18,64 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.10.3\n"
 
-#: i18n.py:32 i18n.py:35
+#: i18n.py:12 i18n.py:15
 msgid "DMX Universe"
-msgstr "dmx univrs"
+msgstr "DMX Universe"
 
-#: i18n.py:33 i18n.py:36
+#: i18n.py:13 i18n.py:16
 msgid "Select DMX Universe"
-msgstr "Zvolte universe"
+msgstr "Zvolte DMX Universe"
 
-#: i18n.py:40
+#: i18n.py:20
 msgid "Configure Source"
 msgstr ""
 
-#: i18n.py:41
+#: i18n.py:21
 msgid "Opens a dialog for configuring this Source."
 msgstr ""
 
-#: i18n.py:43
+#: i18n.py:23
 #, fuzzy
 msgid "Add Universe"
-msgstr "dmx univrs"
+msgstr "Přidat Universe"
 
-#: i18n.py:44
+#: i18n.py:24
 msgid "Add a new Universe to the Patch."
 msgstr ""
 
-#: i18n.py:46
+#: i18n.py:26
 msgid "Add Single Fixture"
 msgstr "Přidat světlo"
+
+#: patch/data/profile.py:111
+msgid "Fixture name"
+msgstr "Jméno světla"
+
+#: patch/data/profile.py:112
+msgid "Manufacturer and fixture name"
+msgstr ""
+
+#: patch/data/profile.py:116
+msgid "Revision ID"
+msgstr ""
+
+#: patch/data/profile.py:117
+msgid "File identifier in the GDTF Share"
+msgstr ""
+
+#: patch/ui/operator.py:107
+msgid "Import from Share"
+msgstr "Import z Share"
+
+#: patch/ui/operator.py:108
+msgid "Import fixture from GDTF Share"
+msgstr ""
+
+#: patch/ui/operator.py:123
+msgid "Import from file"
+msgstr "Import ze souboru"
+
+#: patch/ui/operator.py:124
+msgid "Import fixture from local filesystem"
+msgstr ""
 

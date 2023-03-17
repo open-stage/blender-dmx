@@ -35,3 +35,11 @@ class DMX_Patch_Manager:
 
     def remove_fixture(self, index):
         self.fixtures.remove(index)
+
+    # Fixture Import
+
+    def import_from_file(self):
+        print(self)
+
+    def import_from_share(self):
+        print(self)

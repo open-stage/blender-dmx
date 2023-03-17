@@ -466,6 +466,7 @@ class DMX_GDTFBuilder:
         util.hide_collection(self.collection)
         self._delete_model_collection()
         self.gdtf.delete_fixture_model_folder()
+        return self
 
     @staticmethod
     def get(filename: str, mode_name: str):

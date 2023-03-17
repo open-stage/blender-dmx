@@ -25,6 +25,11 @@ class DMX_Patch(PropertyGroup, DMX_Patch_Controller):
         type = DMX_Patch_Profile
     )
 
+    # GDTF Share Import profiles
+    share_profiles: CollectionProperty(
+        type = DMX_Patch_Import_Gdtf_Profile
+    )
+
     # Fixtures
     
     fixtures: CollectionProperty(
@@ -68,6 +73,7 @@ classes = (
     DMX_Patch_ProfileBreak,
     DMX_Patch_ProfileMode,
     DMX_Patch_Profile,
+    DMX_Patch_Import_Gdtf_Profile,
     DMX_Patch_Source,
     DMX_Patch_Universe,
     DMX_Patch,
@@ -75,6 +81,7 @@ classes = (
     # Lists
     DMX_UL_Patch_Fixtures,
     DMX_UL_Patch_Universes,
+    DMX_UL_Share_Fixtures,
 
     # Menus
     DMX_OP_MT_Patch_SelectUniverse,
@@ -90,6 +97,8 @@ classes = (
     DMX_OP_Patch_Fixture_AddBatch,
     DMX_OP_Patch_Fixture_Remove,
     DMX_OP_Patch_Build,
+    DMX_OP_Import_Fixture_From_File,
+    DMX_OP_Import_Fixture_From_Share,
     
     # Panel
     DMX_PT_Patch

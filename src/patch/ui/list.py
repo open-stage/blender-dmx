@@ -327,3 +327,10 @@ class DMX_UL_Patch_Universes(UIList):
             text='',
             icon=DMX_Icon.REMOVE
         ).index = index
+
+class DMX_UL_Share_Fixtures(UIList):
+    def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
+        layout.context_pointer_set("name", item)
+
+        col = layout.column()
+        col.prop(item, 'name', text = '', icon=DMX_Icon.FIXTURE)

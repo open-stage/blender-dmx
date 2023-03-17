@@ -49,6 +49,7 @@ class DMX(PropertyGroup):
 
 def on_register():
     Patch.DMX_Patch_Profile.load()
+    Patch.DMX_Patch_Import_Gdtf_Profile.load()
 
 def clean_module_imports():
     modules = dict(sys.modules)

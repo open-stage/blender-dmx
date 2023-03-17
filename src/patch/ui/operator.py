@@ -5,6 +5,8 @@ from bpy.props import ( IntProperty )
 
 from src.i18n import DMX_i18n
 from src.patch.controller import DMX_Patch_Controller
+from src.lang import DMX_Lang
+_ = DMX_Lang._
 
 # Source > Configure
 
@@ -93,6 +95,40 @@ class DMX_OP_Patch_Build(Operator):
     def execute(self, context):
         try:
             bpy.context.scene.dmx.core.build_patch()
+        except Exception as e:
+            self.report({"ERROR"}, str(e))
+            raise e
+            return {'CANCELLED'}
+        return {'FINISHED'}
+
+# Import Fixtures
+
+class DMX_OP_Import_Fixture_From_Share(Operator):
+    bl_label = _("Import from Share")
+    bl_description = _("Import fixture from GDTF Share")
+    bl_idname = "dmx.import_fixture_from_share"
+    bl_options = {'UNDO'}
+
+    def execute(self, context):
+        try:
+            context.scene.dmx.patch.import_from_file()
+
+        except Exception as e:
+            self.report({"ERROR"}, str(e))
+            raise e
+            return {'CANCELLED'}
+        return {'FINISHED'}
+
+class DMX_OP_Import_Fixture_From_File(Operator):
+    bl_label = _("Import from file")
+    bl_description = _("Import fixture from local filesystem")
+    bl_idname = "dmx.import_fixture_from_file"
+    bl_options = {'UNDO'}
+
+    def execute(self, context):
+        try:
+            context.scene.dmx.patch.import_from_file()
+
         except Exception as e:
             self.report({"ERROR"}, str(e))
             raise e

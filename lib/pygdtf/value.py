@@ -1,11 +1,12 @@
 from collections import namedtuple
+from typing import List, Optional
 
 
 # Data type that only allows a specific set of values, if given a value
 # which is not permitted, the value will be set to the default
 class Enum:
-    permitted = []
-    _default = None
+    permitted: List[str] = []
+    _default: Optional[str] = None
 
     def __init__(self, value):
         self.value = None
