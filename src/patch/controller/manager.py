@@ -1,3 +1,7 @@
+from lib import share_api_client
+from src import patch as Patch
+import bpy
+
 class DMX_Patch_Manager:
 
     # Source Management
@@ -38,8 +42,23 @@ class DMX_Patch_Manager:
 
     # Fixture Import
 
-    def import_from_file(self):
-        print(self)
+    def import_from_share(self, index: int):
+        result = share_api_client.download_files([self.share_profiles[index]])
+        print(result)
+        Patch.DMX_Patch_Profile.load()
+        ShowMessageBox(f"File downloaded with status code {result.result.status_code}", "GDTF Share download status", 'INFO')
 
-    def import_from_share(self):
-        print(self)
+    def update_share_index(self):
+        result = share_api_client.update_data()
+        print(result)
+        ShowMessageBox(f"Share index updated with status code {result.result.status_code}", "GDTF Share update status", 'INFO')
+        Patch.DMX_Patch_Import_Gdtf_Profile.load()
+
+
+def ShowMessageBox(message = "", title = "Message Box", icon = 'INFO'):
+
+    def draw(self, context):
+        self.layout.label(text=message)
+
+    bpy.context.window_manager.popup_menu(draw, title = title, icon = icon)
+

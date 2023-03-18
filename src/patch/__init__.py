@@ -99,6 +99,7 @@ classes = (
     DMX_OP_Patch_Build,
     DMX_OP_Import_Fixture_From_File,
     DMX_OP_Import_Fixture_From_Share,
+    DMX_OP_Import_Fixture_Update_Share,
     
     # Panel
     DMX_PT_Patch

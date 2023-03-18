@@ -149,6 +149,10 @@ def get_dmx_channels(gdtf_profile: 'pygdtf.FixtureType' = None,
     for channel, geometry in device_channels:
         if channel.offset is None:
             continue
+        if channel.dmx_break == "Overwrite":
+            # TODO: handle!!!
+            print(gdtf_profile.name, "Parsing error, dmx break with Overwrite not handled!")
+            continue
         if len(dmx_channels) < channel.dmx_break:
             dmx_channels = dmx_channels + [[]] * (channel.dmx_break - len(dmx_channels))
 

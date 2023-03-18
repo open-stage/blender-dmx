@@ -7,7 +7,8 @@ from src.icon import DMX_Icon
 
 from .operator import ( DMX_OP_Patch_Source_Configure,
                         DMX_OP_Patch_Fixture_Remove,
-                        DMX_OP_Patch_Universe_Remove )
+                        DMX_OP_Patch_Universe_Remove,
+                        DMX_OP_Import_Fixture_From_Share)
 from .menu import ( DMX_MT_Patch_SelectUniverse,
                     DMX_MT_Patch_SelectMode )
 
@@ -330,7 +331,12 @@ class DMX_UL_Patch_Universes(UIList):
 
 class DMX_UL_Share_Fixtures(UIList):
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
-        layout.context_pointer_set("name", item)
+        layout.context_pointer_set("share_profiles", item)
 
         col = layout.column()
         col.prop(item, 'name', text = '', icon=DMX_Icon.FIXTURE)
+        col = layout.column()
+        col.operator(DMX_OP_Import_Fixture_From_Share.bl_idname,
+                     text = '', 
+                     icon=DMX_Icon.URL
+                     ).index = index

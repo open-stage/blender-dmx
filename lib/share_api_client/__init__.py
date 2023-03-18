@@ -5,11 +5,6 @@ import json
 import os
 import argparse
 
-STORAGE = "../assets/primitives/"
-CONFIG_FILE = "config.json"
-DATA_FILE = "data.json"
-
-
 class Result:
     status = None
     result = None
@@ -24,8 +19,10 @@ class GS:
     api_key = ""
     verbose = True
 
+    dir_path = os.path.dirname(os.path.abspath(__file__))
+    data_file = os.path.join(dir_path, "data.json")
+
     def __init__(self):
-        self.create_dirs()
         saved_config = self.load_config()
         self.config = {}
         self.config["api_key"] = saved_config["api_key"]
@@ -33,16 +30,9 @@ class GS:
         self.config["hash"] = saved_config.get("hash", None)
         self.session = requests.Session()
 
-    def create_dirs(self):
-        dirs = (STORAGE,)
-        for dir in dirs:
-            try:
-                os.mkdir(dir)
-            except:
-                pass  # existed
-
     def load_config(self):
-        fname = CONFIG_FILE
+        dir_path = os.path.dirname(os.path.abspath(__file__))
+        fname = os.path.join(dir_path, "config.json")
         if os.path.isfile(fname):
             with open(fname) as a:
                 return json.load(a)
@@ -53,7 +43,8 @@ class GS:
         }
 
     def store_config(self):
-        fname = CONFIG_FILE
+        dir_path = os.path.dirname(os.path.abspath(__file__))
+        fname = os.path.join(dir_path, "config.json")
         with open(fname, "w") as a:
             json.dump(self.config, a)
 
@@ -70,7 +61,7 @@ class GS:
 
     def make_call(self, slug=None, url_params="", method="GET"):
         url = "%s/%s?%s" % (self.config["base_url"], slug, url_params)
-        if gs.verbose:
+        if self.verbose:
             print(url)
         if method == "GET":
             # res = self.session.get(url, verify=False)
@@ -90,13 +81,13 @@ class GS:
             self.data = result.result.json()
             self.config["hash"] = self.data.get("hash", None)
             self.store_config()
-            self.save_json_file(self.data.get("list", []), DATA_FILE)
+            self.save_json_file(self.data.get("list", []), self.data_file)
             self.data = self.data.get("list", [])
             return result
         return result
 
     def update(self):
-        if gs.verbose:
+        if self.verbose:
             print(f"Updating since: {self.config['hash']}")
         result = self.make_call(
             method="GET", slug="getDiff.php", url_params=f"hash={self.config['hash']}"
@@ -105,7 +96,7 @@ class GS:
         if result.status:
             self.data = result.result.json()
             self.config["hash"] = self.data.get("hash", None)
-            if gs.verbose:
+            if self.verbose:
                 print(f"new hash: {self.config['hash']}")
             self.data = self.data.get("list", [])
             self.patch_data()
@@ -117,26 +108,28 @@ class GS:
             method="GET", slug="login.php", url_params=f"seed={self.config['api_key']}"
         )
 
-    def get_gdtf_file(self, data):
+    def get_gdtf_files(self, data):
         for fixture in data:
-            if gs.verbose:
+            if self.verbose:
                 print(
                     fixture.get("fixture"),
                     fixture.get("manufacturer"),
                     fixture.get("rid"),
-                    fixture.get("status"),
                 )
             filename = f"{fixture.get('manufacturer').replace(' ','_')}@{fixture.get('fixture').replace(' ','_')}@{fixture.get('revision').replace(' ','_')}.gdtf"
 
-            res = gs.make_call(
+            res = self.make_call(
                 slug="downloadFile.php", url_params=f"rid={fixture.get('rid')}"
             )
-            with open(os.path.join(f"{STORAGE}/{filename}"), "wb") as out:
+            dir_path = os.path.dirname(os.path.abspath(__file__))
+            full_path = os.path.join(dir_path,'..','..','assets','profiles')
+            with open(os.path.join(full_path, filename), "wb") as out:
                 out.write(res.result.content)
                 print(f"saved {filename}")
+        return res
 
     def patch_data(self):
-        all_fixtures = self.load_json_file(DATA_FILE)
+        all_fixtures = self.load_json_file(self.data_file)
         updated_fixtures = self.data
 
         for updated_fixture in updated_fixtures:
@@ -160,9 +153,10 @@ class GS:
                     print("not found")
                 all_fixtures.append(updated_fixture)
 
-        self.save_json_file(all_fixtures, DATA_FILE)
-        gs.store_config()
+        self.save_json_file(all_fixtures, self.data_file)
+        self.store_config()
 
+    
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Work with GDTF Share API")
@@ -177,7 +171,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     gs = GS()
     gs.verbose = args.verbose
-    start = gs.load_json_file(DATA_FILE)
+    start = gs.load_json_file(gs.data_file)
     gs.login()
     if args.start or start is None or len(start) < 1:
         ret = gs.start()
@@ -185,3 +179,21 @@ if __name__ == "__main__":
         ret = gs.start()
     else:
         ret = gs.update()
+
+def update_data():
+    gs = GS()
+    start = gs.load_json_file(gs.data_file)
+    gs.login()
+    if start is None or len(start) < 1:
+        ret = gs.start()
+    elif gs.config["hash"] is None:
+        ret = gs.start()
+    else:
+        ret = gs.update()
+    return ret
+
+def download_files(files = []):
+    gs = GS()
+    gs.login()
+    res = gs.get_gdtf_files(files)
+    return res

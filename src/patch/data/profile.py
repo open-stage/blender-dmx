@@ -70,18 +70,22 @@ class DMX_Patch_Profile(PropertyGroup):
         profiles = []
         for file in os.listdir(profiles_path):
             file_path = os.path.join(profiles_path, file)
-            fixture_type = pygdtf.FixtureType(file_path)
-            modes=[]
-            for mode in fixture_type.dmx_modes:
-                channels=pygdtf.utils.get_dmx_channels(fixture_type, mode.name)
-                dmx_breaks = []
-                for dmx_break in channels:
-                    dmx_breaks.append(len(dmx_break))
-                modes.append({"name": mode.name, "breaks":tuple(dmx_breaks)})
-            profiles.append({"name": f"{fixture_type.manufacturer} @ {fixture_type.long_name}",
+            try:
+                fixture_type = pygdtf.FixtureType(file_path)
+                modes=[]
+                for mode in fixture_type.dmx_modes:
+                    channels=pygdtf.utils.get_dmx_channels(fixture_type, mode.name)
+                    dmx_breaks = []
+                    for dmx_break in channels:
+                        dmx_breaks.append(len(dmx_break))
+                    modes.append({"name": mode.name, "breaks":tuple(dmx_breaks)})
+                profiles.append({"name": f"{fixture_type.manufacturer} @ {fixture_type.long_name}",
                              "short_name": fixture_type.short_name,
                              "filename": file,
                              "modes":modes})
+            except Exception as e:
+                print("Error parsing file", file, e)
+
                     
         return profiles
 
@@ -111,6 +115,19 @@ class DMX_Patch_Import_Gdtf_Profile(PropertyGroup):
         name = _("Fixture name"),
         description = _("Manufacturer and fixture name")
     )
+    fixture: StringProperty(
+        name = _("Fixture name"),
+        description = _("Fixture name")
+    )
+    manufacturer: StringProperty(
+        name = _("Manufacturer"),
+        description = _("Manufacturer name")
+    )
+
+    revision: StringProperty(
+        name = _("Revision"),
+        description = _("Revision text")
+    )
 
     rid: IntProperty(
         name = _("Revision ID"),
@@ -118,20 +135,16 @@ class DMX_Patch_Import_Gdtf_Profile(PropertyGroup):
     )
 
 
-    @staticmethod
-    def get_profiles_path() -> str:
-        """Return the path to the "profiles" folder."""
-
-        FILE_PATH = os.path.dirname(os.path.abspath(__file__))
-        #return os.path.join(FILE_PATH,'..','..','..','assets','profiles')
-        return FILE_PATH
 
     @staticmethod
     def get_profile_list():
         """List gdtf files in in profiles folder"""
-        profiles_path = DMX_Patch_Import_Gdtf_Profile.get_profiles_path()
-        with open(os.path.join(profiles_path, "start.json")) as f:
-            data = json.load(f)
+        dir_path = os.path.dirname(os.path.abspath(__file__))
+        try:
+            with open(os.path.join(dir_path, '..', '..', '..', 'lib', 'share_api_client', "data.json")) as f:
+                data = json.load(f)
+        except:
+            data = []
         return data
 
     @staticmethod
@@ -146,6 +159,9 @@ class DMX_Patch_Import_Gdtf_Profile(PropertyGroup):
             patch.share_profiles.add()
             name = f"{profile['manufacturer']} @ {profile['fixture']}"
             patch.share_profiles[-1].name = name
+            patch.share_profiles[-1].fixture = profile['fixture']
+            patch.share_profiles[-1].manufacturer = profile['manufacturer']
+            patch.share_profiles[-1].revision = profile['revision']
             patch.share_profiles[-1].rid = profile['rid']
         print("loading done")
 

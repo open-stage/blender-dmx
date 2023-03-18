@@ -8,7 +8,7 @@ from .operator import ( DMX_OP_Patch_Universe_Add,
                         DMX_OP_Patch_Fixture_Add,
                         DMX_OP_Patch_Fixture_AddBatch,
                         DMX_OP_Patch_Build,
-                        DMX_OP_Import_Fixture_From_Share,
+                        DMX_OP_Import_Fixture_Update_Share,
                         DMX_OP_Import_Fixture_From_File)
 
 class DMX_PT_Patch(Panel):
@@ -77,7 +77,7 @@ class DMX_PT_Patch(Panel):
         row = layout.row()
 
         layout.operator(
-            DMX_OP_Import_Fixture_From_Share.bl_idname,
+            DMX_OP_Import_Fixture_Update_Share.bl_idname,
             icon=DMX_Icon.URL
         )
         layout.operator(
