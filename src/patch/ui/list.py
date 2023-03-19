@@ -336,6 +336,12 @@ class DMX_UL_Share_Fixtures(UIList):
         col = layout.column()
         col.prop(item, 'name', text = '', icon=DMX_Icon.FIXTURE)
         col = layout.column()
+        icon = DMX_Icon.USER
+        #import IPython; IPython.embed()
+        if item.uploader == "Manuf.":
+            icon = DMX_Icon.HOME
+        col.label(icon=icon, text="")
+        col = layout.column()
         col.operator(DMX_OP_Import_Fixture_From_Share.bl_idname,
                      text = '', 
                      icon=DMX_Icon.URL

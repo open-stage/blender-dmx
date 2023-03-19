@@ -129,6 +129,11 @@ class DMX_Patch_Import_Gdtf_Profile(PropertyGroup):
         description = _("Revision text")
     )
 
+    uploader: StringProperty(
+        name = _("Uploader"),
+        description = _("Revision text")
+    )
+
     rid: IntProperty(
         name = _("Revision ID"),
         description = _("File identifier in the GDTF Share") 
@@ -157,11 +162,12 @@ class DMX_Patch_Import_Gdtf_Profile(PropertyGroup):
 
         for profile in profiles:
             patch.share_profiles.add()
-            name = f"{profile['manufacturer']} @ {profile['fixture']}"
+            name = f"{profile['manufacturer']}@{profile['fixture']}@{profile['revision']}"
             patch.share_profiles[-1].name = name
             patch.share_profiles[-1].fixture = profile['fixture']
             patch.share_profiles[-1].manufacturer = profile['manufacturer']
             patch.share_profiles[-1].revision = profile['revision']
+            patch.share_profiles[-1].uploader = profile['uploader']
             patch.share_profiles[-1].rid = profile['rid']
         print("loading done")
 

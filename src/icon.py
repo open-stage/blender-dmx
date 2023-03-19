@@ -20,3 +20,5 @@ class DMX_Icon:
 
     FILE = 'FILE'
     URL = 'URL'
+    USER = "USER"
+    HOME = "HOME"
