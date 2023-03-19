@@ -1,6 +1,8 @@
 from lib import share_api_client
 from src import patch as Patch
 import bpy
+from src.lang import DMX_Lang
+_ = DMX_Lang._
 
 class DMX_Patch_Manager:
 
@@ -46,16 +48,22 @@ class DMX_Patch_Manager:
         result = share_api_client.download_files([self.share_profiles[index]])
         print(result)
         Patch.DMX_Patch_Profile.load()
-        ShowMessageBox(f"File downloaded with status code {result.result.status_code}", "GDTF Share download status", 'INFO')
+        if result.status:
+            ShowMessageBox(_("File downloaded correctly. Status code was: {}").format(result.result.status_code), _("GDTF file downloaded"), 'INFO')
+        else:
+            ShowMessageBox(_("Error downloading GDTF file. Error code was: {}").format(result.result.status_code), _("GDTF Share download error"), 'ERROR')
 
     def update_share_index(self):
         result = share_api_client.update_data()
         print(result)
-        ShowMessageBox(f"Share index updated with status code {result.result.status_code}", "GDTF Share update status", 'INFO')
+        if result.status:
+            ShowMessageBox(_("Share index updated. Status code was: {}").format(result.result.status_code), _("GDTF Share updated"), 'INFO')
+        else:
+            ShowMessageBox(_("Error while updating Share index. Error code was: {}").format(result.result.status_code), _("GDTF Share update error"), 'ERROR')
         Patch.DMX_Patch_Import_Gdtf_Profile.load()
 
 
-def ShowMessageBox(message = "", title = "Message Box", icon = 'INFO'):
+def ShowMessageBox(message = "", title = _("Message Box"), icon = 'INFO'):
 
     def draw(self, context):
         self.layout.label(text=message)
