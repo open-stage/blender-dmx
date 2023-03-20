@@ -5,6 +5,7 @@ import json
 import os
 import argparse
 
+
 class Result:
     status = None
     result = None
@@ -14,7 +15,7 @@ class Result:
         self.result = result
 
 
-class GS:
+class GdtfShareApi:
     base_url = ""
     api_key = ""
     verbose = True
@@ -101,6 +102,10 @@ class GS:
             self.data = self.data.get("list", [])
             self.patch_data()
             return result
+        else:
+            # if update doesn't work (server error), retry from the beginning
+            print("Update failed, try full reload")
+            result = gs.start()
         return result
 
     def login(self):
@@ -122,7 +127,7 @@ class GS:
                 slug="downloadFile.php", url_params=f"rid={fixture.get('rid')}"
             )
             dir_path = os.path.dirname(os.path.abspath(__file__))
-            full_path = os.path.join(dir_path,'..','..','assets','profiles')
+            full_path = os.path.join(dir_path, "..", "..", "assets", "profiles")
             with open(os.path.join(full_path, filename), "wb") as out:
                 out.write(res.result.content)
                 print(f"saved {filename}")
@@ -156,7 +161,6 @@ class GS:
         self.save_json_file(all_fixtures, self.data_file)
         self.store_config()
 
-    
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Work with GDTF Share API")
@@ -169,31 +173,49 @@ if __name__ == "__main__":
         "-v", "--verbose", action="store_false", help="Print debug information"
     )
     args = parser.parse_args()
-    gs = GS()
+    gs = GdtfShareApi()
     gs.verbose = args.verbose
     start = gs.load_json_file(gs.data_file)
     gs.login()
-    if args.start or start is None or len(start) < 1:
-        ret = gs.start()
-    elif gs.config["hash"] is None:
-        ret = gs.start()
+    if args.start or start is None or len(start) < 1 or gs.config["hash"] is None:
+        result = gs.start()
     else:
-        ret = gs.update()
+        result = gs.update()
 
-def update_data():
-    gs = GS()
+
+def update_data() ->'Result':
+    """Updates data.json. 
+    When last timestamp of update exists, it updates from that date.
+    If timestamp is missing, it requests full listing.
+    If update since last timestamp fails, it requests full listing.
+    """
+    gs = GdtfShareApi()
     start = gs.load_json_file(gs.data_file)
     gs.login()
     if start is None or len(start) < 1:
-        ret = gs.start()
+        result = gs.start()
     elif gs.config["hash"] is None:
-        ret = gs.start()
+        result = gs.start()
     else:
-        ret = gs.update()
-    return ret
+        result = gs.update()
+    return result
 
-def download_files(files = []):
-    gs = GS()
+
+def download_files(files=[]) -> 'Result':
+    """Download GDTF files form GDTF Share.
+    @files=[] is list of GDTF files as returned by the API itself,
+    it must contain revision id (rid), name (fixture), manufacturer
+    and revision (required to create file name).
+
+      {
+        "rid": int,
+        "fixture": str,
+        "manufacturer": str,
+        "revision": str
+      }
+    Saving directory path is hardcoded at the moment.
+    """
+    gs = GdtfShareApi()
     gs.login()
-    res = gs.get_gdtf_files(files)
-    return res
+    result = gs.get_gdtf_files(files)
+    return result
