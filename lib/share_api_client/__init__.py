@@ -183,8 +183,8 @@ if __name__ == "__main__":
         result = gs.update()
 
 
-def update_data() ->'Result':
-    """Updates data.json. 
+def update_data() -> "Result":
+    """Updates data.json.
     When last timestamp of update exists, it updates from that date.
     If timestamp is missing, it requests full listing.
     If update since last timestamp fails, it requests full listing.
@@ -201,7 +201,7 @@ def update_data() ->'Result':
     return result
 
 
-def download_files(files=[]) -> 'Result':
+def download_files(files=[]) -> "Result":
     """Download GDTF files form GDTF Share.
     @files=[] is list of GDTF files as returned by the API itself,
     it must contain revision id (rid), name (fixture), manufacturer
@@ -219,3 +219,15 @@ def download_files(files=[]) -> 'Result':
     gs.login()
     result = gs.get_gdtf_files(files)
     return result
+
+
+def get_config():
+    gs = GdtfShareApi()
+    return gs.config
+
+
+def set_config(config):
+    gs = GdtfShareApi()
+    if config is not None:
+        gs.config = config
+        gs.store_config()

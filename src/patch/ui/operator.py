@@ -169,3 +169,12 @@ class DMX_OP_Import_Fixture_From_File(Operator):
         return {'FINISHED'}
 
 
+class DMX_OP_Save_Patch_Api_Key(Operator):
+    bl_label = _("Save Api key")
+    bl_description = _("Storing the Share API key into a config file")
+    bl_idname = "dmx.patch_api_key"
+    bl_options = {'UNDO'}
+
+    def execute(self, context):
+        context.scene.dmx.patch.save_api_key()
+        return {'FINISHED'}

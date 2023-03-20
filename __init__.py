@@ -50,6 +50,8 @@ class DMX(PropertyGroup):
 def on_register():
     Patch.DMX_Patch_Profile.load()
     Patch.DMX_Patch_Import_Gdtf_Profile.load()
+    # load the Share API key
+    bpy.context.scene.dmx.patch.load_api_key()
 
 def clean_module_imports():
     modules = dict(sys.modules)
@@ -70,6 +72,8 @@ def register():
     
     bpy.utils.register_class(DMX)
     bpy.types.Scene.dmx = PointerProperty(type=DMX)
+    # private data, not to be saved to the blender file:
+    bpy.types.WindowManager.dmx = PointerProperty(type=Patch.DMX_PatchPrivateData)
     
     Timer(1, on_register, ()).start()
 

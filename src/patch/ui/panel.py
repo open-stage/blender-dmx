@@ -9,8 +9,8 @@ from .operator import ( DMX_OP_Patch_Universe_Add,
                         DMX_OP_Patch_Fixture_AddBatch,
                         DMX_OP_Patch_Build,
                         DMX_OP_Import_Fixture_Update_Share,
-                        DMX_OP_Import_Fixture_From_File)
-
+                        DMX_OP_Import_Fixture_From_File,
+                        DMX_OP_Save_Patch_Api_Key)
 class DMX_PT_Patch(Panel):
     bl_label = DMX_i18n.PANEL_PATCH
     bl_idname = 'DMX_PT_Patch'
@@ -75,6 +75,13 @@ class DMX_PT_Patch(Panel):
             rows=8
         )
         row = layout.row()
+
+        row.prop(context.window_manager.dmx, 'share_api_key', text = '')
+
+        layout.operator(
+            DMX_OP_Save_Patch_Api_Key.bl_idname,
+            icon=DMX_Icon.URL
+        )
 
         layout.operator(
             DMX_OP_Import_Fixture_Update_Share.bl_idname,

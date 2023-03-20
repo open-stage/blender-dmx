@@ -62,7 +62,19 @@ class DMX_Patch_Manager:
             ShowMessageBox(_("Error while updating Share index. Error code was: {}").format(result.result.status_code), _("GDTF Share update error"), 'ERROR')
         Patch.DMX_Patch_Import_Gdtf_Profile.load()
 
+    def save_api_key(self):
+        config = share_api_client.get_config()
+        key = bpy.context.window_manager.dmx.get("share_api_key", None)
+        if key is not None:
+            config["api_key"] = key
+        share_api_client.set_config(config)
 
+    def load_api_key(self):
+        config = share_api_client.get_config()
+        key = config["api_key"]
+        if key is not None:
+            bpy.context.window_manager.dmx.share_api_key = key
+        
 def ShowMessageBox(message = "", title = _("Message Box"), icon = 'INFO'):
 
     def draw(self, context):
