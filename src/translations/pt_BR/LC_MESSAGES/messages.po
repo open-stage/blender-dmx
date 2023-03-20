@@ -1,0 +1,154 @@
+# Portuguese (Brazil) translations for PROJECT.
+# Copyright (C) 2023 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2023-03-19 20:42+0100\n"
+"PO-Revision-Date: 2023-03-15 22:53+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: pt_BR\n"
+"Language-Team: pt_BR <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.10.3\n"
+
+#: i18n.py:12 i18n.py:15
+msgid "DMX Universe"
+msgstr "Universo DMX"
+
+#: i18n.py:13 i18n.py:16
+msgid "Select DMX Universe"
+msgstr "Selecione Universo DMX"
+
+#: i18n.py:20
+msgid "Configure Source"
+msgstr ""
+
+#: i18n.py:21
+msgid "Opens a dialog for configuring this Source."
+msgstr ""
+
+#: i18n.py:23
+#, fuzzy
+msgid "Add Universe"
+msgstr "Universo DMX"
+
+#: i18n.py:24
+msgid "Add a new Universe to the Patch."
+msgstr ""
+
+#: i18n.py:26
+msgid "Add Single Fixture"
+msgstr "Adicionar fixação única"
+
+#: patch/controller/manager.py:52
+msgid "File downloaded correctly. Status code was: {}"
+msgstr ""
+
+#: patch/controller/manager.py:52
+msgid "GDTF file downloaded"
+msgstr ""
+
+#: patch/controller/manager.py:54
+msgid "Error downloading GDTF file. Error code was: {}"
+msgstr ""
+
+#: patch/controller/manager.py:54
+msgid "GDTF Share download error"
+msgstr ""
+
+#: patch/controller/manager.py:60
+msgid "Share index updated. Status code was: {}"
+msgstr ""
+
+#: patch/controller/manager.py:60
+msgid "GDTF Share updated"
+msgstr ""
+
+#: patch/controller/manager.py:62
+msgid "Error while updating Share index. Error code was: {}"
+msgstr ""
+
+#: patch/controller/manager.py:62
+msgid "GDTF Share update error"
+msgstr ""
+
+#: patch/controller/manager.py:66
+msgid "Message Box"
+msgstr ""
+
+#: patch/data/profile.py:115 patch/data/profile.py:119
+#: patch/data/profile.py:120
+msgid "Fixture name"
+msgstr ""
+
+#: patch/data/profile.py:116
+msgid "Manufacturer and fixture name"
+msgstr ""
+
+#: patch/data/profile.py:123
+msgid "Manufacturer"
+msgstr ""
+
+#: patch/data/profile.py:124
+msgid "Manufacturer name"
+msgstr ""
+
+#: patch/data/profile.py:128
+msgid "Revision"
+msgstr ""
+
+#: patch/data/profile.py:129 patch/data/profile.py:134
+msgid "Revision text"
+msgstr ""
+
+#: patch/data/profile.py:133
+msgid "Uploader"
+msgstr ""
+
+#: patch/data/profile.py:138
+msgid "Revision ID"
+msgstr ""
+
+#: patch/data/profile.py:139
+msgid "File identifier in the GDTF Share"
+msgstr ""
+
+#: patch/ui/operator.py:111
+msgid "Import from Share"
+msgstr ""
+
+#: patch/ui/operator.py:112
+msgid "Import fixture from GDTF Share"
+msgstr ""
+
+#: patch/ui/operator.py:123
+msgid "Update GDTF Share index"
+msgstr ""
+
+#: patch/ui/operator.py:124
+msgid "Update data index of GDTF Share"
+msgstr ""
+
+#: patch/ui/operator.py:133
+msgid "Import from file"
+msgstr ""
+
+#: patch/ui/operator.py:134
+msgid "Import fixture from local filesystem"
+msgstr ""
+
+#: patch/ui/operator.py:141
+msgid "File Path"
+msgstr ""
+
+#: patch/ui/operator.py:146
+msgid "Files"
+msgstr ""
+

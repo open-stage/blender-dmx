@@ -1,8 +1,8 @@
-from typing import List
+from typing import List, Union, Optional
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 import zipfile
-from .value import *
+from .value import * # type: ignore
 from .utils import *
 
 # Standard predefined colour spaces: R, G, B, W-P
@@ -441,8 +441,6 @@ class Geometry(BaseNode):
             self.geometries.append(GeometryFilterColor(xml_node=i))
         for i in xml_node.findall('FilterGobo'):
             self.geometries.append(GeometryFilterGobo(xml_node=i))
-        for i in xml_node.findall('MediaServerCamera'):
-            self.geometries.append(GeometryMediaServerCamera(xml_node=i))
         for i in xml_node.findall('FilterShaper'):
             self.geometries.append(GeometryFilterShaper(xml_node=i))
         for i in xml_node.findall('Beam'):
@@ -474,8 +472,6 @@ class GeometryFilterGobo(Geometry):
 class GeometryFilterShaper(Geometry):
     pass
 
-class GeometryMediaServerCamera(Geometry):
-    pass
 
 class GeometryBeam(Geometry):
 
@@ -576,9 +572,9 @@ class DmxMode(BaseNode):
 
 class DmxChannel(BaseNode):
 
-    def __init__(self, dmx_break: int = 1, offset: List[int] = 'None',
-                 default: 'DmxValue' = DmxValue('0/1'), highlight: 'DmxValue' = 'None',
-                 geometry: str = None,
+    def __init__(self, dmx_break: Union[int, str] = 1, offset: List[int] = None,
+                 default: 'DmxValue' = DmxValue('0/1'), highlight: Optional['DmxValue'] = None,
+                 geometry: Optional[str] = None,
                  logical_channels: List['LogicalChannel'] = None, *args, **kwargs):
         self.dmx_break = dmx_break
         self.offset = offset
@@ -632,7 +628,7 @@ class LogicalChannel(BaseNode):
 
 class ChannelFunction(BaseNode):
 
-    def __init__(self, name: str = None, attribute: 'NodeLink' = 'NoFeature',
+    def __init__(self, name: str = None, attribute: Union['NodeLink', str] = 'NoFeature',
                  original_attribute: str = None, dmx_from: 'DmxValue' = DmxValue('0/1'),
                  default: 'DmxValue' = DmxValue('0/1'),
                  physical_from: float = 0, physical_to: float = 1, real_fade: float = 0,
@@ -674,7 +670,7 @@ class ChannelFunction(BaseNode):
         self.emitter = NodeLink('EmitterCollect', xml_node.attrib.get('Emitter'))
         self.filter = NodeLink('FilterCollect', xml_node.attrib.get('Filter'))
         self.dmx_invert = DmxInvert(xml_node.attrib.get('DMXInvert'))
-        self.mode_master = Master(xml_node.attrib.get('ModeMaster'))
+        self.mode_master = NodeLink('DMXChannel', xml_node.attrib.get('ModeMaster'))
         self.mode_from = DmxValue(xml_node.attrib.get('ModeFrom', '0/1'))
         self.mode_to = DmxValue(xml_node.attrib.get('ModeTo', '0/1'))
         self.channel_sets = [ChannelSet(xml_node=i) for i in xml_node.findall('ChannelSet')]
@@ -745,7 +741,7 @@ class Macro(BaseNode):
 
 class MacroDmxStep(BaseNode):
 
-    def __init__(self, duration: int = 1, dmx_values: List['MacroDmxValue'] = None,
+    def __init__(self, duration: float = 1, dmx_values: List['MacroDmxValue'] = None,
                  *args, **kwargs):
         self.duration = duration
         if dmx_values is not None:
@@ -805,7 +801,7 @@ class MacroVisualValue(BaseNode):
 
 class Revision(BaseNode):
 
-    def __init__(self, text: str = None, date: str = None, user_id: int = 0, *args, **kwargs):
+    def __init__(self, text: Union[str, None] = None, date: Union[str, None] = None, user_id: int = 0, *args, **kwargs):
         self.text = text
         self.date = date
         self.user_id = user_id
@@ -814,4 +810,4 @@ class Revision(BaseNode):
     def _read_xml(self, xml_node: 'Element'):
         self.text = xml_node.attrib.get('Text')
         self.date = xml_node.attrib.get('Date')
-        self.user_id = int(xml_node.attrib.get('UserID'))
+        self.user_id = int(xml_node.attrib.get('UserID', 0))

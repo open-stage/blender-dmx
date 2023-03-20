@@ -1,10 +1,16 @@
 import bpy
+import os
+from lib import pygdtf
+import json
+
 from bpy.types import PropertyGroup
 from bpy.props import ( StringProperty,
                         CollectionProperty,
                         IntProperty )
 
 from src.i18n import DMX_i18n
+from src.lang import DMX_Lang
+_ = DMX_Lang._
 
 
 class DMX_Patch_ProfileBreak(PropertyGroup):
@@ -50,87 +56,45 @@ class DMX_Patch_Profile(PropertyGroup):
     )
 
     @staticmethod
+    def get_profiles_path() -> str:
+        """Return the path to the "profiles" folder."""
+
+        FILE_PATH = os.path.dirname(os.path.abspath(__file__))
+        return os.path.join(FILE_PATH,'..','..','..','assets','profiles')
+
+    @staticmethod
+    def get_profile_list():
+        """List gdtf files in in profiles folder"""
+
+        profiles_path = DMX_Patch_Profile.get_profiles_path()
+        profiles = []
+        for file in os.listdir(profiles_path):
+            file_path = os.path.join(profiles_path, file)
+            try:
+                fixture_type = pygdtf.FixtureType(file_path)
+                modes=[]
+                for mode in fixture_type.dmx_modes:
+                    channels=pygdtf.utils.get_dmx_channels(fixture_type, mode.name)
+                    dmx_breaks = []
+                    for dmx_break in channels:
+                        dmx_breaks.append(len(dmx_break))
+                    modes.append({"name": mode.name, "breaks":tuple(dmx_breaks)})
+                profiles.append({"name": f"{fixture_type.manufacturer} @ {fixture_type.long_name}",
+                             "short_name": fixture_type.short_name,
+                             "filename": file,
+                             "modes":modes})
+            except Exception as e:
+                print("Error parsing file", file, e)
+
+                    
+        return profiles
+
+    @staticmethod
     def load():
         patch = bpy.context.scene.dmx.patch
         patch.profiles.clear()
+        profiles = DMX_Patch_Profile.get_profile_list()
 
-        profiles = [
-            {
-                'name': 'Fog/Haze @ Generic',
-                'short_name': 'FOG',
-                'filename': 'BlenderDMX@Source_Four_PAR@v0.2.gdtf',
-                'modes': [{
-                    'name': 'Default',
-                    'breaks': (1,)
-                }]
-            },
-            {
-                'name': 'Fresnel @ Generic',
-                'short_name': 'FRESN',
-                'filename': 'BlenderDMX@Source_Four_PAR@v0.2.gdtf',
-                'modes': [{
-                    'name': 'Default',
-                    'breaks': (1,)
-                }]
-            },
-            {
-                'name': 'Ellipsoidal @ Generic',
-                'short_name': 'ELPS',
-                'filename': 'BlenderDMX@Source_Four@v0.2.gdtf',
-                'modes': [{
-                    'name': 'Default',
-                    'breaks': (1,)
-                }]
-            },
-            {
-                'name': 'PAR 64 Can @ Generic',
-                'short_name': 'PAR64',
-                'filename': 'BlenderDMX@PAR_64@v0.2.gdtf',
-                'modes': [{
-                    'name': 'Default',
-                    'breaks': (1,)
-                }]
-            },
-            {
-                'name': 'Pointe @ ROBE',
-                'short_name': 'POINTE',
-                'filename': 'BlenderDMX@Moving_Beam@v0.3.gdtf',
-                'modes': [{
-                    'name': 'Standard',
-                    'breaks': (14,)
-                },{
-                    'name': 'Extended',
-                    'breaks': (23,)
-                }]
-            },
-            {
-                'name': 'MAC Aura @ Martin',
-                'short_name': 'MACAUR',
-                'filename': 'Martin_Professional@Mac_Aura@20230201NoMeas.gdtf',
-                'modes': [{
-                    'name': 'Standard',
-                    'breaks': (14,)
-                },{
-                    'name': 'Extended',
-                    'breaks': (25,)
-                }]
-            },
-            {
-                'name': 'Multi-Break @ Test',
-                'short_name': 'MBREAK',
-                'filename': 'Marslite@4_x_Mini_LED_Moving_Head_RGBW_Bar@V.1.1_by_StefanoBigoloni.com_Multi_mode.gdtf',
-                'modes': [{
-                    'name': 'One Break',
-                    'breaks': (12,)
-                },{
-                    'name': 'Two Breaks',
-                    'breaks': (15, 13)
-                },{
-                    'name': 'Three Breaks',
-                    'breaks': (14, 17, 3)
-                }]
-            }
-        ]
 
         for profile in profiles:
             patch.profiles.add()
@@ -144,3 +108,66 @@ class DMX_Patch_Profile(PropertyGroup):
                 for n in mode['breaks']:
                     patch.profiles[-1].modes[-1].breaks.add()
                     patch.profiles[-1].modes[-1].breaks[-1].n_channels = n
+
+class DMX_Patch_Import_Gdtf_Profile(PropertyGroup):
+
+    name: StringProperty(
+        name = _("Fixture name"),
+        description = _("Manufacturer and fixture name")
+    )
+    fixture: StringProperty(
+        name = _("Fixture name"),
+        description = _("Fixture name")
+    )
+    manufacturer: StringProperty(
+        name = _("Manufacturer"),
+        description = _("Manufacturer name")
+    )
+
+    revision: StringProperty(
+        name = _("Revision"),
+        description = _("Revision text")
+    )
+
+    uploader: StringProperty(
+        name = _("Uploader"),
+        description = _("Revision text")
+    )
+
+    rid: IntProperty(
+        name = _("Revision ID"),
+        description = _("File identifier in the GDTF Share") 
+    )
+
+
+
+    @staticmethod
+    def get_profile_list():
+        """List gdtf files in in profiles folder"""
+        dir_path = os.path.dirname(os.path.abspath(__file__))
+        try:
+            with open(os.path.join(dir_path, '..', '..', '..', 'lib', 'share_api_client', "data.json")) as f:
+                data = json.load(f)
+        except:
+            data = []
+        return data
+
+    @staticmethod
+    def load():
+        print("loading start")
+        patch = bpy.context.scene.dmx.patch
+        patch.share_profiles.clear()
+        profiles = DMX_Patch_Import_Gdtf_Profile.get_profile_list()
+
+
+        for profile in profiles:
+            patch.share_profiles.add()
+            name = f"{profile['manufacturer']}@{profile['fixture']}@{profile['revision']}"
+            patch.share_profiles[-1].name = name
+            patch.share_profiles[-1].fixture = profile['fixture']
+            patch.share_profiles[-1].manufacturer = profile['manufacturer']
+            patch.share_profiles[-1].revision = profile['revision']
+            patch.share_profiles[-1].uploader = profile['uploader']
+            patch.share_profiles[-1].rid = profile['rid']
+        print("loading done")
+

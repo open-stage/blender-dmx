@@ -51,8 +51,11 @@ class DMX_GDTF():
         and return the extracted folder path + the file extension.
         '''
         extension = file.extension.lower()
+        dir_name = "gltf"
+        if "3ds" == extension:
+            dir_name = "3ds"
 
-        inside_zip_path = f"models/{extension}/{file.name}.{file.extension}"
+        inside_zip_path = f"models/{dir_name}/{file.name}.{file.extension}"
         to_folder_path = DMX_GDTF._get_fixture_models_path(self.fixture_type.fixture_type_id)       
         self.fixture_type._package.extract(inside_zip_path, to_folder_path)
 

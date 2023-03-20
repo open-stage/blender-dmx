@@ -1,0 +1,7 @@
+# prevent changed config to be added to git:
+# git update-index --assume-unchanged config.json
+# to add changes:
+# git update-index --no-assume-unchanged config.json
+
+# prevent updates to data to be tracked:
+data.json
