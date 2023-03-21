@@ -4,10 +4,11 @@ bl_info = {
     'author': 'open-stage',
     'version': (1, 5, 0),
     'blender': (3, 0, 0),
-    'location': '',
-    'warning': '', # used for warning icon and text in addons panel
-    'wiki_url': 'http://www.github.com/open-stage/blenderDMX/wiki',
-    'tracker_url': '',
+    "location": "3D View > DMX",
+    "warning": "", # used for warning icon and text in addons panel
+    "wiki_url": "https://github.com/open-stage/blender-dmx/wiki",
+    "doc_url": "https://github.com/open-stage/blender-dmx/wiki",
+    "tracker_url": "https://github.com/open-stage/blender-dmx/issues",
     'category': 'Lighting'
 }
 
