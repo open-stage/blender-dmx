@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-03-19 20:42+0100\n"
+"POT-Creation-Date: 2023-03-21 22:34+0100\n"
 "PO-Revision-Date: 2023-03-15 22:42+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en_US\n"
@@ -46,39 +46,49 @@ msgstr ""
 msgid "Add Single Fixture"
 msgstr ""
 
-#: patch/controller/manager.py:52
+#: patch/controller/manager.py:56 patch/controller/manager.py:94
+msgid ""
+"Get API key from GDTF Share account and fill it into BlenderDMX addon "
+"preferences."
+msgstr ""
+
+#: patch/controller/manager.py:59 patch/controller/manager.py:97
+msgid "GDTF Share API key missing"
+msgstr ""
+
+#: patch/controller/manager.py:72
 msgid "File downloaded correctly. Status code was: {}"
 msgstr ""
 
-#: patch/controller/manager.py:52
+#: patch/controller/manager.py:75
 msgid "GDTF file downloaded"
 msgstr ""
 
-#: patch/controller/manager.py:54
+#: patch/controller/manager.py:80
 msgid "Error downloading GDTF file. Error code was: {}"
 msgstr ""
 
-#: patch/controller/manager.py:54
+#: patch/controller/manager.py:83
 msgid "GDTF Share download error"
 msgstr ""
 
-#: patch/controller/manager.py:60
+#: patch/controller/manager.py:106
 msgid "Share index updated. Status code was: {}"
 msgstr ""
 
-#: patch/controller/manager.py:60
+#: patch/controller/manager.py:109
 msgid "GDTF Share updated"
 msgstr ""
 
-#: patch/controller/manager.py:62
+#: patch/controller/manager.py:117
 msgid "Error while updating Share index. Error code was: {}"
 msgstr ""
 
-#: patch/controller/manager.py:62
+#: patch/controller/manager.py:120
 msgid "GDTF Share update error"
 msgstr ""
 
-#: patch/controller/manager.py:66
+#: patch/controller/manager.py:126
 msgid "Message Box"
 msgstr ""
 
@@ -149,5 +159,13 @@ msgstr ""
 
 #: patch/ui/operator.py:146
 msgid "Files"
+msgstr ""
+
+#: preferences/__init__.py:23
+msgid "GDTF Share API key"
+msgstr ""
+
+#: preferences/__init__.py:24
+msgid "Private API key for GDTF Share"
 msgstr ""
 

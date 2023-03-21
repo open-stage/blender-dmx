@@ -25,6 +25,7 @@ from bpy.props import PointerProperty
 from src import core as Core
 from src import patch as Patch
 from src import programmer as Programmer
+from src import preferences as Preferences
 
 # Main Data Structure
 
@@ -51,8 +52,6 @@ class DMX(PropertyGroup):
 def on_register():
     Patch.DMX_Patch_Profile.load()
     Patch.DMX_Patch_Import_Gdtf_Profile.load()
-    # load the Share API key
-    bpy.context.scene.dmx.patch.load_api_key()
 
 def clean_module_imports():
     modules = dict(sys.modules)
@@ -70,11 +69,11 @@ def register():
         bpy.utils.register_class(cls)
     for cls in Programmer.classes:
         bpy.utils.register_class(cls)
+    for cls in Preferences.classes:
+        bpy.utils.register_class(cls)
     
     bpy.utils.register_class(DMX)
     bpy.types.Scene.dmx = PointerProperty(type=DMX)
-    # private data, not to be saved to the blender file:
-    bpy.types.WindowManager.dmx = PointerProperty(type=Patch.DMX_PatchPrivateData)
     
     Timer(1, on_register, ()).start()
 
@@ -85,10 +84,13 @@ def unregister():
         bpy.utils.unregister_class(cls)
     for cls in Programmer.classes:
         bpy.utils.unregister_class(cls)
+    for cls in Preferences.classes:
+        bpy.utils.unregister_class(cls)
     
     bpy.utils.unregister_class(DMX)
 
     clean_module_imports()
 
 if __name__ == '__main__':
+
     register()

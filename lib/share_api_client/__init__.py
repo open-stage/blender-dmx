@@ -3,7 +3,6 @@
 import requests
 import json
 import os
-import argparse
 
 
 class Result:
@@ -16,18 +15,17 @@ class Result:
 
 
 class GdtfShareApi:
-    base_url = ""
+    base_url = "https://gdtf-share.com/apis/public"
     api_key = ""
     verbose = True
 
     dir_path = os.path.dirname(os.path.abspath(__file__))
     data_file = os.path.join(dir_path, "data.json")
 
-    def __init__(self):
+    def __init__(self, api_key: str):
         saved_config = self.load_config()
         self.config = {}
-        self.config["api_key"] = saved_config["api_key"]
-        self.config["base_url"] = saved_config.get("base_url")
+        self.api_key = api_key
         self.config["hash"] = saved_config.get("hash", None)
         self.session = requests.Session()
 
@@ -38,8 +36,6 @@ class GdtfShareApi:
             with open(fname) as a:
                 return json.load(a)
         return {
-            "api_key": "",
-            "base_url": "https://gdtf-share.com/apis/public",
             "hash": None,
         }
 
@@ -61,7 +57,7 @@ class GdtfShareApi:
             return None
 
     def make_call(self, slug=None, url_params="", method="GET"):
-        url = "%s/%s?%s" % (self.config["base_url"], slug, url_params)
+        url = "%s/%s?%s" % (self.base_url, slug, url_params)
         if self.verbose:
             print(url)
         if method == "GET":
@@ -110,10 +106,10 @@ class GdtfShareApi:
 
     def login(self):
         return self.make_call(
-            method="GET", slug="login.php", url_params=f"seed={self.config['api_key']}"
+            method="GET", slug="login.php", url_params=f"seed={self.api_key}"
         )
 
-    def get_gdtf_files(self, data):
+    def get_gdtf_files(self, data, file_path):
         for fixture in data:
             if self.verbose:
                 print(
@@ -126,9 +122,7 @@ class GdtfShareApi:
             res = self.make_call(
                 slug="downloadFile.php", url_params=f"rid={fixture.get('rid')}"
             )
-            dir_path = os.path.dirname(os.path.abspath(__file__))
-            full_path = os.path.join(dir_path, "..", "..", "assets", "profiles")
-            with open(os.path.join(full_path, filename), "wb") as out:
+            with open(os.path.join(file_path, filename), "wb") as out:
                 out.write(res.result.content)
                 print(f"saved {filename}")
         return res
@@ -162,34 +156,13 @@ class GdtfShareApi:
         self.store_config()
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Work with GDTF Share API")
-    parser.add_argument("-s", "--start", action="store_true", help="Resync from 0")
-    parser.add_argument("-H", "--hash", dest="hash", help="Resync from a hash")
-    parser.add_argument(
-        "-t", "--timestamp", dest="timestamp", help="Resync from a timestamp"
-    )
-    parser.add_argument(
-        "-v", "--verbose", action="store_false", help="Print debug information"
-    )
-    args = parser.parse_args()
-    gs = GdtfShareApi()
-    gs.verbose = args.verbose
-    start = gs.load_json_file(gs.data_file)
-    gs.login()
-    if args.start or start is None or len(start) < 1 or gs.config["hash"] is None:
-        result = gs.start()
-    else:
-        result = gs.update()
-
-
-def update_data() -> "Result":
+def update_data(api_key: str) -> "Result":
     """Updates data.json.
     When last timestamp of update exists, it updates from that date.
     If timestamp is missing, it requests full listing.
     If update since last timestamp fails, it requests full listing.
     """
-    gs = GdtfShareApi()
+    gs = GdtfShareApi(api_key)
     start = gs.load_json_file(gs.data_file)
     gs.login()
     if start is None or len(start) < 1:
@@ -201,7 +174,7 @@ def update_data() -> "Result":
     return result
 
 
-def download_files(files=[]) -> "Result":
+def download_files(api_key: str, file_path: str, files=[]) -> "Result":
     """Download GDTF files form GDTF Share.
     @files=[] is list of GDTF files as returned by the API itself,
     it must contain revision id (rid), name (fixture), manufacturer
@@ -213,21 +186,8 @@ def download_files(files=[]) -> "Result":
         "manufacturer": str,
         "revision": str
       }
-    Saving directory path is hardcoded at the moment.
     """
-    gs = GdtfShareApi()
+    gs = GdtfShareApi(api_key)
     gs.login()
-    result = gs.get_gdtf_files(files)
+    result = gs.get_gdtf_files(files, file_path)
     return result
-
-
-def get_config():
-    gs = GdtfShareApi()
-    return gs.config
-
-
-def set_config(config):
-    gs = GdtfShareApi()
-    if config is not None:
-        gs.config = config
-        gs.store_config()

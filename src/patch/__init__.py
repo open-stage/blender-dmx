@@ -64,14 +64,6 @@ class DMX_Patch(PropertyGroup, DMX_Patch_Controller):
         default = 0
     )
 
-class DMX_PatchPrivateData(PropertyGroup):
-
-    share_api_key: StringProperty(
-        default = "",
-        name = _("GDTF Share API key"),
-        description = _("Private API key for GDTF Share")
-    )
-
 # Add-on Module Registering
 
 classes = (
@@ -87,7 +79,6 @@ classes = (
     DMX_Patch_Source,
     DMX_Patch_Universe,
     DMX_Patch,
-    DMX_PatchPrivateData,
     
     # Lists
     DMX_UL_Patch_Fixtures,
@@ -111,7 +102,6 @@ classes = (
     DMX_OP_Import_Fixture_From_File,
     DMX_OP_Import_Fixture_From_Share,
     DMX_OP_Import_Fixture_Update_Share,
-    DMX_OP_Save_Patch_Api_Key,
     
     # Panel
     DMX_PT_Patch
