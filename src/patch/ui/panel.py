@@ -10,6 +10,8 @@ from .operator import ( DMX_OP_Patch_Universe_Add,
                         DMX_OP_Patch_Build,
                         DMX_OP_Import_Fixture_Update_Share,
                         DMX_OP_Import_Fixture_From_File)
+from src.lang import DMX_Lang
+_ = DMX_Lang._
 
 class DMX_PT_Patch(Panel):
     bl_label = DMX_i18n.PANEL_PATCH
@@ -64,9 +66,22 @@ class DMX_PT_Patch(Panel):
             icon=DMX_Icon.BUILD
         )
 
+class DMX_PT_Patch_Import(Panel):
+    bl_label = _("Fixures import")
+    bl_idname = 'DMX_PT_Patch_Import'
+    bl_space_type = 'PROPERTIES'
+    bl_region_type = 'WINDOW'
+    bl_context = "scene"
+    bl_parent_id = "DMX_PT_Patch"
+    bl_options = {'DEFAULT_CLOSED'}
+
+    def draw(self, context):
+        layout = self.layout
+        patch = context.scene.dmx.patch
+
         layout.label(
-            text="Fixtures import",
-            icon=DMX_Icon.IMPORT
+            text="Import from GDTF Share",
+            icon=DMX_Icon.URL
         )
         layout.template_list(
             "DMX_UL_Share_Fixtures", "",

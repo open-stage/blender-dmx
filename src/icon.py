@@ -22,3 +22,5 @@ class DMX_Icon:
     URL = 'URL'
     USER = "USER"
     HOME = "HOME"
+    COMMUNITY = "COMMUNITY"
+    FAKE_USER_ON = "FAKE_USER_ON"

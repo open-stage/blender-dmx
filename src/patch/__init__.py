@@ -104,6 +104,6 @@ classes = (
     DMX_OP_Import_Fixture_Update_Share,
     
     # Panel
-    DMX_PT_Patch
-    
+    DMX_PT_Patch,
+    DMX_PT_Patch_Import
 )
