@@ -155,19 +155,19 @@ class DMX_Patch_Import_Gdtf_Profile(PropertyGroup):
     @staticmethod
     def load():
         print("loading start")
-        patch = bpy.context.scene.dmx.patch
-        patch.share_profiles.clear()
+        imports = bpy.context.window_manager.dmx.imports
+        imports.share_profiles.clear()
         profiles = DMX_Patch_Import_Gdtf_Profile.get_profile_list()
 
 
         for profile in profiles:
-            patch.share_profiles.add()
+            imports.share_profiles.add()
             name = f"{profile['manufacturer']}@{profile['fixture']}@{profile['revision']}"
-            patch.share_profiles[-1].name = name
-            patch.share_profiles[-1].fixture = profile['fixture']
-            patch.share_profiles[-1].manufacturer = profile['manufacturer']
-            patch.share_profiles[-1].revision = profile['revision']
-            patch.share_profiles[-1].uploader = profile['uploader']
-            patch.share_profiles[-1].rid = profile['rid']
+            imports.share_profiles[-1].name = name
+            imports.share_profiles[-1].fixture = profile['fixture']
+            imports.share_profiles[-1].manufacturer = profile['manufacturer']
+            imports.share_profiles[-1].revision = profile['revision']
+            imports.share_profiles[-1].uploader = profile['uploader']
+            imports.share_profiles[-1].rid = profile['rid']
         print("loading done")
 

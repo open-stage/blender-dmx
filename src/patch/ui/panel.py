@@ -77,7 +77,7 @@ class DMX_PT_Patch_Import(Panel):
 
     def draw(self, context):
         layout = self.layout
-        patch = context.scene.dmx.patch
+        imports = context.window_manager.dmx.imports
 
         layout.label(
             text="Import from GDTF Share",
@@ -85,11 +85,10 @@ class DMX_PT_Patch_Import(Panel):
         )
         layout.template_list(
             "DMX_UL_Share_Fixtures", "",
-            patch, "share_profiles",
-            patch, "selected_fixture",
+            imports, "share_profiles",
+            imports, "selected_fixture",
             rows=8
         )
-        row = layout.row()
 
         layout.operator(
             DMX_OP_Import_Fixture_Update_Share.bl_idname,

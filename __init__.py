@@ -46,6 +46,12 @@ class DMX(PropertyGroup):
         type = Programmer.DMX_Programmer
     )
 
+class DMX_Non_Persistent_Data(PropertyGroup):
+
+    imports: PointerProperty(
+            name = "Imports",
+            type=Patch.DMX_Patch_Share_Imports
+            )
 
 # Add-on Registering
 
@@ -73,7 +79,9 @@ def register():
         bpy.utils.register_class(cls)
     
     bpy.utils.register_class(DMX)
+    bpy.utils.register_class(DMX_Non_Persistent_Data)
     bpy.types.Scene.dmx = PointerProperty(type=DMX)
+    bpy.types.WindowManager.dmx = PointerProperty(type=DMX_Non_Persistent_Data)
     
     Timer(1, on_register, ()).start()
 
@@ -87,6 +95,7 @@ def unregister():
     for cls in Preferences.classes:
         bpy.utils.unregister_class(cls)
     
+    bpy.utils.unregister_class(DMX_Non_Persistent_Data)
     bpy.utils.unregister_class(DMX)
 
     clean_module_imports()

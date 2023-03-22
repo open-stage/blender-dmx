@@ -49,6 +49,7 @@ class DMX_Patch_Manager:
     def import_from_share(self, index: int):
         prefs = bpy.context.preferences.addons["dmx"].preferences
         api_key = prefs.get("share_api_key", None)
+        imports = bpy.context.window_manager.dmx.imports
 
         if api_key is None or len(api_key) < 2:
             ShowMessageBox(
@@ -60,7 +61,7 @@ class DMX_Patch_Manager:
         dir_path = os.path.dirname(os.path.abspath(__file__))
         file_path = os.path.join(dir_path, "..", "..", "..", "assets", "profiles")
         result = share_api_client.download_files(
-            api_key, file_path, [self.share_profiles[index]]
+            api_key, file_path, [imports.share_profiles[index]]
         )
         print(result)
         Patch.DMX_Patch_Profile.load()
