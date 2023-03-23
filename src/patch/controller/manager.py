@@ -3,7 +3,10 @@ from src import patch as Patch
 import bpy
 import os
 from src.lang import DMX_Lang
+import queue
 
+
+execution_queue = queue.Queue()
 _ = DMX_Lang._
 
 
@@ -60,21 +63,15 @@ class DMX_Patch_Manager:
             return
         dir_path = os.path.dirname(os.path.abspath(__file__))
         file_path = os.path.join(dir_path, "..", "..", "..", "assets", "profiles")
-        result = share_api_client.download_files(
-            api_key, file_path, [imports.share_profiles[index]]
+
+        if not bpy.app.timers.is_registered(execute_queued_functions):
+            bpy.app.timers.register(execute_queued_functions)
+
+        timer_subscribers.append("download file")
+
+        share_api_client.download_files(
+            api_key, file_path, [imports.share_profiles[index]], queue_up, reload_local_profiles
         )
-        print(result)
-        Patch.DMX_Patch_Profile.load()
-        if result.status:
-            ShowMessageBox(
-                _("File downloaded correctly. Status code was: {}").format(
-                    result.result.status_code),
-                _("GDTF file downloaded"), "INFO",)
-        else:
-            ShowMessageBox(
-                _("Error downloading GDTF file. Error code was: {}").format(
-                    result.result.status_code),
-                _("GDTF Share download error"), "ERROR",)
 
     def update_share_index(self):
         prefs = bpy.context.preferences.addons["dmx"].preferences
@@ -85,20 +82,62 @@ class DMX_Patch_Manager:
                 _("GDTF Share API key missing"), "ERROR",)
             return
 
-        result = share_api_client.update_data(api_key)
-        print(result)
-        if result.status:
-            ShowMessageBox(
-                _("Share index updated. Status code was: {}").format(
-                    result.result.status_code),
-                _("GDTF Share updated"), "INFO",)
-        else:
-            ShowMessageBox(
-                _("Error while updating Share index. Error code was: {}").format(
-                    result.result.status_code),
-                _("GDTF Share update error"), "ERROR",)
-        Patch.DMX_Patch_Import_Gdtf_Profile.load()
+        if not bpy.app.timers.is_registered(execute_queued_functions):
+            bpy.app.timers.register(execute_queued_functions)
+        timer_subscribers.append("update index")
+        share_api_client.update_data(api_key, queue_up, reload_share_profiles)
 
+timer_subscribers=[]
+
+def queue_up(function, arg):
+    execution_queue.put((function, arg))
+
+def execute_queued_functions():
+    print("check")
+    while not execution_queue.empty():
+        items = execution_queue.get()
+        execute = items[0]
+        arg = items[1]
+        execute(arg)
+        if len(timer_subscribers) > 0:
+            timer_subscribers.pop()
+        if (
+            len(timer_subscribers) < 1
+            and execution_queue.empty()
+            and bpy.app.timers.is_registered(execute_queued_functions)
+        ):
+            bpy.app.timers.unregister(execute_queued_functions)
+
+    return 1.0
+
+def reload_share_profiles(result):
+    print("loading profiles")
+    print(result)
+    if result.status:
+        ShowMessageBox(
+            _("Share index updated. Status code was: {}").format(
+                result.result.status_code),
+            _("GDTF Share updated"), "INFO",)
+    else:
+        ShowMessageBox(
+            _("Error while updating Share index. Error code was: {}").format(
+                result.result.status_code),
+            _("GDTF Share update error"), "ERROR",)
+    Patch.DMX_Patch_Import_Gdtf_Profile.load()
+
+def reload_local_profiles(result):
+    print(result)
+    Patch.DMX_Patch_Profile.load()
+    if result.status:
+        ShowMessageBox(
+            _("File downloaded correctly. Status code was: {}").format(
+                result.result.status_code),
+            _("GDTF file downloaded"), "INFO",)
+    else:
+        ShowMessageBox(
+            _("Error downloading GDTF file. Error code was: {}").format(
+                result.result.status_code),
+            _("GDTF Share download error"), "ERROR",)
 
 def ShowMessageBox(message="", title=_("Message Box"), icon="INFO"):
     def draw(self, context):

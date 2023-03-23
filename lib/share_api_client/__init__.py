@@ -3,6 +3,7 @@
 import requests
 import json
 import os
+from threading import Thread
 
 
 class Result:
@@ -18,7 +19,6 @@ class GdtfShareApi:
     base_url = "https://gdtf-share.com/apis/public"
     api_key = ""
     verbose = True
-
     dir_path = os.path.dirname(os.path.abspath(__file__))
     data_file = os.path.join(dir_path, "data.json")
 
@@ -156,7 +156,7 @@ class GdtfShareApi:
         self.store_config()
 
 
-def update_data(api_key: str) -> "Result":
+def _update_data(api_key: str, update, function):
     """Updates data.json.
     When last timestamp of update exists, it updates from that date.
     If timestamp is missing, it requests full listing.
@@ -171,10 +171,14 @@ def update_data(api_key: str) -> "Result":
         result = gs.start()
     else:
         result = gs.update()
-    return result
+    update(function, result)
 
 
-def download_files(api_key: str, file_path: str, files=[]) -> "Result":
+def update_data(api_key: str, update, function):
+    thread = Thread(target=_update_data, args=(api_key, update, function))
+    thread.start()
+
+def _download_files(api_key: str, file_path: str, files, update, function):
     """Download GDTF files form GDTF Share.
     @files=[] is list of GDTF files as returned by the API itself,
     it must contain revision id (rid), name (fixture), manufacturer
@@ -190,4 +194,9 @@ def download_files(api_key: str, file_path: str, files=[]) -> "Result":
     gs = GdtfShareApi(api_key)
     gs.login()
     result = gs.get_gdtf_files(files, file_path)
-    return result
+    update(function, result)
+
+
+def download_files(api_key: str, file_path: str, files, update, function):
+    thread = Thread(target=_download_files, args=(api_key, file_path, files, update, function))
+    thread.start()
