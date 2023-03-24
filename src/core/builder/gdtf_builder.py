@@ -56,7 +56,7 @@ class DMX_GDTFBuilder:
     # - GDTF Primitive: GDTF offers a few standards primitives
     # - Primitive: a simple Blender primitive (ex. Cube, Sphere, etc)
 
-    def _get_created_obj(self) -> Object:
+    def _get_created_obj(self, unlink = False) -> Object:
         '''
         Return the object that was just created by one of the 3 methods.
         '''
@@ -64,9 +64,14 @@ class DMX_GDTFBuilder:
         for obj in objs:
             # gltf files sometimes include this mysterious object
             # so we delete it. there maybe others.
+            # this is actually against GDTF spec, the glb should
+            # contain only a single object
+            # maybe we should check if len(obj) is > 1
             if (obj.name == '_display_d'):
                 bpy.data.objects.remove(obj)
                 objs.remove(obj)
+            if unlink:
+                obj.users_collection[0].objects.unlink(obj)
         return objs[0]
 
     def _create_obj_from_file(self, model: 'pygdtf.Model') -> Object:
@@ -82,7 +87,7 @@ class DMX_GDTFBuilder:
         except Exception as e:
             print(e)
 
-        obj = self._get_created_obj()
+        obj = self._get_created_obj(unlink = extension!="3ds")
         obj.name = model.name
         obj.data.name = model.name
         obj.rotation_euler = Euler((0, 0, 0), 'XYZ')
