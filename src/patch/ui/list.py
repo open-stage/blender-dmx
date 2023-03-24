@@ -11,6 +11,8 @@ from .operator import ( DMX_OP_Patch_Source_Configure,
                         DMX_OP_Import_Fixture_From_Share)
 from .menu import ( DMX_MT_Patch_SelectUniverse,
                     DMX_MT_Patch_SelectMode )
+from src.lang import DMX_Lang
+_ = DMX_Lang._
 
 class DMX_UL_Patch_Fixtures(UIList):
     
@@ -331,6 +333,8 @@ class DMX_UL_Patch_Universes(UIList):
 
 class DMX_UL_Share_Fixtures(UIList):
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
+
+        self.use_filter_show = True
         layout.context_pointer_set("share_profiles", item)
 
         col = layout.column()
@@ -344,3 +348,24 @@ class DMX_UL_Share_Fixtures(UIList):
                      text = '', 
                      icon=DMX_Icon.IMPORT
                      ).index = index
+
+class DMX_UL_Share_Fixtures_Dmx_Modes(UIList):
+    def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
+
+        main_col = layout.column()
+        main_col.emboss = 'NONE'
+        row = main_col.row()
+        if index == 0:
+            row.emboss = 'PULLDOWN_MENU'
+            col = row.column()
+            col.ui_units_x = 5
+            col.label(text=_("DMX Mode Name"))
+            col = row.column()
+            col.ui_units_x = 5
+            col.label(text=_("Footprint"))
+            row = main_col.row()
+        
+        col = row.column()
+        col.label(text=f"{item.name}")
+        col = row.column()
+        col.label(text=f"{item.footprint}")

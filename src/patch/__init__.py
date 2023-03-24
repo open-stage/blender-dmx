@@ -68,6 +68,10 @@ class DMX_Patch_Share_Imports(PropertyGroup):
     selected_fixture: IntProperty(
         default = 0
     )
+
+    selected_mode: IntProperty(
+        default = 0
+    )
 # Add-on Module Registering
 
 classes = (
@@ -79,6 +83,7 @@ classes = (
     DMX_Patch_ProfileBreak,
     DMX_Patch_ProfileMode,
     DMX_Patch_Profile,
+    DMX_Patch_Import_Gdtf_Profile_Dmx_Mode,
     DMX_Patch_Import_Gdtf_Profile,
     DMX_Patch_Source,
     DMX_Patch_Universe,
@@ -89,6 +94,7 @@ classes = (
     DMX_UL_Patch_Fixtures,
     DMX_UL_Patch_Universes,
     DMX_UL_Share_Fixtures,
+    DMX_UL_Share_Fixtures_Dmx_Modes,
 
     # Menus
     DMX_OP_MT_Patch_SelectUniverse,
@@ -110,5 +116,6 @@ classes = (
     
     # Panel
     DMX_PT_Patch,
-    DMX_PT_Patch_Import
+    DMX_PT_Patch_Import,
+    DMX_PT_Patch_Import_Profile_Detail
 )

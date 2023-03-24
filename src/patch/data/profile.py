@@ -109,6 +109,15 @@ class DMX_Patch_Profile(PropertyGroup):
                     patch.profiles[-1].modes[-1].breaks.add()
                     patch.profiles[-1].modes[-1].breaks[-1].n_channels = n
 
+
+class DMX_Patch_Import_Gdtf_Profile_Dmx_Mode(PropertyGroup):
+    name: StringProperty(
+        name = _("Mode name")
+        )
+    footprint: IntProperty(
+            name = _("DMX Footprint")
+            )
+
 class DMX_Patch_Import_Gdtf_Profile(PropertyGroup):
 
     name: StringProperty(
@@ -130,14 +139,29 @@ class DMX_Patch_Import_Gdtf_Profile(PropertyGroup):
     )
 
     uploader: StringProperty(
-        name = _("Uploader"),
-        description = _("Revision text")
+        name = _("Uploaded by"),
+        description = _("File uploaded by")
     )
+
+    creator: StringProperty(
+        name = _("Created by"),
+        description = _("File created by")
+    )
+    rating: StringProperty(
+        name = _("Rating"),
+    )
+
 
     rid: IntProperty(
         name = _("Revision ID"),
         description = _("File identifier in the GDTF Share") 
     )
+
+    modes: CollectionProperty(
+            name = _("Dmx Modes"),
+            type = DMX_Patch_Import_Gdtf_Profile_Dmx_Mode
+            )
+
 
 
 
@@ -169,5 +193,12 @@ class DMX_Patch_Import_Gdtf_Profile(PropertyGroup):
             imports.share_profiles[-1].revision = profile['revision']
             imports.share_profiles[-1].uploader = profile['uploader']
             imports.share_profiles[-1].rid = profile['rid']
+            imports.share_profiles[-1].creator = profile['creator']
+            imports.share_profiles[-1].rating = profile['rating']
+            for mode in profile["modes"]:
+                imports.share_profiles[-1].modes.add()
+                imports.share_profiles[-1].modes[-1].name = mode["name"]
+                imports.share_profiles[-1].modes[-1].footprint = mode["dmxfootprint"]
+
         print("loading done")
 

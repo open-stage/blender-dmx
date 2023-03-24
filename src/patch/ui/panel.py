@@ -79,10 +79,6 @@ class DMX_PT_Patch_Import(Panel):
         layout = self.layout
         imports = context.window_manager.dmx.imports
 
-        layout.label(
-            text="Import from GDTF Share",
-            icon=DMX_Icon.URL
-        )
         layout.template_list(
             "DMX_UL_Share_Fixtures", "",
             imports, "share_profiles",
@@ -97,4 +93,36 @@ class DMX_PT_Patch_Import(Panel):
         layout.operator(
             DMX_OP_Import_Fixture_From_File.bl_idname,
             icon=DMX_Icon.FILE
+        )
+
+class DMX_PT_Patch_Import_Profile_Detail(Panel):
+    bl_label = _("Fixure detail")
+    bl_idname = 'DMX_PT_Patch_Import_Profile_Detail'
+    bl_space_type = 'PROPERTIES'
+    bl_region_type = 'WINDOW'
+    bl_context = "scene"
+    bl_parent_id = "DMX_PT_Patch"
+    bl_options = {'DEFAULT_CLOSED'}
+
+    def draw(self, context):
+        layout = self.layout
+        imports = context.window_manager.dmx.imports
+        profiles = imports.share_profiles
+        selected = imports.selected_fixture
+        if not profiles:
+            return
+        fixture=profiles[selected]
+
+        col = layout.column()
+        col.emboss = 'NONE'
+        col.prop(fixture, "manufacturer")
+        col.prop(fixture, "fixture")
+        col.prop(fixture, "revision")
+        col.prop(fixture, "uploader")
+        col.prop(fixture, "creator")
+        col.prop(fixture, "rating")
+        layout.template_list(
+            "DMX_UL_Share_Fixtures_Dmx_Modes", "",
+            fixture, "modes",
+            imports, "selected_mode",
         )
