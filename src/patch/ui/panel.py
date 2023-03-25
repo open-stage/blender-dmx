@@ -67,12 +67,12 @@ class DMX_PT_Patch(Panel):
         )
 
 class DMX_PT_Patch_Import(Panel):
-    bl_label = _("Fixures import")
+    bl_label = _("DMX Fixtures import")
     bl_idname = 'DMX_PT_Patch_Import'
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
     bl_context = "scene"
-    bl_parent_id = "DMX_PT_Patch"
+    #bl_parent_id = "DMX_PT_Patch"
     bl_options = {'DEFAULT_CLOSED'}
 
     def draw(self, context):
@@ -96,13 +96,13 @@ class DMX_PT_Patch_Import(Panel):
         )
 
 class DMX_PT_Patch_Import_Profile_Detail(Panel):
-    bl_label = _("Fixure detail")
+    bl_label = _("Fixture details")
     bl_idname = 'DMX_PT_Patch_Import_Profile_Detail'
     bl_space_type = 'PROPERTIES'
     bl_region_type = 'WINDOW'
     bl_context = "scene"
-    bl_parent_id = "DMX_PT_Patch"
-    bl_options = {'DEFAULT_CLOSED'}
+    bl_parent_id = "DMX_PT_Patch_Import"
+    #bl_options = {'DEFAULT_CLOSED'}
 
     def draw(self, context):
         layout = self.layout
