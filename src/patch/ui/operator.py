@@ -169,3 +169,15 @@ class DMX_OP_Import_Fixture_From_File(Operator):
         return {'FINISHED'}
 
 
+class DMX_OP_Delete_Local_Fixture(Operator):
+    bl_label = _("Delete fixture")
+    bl_description = _("Delete fixture from local filesystem")
+    bl_idname = "dmx.delete_local_fixture"
+    bl_options = {'UNDO'}
+
+    index: IntProperty()
+
+    def execute(self, context):
+        context.scene.dmx.patch.delete_local_fixture(self.index)
+        return {'FINISHED'}
+

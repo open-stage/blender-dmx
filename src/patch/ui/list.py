@@ -8,7 +8,8 @@ from src.icon import DMX_Icon
 from .operator import ( DMX_OP_Patch_Source_Configure,
                         DMX_OP_Patch_Fixture_Remove,
                         DMX_OP_Patch_Universe_Remove,
-                        DMX_OP_Import_Fixture_From_Share)
+                        DMX_OP_Import_Fixture_From_Share,
+                        DMX_OP_Delete_Local_Fixture)
 from .menu import ( DMX_MT_Patch_SelectUniverse,
                     DMX_MT_Patch_SelectMode )
 from src.lang import DMX_Lang
@@ -369,3 +370,17 @@ class DMX_UL_Share_Fixtures_Dmx_Modes(UIList):
         col.label(text=f"{item.name}")
         col = row.column()
         col.label(text=f"{item.footprint}")
+
+class DMX_UL_Local_Fixtures(UIList):
+    def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
+
+        self.use_filter_show = True
+
+        col = layout.column()
+        col.emboss = 'NONE'
+        col.prop(item, 'name', text = "")
+        col = layout.column()
+        col.operator(DMX_OP_Delete_Local_Fixture.bl_idname,
+                     text = '', 
+                     icon=DMX_Icon.CANCEL
+                     ).index = index

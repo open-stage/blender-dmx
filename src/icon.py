@@ -24,3 +24,4 @@ class DMX_Icon:
     HOME = "HOME"
     COMMUNITY = "COMMUNITY"
     FAKE_USER_ON = "FAKE_USER_ON"
+    CANCEL = "CANCEL"

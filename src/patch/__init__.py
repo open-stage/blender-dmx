@@ -95,6 +95,7 @@ classes = (
     DMX_UL_Patch_Universes,
     DMX_UL_Share_Fixtures,
     DMX_UL_Share_Fixtures_Dmx_Modes,
+    DMX_UL_Local_Fixtures,
 
     # Menus
     DMX_OP_MT_Patch_SelectUniverse,
@@ -113,9 +114,11 @@ classes = (
     DMX_OP_Import_Fixture_From_File,
     DMX_OP_Import_Fixture_From_Share,
     DMX_OP_Import_Fixture_Update_Share,
+    DMX_OP_Delete_Local_Fixture,
     
     # Panel
     DMX_PT_Patch,
     DMX_PT_Patch_Import,
-    DMX_PT_Patch_Import_Profile_Detail
+    DMX_PT_Patch_Import_Profile_Detail,
+    DMX_PT_Patch_Local_Fixtures
 )

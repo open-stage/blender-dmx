@@ -126,3 +126,22 @@ class DMX_PT_Patch_Import_Profile_Detail(Panel):
             fixture, "modes",
             imports, "selected_mode",
         )
+class DMX_PT_Patch_Local_Fixtures(Panel):
+    bl_label = _("DMX Local fixtures")
+    bl_idname = 'DMX_PT_Local_Fixtures'
+    bl_space_type = 'PROPERTIES'
+    bl_region_type = 'WINDOW'
+    bl_context = "scene"
+    #bl_parent_id = "DMX_PT_Patch"
+    bl_options = {'DEFAULT_CLOSED'}
+
+    def draw(self, context):
+        layout = self.layout
+        patch = context.scene.dmx.patch
+
+        layout.template_list(
+            "DMX_UL_Local_Fixtures", "",
+            patch, "profiles",
+            patch, "selected_fixture",
+            rows=8
+        )

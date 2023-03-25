@@ -47,6 +47,17 @@ class DMX_Patch_Manager:
     def remove_fixture(self, index):
         self.fixtures.remove(index)
 
+    # Fixture delete
+
+    def delete_local_fixture(self, index: int):
+        dir_path = os.path.dirname(os.path.abspath(__file__))
+        profiles = bpy.context.scene.dmx.patch.profiles
+        profile = profiles[index]
+        filename=profile.filename
+        file_path = os.path.join(dir_path, "..", "..", "..", "assets", "profiles", filename)
+        os.remove(file_path)
+        Patch.DMX_Patch_Profile.load()
+
     # Fixture Import
 
     def import_from_share(self, index: int):
