@@ -24,6 +24,7 @@ from bpy.props import PointerProperty
 
 from src import core as Core
 from src import patch as Patch
+from src import devices as Devices
 from src import programmer as Programmer
 from src import preferences as Preferences
 
@@ -41,6 +42,11 @@ class DMX(PropertyGroup):
         type = Patch.DMX_Patch
     )
 
+    devices: PointerProperty(
+        name = 'Devices',
+        type = Devices.DMX_Devices
+    )
+
     programmer: PointerProperty(
         name = 'Patch',
         type = Programmer.DMX_Programmer
@@ -50,14 +56,14 @@ class DMX_Non_Persistent_Data(PropertyGroup):
 
     imports: PointerProperty(
             name = "Imports",
-            type=Patch.DMX_Patch_Share_Imports
+            type=Devices.DMX_Devices_Share_Imports
             )
 
 # Add-on Registering
 
 def on_register():
     Patch.DMX_Patch_Profile.load()
-    Patch.DMX_Patch_Import_Gdtf_Profile.load()
+    Devices.DMX_Devices_Import_Gdtf_Profile.load()
 
 def clean_module_imports():
     modules = dict(sys.modules)
@@ -70,6 +76,8 @@ def clean_module_imports():
 
 def register():
     for cls in Patch.classes:
+        bpy.utils.register_class(cls)
+    for cls in Devices.classes:
         bpy.utils.register_class(cls)
     for cls in Core.classes:
         bpy.utils.register_class(cls)
@@ -87,6 +95,8 @@ def register():
 
 def unregister():
     for cls in Patch.classes:
+        bpy.utils.unregister_class(cls)
+    for cls in Devices.classes:
         bpy.utils.unregister_class(cls)
     for cls in Core.classes:
         bpy.utils.unregister_class(cls)

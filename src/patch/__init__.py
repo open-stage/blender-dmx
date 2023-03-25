@@ -59,19 +59,6 @@ class DMX_Patch(PropertyGroup, DMX_Patch_Controller):
         default = 0
     )
 
-class DMX_Patch_Share_Imports(PropertyGroup):
-
-    # GDTF Share Import profiles
-    share_profiles: CollectionProperty(
-        type = DMX_Patch_Import_Gdtf_Profile
-    )
-    selected_fixture: IntProperty(
-        default = 0
-    )
-
-    selected_mode: IntProperty(
-        default = 0
-    )
 # Add-on Module Registering
 
 classes = (
@@ -83,19 +70,13 @@ classes = (
     DMX_Patch_ProfileBreak,
     DMX_Patch_ProfileMode,
     DMX_Patch_Profile,
-    DMX_Patch_Import_Gdtf_Profile_Dmx_Mode,
-    DMX_Patch_Import_Gdtf_Profile,
     DMX_Patch_Source,
     DMX_Patch_Universe,
     DMX_Patch,
-    DMX_Patch_Share_Imports,
     
     # Lists
     DMX_UL_Patch_Fixtures,
     DMX_UL_Patch_Universes,
-    DMX_UL_Share_Fixtures,
-    DMX_UL_Share_Fixtures_Dmx_Modes,
-    DMX_UL_Local_Fixtures,
 
     # Menus
     DMX_OP_MT_Patch_SelectUniverse,
@@ -111,14 +92,7 @@ classes = (
     DMX_OP_Patch_Fixture_AddBatch,
     DMX_OP_Patch_Fixture_Remove,
     DMX_OP_Patch_Build,
-    DMX_OP_Import_Fixture_From_File,
-    DMX_OP_Import_Fixture_From_Share,
-    DMX_OP_Import_Fixture_Update_Share,
-    DMX_OP_Delete_Local_Fixture,
     
     # Panel
     DMX_PT_Patch,
-    DMX_PT_Patch_Import,
-    DMX_PT_Patch_Import_Profile_Detail,
-    DMX_PT_Patch_Local_Fixtures
 )
