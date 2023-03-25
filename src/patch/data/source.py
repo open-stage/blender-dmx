@@ -1,22 +1,22 @@
 import bpy
 from bpy.types import PropertyGroup
-from bpy.props import ( EnumProperty,
-                        StringProperty )
+from bpy.props import EnumProperty, StringProperty
 
-from src.i18n import DMX_i18n
+
+from src.lang import DMX_Lang
+
+_ = DMX_Lang._
+
 
 class DMX_Source:
-    
     types = [
-        ('blenderdmx', 'BlenderDMX', ''),
-        ('artnet', 'ArtNet', ''),
-        ('sacn', 'sACN', '')
+        ("blenderdmx", "BlenderDMX", ""),
+        ("artnet", "ArtNet", ""),
+        ("sacn", "sACN", ""),
     ]
 
-class DMX_Patch_Source(PropertyGroup):
 
+class DMX_Patch_Source(PropertyGroup):
     type: EnumProperty(
-        name = DMX_i18n.PROP_PATCH_SOURCE_TYPE,
-        description = DMX_i18n.PROP_PATCH_SOURCE_TYPE_DESC,
-        items = DMX_Source.types
+        name=_("Type"), description=_("The type of DMX source."), items=DMX_Source.types
     )

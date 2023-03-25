@@ -1,7 +1,10 @@
 import bpy
 from bpy.types import Panel
 
-from src.i18n import DMX_i18n
+
+from src.lang import DMX_Lang
+_ = DMX_Lang._
+
 from src.icon import DMX_Icon
 
 from .operator import ( DMX_OP_Programmer_SelectAll,
@@ -13,7 +16,7 @@ from .operator import ( DMX_OP_Programmer_SelectAll,
                         DMX_OP_Programmer_Clear )
 
 class DMX_PT_Programmer(Panel):
-    bl_label = DMX_i18n.PANEL_PROGRAMMER
+    bl_label = _('Programmer')
     bl_idname = "DMX_PT_Programmer"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"

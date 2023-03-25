@@ -43,4 +43,3 @@ class DMX_Patch_Manager:
 
     def remove_fixture(self, index):
         self.fixtures.remove(index)
-

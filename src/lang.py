@@ -26,3 +26,6 @@ class DMX_Lang:
             )
         finally:
             DMX_Lang._ = lang.gettext
+
+
+DMX_Lang.enable()

@@ -1,11 +1,14 @@
 import bpy
 from bpy.types import Operator, Menu
 
-from src.i18n import DMX_i18n
+
+from src.lang import DMX_Lang
+
+_ = DMX_Lang._
 
 class DMX_OP_Programmer_SelectAll(Operator):
-    bl_label = DMX_i18n.OP_PROGRAMMER_SELECTALL
-    bl_description = DMX_i18n.OP_PROGRAMMER_SELECTALL_DESC
+    bl_label = 'Select All'
+    bl_description = 'Select every fixture in the scene.'
     bl_idname = "dmx.programmer_select_all"
     bl_options = {'UNDO'}
 
@@ -16,8 +19,8 @@ class DMX_OP_Programmer_SelectAll(Operator):
         return {'FINISHED'}
 
 class DMX_OP_Programmer_SelectInvert(Operator):
-    bl_label = DMX_i18n.OP_PROGRAMMER_SELECTINVERT
-    bl_description = DMX_i18n.OP_PROGRAMMER_SELECTINVERT_DESC
+    bl_label = 'Invert Selection'
+    bl_description = 'Invert the selection of fixtures.'
     bl_idname = "dmx.programmer_select_invert"
     bl_description = "Invert the selection"
     bl_options = {'UNDO'}
@@ -38,8 +41,8 @@ class DMX_OP_Programmer_SelectInvert(Operator):
         return {'FINISHED'}
 
 class DMX_OP_Programmer_SelectEveryOther(Operator):
-    bl_label = DMX_i18n.OP_PROGRAMMER_SELECTEVERYOTHER
-    bl_description = DMX_i18n.OP_PROGRAMMER_SELECTEVERYOTHER_DESC
+    bl_label = 'Select Every Other'
+    bl_description = 'Select every other light.'
     bl_idname = "dmx.programmer_select_every_other"
     bl_description = "Select every other light"
     bl_options = {'UNDO'}
@@ -54,8 +57,8 @@ class DMX_OP_Programmer_SelectEveryOther(Operator):
         return {'FINISHED'}
 
 class DMX_OP_Programmer_DeselectAll(Operator):
-    bl_label = DMX_i18n.OP_PROGRAMMER_DESELECTALL
-    bl_description = DMX_i18n.OP_PROGRAMMER_DESELECTALL_DESC
+    bl_label = 'Deselect All'
+    bl_description = 'Deselect every object in the scene.'
     bl_idname = "dmx.programmer_deselect_all"
     bl_options = {'UNDO'}
 
@@ -64,8 +67,8 @@ class DMX_OP_Programmer_DeselectAll(Operator):
         return {'FINISHED'}
 
 class DMX_OP_Programmer_SelectBodies(Operator):
-    bl_label = DMX_i18n.OP_PROGRAMMER_SELECTBODIES
-    bl_description = DMX_i18n.OP_PROGRAMMER_SELECTBODIES_DESC
+    bl_label = 'Bodies'
+    bl_description = 'Select body from every fixture selected.'
     bl_idname = "dmx.programmer_select_bodies"
     bl_options = {'UNDO'}
 
@@ -87,8 +90,8 @@ class DMX_OP_Programmer_SelectBodies(Operator):
         return {'FINISHED'}
 
 class DMX_OP_Programmer_SelectTargets(Operator):
-    bl_label = DMX_i18n.OP_PROGRAMMER_SELECTTARGETS
-    bl_description = DMX_i18n.OP_PROGRAMMER_SELECTTARGETS_DESC
+    bl_label = 'Targets'
+    bl_description = 'Select target from every fixture selected.'
     bl_idname = "dmx.programmer_select_targets"
     bl_options = {'UNDO'}
 
@@ -109,8 +112,8 @@ class DMX_OP_Programmer_SelectTargets(Operator):
         return {'FINISHED'}
 
 class DMX_OP_Programmer_Clear(Operator):
-    bl_label = DMX_i18n.OP_PROGRAMMER_CLEAR
-    bl_description = DMX_i18n.OP_PROGRAMMER_CLEAR_DESC
+    bl_label = 'Clear'
+    bl_description = 'Clears the selected fixtures.'
     bl_idname = "dmx.programmer_clear"
     bl_options = {'UNDO'}
 

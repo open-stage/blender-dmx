@@ -15,8 +15,10 @@ _ = DMX_Lang._
 
 # Module Data Structure
 
+
 class DMX_Devices(PropertyGroup, DMX_Devices_Manager):
     placeholder: IntProperty(default=0)
+
 
 class DMX_Devices_Share_Imports(PropertyGroup):
     # GDTF Share Import profiles
