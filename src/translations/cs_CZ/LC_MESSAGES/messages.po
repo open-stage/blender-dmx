@@ -8,14 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-03-25 14:15+0100\n"
-"PO-Revision-Date: 2023-03-15 22:55+0100\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2023-03-25 14:17+0000\n"
+"Last-Translator: vanous <petr+weblate@linuks.cz>\n"
+"Language-Team: Czech <https://hosted.weblate.org/projects/blenderdmx/main/cs/"
+">\n"
 "Language: cs_CZ\n"
-"Language-Team: cs_CZ <LL@li.org>\n"
-"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Weblate 4.17-dev\n"
 "Generated-By: Babel 2.10.3\n"
 
 #: devices/controller/manager.py:39 devices/controller/manager.py:67
@@ -23,54 +25,56 @@ msgid ""
 "Get API key from GDTF Share account and fill it into BlenderDMX addon "
 "preferences."
 msgstr ""
+"Získejte API klíč z účtu GDTF Share a zadejte jej do předvoleb doplňku "
+"BlenderDMX."
 
 #: devices/controller/manager.py:42 devices/controller/manager.py:70
 msgid "GDTF Share API key missing"
-msgstr ""
+msgstr "Chybí GDTF Share klíč API"
 
 #: devices/controller/manager.py:112
 msgid "Share index updated. Status code was: {}"
-msgstr ""
+msgstr "Share index aktualizován. Stavový kód byl: {}"
 
 #: devices/controller/manager.py:115
 msgid "GDTF Share updated"
-msgstr ""
+msgstr "GDTF Share aktualizován"
 
 #: devices/controller/manager.py:120
 msgid "Error while updating Share index. Error code was: {}"
-msgstr ""
+msgstr "Chyba při aktualizaci GDTF dat. Kód chyby byl: {}"
 
 #: devices/controller/manager.py:123
 msgid "GDTF Share update error"
-msgstr ""
+msgstr "Chyba aktualizace GDTF Share"
 
 #: devices/controller/manager.py:134
 msgid "File downloaded correctly. Status code was: {}"
-msgstr ""
+msgstr "Soubor stažen správně. Stavový kód byl: {}"
 
 #: devices/controller/manager.py:137
 msgid "GDTF file downloaded"
-msgstr ""
+msgstr "GDTF soubor stažen"
 
 #: devices/controller/manager.py:142
 msgid "Error downloading GDTF file. Error code was: {}"
-msgstr ""
+msgstr "Chyba stahování souboru GDTF. Chybový kód byl: {}"
 
 #: devices/controller/manager.py:145
 msgid "GDTF Share download error"
-msgstr ""
+msgstr "Chyba při stahování z GDTF Share"
 
 #: devices/controller/manager.py:150
 msgid "Message Box"
-msgstr ""
+msgstr "Okno se zprávou"
 
 #: devices/data/profile.py:14
 msgid "Mode name"
-msgstr ""
+msgstr "Název módu"
 
 #: devices/data/profile.py:15
 msgid "DMX Footprint"
-msgstr ""
+msgstr "DMX stopa"
 
 #: devices/data/profile.py:20 devices/data/profile.py:22
 msgid "Fixture name"
@@ -78,64 +82,63 @@ msgstr "Jméno světla"
 
 #: devices/data/profile.py:20
 msgid "Manufacturer and fixture name"
-msgstr ""
+msgstr "Název výrobce a svítidla"
 
 #: devices/data/profile.py:24
 msgid "Manufacturer"
-msgstr ""
+msgstr "Výrobce"
 
 #: devices/data/profile.py:24
-#, fuzzy
 msgid "Manufacturer name"
-msgstr "Jméno světla"
+msgstr "Název výrobce"
 
 #: devices/data/profile.py:27
 msgid "Revision"
-msgstr ""
+msgstr "Revize"
 
 #: devices/data/profile.py:27
 msgid "Revision text"
-msgstr ""
+msgstr "Text revize"
 
 #: devices/data/profile.py:29
 msgid "Uploaded by"
-msgstr ""
+msgstr "Nahrál"
 
 #: devices/data/profile.py:29
 msgid "File uploaded by"
-msgstr ""
+msgstr "Soubor byl nahrán"
 
 #: devices/data/profile.py:31
 msgid "Created by"
-msgstr ""
+msgstr "Vytvořeno"
 
 #: devices/data/profile.py:31
 msgid "File created by"
-msgstr ""
+msgstr "Soubor byl vytvořen"
 
 #: devices/data/profile.py:33
 msgid "Rating"
-msgstr ""
+msgstr "Hodnocení"
 
 #: devices/data/profile.py:37
 msgid "Revision ID"
-msgstr ""
+msgstr "ID revize"
 
 #: devices/data/profile.py:37
 msgid "File identifier in the GDTF Share"
-msgstr ""
+msgstr "Identifikátor souboru v GDTF Share"
 
 #: devices/data/profile.py:41
 msgid "Dmx Modes"
-msgstr ""
+msgstr "Dmx Módy"
 
 #: devices/ui/list.py:42
 msgid "DMX Mode Name"
-msgstr ""
+msgstr "Název DMX Módu"
 
 #: devices/ui/list.py:45 patch/data/fixture_batch.py:42
 msgid "Footprint"
-msgstr ""
+msgstr "Stopa"
 
 #: devices/ui/operator.py:17
 msgid "Import from Share"
@@ -143,15 +146,15 @@ msgstr "Import z Share"
 
 #: devices/ui/operator.py:18
 msgid "Import fixture from GDTF Share"
-msgstr ""
+msgstr "Importovat zařízení z GDTF Share"
 
 #: devices/ui/operator.py:30
 msgid "Update GDTF Share index"
-msgstr ""
+msgstr "Aktualizovat index dat GDTF Share"
 
 #: devices/ui/operator.py:31
 msgid "Update data index of GDTF Share"
-msgstr ""
+msgstr "Aktualizovat index dat GDTF Share"
 
 #: devices/ui/operator.py:41
 msgid "Import from file"
@@ -159,99 +162,98 @@ msgstr "Import ze souboru"
 
 #: devices/ui/operator.py:42
 msgid "Import fixture from local filesystem"
-msgstr ""
+msgstr "Importovat světlo ze souboru"
 
 #: devices/ui/operator.py:48
 msgid "File Path"
-msgstr ""
+msgstr "Cesta k souboru"
 
 #: devices/ui/operator.py:50
 msgid "Files"
-msgstr ""
+msgstr "Soubory"
 
 #: devices/ui/operator.py:75
-#, fuzzy
 msgid "Delete fixture"
-msgstr "Přidat světlo"
+msgstr "Smazat zařízení"
 
 #: devices/ui/operator.py:76
 msgid "Delete fixture from local filesystem"
-msgstr ""
+msgstr "Odstranit světlo ze souborového systému"
 
 #: devices/ui/panel.py:16
 msgid "DMX Fixtures import"
-msgstr ""
+msgstr "Import DMX svítidel"
 
 #: devices/ui/panel.py:43
 msgid "Fixture details"
-msgstr ""
+msgstr "Podrobnosti o svítidle"
 
 #: devices/ui/panel.py:79
 msgid "DMX Local fixtures"
-msgstr ""
+msgstr "DMX Lokální svítidla"
 
 #: patch/data/fixture.py:20 patch/data/fixture.py:73
 msgid "Number of Channels"
-msgstr ""
+msgstr "Počet kanálů"
 
 #: patch/data/fixture.py:21 patch/data/fixture.py:74
 msgid "The number of channels of the current profile."
-msgstr ""
+msgstr "Počet kanálů aktuálního profilu."
 
 #: patch/data/fixture.py:26
 msgid "DMX Address"
-msgstr ""
+msgstr "Adresa DMX"
 
 #: patch/data/fixture.py:27
 msgid "The DMX address of the fixture at the current universe."
-msgstr ""
+msgstr "Adresa DMX svítidla v aktuálním universe."
 
 #: patch/data/fixture.py:34 patch/ui/menu.py:16 patch/ui/menu.py:27
 #: patch/ui/menu.py:48 patch/ui/menu.py:60
 msgid "DMX Universe"
-msgstr "DMX Universe"
+msgstr "DMX Univers"
 
 #: patch/data/fixture.py:35
 msgid "The DMX universe to which the fixture is currently addressed."
-msgstr ""
+msgstr "Universe DMX, do kterého je svítidlo aktuálně adresováno."
 
 #: patch/data/fixture.py:46
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: patch/data/fixture.py:47
 msgid "A numeric unique identifier for the fixture."
-msgstr ""
+msgstr "Číselný jedinečný identifikátor zařízení."
 
 #: patch/data/fixture.py:53 patch/data/fixture_batch.py:15
 #: patch/data/profile.py:15 patch/data/profile.py:20 patch/data/profile.py:23
 #: patch/data/profile.py:30 patch/data/profile.py:38 patch/data/universe.py:17
 msgid "Name"
-msgstr ""
+msgstr "Název"
 
 #: patch/data/fixture.py:54
 msgid "A unique name for the fixture."
-msgstr ""
+msgstr "Jedinečný název svítidla."
 
 #: patch/data/fixture.py:60
 msgid "GDTF Profile"
-msgstr ""
+msgstr "GDTF Profil"
 
 #: patch/data/fixture.py:61
 msgid "The GDTF profile of the fixture."
-msgstr ""
+msgstr "GDTF Profil zařízení ."
 
 #: patch/data/fixture.py:66
 msgid "GDTF Mode"
-msgstr ""
+msgstr "GDTF Mód"
 
 #: patch/data/fixture.py:67
 msgid "The GDTF mode of the current profile."
-msgstr ""
+msgstr "Mód GDTF aktuálního profilu."
 
 #: patch/data/fixture.py:81
 msgid "Create Lights"
-msgstr ""
+msgstr "Vytvořit světla"
 
 #: patch/data/fixture.py:82
 msgid ""
@@ -259,108 +261,112 @@ msgid ""
 "with emitter materials only. Keep in mind that Blender has a 128 light "
 "sources limitation."
 msgstr ""
+"Toto svítidlo by mělo mít světelné zdroje. Pokud není zaškrtnuto, budou "
+"světla vytvořena pouze s pomocí emitujících materiálů . Mějte na paměti, že "
+"Blender má omezení na 128 světelných zdrojů."
 
 #: patch/data/fixture.py:89
 msgid "Gel Color"
-msgstr ""
+msgstr "Barva gelu"
 
 #: patch/data/fixture.py:90
 msgid ""
 "Color of the gel applied to the fixture, in case the profile doesn't "
 "define color channels."
 msgstr ""
+"Barva gelu aplikovaného na svítidlo, v případě, že profil nedefinuje barevné "
+"kanály."
 
 #: patch/data/fixture_batch.py:16
 msgid "A unique name for the fixture batch."
-msgstr ""
+msgstr "Jedinečný název skupiny světel."
 
 #: patch/data/fixture_batch.py:22
 msgid "Units"
-msgstr ""
+msgstr "Jednotky"
 
 #: patch/data/fixture_batch.py:23
 msgid "The number of fixtures inside this batch."
-msgstr ""
+msgstr "Počet přípravků v této skupině."
 
 #: patch/data/fixture_batch.py:32
 msgid "Sequential"
-msgstr ""
+msgstr "Sekvenční"
 
 #: patch/data/fixture_batch.py:35
 msgid ""
 "True if the batch fixtures are addressed sequentially, according to the "
 "footprint."
-msgstr ""
+msgstr "Platí, pokud jsou dávková zařízení řešena postupně podle DMX stopy."
 
 #: patch/data/fixture_batch.py:45
 msgid "Overrides the footprint of each fixture."
-msgstr ""
+msgstr "Přepíše DMX stopu každého svítidla."
 
 #: patch/data/fixture_batch.py:56
 msgid "Expand"
-msgstr ""
+msgstr "Rozbalit"
 
 #: patch/data/fixture_batch.py:59
 msgid "Expands/shrinks the list of fixtures in this batch."
-msgstr ""
+msgstr "Rozbalit/sbalit seznam svítidel v této skupině."
 
 #: patch/data/profile.py:15 patch/data/profile.py:20 patch/data/profile.py:24
 #: patch/data/profile.py:30 patch/data/profile.py:38
 msgid "The name of the DMX profile."
-msgstr ""
+msgstr "Název profilu DMX."
 
 #: patch/data/profile.py:33
 msgid "Short Name"
-msgstr ""
+msgstr "Krátký název"
 
 #: patch/data/source.py:21
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: patch/data/source.py:21
 msgid "The type of DMX source."
-msgstr ""
+msgstr "Typ zdroje DMX."
 
 #: patch/data/universe.py:18
 msgid "A unique name for the DMX universe."
-msgstr ""
+msgstr "Jedinečný název pro DMX universe."
 
 #: patch/data/universe.py:24
 msgid "Number"
-msgstr ""
+msgstr "Číslo"
 
 #: patch/data/universe.py:25
 msgid "The number of the DMX universe."
-msgstr ""
+msgstr "Číslo DMX universe."
 
 #: patch/data/universe.py:34
 msgid "Source"
-msgstr ""
+msgstr "Zdroj"
 
 #: patch/data/universe.py:35
 msgid "The type of DMX source of the universe."
-msgstr ""
+msgstr "Typ zdroje DMX universe."
 
 #: patch/ui/menu.py:71
 msgid "No Profile selected"
-msgstr ""
+msgstr "Není vybrán žádný profil"
 
 #: patch/ui/operator.py:23 patch/ui/operator.py:37
-#, fuzzy
 msgid "Add Universe"
 msgstr "Přidat Universe"
 
 #: patch/ui/operator.py:24 patch/ui/operator.py:38
 msgid "Add a new Universe to the Patch."
-msgstr ""
+msgstr "Přidání nového universe do patche."
 
 #: patch/ui/operator.py:51 patch/ui/operator.py:96
 msgid "Remove Fixture"
-msgstr ""
+msgstr "Odebrat svítidlo"
 
 #: patch/ui/operator.py:52 patch/ui/operator.py:97
 msgid "Remove this Fixture from the Patch."
-msgstr ""
+msgstr "Odebrat toto svítidlo z patche."
 
 #: patch/ui/operator.py:68
 msgid "Add Single Fixture"
@@ -368,51 +374,51 @@ msgstr "Přidat světlo"
 
 #: patch/ui/operator.py:69
 msgid "Add a single new Fixture to the Patch."
-msgstr ""
+msgstr "Přidání jednoho nového svítidla Fixture do patche."
 
 #: patch/ui/operator.py:82
 msgid "Add Fixture Batch"
-msgstr ""
+msgstr "Přidání skupiny světel"
 
 #: patch/ui/operator.py:83
 msgid "Add new Fixture Batch to the Patch."
-msgstr ""
+msgstr "Přidání nové skupiny světel do patche."
 
 #: patch/ui/operator.py:112
 msgid "Build Fixtures"
-msgstr ""
+msgstr "Vygenerovat Svítidla"
 
 #: patch/ui/operator.py:113
 msgid ""
 "After completing the patch, you should click this button to build/update "
 "the fixture geometry."
 msgstr ""
+"Po dokončení patche byste měli kliknutím na toto tlačítko sestavit/"
+"aktualizovat geometrii svítidla."
 
 #: patch/ui/panel.py:18
 msgid "DMX Patch"
-msgstr ""
+msgstr "DMX Patch"
 
 #: patch/ui/panel.py:28
-#, fuzzy
 msgid "Universes"
 msgstr "DMX Universe"
 
 #: patch/ui/panel.py:41
-#, fuzzy
 msgid "Fixtures"
-msgstr "Jméno světla"
+msgstr "Svítidla"
 
 #: preferences/__init__.py:16
 msgid "GDTF Share API key"
-msgstr ""
+msgstr "GDTF Share Klíč API"
 
 #: preferences/__init__.py:17
 msgid "Private API key for GDTF Share"
-msgstr ""
+msgstr "Soukromý klíč API pro GDTF Share"
 
 #: programmer/ui/panel.py:19
 msgid "Programmer"
-msgstr ""
+msgstr "Programátor"
 
 #~ msgid "Select DMX Universe"
 #~ msgstr "Zvolte DMX Universe"
@@ -425,4 +431,3 @@ msgstr ""
 
 #~ msgid "Uploader"
 #~ msgstr ""
-
