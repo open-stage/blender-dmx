@@ -74,6 +74,9 @@ class DMX_GDTF():
         Return the type of primitive of the given model.
         Options: file, gdtf, primitive
         '''
+        # TODO: gdtf can have both primitive and file set. use file in that case,
+        # we can look at BlenderDMX 1.0 implementation for how this must be done
+
         primitive = str(model.primitive_type)
         if (primitive.endswith('1_1')):
             primitive = primitive[:-3]
@@ -94,6 +97,12 @@ class DMX_GDTF():
         We assume a single logical channel by channel for now,
         which is  exposed through the "function" string.
         '''
+        # TODO: this uses old implementation which doesn't take geometry references into account.
+        # References are used very frequently and thus GDTF dmx chart cannot be 
+        # determined by dmx mode but by geometry tree. The tree must be assembled
+        # and traversed including geometry references first, to get correct dmx mode layout. 
+        # BlenderDMX 1.0 did this correctly
+
         channels = {}
         mode = pygdtf.utils.get_dmx_mode_by_name(self.fixture_type, mode_name)
 

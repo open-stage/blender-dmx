@@ -167,6 +167,12 @@ class DMX_GDTFBuilder:
         During this process, 3D files are extracted from the zip file
         to a temporary folder inside assets/models, that's also deleted.
         '''
+
+        # TODO: we should check if this is efficient, because we would be loading
+        # models that are not even used in this particular DMX Mode. Better would be
+        # , again, to follow the geometry tree structure, starting from the geometry
+        # root ad given be the dmx mode
+
         collection = self._new_model_collection()
         util.activate_collection(collection)
 
@@ -267,6 +273,10 @@ class DMX_GDTFBuilder:
         Build all trees defined on the GDTF geometry as
         Blender Object Trees.
         '''
+
+        # TODO: clarify if this is efficient, as many GDTFs have many geometry trees and each of them is
+        # attached to different dmx mode.
+
         util.activate_collection(self.collection)
         for geometry in self.gdtf.fixture_type.geometries:
             self.roots.append(self._build_geometry(geometry))
