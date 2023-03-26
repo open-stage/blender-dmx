@@ -55,7 +55,7 @@
                 
                 - create channel metadata (__init__)
                 - create collection in data.collections (name is fixture + mode name, revision is in props)
-                - build models
+                - build models → loads models from glb/3ds files
                 - build trees
                 - build targets, lights, cameras...
                 - delete collection and delete model directory

@@ -4,7 +4,7 @@ from typing import List
 import bpy
 from bpy.types import Object, Collection
 
-from lib import io_scene_3ds
+from lib.io_scene_3ds.import_3ds import load_3ds
 
 from src.core import util
 from .gdtf import DMX_GDTF_Processor
@@ -81,13 +81,13 @@ class DMX_GDTF_ModelBuilder:
         filepath, extension = self.gdtf.extract_model_file(model.file)
         try:
             if extension == "3ds":
-                io_scene_3ds.import_3ds.load_3ds(filepath, bpy.context)
+                load_3ds(filepath, bpy.context)
             else:
                 bpy.ops.import_scene.gltf(filepath=filepath)
         except Exception as e:
             print(e)
 
-        obj = self._get_created_obj(unlink = extension!="3ds")
+        obj = self._get_created_obj(unlink = extension != "3ds")
         obj.name = model.name
         obj.data.name = model.name
         obj.rotation_euler = Euler((0, 0, 0), 'XYZ')
@@ -259,12 +259,14 @@ class DMX_GDTF_ModelBuilder:
         self._add_obj_metadata(geometry, obj)
         
         # Build children
-        for child_geometry in geometry.geometries:
-            child_obj = self._build_geometry(child_geometry)
-            child_obj.parent = obj
-            child_obj.matrix_parent_inverse = obj.matrix_world.inverted()
-            # Make children unselectable, so the user won't accidentaly misalign them on the 3D view.
-            child_obj.hide_select = True
+
+        if hasattr(geometry, "geometries"):
+            for child_geometry in geometry.geometries:
+                child_obj = self._build_geometry(child_geometry)
+                child_obj.parent = obj
+                child_obj.matrix_parent_inverse = obj.matrix_world.inverted()
+                # Make children unselectable, so the user won't accidentaly misalign them on the 3D view.
+                child_obj.hide_select = True
 
         return obj
 

@@ -248,7 +248,7 @@ class DMX_FixtureBuilder:
         dmx_break = self.patch.breaks[channel['dmx_break']-1]
         
         coords = None
-        if (offset):
+        if offset is not None:
             # Add break address so offset has absolute dmx address
             offset = [
                 offset[i] + dmx_break.address
@@ -260,8 +260,13 @@ class DMX_FixtureBuilder:
             coords = sum(coords, tuple())
             coords += (0,)*(12-len(coords))
 
+        if offset is not None:
+            offset_len = len(offset)
+        else:
+            offset_len = 0 # TODO: fix me... not sure why offset is None, maybe GeometryReference?
+
         self.fixture.channels[-1].coords = coords or (0,)*12
-        self.fixture.channels[-1].resolution = len(offset)
+        self.fixture.channels[-1].resolution = offset_len
         self.fixture.channels[-1].function = channel['function']
         self.fixture.channels[-1].geometry = obj
         self.fixture.channels[-1].default = channel['default']['value']
