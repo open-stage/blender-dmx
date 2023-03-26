@@ -6,7 +6,7 @@ from bpy.types import Collection, Object
 from src.core.types import *
 from src.core import util
 from src.core import const
-from .gdtf_builder import DMX_GDTFBuilder
+from .gdtf_builder import DMX_GDTF_ModelBuilder
 from .material import DMX_Material
 
 class DMX_FixtureBuilder:
@@ -51,7 +51,7 @@ class DMX_FixtureBuilder:
         '''
         Load a Model Collection, built by the GDTF Builder.
         '''
-        return DMX_GDTFBuilder.get(self.profile.filename, self.patch.mode)
+        return DMX_GDTF_ModelBuilder.get(self.profile.filename, self.patch.mode)
 
     def _build_tree(self, node: Object) -> Object:
         '''

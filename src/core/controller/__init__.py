@@ -1,7 +1,7 @@
 import bpy
 
 from src.core import util
-from src.core.builder import DMX_Builder
+from src.core.builder import DMX_SceneBuilder
 
 class DMX_Core_Controller:
     
@@ -11,5 +11,5 @@ class DMX_Core_Controller:
         '''
         self.collection = util.new_collection('DMX')
         util.activate_collection(self.collection)
-        DMX_Builder().build()
+        DMX_SceneBuilder().build()
 

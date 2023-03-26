@@ -3,7 +3,7 @@ import bpy
 from src.core import util
 from .fixture_builder import DMX_FixtureBuilder
 
-class DMX_Builder:
+class DMX_SceneBuilder:
     '''
     Builder that turns a DMX Patch into a Blender scene.
     '''

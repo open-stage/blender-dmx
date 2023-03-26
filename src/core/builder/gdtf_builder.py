@@ -7,9 +7,9 @@ from bpy.types import Object, Collection
 from lib import io_scene_3ds
 
 from src.core import util
-from .gdtf import DMX_GDTF
+from .gdtf import DMX_GDTF_Processor
 
-class DMX_GDTFBuilder:
+class DMX_GDTF_ModelBuilder:
     '''
     Builder that parses a GDTF Profile and builds a
     Model Collection from it.
@@ -115,7 +115,7 @@ class DMX_GDTFBuilder:
         '''
         Import a geometry from BlenderDMX gdtf primitives to Blender and return it.
         '''
-        filepath = DMX_GDTF._get_primitive_path(primitive)
+        filepath = DMX_GDTF_Processor._get_primitive_path(primitive)
         bpy.ops.import_scene.obj(filepath=filepath)
 
         obj = self._get_created_obj()
@@ -228,9 +228,9 @@ class DMX_GDTFBuilder:
 
         obj['geometry_name'] = geometry.name
         obj['geometry_type'] = type(geometry).__name__
-        if 'yoke' in geometry.name.lower():
+        if 'yoke' in geometry.name.lower(): # TODO: likely redo this to apply for models with "pan" gdtf attribute
             obj['mobile_type'] = 'yoke'
-        if 'head' in geometry.name.lower():
+        if 'head' in geometry.name.lower(): # TODO: likely redo this to apply for models with "tilt" gdtf attribute
             obj['mobile_type'] = 'head'
 
         if (geometry.name in self.geom_channels):
@@ -453,7 +453,7 @@ class DMX_GDTFBuilder:
     
     # [ Constructor ]
 
-    def __init__(self, gdtf: 'DMX_GDTF', mode_name: str) -> None:
+    def __init__(self, gdtf: 'DMX_GDTF_Processor', mode_name: str) -> None:
         self.gdtf = gdtf
         self.mode_name = mode_name
        
@@ -485,7 +485,7 @@ class DMX_GDTFBuilder:
 
     @staticmethod
     def get(filename: str, mode_name: str):
-        gdtf = DMX_GDTF(filename)
+        gdtf = DMX_GDTF_Processor(filename)
         
         collection_name = gdtf.get_collection_name(mode_name)
         if (collection_name in bpy.data.collections):
@@ -496,5 +496,5 @@ class DMX_GDTFBuilder:
             # objects = DMX_GDTFBuilder.get_objects(collection)
             return collection
 
-        builder = DMX_GDTFBuilder(gdtf, mode_name).build()
+        builder = DMX_GDTF_ModelBuilder(gdtf, mode_name).build()
         return builder.collection

@@ -6,7 +6,7 @@ import shutil
 from lib import pygdtf
 from src.core.types import *
 
-class DMX_GDTF():
+class DMX_GDTF_Processor():
     '''
     A GDTF profile parsed by pygdtf, with helper methods.
     '''
@@ -40,7 +40,7 @@ class DMX_GDTF():
     # [ Constructor ]
 
     def __init__(self, filename: str) -> None:
-        path = os.path.join(DMX_GDTF._get_profiles_path(), filename)
+        path = os.path.join(DMX_GDTF_Processor._get_profiles_path(), filename)
         self.fixture_type = pygdtf.FixtureType(path)
     
     # [ Parsing Helpers ]
@@ -56,7 +56,7 @@ class DMX_GDTF():
             dir_name = "3ds"
 
         inside_zip_path = f"models/{dir_name}/{file.name}.{file.extension}"
-        to_folder_path = DMX_GDTF._get_fixture_models_path(self.fixture_type.fixture_type_id)       
+        to_folder_path = DMX_GDTF_Processor._get_fixture_models_path(self.fixture_type.fixture_type_id)
         self.fixture_type._package.extract(inside_zip_path, to_folder_path)
 
         return os.path.join(to_folder_path, inside_zip_path), extension
@@ -65,7 +65,7 @@ class DMX_GDTF():
         '''
         Delete the folder that stores GDTF Models for this Fixture.
         '''
-        folder_path = DMX_GDTF._get_fixture_models_path(self.fixture_type.fixture_type_id)
+        folder_path = DMX_GDTF_Processor._get_fixture_models_path(self.fixture_type.fixture_type_id)
         if (os.path.exists(folder_path)):
             shutil.rmtree(folder_path)
 
