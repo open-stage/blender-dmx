@@ -82,3 +82,13 @@ class DMX_OP_Delete_Local_Fixture(Operator):
     def execute(self, context):
         context.scene.dmx.devices.delete_local_fixture(self.index)
         return {"FINISHED"}
+
+class DMX_OP_Update_Local_Fixtures(Operator):
+    bl_label = _("Refresh files listing")
+    bl_description = _("Update list of local files")
+    bl_idname = "dmx.update_local_fixtures"
+    bl_options = {"UNDO"}
+
+    def execute(self, context):
+        Patch.DMX_Patch_Profile.load()
+        return {"FINISHED"}

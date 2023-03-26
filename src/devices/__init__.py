@@ -45,6 +45,7 @@ classes = (
     DMX_OP_Import_Fixture_From_Share,
     DMX_OP_Import_Fixture_Update_Share,
     DMX_OP_Delete_Local_Fixture,
+    DMX_OP_Update_Local_Fixtures,
     # Panel
     DMX_PT_Devices_Import,
     DMX_PT_Devices_Import_Profile_Detail,

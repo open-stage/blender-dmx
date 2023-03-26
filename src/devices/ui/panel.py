@@ -6,6 +6,7 @@ from src.icon import DMX_Icon
 from .operator import (
     DMX_OP_Import_Fixture_Update_Share,
     DMX_OP_Import_Fixture_From_File,
+    DMX_OP_Update_Local_Fixtures
 )
 from src.lang import DMX_Lang
 
@@ -97,3 +98,5 @@ class DMX_PT_Devices_Local_Fixtures(Panel):
             "selected_fixture",
             rows=8,
         )
+
+        layout.operator(DMX_OP_Update_Local_Fixtures.bl_idname, icon=DMX_Icon.FILE_REFRESH)
