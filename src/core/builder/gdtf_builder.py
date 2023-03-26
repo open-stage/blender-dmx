@@ -178,7 +178,7 @@ class DMX_GDTF_ModelBuilder:
 
         for model in self.gdtf.fixture_type.models:
             model_type, primitive = self.gdtf.get_model_primitive_type(model)
-            
+
             if model_type == 'file':
                 self.models[model.name] = self._create_obj_from_file(model)
             elif model_type == 'gdtf':

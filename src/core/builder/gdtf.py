@@ -74,13 +74,11 @@ class DMX_GDTF_Processor():
         Return the type of primitive of the given model.
         Options: file, gdtf, primitive
         '''
-        # TODO: gdtf can have both primitive and file set. use file in that case,
-        # we can look at BlenderDMX 1.0 implementation for how this must be done
-
         primitive = str(model.primitive_type)
         if (primitive.endswith('1_1')):
             primitive = primitive[:-3]
-        if primitive == 'Undefined':
+        if model.file.name != '': 
+            #if primitive == 'Undefined' is not a good test as the model can have both, maybe due to GDTF Builder issue.
             return 'file', None
         elif primitive in ['Base','Conventional','Head','Yoke']:
             return 'gdtf', primitive
