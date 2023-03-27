@@ -104,14 +104,14 @@ class DMX_Patch_Fixture(PropertyGroup):
 
     # Getters
 
-    def get_profile(self, context):
+    def get_profile(self, context) -> 'DMX_Patch_Profile':
         return context.scene.dmx.patch.profiles.get(self.profile, None)
 
-    def get_mode(self, context):
+    def get_mode(self, context) -> 'DMX_Patch_ProfileMode':
         profile = self.get_profile(context)
         return profile.modes.get(self.mode, None)
 
-    def get_address_str(self, context, break_i):
+    def get_address_str(self, context, break_i: int) -> str:
         if break_i >= len(self.breaks):
             return None
 
@@ -120,7 +120,7 @@ class DMX_Patch_Fixture(PropertyGroup):
 
         return str(address)
 
-    def get_universe_str(self, context, break_i, mini=False):
+    def get_universe_str(self, context, break_i: int, mini=False) -> str:
         if break_i >= len(self.breaks):
             return None
 
@@ -135,7 +135,7 @@ class DMX_Patch_Fixture(PropertyGroup):
         else:
             return f"{universe.number}: {universe.name}"
 
-    def get_mode_str(self, mini=False):
+    def get_mode_str(self, mini=False) -> str:
         if len(self.breaks) == 0:
             return None
         breaks = [b.n_channels for b in self.breaks]
@@ -148,7 +148,7 @@ class DMX_Patch_Fixture(PropertyGroup):
         else:
             return f"{self.mode}, {n_channels} chs"
 
-    def get_batch(self, context):
+    def get_batch(self, context) -> 'DMX_Patch_FixtureBatch':
         if self.batch == -1:
             return None
         return context.scene.dmx.patch.fixture_batches[self.batch]

@@ -61,10 +61,6 @@ class DMX_UL_Patch_Fixtures(UIList):
         cols[0].alert = len(item.name) == 0 or len(item.profile) == 0
         cols[0].prop(item, 'id', text='', slider=True)
 
-        cols[0].emboss = "NONE"
-        cols[0].alert = len(item.name) == 0 or len(item.profile) == 0
-        cols[0].prop(item, "id", text="", slider=True)
-
         cols[1].prop(item, "name", text="")
 
         cols[2].prop_search(
