@@ -8,7 +8,7 @@ from .ui.operator import *
 from .ui.panel import *
 from src.patch import *
 
-from .controller import DMX_Devices_Manager
+from .controller import DMX_Fixtures_Manager
 from src.lang import DMX_Lang
 
 _ = DMX_Lang._
@@ -16,13 +16,13 @@ _ = DMX_Lang._
 # Module Data Structure
 
 
-class DMX_Devices(PropertyGroup, DMX_Devices_Manager):
+class DMX_Fixtures(PropertyGroup, DMX_Fixtures_Manager):
     placeholder: IntProperty(default=0)
 
 
-class DMX_Devices_Share_Imports(PropertyGroup):
+class DMX_Fixtures_Share_Imports(PropertyGroup):
     # GDTF Share Import profiles
-    share_profiles: CollectionProperty(type=DMX_Devices_Import_Gdtf_Profile)
+    share_profiles: CollectionProperty(type=DMX_Fixtures_Import_Gdtf_Profile)
     selected_fixture: IntProperty(default=0)
 
     selected_mode: IntProperty(default=0)
@@ -32,10 +32,10 @@ class DMX_Devices_Share_Imports(PropertyGroup):
 
 classes = (
     # Data Structures
-    DMX_Devices_Import_Gdtf_Profile_Dmx_Mode,
-    DMX_Devices_Import_Gdtf_Profile,
-    DMX_Devices_Share_Imports,
-    DMX_Devices,
+    DMX_Fixtures_Import_Gdtf_Profile_Dmx_Mode,
+    DMX_Fixtures_Import_Gdtf_Profile,
+    DMX_Fixtures_Share_Imports,
+    DMX_Fixtures,
     # Lists
     DMX_UL_Share_Fixtures,
     DMX_UL_Share_Fixtures_Dmx_Modes,
@@ -47,7 +47,7 @@ classes = (
     DMX_OP_Delete_Local_Fixture,
     DMX_OP_Update_Local_Fixtures,
     # Panel
-    DMX_PT_Devices_Import,
-    DMX_PT_Devices_Import_Profile_Detail,
-    DMX_PT_Devices_Local_Fixtures,
+    DMX_PT_Fixtures_Import,
+    DMX_PT_Fixtures_Import_Profile_Detail,
+    DMX_PT_Fixtures_Local_Fixtures,
 )

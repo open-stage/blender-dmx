@@ -10,12 +10,12 @@ from src.lang import DMX_Lang
 _ = DMX_Lang._
 
 
-class DMX_Devices_Import_Gdtf_Profile_Dmx_Mode(PropertyGroup):
+class DMX_Fixtures_Import_Gdtf_Profile_Dmx_Mode(PropertyGroup):
     name: StringProperty(name=_("Mode name"))
     footprint: IntProperty(name=_("DMX Footprint"))
 
 
-class DMX_Devices_Import_Gdtf_Profile(PropertyGroup):
+class DMX_Fixtures_Import_Gdtf_Profile(PropertyGroup):
     name: StringProperty(
         name=_("Fixture name"), description=_("Manufacturer and fixture name")
     )
@@ -38,7 +38,7 @@ class DMX_Devices_Import_Gdtf_Profile(PropertyGroup):
     )
 
     modes: CollectionProperty(
-        name=_("Dmx Modes"), type=DMX_Devices_Import_Gdtf_Profile_Dmx_Mode
+        name=_("Dmx Modes"), type=DMX_Fixtures_Import_Gdtf_Profile_Dmx_Mode
     )
 
     @staticmethod
@@ -61,7 +61,7 @@ class DMX_Devices_Import_Gdtf_Profile(PropertyGroup):
         print("loading start")
         imports = bpy.context.window_manager.dmx.imports
         imports.share_profiles.clear()
-        profiles = DMX_Devices_Import_Gdtf_Profile.get_profile_list()
+        profiles = DMX_Fixtures_Import_Gdtf_Profile.get_profile_list()
 
         for profile in profiles:
             imports.share_profiles.add()

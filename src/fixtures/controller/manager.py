@@ -1,6 +1,6 @@
 from lib import share_api_client
 from src import patch as Patch
-from src import devices as Devices
+from src import fixtures as Fixtures
 import bpy
 import os
 import pathlib
@@ -12,7 +12,7 @@ execution_queue = queue.Queue()
 _ = DMX_Lang._
 
 
-class DMX_Devices_Manager:
+class DMX_Fixtures_Manager:
     # Source Management
 
     # Fixture delete
@@ -126,7 +126,7 @@ def reload_share_profiles(result):
             _("GDTF Share update error"),
             "ERROR",
         )
-    Devices.DMX_Devices_Import_Gdtf_Profile.load()
+    Fixtures.DMX_Fixtures_Import_Gdtf_Profile.load()
 
 
 def reload_local_profiles(result):

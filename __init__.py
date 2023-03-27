@@ -24,7 +24,7 @@ from bpy.props import PointerProperty
 
 from src import core as Core
 from src import patch as Patch
-from src import devices as Devices
+from src import fixtures as Fixtures
 from src import programmer as Programmer
 from src import preferences as Preferences
 
@@ -41,9 +41,9 @@ class DMX(PropertyGroup):
         type = Patch.DMX_Patch
     )
 
-    devices: PointerProperty(
-        name = 'Devices',
-        type = Devices.DMX_Devices
+    fixtures: PointerProperty(
+        name = 'Fixtures',
+        type = Fixtures.DMX_Fixtures
     )
 
     programmer: PointerProperty(
@@ -55,14 +55,14 @@ class DMX_Non_Persistent_Data(PropertyGroup):
 
     imports: PointerProperty(
             name = "Imports",
-            type=Devices.DMX_Devices_Share_Imports
+            type=Fixtures.DMX_Fixtures_Share_Imports
             )
 
 # Blender Add-on Registering
 
 def on_register():
     Patch.DMX_Patch_Profile.load()
-    Devices.DMX_Devices_Import_Gdtf_Profile.load()
+    Fixtures.DMX_Fixtures_Import_Gdtf_Profile.load()
 
 def clean_module_imports():
     modules = dict(sys.modules)
@@ -76,7 +76,7 @@ def clean_module_imports():
 def register():
     for cls in Patch.classes:
         bpy.utils.register_class(cls)
-    for cls in Devices.classes:
+    for cls in Fixtures.classes:
         bpy.utils.register_class(cls)
     for cls in Core.classes:
         bpy.utils.register_class(cls)
@@ -95,7 +95,7 @@ def register():
 def unregister():
     for cls in Patch.classes:
         bpy.utils.unregister_class(cls)
-    for cls in Devices.classes:
+    for cls in Fixtures.classes:
         bpy.utils.unregister_class(cls)
     for cls in Core.classes:
         bpy.utils.unregister_class(cls)

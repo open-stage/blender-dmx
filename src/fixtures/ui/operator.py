@@ -22,7 +22,7 @@ class DMX_OP_Import_Fixture_From_Share(Operator):
     index: IntProperty()
 
     def execute(self, context):
-        context.scene.dmx.devices.import_from_share(self.index)
+        context.scene.dmx.fixtures.import_from_share(self.index)
         return {"FINISHED"}
 
 
@@ -33,7 +33,7 @@ class DMX_OP_Import_Fixture_Update_Share(Operator):
     bl_options = {"UNDO"}
 
     def execute(self, context):
-        context.scene.dmx.devices.update_share_index()
+        context.scene.dmx.fixtures.update_share_index()
         return {"FINISHED"}
 
 
@@ -80,7 +80,7 @@ class DMX_OP_Delete_Local_Fixture(Operator):
     index: IntProperty()
 
     def execute(self, context):
-        context.scene.dmx.devices.delete_local_fixture(self.index)
+        context.scene.dmx.fixtures.delete_local_fixture(self.index)
         return {"FINISHED"}
 
 class DMX_OP_Update_Local_Fixtures(Operator):

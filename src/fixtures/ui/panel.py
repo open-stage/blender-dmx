@@ -13,7 +13,7 @@ from src.lang import DMX_Lang
 _ = DMX_Lang._
 
 
-class DMX_PT_Devices_Import(Panel):
+class DMX_PT_Fixtures_Import(Panel):
     bl_label = _("DMX Fixtures import")
     bl_idname = "DMX_PT_Patch_Import"
     bl_space_type = "PROPERTIES"
@@ -40,7 +40,7 @@ class DMX_PT_Devices_Import(Panel):
         layout.operator(DMX_OP_Import_Fixture_From_File.bl_idname, icon=DMX_Icon.FILE)
 
 
-class DMX_PT_Devices_Import_Profile_Detail(Panel):
+class DMX_PT_Fixtures_Import_Profile_Detail(Panel):
     bl_label = _("Fixture details")
     bl_idname = "DMX_PT_Patch_Import_Profile_Detail"
     bl_space_type = "PROPERTIES"
@@ -76,7 +76,7 @@ class DMX_PT_Devices_Import_Profile_Detail(Panel):
         )
 
 
-class DMX_PT_Devices_Local_Fixtures(Panel):
+class DMX_PT_Fixtures_Local_Fixtures(Panel):
     bl_label = _("DMX Local fixtures")
     bl_idname = "DMX_PT_Local_Fixtures"
     bl_space_type = "PROPERTIES"
