@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-03-27 22:15+0200\n"
-"PO-Revision-Date: 2023-03-25 14:17+0000\n"
+"PO-Revision-Date: 2023-03-27 20:18+0000\n"
 "Last-Translator: vanous <petr+weblate@linuks.cz>\n"
+"Language-Team: Czech <https://hosted.weblate.org/projects/blenderdmx/main/cs/"
+">\n"
 "Language: cs_CZ\n"
-"Language-Team: Czech "
-"<https://hosted.weblate.org/projects/blenderdmx/main/cs/>\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Weblate 4.17-dev\n"
 "Generated-By: Babel 2.10.3\n"
 
 #: ../src/fixtures/controller/manager.py:41
@@ -183,11 +184,11 @@ msgstr "Odstranit světlo ze souborového systému"
 
 #: ../src/fixtures/ui/operator.py:87
 msgid "Refresh files listing"
-msgstr ""
+msgstr "Obnovit výpis souborů"
 
 #: ../src/fixtures/ui/operator.py:88
 msgid "Update list of local files"
-msgstr ""
+msgstr "Aktualizace seznamu místních souborů"
 
 #: ../src/fixtures/ui/panel.py:17
 msgid "DMX Fixtures import"
@@ -202,7 +203,6 @@ msgid "DMX Local fixtures"
 msgstr "DMX Lokální svítidla"
 
 #: ../src/fixtures/ui/panel.py:108
-#, fuzzy
 msgid "Local Fixture details"
 msgstr "Podrobnosti o svítidle"
 
@@ -338,9 +338,8 @@ msgid "Short Name"
 msgstr "Krátký název"
 
 #: ../src/patch/data/profile.py:38
-#, fuzzy
 msgid "Filename"
-msgstr "Jméno světla"
+msgstr "Jméno souboru"
 
 #: ../src/patch/data/source.py:21
 msgid "Type"
@@ -453,4 +452,3 @@ msgstr "Programátor"
 
 #~ msgid "Uploader"
 #~ msgstr ""
-
