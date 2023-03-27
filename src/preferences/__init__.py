@@ -5,7 +5,7 @@ import pathlib
 from bpy.types import AddonPreferences
 from bpy.props import StringProperty
 
-from src.lang import DMX_Lang
+from i18n import DMX_Lang
 _ = DMX_Lang._
 
 # Module Data Structure

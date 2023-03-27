@@ -1,5 +1,5 @@
 import bpy
-from src.lang import DMX_Lang
+from i18n import DMX_Lang
 import queue
 
 

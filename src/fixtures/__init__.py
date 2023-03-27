@@ -9,7 +9,7 @@ from .ui.panel import *
 from src.patch import *
 
 from .controller import DMX_Fixtures_Manager
-from src.lang import DMX_Lang
+from i18n import DMX_Lang
 
 _ = DMX_Lang._
 

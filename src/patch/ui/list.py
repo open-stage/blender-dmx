@@ -9,7 +9,7 @@ from .operator import (
     DMX_OP_Patch_Universe_Remove,
 )
 from .menu import DMX_MT_Patch_SelectUniverse, DMX_MT_Patch_SelectMode
-from src.lang import DMX_Lang
+from i18n import DMX_Lang
 
 _ = DMX_Lang._
 

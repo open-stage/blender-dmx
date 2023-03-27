@@ -4,7 +4,7 @@ from src import fixtures as Fixtures
 import bpy
 import os
 import pathlib
-from src.lang import DMX_Lang
+from i18n import DMX_Lang
 import queue
 
 

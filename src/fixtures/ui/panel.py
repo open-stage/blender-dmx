@@ -8,7 +8,7 @@ from .operator import (
     DMX_OP_Import_Fixture_From_File,
     DMX_OP_Update_Local_Fixtures
 )
-from src.lang import DMX_Lang
+from i18n import DMX_Lang
 
 _ = DMX_Lang._
 

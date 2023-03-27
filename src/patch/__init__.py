@@ -13,7 +13,7 @@ from .ui.operator import *
 from .ui.panel import *
 
 from .controller import DMX_Patch_Controller
-from src.lang import DMX_Lang
+from i18n import DMX_Lang
 
 _ = DMX_Lang._
 

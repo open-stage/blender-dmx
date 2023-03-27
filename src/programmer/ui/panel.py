@@ -2,7 +2,7 @@ import bpy
 from bpy.types import Panel
 
 
-from src.lang import DMX_Lang
+from i18n import DMX_Lang
 _ = DMX_Lang._
 
 from src.icon import DMX_Icon

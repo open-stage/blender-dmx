@@ -5,7 +5,7 @@ from lib import pygdtf
 from bpy.types import PropertyGroup
 from bpy.props import StringProperty, CollectionProperty, IntProperty
 
-from src.lang import DMX_Lang
+from i18n import DMX_Lang
 
 _ = DMX_Lang._
 

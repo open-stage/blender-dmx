@@ -9,7 +9,7 @@ from .operator import (
     DMX_OP_Patch_Fixture_AddBatch,
     DMX_OP_Patch_Build,
 )
-from src.lang import DMX_Lang
+from i18n import DMX_Lang
 
 _ = DMX_Lang._
 

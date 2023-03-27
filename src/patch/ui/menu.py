@@ -3,7 +3,7 @@ from bpy.types import Operator, Menu
 from bpy.props import IntProperty, StringProperty
 
 
-from src.lang import DMX_Lang
+from i18n import DMX_Lang
 
 _ = DMX_Lang._
 

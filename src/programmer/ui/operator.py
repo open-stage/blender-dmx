@@ -2,7 +2,7 @@ import bpy
 from bpy.types import Operator, Menu
 
 
-from src.lang import DMX_Lang
+from i18n import DMX_Lang
 
 _ = DMX_Lang._
 

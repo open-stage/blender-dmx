@@ -7,12 +7,12 @@ from bpy.props import IntProperty
 from src import patch as Patch
 
 
-from src.lang import DMX_Lang
+from i18n import DMX_Lang
 
 _ = DMX_Lang._
 
 from src.patch.controller import DMX_Patch_Controller
-from src.lang import DMX_Lang
+from i18n import DMX_Lang
 
 _ = DMX_Lang._
 
