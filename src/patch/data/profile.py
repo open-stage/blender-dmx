@@ -12,7 +12,7 @@ _ = DMX_Lang._
 
 class DMX_Patch_ProfileBreak(PropertyGroup):
     n_channels: IntProperty(
-        name=_("Name"), description=_("The name of the DMX profile.")
+        name=_(_("Name")), description=_("The name of the DMX profile.")
     )
 
 
@@ -20,7 +20,7 @@ class DMX_Patch_ProfileMode(PropertyGroup):
     name: StringProperty(name=_("Name"), description=_("The name of the DMX profile."))
 
     breaks: CollectionProperty(
-        name=_("Name"),
+        name=_(_("Name")),
         description=_("The name of the DMX profile."),
         type=DMX_Patch_ProfileBreak,
     )
@@ -30,12 +30,12 @@ class DMX_Patch_Profile(PropertyGroup):
     name: StringProperty(name=_("Name"), description=_("The name of the DMX profile."))
 
     short_name: StringProperty(
-        name=_("Short Name"),
+        name=_(_("Short Name")),
         description="The short name of the DMX profile, all caps, used as suggestion for fixture names.",
     )
 
     filename: StringProperty(
-        name=_("Name"), description=_("The name of the DMX profile.")
+        name=_(_("Filename")), description=_("The name of the DMX profile.")
     )
 
     modes: CollectionProperty(type=DMX_Patch_ProfileMode)

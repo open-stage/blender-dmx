@@ -6,7 +6,7 @@ from src.icon import DMX_Icon
 from .operator import (
     DMX_OP_Import_Fixture_Update_Share,
     DMX_OP_Import_Fixture_From_File,
-    DMX_OP_Update_Local_Fixtures
+    DMX_OP_Update_Local_Fixtures,
 )
 from i18n import DMX_Lang
 
@@ -15,7 +15,7 @@ _ = DMX_Lang._
 
 class DMX_PT_Fixtures_Import(Panel):
     bl_label = _("DMX Fixtures import")
-    bl_idname = "DMX_PT_Patch_Import"
+    bl_idname = "DMX_PT_Fixtures_Import"
     bl_space_type = "PROPERTIES"
     bl_region_type = "WINDOW"
     bl_context = "scene"
@@ -42,11 +42,11 @@ class DMX_PT_Fixtures_Import(Panel):
 
 class DMX_PT_Fixtures_Import_Profile_Detail(Panel):
     bl_label = _("Fixture details")
-    bl_idname = "DMX_PT_Patch_Import_Profile_Detail"
+    bl_idname = "DMX_PT_Fixtures_Import_Profile_Detail"
     bl_space_type = "PROPERTIES"
     bl_region_type = "WINDOW"
     bl_context = "scene"
-    bl_parent_id = "DMX_PT_Patch_Import"
+    bl_parent_id = "DMX_PT_Fixtures_Import"
     # bl_options = {'DEFAULT_CLOSED'}
 
     def draw(self, context):
@@ -99,4 +99,40 @@ class DMX_PT_Fixtures_Local_Fixtures(Panel):
             rows=8,
         )
 
-        layout.operator(DMX_OP_Update_Local_Fixtures.bl_idname, icon=DMX_Icon.FILE_REFRESH)
+        layout.operator(
+            DMX_OP_Update_Local_Fixtures.bl_idname, icon=DMX_Icon.FILE_REFRESH
+        )
+
+
+class DMX_PT_Fixtures_Local_Profile_Detail(Panel):
+    bl_label = _("Local Fixture details")
+    bl_idname = "DMX_PT_Fixtures_Local_Profile_Detail"
+    bl_space_type = "PROPERTIES"
+    bl_region_type = "WINDOW"
+    bl_context = "scene"
+    bl_parent_id = "DMX_PT_Local_Fixtures"
+    # bl_options = {'DEFAULT_CLOSED'}
+
+    def draw(self, context):
+        layout = self.layout
+        patch = context.scene.dmx.patch
+        imports = context.window_manager.dmx.imports
+        profiles = patch.profiles
+        selected = patch.selected_fixture
+        if not profiles:
+            return
+        fixture = profiles[selected]
+
+        col = layout.column()
+        col.emboss = "NONE"
+        col.prop(fixture, "name")
+        col.prop(fixture, "filename")
+
+        layout.template_list(
+            "DMX_UL_Local_Fixtures_Dmx_Modes",
+            "",
+            fixture,
+            "modes",
+            imports,
+            "local_fixture_selected_mode",
+        )

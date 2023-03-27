@@ -24,8 +24,8 @@ class DMX_Fixtures_Share_Imports(PropertyGroup):
     # GDTF Share Import profiles
     share_profiles: CollectionProperty(type=DMX_Fixtures_Import_Gdtf_Profile)
     selected_fixture: IntProperty(default=0)
-
     selected_mode: IntProperty(default=0)
+    local_fixture_selected_mode: IntProperty(default=0)
 
 
 # Add-on Module Registering
@@ -40,6 +40,7 @@ classes = (
     DMX_UL_Share_Fixtures,
     DMX_UL_Share_Fixtures_Dmx_Modes,
     DMX_UL_Local_Fixtures,
+    DMX_UL_Local_Fixtures_Dmx_Modes,
     # Operators
     DMX_OP_Import_Fixture_From_File,
     DMX_OP_Import_Fixture_From_Share,
@@ -50,4 +51,5 @@ classes = (
     DMX_PT_Fixtures_Import,
     DMX_PT_Fixtures_Import_Profile_Detail,
     DMX_PT_Fixtures_Local_Fixtures,
+    DMX_PT_Fixtures_Local_Profile_Detail,
 )

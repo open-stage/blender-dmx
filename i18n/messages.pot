@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-03-27 20:57+0200\n"
+"POT-Creation-Date: 2023-03-27 22:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -129,7 +129,7 @@ msgstr ""
 msgid "Dmx Modes"
 msgstr ""
 
-#: ../src/fixtures/ui/list.py:42
+#: ../src/fixtures/ui/list.py:42 ../src/fixtures/ui/list.py:80
 msgid "DMX Mode Name"
 msgstr ""
 
@@ -197,6 +197,10 @@ msgstr ""
 msgid "DMX Local fixtures"
 msgstr ""
 
+#: ../src/fixtures/ui/panel.py:108
+msgid "Local Fixture details"
+msgstr ""
+
 #: ../src/patch/data/fixture.py:20 ../src/patch/data/fixture.py:73
 msgid "Number of Channels"
 msgstr ""
@@ -234,7 +238,7 @@ msgstr ""
 #: ../src/patch/data/fixture.py:53 ../src/patch/data/fixture_batch.py:15
 #: ../src/patch/data/profile.py:15 ../src/patch/data/profile.py:20
 #: ../src/patch/data/profile.py:23 ../src/patch/data/profile.py:30
-#: ../src/patch/data/profile.py:38 ../src/patch/data/universe.py:17
+#: ../src/patch/data/universe.py:17
 msgid "Name"
 msgstr ""
 
@@ -321,6 +325,10 @@ msgstr ""
 
 #: ../src/patch/data/profile.py:33
 msgid "Short Name"
+msgstr ""
+
+#: ../src/patch/data/profile.py:38
+msgid "Filename"
 msgstr ""
 
 #: ../src/patch/data/source.py:21

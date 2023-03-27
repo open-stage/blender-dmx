@@ -64,3 +64,21 @@ class DMX_UL_Local_Fixtures(UIList):
         col.operator(
             DMX_OP_Delete_Local_Fixture.bl_idname, text="", icon=DMX_Icon.CANCEL
         ).index = index
+
+
+class DMX_UL_Local_Fixtures_Dmx_Modes(UIList):
+    def draw_item(
+        self, context, layout, data, item, icon, active_data, active_propname, index
+    ):
+        main_col = layout.column()
+        main_col.emboss = "NONE"
+        row = main_col.row()
+        if index == 0:
+            row.emboss = "PULLDOWN_MENU"
+            col = row.column()
+            col.ui_units_x = 5
+            col.label(text=_("DMX Mode Name"))
+            row = main_col.row()
+
+        col = row.column()
+        col.label(text=f"{item.name}")

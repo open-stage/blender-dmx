@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-03-27 20:57+0200\n"
+"POT-Creation-Date: 2023-03-27 22:15+0200\n"
 "PO-Revision-Date: 2023-03-25 14:17+0000\n"
 "Last-Translator: vanous <petr+weblate@linuks.cz>\n"
 "Language: cs_CZ\n"
@@ -133,7 +133,7 @@ msgstr "Identifikátor souboru v GDTF Share"
 msgid "Dmx Modes"
 msgstr "Dmx Módy"
 
-#: ../src/fixtures/ui/list.py:42
+#: ../src/fixtures/ui/list.py:42 ../src/fixtures/ui/list.py:80
 msgid "DMX Mode Name"
 msgstr "Název DMX Módu"
 
@@ -201,6 +201,11 @@ msgstr "Podrobnosti o svítidle"
 msgid "DMX Local fixtures"
 msgstr "DMX Lokální svítidla"
 
+#: ../src/fixtures/ui/panel.py:108
+#, fuzzy
+msgid "Local Fixture details"
+msgstr "Podrobnosti o svítidle"
+
 #: ../src/patch/data/fixture.py:20 ../src/patch/data/fixture.py:73
 msgid "Number of Channels"
 msgstr "Počet kanálů"
@@ -238,7 +243,7 @@ msgstr "Číselný jedinečný identifikátor zařízení."
 #: ../src/patch/data/fixture.py:53 ../src/patch/data/fixture_batch.py:15
 #: ../src/patch/data/profile.py:15 ../src/patch/data/profile.py:20
 #: ../src/patch/data/profile.py:23 ../src/patch/data/profile.py:30
-#: ../src/patch/data/profile.py:38 ../src/patch/data/universe.py:17
+#: ../src/patch/data/universe.py:17
 msgid "Name"
 msgstr "Název"
 
@@ -331,6 +336,11 @@ msgstr "Název profilu DMX."
 #: ../src/patch/data/profile.py:33
 msgid "Short Name"
 msgstr "Krátký název"
+
+#: ../src/patch/data/profile.py:38
+#, fuzzy
+msgid "Filename"
+msgstr "Jméno světla"
 
 #: ../src/patch/data/source.py:21
 msgid "Type"
