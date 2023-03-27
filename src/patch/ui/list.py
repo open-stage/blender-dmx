@@ -50,38 +50,16 @@ class DMX_UL_Patch_Fixtures(UIList):
         col.ui_units_x = 7
         col.label(text="Mode")
 
-        col = layout.column()
-        col.ui_units_x = 6
-        col.label(text="Address")
-
-        col = layout.column()
-        col.ui_units_x = 6
-        col.label(text="Universe")
-
+    def _draw_icon(self, layout, icon):
         col = layout.column()
         col.ui_units_x = 1
-        col.label(text="")
-        col = layout.column()
-        col.ui_units_x = 1
-        col.label(text="")
-        col = layout.column()
-        col.ui_units_x = 1
-        col.label(text="")
+        col.label(icon=icon)
+        return col
 
-    def draw_fixture_item(
-        self, context, layout, data, item, icon, active_data, active_propname, index
-    ):
-        patch = context.scene.dmx.patch
-
-        main_col = layout.column()
-        row = main_col.row()
-
-        col = row.column()
-        col.ui_units_x = 1
-        col.alert = len(item.name) == 0 or len(item.profile) == 0
-        col.label(icon=DMX_Icon.FIXTURE)
-
-        cols = self._split_row(row, DMX_UL_Patch_Fixtures.cols)
+    def _draw_id_name_profile_mode(self, cols, item, patch):
+        cols[0].emboss = 'NONE'
+        cols[0].alert = len(item.name) == 0 or len(item.profile) == 0
+        cols[0].prop(item, 'id', text='', slider=True)
 
         cols[0].emboss = "NONE"
         cols[0].alert = len(item.name) == 0 or len(item.profile) == 0
@@ -99,56 +77,67 @@ class DMX_UL_Patch_Fixtures(UIList):
                 text=item.get_mode_str(mini=True) or "",
             )
 
-        if len(item.breaks):
-            cols[4].prop(item.breaks[0], "address", text="")
+    def _draw_break(self, context, cols, item, break_index):
+        cols[4].prop(item.breaks[break_index], 'address', text = '')
 
-            universe = item.get_universe_str(context, 0, mini=True)
-            cols[5].context_pointer_set("fixture_break", item.breaks[0])
-            cols[5].alert = universe != None
-            cols[5].menu(DMX_MT_Patch_SelectUniverse.bl_idname, text=universe or "")
+        universe = item.get_universe_str(context, break_index, mini=True)
+        cols[5].context_pointer_set("fixture_break", item.breaks[break_index])
+        cols[5].alert = (universe != None)
+        cols[5].menu(
+            DMX_MT_Patch_SelectUniverse.bl_idname,
+            text = universe or ''
+        )
 
+    def _draw_ops(self, cols, item, index, is_batch_root=False):
         row = cols[6].row()
         col = row.column()
         col.ui_units_x = 1
-        col.prop(item, "gel_color", text="")
+        if (is_batch_root):
+            col.label(text='')
+        else:
+            col.prop(item, 'gel_color', text='')
         col = row.column()
         col.ui_units_x = 1
-        col.prop(item, "create_lights", text="", icon=DMX_Icon.CREATE_LIGHTS)
+        if (is_batch_root):
+            col.label(text='')
+        else:
+            col.prop(item, 'create_lights', text='', icon=DMX_Icon.CREATE_LIGHTS)
         col = row.column()
         col.ui_units_x = 1
         col.operator(
             DMX_OP_Patch_Fixture_Remove.bl_idname, text="", icon=DMX_Icon.REMOVE
         ).index = index
 
-        if len(item.breaks) > 1:
-            for break_i in range(1, len(item.breaks)):
+    def draw_fixture_item(self, context, layout, data, item, icon, active_data, active_propname, index):
+        patch = context.scene.dmx.patch
+        main_col = layout.column()
+        row = main_col.row()
+
+        icon = self._draw_icon(row, icon=DMX_Icon.FIXTURE)
+        icon.alert = len(item.name) == 0 or len(item.profile) == 0
+
+        cols = self._split_row(row, DMX_UL_Patch_Fixtures.cols)
+        
+        self._draw_id_name_profile_mode(cols, item, patch)
+        if (len(item.breaks)):
+            self._draw_break(context, cols, item, 0)      
+        self._draw_ops(cols, item, index)
+
+        if (len(item.breaks) > 1):
+            for break_i in range(1,len(item.breaks)):
                 row = main_col.row()
                 self.draw_extra_break(context, row, item, break_i)
 
     def draw_extra_break(self, context, layout, item, break_i):
-        col = layout.column()
-        col.ui_units_x = 1
-        col.label(icon=DMX_Icon.BREAK)
-
+        self._draw_icon(layout, DMX_Icon.BREAK)
         cols = self._split_row(layout, DMX_UL_Patch_Fixtures.cols)
-
-        cols[4].prop(item.breaks[break_i], "address", text="")
-
-        universe = item.get_universe_str(context, break_i, mini=True)
-        cols[5].context_pointer_set("fixture_break", item.breaks[break_i])
-        cols[5].alert = universe != None
-        cols[5].menu(DMX_MT_Patch_SelectUniverse.bl_idname, text=universe or "")
-
-    def draw_batch_item(self, context, layout, item, is_root=False):
+        self._draw_break(context, cols, item, break_i)
+    
+    def draw_batch_item(self, context, layout, item, is_root = False):
         batch = item.get_batch(context)
-
-        col = layout.column()
-        col.ui_units_x = 1
-        col.alert = len(batch.name) == 0 or (
-            item.batch_index == 0 and len(item.profile) == 0
-        )
-        col.label(icon=DMX_Icon.FIXTURE)
-
+        icon = self._draw_icon(layout, DMX_Icon.FIXTURE)
+        icon.alert = len(batch.name) == 0 or (item.batch_index == 0 and len(item.profile) == 0)
+        
         cols = self._split_row(layout, DMX_UL_Patch_Fixtures.cols)
 
         cols[0].emboss = "NONE"
@@ -199,46 +188,30 @@ class DMX_UL_Patch_Fixtures(UIList):
 
         cols = self._split_row(row, DMX_UL_Patch_Fixtures.cols)
 
-        cols[0].emboss = "NONE"
-        cols[0].alert = len(batch.name) == 0 or len(item.profile) == 0
-        cols[0].prop(item, "id", text="", slider=True)
+        self._draw_id_name_profile_mode(cols, item, patch)
 
-        cols[1].prop(batch, "name", text="")
+        if not batch.expand:
+            if (len(item.breaks)):
+                self._draw_break(context, cols, item, 0)
 
-        cols[2].prop_search(
-            item, "profile", patch, "profiles", text="", icon=DMX_Icon.GDTF_PROFILE
-        )
+        # if (batch.expand):
+        #     cols[4].label(text='')
+        # else:
+        #     cols[4].prop(item, 'address', text='')
 
-        cols[3].menu(
-            DMX_MT_Patch_SelectMode.bl_idname, text=item.get_mode_str(mini=True)
-        )
+        # if (batch.expand):
+        #     cols[5].label(text='')
+        # else:
+        #     cols[5].menu(
+        #         DMX_MT_Patch_SelectUniverse.bl_idname,
+        #         text = item.get_universe_str(context, mini=True)
+        #     )
 
-        if batch.expand:
-            cols[4].label(text="")
-        else:
-            cols[4].prop(item, "address", text="")
+        self._draw_ops(cols, item, index, batch.expand)
 
-        if batch.expand:
-            cols[5].label(text="")
-        else:
-            cols[5].menu(
-                DMX_MT_Patch_SelectUniverse.bl_idname,
-                text=item.get_universe_str(context, mini=True),
-            )
-
-        row = cols[6].row()
-        col = row.column()
-        col.emboss = "NONE"
-        col.prop(batch, "units", text="x", slider=True)
-        col = row.column()
-        col.ui_units_x = 1
-        col.operator(
-            DMX_OP_Patch_Fixture_Remove.bl_idname, text="", icon=DMX_Icon.REMOVE
-        ).index = index
-
-        if batch.expand:
-            row = main_col.row()
-            self.draw_batch_item(context, row, item, True)
+        # if (batch.expand):
+        #     row = main_col.row()
+        #     self.draw_batch_item(context, row, item, True)
 
     def draw_item(
         self, context, layout, data, item, icon, active_data, active_propname, index

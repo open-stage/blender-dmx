@@ -1,8 +1,8 @@
 bl_info = {
     'name': 'DMX',
-    'description': 'DMX visualization and programming, with Network support',
+    'description': 'DMX visualization and programming, with GDTF/MVR and Network support',
     'author': 'open-stage',
-    'version': (1, 5, 0),
+    'version': (2, 0, 0),
     'blender': (3, 0, 0),
     "location": "3D View > DMX",
     "warning": "", # used for warning icon and text in addons panel
@@ -28,7 +28,6 @@ from src import devices as Devices
 from src import programmer as Programmer
 from src import preferences as Preferences
 
-# Main Data Structure
 
 class DMX(PropertyGroup):
 
@@ -59,7 +58,7 @@ class DMX_Non_Persistent_Data(PropertyGroup):
             type=Devices.DMX_Devices_Share_Imports
             )
 
-# Add-on Registering
+# Blender Add-on Registering
 
 def on_register():
     Patch.DMX_Patch_Profile.load()
