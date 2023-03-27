@@ -1,5 +1,7 @@
 import bpy
 import os
+import pathlib
+
 from bpy.types import AddonPreferences
 from bpy.props import StringProperty
 
@@ -9,7 +11,7 @@ _ = DMX_Lang._
 # Module Data Structure
 
 class DMX_Preferences(AddonPreferences):
-    bl_idname = os.path.basename(os.getcwd())
+    bl_idname = pathlib.Path(__file__).parent.parts[-3]
 
     share_api_key: StringProperty(
         default="",

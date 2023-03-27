@@ -3,6 +3,7 @@ from src import patch as Patch
 from src import devices as Devices
 import bpy
 import os
+import pathlib
 from src.lang import DMX_Lang
 import queue
 
@@ -30,7 +31,8 @@ class DMX_Devices_Manager:
     # Fixture Import
 
     def import_from_share(self, index: int):
-        prefs = bpy.context.preferences.addons["dmx"].preferences
+        addon_name = pathlib.Path(__file__).parent.parts[-4]
+        prefs = bpy.context.preferences.addons[addon_name].preferences
         api_key = prefs.get("share_api_key", None)
         imports = bpy.context.window_manager.dmx.imports
 
@@ -60,7 +62,8 @@ class DMX_Devices_Manager:
         )
 
     def update_share_index(self):
-        prefs = bpy.context.preferences.addons["dmx"].preferences
+        addon_name = pathlib.Path(__file__).parent.parts[-4]
+        prefs = bpy.context.preferences.addons[addon_name].preferences
         api_key = prefs.get("share_api_key", None)
         if api_key is None or len(api_key) < 2:
             ShowMessageBox(
