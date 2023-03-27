@@ -1,15 +1,15 @@
 import bpy
+import os
 from bpy.types import AddonPreferences
 from bpy.props import StringProperty
-from src.lang import DMX_Lang
 
+from src.lang import DMX_Lang
 _ = DMX_Lang._
 
 # Module Data Structure
 
-
-class DMX_AddOn_Preferences(AddonPreferences):
-    bl_idname = "dmx"  # It would be better to get the name dynamically
+class DMX_Preferences(AddonPreferences):
+    bl_idname = os.path.basename(os.getcwd())
 
     share_api_key: StringProperty(
         default="",
@@ -24,4 +24,6 @@ class DMX_AddOn_Preferences(AddonPreferences):
 
 # Add-on Module Registering
 
-classes = (DMX_AddOn_Preferences,)
+classes = (
+    DMX_Preferences,
+)
