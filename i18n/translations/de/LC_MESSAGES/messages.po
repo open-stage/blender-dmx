@@ -8,13 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-03-27 22:15+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2023-03-28 16:29+0000\n"
+"Last-Translator: Konrad Dieter Einfach <einfachkonrad@gmail.com>\n"
+"Language-Team: German <https://hosted.weblate.org/projects/blenderdmx/main/"
+"de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17-dev\n"
 "Generated-By: Babel 2.10.3\n"
 
 #: ../src/fixtures/controller/manager.py:41
@@ -47,19 +50,19 @@ msgstr ""
 
 #: ../src/fixtures/controller/manager.py:137
 msgid "File downloaded correctly. Status code was: {}"
-msgstr ""
+msgstr "Datei erfolgreich heruntergeladen! Statuscode: {}"
 
 #: ../src/fixtures/controller/manager.py:140
 msgid "GDTF file downloaded"
-msgstr ""
+msgstr "GDTF-Datei heruntergeladen"
 
 #: ../src/fixtures/controller/manager.py:145
 msgid "Error downloading GDTF file. Error code was: {}"
-msgstr ""
+msgstr "Beim Herunterladen ist ein Fehöer aufgetreten! Fehlercode: {}"
 
 #: ../src/fixtures/controller/manager.py:148
 msgid "GDTF Share download error"
-msgstr ""
+msgstr "unidentifizierter GDTF-Share Downloadfehler"
 
 #: ../src/fixtures/controller/manager.py:153
 msgid "Message Box"
@@ -83,71 +86,71 @@ msgstr ""
 
 #: ../src/fixtures/data/profile.py:24
 msgid "Manufacturer"
-msgstr ""
+msgstr "Hersteller"
 
 #: ../src/fixtures/data/profile.py:24
 msgid "Manufacturer name"
-msgstr ""
+msgstr "Name des Herstellers"
 
 #: ../src/fixtures/data/profile.py:27
 msgid "Revision"
-msgstr ""
+msgstr "Version"
 
 #: ../src/fixtures/data/profile.py:27
 msgid "Revision text"
-msgstr ""
+msgstr "Versionsbeschreibung"
 
 #: ../src/fixtures/data/profile.py:29
 msgid "Uploaded by"
-msgstr ""
+msgstr "Hochgeladen von"
 
 #: ../src/fixtures/data/profile.py:29
 msgid "File uploaded by"
-msgstr ""
+msgstr "Datei hochgeladen von"
 
 #: ../src/fixtures/data/profile.py:31
 msgid "Created by"
-msgstr ""
+msgstr "Erstellt von"
 
 #: ../src/fixtures/data/profile.py:31
 msgid "File created by"
-msgstr ""
+msgstr "Datei erstellt von"
 
 #: ../src/fixtures/data/profile.py:33
 msgid "Rating"
-msgstr ""
+msgstr "Bewertung"
 
 #: ../src/fixtures/data/profile.py:37
 msgid "Revision ID"
-msgstr ""
+msgstr "Versions-ID"
 
 #: ../src/fixtures/data/profile.py:37
 msgid "File identifier in the GDTF Share"
-msgstr ""
+msgstr "Dateikennung auf GDTF-Share"
 
 #: ../src/fixtures/data/profile.py:41
 msgid "Dmx Modes"
-msgstr ""
+msgstr "DMX-Modi"
 
 #: ../src/fixtures/ui/list.py:42 ../src/fixtures/ui/list.py:80
 msgid "DMX Mode Name"
-msgstr ""
+msgstr "Name des DMX-Modus"
 
 #: ../src/fixtures/ui/list.py:45 ../src/patch/data/fixture_batch.py:42
 msgid "Footprint"
-msgstr ""
+msgstr "Fußabdruck"
 
 #: ../src/fixtures/ui/operator.py:17
 msgid "Import from Share"
-msgstr ""
+msgstr "Vin GDTF-Share importieren"
 
 #: ../src/fixtures/ui/operator.py:18
 msgid "Import fixture from GDTF Share"
-msgstr ""
+msgstr "Firture von GDTF-Share importieren"
 
 #: ../src/fixtures/ui/operator.py:30
 msgid "Update GDTF Share index"
-msgstr ""
+msgstr "GDTF-Share-Index aktualisieren"
 
 #: ../src/fixtures/ui/operator.py:31
 msgid "Update data index of GDTF Share"
@@ -211,7 +214,7 @@ msgstr ""
 
 #: ../src/patch/data/fixture.py:26
 msgid "DMX Address"
-msgstr ""
+msgstr "DMX-Adresse"
 
 #: ../src/patch/data/fixture.py:27
 msgid "The DMX address of the fixture at the current universe."
@@ -229,7 +232,7 @@ msgstr ""
 
 #: ../src/patch/data/fixture.py:46
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: ../src/patch/data/fixture.py:47
 msgid "A numeric unique identifier for the fixture."
