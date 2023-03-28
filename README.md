@@ -48,5 +48,6 @@ We also have a `Discord` server for sharing knowledge: [discord server link](htt
 - [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?hosted_button_id=K2DRRKRFE583J)
 - Bitcon (BTC only): 1BApp5s16pEPk5oECtJJ7G8iYmbj7r2YrG
 
+## Translations
 
-
+Translations can be contributed via https://hosted.weblate.org/projects/blenderdmx/
