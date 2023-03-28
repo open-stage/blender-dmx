@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-03-27 22:15+0200\n"
-"PO-Revision-Date: 2023-03-28 16:29+0000\n"
+"PO-Revision-Date: 2023-03-29 19:38+0000\n"
 "Last-Translator: Konrad Dieter Einfach <einfachkonrad@gmail.com>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/blenderdmx/main/"
 "de/>\n"
@@ -42,11 +42,11 @@ msgstr ""
 
 #: ../src/fixtures/controller/manager.py:123
 msgid "Error while updating Share index. Error code was: {}"
-msgstr ""
+msgstr "Fehler beim Aktualisieren vom Share-Index. Fehlercode: {}"
 
 #: ../src/fixtures/controller/manager.py:126
 msgid "GDTF Share update error"
-msgstr ""
+msgstr "GDTF-Share Aktualisierungsfehler"
 
 #: ../src/fixtures/controller/manager.py:137
 msgid "File downloaded correctly. Status code was: {}"
@@ -58,7 +58,7 @@ msgstr "GDTF-Datei heruntergeladen"
 
 #: ../src/fixtures/controller/manager.py:145
 msgid "Error downloading GDTF file. Error code was: {}"
-msgstr "Beim Herunterladen ist ein Fehöer aufgetreten! Fehlercode: {}"
+msgstr "Beim Herunterladen ist ein Fehler aufgetreten! Fehlercode: {}"
 
 #: ../src/fixtures/controller/manager.py:148
 msgid "GDTF Share download error"
@@ -66,7 +66,7 @@ msgstr "unidentifizierter GDTF-Share Downloadfehler"
 
 #: ../src/fixtures/controller/manager.py:153
 msgid "Message Box"
-msgstr ""
+msgstr "Nachrichtenbox"
 
 #: ../src/fixtures/data/profile.py:14
 msgid "Mode name"
@@ -74,15 +74,15 @@ msgstr ""
 
 #: ../src/fixtures/data/profile.py:15
 msgid "DMX Footprint"
-msgstr ""
+msgstr "DMX-Fußabdruck"
 
 #: ../src/fixtures/data/profile.py:20 ../src/fixtures/data/profile.py:22
 msgid "Fixture name"
-msgstr ""
+msgstr "Name der Fixture"
 
 #: ../src/fixtures/data/profile.py:20
 msgid "Manufacturer and fixture name"
-msgstr ""
+msgstr "Hersteller und Bezeichnung"
 
 #: ../src/fixtures/data/profile.py:24
 msgid "Manufacturer"
@@ -142,11 +142,11 @@ msgstr "Fußabdruck"
 
 #: ../src/fixtures/ui/operator.py:17
 msgid "Import from Share"
-msgstr "Vin GDTF-Share importieren"
+msgstr "Von GDTF-Share importieren"
 
 #: ../src/fixtures/ui/operator.py:18
 msgid "Import fixture from GDTF Share"
-msgstr "Firture von GDTF-Share importieren"
+msgstr "Fixture von GDTF-Share importieren"
 
 #: ../src/fixtures/ui/operator.py:30
 msgid "Update GDTF Share index"
@@ -154,35 +154,35 @@ msgstr "GDTF-Share-Index aktualisieren"
 
 #: ../src/fixtures/ui/operator.py:31
 msgid "Update data index of GDTF Share"
-msgstr ""
+msgstr "Aktualisiere Daten von GDTF-Share"
 
 #: ../src/fixtures/ui/operator.py:41
 msgid "Import from file"
-msgstr ""
+msgstr "Aus Datei importieren"
 
 #: ../src/fixtures/ui/operator.py:42
 msgid "Import fixture from local filesystem"
-msgstr ""
+msgstr "Fixture aus lokalem Dateisystem importieren"
 
 #: ../src/fixtures/ui/operator.py:48
 msgid "File Path"
-msgstr ""
+msgstr "Dateipfad"
 
 #: ../src/fixtures/ui/operator.py:50
 msgid "Files"
-msgstr ""
+msgstr "Datein"
 
 #: ../src/fixtures/ui/operator.py:75
 msgid "Delete fixture"
-msgstr ""
+msgstr "Fixture löschen"
 
 #: ../src/fixtures/ui/operator.py:76
 msgid "Delete fixture from local filesystem"
-msgstr ""
+msgstr "Fixture aus lokalen Dateien löschen"
 
 #: ../src/fixtures/ui/operator.py:87
 msgid "Refresh files listing"
-msgstr ""
+msgstr "Dateiliste aktualisieren"
 
 #: ../src/fixtures/ui/operator.py:88
 msgid "Update list of local files"
@@ -224,7 +224,7 @@ msgstr ""
 #: ../src/patch/ui/menu.py:27 ../src/patch/ui/menu.py:48
 #: ../src/patch/ui/menu.py:60
 msgid "DMX Universe"
-msgstr ""
+msgstr "DMX-Universum"
 
 #: ../src/patch/data/fixture.py:35
 msgid "The DMX universe to which the fixture is currently addressed."
@@ -292,11 +292,12 @@ msgstr ""
 
 #: ../src/patch/data/fixture_batch.py:22
 msgid "Units"
-msgstr ""
+msgstr "Anzahl"
 
 #: ../src/patch/data/fixture_batch.py:23
+#, fuzzy
 msgid "The number of fixtures inside this batch."
-msgstr ""
+msgstr "Die Anzahl der Fixtures in dieser Gruppe"
 
 #: ../src/patch/data/fixture_batch.py:32
 msgid "Sequential"
@@ -314,29 +315,30 @@ msgstr ""
 
 #: ../src/patch/data/fixture_batch.py:56
 msgid "Expand"
-msgstr ""
+msgstr "Erweitern"
 
 #: ../src/patch/data/fixture_batch.py:59
+#, fuzzy
 msgid "Expands/shrinks the list of fixtures in this batch."
-msgstr ""
+msgstr "Erweitert/minimiert die Fixtures in dieser Gruppe"
 
 #: ../src/patch/data/profile.py:15 ../src/patch/data/profile.py:20
 #: ../src/patch/data/profile.py:24 ../src/patch/data/profile.py:30
 #: ../src/patch/data/profile.py:38
 msgid "The name of the DMX profile."
-msgstr ""
+msgstr "Name des DMX-Profils."
 
 #: ../src/patch/data/profile.py:33
 msgid "Short Name"
-msgstr ""
+msgstr "kurzer Name"
 
 #: ../src/patch/data/profile.py:38
 msgid "Filename"
-msgstr ""
+msgstr "Dateiname"
 
 #: ../src/patch/data/source.py:21
 msgid "Type"
-msgstr ""
+msgstr "Typ"
 
 #: ../src/patch/data/source.py:21
 msgid "The type of DMX source."
