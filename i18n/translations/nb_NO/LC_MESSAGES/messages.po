@@ -8,13 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-03-27 22:15+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2023-04-02 13:37+0000\n"
+"Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
+"Language-Team: Norwegian Bokmål <https://hosted.weblate.org/projects/"
+"blenderdmx/main/nb_NO/>\n"
 "Language: nb_NO\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.17-dev\n"
 "Generated-By: Babel 2.10.3\n"
 
 #: ../src/fixtures/controller/manager.py:41
@@ -71,7 +74,7 @@ msgstr ""
 
 #: ../src/fixtures/data/profile.py:15
 msgid "DMX Footprint"
-msgstr ""
+msgstr "DMX-fotavtrykk"
 
 #: ../src/fixtures/data/profile.py:20 ../src/fixtures/data/profile.py:22
 msgid "Fixture name"
@@ -87,7 +90,7 @@ msgstr ""
 
 #: ../src/fixtures/data/profile.py:24
 msgid "Manufacturer name"
-msgstr ""
+msgstr "Utviklernavn"
 
 #: ../src/fixtures/data/profile.py:27
 msgid "Revision"
@@ -99,27 +102,27 @@ msgstr ""
 
 #: ../src/fixtures/data/profile.py:29
 msgid "Uploaded by"
-msgstr ""
+msgstr "Opplastet av"
 
 #: ../src/fixtures/data/profile.py:29
 msgid "File uploaded by"
-msgstr ""
+msgstr "Fil opplastet av"
 
 #: ../src/fixtures/data/profile.py:31
 msgid "Created by"
-msgstr ""
+msgstr "Opprettet av"
 
 #: ../src/fixtures/data/profile.py:31
 msgid "File created by"
-msgstr ""
+msgstr "Fil opprettet av"
 
 #: ../src/fixtures/data/profile.py:33
 msgid "Rating"
-msgstr ""
+msgstr "Vurdering"
 
 #: ../src/fixtures/data/profile.py:37
 msgid "Revision ID"
-msgstr ""
+msgstr "Versjons-ID"
 
 #: ../src/fixtures/data/profile.py:37
 msgid "File identifier in the GDTF Share"
@@ -127,7 +130,7 @@ msgstr ""
 
 #: ../src/fixtures/data/profile.py:41
 msgid "Dmx Modes"
-msgstr ""
+msgstr "DMX-modus"
 
 #: ../src/fixtures/ui/list.py:42 ../src/fixtures/ui/list.py:80
 msgid "DMX Mode Name"
@@ -135,11 +138,11 @@ msgstr ""
 
 #: ../src/fixtures/ui/list.py:45 ../src/patch/data/fixture_batch.py:42
 msgid "Footprint"
-msgstr ""
+msgstr "Fotavtrykk"
 
 #: ../src/fixtures/ui/operator.py:17
 msgid "Import from Share"
-msgstr ""
+msgstr "Importer fra deling"
 
 #: ../src/fixtures/ui/operator.py:18
 msgid "Import fixture from GDTF Share"
@@ -221,7 +224,7 @@ msgstr ""
 #: ../src/patch/ui/menu.py:27 ../src/patch/ui/menu.py:48
 #: ../src/patch/ui/menu.py:60
 msgid "DMX Universe"
-msgstr ""
+msgstr "DMX-univers"
 
 #: ../src/patch/data/fixture.py:35
 msgid "The DMX universe to which the fixture is currently addressed."
@@ -229,7 +232,7 @@ msgstr ""
 
 #: ../src/patch/data/fixture.py:46
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: ../src/patch/data/fixture.py:47
 msgid "A numeric unique identifier for the fixture."
@@ -240,7 +243,7 @@ msgstr ""
 #: ../src/patch/data/profile.py:23 ../src/patch/data/profile.py:30
 #: ../src/patch/data/universe.py:17
 msgid "Name"
-msgstr ""
+msgstr "Navn"
 
 #: ../src/patch/data/fixture.py:54
 msgid "A unique name for the fixture."
@@ -248,7 +251,7 @@ msgstr ""
 
 #: ../src/patch/data/fixture.py:60
 msgid "GDTF Profile"
-msgstr ""
+msgstr "GDTF-profil"
 
 #: ../src/patch/data/fixture.py:61
 msgid "The GDTF profile of the fixture."
@@ -256,7 +259,7 @@ msgstr ""
 
 #: ../src/patch/data/fixture.py:66
 msgid "GDTF Mode"
-msgstr ""
+msgstr "GDTF-modus"
 
 #: ../src/patch/data/fixture.py:67
 msgid "The GDTF mode of the current profile."
@@ -264,7 +267,7 @@ msgstr ""
 
 #: ../src/patch/data/fixture.py:81
 msgid "Create Lights"
-msgstr ""
+msgstr "Opprett lys"
 
 #: ../src/patch/data/fixture.py:82
 msgid ""
@@ -289,7 +292,7 @@ msgstr ""
 
 #: ../src/patch/data/fixture_batch.py:22
 msgid "Units"
-msgstr ""
+msgstr "Enheter"
 
 #: ../src/patch/data/fixture_batch.py:23
 msgid "The number of fixtures inside this batch."
@@ -311,7 +314,7 @@ msgstr ""
 
 #: ../src/patch/data/fixture_batch.py:56
 msgid "Expand"
-msgstr ""
+msgstr "Utvid"
 
 #: ../src/patch/data/fixture_batch.py:59
 msgid "Expands/shrinks the list of fixtures in this batch."
@@ -321,23 +324,23 @@ msgstr ""
 #: ../src/patch/data/profile.py:24 ../src/patch/data/profile.py:30
 #: ../src/patch/data/profile.py:38
 msgid "The name of the DMX profile."
-msgstr ""
+msgstr "Navnet på DMX-profilen."
 
 #: ../src/patch/data/profile.py:33
 msgid "Short Name"
-msgstr ""
+msgstr "Kort navn"
 
 #: ../src/patch/data/profile.py:38
 msgid "Filename"
-msgstr ""
+msgstr "Filnavn"
 
 #: ../src/patch/data/source.py:21
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 #: ../src/patch/data/source.py:21
 msgid "The type of DMX source."
-msgstr ""
+msgstr "Typen DMX-kilde."
 
 #: ../src/patch/data/universe.py:18
 msgid "A unique name for the DMX universe."
@@ -345,7 +348,7 @@ msgstr ""
 
 #: ../src/patch/data/universe.py:24
 msgid "Number"
-msgstr ""
+msgstr "Nummer"
 
 #: ../src/patch/data/universe.py:25
 msgid "The number of the DMX universe."
@@ -353,19 +356,20 @@ msgstr ""
 
 #: ../src/patch/data/universe.py:34
 msgid "Source"
-msgstr ""
+msgstr "Kilde"
 
 #: ../src/patch/data/universe.py:35
 msgid "The type of DMX source of the universe."
 msgstr ""
 
 #: ../src/patch/ui/menu.py:71
+#, fuzzy
 msgid "No Profile selected"
-msgstr ""
+msgstr "Ingen profil valgt"
 
 #: ../src/patch/ui/operator.py:23 ../src/patch/ui/operator.py:37
 msgid "Add Universe"
-msgstr ""
+msgstr "Legg til univers"
 
 #: ../src/patch/ui/operator.py:24 ../src/patch/ui/operator.py:38
 msgid "Add a new Universe to the Patch."
@@ -418,13 +422,15 @@ msgid "Fixtures"
 msgstr ""
 
 #: ../src/preferences/__init__.py:18
+#, fuzzy
 msgid "GDTF Share API key"
-msgstr ""
+msgstr "API-nøkkel for GDTF-deling"
 
 #: ../src/preferences/__init__.py:19
+#, fuzzy
 msgid "Private API key for GDTF Share"
-msgstr ""
+msgstr "Privat API-nøkkel for GDTF-delingen"
 
 #: ../src/programmer/ui/panel.py:19
 msgid "Programmer"
-msgstr ""
+msgstr "Programmerer"
