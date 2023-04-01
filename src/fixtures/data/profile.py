@@ -38,12 +38,12 @@ class DMX_Fixtures_Import_Gdtf_Profile(PropertyGroup):
     )
 
     modes: CollectionProperty(
-        name=_("Dmx Modes"), type=DMX_Fixtures_Import_Gdtf_Profile_Dmx_Mode
+        name=_("DMX Modes"), type=DMX_Fixtures_Import_Gdtf_Profile_Dmx_Mode
     )
 
     @staticmethod
     def get_profile_list():
-        """List gdtf files in in profiles folder"""
+        """List all GDTF files in \"Profiles\" folder"""
         dir_path = os.path.dirname(os.path.abspath(__file__))
         try:
             with open(
