@@ -205,9 +205,8 @@ msgid "DMX Local fixtures"
 msgstr "Lokalne oprawy DMX"
 
 #: ../src/fixtures/ui/panel.py:108
-#, fuzzy
 msgid "Local Fixture details"
-msgstr "Szczegóły dotyczące lokalnych urządzeń"
+msgstr "Szczegóły dotyczące lokalnych opraw"
 
 #: ../src/patch/data/fixture.py:20 ../src/patch/data/fixture.py:73
 #, fuzzy
