@@ -422,7 +422,6 @@ msgid "DMX Patch"
 msgstr "Łatka DMX"
 
 #: ../src/patch/ui/panel.py:28
-#, fuzzy
 msgid "Universes"
 msgstr "Wszechświat"
 
