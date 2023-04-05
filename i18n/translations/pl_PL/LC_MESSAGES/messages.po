@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-03-27 22:15+0200\n"
-"PO-Revision-Date: 2023-04-05 15:20+0000\n"
-"Last-Translator: gnu-ewm <gnu.ewm@protonmail.com>\n"
+"PO-Revision-Date: 2023-04-06 15:47+0000\n"
+"Last-Translator: Eryk Michalak <gnu.ewm@protonmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/blenderdmx/main/"
 "pl/>\n"
 "Language: pl_PL\n"
@@ -144,7 +144,6 @@ msgid "Footprint"
 msgstr "Ślad stopy"
 
 #: ../src/fixtures/ui/operator.py:17
-#, fuzzy
 msgid "Import from Share"
 msgstr "Importuj z Share"
 
@@ -409,7 +408,6 @@ msgid "Build Fixtures"
 msgstr "Buduj oprawy"
 
 #: ../src/patch/ui/operator.py:113
-#, fuzzy
 msgid ""
 "After completing the patch, you should click this button to build/update "
 "the fixture geometry."
@@ -426,19 +424,16 @@ msgid "Universes"
 msgstr "Wszechświat"
 
 #: ../src/patch/ui/panel.py:41
-#, fuzzy
 msgid "Fixtures"
 msgstr "Oprawy"
 
 #: ../src/preferences/__init__.py:18
-#, fuzzy
 msgid "GDTF Share API key"
 msgstr "Klucz API GDTF Share"
 
 #: ../src/preferences/__init__.py:19
-#, fuzzy
 msgid "Private API key for GDTF Share"
-msgstr "Prywatny klucz API dla udziału GDTF"
+msgstr "Prywatny klucz API dla GDTF Share"
 
 #: ../src/programmer/ui/panel.py:19
 msgid "Programmer"
