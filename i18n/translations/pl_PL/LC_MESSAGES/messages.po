@@ -293,9 +293,8 @@ msgstr ""
 "kanałów kolorów."
 
 #: ../src/patch/data/fixture_batch.py:16
-#, fuzzy
 msgid "A unique name for the fixture batch."
-msgstr "Unikalna nazwa partii urządzeń."
+msgstr "Unikalna nazwa partii opraw."
 
 #: ../src/patch/data/fixture_batch.py:22
 msgid "Units"
