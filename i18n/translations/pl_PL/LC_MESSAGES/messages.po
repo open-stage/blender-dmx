@@ -415,11 +415,11 @@ msgid ""
 "the fixture geometry."
 msgstr ""
 "Po zakończeniu aktualizacji należy kliknąć ten przycisk, aby zbudować/"
-"zaktualizować geometrię urządzenia."
+"zaktualizować geometrię oprawy."
 
 #: ../src/patch/ui/panel.py:18
 msgid "DMX Patch"
-msgstr ""
+msgstr "Łatka DMX"
 
 #: ../src/patch/ui/panel.py:28
 #, fuzzy
