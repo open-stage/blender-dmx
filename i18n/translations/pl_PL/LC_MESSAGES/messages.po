@@ -80,9 +80,8 @@ msgid "DMX Footprint"
 msgstr "Ślad stopy DMX"
 
 #: ../src/fixtures/data/profile.py:20 ../src/fixtures/data/profile.py:22
-#, fuzzy
 msgid "Fixture name"
-msgstr "Nazwa urządzenia"
+msgstr "Nazwa oprawy"
 
 #: ../src/fixtures/data/profile.py:20
 msgid "Manufacturer and fixture name"
