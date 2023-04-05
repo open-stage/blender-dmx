@@ -319,7 +319,6 @@ msgid "Overrides the footprint of each fixture."
 msgstr ""
 
 #: ../src/patch/data/fixture_batch.py:56
-#, fuzzy
 msgid "Expand"
 msgstr "Zwiększ"
 
