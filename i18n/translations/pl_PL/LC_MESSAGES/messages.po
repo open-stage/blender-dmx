@@ -140,7 +140,6 @@ msgid "DMX Mode Name"
 msgstr "Nazwa trybu DMX"
 
 #: ../src/fixtures/ui/list.py:45 ../src/patch/data/fixture_batch.py:42
-#, fuzzy
 msgid "Footprint"
 msgstr "Ślad stopy"
 
