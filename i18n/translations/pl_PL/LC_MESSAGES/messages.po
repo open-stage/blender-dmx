@@ -197,7 +197,6 @@ msgid "DMX Fixtures import"
 msgstr ""
 
 #: ../src/fixtures/ui/panel.py:44
-#, fuzzy
 msgid "Fixture details"
 msgstr "Szczegóły oprawy"
 
