@@ -100,9 +100,8 @@ msgid "Revision"
 msgstr "Rewizja"
 
 #: ../src/fixtures/data/profile.py:27
-#, fuzzy
 msgid "Revision text"
-msgstr "Tekst poprawki"
+msgstr "Tekst rewizji"
 
 #: ../src/fixtures/data/profile.py:29
 msgid "Uploaded by"
