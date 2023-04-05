@@ -177,9 +177,8 @@ msgid "Files"
 msgstr "Pliki"
 
 #: ../src/fixtures/ui/operator.py:75
-#, fuzzy
 msgid "Delete fixture"
-msgstr "Usuń urządzenie"
+msgstr "Usuń oprawę"
 
 #: ../src/fixtures/ui/operator.py:76
 msgid "Delete fixture from local filesystem"
