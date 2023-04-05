@@ -213,7 +213,6 @@ msgid "Number of Channels"
 msgstr "Liczba kanałów"
 
 #: ../src/patch/data/fixture.py:21 ../src/patch/data/fixture.py:74
-#, fuzzy
 msgid "The number of channels of the current profile."
 msgstr "Liczba kanałów w bieżącym profilu."
 
@@ -229,7 +228,7 @@ msgstr ""
 #: ../src/patch/ui/menu.py:27 ../src/patch/ui/menu.py:48
 #: ../src/patch/ui/menu.py:60
 msgid "DMX Universe"
-msgstr ""
+msgstr "Wszechświat DMX"
 
 #: ../src/patch/data/fixture.py:35
 msgid "The DMX universe to which the fixture is currently addressed."
@@ -237,7 +236,7 @@ msgstr ""
 
 #: ../src/patch/data/fixture.py:46
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: ../src/patch/data/fixture.py:47
 #, fuzzy
