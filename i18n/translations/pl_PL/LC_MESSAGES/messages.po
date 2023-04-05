@@ -349,7 +349,6 @@ msgid "The type of DMX source."
 msgstr "Typ źródła DMX."
 
 #: ../src/patch/data/universe.py:18
-#, fuzzy
 msgid "A unique name for the DMX universe."
 msgstr "Unikalna nazwa dla wszechświata DMX."
 
