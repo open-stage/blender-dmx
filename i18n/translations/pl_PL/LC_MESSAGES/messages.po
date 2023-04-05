@@ -377,9 +377,8 @@ msgid "Add Universe"
 msgstr "Dodaj wszechświat"
 
 #: ../src/patch/ui/operator.py:24 ../src/patch/ui/operator.py:38
-#, fuzzy
 msgid "Add a new Universe to the Patch."
-msgstr "Dodaj nowy wszechświat do aktualizacji."
+msgstr "Dodaj nowy wszechświat do łatki."
 
 #: ../src/patch/ui/operator.py:51 ../src/patch/ui/operator.py:96
 msgid "Remove Fixture"
