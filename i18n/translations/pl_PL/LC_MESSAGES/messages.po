@@ -120,7 +120,6 @@ msgid "File created by"
 msgstr "Plik utworzony przez"
 
 #: ../src/fixtures/data/profile.py:33
-#, fuzzy
 msgid "Rating"
 msgstr "Ocena"
 
