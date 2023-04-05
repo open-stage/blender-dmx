@@ -72,13 +72,12 @@ msgid "Message Box"
 msgstr "Okno dialogowe"
 
 #: ../src/fixtures/data/profile.py:14
-#, fuzzy
 msgid "Mode name"
 msgstr "Nazwa trybu"
 
 #: ../src/fixtures/data/profile.py:15
 msgid "DMX Footprint"
-msgstr ""
+msgstr "Ślad stopy DMX"
 
 #: ../src/fixtures/data/profile.py:20 ../src/fixtures/data/profile.py:22
 #, fuzzy
