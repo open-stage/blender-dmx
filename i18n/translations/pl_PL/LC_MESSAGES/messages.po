@@ -365,9 +365,8 @@ msgid "Source"
 msgstr "Źródło"
 
 #: ../src/patch/data/universe.py:35
-#, fuzzy
 msgid "The type of DMX source of the universe."
-msgstr "Typ źródła DMX dla danego uniwersum."
+msgstr "Typ źródła DMX dla danego wszechświata."
 
 #: ../src/patch/ui/menu.py:71
 msgid "No Profile selected"
