@@ -239,9 +239,8 @@ msgid "ID"
 msgstr "ID"
 
 #: ../src/patch/data/fixture.py:47
-#, fuzzy
 msgid "A numeric unique identifier for the fixture."
-msgstr "Numeryczny, unikalny identyfikator dla urządzenia."
+msgstr "Numeryczny, unikalny identyfikator dla oprawy."
 
 #: ../src/patch/data/fixture.py:53 ../src/patch/data/fixture_batch.py:15
 #: ../src/patch/data/profile.py:15 ../src/patch/data/profile.py:20
@@ -283,7 +282,7 @@ msgstr ""
 
 #: ../src/patch/data/fixture.py:89
 msgid "Gel Color"
-msgstr ""
+msgstr "Kolor żelu"
 
 #: ../src/patch/data/fixture.py:90
 msgid ""
