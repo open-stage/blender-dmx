@@ -405,7 +405,6 @@ msgid "Add new Fixture Batch to the Patch."
 msgstr ""
 
 #: ../src/patch/ui/operator.py:112
-#, fuzzy
 msgid "Build Fixtures"
 msgstr "Buduj oprawy"
 
