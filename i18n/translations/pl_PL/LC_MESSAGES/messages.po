@@ -323,9 +323,8 @@ msgid "Expand"
 msgstr "Zwiększ"
 
 #: ../src/patch/data/fixture_batch.py:59
-#, fuzzy
 msgid "Expands/shrinks the list of fixtures in this batch."
-msgstr "Rozszerza/zmniejsza listę urządzeń w tej partii."
+msgstr "Rozszerza/zmniejsza listę opraw w tej partii."
 
 #: ../src/patch/data/profile.py:15 ../src/patch/data/profile.py:20
 #: ../src/patch/data/profile.py:24 ../src/patch/data/profile.py:30
