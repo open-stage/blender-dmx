@@ -124,9 +124,8 @@ msgid "Rating"
 msgstr "Ocena"
 
 #: ../src/fixtures/data/profile.py:37
-#, fuzzy
 msgid "Revision ID"
-msgstr "Identyfikator wersji"
+msgstr "Identyfikator rewizji"
 
 #: ../src/fixtures/data/profile.py:37
 msgid "File identifier in the GDTF Share"
