@@ -96,7 +96,6 @@ msgid "Manufacturer name"
 msgstr "Nazwa producenta"
 
 #: ../src/fixtures/data/profile.py:27
-#, fuzzy
 msgid "Revision"
 msgstr "Rewizja"
 
