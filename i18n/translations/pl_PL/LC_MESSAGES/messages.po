@@ -373,7 +373,6 @@ msgid "No Profile selected"
 msgstr "Nie wybrano profilu"
 
 #: ../src/patch/ui/operator.py:23 ../src/patch/ui/operator.py:37
-#, fuzzy
 msgid "Add Universe"
 msgstr "Dodaj wszechświat"
 
