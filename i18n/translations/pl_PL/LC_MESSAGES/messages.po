@@ -48,7 +48,6 @@ msgid "Error while updating Share index. Error code was: {}"
 msgstr ""
 
 #: ../src/fixtures/controller/manager.py:126
-#, fuzzy
 msgid "GDTF Share update error"
 msgstr "Błąd aktualizacji GDTF Share"
 
@@ -70,7 +69,7 @@ msgstr ""
 
 #: ../src/fixtures/controller/manager.py:153
 msgid "Message Box"
-msgstr ""
+msgstr "Okno dialogowe"
 
 #: ../src/fixtures/data/profile.py:14
 #, fuzzy
