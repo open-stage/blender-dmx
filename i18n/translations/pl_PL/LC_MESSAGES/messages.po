@@ -209,7 +209,6 @@ msgid "Local Fixture details"
 msgstr "Szczegóły dotyczące lokalnych opraw"
 
 #: ../src/patch/data/fixture.py:20 ../src/patch/data/fixture.py:73
-#, fuzzy
 msgid "Number of Channels"
 msgstr "Liczba kanałów"
 
