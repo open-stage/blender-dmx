@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-03-27 22:15+0200\n"
-"PO-Revision-Date: 2023-04-06 15:47+0000\n"
-"Last-Translator: Eryk Michalak <gnu.ewm@protonmail.com>\n"
+"PO-Revision-Date: 2023-04-08 17:51+0000\n"
+"Last-Translator: WaldiS <sto@tutanota.de>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/blenderdmx/main/"
 "pl/>\n"
 "Language: pl_PL\n"
@@ -40,12 +40,13 @@ msgid "Share index updated. Status code was: {}"
 msgstr "Zaktualizowano indeks udostępniania. Kod stanu to: {}"
 
 #: ../src/fixtures/controller/manager.py:118
+#, fuzzy
 msgid "GDTF Share updated"
-msgstr ""
+msgstr "Zaktualizowano udział GDTF"
 
 #: ../src/fixtures/controller/manager.py:123
 msgid "Error while updating Share index. Error code was: {}"
-msgstr ""
+msgstr "Błąd podczas aktualizowania indeksu Share. Kod błędu: {}"
 
 #: ../src/fixtures/controller/manager.py:126
 msgid "GDTF Share update error"
@@ -129,7 +130,7 @@ msgstr "Identyfikator rewizji"
 
 #: ../src/fixtures/data/profile.py:37
 msgid "File identifier in the GDTF Share"
-msgstr ""
+msgstr "Identyfikator pliku w GDTF Share"
 
 #: ../src/fixtures/data/profile.py:41
 msgid "Dmx Modes"
