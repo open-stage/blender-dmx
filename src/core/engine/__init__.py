@@ -16,15 +16,6 @@ class DMX_Engine(
     The engine responsible for DMX data I/O and fixture rendering.
     '''
 
-    # A buffer of 64 universes of 512 channels
-    # This is the largest IntVector allowed by Blender, so
-    # reading/writing must be done through 3D coordinates.
-    buffer: IntVectorProperty(
-        min = 0,
-        max = 255,
-        size = (32,32,32)
-    )
-
     def program(self, fixtures: List['DMX_Fixture'], programmer_data: Dict[str,float]):
         '''
         Write DMX data to the buffer at channels covered by the given fixtures.
@@ -38,9 +29,18 @@ class DMX_Engine(
         '''
         Read DMX data from the buffer and update fixtures with it.
         '''
+        pass
         for fixture in core.fixtures:
-            data = self._build_fixture_data(fixture)
-            self.render_dimmer(fixture, data)
-    
-            
+            render = fixture.roots[0].object['render']
+
+            dimmer = self._renderable_data(render, 'Dimmer')
+            if (dimmer): self.render_dimmer(dimmer)
+
+            color = self._renderable_data(render, 'ColorAdd')
+            if (color): self.render_color(color)
+
+            # for geom in geoms:
+            #     
+            #     if (dimmer): self.render_dimmer(geom, dimmer)
+                
         

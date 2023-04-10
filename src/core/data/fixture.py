@@ -17,9 +17,9 @@ class DMX_FixtureChannel(PropertyGroup):
     and acts as the interface between DMX channels and fixture geometry.
     '''
 
-    # The 3D coordinates of the channel on the buffer
+    # The coordinates of the 4 channels on the buffer
     coords: IntVectorProperty(
-        size = 12
+        size = 4
     )
 
     # Channel resolution in bytes. 0 = virtual channel
@@ -43,8 +43,7 @@ class DMX_FixtureChannel(PropertyGroup):
     default: IntProperty(
         default = 0
     )
-    
-    
+        
 class DMX_Fixture(PropertyGroup):
     '''
     A dynamic fixture, built from a `PatchFixture` by the
