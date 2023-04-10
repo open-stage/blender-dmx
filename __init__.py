@@ -88,7 +88,7 @@ def register():
     bpy.utils.register_class(DMX)
     bpy.utils.register_class(DMX_TempData)
     bpy.types.Scene.dmx = PointerProperty(type=DMX)
-    bpy.types.WindowManager.dmx = PointerProperty(type=DMX_TempData)
+    bpy.types.WindowManager.dmx = PointerProperty(type=DMX_Non_Persistent_Data)
     
     Timer(1, on_register, ()).start()
 
