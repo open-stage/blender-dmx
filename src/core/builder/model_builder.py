@@ -9,7 +9,7 @@ from lib.io_scene_3ds.import_3ds import load_3ds
 from src.core import util
 from .gdtf import DMX_GDTF_Processor
 
-class DMX_GDTF_ModelBuilder:
+class DMX_ModelBuilder:
     '''
     Builder that parses a GDTF Profile and builds a
     Model Collection from it.
@@ -498,5 +498,5 @@ class DMX_GDTF_ModelBuilder:
             # objects = DMX_GDTFBuilder.get_objects(collection)
             return collection
 
-        builder = DMX_GDTF_ModelBuilder(gdtf, mode_name).build()
+        builder = DMX_ModelBuilder(gdtf, mode_name).build()
         return builder.collection

@@ -44,14 +44,14 @@
     - create a new DMX_Fixture inside DMX.fixtures:
     - creates new collection and add it to the scene
     - create model collection via _load_model:
-        - get collection using DMX_GDTF_ModelBuilder.get(self.profile.filename, self.patch.mode)
+        - get collection using DMX_ModelBuilder.get(self.profile.filename, self.patch.mode)
 
-#### core/builder/gdtf_builder → DMX_GDTF_ModelBuilder → get:
+#### core/builder/model_builder → DMX_ModelBuilder → get:
 
                 - create pygdtf object
-                - build gdtf fixture model using DMX_GDTF_ModelBuilder(gdtf, mode_name).build()
+                - build gdtf fixture model using DMX_ModelBuilder(gdtf, mode_name).build()
 
-#### core/builder/gdtf_builder → DMX_GDTF_ModelBuilder(gdtf, mode_name) → __init__, build:
+#### core/builder/model_builder → DMX_ModelBuilder(gdtf, mode_name) → __init__, build:
                 
                 - create channel metadata (__init__)
                 - create collection in data.collections (name is fixture + mode name, revision is in props)
@@ -65,7 +65,41 @@
     - annotate channels per geometry
     - render
 
+## Rendering
 
+Each fixture first root is annotated with the "renderables metadata".
+It looks like this:
+
+```
+{
+  'Dimmer': {
+    'geoms': [<Object1>, <Object2>],
+    'coords': [[[1,0,0,0,0]],[[1,8,0,0,0]]]
+  },
+  'ColorAdd': {
+    'geoms': [<Object1>, <Object2>],
+    'coords': [[[1,1,0,0,0],[1,2,0,0,0],[1,3,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]],[[1,9,0,0,0],[1,10,0,0,0],[1,11,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]]]
+  }
+}
+```
+
+The `coords` values follow the structure defined at `const.Functions`.
+
+Each coordinate is composed of (resolution, coarse, fine, ultra, uber). All addresses are absolute on the buffer.
+The render method reads the data for each valid coordinate (resolution > 0), then zips it with the geom, so each render method receives the following for each fixture:
+
+```
+# render_dimmer(data)
+data = [
+  (<Object1>, [1.0]),
+  (<Object2>, [1.0])
+]
+# render_color(data)
+data = [
+  (<Object1>, [1.0,1.0,1.0,None,None,None]),
+  (<Object2>, [1.0,1.0,1.0,None,None,None])
+]
+```
 
 
 

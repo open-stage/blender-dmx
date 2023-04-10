@@ -6,7 +6,7 @@ from bpy.types import Collection, Object
 from src.core.types import *
 from src.core import util
 from src.core import const
-from .gdtf_builder import DMX_GDTF_ModelBuilder
+from .model_builder import DMX_ModelBuilder
 from .material import DMX_Material
 
 class DMX_FixtureBuilder:
@@ -51,7 +51,7 @@ class DMX_FixtureBuilder:
         '''
         Load a Model Collection, built by the GDTF Builder.
         '''
-        return DMX_GDTF_ModelBuilder.get(self.profile.filename, self.patch.mode)
+        return DMX_ModelBuilder.get(self.profile.filename, self.patch.mode)
 
     def _build_tree(self, node: Object) -> Object:
         '''
@@ -185,15 +185,57 @@ class DMX_FixtureBuilder:
             stack += obj.children
         return objs    
 
+    def _add_renderable(self, cache: Object, renderable: str, ch: 'DMX_FixtureChannel', fns: any):
+        default = [(0,0,0,0,0) for _ in range(len(fns))]
+        if renderable not in cache:
+            cache[renderable] = {}
+        if ch.geometry.name not in cache[renderable]:
+            cache[renderable][ch.geometry.name] = [ch.geometry, default]
+
+    def _cache_dmx_renderables(self) -> None:
+        '''
+        Annotate first fixture root with renderables metadata.
+        This data is used on the render to read data and update geometry
+        in an optimized way.
+        '''
+        cache = {}
+
+        for ch in self.fixture.channels:
+            # Find renderable to which this Function belongs
+            r, fns = next(((r, fns) for r, fns in const.Renderables.items() if ch.function in fns), (None, None))
+
+            # Channel function is not renderable
+            if (r is None):
+                continue
+
+            # Add renderable to cache
+            self._add_renderable(cache, r, ch, fns)
+
+            # Add channel to proper position on the list
+            i = fns.index(ch.function)
+            cache[r][ch.geometry.name][1][i] = (ch.resolution,) + tuple(ch.coords)
+
+        renderables = {}
+        for r in cache:
+            renderables[r] = {
+                'geoms': [],
+                'coords': []
+            }
+            for geom, coords in cache[r].values():
+                renderables[r]['geoms'].append(geom)
+                renderables[r]['coords'].append(coords)
+
+        self.fixture.roots[0].object['render'] = renderables
+
+
     def _cache_emitter_shader_references(self) -> None:
         '''
         Annotate all geometry that has a Dimmer or Color
         function with references to it's children emitter
         shaders.
         '''
-        emitter_fns = [const.Function.Dimmer] + \
-                      const.Function.RGB + \
-                      const.Function.HSV
+        emitter_fns = const.Function.Dimmer + \
+                      const.Function.ColorAdd
         channels = [
             ch for ch in self.fixture.channels
             if ch.function in emitter_fns
@@ -206,6 +248,22 @@ class DMX_FixtureBuilder:
                 beam.data.materials[0].node_tree
                 for beam in beams
             ]
+
+    def _cache_light_references(self) -> None:
+        '''
+        Annotate all geometry that has a Dimmer or Color
+        function with references to it's children lights.
+        '''
+        emitter_fns = const.Function.Dimmer + \
+                      const.Function.ColorAdd
+        channels = [
+            ch for ch in self.fixture.channels
+            if ch.function in emitter_fns
+        ]
+
+        for ch in channels:
+            geom = ch.geometry
+            geom['lights'] = self._get_nodes_of_type(geom, 'Light')
 
     # [ Preview Options ]
 
@@ -225,16 +283,11 @@ class DMX_FixtureBuilder:
         on the DMX buffer.
         '''
         addresses = [
-            (o - 1 + universe*512)
+            (o - 1 + (universe-1)*512)
             for o in offset
             if o != 0
         ]
-        coords = [(
-            i & 31,
-            (i >> 5) & 31,
-            (i >> 10) & 31
-        ) for i in addresses]
-        return coords
+        return addresses
 
     def _build_channel(self, obj: Object, channel: ChannelMetadata):
         '''
@@ -246,27 +299,27 @@ class DMX_FixtureBuilder:
         
         offset = channel['offset']
         dmx_break = self.patch.breaks[channel['dmx_break']-1]
-        
         coords = None
-        if offset is not None:
+
+        # Virtual Channel
+        if offset is None:
+            resolution = 0
+
+        # DMX Channel
+        else:
+            resolution = len(offset)
             # Add break address so offset has absolute dmx address
             offset = [
-                offset[i] + dmx_break.address
+                offset[i] - 1 + dmx_break.address
                 if i < len(offset) else 0
                 for i in range(4)
             ]
-            # Get 3D coords of the universe+channel on the dmx buffer
+            # Get coords of the universe+channel on the dmx buffer
             coords = self._get_coords(dmx_break.universe, offset)
-            coords = sum(coords, tuple())
-            coords += (0,)*(12-len(coords))
+            coords += (0,)*(4-len(coords))
 
-        if offset is not None:
-            offset_len = len(offset)
-        else:
-            offset_len = 0 # TODO: fix me... not sure why offset is None, maybe GeometryReference?
-
-        self.fixture.channels[-1].coords = coords or (0,)*12
-        self.fixture.channels[-1].resolution = offset_len
+        self.fixture.channels[-1].coords = coords or (0,)*4
+        self.fixture.channels[-1].resolution = resolution
         self.fixture.channels[-1].function = channel['function']
         self.fixture.channels[-1].geometry = obj
         self.fixture.channels[-1].default = channel['default']['value']
@@ -281,6 +334,9 @@ class DMX_FixtureBuilder:
                 continue
             for channel in obj['dmx_channels']:
                 self._build_channel(obj, channel)
+            # Delete channel metadata, since it won't be used.
+            # The engine uses the resulting built channels.
+            del obj['dmx_channels']
 
     # [ Constructor ]
 
@@ -329,10 +385,14 @@ class DMX_FixtureBuilder:
         # Build DMX channels
         self._build_channels()
 
+        # Build cache of renderables, to call render methods selectively.
+        self._cache_dmx_renderables()
+
         # Build caches of pointers to dynamic blender elements
         # such as material nodes and lights.
         # These allow updating fixture state in constant time.
         self._cache_emitter_shader_references()
+        self._cache_light_references()
 
         # Set position
         if mvr:
