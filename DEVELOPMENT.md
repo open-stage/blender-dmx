@@ -88,6 +88,46 @@ The core module has two extra sub-modules:
 
 
 
+## Rendering
+
+Each fixture first root is annotated with the "renderables metadata".
+It looks like this:
+
+```
+{
+  'Dimmer': {
+    'geoms': [<Object1>, <Object2>],
+    'coords': [[[1,0,0,0,0]],[[1,8,0,0,0]]]
+  },
+  'ColorAdd': {
+    'geoms': [<Object1>, <Object2>],
+    'coords': [[[1,1,0,0,0],[1,2,0,0,0],[1,3,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]],[[1,9,0,0,0],[1,10,0,0,0],[1,11,0,0,0],[0,0,0,0,0],[0,0,0,0,0],[0,0,0,0,0]]]
+  }
+}
+```
+
+The `coords` values follow the structure defined at `const.Functions`.
+
+Each coordinate is composed of (resolution, coarse, fine, ultra, uber). All addresses are absolute on the buffer.
+The render method reads the data for each valid coordinate (resolution > 0), then zips it with the geom, so each render method receives the following for each fixture:
+
+```
+# render_dimmer(data)
+data = [
+  (<Object1>, [1.0]),
+  (<Object2>, [1.0])
+]
+# render_color(data)
+data = [
+  (<Object1>, [1.0,1.0,1.0,None,None,None]),
+  (<Object2>, [1.0,1.0,1.0,None,None,None])
+]
+```
+
+
+
+
+
 
 
 
