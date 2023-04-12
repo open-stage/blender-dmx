@@ -1,4 +1,4 @@
-# Translations template for PROJECT.
+# French (France) translations for PROJECT.
 # Copyright (C) 2023 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
@@ -7,17 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-03-27 22:15+0200\n"
+"POT-Creation-Date: 2023-04-12 23:22+0200\n"
 "PO-Revision-Date: 2023-03-31 21:37+0000\n"
 "Last-Translator: max <ombre_1@hotmail.fr>\n"
-"Language-Team: French <https://hosted.weblate.org/projects/blenderdmx/main/"
-"fr/>\n"
 "Language: fr_FR\n"
+"Language-Team: French "
+"<https://hosted.weblate.org/projects/blenderdmx/main/fr/>\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.17-dev\n"
 "Generated-By: Babel 2.10.3\n"
 
 #: ../src/fixtures/controller/manager.py:41
@@ -129,7 +128,8 @@ msgid "File identifier in the GDTF Share"
 msgstr ""
 
 #: ../src/fixtures/data/profile.py:41
-msgid "Dmx Modes"
+#, fuzzy
+msgid "DMX Modes"
 msgstr "Mode DMX"
 
 #: ../src/fixtures/ui/list.py:42 ../src/fixtures/ui/list.py:80
@@ -409,8 +409,8 @@ msgid ""
 "After completing the patch, you should click this button to build/update "
 "the fixture geometry."
 msgstr ""
-"Après avoir complété le patch, cliqué sur ce bouton pour crée/mettre à jour "
-"le projecteur."
+"Après avoir complété le patch, cliqué sur ce bouton pour crée/mettre à "
+"jour le projecteur."
 
 #: ../src/patch/ui/panel.py:18
 msgid "DMX Patch"
@@ -435,3 +435,4 @@ msgstr ""
 #: ../src/programmer/ui/panel.py:19
 msgid "Programmer"
 msgstr ""
+

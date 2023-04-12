@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-03-27 22:15+0200\n"
+"POT-Creation-Date: 2023-04-12 23:22+0200\n"
 "PO-Revision-Date: 2023-03-15 22:53+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: pt_BR\n"
@@ -127,7 +127,7 @@ msgid "File identifier in the GDTF Share"
 msgstr ""
 
 #: ../src/fixtures/data/profile.py:41
-msgid "Dmx Modes"
+msgid "DMX Modes"
 msgstr ""
 
 #: ../src/fixtures/ui/list.py:42 ../src/fixtures/ui/list.py:80
@@ -443,5 +443,8 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid "Uploader"
+#~ msgstr ""
+
+#~ msgid "Dmx Modes"
 #~ msgstr ""
 
