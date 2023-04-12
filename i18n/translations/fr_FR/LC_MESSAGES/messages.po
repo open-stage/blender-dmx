@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-03-27 22:15+0200\n"
-"PO-Revision-Date: 2023-03-29 19:38+0000\n"
-"Last-Translator: Konrad Dieter Einfach <einfachkonrad@gmail.com>\n"
-"Language-Team: German <https://hosted.weblate.org/projects/blenderdmx/main/"
-"de/>\n"
-"Language: de\n"
+"PO-Revision-Date: 2023-03-31 21:37+0000\n"
+"Last-Translator: max <ombre_1@hotmail.fr>\n"
+"Language-Team: French <https://hosted.weblate.org/projects/blenderdmx/main/"
+"fr/>\n"
+"Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 4.17-dev\n"
 "Generated-By: Babel 2.10.3\n"
 
@@ -42,159 +42,159 @@ msgstr ""
 
 #: ../src/fixtures/controller/manager.py:123
 msgid "Error while updating Share index. Error code was: {}"
-msgstr "Fehler beim Aktualisieren vom Share-Index. Fehlercode: {}"
+msgstr ""
 
 #: ../src/fixtures/controller/manager.py:126
 msgid "GDTF Share update error"
-msgstr "GDTF-Share Aktualisierungsfehler"
+msgstr ""
 
 #: ../src/fixtures/controller/manager.py:137
 msgid "File downloaded correctly. Status code was: {}"
-msgstr "Datei erfolgreich heruntergeladen! Statuscode: {}"
+msgstr ""
 
 #: ../src/fixtures/controller/manager.py:140
 msgid "GDTF file downloaded"
-msgstr "GDTF-Datei heruntergeladen"
+msgstr "Fichier GDTF téléchargé"
 
 #: ../src/fixtures/controller/manager.py:145
 msgid "Error downloading GDTF file. Error code was: {}"
-msgstr "Beim Herunterladen ist ein Fehler aufgetreten! Fehlercode: {}"
+msgstr "Erreur de téléchargement du fichier GDTF. Le code erreur est : {}"
 
 #: ../src/fixtures/controller/manager.py:148
 msgid "GDTF Share download error"
-msgstr "unidentifizierter GDTF-Share Downloadfehler"
+msgstr ""
 
 #: ../src/fixtures/controller/manager.py:153
 msgid "Message Box"
-msgstr "Nachrichtenbox"
+msgstr "Boite de dialogue"
 
 #: ../src/fixtures/data/profile.py:14
 msgid "Mode name"
-msgstr ""
+msgstr "nom du mode"
 
 #: ../src/fixtures/data/profile.py:15
 msgid "DMX Footprint"
-msgstr "DMX-Fußabdruck"
+msgstr ""
 
 #: ../src/fixtures/data/profile.py:20 ../src/fixtures/data/profile.py:22
 msgid "Fixture name"
-msgstr "Name der Fixture"
+msgstr "Nom du projecteur"
 
 #: ../src/fixtures/data/profile.py:20
 msgid "Manufacturer and fixture name"
-msgstr "Hersteller und Bezeichnung"
+msgstr "Nom du Constructeur et du projecteur"
 
 #: ../src/fixtures/data/profile.py:24
 msgid "Manufacturer"
-msgstr "Hersteller"
+msgstr "Constructeur"
 
 #: ../src/fixtures/data/profile.py:24
 msgid "Manufacturer name"
-msgstr "Name des Herstellers"
+msgstr "Nom du constructeur"
 
 #: ../src/fixtures/data/profile.py:27
 msgid "Revision"
-msgstr "Version"
+msgstr ""
 
 #: ../src/fixtures/data/profile.py:27
 msgid "Revision text"
-msgstr "Versionsbeschreibung"
+msgstr ""
 
 #: ../src/fixtures/data/profile.py:29
 msgid "Uploaded by"
-msgstr "Hochgeladen von"
+msgstr "Mise a jour par"
 
 #: ../src/fixtures/data/profile.py:29
 msgid "File uploaded by"
-msgstr "Datei hochgeladen von"
+msgstr "Fichier mis en ligne par"
 
 #: ../src/fixtures/data/profile.py:31
 msgid "Created by"
-msgstr "Erstellt von"
+msgstr "Crée par"
 
 #: ../src/fixtures/data/profile.py:31
 msgid "File created by"
-msgstr "Datei erstellt von"
+msgstr "Fichier crée par"
 
 #: ../src/fixtures/data/profile.py:33
 msgid "Rating"
-msgstr "Bewertung"
+msgstr "évaluation"
 
 #: ../src/fixtures/data/profile.py:37
 msgid "Revision ID"
-msgstr "Versions-ID"
+msgstr ""
 
 #: ../src/fixtures/data/profile.py:37
 msgid "File identifier in the GDTF Share"
-msgstr "Dateikennung auf GDTF-Share"
+msgstr ""
 
 #: ../src/fixtures/data/profile.py:41
 msgid "Dmx Modes"
-msgstr "DMX-Modi"
+msgstr "Mode DMX"
 
 #: ../src/fixtures/ui/list.py:42 ../src/fixtures/ui/list.py:80
 msgid "DMX Mode Name"
-msgstr "Name des DMX-Modus"
+msgstr "Nom du mode DMX"
 
 #: ../src/fixtures/ui/list.py:45 ../src/patch/data/fixture_batch.py:42
 msgid "Footprint"
-msgstr "Fußabdruck"
+msgstr ""
 
 #: ../src/fixtures/ui/operator.py:17
 msgid "Import from Share"
-msgstr "Von GDTF-Share importieren"
+msgstr ""
 
 #: ../src/fixtures/ui/operator.py:18
 msgid "Import fixture from GDTF Share"
-msgstr "Fixture von GDTF-Share importieren"
+msgstr ""
 
 #: ../src/fixtures/ui/operator.py:30
 msgid "Update GDTF Share index"
-msgstr "GDTF-Share-Index aktualisieren"
+msgstr ""
 
 #: ../src/fixtures/ui/operator.py:31
 msgid "Update data index of GDTF Share"
-msgstr "Aktualisiere Daten von GDTF-Share"
+msgstr ""
 
 #: ../src/fixtures/ui/operator.py:41
 msgid "Import from file"
-msgstr "Aus Datei importieren"
+msgstr "Importer du fichier"
 
 #: ../src/fixtures/ui/operator.py:42
 msgid "Import fixture from local filesystem"
-msgstr "Fixture aus lokalem Dateisystem importieren"
+msgstr "Importer un projecteur depuis un fichier local"
 
 #: ../src/fixtures/ui/operator.py:48
 msgid "File Path"
-msgstr "Dateipfad"
+msgstr "Chemin d'accès"
 
 #: ../src/fixtures/ui/operator.py:50
 msgid "Files"
-msgstr "Datein"
+msgstr "Fichier"
 
 #: ../src/fixtures/ui/operator.py:75
 msgid "Delete fixture"
-msgstr "Fixture löschen"
+msgstr "Supprimer projecteur"
 
 #: ../src/fixtures/ui/operator.py:76
 msgid "Delete fixture from local filesystem"
-msgstr "Fixture aus lokalen Dateien löschen"
+msgstr "Supprimer projecteur d'un fichier local"
 
 #: ../src/fixtures/ui/operator.py:87
 msgid "Refresh files listing"
-msgstr "Dateiliste aktualisieren"
+msgstr "Rafraichir la liste de fichier"
 
 #: ../src/fixtures/ui/operator.py:88
 msgid "Update list of local files"
-msgstr ""
+msgstr "Mise à jour de la liste des fichiers locaux"
 
 #: ../src/fixtures/ui/panel.py:17
 msgid "DMX Fixtures import"
-msgstr ""
+msgstr "Projecteurs DMX importés"
 
 #: ../src/fixtures/ui/panel.py:44
 msgid "Fixture details"
-msgstr ""
+msgstr "Détail du projecteur"
 
 #: ../src/fixtures/ui/panel.py:80
 msgid "DMX Local fixtures"
@@ -206,7 +206,7 @@ msgstr ""
 
 #: ../src/patch/data/fixture.py:20 ../src/patch/data/fixture.py:73
 msgid "Number of Channels"
-msgstr ""
+msgstr "Nombre de canaux"
 
 #: ../src/patch/data/fixture.py:21 ../src/patch/data/fixture.py:74
 msgid "The number of channels of the current profile."
@@ -214,7 +214,7 @@ msgstr ""
 
 #: ../src/patch/data/fixture.py:26
 msgid "DMX Address"
-msgstr "DMX-Adresse"
+msgstr "Adresse DMX"
 
 #: ../src/patch/data/fixture.py:27
 msgid "The DMX address of the fixture at the current universe."
@@ -224,7 +224,7 @@ msgstr ""
 #: ../src/patch/ui/menu.py:27 ../src/patch/ui/menu.py:48
 #: ../src/patch/ui/menu.py:60
 msgid "DMX Universe"
-msgstr "DMX-Universum"
+msgstr "Univers DMX"
 
 #: ../src/patch/data/fixture.py:35
 msgid "The DMX universe to which the fixture is currently addressed."
@@ -232,7 +232,7 @@ msgstr ""
 
 #: ../src/patch/data/fixture.py:46
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #: ../src/patch/data/fixture.py:47
 msgid "A numeric unique identifier for the fixture."
@@ -243,15 +243,15 @@ msgstr ""
 #: ../src/patch/data/profile.py:23 ../src/patch/data/profile.py:30
 #: ../src/patch/data/universe.py:17
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
 #: ../src/patch/data/fixture.py:54
 msgid "A unique name for the fixture."
-msgstr ""
+msgstr "Nom unique du projecteur."
 
 #: ../src/patch/data/fixture.py:60
 msgid "GDTF Profile"
-msgstr ""
+msgstr "Profile GDTF"
 
 #: ../src/patch/data/fixture.py:61
 msgid "The GDTF profile of the fixture."
@@ -259,7 +259,7 @@ msgstr ""
 
 #: ../src/patch/data/fixture.py:66
 msgid "GDTF Mode"
-msgstr ""
+msgstr "Mode GDTF"
 
 #: ../src/patch/data/fixture.py:67
 msgid "The GDTF mode of the current profile."
@@ -267,7 +267,7 @@ msgstr ""
 
 #: ../src/patch/data/fixture.py:81
 msgid "Create Lights"
-msgstr ""
+msgstr "Crée Projecteur"
 
 #: ../src/patch/data/fixture.py:82
 msgid ""
@@ -278,7 +278,7 @@ msgstr ""
 
 #: ../src/patch/data/fixture.py:89
 msgid "Gel Color"
-msgstr ""
+msgstr "Couleur de Gelat"
 
 #: ../src/patch/data/fixture.py:90
 msgid ""
@@ -292,16 +292,16 @@ msgstr ""
 
 #: ../src/patch/data/fixture_batch.py:22
 msgid "Units"
-msgstr "Anzahl"
+msgstr "Unité"
 
 #: ../src/patch/data/fixture_batch.py:23
-#, fuzzy
 msgid "The number of fixtures inside this batch."
-msgstr "Die Anzahl der Fixtures in dieser Gruppe"
+msgstr ""
 
 #: ../src/patch/data/fixture_batch.py:32
+#, fuzzy
 msgid "Sequential"
-msgstr ""
+msgstr "Séquenceur"
 
 #: ../src/patch/data/fixture_batch.py:35
 msgid ""
@@ -314,51 +314,51 @@ msgid "Overrides the footprint of each fixture."
 msgstr ""
 
 #: ../src/patch/data/fixture_batch.py:56
+#, fuzzy
 msgid "Expand"
-msgstr "Erweitern"
+msgstr "Déplier"
 
 #: ../src/patch/data/fixture_batch.py:59
-#, fuzzy
 msgid "Expands/shrinks the list of fixtures in this batch."
-msgstr "Erweitert/minimiert die Fixtures in dieser Gruppe"
+msgstr ""
 
 #: ../src/patch/data/profile.py:15 ../src/patch/data/profile.py:20
 #: ../src/patch/data/profile.py:24 ../src/patch/data/profile.py:30
 #: ../src/patch/data/profile.py:38
 msgid "The name of the DMX profile."
-msgstr "Name des DMX-Profils."
+msgstr ""
 
 #: ../src/patch/data/profile.py:33
 msgid "Short Name"
-msgstr "kurzer Name"
+msgstr ""
 
 #: ../src/patch/data/profile.py:38
 msgid "Filename"
-msgstr "Dateiname"
+msgstr "Nom du fichier"
 
 #: ../src/patch/data/source.py:21
 msgid "Type"
-msgstr "Typ"
+msgstr "Type"
 
 #: ../src/patch/data/source.py:21
 msgid "The type of DMX source."
-msgstr ""
+msgstr "Type de la source DMX."
 
 #: ../src/patch/data/universe.py:18
 msgid "A unique name for the DMX universe."
-msgstr ""
+msgstr "Nom unique de l'univers DMX."
 
 #: ../src/patch/data/universe.py:24
 msgid "Number"
-msgstr ""
+msgstr "Nombre"
 
 #: ../src/patch/data/universe.py:25
 msgid "The number of the DMX universe."
-msgstr ""
+msgstr "Nombre d'univers DMX."
 
 #: ../src/patch/data/universe.py:34
 msgid "Source"
-msgstr ""
+msgstr "Source"
 
 #: ../src/patch/data/universe.py:35
 msgid "The type of DMX source of the universe."
@@ -370,11 +370,11 @@ msgstr ""
 
 #: ../src/patch/ui/operator.py:23 ../src/patch/ui/operator.py:37
 msgid "Add Universe"
-msgstr ""
+msgstr "Ajouter un Univers"
 
 #: ../src/patch/ui/operator.py:24 ../src/patch/ui/operator.py:38
 msgid "Add a new Universe to the Patch."
-msgstr ""
+msgstr "Ajouter un Univers au Patch."
 
 #: ../src/patch/ui/operator.py:51 ../src/patch/ui/operator.py:96
 msgid "Remove Fixture"
@@ -409,18 +409,20 @@ msgid ""
 "After completing the patch, you should click this button to build/update "
 "the fixture geometry."
 msgstr ""
+"Après avoir complété le patch, cliqué sur ce bouton pour crée/mettre à jour "
+"le projecteur."
 
 #: ../src/patch/ui/panel.py:18
 msgid "DMX Patch"
-msgstr ""
+msgstr "Patch DMX"
 
 #: ../src/patch/ui/panel.py:28
 msgid "Universes"
-msgstr ""
+msgstr "Univers"
 
 #: ../src/patch/ui/panel.py:41
 msgid "Fixtures"
-msgstr ""
+msgstr "Projecteurs"
 
 #: ../src/preferences/__init__.py:18
 msgid "GDTF Share API key"
