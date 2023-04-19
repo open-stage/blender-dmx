@@ -8,16 +8,17 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-04-12 23:22+0200\n"
-"PO-Revision-Date: 2023-04-08 17:51+0000\n"
+"PO-Revision-Date: 2023-04-20 13:48+0000\n"
 "Last-Translator: WaldiS <sto@tutanota.de>\n"
+"Language-Team: Polish <https://hosted.weblate.org/projects/blenderdmx/main/"
+"pl/>\n"
 "Language: pl_PL\n"
-"Language-Team: Polish "
-"<https://hosted.weblate.org/projects/blenderdmx/main/pl/>\n"
-"Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && "
-"(n%100<10 || n%100>=20) ? 1 : 2;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 4.18-dev\n"
 "Generated-By: Babel 2.10.3\n"
 
 #: ../src/fixtures/controller/manager.py:41
@@ -64,8 +65,9 @@ msgid "Error downloading GDTF file. Error code was: {}"
 msgstr "Błąd pobierania pliku GDTF. Kod błędu: {}"
 
 #: ../src/fixtures/controller/manager.py:148
+#, fuzzy
 msgid "GDTF Share download error"
-msgstr ""
+msgstr "Błąd pobierania udziału GDTF"
 
 #: ../src/fixtures/controller/manager.py:153
 msgid "Message Box"
@@ -132,7 +134,6 @@ msgid "File identifier in the GDTF Share"
 msgstr "Identyfikator pliku w GDTF Share"
 
 #: ../src/fixtures/data/profile.py:41
-#, fuzzy
 msgid "DMX Modes"
 msgstr "Tryby DMX"
 
@@ -181,20 +182,22 @@ msgid "Delete fixture"
 msgstr "Usuń oprawę"
 
 #: ../src/fixtures/ui/operator.py:76
+#, fuzzy
 msgid "Delete fixture from local filesystem"
-msgstr ""
+msgstr "Usuń urządzenie z lokalnego systemu plików"
 
 #: ../src/fixtures/ui/operator.py:87
 msgid "Refresh files listing"
-msgstr ""
+msgstr "Odśwież listę plików"
 
 #: ../src/fixtures/ui/operator.py:88
 msgid "Update list of local files"
-msgstr ""
+msgstr "Zaktualizuj listę plików lokalnych"
 
 #: ../src/fixtures/ui/panel.py:17
+#, fuzzy
 msgid "DMX Fixtures import"
-msgstr ""
+msgstr "Import urządzeń DMX"
 
 #: ../src/fixtures/ui/panel.py:44
 msgid "Fixture details"
@@ -221,8 +224,9 @@ msgid "DMX Address"
 msgstr "Adres DMX"
 
 #: ../src/patch/data/fixture.py:27
+#, fuzzy
 msgid "The DMX address of the fixture at the current universe."
-msgstr ""
+msgstr "Adres DMX urządzenia w bieżącym wszechświecie."
 
 #: ../src/patch/data/fixture.py:34 ../src/patch/ui/menu.py:16
 #: ../src/patch/ui/menu.py:27 ../src/patch/ui/menu.py:48
@@ -231,8 +235,9 @@ msgid "DMX Universe"
 msgstr "Wszechświat DMX"
 
 #: ../src/patch/data/fixture.py:35
+#, fuzzy
 msgid "The DMX universe to which the fixture is currently addressed."
-msgstr ""
+msgstr "Uniwersum DMX, do którego urządzenie jest obecnie adresowane."
 
 #: ../src/patch/data/fixture.py:46
 msgid "ID"
@@ -258,8 +263,9 @@ msgid "GDTF Profile"
 msgstr "Profil GDTF"
 
 #: ../src/patch/data/fixture.py:61
+#, fuzzy
 msgid "The GDTF profile of the fixture."
-msgstr ""
+msgstr "Profil GDTF urządzenia."
 
 #: ../src/patch/data/fixture.py:66
 msgid "GDTF Mode"
@@ -267,18 +273,22 @@ msgstr "Tryb GDTF"
 
 #: ../src/patch/data/fixture.py:67
 msgid "The GDTF mode of the current profile."
-msgstr ""
+msgstr "Tryb GDTF bieżącego profilu."
 
 #: ../src/patch/data/fixture.py:81
 msgid "Create Lights"
 msgstr "Tworzenie świateł"
 
 #: ../src/patch/data/fixture.py:82
+#, fuzzy
 msgid ""
 "This fixture should have light sources. If false, the lights are created "
 "with emitter materials only. Keep in mind that Blender has a 128 light "
 "sources limitation."
 msgstr ""
+"To oprzyrządowanie powinno mieć źródła światła. Jeśli false, światła są "
+"tworzone tylko z materiałów emiterowych. Pamiętaj, że Blender ma "
+"ograniczenie do 128 źródeł światła."
 
 #: ../src/patch/data/fixture.py:89
 msgid "Gel Color"
@@ -309,14 +319,17 @@ msgid "Sequential"
 msgstr "Sekwencyjny"
 
 #: ../src/patch/data/fixture_batch.py:35
+#, fuzzy
 msgid ""
 "True if the batch fixtures are addressed sequentially, according to the "
 "footprint."
 msgstr ""
+"Prawda, jeśli mocowania wsadowe są adresowane sekwencyjnie, według śladu."
 
 #: ../src/patch/data/fixture_batch.py:45
+#, fuzzy
 msgid "Overrides the footprint of each fixture."
-msgstr ""
+msgstr "Zastępuje ślad każdego urządzenia."
 
 #: ../src/patch/data/fixture_batch.py:56
 msgid "Expand"
@@ -357,8 +370,9 @@ msgid "Number"
 msgstr "Numer"
 
 #: ../src/patch/data/universe.py:25
+#, fuzzy
 msgid "The number of the DMX universe."
-msgstr ""
+msgstr "Numer uniwersum DMX."
 
 #: ../src/patch/data/universe.py:34
 msgid "Source"
@@ -393,16 +407,18 @@ msgid "Add Single Fixture"
 msgstr "Dodaj pojedyncze urządzenie"
 
 #: ../src/patch/ui/operator.py:69
+#, fuzzy
 msgid "Add a single new Fixture to the Patch."
-msgstr ""
+msgstr "Dodaj do patcha pojedynczy nowy osprzęt."
 
 #: ../src/patch/ui/operator.py:82
 msgid "Add Fixture Batch"
 msgstr "Dodaj partię urządzeń"
 
 #: ../src/patch/ui/operator.py:83
+#, fuzzy
 msgid "Add new Fixture Batch to the Patch."
-msgstr ""
+msgstr "Dodaj nową partię urządzeń do łatki."
 
 #: ../src/patch/ui/operator.py:112
 msgid "Build Fixtures"
@@ -439,4 +455,3 @@ msgstr "Prywatny klucz API dla GDTF Share"
 #: ../src/programmer/ui/panel.py:19
 msgid "Programmer"
 msgstr "Programista"
-
