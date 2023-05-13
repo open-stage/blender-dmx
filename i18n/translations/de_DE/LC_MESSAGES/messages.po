@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-04-12 23:22+0200\n"
-"PO-Revision-Date: 2023-03-29 19:38+0000\n"
-"Last-Translator: Konrad Dieter Einfach <einfachkonrad@gmail.com>\n"
-"Language: de\n"
-"Language-Team: German "
-"<https://hosted.weblate.org/projects/blenderdmx/main/de/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"PO-Revision-Date: 2023-05-14 23:50+0000\n"
+"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
+"Language-Team: German <https://hosted.weblate.org/projects/blenderdmx/main/"
+"de/>\n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.18-dev\n"
 "Generated-By: Babel 2.10.3\n"
 
 #: ../src/fixtures/controller/manager.py:41
@@ -69,7 +70,7 @@ msgstr "Nachrichtenbox"
 
 #: ../src/fixtures/data/profile.py:14
 msgid "Mode name"
-msgstr ""
+msgstr "Modus-Name"
 
 #: ../src/fixtures/data/profile.py:15
 msgid "DMX Footprint"
@@ -128,7 +129,6 @@ msgid "File identifier in the GDTF Share"
 msgstr "Dateikennung auf GDTF-Share"
 
 #: ../src/fixtures/data/profile.py:41
-#, fuzzy
 msgid "DMX Modes"
 msgstr "DMX-Modi"
 
@@ -186,7 +186,7 @@ msgstr "Dateiliste aktualisieren"
 
 #: ../src/fixtures/ui/operator.py:88
 msgid "Update list of local files"
-msgstr ""
+msgstr "Liste der lokalen Dateien aktualisieren"
 
 #: ../src/fixtures/ui/panel.py:17
 msgid "DMX Fixtures import"
@@ -206,11 +206,11 @@ msgstr ""
 
 #: ../src/patch/data/fixture.py:20 ../src/patch/data/fixture.py:73
 msgid "Number of Channels"
-msgstr ""
+msgstr "Anzahl der Kanäle"
 
 #: ../src/patch/data/fixture.py:21 ../src/patch/data/fixture.py:74
 msgid "The number of channels of the current profile."
-msgstr ""
+msgstr "Die Anzahl der Kanäle des aktuellen Profils."
 
 #: ../src/patch/data/fixture.py:26
 msgid "DMX Address"
@@ -243,7 +243,7 @@ msgstr ""
 #: ../src/patch/data/profile.py:23 ../src/patch/data/profile.py:30
 #: ../src/patch/data/universe.py:17
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 #: ../src/patch/data/fixture.py:54
 msgid "A unique name for the fixture."
@@ -251,7 +251,7 @@ msgstr ""
 
 #: ../src/patch/data/fixture.py:60
 msgid "GDTF Profile"
-msgstr ""
+msgstr "GDTF-Profil"
 
 #: ../src/patch/data/fixture.py:61
 msgid "The GDTF profile of the fixture."
@@ -259,15 +259,15 @@ msgstr ""
 
 #: ../src/patch/data/fixture.py:66
 msgid "GDTF Mode"
-msgstr ""
+msgstr "GDTF-Modus"
 
 #: ../src/patch/data/fixture.py:67
 msgid "The GDTF mode of the current profile."
-msgstr ""
+msgstr "Der GDTF-Modus des aktuellen Profils."
 
 #: ../src/patch/data/fixture.py:81
 msgid "Create Lights"
-msgstr ""
+msgstr "Lichter erstellen"
 
 #: ../src/patch/data/fixture.py:82
 msgid ""
@@ -301,7 +301,7 @@ msgstr "Die Anzahl der Fixtures in dieser Gruppe"
 
 #: ../src/patch/data/fixture_batch.py:32
 msgid "Sequential"
-msgstr ""
+msgstr "Sequentiell"
 
 #: ../src/patch/data/fixture_batch.py:35
 msgid ""
@@ -342,35 +342,35 @@ msgstr "Typ"
 
 #: ../src/patch/data/source.py:21
 msgid "The type of DMX source."
-msgstr ""
+msgstr "Der Typ der DMX-Quelle."
 
 #: ../src/patch/data/universe.py:18
 msgid "A unique name for the DMX universe."
-msgstr ""
+msgstr "Ein eindeutiger Name für das DMX-Universum."
 
 #: ../src/patch/data/universe.py:24
 msgid "Number"
-msgstr ""
+msgstr "Nummer"
 
 #: ../src/patch/data/universe.py:25
 msgid "The number of the DMX universe."
-msgstr ""
+msgstr "Die Nummer des DMX-Universums."
 
 #: ../src/patch/data/universe.py:34
 msgid "Source"
-msgstr ""
+msgstr "Quelle"
 
 #: ../src/patch/data/universe.py:35
 msgid "The type of DMX source of the universe."
-msgstr ""
+msgstr "Der Typ der DMX-Quelle des Universums."
 
 #: ../src/patch/ui/menu.py:71
 msgid "No Profile selected"
-msgstr ""
+msgstr "Kein Profil ausgewählt"
 
 #: ../src/patch/ui/operator.py:23 ../src/patch/ui/operator.py:37
 msgid "Add Universe"
-msgstr ""
+msgstr "Universum hinzufügen"
 
 #: ../src/patch/ui/operator.py:24 ../src/patch/ui/operator.py:38
 msgid "Add a new Universe to the Patch."
@@ -416,7 +416,7 @@ msgstr ""
 
 #: ../src/patch/ui/panel.py:28
 msgid "Universes"
-msgstr ""
+msgstr "Universen"
 
 #: ../src/patch/ui/panel.py:41
 msgid "Fixtures"
@@ -432,5 +432,4 @@ msgstr ""
 
 #: ../src/programmer/ui/panel.py:19
 msgid "Programmer"
-msgstr ""
-
+msgstr "Programmierer"
