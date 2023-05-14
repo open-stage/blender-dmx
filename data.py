@@ -45,6 +45,7 @@ class DMX_Data():
             for i in buffer:
                 dmx.dmx_values.add()
                 dmx.dmx_values[-1].channel=i
+        DMX_Data._last_updated = None
 
     @staticmethod
     def setup(universes):
@@ -52,7 +53,6 @@ class DMX_Data():
             DMX_Data._dmx = bpy.context.scene.dmx
         except:
             pass
-        DMX_Data._last_updated = time.time() # Set some time instead of None
         DMX_Data.prepare_empty_buffer()
         old_n = len(DMX_Data._universes)
         # shrinking (less universes then before)
@@ -109,16 +109,19 @@ class DMX_Data():
         DMX_Log.log.debug((universe, data))
         if (universe >= len(DMX_Data._universes)):
             return
-        if (DMX_Data._universes[universe] != data):
-            if DMX_Data._dmx is not None:
-                dmx = DMX_Data._dmx
-                if dmx.selected_live_dmx_source == source and dmx.selected_live_dmx_universe == universe:
-                    if DMX_Data._last_updated is not None and time.time() - DMX_Data._last_updated > 0.8:
-                        # We limit update by time, too fast updates were troubling Blender's UI
-                        for idx, val in enumerate(data):
-                            dmx.dmx_values[idx].channel = val
-                        DMX_Data._last_updated = time.time()
-                        print("update dmx")
+
+        changed = DMX_Data._universes[universe] != data
+        if changed:
             DMX_Data._universes[universe] = data
-            return True
-        return False
+
+        if DMX_Data._dmx is not None:
+            dmx = DMX_Data._dmx
+            if dmx.selected_live_dmx_source == source and dmx.selected_live_dmx_universe == universe:
+                if DMX_Data._last_updated is None or (time.time() - DMX_Data._last_updated > 0.8 and changed):
+                    # We limit update by time, too fast updates were troubling Blender's UI
+                    for idx, val in enumerate(data):
+                        dmx.dmx_values[idx].channel = val
+                    DMX_Data._last_updated = time.time()
+                    print("update dmx")
+
+        return changed

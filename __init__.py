@@ -166,11 +166,12 @@ class DMX(PropertyGroup):
         description="The network protocol for which to show live DMX values",
         default = "BLENDERDMX",
         items = network_options_list,
-        update = prepare_empty_buffer
+        update = prepare_empty_buffer,
     )
     selected_live_dmx_universe: IntProperty(
         min = 0,
-            )
+        update = prepare_empty_buffer,
+    )
 
     dmx_values: CollectionProperty(
         name = "DMX buffer",
