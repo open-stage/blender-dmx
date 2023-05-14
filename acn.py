@@ -15,6 +15,10 @@ class DMX_sACN:
         self._dmx = bpy.context.scene.dmx
 
     def callback(packet):  # packet type: sacn.DataPacket
+        if packet.dmxStartCode > 0:
+            # See https://tsp.esta.org/tsp/working_groups/CP/DMXAlternateCodes.php
+            DMX_Log.log.debug("Ignoring packet with start code %s", packet.dmxStartCode)
+            return
         dmx = bpy.context.scene.dmx
         if packet.universe >= len(dmx.universes):
             DMX_Log.log.info("Not enough DMX universes set in BlenderDMX")
