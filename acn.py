@@ -21,13 +21,10 @@ class DMX_sACN:
             return
         dmx = bpy.context.scene.dmx
         if packet.universe >= len(dmx.universes):
-            DMX_Log.log.info("Not enough DMX universes set in BlenderDMX")
-            return
-        if not dmx.universes[packet.universe]:
-            DMX_Log.log.info("sACN universe doesn't exist in BlenderDMX")
+            DMX_Log.log.error("Not enough DMX universes set in BlenderDMX for incoming sACN data")
             return
         if dmx.universes[packet.universe].input != "sACN":
-            DMX_Log.log.info("This DMX universe is not set to accept sACN data")
+            DMX_Log.log.warning("This DMX universe is not set to accept sACN data")
             return
         DMX_Data.set_universe(packet.universe, bytearray(packet.dmxData), "sACN")
         try:

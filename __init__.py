@@ -227,7 +227,7 @@ class DMX(PropertyGroup):
     def linkFile(self):
         print("DMX", "Linking to file")
         DMX_Log.enable(self.logging_level)
-        DMX_Log.log.info("DMX", "Linking to file")
+        DMX_Log.log.info("BlenderDMX: Linking to file")
 
 
         # Link pointer properties to file objects
