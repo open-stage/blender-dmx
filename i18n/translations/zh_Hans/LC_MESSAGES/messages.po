@@ -8,13 +8,17 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-04-12 23:22+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2023-08-04 14:05+0000\n"
+"Last-Translator: \"YuxiangWang_0525(John Frederick Wang)\" "
+"<1n3-3z0la8jxie@dingtalk.com>\n"
+"Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
+"blenderdmx/main/zh_Hans/>\n"
 "Language: zh_Hans\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.0-dev\n"
 "Generated-By: Babel 2.10.3\n"
 
 #: ../src/fixtures/controller/manager.py:41
@@ -22,48 +26,48 @@ msgstr ""
 msgid ""
 "Get API key from GDTF Share account and fill it into BlenderDMX addon "
 "preferences."
-msgstr ""
+msgstr "请从GDTF共享账户中获取API Key，并将其填写进BlenderDMX的插件首选项中。"
 
 #: ../src/fixtures/controller/manager.py:44
 #: ../src/fixtures/controller/manager.py:73
 msgid "GDTF Share API key missing"
-msgstr ""
+msgstr "GDTF共享API Key不存在"
 
 #: ../src/fixtures/controller/manager.py:115
 msgid "Share index updated. Status code was: {}"
-msgstr ""
+msgstr "共享索引已更新。状态代码为：{}"
 
 #: ../src/fixtures/controller/manager.py:118
 msgid "GDTF Share updated"
-msgstr ""
+msgstr "GDTF共享已更新"
 
 #: ../src/fixtures/controller/manager.py:123
 msgid "Error while updating Share index. Error code was: {}"
-msgstr ""
+msgstr "在更新共享索引时发生错误，错误代码为：{}"
 
 #: ../src/fixtures/controller/manager.py:126
 msgid "GDTF Share update error"
-msgstr ""
+msgstr "GDTF共享更新出错"
 
 #: ../src/fixtures/controller/manager.py:137
 msgid "File downloaded correctly. Status code was: {}"
-msgstr ""
+msgstr "文件已被正确下载。状态代码为：{}"
 
 #: ../src/fixtures/controller/manager.py:140
 msgid "GDTF file downloaded"
-msgstr ""
+msgstr "GDTF文件已下载"
 
 #: ../src/fixtures/controller/manager.py:145
 msgid "Error downloading GDTF file. Error code was: {}"
-msgstr ""
+msgstr "下载GDTF文件时发生错误。错误代码为：{}"
 
 #: ../src/fixtures/controller/manager.py:148
 msgid "GDTF Share download error"
-msgstr ""
+msgstr "GDTF 共享下载错误"
 
 #: ../src/fixtures/controller/manager.py:153
 msgid "Message Box"
-msgstr ""
+msgstr "信息框"
 
 #: ../src/fixtures/data/profile.py:14
 msgid "Mode name"
