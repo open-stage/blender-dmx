@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2023-04-12 23:22+0200\n"
-"PO-Revision-Date: 2023-08-04 14:05+0000\n"
+"PO-Revision-Date: 2023-08-11 16:50+0000\n"
 "Last-Translator: \"YuxiangWang_0525(John Frederick Wang)\" "
 "<1n3-3z0la8jxie@dingtalk.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
@@ -26,28 +26,28 @@ msgstr ""
 msgid ""
 "Get API key from GDTF Share account and fill it into BlenderDMX addon "
 "preferences."
-msgstr "请从GDTF共享账户中获取API Key，并将其填写进BlenderDMX的插件首选项中。"
+msgstr "请从GDTF Share中获取API Key，并将其填写进BlenderDMX的插件首选项中。"
 
 #: ../src/fixtures/controller/manager.py:44
 #: ../src/fixtures/controller/manager.py:73
 msgid "GDTF Share API key missing"
-msgstr "GDTF共享API Key不存在"
+msgstr "GDTF Share API Key不存在"
 
 #: ../src/fixtures/controller/manager.py:115
 msgid "Share index updated. Status code was: {}"
-msgstr "共享索引已更新。状态代码为：{}"
+msgstr "Share索引已更新。状态代码为：{}"
 
 #: ../src/fixtures/controller/manager.py:118
 msgid "GDTF Share updated"
-msgstr "GDTF共享已更新"
+msgstr "GDTF Share已更新"
 
 #: ../src/fixtures/controller/manager.py:123
 msgid "Error while updating Share index. Error code was: {}"
-msgstr "在更新共享索引时发生错误，错误代码为：{}"
+msgstr "在更新Share索引时发生错误，错误代码为：{}"
 
 #: ../src/fixtures/controller/manager.py:126
 msgid "GDTF Share update error"
-msgstr "GDTF共享更新出错"
+msgstr "GDTF Share更新出错"
 
 #: ../src/fixtures/controller/manager.py:137
 msgid "File downloaded correctly. Status code was: {}"
@@ -63,7 +63,7 @@ msgstr "下载GDTF文件时发生错误。错误代码为：{}"
 
 #: ../src/fixtures/controller/manager.py:148
 msgid "GDTF Share download error"
-msgstr "GDTF 共享下载错误"
+msgstr "GDTF Share下载错误"
 
 #: ../src/fixtures/controller/manager.py:153
 msgid "Message Box"
@@ -71,364 +71,365 @@ msgstr "信息框"
 
 #: ../src/fixtures/data/profile.py:14
 msgid "Mode name"
-msgstr ""
+msgstr "模式名称"
 
 #: ../src/fixtures/data/profile.py:15
 msgid "DMX Footprint"
-msgstr ""
+msgstr "DMX 脚注"
 
 #: ../src/fixtures/data/profile.py:20 ../src/fixtures/data/profile.py:22
 msgid "Fixture name"
-msgstr ""
+msgstr "固定装置名称"
 
 #: ../src/fixtures/data/profile.py:20
 msgid "Manufacturer and fixture name"
-msgstr ""
+msgstr "固定装置制造商与名称"
 
 #: ../src/fixtures/data/profile.py:24
 msgid "Manufacturer"
-msgstr ""
+msgstr "制造商"
 
 #: ../src/fixtures/data/profile.py:24
 msgid "Manufacturer name"
-msgstr ""
+msgstr "制造商名称"
 
 #: ../src/fixtures/data/profile.py:27
 msgid "Revision"
-msgstr ""
+msgstr "修改"
 
 #: ../src/fixtures/data/profile.py:27
 msgid "Revision text"
-msgstr ""
+msgstr "修改文字"
 
 #: ../src/fixtures/data/profile.py:29
 msgid "Uploaded by"
-msgstr ""
+msgstr "上传者为"
 
 #: ../src/fixtures/data/profile.py:29
 msgid "File uploaded by"
-msgstr ""
+msgstr "文件上传者为"
 
 #: ../src/fixtures/data/profile.py:31
 msgid "Created by"
-msgstr ""
+msgstr "创建者为"
 
 #: ../src/fixtures/data/profile.py:31
 msgid "File created by"
-msgstr ""
+msgstr "文件创建者为"
 
 #: ../src/fixtures/data/profile.py:33
 msgid "Rating"
-msgstr ""
+msgstr "评分"
 
 #: ../src/fixtures/data/profile.py:37
 msgid "Revision ID"
-msgstr ""
+msgstr "修改ID"
 
 #: ../src/fixtures/data/profile.py:37
 msgid "File identifier in the GDTF Share"
-msgstr ""
+msgstr "GDTF Share中的文件标识符"
 
 #: ../src/fixtures/data/profile.py:41
 msgid "DMX Modes"
-msgstr ""
+msgstr "DMX模式"
 
 #: ../src/fixtures/ui/list.py:42 ../src/fixtures/ui/list.py:80
 msgid "DMX Mode Name"
-msgstr ""
+msgstr "DMX模式名称"
 
 #: ../src/fixtures/ui/list.py:45 ../src/patch/data/fixture_batch.py:42
 msgid "Footprint"
-msgstr ""
+msgstr "脚注"
 
 #: ../src/fixtures/ui/operator.py:17
 msgid "Import from Share"
-msgstr ""
+msgstr "从Share导入"
 
 #: ../src/fixtures/ui/operator.py:18
 msgid "Import fixture from GDTF Share"
-msgstr ""
+msgstr "从GDTF Share导入装置"
 
 #: ../src/fixtures/ui/operator.py:30
 msgid "Update GDTF Share index"
-msgstr ""
+msgstr "更新GDTF Share索引"
 
 #: ../src/fixtures/ui/operator.py:31
 msgid "Update data index of GDTF Share"
-msgstr ""
+msgstr "更新GDTF Share的数据索引"
 
 #: ../src/fixtures/ui/operator.py:41
 msgid "Import from file"
-msgstr ""
+msgstr "从文件导入"
 
 #: ../src/fixtures/ui/operator.py:42
 msgid "Import fixture from local filesystem"
-msgstr ""
+msgstr "从本地文件系统中导入装置"
 
 #: ../src/fixtures/ui/operator.py:48
 msgid "File Path"
-msgstr ""
+msgstr "文件路径"
 
 #: ../src/fixtures/ui/operator.py:50
 msgid "Files"
-msgstr ""
+msgstr "文件"
 
 #: ../src/fixtures/ui/operator.py:75
 msgid "Delete fixture"
-msgstr ""
+msgstr "删除装置"
 
 #: ../src/fixtures/ui/operator.py:76
 msgid "Delete fixture from local filesystem"
-msgstr ""
+msgstr "从本地文件系统中删除装置"
 
 #: ../src/fixtures/ui/operator.py:87
 msgid "Refresh files listing"
-msgstr ""
+msgstr "刷新文件列表"
 
 #: ../src/fixtures/ui/operator.py:88
 msgid "Update list of local files"
-msgstr ""
+msgstr "更新本地文件列表"
 
 #: ../src/fixtures/ui/panel.py:17
 msgid "DMX Fixtures import"
-msgstr ""
+msgstr "导入DMX装置"
 
 #: ../src/fixtures/ui/panel.py:44
 msgid "Fixture details"
-msgstr ""
+msgstr "装置详情"
 
 #: ../src/fixtures/ui/panel.py:80
 msgid "DMX Local fixtures"
-msgstr ""
+msgstr "本地DMX装置"
 
 #: ../src/fixtures/ui/panel.py:108
 msgid "Local Fixture details"
-msgstr ""
+msgstr "本地装置详情"
 
 #: ../src/patch/data/fixture.py:20 ../src/patch/data/fixture.py:73
 msgid "Number of Channels"
-msgstr ""
+msgstr "通道数量"
 
 #: ../src/patch/data/fixture.py:21 ../src/patch/data/fixture.py:74
 msgid "The number of channels of the current profile."
-msgstr ""
+msgstr "当前配置文件的通道数。"
 
 #: ../src/patch/data/fixture.py:26
 msgid "DMX Address"
-msgstr ""
+msgstr "DMX地址"
 
 #: ../src/patch/data/fixture.py:27
 msgid "The DMX address of the fixture at the current universe."
-msgstr ""
+msgstr "当前范围中装置的DMX地址。"
 
 #: ../src/patch/data/fixture.py:34 ../src/patch/ui/menu.py:16
 #: ../src/patch/ui/menu.py:27 ../src/patch/ui/menu.py:48
 #: ../src/patch/ui/menu.py:60
 msgid "DMX Universe"
-msgstr ""
+msgstr "DMX 范围"
 
 #: ../src/patch/data/fixture.py:35
 msgid "The DMX universe to which the fixture is currently addressed."
-msgstr ""
+msgstr "设备当前要寻址的DMX范围。"
 
 #: ../src/patch/data/fixture.py:46
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #: ../src/patch/data/fixture.py:47
 msgid "A numeric unique identifier for the fixture."
-msgstr ""
+msgstr "装置的数字唯一标识符。"
 
 #: ../src/patch/data/fixture.py:53 ../src/patch/data/fixture_batch.py:15
 #: ../src/patch/data/profile.py:15 ../src/patch/data/profile.py:20
 #: ../src/patch/data/profile.py:23 ../src/patch/data/profile.py:30
 #: ../src/patch/data/universe.py:17
 msgid "Name"
-msgstr ""
+msgstr "名称"
 
 #: ../src/patch/data/fixture.py:54
 msgid "A unique name for the fixture."
-msgstr ""
+msgstr "装置的唯一名称。"
 
 #: ../src/patch/data/fixture.py:60
 msgid "GDTF Profile"
-msgstr ""
+msgstr "GDTF配置文件"
 
 #: ../src/patch/data/fixture.py:61
 msgid "The GDTF profile of the fixture."
-msgstr ""
+msgstr "装置的GDTF配置文件。"
 
 #: ../src/patch/data/fixture.py:66
 msgid "GDTF Mode"
-msgstr ""
+msgstr "GDTF模式"
 
 #: ../src/patch/data/fixture.py:67
 msgid "The GDTF mode of the current profile."
-msgstr ""
+msgstr "当前配置文件的GDTF模式。"
 
 #: ../src/patch/data/fixture.py:81
 msgid "Create Lights"
-msgstr ""
+msgstr "创建灯"
 
 #: ../src/patch/data/fixture.py:82
 msgid ""
 "This fixture should have light sources. If false, the lights are created "
 "with emitter materials only. Keep in mind that Blender has a 128 light "
 "sources limitation."
-msgstr ""
+msgstr "该灯具应具有光源。如果为false，则仅使用发射器材质创建灯光。请记住，Blender有1"
+"28个光源的限制。"
 
 #: ../src/patch/data/fixture.py:89
 msgid "Gel Color"
-msgstr ""
+msgstr "胶体颜色"
 
 #: ../src/patch/data/fixture.py:90
 msgid ""
 "Color of the gel applied to the fixture, in case the profile doesn't "
 "define color channels."
-msgstr ""
+msgstr "胶合体适用于固定装置,如果是剖面图则没有界定颜色渠道。."
 
 #: ../src/patch/data/fixture_batch.py:16
 msgid "A unique name for the fixture batch."
-msgstr ""
+msgstr "装置的批处理唯一名称。"
 
 #: ../src/patch/data/fixture_batch.py:22
 msgid "Units"
-msgstr ""
+msgstr "单位"
 
 #: ../src/patch/data/fixture_batch.py:23
 msgid "The number of fixtures inside this batch."
-msgstr ""
+msgstr "批处理的装置数量。"
 
 #: ../src/patch/data/fixture_batch.py:32
 msgid "Sequential"
-msgstr ""
+msgstr "顺序"
 
 #: ../src/patch/data/fixture_batch.py:35
 msgid ""
 "True if the batch fixtures are addressed sequentially, according to the "
 "footprint."
-msgstr ""
+msgstr "如果批处理固定装置根据封装外形按顺序寻址，则为True。"
 
 #: ../src/patch/data/fixture_batch.py:45
 msgid "Overrides the footprint of each fixture."
-msgstr ""
+msgstr "覆盖每个固定装置的示意图。"
 
 #: ../src/patch/data/fixture_batch.py:56
 msgid "Expand"
-msgstr ""
+msgstr "扩大"
 
 #: ../src/patch/data/fixture_batch.py:59
 msgid "Expands/shrinks the list of fixtures in this batch."
-msgstr ""
+msgstr "展开/收起 此批次中的固定装置列表。"
 
 #: ../src/patch/data/profile.py:15 ../src/patch/data/profile.py:20
 #: ../src/patch/data/profile.py:24 ../src/patch/data/profile.py:30
 #: ../src/patch/data/profile.py:38
 msgid "The name of the DMX profile."
-msgstr ""
+msgstr "DMX配置文件的名称。"
 
 #: ../src/patch/data/profile.py:33
 msgid "Short Name"
-msgstr ""
+msgstr "缩写名称"
 
 #: ../src/patch/data/profile.py:38
 msgid "Filename"
-msgstr ""
+msgstr "文件名"
 
 #: ../src/patch/data/source.py:21
 msgid "Type"
-msgstr ""
+msgstr "类型"
 
 #: ../src/patch/data/source.py:21
 msgid "The type of DMX source."
-msgstr ""
+msgstr "DMX源的类型。"
 
 #: ../src/patch/data/universe.py:18
 msgid "A unique name for the DMX universe."
-msgstr ""
+msgstr "DMX范围的唯一名称。"
 
 #: ../src/patch/data/universe.py:24
 msgid "Number"
-msgstr ""
+msgstr "编号"
 
 #: ../src/patch/data/universe.py:25
 msgid "The number of the DMX universe."
-msgstr ""
+msgstr "DMX范围编号。"
 
 #: ../src/patch/data/universe.py:34
 msgid "Source"
-msgstr ""
+msgstr "来源"
 
 #: ../src/patch/data/universe.py:35
 msgid "The type of DMX source of the universe."
-msgstr ""
+msgstr "范围中DMX源的类型。"
 
 #: ../src/patch/ui/menu.py:71
 msgid "No Profile selected"
-msgstr ""
+msgstr "未选择配置文件"
 
 #: ../src/patch/ui/operator.py:23 ../src/patch/ui/operator.py:37
 msgid "Add Universe"
-msgstr ""
+msgstr "添加范围"
 
 #: ../src/patch/ui/operator.py:24 ../src/patch/ui/operator.py:38
 msgid "Add a new Universe to the Patch."
-msgstr ""
+msgstr "将新的范围添加到补丁中。"
 
 #: ../src/patch/ui/operator.py:51 ../src/patch/ui/operator.py:96
 msgid "Remove Fixture"
-msgstr ""
+msgstr "移除装置"
 
 #: ../src/patch/ui/operator.py:52 ../src/patch/ui/operator.py:97
 msgid "Remove this Fixture from the Patch."
-msgstr ""
+msgstr "从补丁中删除此装置。"
 
 #: ../src/patch/ui/operator.py:68
 msgid "Add Single Fixture"
-msgstr ""
+msgstr "添加单个装置"
 
 #: ../src/patch/ui/operator.py:69
 msgid "Add a single new Fixture to the Patch."
-msgstr ""
+msgstr "将单个新装置添加到补丁。"
 
 #: ../src/patch/ui/operator.py:82
 msgid "Add Fixture Batch"
-msgstr ""
+msgstr "添加装置批次"
 
 #: ../src/patch/ui/operator.py:83
 msgid "Add new Fixture Batch to the Patch."
-msgstr ""
+msgstr "将新的装置批次添加到修补程序。"
 
 #: ../src/patch/ui/operator.py:112
 msgid "Build Fixtures"
-msgstr ""
+msgstr "构建装置"
 
 #: ../src/patch/ui/operator.py:113
 msgid ""
 "After completing the patch, you should click this button to build/update "
 "the fixture geometry."
-msgstr ""
+msgstr "完成修补后，应单击此按钮来构建/更新装置几何图形。"
 
 #: ../src/patch/ui/panel.py:18
 msgid "DMX Patch"
-msgstr ""
+msgstr "DMX补丁"
 
 #: ../src/patch/ui/panel.py:28
 msgid "Universes"
-msgstr ""
+msgstr "范围"
 
 #: ../src/patch/ui/panel.py:41
 msgid "Fixtures"
-msgstr ""
+msgstr "装置"
 
 #: ../src/preferences/__init__.py:18
 msgid "GDTF Share API key"
-msgstr ""
+msgstr "GDTF Share的API key"
 
 #: ../src/preferences/__init__.py:19
 msgid "Private API key for GDTF Share"
-msgstr ""
+msgstr "GDTF Share的私有 API key"
 
 #: ../src/programmer/ui/panel.py:19
 msgid "Programmer"
-msgstr ""
+msgstr "程序设计者"
