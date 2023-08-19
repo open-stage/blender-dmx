@@ -33,15 +33,16 @@ class DMX_Fixtures_Manager:
     def import_from_share(self, index: int):
         addon_name = pathlib.Path(__file__).parent.parts[-4]
         prefs = bpy.context.preferences.addons[addon_name].preferences
-        api_key = prefs.get("share_api_key", None)
+        api_username = prefs.get("share_api_username", None)
+        api_password = prefs.get("share_api_password", None)
         imports = bpy.context.window_manager.dmx.imports
 
-        if api_key is None or len(api_key) < 2:
+        if api_username is None or len(api_username) < 2:
             ShowMessageBox(
                 _(
-                    "Get API key from GDTF Share account and fill it into BlenderDMX addon preferences."
+                    "Get GDTF Share account and fill it into BlenderDMX addon preferences."
                 ),
-                _("GDTF Share API key missing"),
+                _("GDTF Share API credentials missing"),
                 "ERROR",
             )
             return
@@ -54,7 +55,8 @@ class DMX_Fixtures_Manager:
         timer_subscribers.append("download file")
 
         share_api_client.download_files(
-            api_key,
+            api_username,
+            api_password,
             file_path,
             [imports.share_profiles[index]],
             queue_up,
@@ -64,13 +66,14 @@ class DMX_Fixtures_Manager:
     def update_share_index(self):
         addon_name = pathlib.Path(__file__).parent.parts[-4]
         prefs = bpy.context.preferences.addons[addon_name].preferences
-        api_key = prefs.get("share_api_key", None)
-        if api_key is None or len(api_key) < 2:
+        api_username = prefs.get("share_api_username", None)
+        api_password = prefs.get("share_api_password", None)
+        if api_username is None or len(api_username) < 2:
             ShowMessageBox(
                 _(
-                    "Get API key from GDTF Share account and fill it into BlenderDMX addon preferences."
+                    "Get GDTF Share account and fill it into BlenderDMX addon preferences."
                 ),
-                _("GDTF Share API key missing"),
+                _("GDTF Share API credentials missing"),
                 "ERROR",
             )
             return
@@ -78,7 +81,9 @@ class DMX_Fixtures_Manager:
         if not bpy.app.timers.is_registered(execute_queued_functions):
             bpy.app.timers.register(execute_queued_functions)
         timer_subscribers.append("update index")
-        share_api_client.update_data(api_key, queue_up, reload_share_profiles)
+        share_api_client.update_data(
+            api_username, api_password, queue_up, reload_share_profiles
+        )
 
 
 timer_subscribers = []
