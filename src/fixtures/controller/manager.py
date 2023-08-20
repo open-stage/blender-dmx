@@ -37,7 +37,12 @@ class DMX_Fixtures_Manager:
         api_password = prefs.get("share_api_password", None)
         imports = bpy.context.window_manager.dmx.imports
 
-        if api_username is None or len(api_username) < 2:
+        if (
+            api_username is None
+            or len(api_username) < 2
+            or api_password is None
+            or len(api_password) < 2
+        ):
             ShowMessageBox(
                 _(
                     "Get GDTF Share account and fill it into BlenderDMX addon preferences."
@@ -68,7 +73,12 @@ class DMX_Fixtures_Manager:
         prefs = bpy.context.preferences.addons[addon_name].preferences
         api_username = prefs.get("share_api_username", None)
         api_password = prefs.get("share_api_password", None)
-        if api_username is None or len(api_username) < 2:
+        if (
+            api_username is None
+            or len(api_username) < 2
+            or api_password is None
+            or len(api_password) < 2
+        ):
             ShowMessageBox(
                 _(
                     "Get GDTF Share account and fill it into BlenderDMX addon preferences."

@@ -88,11 +88,7 @@ class GdtfShareApi:
 
 
 def _update_data(api_username, api_password: str, update, function):
-    """Updates data.json.
-    When last timestamp of update exists, it updates from that date.
-    If timestamp is missing, it requests full listing.
-    If update since last timestamp fails, it requests full listing.
-    """
+    """Updates data.json."""
     gs = GdtfShareApi(api_username, api_password)
     gs.login()
     result = gs.get_list()
