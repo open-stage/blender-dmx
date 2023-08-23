@@ -1,7 +1,7 @@
 __pycache__
 fixtures/__pycache__
 panels/__pycache__
-
+lib/
 assets/profiles/*
 assets/models/*/*
 !assets/profiles/BlenderDMX*
