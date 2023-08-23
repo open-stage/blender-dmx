@@ -1,11 +1,12 @@
 from collections import namedtuple
+from typing import List, Optional
 
 
 # Data type that only allows a specific set of values, if given a value
 # which is not permitted, the value will be set to the default
 class Enum:
-    permitted = []
-    _default = None
+    permitted: List[str] = []
+    _default: Optional[str] = None
 
     def __init__(self, value):
         self.value = None
@@ -22,139 +23,202 @@ class Enum:
 
 
 class PhysicalUnit(Enum):
-    permitted = ['None', 'Percent', 'Length', 'Mass', 'Time', 'Temperature',
-                 'LuminousIntensity', 'Angle', 'Force', 'Frequency', 'Current',
-                 'Voltage', 'Power', 'Energy', 'Area', 'Volume', 'Speed',
-                 'Acceleration', 'AngularSpeed', 'AngularAcc', 'WaveLength',
-                 'ColorComponent']
-    default = 'None'
+    permitted = [
+        "None",
+        "Percent",
+        "Length",
+        "Mass",
+        "Time",
+        "Temperature",
+        "LuminousIntensity",
+        "Angle",
+        "Force",
+        "Frequency",
+        "Current",
+        "Voltage",
+        "Power",
+        "Energy",
+        "Area",
+        "Volume",
+        "Speed",
+        "Acceleration",
+        "AngularSpeed",
+        "AngularAcc",
+        "WaveLength",
+        "ColorComponent",
+    ]
+    default = "None"
 
 
 class InterpolationTo(Enum):
-    permitted = ['Linear', 'Step', 'Log']
-    _default = 'Linear'
+    permitted = ["Linear", "Step", "Log"]
+    _default = "Linear"
 
 
 class ColorSpaceMode(Enum):
-    permitted = ['Custom', 'sRGB', 'ProPhoto', 'ANSI']
-    _default = 'sRGB'
+    permitted = ["Custom", "sRGB", "ProPhoto", "ANSI"]
+    _default = "sRGB"
 
 
 class Ces(Enum):
-    permitted = [f'CES{str(n).zfill(2)}' for n in range(1, 100)]
-    _default = 'CES01'
+    permitted = [f"CES{str(n).zfill(2)}" for n in range(1, 100)]
+    _default = "CES01"
 
 
 class PrimitiveType(Enum):
-    permitted = ['Undefined', 'Cube', 'Cylinder', 'Sphere', 'Base', 'Yoke',
-                 'Head', 'Scanner', 'Conventional', 'Pigtail',
-                 'Base1_1', 'Scanner1_1', 'Conventional1_1']
-    _default = 'Undefined'
+    permitted = [
+        "Undefined",
+        "Cube",
+        "Cylinder",
+        "Sphere",
+        "Base",
+        "Yoke",
+        "Head",
+        "Scanner",
+        "Conventional",
+        "Pigtail",
+        "Base1_1",
+        "Scanner1_1",
+        "Conventional1_1",
+    ]
+    _default = "Undefined"
 
 
 class LampType(Enum):
-    permitted = ['Discharge', 'Tungsten', 'Halogen', 'LED']
-    _default = 'Discharge'
+    permitted = ["Discharge", "Tungsten", "Halogen", "LED"]
+    _default = "Discharge"
+
+
+class FuseRating(Enum):
+    permitted = ["B", "C", "D", "K", "Z"]
+    _default = "B"
+
+
+class Orientation(Enum):
+    permitted = ["Left", "Right", "Top", "Bottom"]
+    _default = "Left"
+
+
+class ComponentType(Enum):
+    permitted = [
+        "Input",
+        "Output",
+        "PowerSource",
+        "Consumer",
+        "Fuse",
+        "NetworkProvider",
+        "NetworkInput",
+        "NetworkOutput",
+        "NetworkInOut",
+    ]
+    _default = "Input"
 
 
 class BeamType(Enum):
-    permitted = ['Wash', 'Spot', 'None']
-    _default = 'Wash'
+    permitted = ["Wash", "Spot", "None"]
+    _default = "Wash"
 
 
 class Snap(Enum):
-    permitted = ['Yes', 'No', 'On', 'Off']
-    _default = 'No'
+    permitted = ["Yes", "No", "On", "Off"]
+    _default = "No"
 
 
 class Master(Enum):
-    permitted = ['None', 'Grand', 'Group']
-    _default = 'None'
+    permitted = ["None", "Grand", "Group"]
+    _default = "None"
 
 
 class DmxInvert(Enum):
-    permitted = ['Yes', 'No']
-    _default = 'No'
+    permitted = ["Yes", "No"]
+    _default = "No"
 
 
 class RelationType(Enum):
-    permitted = ['Multiply', 'Override']
+    permitted = ["Multiply", "Override"]
 
 
 class Resource:
-
-    def __init__(self, name, extension = None):
+    def __init__(self, name, extension=None):
         self.name = name
         self.extension = extension
 
     def __str__(self):
-        return '.'.join([self.name, self.extension])
+        return ".".join([self.name, self.extension])
 
 
 class DmxAddress:
-
     def __init__(self, str_repr):
-        if '.' in str_repr:
-            self.universe = int(str_repr.split('.')[0])
-            self.address = int(str_repr.split('.')[1])
+        if "." in str_repr:
+            self.universe = int(str_repr.split(".")[0])
+            self.address = int(str_repr.split(".")[1])
         else:
             self.universe = 1
             self.address = int(str_repr)
 
+    def __str__(self):
+        return f"Universe: {self.universe}, Address: {self.address}"
+
 
 class DmxValue:
-
     def __init__(self, str_repr):
-        if str_repr == 'None':
+        if str_repr == "None":
             self.value = None
             self.byte_count = None
         else:
-            self.value = int(str_repr.split('/')[0])
-            self.byte_count = int(str_repr.split('/')[1])
+            self.value = int(str_repr.split("/")[0])
+            self.byte_count = int(str_repr.split("/")[1])
 
 
 class ColorCIE:
-
-    def __init__(self, x: float = None, y: float = None, z: float = None, str_repr: str = None):
+    def __init__(
+        self, x: float = None, y: float = None, z: float = None, str_repr: str = None
+    ):
         self.x = x
         self.y = y
         self.z = z
         if str_repr is not None:
-            self.x = float(str_repr.split(',')[0])
-            self.y = float(str_repr.split(',')[1])
-            self.Y = float(str_repr.split(',')[2])
+            try:
+                self.x = float(str_repr.split(",")[0])
+                self.y = float(str_repr.split(",")[1])
+                self.Y = float(str_repr.split(",")[2])
+            except:
+                # Fail gracefully with default color (White)
+                self.x = 0.3127
+                self.y = 0.3290
+                self.z = 1.0000
 
 
 class Rotation:
-
     def __init__(self, str_repr):
-        str_repr = str_repr.replace('}{', ',')
-        str_repr = str_repr.replace('{', '')
-        str_repr = str_repr.replace('}', '')
-        component = str_repr.split(',')
+        str_repr = str_repr.replace("}{", ",")
+        str_repr = str_repr.replace("{", "")
+        str_repr = str_repr.replace("}", "")
+        component = str_repr.split(",")
         component = [float(i) for i in component]
-        self.matrix = [[component[0], component[1], component[2]],
-                       [component[3], component[4], component[5]],
-                       [component[6], component[7], component[8]]]
+        self.matrix = [
+            [component[0], component[1], component[2]],
+            [component[3], component[4], component[5]],
+            [component[6], component[7], component[8]],
+        ]
 
 
 class Matrix:
     def __init__(self, str_repr):
-        if str_repr == '0' or str_repr == 0:
-            self.matrix = [[1, 0, 0, 0],
-                           [0, 1, 0, 0],
-                           [0, 0, 1, 0],
-                           [0, 0, 0, 1]]
+        if str_repr == "0" or str_repr == 0:
+            self.matrix = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]]
         else:
-            str_repr = str_repr.replace('}{', ',')
-            str_repr = str_repr.replace('{', '')
-            str_repr = str_repr.replace('}', '')
-            component = str_repr.split(',')
+            str_repr = str_repr.replace("}{", ",")
+            str_repr = str_repr.replace("{", "")
+            str_repr = str_repr.replace("}", "")
+            component = str_repr.split(",")
             component = [float(i) for i in component]
-            self.matrix = [[component[0], component[1], component[2], component[3]],
-                           [component[4], component[5], component[6], component[7]],
-                           [component[8], component[9], component[10], component[11]],
-                           [component[12], component[13], component[14], component[15]]]
+            self.matrix = [
+                [component[0], component[1], component[2], component[3]],
+                [component[4], component[5], component[6], component[7]],
+                [component[8], component[9], component[10], component[11]],
+                [component[12], component[13], component[14], component[15]],
+            ]
 
 
 # A node link represents a link to another node in the XML tree, starting from
@@ -173,4 +237,4 @@ class NodeLink:
         return str(self.str_link)
 
 
-ColorSpaceDefinition = namedtuple('ColorSpaceDefinition', 'r g b w')
+ColorSpaceDefinition = namedtuple("ColorSpaceDefinition", "r g b w")
