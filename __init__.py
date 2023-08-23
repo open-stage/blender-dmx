@@ -110,7 +110,7 @@ class DMX(PropertyGroup):
                 DMX_OT_Programmer_Clear,
                 DMX_OT_Programmer_SelectBodies,
                 DMX_OT_Programmer_SelectTargets,
-                #DMX_OT_Programmer_SelectCamera,
+                DMX_OT_Programmer_SelectCamera,
                 DMX_PT_Programmer  )
 
     linkedToFile = False
