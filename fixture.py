@@ -171,6 +171,12 @@ class DMX_Fixture(PropertyGroup):
 
         # Import and deep copy Fixture Model Collection
         gdtf_profile = DMX_GDTF.loadProfile(profile)
+
+        # Handle if dmx mode doesn't exist (maybe this is MVR import and GDTF files were replaced)
+        # use mode[0] as default
+        if not any(self.mode == mode.name for mode in gdtf_profile.dmx_modes):
+            self.mode = gdtf_profile.dmx_modes[0].name
+
         model_collection = DMX_Model.getFixtureModelCollection(gdtf_profile, self.mode, self.display_beams)
 
         # Build DMX channels cache

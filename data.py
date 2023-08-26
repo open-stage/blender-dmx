@@ -79,6 +79,10 @@ class DMX_Data():
         if (not bpy.context.scene.dmx.universes[universe]): return
         if (bpy.context.scene.dmx.universes[universe].input != 'BLENDERDMX'): return
         if val > 255: return
+        # This happened when importing one MVR file
+        if addr > 511:
+            return
+
 
         if DMX_Data._dmx is not None:
             dmx = DMX_Data._dmx

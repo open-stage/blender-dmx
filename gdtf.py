@@ -140,6 +140,13 @@ class DMX_GDTF():
         objs = {}
         # Get root geometry reference from the selected DMX Mode
         dmx_mode = pygdtf.utils.get_dmx_mode_by_name(profile, mode)
+
+        # Handle if dmx mode doesn't exist (maybe this is MVR import and GDTF files were replaced)
+        # use mode[0] as default
+        if dmx_mode is None:
+            dmx_mode = profile.dmx_modes[0]
+            mode = dmx_mode.name
+
         root_geometry = pygdtf.utils.get_geometry_by_name(profile, dmx_mode.geometry)
         def load_geometries(geometry):
             """Load 3d models, primitives and shapes"""
