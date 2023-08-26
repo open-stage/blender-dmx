@@ -721,7 +721,12 @@ class DMX(PropertyGroup):
             self.process_mvr_child_list(child_list.group_object.child_list, layer_index, extract_to_folder_path, mvr_scene)
 
     def add_mvr_fixture(self, mvr_scene, extract_to_folder_path, fixture, fixture_index, layer_index):
-        mvr_scene._package.extract(fixture.gdtf_spec, extract_to_folder_path)
+        if f"{fixture.gdtf_spec}" in mvr_scene._package.namelist():
+            mvr_scene._package.extract(fixture.gdtf_spec, extract_to_folder_path)
+        else:
+            # if the file is not in the MVR package, use an RGBW Par64
+            fixture.gdtf_spec = "BlenderDMX@LED_PAR_64_RGBW@v0.3.gdtf" 
+
         self.ensureUniverseExists(fixture.addresses[0].universe)
         self.addFixture(f"{fixture.name} {layer_index}-{fixture_index}", fixture.gdtf_spec, fixture.addresses[0].universe, fixture.addresses[0].address, fixture.gdtf_mode, (1.0,1.0,1.0,1.0), True, position=fixture.matrix.matrix)
 
