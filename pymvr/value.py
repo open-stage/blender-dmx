@@ -1,10 +1,11 @@
 from collections import namedtuple
+from typing import List, Union
 
 
 # Data type that only allows a specific set of values, if given a value
 # which is not permitted, the value will be set to the default
 class Enum:
-    permitted = []
+    permitted: List[str] = []
     _default = None
 
     def __init__(self, value):
@@ -23,7 +24,7 @@ class Enum:
 
 class ColorCIE:
     def __init__(
-        self, x: float = None, y: float = None, z: float = None, str_repr: str = None
+        self, x: Union[float, None] = None, y: Union[float, None] = None, z: Union[float, None] = None, str_repr: Union[str, None] = None
     ):
         self.x = x
         self.y = y
@@ -59,10 +60,10 @@ class Matrix:
             component = str_repr.split(",")
             component = [float(i) for i in component]
             self.matrix = [
-                [component[0] , component[1] , component[2] , 0],
-                [component[3] , component[4] , component[5] , 0],
-                [component[6] , component[7] , component[8] , 0],
-                [component[9]* 0.001, component[10] * 0.001, component[11] * 0.001, 0],
+                [component[0], component[1], component[2], 0],
+                [component[3], component[4], component[5], 0],
+                [component[6], component[7], component[8], 0],
+                [component[9] * 0.001, component[10] * 0.001, component[11] * 0.001, 0],
             ]
 
 
