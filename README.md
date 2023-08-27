@@ -19,9 +19,9 @@ Then, download the `zip` file:
 
 - **ROLLING RELEASE (UNSTABLE)**
 
-   1. Download the [repository ZIP](https://github.com/open-stage/BlenderDMX/archive/main.zip) `BlenderDMX-main.zip` file
+   1. Download the [repository ZIP](https://codeload.github.com/open-stage/blender-dmx/zip/refs/heads/main) `blender-dmx-main.zip` file
    2. Unzip it
-   3. Rename the folder `BlenderDMX-main` inside it to `dmx`
+   3. Rename the folder `blender-dmx-main` inside it to `dmx`
    4. Zip it back, so you have: `dmx.zip/dmx/<contents>`
 
 Finally:
@@ -35,7 +35,7 @@ To enable the addon, go to `Edit > Preferences > Add-ons`, search for "DMX" and 
 
 ## How to Use
 
-For details on how to use the Addon, check our [Wiki](/open-stage/blender-dmx/wiki).
+For details on how to use the Addon, check our [Wiki](https://github.com/open-stage/blender-dmx/wiki).
 
 Check the demonstration video:
 [demonstration video](https://www.youtube.com/watch?v=uzZQhcqSjS4)
