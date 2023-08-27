@@ -35,7 +35,7 @@ To enable the addon, go to `Edit > Preferences > Add-ons`, search for "DMX" and 
 
 ## How to Use
 
-For details on how to use the Addon, check our [Wiki](https://github.com/open-stage/BlenderDMX/wiki).
+For details on how to use the Addon, check our [Wiki](./wiki).
 
 Check the demonstration video:
 [demonstration video](https://www.youtube.com/watch?v=uzZQhcqSjS4)
