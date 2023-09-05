@@ -52,7 +52,12 @@ class DMX_OT_Setup_Volume_Create(Operator):
         else:
             dmx.volume = bpy.data.objects["DMX_Volume"]
 
-        dmx.volume_nodetree = dmx.volume.data.materials[0].node_tree
+        if len(dmx.volume.data.materials):
+            dmx.volume_nodetree = dmx.volume.data.materials[0].node_tree
+        else:
+            material = getVolumeScatterMaterial()
+            dmx.volume.data.materials.append(material)
+            dmx.volume_nodetree = dmx.volume.data.materials[0].node_tree
         
         old_collections = dmx.volume.users_collection
         if (dmx.collection not in old_collections):
