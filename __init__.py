@@ -671,11 +671,11 @@ class DMX(PropertyGroup):
 
     # # Fixtures
 
-    def addFixture(self, name, profile, universe, address, mode, gel_color, display_beams, position=None):
+    def addFixture(self, name, profile, universe, address, mode, gel_color, display_beams, position=None, focus_point=None):
         bpy.app.handlers.depsgraph_update_post.clear()
         dmx = bpy.context.scene.dmx
         dmx.fixtures.add()
-        dmx.fixtures[-1].build(name, profile, mode, universe, address, gel_color, display_beams, position)
+        dmx.fixtures[-1].build(name, profile, mode, universe, address, gel_color, display_beams, position, focus_point)
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
     def removeFixture(self, fixture):
@@ -716,11 +716,17 @@ class DMX(PropertyGroup):
 
     def process_mvr_child_list(self, child_list, layer_index, extract_to_folder_path, mvr_scene):
         for fixture_index, fixture in enumerate(child_list.fixtures):
-            self.add_mvr_fixture(mvr_scene, extract_to_folder_path, fixture, fixture_index, layer_index)
+            focus_point = None
+            if fixture.focus is not None:
+                focus_points =  [fp for fp in child_list.focus_points if fp.uuid == fixture.focus]
+                if len(focus_points):
+                    focus_point = focus_points[0].matrix.matrix
+
+            self.add_mvr_fixture(mvr_scene, extract_to_folder_path, fixture, fixture_index, layer_index, focus_point)
         if child_list.group_object.child_list is not None:
             self.process_mvr_child_list(child_list.group_object.child_list, layer_index, extract_to_folder_path, mvr_scene)
 
-    def add_mvr_fixture(self, mvr_scene, extract_to_folder_path, fixture, fixture_index, layer_index):
+    def add_mvr_fixture(self, mvr_scene, extract_to_folder_path, fixture, fixture_index, layer_index, focus_point):
         if f"{fixture.gdtf_spec}" in mvr_scene._package.namelist():
             mvr_scene._package.extract(fixture.gdtf_spec, extract_to_folder_path)
         else:
@@ -728,7 +734,7 @@ class DMX(PropertyGroup):
             fixture.gdtf_spec = "BlenderDMX@LED_PAR_64_RGBW@v0.3.gdtf" 
 
         self.ensureUniverseExists(fixture.addresses[0].universe)
-        self.addFixture(f"{fixture.name} {layer_index}-{fixture_index}", fixture.gdtf_spec, fixture.addresses[0].universe, fixture.addresses[0].address, fixture.gdtf_mode, (1.0,1.0,1.0,1.0), True, position=fixture.matrix.matrix)
+        self.addFixture(f"{fixture.name} {layer_index}-{fixture_index}", fixture.gdtf_spec, fixture.addresses[0].universe, fixture.addresses[0].address, fixture.gdtf_mode, (1.0,1.0,1.0,1.0), True, position=fixture.matrix.matrix, focus_point = focus_point)
 
     def ensureUniverseExists(self, universe):
         # Allocate universes to be able to control devices
