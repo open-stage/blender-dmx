@@ -37,6 +37,14 @@ class GeneralSceneDescription:
         else:
             self.layers = []
 
+        aux_data_collect = self._scene.find("AUXData")
+        if aux_data_collect:
+            self.classes = [
+                Class(xml_node=i) for i in aux_data_collect.findall("Class")
+            ]
+        else:
+            self.classes = []
+
 
 class BaseNode:
     def __init__(self, xml_node: "Element" = None):
@@ -54,6 +62,7 @@ class Fixture(BaseNode):
         uuid: Union[str, None] = None,
         gdtf_spec: Union[str, None] = None,
         gdtf_mode: Union[str, None] = None,
+        focus: Union[str, None] = None,
         matrix: Matrix = Matrix(0),
         fixture_id: Union[str, None] = None,
         unit_number: Union[str, None] = None,
@@ -69,6 +78,7 @@ class Fixture(BaseNode):
         self.uuid = uuid
         self.gdtf_spec = gdtf_spec
         self.gdtf_mode = gdtf_mode
+        self.focus = focus
         self.matrix = matrix
         self.fixture_id = fixture_id
         self.unit_number = unit_number
@@ -92,6 +102,9 @@ class Fixture(BaseNode):
         _gdtf_mode = xml_node.find("GDTFMode")
         if _gdtf_mode is not None:
             self.gdtf_mode = _gdtf_mode.text
+        _focus = xml_node.find("Focus")
+        if _focus is not None:
+            self.focus = _focus.text
         self.matrix = Matrix(str_repr=xml_node.find("Matrix").text)
         self.fixture_id = xml_node.find("FixtureID").text
         self.unit_number = xml_node.find("UnitNumber").text
@@ -142,7 +155,7 @@ class GroupObject(BaseNode):
             self.classing = _classing.text
 
         self.child_list = ChildList(xml_node=xml_node.find("ChildList"))
-        if xml_node.find("Matrix"):
+        if xml_node.find("Matrix") is not None:
             self.matrix = Matrix(str_repr=xml_node.find("Matrix").text)
 
     def __str__(self):
@@ -153,6 +166,7 @@ class ChildList(BaseNode):
     def __init__(
         self,
         fixtures: List["Fixture"] = [],
+        focus_points: List["FocusPoint"] = [],
         group_object: Union["GroupObject", None] = None,
         *args,
         **kwargs,
@@ -161,11 +175,18 @@ class ChildList(BaseNode):
             self.fixtures = fixtures
         else:
             self.fixtures = []
+        if focus_points is not None:
+            self.focus_points = focus_points
+        else:
+            self.focus_points = []
         self.group_object = group_object
         super().__init__(*args, **kwargs)
 
     def _read_xml(self, xml_node: "Element"):
         self.fixtures = [Fixture(xml_node=i) for i in xml_node.findall("Fixture")]
+        self.focus_points = [
+            FocusPoint(xml_node=i) for i in xml_node.findall("FocusPoint")
+        ]
         self.group_object = GroupObject(xml_node=xml_node.find("GroupObject"))
 
 
@@ -204,7 +225,7 @@ class Layer(BaseNode):
             self.gdtf_mode = _gdtf_mode.text
 
         self.child_list = ChildList(xml_node=xml_node.find("ChildList"))
-        if xml_node.find("Matrix"):
+        if xml_node.find("Matrix") is not None:
             self.matrix = Matrix(str_repr=xml_node.find("Matrix").text)
 
     def __str__(self):
@@ -241,3 +262,118 @@ class Address(BaseNode):
 
     def __str__(self):
         return f"B: {self.dmx_break}, U: {self.universe}, A: {self.address}"
+
+
+class Class(BaseNode):
+    def __init__(
+        self,
+        uuid: Union[str, None] = None,
+        name: Union[str, None] = None,
+        *args,
+        **kwargs,
+    ):
+        self.uuid = uuid
+        self.name = name
+        super().__init__(*args, **kwargs)
+
+    def _read_xml(self, xml_node: "Element"):
+        self.name = xml_node.attrib.get("name")
+        self.uuid = xml_node.attrib.get("uuid")
+
+    def __str__(self):
+        return f"{self.name}"
+
+
+class Geometry3D(BaseNode):
+    def __init__(
+        self,
+        file_name: Union[str, None] = None,
+        matrix: Matrix = Matrix(0),
+        *args,
+        **kwargs,
+    ):
+        self.file_name = file_name
+        self.matrix = matrix
+        super().__init__(*args, **kwargs)
+
+    def _read_xml(self, xml_node: "Element"):
+        self.file_name = xml_node.attrib.get("fileName")
+        if xml_node.find("Matrix") is not None:
+            self.matrix = Matrix(str_repr=xml_node.find("Matrix").text)
+
+    def __str__(self):
+        return f"{self.file_name}"
+
+
+class Symbol(BaseNode):
+    def __init__(
+        self,
+        uuid: Union[str, None] = None,
+        symdef: Union[str, None] = None,
+        matrix: Matrix = Matrix(0),
+        *args,
+        **kwargs,
+    ):
+        self.uuid = uuid
+        self.symdef = symdef
+        self.matrix = matrix
+        super().__init__(*args, **kwargs)
+
+    def _read_xml(self, xml_node: "Element"):
+        self.uuid = xml_node.attrib.get("uuid")
+        self.symdef = xml_node.attrib.get("symdef")
+        if xml_node.find("Matrix") is not None:
+            self.matrix = Matrix(str_repr=xml_node.find("Matrix").text)
+
+    def __str__(self):
+        return f"{self.uuid}"
+
+
+class Geometries(BaseNode):
+    def __init__(
+        self,
+        geometry3d: "Geometry3D" = None,
+        symbol: "Symbol" = None,
+        *args,
+        **kwargs,
+    ):
+        self.geometry3d = geometry3d
+        self.symbol = symbol
+        super().__init__(*args, **kwargs)
+
+    def _read_xml(self, xml_node: "Element"):
+        self.geometry3d = Geometry3D(xml_node=xml_node.find("Geometry3D"))
+        self.symbol = Symbol(xml_node=xml_node.find("Symbol"))
+
+
+class FocusPoint(BaseNode):
+    def __init__(
+        self,
+        uuid: Union[str, None] = None,
+        name: Union[str, None] = None,
+        matrix: Matrix = Matrix(0),
+        classing: Union[str, None] = None,
+        geometries: "Geometries" = None,
+        *args,
+        **kwargs,
+    ):
+        self.name = name
+        self.uuid = uuid
+        self.matrix = matrix
+        self.classing = classing
+        self.geometries = geometries
+
+        super().__init__(*args, **kwargs)
+
+    def _read_xml(self, xml_node: "Element"):
+        self.uuid = xml_node.attrib.get("uuid")
+        self.name = xml_node.attrib.get("name")
+        if xml_node.find("Matrix") is not None:
+            self.matrix = Matrix(str_repr=xml_node.find("Matrix").text)
+        if xml_node.find("Classing") is not None:
+            self.classing = xml_node.find("Classing").text
+        if xml_node.find("Geometries") is not None:
+            self.geometries = Geometries(xml_node=xml_node.find("Geometries"))
+
+    def __str__(self):
+        return f"{self.name}"
