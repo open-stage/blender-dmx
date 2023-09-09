@@ -114,6 +114,7 @@ class DMX(PropertyGroup):
                 DMX_PT_Programmer  )
 
     linkedToFile = False
+    mvr_import_in_progress = False
 
     def register():
         for cls in DMX.classes_setup:
@@ -708,33 +709,86 @@ class DMX(PropertyGroup):
         return selected
 
     def addMVR(self, file_name):
+        DMX.mvr_import_in_progress = True # this stops the render loop, to prevent slowness and crashes
+        already_extracted_files = []
         mvr_scene = pymvr.GeneralSceneDescription(file_name)
         current_path = os.path.dirname(os.path.realpath(__file__))
-        extract_to_folder_path = os.path.join(current_path, 'assets', 'profiles')
+        extract_to_folder_path = os.path.join(current_path, "assets", "profiles")
         for layer_index, layer in enumerate(mvr_scene.layers):
-            self.process_mvr_child_list(layer.child_list, layer_index, extract_to_folder_path, mvr_scene)
+            self.process_mvr_child_list(
+                layer.child_list,
+                layer_index,
+                extract_to_folder_path,
+                mvr_scene,
+                already_extracted_files,
+            )
+        DMX.mvr_import_in_progress = False # re-enable render loop
 
-    def process_mvr_child_list(self, child_list, layer_index, extract_to_folder_path, mvr_scene):
+    def process_mvr_child_list(
+        self,
+        child_list,
+        layer_index,
+        extract_to_folder_path,
+        mvr_scene,
+        already_extracted_files,
+    ):
         for fixture_index, fixture in enumerate(child_list.fixtures):
             focus_point = None
             if fixture.focus is not None:
-                focus_points =  [fp for fp in child_list.focus_points if fp.uuid == fixture.focus]
+                focus_points = [
+                    fp for fp in child_list.focus_points if fp.uuid == fixture.focus
+                ]
                 if len(focus_points):
                     focus_point = focus_points[0].matrix.matrix
 
-            self.add_mvr_fixture(mvr_scene, extract_to_folder_path, fixture, fixture_index, layer_index, focus_point)
+            self.add_mvr_fixture(
+                mvr_scene,
+                extract_to_folder_path,
+                fixture,
+                fixture_index,
+                layer_index,
+                focus_point,
+                already_extracted_files,
+            )
         if child_list.group_object.child_list is not None:
-            self.process_mvr_child_list(child_list.group_object.child_list, layer_index, extract_to_folder_path, mvr_scene)
+            self.process_mvr_child_list(
+                child_list.group_object.child_list,
+                layer_index,
+                extract_to_folder_path,
+                mvr_scene,
+                already_extracted_files,
+            )
 
-    def add_mvr_fixture(self, mvr_scene, extract_to_folder_path, fixture, fixture_index, layer_index, focus_point):
+    def add_mvr_fixture(
+        self,
+        mvr_scene,
+        extract_to_folder_path,
+        fixture,
+        fixture_index,
+        layer_index,
+        focus_point,
+        already_extracted_files,
+    ):
         if f"{fixture.gdtf_spec}" in mvr_scene._package.namelist():
-            mvr_scene._package.extract(fixture.gdtf_spec, extract_to_folder_path)
+            if fixture.gdtf_spec not in already_extracted_files:
+                mvr_scene._package.extract(fixture.gdtf_spec, extract_to_folder_path)
+                already_extracted_files.append(fixture.gdtf_spec)
         else:
             # if the file is not in the MVR package, use an RGBW Par64
-            fixture.gdtf_spec = "BlenderDMX@LED_PAR_64_RGBW@v0.3.gdtf" 
+            fixture.gdtf_spec = "BlenderDMX@LED_PAR_64_RGBW@v0.3.gdtf"
 
         self.ensureUniverseExists(fixture.addresses[0].universe)
-        self.addFixture(f"{fixture.name} {layer_index}-{fixture_index}", fixture.gdtf_spec, fixture.addresses[0].universe, fixture.addresses[0].address, fixture.gdtf_mode, (1.0,1.0,1.0,1.0), True, position=fixture.matrix.matrix, focus_point = focus_point)
+        self.addFixture(
+            f"{fixture.name} {layer_index}-{fixture_index}",
+            fixture.gdtf_spec,
+            fixture.addresses[0].universe,
+            fixture.addresses[0].address,
+            fixture.gdtf_mode,
+            (1.0, 1.0, 1.0, 1.0),
+            True,
+            position=fixture.matrix.matrix,
+            focus_point=focus_point,
+        )
 
     def ensureUniverseExists(self, universe):
         # Allocate universes to be able to control devices

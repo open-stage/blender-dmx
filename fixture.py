@@ -307,6 +307,9 @@ class DMX_Fixture(PropertyGroup):
                     DMX_Data.set_virtual(self.name, attribute, value)
 
     def render(self):
+        if bpy.context.scene.dmx.mvr_import_in_progress:
+            # do not run dender loop during MVR import
+            return
         channels = [c.id for c in self.channels]
         data = DMX_Data.get(self.universe, self.address, len(channels))
         data_virtual = DMX_Data.get_virtual(self.name)
