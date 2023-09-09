@@ -33,6 +33,9 @@ class ColorCIE:
             self.x = float(str_repr.split(",")[0])
             self.y = float(str_repr.split(",")[1])
             self.Y = float(str_repr.split(",")[2])
+    def __str__(self):
+        return f"{self.x}, {self.y}, {self.Y}"
+
 
 
 class Rotation:
