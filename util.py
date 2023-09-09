@@ -73,7 +73,8 @@ def sanitize_obj_name(geometry):
 
 # https://stackoverflow.com/questions/6629798/whats-wrong-with-this-rgb-to-xyz-color-space-conversion-algorithm
 # http://www.easyrgb.com/en/math.php
-def xyY2rgb(xyY):
+def xyY2rgbaa(xyY):
+    """As blender needs RGBA, which we later strip anyways, we just add 100 for Alpha"""
     x = xyY.x
     y = xyY.y
     Y = xyY.Y
@@ -110,11 +111,12 @@ def xyY2rgb(xyY):
     else:
         var_B = 12.92 * var_B
 
-    return (int(var_R * 100), int(var_G * 100), int(var_B * 100))
+    return (int(var_R * 100), int(var_G * 100), int(var_B * 100), 0)
 
 
-def xyY2rgba(xyY):
-    rgb = xyY2rgb(xyY)
+def xyY2rgba(xyz):
+    """Unused for now"""
+    rgb = xyY2rgb(xyz)
     lowest = min(rgb)
     alpha = (255 - lowest) / 255
     red = (rgb[0] - lowest) / alpha
