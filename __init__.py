@@ -114,7 +114,11 @@ class DMX(PropertyGroup):
                 DMX_PT_Programmer  )
 
     linkedToFile = False
-    mvr_import_in_progress = False
+
+    mvr_import_in_progress: BoolProperty(
+        description="The renderer is paused during MVR import. This checkbox allows to re-enable it in case of some failure during import, which would leave it paused",
+        name = "Pause renderer",
+        default = False)
 
     def register():
         for cls in DMX.classes_setup:
@@ -709,7 +713,7 @@ class DMX(PropertyGroup):
         return selected
 
     def addMVR(self, file_name):
-        DMX.mvr_import_in_progress = True # this stops the render loop, to prevent slowness and crashes
+        self.mvr_import_in_progress = True # this stops the render loop, to prevent slowness and crashes
         already_extracted_files = []
         mvr_scene = pymvr.GeneralSceneDescription(file_name)
         current_path = os.path.dirname(os.path.realpath(__file__))
@@ -722,7 +726,7 @@ class DMX(PropertyGroup):
                 mvr_scene,
                 already_extracted_files,
             )
-        DMX.mvr_import_in_progress = False # re-enable render loop
+        self.mvr_import_in_progress = False # re-enable render loop
 
     def process_mvr_child_list(
         self,

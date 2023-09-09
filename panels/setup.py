@@ -128,6 +128,8 @@ class DMX_PT_Setup_Debug(Panel):
         layout = self.layout
         dmx = context.scene.dmx
         row = layout.row()
+        row.prop(context.scene.dmx, 'mvr_import_in_progress')
+        row = layout.row()
         row.prop(context.scene.dmx,'display_pigtails')
         row = layout.row()
         row.prop(context.scene.dmx, 'logging_level')
