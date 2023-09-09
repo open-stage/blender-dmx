@@ -34,7 +34,7 @@ from dmx.panels.dmx import *
 from dmx.panels.fixtures import *
 from dmx.panels.groups import *
 from dmx.panels.programmer import *
-from dmx.util import rgb_to_cmy, xyY2rgba
+from dmx.util import rgb_to_cmy, xyY2rgbaa
 
 from bpy.props import (BoolProperty,
                        IntProperty,
@@ -782,14 +782,13 @@ class DMX(PropertyGroup):
             fixture.gdtf_spec = "BlenderDMX@LED_PAR_64_RGBW@v0.3.gdtf"
 
         self.ensureUniverseExists(fixture.addresses[0].universe)
-        print(fixture.color, xyY2rgba(fixture.color))
         self.addFixture(
             f"{fixture.name} {layer_index}-{fixture_index}",
             fixture.gdtf_spec,
             fixture.addresses[0].universe,
             fixture.addresses[0].address,
             fixture.gdtf_mode,
-            xyY2rgba(fixture.color),
+            xyY2rgbaa(fixture.color),
             True,
             position=fixture.matrix.matrix,
             focus_point=focus_point,
