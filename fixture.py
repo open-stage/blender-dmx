@@ -359,6 +359,14 @@ class DMX_Fixture(PropertyGroup):
                     self.updateRGB(rgb, None)
                 else:
                     self.updateRGB(rgb, geometry)
+            else:
+                # TODO: eliminate code duplication?
+                # This ensures that devices without RGB/CMY can still have color from the gel
+                if len(mixing) == 1 or not self.light_object_for_geometry_exists(mixing):
+                    # do not apply for simple devices as trickle down is not implemented...
+                    self.updateRGB([255, 255, 255], None)
+                else:
+                    self.updateRGB([255, 255, 255], geometry)
         
         if (cmy[0] != None and cmy[1] != None and cmy[2] != None):
             self.updateCMY(cmy)
