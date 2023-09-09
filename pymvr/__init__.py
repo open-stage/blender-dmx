@@ -109,17 +109,17 @@ class Fixture(BaseNode):
         self.fixture_id = xml_node.find("FixtureID").text
         self.unit_number = xml_node.find("UnitNumber").text
         fixture_type_id_node = xml_node.find("FixtureTypeId")
-        if fixture_type_id_node:
+        if fixture_type_id_node is not None:
             self.fixture_type_id = int(fixture_type_id_node.text or 0)
         custom_id_node = xml_node.find("CustomId")
-        if custom_id_node:
+        if custom_id_node is not None:
             self.custom_id = int(custom_id_node.text or 0)
         color_node = xml_node.find("Color")
-        if color_node:
+        if color_node is not None:
             self.color = ColorCIE(str_repr=color_node.text)
 
         cast_shadow_node = xml_node.find("CastShadow")
-        if cast_shadow_node:
+        if cast_shadow_node is not None:
             self.cast_shadow = bool(cast_shadow_node.text)
         self.addresses = [
             Address(xml_node=i) for i in xml_node.find("Addresses").findall("Address")
