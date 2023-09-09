@@ -24,18 +24,28 @@ class Enum:
 
 class ColorCIE:
     def __init__(
-        self, x: Union[float, None] = None, y: Union[float, None] = None, z: Union[float, None] = None, str_repr: Union[str, None] = None
+        self,
+        x: Union[float, None] = 0.3127,
+        y: Union[float, None] = 0.3290,
+        Y: Union[float, None] = 100.00,
+        str_repr: Union[str, None] = None,
     ):
         self.x = x
         self.y = y
-        self.z = z
+        self.Y = Y
         if str_repr is not None:
-            self.x = float(str_repr.split(",")[0])
-            self.y = float(str_repr.split(",")[1])
-            self.Y = float(str_repr.split(",")[2])
+            try:
+                self.x = float(str_repr.split(",")[0])
+                self.y = float(str_repr.split(",")[1])
+                self.Y = float(str_repr.split(",")[2])
+            except:
+                # Fail gracefully with default color (White)
+                self.x = 0.3127
+                self.y = 0.3290
+                self.Y = 100.00
+
     def __str__(self):
         return f"{self.x}, {self.y}, {self.Y}"
-
 
 
 class Rotation:

@@ -117,6 +117,8 @@ class Fixture(BaseNode):
         color_node = xml_node.find("Color")
         if color_node is not None:
             self.color = ColorCIE(str_repr=color_node.text)
+        else:
+            self.color = ColorCIE()
 
         cast_shadow_node = xml_node.find("CastShadow")
         if cast_shadow_node is not None:
