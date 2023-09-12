@@ -90,8 +90,11 @@ def process_mvr_object(
     layer_index,
     already_extracted_files,
 ):
-    geometry3ds = mvr_object.geometries.geometry3d
-    symbols = mvr_object.geometries.symbol
+    geometry3ds = []
+    symbols = []
+    if mvr_object.geometries:
+        geometry3ds = mvr_object.geometries.geometry3d
+        symbols = mvr_object.geometries.symbol
     position = mvr_object.matrix.matrix
     file = ""
     current_path = os.path.dirname(os.path.realpath(__file__))
@@ -139,18 +142,25 @@ def add_mvr_object(
     collection_name = name
 
     file_name = os.path.join(folder, file)
+    old_3ds = False
     if file_name.split(".")[-1] == "glb":
         bpy.ops.import_scene.gltf(filepath=file_name)
     else:
-        # not tested
         load_3ds(file_name, bpy.context)
+        old_3ds = True
 
     collection = bpy.data.collections.new(collection_name)
     bpy.context.scene.collection.children.link(collection)
+
     for ob in bpy.context.selected_objects:
         collection.objects.link(ob)
         ob.matrix_world = position
-        bpy.context.scene.collection.objects.unlink(ob)
+        if old_3ds:
+            ob.scale = (0.001, 0.001, 0.001)
+        try:
+            bpy.context.scene.collection.objects.unlink(ob)
+        except:
+            print("unlinking didnt work...")
     bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
 
