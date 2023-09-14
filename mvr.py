@@ -35,6 +35,12 @@ def process_mvr_child_list(
     mvr_scene,
     already_extracted_files,
 ):
+    if "MVR Trusses" in bpy.data.collections:
+        truss_collection = bpy.data.collections["MVR Trusses"]
+    else:
+        truss_collection = bpy.data.collections.new("MVR Trusses")
+        bpy.context.scene.collection.children.link(truss_collection)
+
     for truss_index, truss_object in enumerate(child_list.trusses):
         process_mvr_object(
             mvr_scene,
@@ -42,7 +48,14 @@ def process_mvr_child_list(
             truss_index,
             layer_index,
             already_extracted_files,
+            truss_collection,
         )
+
+    if "MVR Scene objects" in bpy.data.collections:
+        scene_collection = bpy.data.collections["MVR Scene objects"]
+    else:
+        scene_collection = bpy.data.collections.new("MVR Scene objects")
+        bpy.context.scene.collection.children.link(scene_collection)
 
     for scene_index, scene_object in enumerate(child_list.scene_objects):
         process_mvr_object(
@@ -51,6 +64,7 @@ def process_mvr_child_list(
             scene_index,
             layer_index,
             already_extracted_files,
+            scene_collection,
         )
 
     for fixture_index, fixture in enumerate(child_list.fixtures):
@@ -89,6 +103,7 @@ def process_mvr_object(
     mvr_object_index,
     layer_index,
     already_extracted_files,
+    group_collection,
 ):
     geometry3ds = []
     symbols = []
@@ -105,7 +120,15 @@ def process_mvr_object(
         if geometry.file_name:
             file = geometry.file_name
             extract_mvr_object(file, mvr_scene, folder, already_extracted_files)
-            add_mvr_object(name, file, folder, position, mvr_object_index, layer_index)
+            add_mvr_object(
+                name,
+                file,
+                folder,
+                position,
+                mvr_object_index,
+                layer_index,
+                group_collection,
+            )
 
     for symbol in symbols:
         symdefs = [sd for sd in mvr_scene.symdefs if sd.uuid == symbol.symdef]
@@ -116,7 +139,13 @@ def process_mvr_object(
 
                     extract_mvr_object(file, mvr_scene, folder, already_extracted_files)
                     add_mvr_object(
-                        name, file, folder, position, mvr_object_index, layer_index
+                        name,
+                        file,
+                        folder,
+                        position,
+                        mvr_object_index,
+                        layer_index,
+                        group_collection,
                     )
 
 
@@ -135,6 +164,7 @@ def add_mvr_object(
     position,
     mvr_object_index,
     layer_index,
+    group_collection,
 ):
     name = f"{name} {layer_index}-{mvr_object_index}"
     bpy.app.handlers.depsgraph_update_post.clear()
@@ -142,25 +172,28 @@ def add_mvr_object(
     collection_name = name
 
     file_name = os.path.join(folder, file)
-    old_3ds = False
+    file_3ds = False
     if file_name.split(".")[-1] == "glb":
         bpy.ops.import_scene.gltf(filepath=file_name)
     else:
         load_3ds(file_name, bpy.context)
-        old_3ds = True
+        file_3ds = True
 
-    collection = bpy.data.collections.new(collection_name)
-    bpy.context.scene.collection.children.link(collection)
+    object_collection = bpy.data.collections.new(collection_name)
 
-    for ob in bpy.context.selected_objects:
-        collection.objects.link(ob)
+    objs = list(bpy.context.view_layer.objects.selected)
+    for ob in objs:
         ob.matrix_world = position
-        if old_3ds:
+
+        if file_3ds:
             ob.scale = (0.001, 0.001, 0.001)
-        try:
+            ob.users_collection[0].objects.unlink(ob)
+        else:
             bpy.context.scene.collection.objects.unlink(ob)
-        except:
-            print("unlinking didnt work...")
+
+        object_collection.objects.link(ob)
+
+    group_collection.children.link(object_collection)
     bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
 
