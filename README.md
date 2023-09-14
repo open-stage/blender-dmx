@@ -13,21 +13,19 @@ A DMX visualization tool inside `Blender`, designed to offer a free, easy and fu
 First of all, make sure you have installed [Blender 3.0](https://www.blender.org/download/) or higher;
 Then, download the `zip` file:
 
-- **LATEST RELEASE (STABLE): v1.0.0 Vanilla**
+### LATEST RELEASE (STABLE): v1.0.0 Vanilla
 
    1. Download the [latest release](https://github.com/open-stage/blender-dmx/releases/latest) `dmx.zip` file
 
-- **ROLLING RELEASE (UNSTABLE)**
+### ROLLING RELEASE (UNSTABLE)
 
    1. Download the [repository ZIP](https://codeload.github.com/open-stage/blender-dmx/zip/refs/heads/main) `blender-dmx-main.zip` file
-   2. Unzip it
-   3. Rename the folder `blender-dmx-main` inside it to `dmx`
-   4. Zip it back, so you have: `dmx.zip/dmx/<contents>`
+   2. Inside the zip file is a folder called `blender-dmx-main`, rename this folder to `dmx`, keep the file zipped
 
 Finally:
    1. Open Blender
    2. `Edit > Preferences > Add-ons > Install`
-   3. Pick the addon `zip` file
+   3. Pick the downloaded `zip` file
 
 To enable the addon, go to `Edit > Preferences > Add-ons`, search for "DMX" and toggle the checkbox on.
 
