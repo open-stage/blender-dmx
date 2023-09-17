@@ -1,14 +1,14 @@
 bl_info = {
     "name": "DMX",
-    "description": "DMX Visualization, with GDTF and ArtNet support.",
+    "description": "DMX visualization and programming, with GDTF/MVR and Network support",
     "author": "open-stage",
-    "version": (1, 0, 0),
+    "version": (1, 0, 1),
     "blender": (3, 0, 0),
     "location": "3D View > DMX",
-    "warning": "", # used for warning icon and text in addons panel
-    "wiki_url": "http://www.github.com/open-stage/blenderDMX/wiki",
-    "tracker_url": "",
-    "category": "Lighting"
+    "wiki_url": "https://github.com/open-stage/blender-dmx/wiki",
+    "doc_url": "https://github.com/open-stage/blender-dmx/wiki",
+    "tracker_url": "https://github.com/open-stage/blender-dmx/issues",
+    "category": "Lighting",
 }
 
 import sys
@@ -309,7 +309,7 @@ class DMX(PropertyGroup):
 
         if ("DMX_DataVersion" in self.collection):
             file_data_version = self.collection["DMX_DataVersion"]
-        print("run", file_data_version)
+        print("Data version", file_data_version)
 
         if file_data_version < 2: # migration for sw. version 0.5 → 1.0
             print("Running migration 1→2")
@@ -801,7 +801,8 @@ def onDepsgraph(scene):
         obj = update.id.evaluated_get(depsgraph)
         # Selection changed, sync programmer
         if (obj.rna_type.name == 'Scene'):
-            scene.dmx.syncProgrammer()
+            if "dmx" in scene: # dmx may not be in scene during installation
+                scene.dmx.syncProgrammer()
             continue
         # Fixture updated
         found = False
