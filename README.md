@@ -4,7 +4,7 @@
 
 # BlenderDMX
 
-A DMX visualization tool inside `Blender`, designed to offer a free, easy and fully packed solution for Lighting Designers.
+A DMX visualization tool inside <a href="https://blender.org">Blender</a>, designed to offer a free, easy and fully packed solution for Lighting Designers. Fixture library is based on <a href="https://gdtf-share.com">GDTF</a> (via <a href="https://github.com/open-stage/python-gdtf">pygdtf</a>), scene import is based on <a href="https://gdtf-share.com">MVR</a> (via <a href="https://github.com/open-stage/python-mvr">pymvr</a>), GDTF/MVR resources and news: <a href="https://gdtf.eu">GDTF.eu</a>.
 
 ![](https://i.ibb.co/rvpKYxB/render-eevee-7.png)
 
