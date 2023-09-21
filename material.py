@@ -6,17 +6,16 @@
 #
 
 import bpy
-import bmesh
 from dmx.logging import DMX_Log
 import logging
 
 # Shader Nodes default labels
 # Blender API naming convention is inconsistent for internationalization
 # Every label used is listed here, so it's easier to fix it on new API updates
-PRINCIPLED_BSDF = "Principled BSDF"
-MATERIAL_OUTPUT = "Material Output"
-SHADER_NODE_EMISSION = "ShaderNodeEmission"
-SHADER_NODE_VOLUMESCATTER = "ShaderNodeVolumeScatter"
+PRINCIPLED_BSDF = bpy.app.translations.pgettext("Principled BSDF")
+MATERIAL_OUTPUT = bpy.app.translations.pgettext("Material Output")
+SHADER_NODE_EMISSION = bpy.app.translations.pgettext("ShaderNodeEmission")
+SHADER_NODE_VOLUMESCATTER = bpy.app.translations.pgettext("ShaderNodeVolumeScatter")
 VOLUME_SCATTER = bpy.app.translations.pgettext("Volume Scatter")
 EMISSION = bpy.app.translations.pgettext("Emission")
 
