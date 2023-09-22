@@ -57,7 +57,6 @@ class BaseNode:
             self._read_xml(xml_node)
 
     def _read_xml(self, xml_node: "Element"):
-        print("base node")
         pass
 
 
