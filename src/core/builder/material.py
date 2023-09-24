@@ -4,6 +4,13 @@ SHADER_NODE_BSDF = 'ShaderNodeBsdfPrincipled'
 SHADER_NODE_OUTPUT = 'ShaderNodeOutputMaterial'
 SHADER_NODE_EMISSION = 'ShaderNodeEmission'
 
+# TODO: try if this works in non English settings of Blender, in case of issue use this:
+# PRINCIPLED_BSDF = bpy.app.translations.pgettext("Principled BSDF")
+# https://github.com/open-stage/blender-dmx/commit/681213de30d167d0c6ad5528e51bdf1e52d10612
+# https://github.com/open-stage/blender-dmx/pull/48
+
+
+
 class DMX_Material:
     '''
     Manager for the materials used by the Add-on.

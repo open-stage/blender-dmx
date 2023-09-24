@@ -125,14 +125,6 @@ data = [
 ```
 
 
-
-
-
-
-
-
-
-
 ## Logging
 
 Use [predefined python logging module](https://docs.python.org/3/library/logging.html?highlight=logging#module-logging) instead of print. If not imported yet, import it into your class:
@@ -150,3 +142,12 @@ DMX_LOG.log.warning("Logging warning message here, level 30")
 DMX_LOG.log.debug("Logging debug message here, level 20")
 DMX_LOG.log.info("Logging info message here, level 10")
 ```
+
+
+### MVR
+
+We will need to keep track of each imported MVR object, this is identified by a
+UUID, which we will need to assign to each imported scene object including
+fixtures, trusses or other 3D geometries. During next import, we need to check
+if object with given UUIDs are already existing in the scene and rather then
+importing them again, we update their position, patch information...

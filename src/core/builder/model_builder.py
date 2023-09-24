@@ -199,7 +199,7 @@ class DMX_ModelBuilder:
         '''
         Create empty object for geometry without a geometry assigned.
         '''
-        if not name in self.models:
+        if name not in self.models:
             self.models[name] = bpy.data.objects.new(name, None)
             self.models[name].empty_display_size = 0
         return self.models[name]
@@ -228,7 +228,7 @@ class DMX_ModelBuilder:
 
         obj['geometry_name'] = geometry.name
         obj['geometry_type'] = type(geometry).__name__
-        if 'yoke' in geometry.name.lower(): # TODO: likely redo this to apply for models with "pan" gdtf attribute
+        if 'yoke' in geometry.name.lower(): # TODO: GDTF geometries are not required to have these names, we must search for geometries  with "pan" gdtf attribute
             obj['mobile_type'] = 'yoke'
         if 'head' in geometry.name.lower(): # TODO: likely redo this to apply for models with "tilt" gdtf attribute
             obj['mobile_type'] = 'head'
@@ -244,10 +244,10 @@ class DMX_ModelBuilder:
         and populating them.
         '''
         # Copy model object for this geometry
-        if (geometry.model == None):
+        if (geometry.model is None):
             obj = self._build_empty_model(geometry.name)
         else:
-            if not geometry.model in self.models:
+            if geometry.model not in self.models:
                 raise Exception(f'Malformed GDTF file. The "{geometry.model}" model refered by "{geometry.name}" geometry doesn\'t exist.')
             obj = self.models[geometry.model].copy()
         self.collection.objects.link(obj)
@@ -412,7 +412,7 @@ class DMX_ModelBuilder:
         data.spot_size = geometry.beam_angle*3.1415/180.0
         data.shadow_soft_size = geometry.beam_radius
 
-        light = bpy.data.objects.new(name=f"Spot", object_data=data)
+        light = bpy.data.objects.new(name="Spot", object_data=data)
         light.hide_select = True
 
         self._merge_special_obj(obj, light, 'Light')
