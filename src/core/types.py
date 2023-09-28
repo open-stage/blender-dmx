@@ -14,5 +14,5 @@ FixtureData = Dict[Function, FixtureFnData]
 FunctionData = Dict[Function, float]
 ChannelData = List[Tuple[Universe, Offset, float]]
 
-ChannelMetadata = object
+ChannelMetadata = Dict
 CustomPropertyChannel = object

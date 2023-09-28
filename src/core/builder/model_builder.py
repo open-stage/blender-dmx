@@ -223,17 +223,22 @@ class DMX_ModelBuilder:
         Add metadata to the Object as Custom Properties.
         These are used in later stages of the build.
         '''
+        
         self.objects[geometry.name] = obj
         self.geometries[geometry.name] = geometry
 
         obj['geometry_name'] = geometry.name
         obj['geometry_type'] = type(geometry).__name__
-        if 'yoke' in geometry.name.lower(): # TODO: GDTF geometries are not required to have these names, we must search for geometries  with "pan" gdtf attribute
-            obj['mobile_type'] = 'yoke'
-        if 'head' in geometry.name.lower(): # TODO: likely redo this to apply for models with "tilt" gdtf attribute
-            obj['mobile_type'] = 'head'
+        
+        if geometry.name in self.geom_channels:
+            attributes = [x["function"] for x in self.geom_channels[geometry.name]]
+            if "Pan" in attributes:
+                obj['mobile_type'] = 'yoke'
+                print("found pan")
+            if "Tilt" in attributes:
+                print("found tilt")
+                obj['mobile_type'] = 'head'
 
-        if (geometry.name in self.geom_channels):
             obj['dmx_channels'] = self.geom_channels[geometry.name]
         
     def _build_geometry(self, geometry: 'pygdtf.Geometry') -> Object:
