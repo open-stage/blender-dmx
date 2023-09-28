@@ -92,37 +92,63 @@ class FixtureType:
             self.wheels = [Wheel(xml_node=i) for i in wheel_collect.findall("Wheel")]
         else:
             self.wheels = []
-        if emitter_collect := self._root.find("PhysicalDescriptions").find("Emitters"):
-            self.emitters = [
-                Emitter(xml_node=i) for i in emitter_collect.findall("Emitter")
-            ]
-        else:
-            self.emitters = []
-        if filter_collect := self._root.find("PhysicalDescriptions").find("Filters"):
-            self.filters = [
-                Filter(xml_node=i) for i in filter_collect.findall("Filter")
-            ]
-        else:
-            self.filters = []
-        if color_space := self._root.find("PhysicalDescriptions").find("ColorSpace"):
-            self.color_space = ColorSpace(xml_node=color_space)
-        else:
-            # The default color space is sRGB if nothing else is defined
-            self.color_space = ColorSpace(mode=ColorSpaceMode("sRGB"))
-        if profiles_collect := self._root.find("PhysicalDescriptions").find(
-            "DMXProfiles"
-        ):
-            self.dmx_profiles = [
-                DmxProfile(xml_node=i) for i in profiles_collect.findall("DMXProfile")
-            ]
-        else:
-            self.dmx_profiles = []
-        if cri_collect := self._root.find("PhysicalDescriptions").find("CRIs"):
-            self.cri_groups = [
-                CriGroup(xml_node=i) for i in cri_collect.findall("CRIGroup")
-            ]
-        else:
-            self.cri_groups = []
+
+        physical_descriptions_node = self._root.find("PhysicalDescriptions")
+
+        if physical_descriptions_node:
+            if emitter_collect := self._root.find("PhysicalDescriptions").find(
+                "Emitters"
+            ):
+                self.emitters = [
+                    Emitter(xml_node=i) for i in emitter_collect.findall("Emitter")
+                ]
+            else:
+                self.emitters = []
+
+        if physical_descriptions_node:
+            if filter_collect := self._root.find("PhysicalDescriptions").find(
+                "Filters"
+            ):
+                self.filters = [
+                    Filter(xml_node=i) for i in filter_collect.findall("Filter")
+                ]
+            else:
+                self.filters = []
+
+        if physical_descriptions_node:
+            if color_space := self._root.find("PhysicalDescriptions").find(
+                "ColorSpace"
+            ):
+                self.color_space = ColorSpace(xml_node=color_space)
+            else:
+                # The default color space is sRGB if nothing else is defined
+                self.color_space = ColorSpace(mode=ColorSpaceMode("sRGB"))
+
+        if physical_descriptions_node:
+            if profiles_collect := self._root.find("PhysicalDescriptions").find(
+                "DMXProfiles"
+            ):
+                self.dmx_profiles = [
+                    DmxProfile(xml_node=i)
+                    for i in profiles_collect.findall("DMXProfile")
+                ]
+            else:
+                self.dmx_profiles = []
+
+        if physical_descriptions_node:
+            if cri_collect := self._root.find("PhysicalDescriptions").find("CRIs"):
+                self.cri_groups = [
+                    CriGroup(xml_node=i) for i in cri_collect.findall("CRIGroup")
+                ]
+            else:
+                self.cri_groups = []
+
+        if physical_descriptions_node:
+            if properties := self._root.find("PhysicalDescriptions").find("Properties"):
+                self.properties = Properties(xml_node=properties)
+            else:
+                self.properties: Properties = Properties()
+
         self.models = []
         if model_collect := self._root.find("Models"):
             self.models = [Model(xml_node=i) for i in model_collect.findall("Model")]
@@ -172,11 +198,6 @@ class FixtureType:
             ]
         else:
             self.revisions = []
-
-        if properties := self._root.find("PhysicalDescriptions").find("Properties"):
-            self.properties = Properties(xml_node=properties)
-        else:
-            self.properties: Properties = Properties()
 
 
 class BaseNode:
@@ -804,15 +825,18 @@ class DmxMode(BaseNode):
             DmxChannel(xml_node=i)
             for i in xml_node.find("DMXChannels").findall("DMXChannel")
         ]
-        self.relations = [
-            Relation(xml_node=i) for i in xml_node.find("Relations").findall("Relation")
-        ]
-        try:
-            self.ft_macros = [
-                Macro(xml_node=i) for i in xml_node.find("FTMacros").findall("FTMacro")
+
+        relations_node = xml_node.find("Relations")
+        if relations_node:
+            self.relations = [
+                Relation(xml_node=i) for i in relations_node.findall("Relation")
             ]
-        except AttributeError:
-            pass
+
+        ftmacros_node = xml_node.find("FTMacros")
+        if ftmacros_node:
+            self.ft_macros = [
+                Macro(xml_node=i) for i in ftmacros_node.findall("FTMacro")
+            ]
 
 
 class DmxChannel(BaseNode):
@@ -822,6 +846,7 @@ class DmxChannel(BaseNode):
         offset: List[int] = None,
         default: "DmxValue" = DmxValue("0/1"),
         highlight: Optional["DmxValue"] = None,
+        initial_function: Optional[str] = None,
         geometry: Optional[str] = None,
         logical_channels: List["LogicalChannel"] = None,
         *args,
@@ -831,6 +856,7 @@ class DmxChannel(BaseNode):
         self.offset = offset
         self.default = default
         self.highlight = highlight
+        self.initial_function = initial_function
         self.geometry = geometry
         self.logical_channels = logical_channels
         super().__init__(*args, **kwargs)
@@ -845,12 +871,32 @@ class DmxChannel(BaseNode):
             self.offset = None
         else:
             self.offset = [int(i) for i in xml_node.attrib.get("Offset").split(",")]
+
+        # obsoleted by initial function in GDTF 1.2
         self.default = DmxValue(xml_node.attrib.get("Default", "0/1"))
-        self.highlight = DmxValue(xml_node.attrib.get("Highlight"))
+
+        highlight_node = xml_node.attrib.get("Highlight")
+        if highlight_node is not None:
+            highlight_value = xml_node.attrib.get("Highlight", "0/1")
+            
+            print("highlight value", highlight_value)
+            if highlight_value != "None":
+                self.highlight = DmxValue(highlight_value)
+
         self.geometry = xml_node.attrib.get("Geometry")
         self.logical_channels = [
             LogicalChannel(xml_node=i) for i in xml_node.findall("LogicalChannel")
         ]
+
+        initial_function_node = xml_node.attrib.get("InitialFunction")
+        if initial_function_node:
+            self.initial_function = NodeLink(
+                xml_node, xml_node.attrib.get("InitialFunction")
+            )
+            for logical_channel in self.logical_channels:
+                for channel_function in logical_channel.channel_functions:
+                    if channel_function.name == self.initial_function:
+                        self.default = channel_function.default
 
 
 class LogicalChannel(BaseNode):

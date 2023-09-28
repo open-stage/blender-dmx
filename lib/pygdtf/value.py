@@ -1,5 +1,5 @@
 from collections import namedtuple
-from typing import List, Optional
+from typing import List, Optional, Union
 
 
 # Data type that only allows a specific set of values, if given a value
@@ -169,14 +169,21 @@ class DmxValue:
             self.value = int(str_repr.split("/")[0])
             self.byte_count = int(str_repr.split("/")[1])
 
+    def __str__(self):
+        return f"Value: {self.value}, Byte count: {self.byte_count}"
+
 
 class ColorCIE:
     def __init__(
-        self, x: float = None, y: float = None, z: float = None, str_repr: str = None
+        self,
+        x: Union[float, None] = 0.3127,
+        y: Union[float, None] = 0.3290,
+        Y: Union[float, None] = 100.00,
+        str_repr: Union[str, None] = None,
     ):
         self.x = x
         self.y = y
-        self.z = z
+        self.Y = Y
         if str_repr is not None:
             try:
                 self.x = float(str_repr.split(",")[0])
@@ -186,7 +193,10 @@ class ColorCIE:
                 # Fail gracefully with default color (White)
                 self.x = 0.3127
                 self.y = 0.3290
-                self.z = 1.0000
+                self.Y = 100.00
+
+    def __str__(self):
+        return f"{self.x}, {self.y}, {self.Y}"
 
 
 class Rotation:

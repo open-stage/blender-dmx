@@ -102,28 +102,45 @@ class DMX_GDTF_Processor():
         # BlenderDMX 1.0 did this correctly
 
         channels = {}
-        mode = pygdtf.utils.get_dmx_mode_by_name(self.fixture_type, mode_name)
+        #mode = pygdtf.utils.get_dmx_mode_by_name(self.fixture_type, mode_name)
 
-        if (mode == None):
-            raise Exception(f'Mode {mode_name} not found on profile {self.fixture_type.name}.')
 
-        for channel in mode.dmx_channels:
-            geom = channel.geometry
-            if (geom not in channels):
-                channels[geom] = []
-            channels[geom].append({
-                'dmx_break': channel.dmx_break,
-                'default': {
-                    'byte_count': channel.default.byte_count,
-                    'value': channel.default.value,
-                },
-                'highlight': {
-                    'byte_count': channel.highlight.byte_count,
-                    'value': channel.highlight.value,
-                },
-                'function': channel.logical_channels[0].attribute.str_link,
-                'offset': channel.offset # None if virtual channel, or [coarse, fine, ultra, uber]
-            })
+        #if (mode == None):
+        #    raise Exception(f'Mode {mode_name} not found on profile {self.fixture_type.name}.')
+
+        dmx_channels = pygdtf.utils.get_dmx_channels(self.fixture_type, mode_name)
+        
+        for dmx_break in dmx_channels:
+            for channel in dmx_break:
+                geom = channel.get("geometry")
+                if geom not in channels:
+                    channels[geom] = []
+                channels[geom].append({
+                    "dmx_break": channel.get("break"),
+                    "default": {"value": channel.get("default")},
+                    "highlight": {"value": channel.get("highlight")},
+                    "function": channel.get("id"),
+                    "offset": channel.get("offset"),
+                    })
+        
+        # TODO START
+        #for channel in mode.dmx_channels:
+        #    geom = channel.geometry
+        #    if (geom not in channels):
+        #        channels[geom] = []
+        #    channels[geom].append({
+        #        'dmx_break': channel.dmx_break,
+        #        'default': {
+        #            'byte_count': channel.default.byte_count,
+        #            'value': channel.default.value,
+        #        },
+        #        'highlight': {
+        #            'byte_count': channel.highlight.byte_count,
+        #            'value': channel.highlight.value,
+        #        },
+        #        'function': channel.logical_channels[0].attribute.str_link,
+        #        'offset': channel.offset # None if virtual channel, or [coarse, fine, ultra, uber]
+        #    })
 
         return channels
 
