@@ -209,10 +209,20 @@ class DMX_ModelBuilder:
         Apply a transform matrix to the object, altering it's
         location, rotation and scale.
         '''
-        obj.location = Matrix(matrix).to_translation()
+        # rotation/location (for searching). 
+        # The following should be sufficient and correct:
+        #obj.location = Matrix(matrix).to_translation() 
+
+        # but, that is not the case... so we must invert one axis:
+
+        position = Matrix(matrix).to_translation()
+        obj.location[0] += (position[0]*-1) # bug? Not sure why, but this is still needed.
+        obj.location[1] += position[1]
+        obj.location[2] += position[2]
+
         obj.rotation_mode = "XYZ"
         obj.rotation_euler = Matrix(matrix).to_euler('XYZ')
-        
+
         scale = Matrix(matrix).to_scale()
         obj.scale[0] *= scale[0]
         obj.scale[1] *= scale[1]
@@ -234,9 +244,8 @@ class DMX_ModelBuilder:
             attributes = [x["function"] for x in self.geom_channels[geometry.name]]
             if "Pan" in attributes:
                 obj['mobile_type'] = 'yoke'
-                print("found pan")
+
             if "Tilt" in attributes:
-                print("found tilt")
                 obj['mobile_type'] = 'head'
 
             obj['dmx_channels'] = self.geom_channels[geometry.name]
@@ -271,7 +280,7 @@ class DMX_ModelBuilder:
                 child_obj.parent = obj
                 child_obj.matrix_parent_inverse = obj.matrix_world.inverted()
                 # Make children unselectable, so the user won't accidentaly misalign them on the 3D view.
-                child_obj.hide_select = True
+                #child_obj.hide_select = True
 
         return obj
 
