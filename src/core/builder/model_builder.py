@@ -367,7 +367,7 @@ class DMX_ModelBuilder:
         heads = []
         for head in head_objects:
             if head not in [pair[1] for pair in yoke_head_pairs]:
-                heads.append((yoke,))
+                heads.append((head,))
 
         return yokes + heads + yoke_head_pairs
 
