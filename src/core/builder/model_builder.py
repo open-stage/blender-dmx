@@ -86,6 +86,8 @@ class DMX_ModelBuilder:
                 bpy.ops.import_scene.gltf(filepath=filepath)
         except Exception as e:
             print(e)
+        
+        # TODO: GLP@impression_X5_RGBL@220923_-_no_meas.gdtf doesn't load correctly, due to some 3DS/scaling issues... 
 
         obj = self._get_created_obj(unlink = extension != "3ds")
         obj.name = model.name
@@ -279,6 +281,8 @@ class DMX_ModelBuilder:
                 child_obj = self._build_geometry(child_geometry)
                 child_obj.parent = obj
                 child_obj.matrix_parent_inverse = obj.matrix_world.inverted()
+                # we may have to look at this:
+                # https://blender.stackexchange.com/questions/26694/problem-with-matrix-parent-inverse-of-childs-of-bones
                 # Make children unselectable, so the user won't accidentaly misalign them on the 3D view.
                 #child_obj.hide_select = True
 
