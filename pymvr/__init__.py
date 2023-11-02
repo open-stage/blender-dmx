@@ -2,7 +2,7 @@ from typing import List, Union, Optional
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 import zipfile
-from dmx.pymvr.value import *
+from dmx.pymvr.value import Matrix, ColorCIE
 
 
 def _find_root(pkg: "zipfile.ZipFile") -> "ElementTree.Element":
@@ -144,6 +144,8 @@ class BaseChildNode(BaseNode):
                 Address(xml_node=i)
                 for i in xml_node.find("Addresses").findall("Address")
             ]
+        if not len(self.addresses):
+            self.addresses = [Address(dmx_break=0, universe=0, address=0)]
 
         if xml_node.find("Alignments"):
             self.alignments = [
@@ -307,7 +309,7 @@ class ChildList(BaseNode):
     def __init__(
         self,
         scene_objects: List["SceneObject"] = [],
-        group_object: Union["GroupObject", None] = None,
+        group_objects: List["GroupObject"] = [],
         focus_points: List["FocusPoint"] = [],
         fixtures: List["Fixture"] = [],
         supports: List["Support"] = [],
@@ -322,7 +324,10 @@ class ChildList(BaseNode):
         else:
             self.scene_objects = []
 
-        self.group_object = group_object
+        if group_objects is not None:
+            self.group_objects = group_objects
+        else:
+            self.group_objects = []
 
         if focus_points is not None:
             self.focus_points = focus_points
@@ -361,7 +366,9 @@ class ChildList(BaseNode):
             SceneObject(xml_node=i) for i in xml_node.findall("SceneObject")
         ]
 
-        self.group_object = GroupObject(xml_node=xml_node.find("GroupObject"))
+        self.group_objects = [
+            GroupObject(xml_node=i) for i in xml_node.findall("GroupObject")
+        ]
 
         self.focus_points = [
             FocusPoint(xml_node=i) for i in xml_node.findall("FocusPoint")
