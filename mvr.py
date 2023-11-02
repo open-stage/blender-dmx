@@ -86,15 +86,17 @@ def process_mvr_child_list(
             focus_point,
             already_extracted_files,
         )
-    if child_list.group_object.child_list is not None:
-        process_mvr_child_list(
-            dmx,
-            child_list.group_object.child_list,
-            layer_index,
-            extract_to_folder_path,
-            mvr_scene,
-            already_extracted_files,
-        )
+
+    for group in child_list.group_objects:
+        if group.child_list is not None:
+            process_mvr_child_list(
+                dmx,
+                group.child_list,
+                layer_index,
+                extract_to_folder_path,
+                mvr_scene,
+                already_extracted_files,
+            )
 
 
 def process_mvr_object(
