@@ -16,8 +16,6 @@ def _find_root(pkg: "zipfile.ZipFile") -> "ElementTree.Element":
 
 class GeneralSceneDescription:
     def __init__(self, path=None):
-        self._package = None
-        self._root = None
         if path is not None:
             self._package = zipfile.ZipFile(path, "r")
         if self._package is not None:
@@ -28,26 +26,29 @@ class GeneralSceneDescription:
             self._read_xml()
 
     def _read_xml(self):
-        self.version_major = self._root.get("verMajor")
-        self.version_minor = self._root.get("verMinor")
+        self.version_major: str = self._root.get("verMajor", "")
+        self.version_minor: str = self._root.get("verMinor", "")
+        self.provider: str = self._root.get("provider", "")
+        self.providerVersion: str = self._root.get("providerVersion", "")
 
         layers_collect = self._scene.find("Layers")
         if layers_collect:
-            self.layers = [Layer(xml_node=i) for i in layers_collect.findall("Layer")]
+            self.layers: List["Layer"] = [
+                Layer(xml_node=i) for i in layers_collect.findall("Layer")
+            ]
         else:
             self.layers = []
 
         aux_data_collect = self._scene.find("AUXData")
 
         if aux_data_collect:
-            self.classes = [
-                Class(xml_node=i) for i in aux_data_collect.findall("Class")
-            ]
-            self.symdefs = [
-                Symdef(xml_node=i) for i in aux_data_collect.findall("Symdef")
-            ]
-            self.positions = [
-                Position(xml_node=i) for i in aux_data_collect.findall("Position")
+            self.aux_data = AUXData(xml_node=aux_data_collect)
+        else:
+            self.aux_data = None
+
+        if self._user_data is not None:
+            self.user_data: List["Data"] = [
+                Data(xml_node=i) for i in self._user_data.findall("Data")
             ]
 
 
@@ -197,6 +198,79 @@ class BaseChildNodeExtended(BaseChildNode):
 
     def __str__(self):
         return f"{self.name}"
+
+
+class Data(BaseNode):
+    def __init__(
+        self,
+        provider: str = "",
+        ver: str = "",
+        *args,
+        **kwargs,
+    ):
+        self.provider = provider
+        self.ver = ver
+        super().__init__(*args, **kwargs)
+
+    def _read_xml(self, xml_node: "Element"):
+        self.provider = xml_node.attrib.get("provider")
+        self.ver = xml_node.attrib.get("ver")
+
+    def __str__(self):
+        return f"{self.provider} {self.ver}"
+
+
+class AUXData(BaseNode):
+    def __init__(
+        self,
+        classes: List["Class"] = [],
+        symdefs: List["Symdef"] = [],
+        positions: List["Position"] = [],
+        mapping_definitions: List["MappingDefinition"] = [],
+        *args,
+        **kwargs,
+    ):
+        self.classes = classes
+        self.symdefs = symdefs
+        self.positions = positions
+        self.mapping_definitions = mapping_definitions
+        super().__init__(*args, **kwargs)
+
+    def _read_xml(self, xml_node: "Element"):
+        self.classes = [Class(xml_node=i) for i in xml_node.findall("Class")]
+        self.symdefs = [Symdef(xml_node=i) for i in xml_node.findall("Symdef")]
+        self.positions = [Position(xml_node=i) for i in xml_node.findall("Position")]
+        self.mapping_definitions = [
+            MappingDefinition(xml_node=i) for i in xml_node.findall("MappingDefinition")
+        ]
+
+
+class MappingDefinition(BaseNode):
+    def __init__(
+        self,
+        name: Union[str, None] = None,
+        uuid: Union[str, None] = None,
+        size_x: int = 0,
+        size_y: int = 0,
+        source=None,
+        scale_handling=None,
+        *args,
+        **kwargs,
+    ):
+        self.name = name
+        self.uuid = uuid
+        self.size_x = size_x
+        self.size_y = size_y
+        self.source = source
+        self.scale_handling = scale_handling
+        super().__init__(*args, **kwargs)
+
+    def _read_xml(self, xml_node: "Element"):
+        # TODO handle missing data...
+        self.size_x = int(xml_node.find("SizeX").text)
+        self.size_y = int(xml_node.find("SizeY").text)
+        self.source = xml_node.find("Source")  # TODO
+        self.scale_handling = xml_node.find("ScaleHandeling").text  # TODO ENUM
 
 
 class Fixture(BaseChildNode):
@@ -389,7 +463,7 @@ class ChildList(BaseNode):
 class Layer(BaseNode):
     def __init__(
         self,
-        name: Union[str, None] = None,
+        name: str = "",
         uuid: Union[str, None] = None,
         gdtf_spec: Union[str, None] = None,
         gdtf_mode: Union[str, None] = None,
@@ -408,7 +482,7 @@ class Layer(BaseNode):
         super().__init__(*args, **kwargs)
 
     def _read_xml(self, xml_node: "Element"):
-        self.name = xml_node.attrib.get("name")
+        self.name = xml_node.attrib.get("name", "")
         self.uuid = xml_node.attrib.get("uuid")
         _gdtf_spec = xml_node.find("GDTFSpec")
         if _gdtf_spec is not None:
