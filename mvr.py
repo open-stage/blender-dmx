@@ -2,6 +2,7 @@ import os
 import bpy
 from dmx.util import xyY2rgbaa
 from dmx.io_scene_3ds.import_3ds import load_3ds
+from mathutils import Matrix
 
 
 # importing from dmx didn't work, had to duplicate this function
@@ -34,12 +35,13 @@ def process_mvr_child_list(
     extract_to_folder_path,
     mvr_scene,
     already_extracted_files,
+    layer_collection,
 ):
-    if "MVR Trusses" in bpy.data.collections:
-        truss_collection = bpy.data.collections["MVR Trusses"]
+    if "MVR Trusses" in layer_collection:
+        truss_collection = layer_collection["MVR Trusses"]
     else:
         truss_collection = bpy.data.collections.new("MVR Trusses")
-        bpy.context.scene.collection.children.link(truss_collection)
+        layer_collection.children.link(truss_collection)
 
     for truss_index, truss_object in enumerate(child_list.trusses):
         process_mvr_object(
@@ -51,11 +53,11 @@ def process_mvr_child_list(
             truss_collection,
         )
 
-    if "MVR Scene objects" in bpy.data.collections:
-        scene_collection = bpy.data.collections["MVR Scene objects"]
+    if "MVR Scene objects" in layer_collection:
+        scene_collection = layer_collection["MVR Scene objects"]
     else:
         scene_collection = bpy.data.collections.new("MVR Scene objects")
-        bpy.context.scene.collection.children.link(scene_collection)
+        layer_collection.children.link(scene_collection)
 
     for scene_index, scene_object in enumerate(child_list.scene_objects):
         process_mvr_object(
@@ -87,15 +89,17 @@ def process_mvr_child_list(
             already_extracted_files,
         )
 
-    for group in child_list.group_objects:
+    for group_index, group in enumerate(child_list.group_objects):
         if group.child_list is not None:
+            layer_group_index = f"{layer_index}-{group_index}"
             process_mvr_child_list(
                 dmx,
                 group.child_list,
-                layer_index,
+                layer_group_index,
                 extract_to_folder_path,
                 mvr_scene,
                 already_extracted_files,
+                layer_collection,
             )
 
 
@@ -133,7 +137,7 @@ def process_mvr_object(
             )
 
     for symbol in symbols:
-        symdefs = [sd for sd in mvr_scene.symdefs if sd.uuid == symbol.symdef]
+        symdefs = [sd for sd in mvr_scene.aux_data.symdefs if sd.uuid == symbol.symdef]
         for symdef in symdefs:
             for geometry in symdef.geometry3d:
                 if geometry.file_name:
@@ -184,11 +188,18 @@ def add_mvr_object(
     object_collection = bpy.data.collections.new(collection_name)
 
     objs = list(bpy.context.view_layer.objects.selected)
+    scale = Matrix(position).to_scale()
     for ob in objs:
         ob.matrix_world = position
+        ob.scale[0] *= scale[0]
+        ob.scale[1] *= scale[1]
+        ob.scale[2] *= scale[2]
 
         if file_3ds:
-            ob.scale = (0.001, 0.001, 0.001)
+            # ob.scale = (0.001, 0.001, 0.001)
+            ob.scale[0] *= 0.001
+            ob.scale[1] *= 0.001
+            ob.scale[2] *= 0.001
             ob.users_collection[0].objects.unlink(ob)
         else:
             bpy.context.scene.collection.objects.unlink(ob)
