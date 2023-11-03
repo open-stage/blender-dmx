@@ -719,6 +719,8 @@ class DMX(PropertyGroup):
         current_path = os.path.dirname(os.path.realpath(__file__))
         extract_to_folder_path = os.path.join(current_path, "assets", "profiles")
         for layer_index, layer in enumerate(mvr_scene.layers):
+            layer_collection = bpy.data.collections.new(layer.name or f"Layer {layer_index}")
+            bpy.context.scene.collection.children.link(layer_collection)
             process_mvr_child_list(
                 self,
                 layer.child_list,
@@ -726,6 +728,7 @@ class DMX(PropertyGroup):
                 extract_to_folder_path,
                 mvr_scene,
                 already_extracted_files,
+                layer_collection,
             )
         self.mvr_import_in_progress = False # re-enable render loop
 

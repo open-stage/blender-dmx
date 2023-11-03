@@ -266,7 +266,7 @@ class MappingDefinition(BaseNode):
         super().__init__(*args, **kwargs)
 
     def _read_xml(self, xml_node: "Element"):
-        # TODO handle missing data...
+        #TODO handle missing data...
         self.size_x = int(xml_node.find("SizeX").text)
         self.size_y = int(xml_node.find("SizeY").text)
         self.source = xml_node.find("Source")  # TODO
