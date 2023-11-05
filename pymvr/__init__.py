@@ -33,9 +33,7 @@ class GeneralSceneDescription:
 
         layers_collect = self._scene.find("Layers")
         if layers_collect:
-            self.layers: List["Layer"] = [
-                Layer(xml_node=i) for i in layers_collect.findall("Layer")
-            ]
+            self.layers: List["Layer"] = [Layer(xml_node=i) for i in layers_collect.findall("Layer")]
         else:
             self.layers = []
 
@@ -47,9 +45,7 @@ class GeneralSceneDescription:
             self.aux_data = None
 
         if self._user_data is not None:
-            self.user_data: List["Data"] = [
-                Data(xml_node=i) for i in self._user_data.findall("Data")
-            ]
+            self.user_data: List["Data"] = [Data(xml_node=i) for i in self._user_data.findall("Data")]
 
 
 class BaseNode:
@@ -141,33 +137,18 @@ class BaseChildNode(BaseNode):
             self.cast_shadow = bool(xml_node.find("CastShadow").text)
 
         if xml_node.find("Addresses") is not None:
-            self.addresses = [
-                Address(xml_node=i)
-                for i in xml_node.find("Addresses").findall("Address")
-            ]
+            self.addresses = [Address(xml_node=i) for i in xml_node.find("Addresses").findall("Address")]
         if not len(self.addresses):
             self.addresses = [Address(dmx_break=0, universe=0, address=0)]
 
         if xml_node.find("Alignments"):
-            self.alignments = [
-                Alignment(xml_node=i)
-                for i in xml_node.find("Alignments").findall("Alignment")
-            ]
+            self.alignments = [Alignment(xml_node=i) for i in xml_node.find("Alignments").findall("Alignment")]
         if xml_node.find("Connections"):
-            self.connections = [
-                Connection(xml_node=i)
-                for i in xml_node.find("Connections").findall("Connection")
-            ]
+            self.connections = [Connection(xml_node=i) for i in xml_node.find("Connections").findall("Connection")]
         if xml_node.find("CustomCommands"):
-            self.custom_commands = [
-                CustomCommand(xml_node=i)
-                for i in xml_node.find("CustomCommands").findall("CustomCommand")
-            ]
+            self.custom_commands = [CustomCommand(xml_node=i) for i in xml_node.find("CustomCommands").findall("CustomCommand")]
         if xml_node.find("Overwrites"):
-            self.overwrites = [
-                Overwrite(xml_node=i)
-                for i in xml_node.find("Overwrites").findall("Overwrite")
-            ]
+            self.overwrites = [Overwrite(xml_node=i) for i in xml_node.find("Overwrites").findall("Overwrite")]
         if xml_node.find("Classing") is not None:
             self.classing = xml_node.find("Classing").text
 
@@ -240,9 +221,7 @@ class AUXData(BaseNode):
         self.classes = [Class(xml_node=i) for i in xml_node.findall("Class")]
         self.symdefs = [Symdef(xml_node=i) for i in xml_node.findall("Symdef")]
         self.positions = [Position(xml_node=i) for i in xml_node.findall("Position")]
-        self.mapping_definitions = [
-            MappingDefinition(xml_node=i) for i in xml_node.findall("MappingDefinition")
-        ]
+        self.mapping_definitions = [MappingDefinition(xml_node=i) for i in xml_node.findall("MappingDefinition")]
 
 
 class MappingDefinition(BaseNode):
@@ -266,7 +245,7 @@ class MappingDefinition(BaseNode):
         super().__init__(*args, **kwargs)
 
     def _read_xml(self, xml_node: "Element"):
-        #TODO handle missing data...
+        # TODO handle missing data...
         self.size_x = int(xml_node.find("SizeX").text)
         self.size_y = int(xml_node.find("SizeY").text)
         self.source = xml_node.find("Source")  # TODO
@@ -331,15 +310,9 @@ class Fixture(BaseChildNode):
             self.child_position = xml_node.find("ChildPosition").text
 
         if xml_node.find("Protocols"):
-            self.protocols = [
-                Protocol(xml_node=i)
-                for i in xml_node.find("Protocols").findall("Protocol")
-            ]
+            self.protocols = [Protocol(xml_node=i) for i in xml_node.find("Protocols").findall("Protocol")]
         if xml_node.find("Mappings"):
-            self.mappings = [
-                Mapping(xml_node=i)
-                for i in xml_node.find("Mappings").findall("Mapping")
-            ]
+            self.mappings = [Mapping(xml_node=i) for i in xml_node.find("Mappings").findall("Mapping")]
         if xml_node.find("Gobo") is not None:
             self.gobo = Gobo(xml_node.attrib.get("Gobo"))
 
@@ -436,26 +409,18 @@ class ChildList(BaseNode):
         super().__init__(*args, **kwargs)
 
     def _read_xml(self, xml_node: "Element"):
-        self.scene_objects = [
-            SceneObject(xml_node=i) for i in xml_node.findall("SceneObject")
-        ]
+        self.scene_objects = [SceneObject(xml_node=i) for i in xml_node.findall("SceneObject")]
 
-        self.group_objects = [
-            GroupObject(xml_node=i) for i in xml_node.findall("GroupObject")
-        ]
+        self.group_objects = [GroupObject(xml_node=i) for i in xml_node.findall("GroupObject")]
 
-        self.focus_points = [
-            FocusPoint(xml_node=i) for i in xml_node.findall("FocusPoint")
-        ]
+        self.focus_points = [FocusPoint(xml_node=i) for i in xml_node.findall("FocusPoint")]
 
         self.fixtures = [Fixture(xml_node=i) for i in xml_node.findall("Fixture")]
 
         self.supports = [Support(xml_node=i) for i in xml_node.findall("Support")]
         self.trusses = [Truss(xml_node=i) for i in xml_node.findall("Truss")]
 
-        self.video_screens = [
-            VideoScreen(xml_node=i) for i in xml_node.findall("VideoScreen")
-        ]
+        self.video_screens = [VideoScreen(xml_node=i) for i in xml_node.findall("VideoScreen")]
 
         self.projectors = [Projector(xml_node=i) for i in xml_node.findall("Projector")]
 
@@ -595,17 +560,13 @@ class Symdef(BaseNode):
         self.uuid = xml_node.attrib.get("uuid")
 
         self.symbol = [Symbol(xml_node=i) for i in xml_node.findall("Symbol")]
-        self.geometry3d = [
-            Geometry3D(xml_node=i) for i in xml_node.findall("Geometry3D")
-        ]
+        self.geometry3d = [Geometry3D(xml_node=i) for i in xml_node.findall("Geometry3D")]
         if xml_node.find("ChildList"):
             child_list = xml_node.find("ChildList")
 
             symbols = [Symbol(xml_node=i) for i in child_list.findall("Symbol")]
-            geometry3ds = [
-                Geometry3D(xml_node=i) for i in child_list.findall("Geometry3D")
-            ]
-            self.symbol += symbols
+            geometry3ds = [Geometry3D(xml_node=i) for i in child_list.findall("Geometry3D")]
+            self.symbol += symbols  # TODO remove this over time, children should only be in the child_list
             self.geometry3d += geometry3ds
 
 
@@ -668,17 +629,13 @@ class Geometries(BaseNode):
 
     def _read_xml(self, xml_node: "Element"):
         self.symbol = [Symbol(xml_node=i) for i in xml_node.findall("Symbol")]
-        self.geometry3d = [
-            Geometry3D(xml_node=i) for i in xml_node.findall("Geometry3D")
-        ]
+        self.geometry3d = [Geometry3D(xml_node=i) for i in xml_node.findall("Geometry3D")]
         if xml_node.find("ChildList"):
             child_list = xml_node.find("ChildList")
 
             symbols = [Symbol(xml_node=i) for i in child_list.findall("Symbol")]
-            geometry3ds = [
-                Geometry3D(xml_node=i) for i in child_list.findall("Geometry3D")
-            ]
-            self.symbol += symbols
+            geometry3ds = [Geometry3D(xml_node=i) for i in child_list.findall("Geometry3D")]
+            self.symbol += symbols  # TODO remove this over time, children should only be in child_list
             self.geometry3d += geometry3ds
 
 
