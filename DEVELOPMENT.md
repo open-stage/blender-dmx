@@ -1,5 +1,9 @@
 ## Development
 
+### Formatting
+
+Use `ruff` to format the code.
+
 ### Logging
 
 Use [predefined python logging module](https://docs.python.org/3/library/logging.html?highlight=logging#module-logging) instead of print. If not imported yet, import it into your class:
