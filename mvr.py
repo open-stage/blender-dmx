@@ -53,6 +53,17 @@ def process_mvr_child_list(
             truss_collection,
         )
 
+        if hasattr(truss_object, "child_list") and truss_object.child_list:
+            process_mvr_child_list(
+                dmx,
+                truss_object.child_list,
+                truss_index,
+                extract_to_folder_path,
+                mvr_scene,
+                already_extracted_files,
+                layer_collection,
+            )
+
     if "MVR Scene objects" in layer_collection:
         scene_collection = layer_collection["MVR Scene objects"]
     else:
@@ -69,12 +80,21 @@ def process_mvr_child_list(
             scene_collection,
         )
 
+        if hasattr(scene_object, "child_list") and scene_object.child_list:
+            process_mvr_child_list(
+                dmx,
+                scene_object.child_list,
+                scene_index,
+                extract_to_folder_path,
+                mvr_scene,
+                already_extracted_files,
+                layer_collection,
+            )
+
     for fixture_index, fixture in enumerate(child_list.fixtures):
         focus_point = None
         if fixture.focus is not None:
-            focus_points = [
-                fp for fp in child_list.focus_points if fp.uuid == fixture.focus
-            ]
+            focus_points = [fp for fp in child_list.focus_points if fp.uuid == fixture.focus]
             if len(focus_points):
                 focus_point = focus_points[0].matrix.matrix
 
@@ -89,8 +109,20 @@ def process_mvr_child_list(
             already_extracted_files,
         )
 
+        if hasattr(fixture, "child_list") and fixture.child_list:
+            process_mvr_child_list(
+                dmx,
+                fixture.child_list,
+                fixture_index,
+                extract_to_folder_path,
+                mvr_scene,
+                already_extracted_files,
+                layer_collection,
+            )
+
     for group_index, group in enumerate(child_list.group_objects):
-        if group.child_list is not None:
+        if hasattr(group, "child_list") and group.child_list:
+            # if group.child_list is not None:
             layer_group_index = f"{layer_index}-{group_index}"
             process_mvr_child_list(
                 dmx,
