@@ -3,6 +3,7 @@ import bpy
 from dmx.util import xyY2rgbaa
 from dmx.io_scene_3ds.import_3ds import load_3ds
 from mathutils import Matrix
+import time
 
 
 # importing from dmx didn't work, had to duplicate this function
@@ -65,19 +66,38 @@ def process_mvr_child_list(
             )
 
     if "MVR Scene objects" in layer_collection:
-        scene_collection = layer_collection["MVR Scene objects"]
+        scene_collection_top = layer_collection["MVR Scene objects"]
     else:
-        scene_collection = bpy.data.collections.new("MVR Scene objects")
-        layer_collection.children.link(scene_collection)
+        scene_collection_top = bpy.data.collections.new("MVR Scene objects")
+        layer_collection.children.link(scene_collection_top)
 
     for scene_index, scene_object in enumerate(child_list.scene_objects):
+        collection = scene_collection_top
+
+        geometry3ds = []
+        symbols = []
+        if scene_object.geometries:
+            geometry3ds = scene_object.geometries.geometry3d
+            symbols = scene_object.geometries.symbol
+
+        if (len(geometry3ds) + len(symbols)) > 1:
+            # create extra scene object collection if the scene object is composed of multiple models
+            if scene_object.name is not None or scene_object.name != "":
+                scene_name = f"Scene object - {scene_object.name}"
+            else:
+                scene_name = f"Scene object - {scene_object.uuid}"
+
+            scene_collection = bpy.data.collections.new(scene_name)
+            scene_collection_top.children.link(scene_collection)
+            collection = scene_collection
+
         process_mvr_object(
             mvr_scene,
             scene_object,
             scene_index,
             layer_index,
             already_extracted_files,
-            scene_collection,
+            collection,
         )
 
         if hasattr(scene_object, "child_list") and scene_object.child_list:
@@ -148,7 +168,7 @@ def process_mvr_object(
     if mvr_object.geometries:
         geometry3ds = mvr_object.geometries.geometry3d
         symbols = mvr_object.geometries.symbol
-    position = mvr_object.matrix.matrix
+    global_transform = mvr_object.matrix.matrix
     file = ""
     current_path = os.path.dirname(os.path.realpath(__file__))
     folder = os.path.join(current_path, "assets", "models", "mvr")
@@ -157,12 +177,14 @@ def process_mvr_object(
     for geometry in geometry3ds:
         if geometry.file_name:
             file = geometry.file_name
+            local_transform = geometry.matrix.matrix
             extract_mvr_object(file, mvr_scene, folder, already_extracted_files)
             add_mvr_object(
                 name,
                 file,
                 folder,
-                position,
+                global_transform,
+                local_transform,
                 mvr_object_index,
                 layer_index,
                 group_collection,
@@ -174,13 +196,15 @@ def process_mvr_object(
             for geometry in symdef.geometry3d:
                 if geometry.file_name:
                     file = geometry.file_name
+                    local_transform = geometry.matrix.matrix
 
                     extract_mvr_object(file, mvr_scene, folder, already_extracted_files)
                     add_mvr_object(
                         name,
                         file,
                         folder,
-                        position,
+                        global_transform,
+                        local_transform,
                         mvr_object_index,
                         layer_index,
                         group_collection,
@@ -189,9 +213,11 @@ def process_mvr_object(
 
 def extract_mvr_object(file, mvr_scene, folder, already_extracted_files):
     if f"{file}" in mvr_scene._package.namelist():
-        if file not in already_extracted_files:
+        if file not in already_extracted_files.keys():
             mvr_scene._package.extract(file, folder)
-            already_extracted_files.append(file)
+            already_extracted_files[file] = 0
+        else:
+            already_extracted_files[file] += 1
 
 
 def add_mvr_object(
@@ -199,13 +225,15 @@ def add_mvr_object(
     name,
     file,
     folder,
-    position,
+    global_transform,
+    local_transform,
     mvr_object_index,
     layer_index,
     group_collection,
 ):
+    time1 = time.time()
     name = f"{name} {layer_index}-{mvr_object_index}"
-    bpy.app.handlers.depsgraph_update_post.clear()
+    # bpy.app.handlers.depsgraph_update_post.clear()
 
     collection_name = name
 
@@ -220,12 +248,24 @@ def add_mvr_object(
     object_collection = bpy.data.collections.new(collection_name)
 
     objs = list(bpy.context.view_layer.objects.selected)
-    scale = Matrix(position).to_scale()
+
+    local_scale = Matrix(local_transform).to_scale()
+    global_scale = Matrix(global_transform).to_scale()
+
     for ob in objs:
-        ob.matrix_world = position
-        ob.scale[0] *= scale[0]
-        ob.scale[1] *= scale[1]
-        ob.scale[2] *= scale[2]
+        ob.location = Matrix(local_transform).to_translation()
+        ob.rotation_mode = "XYZ"
+        ob.rotation_euler = Matrix(local_transform).to_euler("XYZ")
+        ob["file name"] = file
+
+        ob.matrix_world = global_transform
+        # ob.location = Matrix(global_transform).to_translation()
+        # ob.rotation_mode = "XYZ"
+        # ob.rotation_euler = Matrix(global_transform).to_euler('XYZ')
+
+        ob.scale[0] *= local_scale[0] * global_scale[0]
+        ob.scale[1] *= local_scale[1] * global_scale[1]
+        ob.scale[2] *= local_scale[2] * global_scale[2]
 
         if file_3ds:
             # ob.scale = (0.001, 0.001, 0.001)
@@ -237,9 +277,9 @@ def add_mvr_object(
             bpy.context.scene.collection.objects.unlink(ob)
 
         object_collection.objects.link(ob)
-
     group_collection.children.link(object_collection)
-    bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
+    # bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
+    print("MVR object loaded in %.4f sec." % (time.time() - time1))
 
 
 def add_mvr_fixture(
@@ -254,9 +294,11 @@ def add_mvr_fixture(
 ):
     """Add fixture to the scene"""
     if f"{fixture.gdtf_spec}" in mvr_scene._package.namelist():
-        if fixture.gdtf_spec not in already_extracted_files:
+        if fixture.gdtf_spec not in already_extracted_files.keys():
             mvr_scene._package.extract(fixture.gdtf_spec, extract_to_folder_path)
-            already_extracted_files.append(fixture.gdtf_spec)
+            already_extracted_files[fixture.gdtf_spec] = 0
+        else:
+            already_extracted_files[fixture.gdtf_spec] += 1
     else:
         # if the file is not in the MVR package, use an RGBW Par64
         fixture.gdtf_spec = "BlenderDMX@LED_PAR_64_RGBW@v0.3.gdtf"

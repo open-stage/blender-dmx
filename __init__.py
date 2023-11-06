@@ -17,6 +17,7 @@ import os
 import atexit
 from operator import attrgetter
 from threading import Timer
+import time
 
 from dmx.pymvr import *
 from dmx.mvr import *
@@ -713,8 +714,12 @@ class DMX(PropertyGroup):
         return selected
 
     def addMVR(self, file_name):
+
+        bpy.app.handlers.depsgraph_update_post.clear()
+
+        time1 = time.time()
         self.mvr_import_in_progress = True # this stops the render loop, to prevent slowness and crashes
-        already_extracted_files = []
+        already_extracted_files = {}
         mvr_scene = pymvr.GeneralSceneDescription(file_name)
         current_path = os.path.dirname(os.path.realpath(__file__))
         extract_to_folder_path = os.path.join(current_path, "assets", "profiles")
@@ -730,7 +735,11 @@ class DMX(PropertyGroup):
                 already_extracted_files,
                 layer_collection,
             )
+        print(len(already_extracted_files.keys()))
+        print(sum(x for x in already_extracted_files.values()))
         self.mvr_import_in_progress = False # re-enable render loop
+        bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
+        print("MVR scene loaded in %.4f sec." % (time.time() - time1))
 
     def ensureUniverseExists(self, universe):
         # Allocate universes to be able to control devices
