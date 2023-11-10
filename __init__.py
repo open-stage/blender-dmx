@@ -19,8 +19,8 @@ from operator import attrgetter
 from threading import Timer
 import time
 
-from dmx.pymvr import *
-from dmx.mvr import *
+from dmx.pymvr import GeneralSceneDescription
+from dmx.mvr import extract_mvr_textures, process_mvr_child_list
 
 from dmx.fixture import *
 from dmx.group import *
@@ -717,12 +717,15 @@ class DMX(PropertyGroup):
 
         bpy.app.handlers.depsgraph_update_post.clear()
 
-        time1 = time.time()
+        star_time = time.time()
         self.mvr_import_in_progress = True # this stops the render loop, to prevent slowness and crashes
         already_extracted_files = {}
-        mvr_scene = pymvr.GeneralSceneDescription(file_name)
+        mvr_scene = GeneralSceneDescription(file_name)
         current_path = os.path.dirname(os.path.realpath(__file__))
         extract_to_folder_path = os.path.join(current_path, "assets", "profiles")
+        media_folder_path = os.path.join(current_path, "assets", "models", "mvr")
+        extract_mvr_textures(mvr_scene, media_folder_path)
+
         for layer_index, layer in enumerate(mvr_scene.layers):
             layer_collection = bpy.data.collections.new(layer.name or f"Layer {layer_index}")
             bpy.context.scene.collection.children.link(layer_collection)
@@ -735,11 +738,9 @@ class DMX(PropertyGroup):
                 already_extracted_files,
                 layer_collection,
             )
-        print(len(already_extracted_files.keys()))
-        print(sum(x for x in already_extracted_files.values()))
         self.mvr_import_in_progress = False # re-enable render loop
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
-        print("MVR scene loaded in %.4f sec." % (time.time() - time1))
+        print("MVR scene loaded in %.4f sec." % (time.time() - star_time))
 
     def ensureUniverseExists(self, universe):
         # Allocate universes to be able to control devices

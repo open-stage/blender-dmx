@@ -188,6 +188,7 @@ def process_mvr_object(
                 mvr_object_index,
                 layer_index,
                 group_collection,
+                mvr_object,
             )
 
     for symbol in symbols:
@@ -208,6 +209,7 @@ def process_mvr_object(
                         mvr_object_index,
                         layer_index,
                         group_collection,
+                        symbol,
                     )
 
 
@@ -220,6 +222,12 @@ def extract_mvr_object(file, mvr_scene, folder, already_extracted_files):
             already_extracted_files[file] += 1
 
 
+def extract_mvr_textures(mvr_scene, folder):
+    for name in mvr_scene._package.namelist():
+        if name.endswith(".png"):
+            mvr_scene._package.extract(name, folder)
+
+
 def add_mvr_object(
     # This is just a basic implementation, layers, grouping, management need to be added...
     name,
@@ -230,8 +238,9 @@ def add_mvr_object(
     mvr_object_index,
     layer_index,
     group_collection,
+    mvr_object,
 ):
-    time1 = time.time()
+    start_time = time.time()
     name = f"{name} {layer_index}-{mvr_object_index}"
     # bpy.app.handlers.depsgraph_update_post.clear()
 
@@ -257,6 +266,7 @@ def add_mvr_object(
         ob.rotation_mode = "XYZ"
         ob.rotation_euler = Matrix(local_transform).to_euler("XYZ")
         ob["file name"] = file
+        ob["uuid"] = mvr_object.uuid
 
         ob.matrix_world = global_transform
         # ob.location = Matrix(global_transform).to_translation()
@@ -279,7 +289,7 @@ def add_mvr_object(
         object_collection.objects.link(ob)
     group_collection.children.link(object_collection)
     # bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
-    print("MVR object loaded in %.4f sec." % (time.time() - time1))
+    print("MVR object loaded in %.4f sec." % (time.time() - start_time))
 
 
 def add_mvr_fixture(
