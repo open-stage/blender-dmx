@@ -11,6 +11,7 @@ import bpy
 import os
 import shutil
 from dmx import pygdtf
+from dmx.gdtf import *
 
 from bpy.props import (IntProperty,
                        FloatProperty,
@@ -77,14 +78,13 @@ class DMX_MT_Fixture_Manufacturers(Menu):
 
     def draw(self, context):
         layout = self.layout
-        scene = context.scene
-        dmx = scene.dmx
 
-        for manufacturer in context.add_edit_panel.rna_type.properties['manufacturers'].enum_items:
+        manufacturers  = bpy.context.window_manager.dmx.manufacturers
+        for manufacturer in manufacturers:
             row = layout.row()
             row.context_pointer_set("add_edit_panel", context.add_edit_panel)
             row.context_pointer_set("manufacturer", manufacturer)
-            row.menu(DMX_MT_Fixture_Profiles.bl_idname, text=manufacturer.identifier.replace("_"," "))
+            row.menu(DMX_MT_Fixture_Profiles.bl_idname, text=manufacturer.name.replace("_"," "))
 
 class DMX_MT_Fixture_Profiles(Menu):
     bl_label = "DMX > Fixture > Add > Profiles"
@@ -92,10 +92,8 @@ class DMX_MT_Fixture_Profiles(Menu):
 
     def draw(self, context):
         layout = self.layout
-        scene = context.scene
-        dmx = scene.dmx
-        manufacturer = context.manufacturer.identifier
-        for profile in DMX_GDTF.getProfileList(manufacturer):
+        manufacturer = context.manufacturer
+        for profile in DMX_GDTF.getProfileList(manufacturer.name):
             row = layout.row()
             row.context_pointer_set("add_edit_panel", context.add_edit_panel)
             row.operator(DMX_OT_Fixture_Profiles.bl_idname, text=profile[1].replace("_"," ")).profile = profile[0]
@@ -106,8 +104,6 @@ class DMX_MT_Fixture_Mode(Menu):
 
     def draw(self, context):
         layout = self.layout
-        scene = context.scene
-        dmx = scene.dmx
         profile = context.add_edit_panel.profile
         if (not profile): return
         for mode, channel_count in DMX_GDTF.getModes(profile).items():
@@ -147,14 +143,6 @@ class DMX_OT_Fixture_Mode(Operator):
 
 
 class DMX_Fixture_AddEdit():
-
-    manufacturer_list_items = DMX_GDTF.getManufacturerList()
-
-    manufacturers: EnumProperty(
-        name = "Manufacturers",
-        description = "Fixture GDTF Manufacturers",
-        items=manufacturer_list_items
-    )
 
     def onProfile(self, context):
         if hasattr(context,'add_edit_panel'):
@@ -401,8 +389,7 @@ class DMX_OT_Fixture_Import_GDTF(Operator):
             file_path = os.path.join(self.directory, file.name)
             print('Importing GDTF Profile: %s' % file_path)
             shutil.copy(file_path, folder_path)
-        # https://developer.blender.org/T86803
-        self.report({'WARNING'}, 'Restart Blender to load the profiles.')
+        DMX_GDTF.getManufacturerList()
         return {'FINISHED'}
 
 

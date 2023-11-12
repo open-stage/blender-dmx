@@ -32,16 +32,17 @@ class DMX_GDTF():
     @staticmethod
     def getManufacturerList():
         # List profiles in folder
-        manufacturers = set([])
+        manufacturers_names = set()
         for file in os.listdir(DMX_GDTF.getProfilesPath()):
-            # Parse info from file name: Company@Model.gdtf
-            info = file.split('@')
-            # Remove ".gdtf" from the end of the string
-            info[-1] = info[-1][:-5]
-            # Add to list (identifier, short name, full name)
-            manufacturers.add((info[0], info[0], ''))
-
-        return tuple(sorted(manufacturers))
+            # Parse info from file name: Manufacturer@Device@Revision.gdtf
+            if "@" not in file:
+                continue
+            name = file.split('@')[0]
+            manufacturers_names.add(name)
+        manufacturers  = bpy.context.window_manager.dmx.manufacturers
+        manufacturers.clear()
+        for name in sorted(manufacturers_names):
+            manufacturers.add().name = name
 
     @staticmethod
     def getProfileList(manufacturer):

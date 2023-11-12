@@ -39,6 +39,21 @@ from bpy.types import (PropertyGroup,
 STRENGTH = "Strength"
 COLOR = "Color"
 
+
+class DMX_Manufacturer(PropertyGroup):
+    name: StringProperty (
+        name = "Name",
+        description = "Name of the manufacturer",
+        default = "Manufacturer 0")
+
+
+manufacturers: CollectionProperty(
+    name = "Manufacturers",
+    description = "Fixture GDTF Manufacturers",
+    type = DMX_Manufacturer
+)
+
+
 class DMX_Fixture_Object(PropertyGroup):
     object: PointerProperty(
         name = "Fixture > Object",

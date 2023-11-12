@@ -26,6 +26,7 @@ from dmx.fixture import *
 from dmx.group import *
 from dmx.universe import *
 from dmx.data import *
+from dmx.gdtf import *
 from dmx.artnet import *
 from dmx.acn import DMX_sACN
 from dmx.network import *
@@ -49,6 +50,15 @@ from bpy.types import (PropertyGroup,
                        Object,
                        Collection,
                        NodeTree)
+
+
+class DMX_TempData(PropertyGroup):
+
+    manufacturers: CollectionProperty(
+            name = "Manufacturers",
+            type=PropertyGroup
+            )
+
 
 class DMX(PropertyGroup):
 
@@ -198,6 +208,8 @@ class DMX(PropertyGroup):
     # - Create DMX universes
     # - Link to file
     def new(self):
+
+        DMX_GDTF.getManufacturerList()
         # Remove old DMX collection from file if present
         if ("DMX" in bpy.data.collections):
             bpy.data.collections.remove(bpy.data.collections["DMX"])
@@ -894,6 +906,8 @@ def register():
     # Register addon main class
     bpy.utils.register_class(DMX)
     bpy.types.Scene.dmx = PointerProperty(type=DMX)
+    bpy.utils.register_class(DMX_TempData)
+    bpy.types.WindowManager.dmx = PointerProperty(type=DMX_TempData)
 
     # Append handlers
     bpy.app.handlers.load_post.append(onLoadFile)
@@ -918,6 +932,7 @@ def unregister():
 
         # Unregister addon main class
         bpy.utils.unregister_class(DMX)
+        bpy.utils.unregister_class(DMX_TempData)
 
     except Exception as e:
         print(e)
