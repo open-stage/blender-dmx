@@ -221,6 +221,7 @@ class DMX_GDTF():
                 # Apply transforms to ensure that models are correctly rendered
                 # even if their transformations have not been applied prior to saving
                 # This solves 99% of known issues when loading glbs
+                # TODO: if the model is made of multiple smaller objects, we need to process them.
 
                 mb = obj.matrix_basis
                 if hasattr(obj.data, "transform"):
