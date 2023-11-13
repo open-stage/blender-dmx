@@ -37,6 +37,10 @@ from dmx.panels.dmx import *
 from dmx.panels.fixtures import *
 from dmx.panels.groups import *
 from dmx.panels.programmer import *
+import dmx.panels.profiles as Profiles
+
+from dmx.preferences import DMX_Preferences
+
 from dmx.util import rgb_to_cmy, xyY2rgbaa
 
 from bpy.props import (BoolProperty,
@@ -59,6 +63,11 @@ class DMX_TempData(PropertyGroup):
             type=PropertyGroup
             )
 
+    imports: PointerProperty(
+            name = "Imports",
+            type=Profiles.DMX_Fixtures_Imports
+            )
+
 
 class DMX(PropertyGroup):
 
@@ -74,7 +83,8 @@ class DMX(PropertyGroup):
                     DMX_Group,
                     DMX_Universe,
                     DMX_Value,
-                    DMX_PT_Setup)
+                    DMX_PT_Setup,
+                    DMX_Preferences)
 
     # Classes to be registered
     # The registration is done in two steps. The second only runs
@@ -123,7 +133,7 @@ class DMX(PropertyGroup):
                 DMX_OT_Programmer_SelectBodies,
                 DMX_OT_Programmer_SelectTargets,
                 DMX_OT_Programmer_SelectCamera,
-                DMX_PT_Programmer  )
+                DMX_PT_Programmer)
 
     linkedToFile = False
 
@@ -896,6 +906,8 @@ def clean_module_imports():
 
 def onRegister():
     onLoadFile(None)
+    Profiles.DMX_Fixtures_Local_Profile.loadLocal(show_errors=False)
+    Profiles.DMX_Fixtures_Import_Gdtf_Profile.loadShare()
 
 def register():
 
@@ -906,6 +918,11 @@ def register():
     # Register addon main class
     bpy.utils.register_class(DMX)
     bpy.types.Scene.dmx = PointerProperty(type=DMX)
+
+
+    for cls in Profiles.classes:
+        bpy.utils.register_class(cls)
+
     bpy.utils.register_class(DMX_TempData)
     bpy.types.WindowManager.dmx = PointerProperty(type=DMX_TempData)
 
@@ -926,13 +943,16 @@ def unregister():
     DMX_sACN.disable()
 
     try:
+        for cls in Profiles.classes:
+            bpy.utils.unregister_class(cls)
+
         # Unregister Base Classes
         for cls in DMX.classes_base:
             bpy.utils.unregister_class(cls)
 
         # Unregister addon main class
-        bpy.utils.unregister_class(DMX)
         bpy.utils.unregister_class(DMX_TempData)
+        bpy.utils.unregister_class(DMX)
 
     except Exception as e:
         print(e)
