@@ -33,7 +33,6 @@ class DMX_Fixtures_Import_Gdtf_Profile(PropertyGroup):
     def get_profile_list():
         """List all GDTF files in \"Profiles\" folder"""
         dir_path = os.path.dirname(os.path.abspath(__file__))
-        print("dir path", dir_path)
         try:
             with open(os.path.join(dir_path, "..", "..", "..", "share_api_client", "data.json")) as f:
                 data = json.load(f)

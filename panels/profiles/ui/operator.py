@@ -20,7 +20,6 @@ class DMX_OP_Import_Fixture_From_Share(Operator):
     index: IntProperty()
 
     def execute(self, context):
-        #context.scene.dmx.profiles.import_from_share(self.index)
         Profiles.controller.DMX_Fixtures_Manager.import_from_share(self, self.index)
         DMX_GDTF.getManufacturerList()
         return {"FINISHED"}
@@ -67,8 +66,8 @@ class DMX_OP_Import_Fixture_From_File(Operator):
             file_path = os.path.join(self.directory, file.name)
             print("Importing GDTF Profile: %s" % file_path)
             shutil.copy(file_path, folder_path)
+        DMX_GDTF.getManufacturerList()
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
-        #Patch.DMX_Patch_Profile.load()
         return {"FINISHED"}
 
 
@@ -81,11 +80,11 @@ class DMX_OP_Delete_Local_Fixture(Operator):
     index: IntProperty()
 
     def execute(self, context):
-        #context.scene.dmx.profiles.delete_local_fixture(self.index)
         Profiles.controller.DMX_Fixtures_Manager.delete_local_fixture(self, self.index)
-        #Profiles.DMX_Patch_Controller.DMX_Fixtures_Manager.delete_local_fixture
+        DMX_GDTF.getManufacturerList()
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
         return {"FINISHED"}
+
 
 class DMX_OP_Update_Local_Fixtures(Operator):
     bl_label = "Refresh files listing"
@@ -95,8 +94,5 @@ class DMX_OP_Update_Local_Fixtures(Operator):
 
     def execute(self, context):
         DMX_GDTF.getManufacturerList()
-        #DMX_Fixtures_Local_Profile.load()
-
-        Profiles.DMX_Fixtures_Local_Profile.loadLocal()
-        #Patch.DMX_Patch_Profile.load()
+        Profiles.DMX_Fixtures_Local_Profile.loadLocal(show_errors=True)
         return {"FINISHED"}

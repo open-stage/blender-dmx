@@ -12,6 +12,7 @@ import os
 import shutil
 from dmx import pygdtf
 from dmx.gdtf import *
+import dmx.panels.profiles as Profiles
 
 from bpy.props import (IntProperty,
                        FloatProperty,
@@ -390,13 +391,14 @@ class DMX_OT_Fixture_Import_GDTF(Operator):
             print('Importing GDTF Profile: %s' % file_path)
             shutil.copy(file_path, folder_path)
         DMX_GDTF.getManufacturerList()
+        Profiles.DMX_Fixtures_Local_Profile.loadLocal()
         return {'FINISHED'}
 
 
 class DMX_OT_Fixture_Import_MVR(Operator):
     bl_label = "Import MVR scene"
     bl_idname = "dmx.import_mvr_scene"
-    bl_description = "Import fixtures from MVR scene file"
+    bl_description = "Import fixtures from MVR scene file. This may take a long time!"
     bl_options = {'UNDO'}
 
     filter_glob: StringProperty(default="*.mvr", options={'HIDDEN'})

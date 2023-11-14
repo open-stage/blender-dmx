@@ -1,9 +1,5 @@
-#from src import patch as Patch
-#from src import fixtures as Fixtures
-
-
 import dmx.share_api_client as share_api_client
-from dmx.panels import profiles as Fixtures
+from dmx.gdtf import DMX_GDTF
 import bpy
 import os
 import pathlib
@@ -21,12 +17,13 @@ class DMX_Fixtures_Manager:
 
     def delete_local_fixture(self, index: int):
         dir_path = os.path.dirname(os.path.abspath(__file__))
-        profiles  = bpy.context.window_manager.dmx.imports.local_profiles
+        profiles = bpy.context.window_manager.dmx.imports.local_profiles
         profile = profiles[index]
         filename = profile.filename
         file_path = os.path.join(dir_path, "..", "..", "..", "assets", "profiles", filename)
         os.remove(file_path)
-        # Patch.DMX_Patch_Profile.load()
+        DMX_GDTF.getManufacturerList()
+        Profiles.DMX_Fixtures_Local_Profile.loadLocal()
 
     # Fixture Import
 
@@ -59,6 +56,12 @@ class DMX_Fixtures_Manager:
             [imports.share_profiles[index]],
             queue_up,
             reload_local_profiles,
+        )
+
+        ShowMessageBox(
+            f"Downloading {imports.share_profiles[index]['fixture']}",
+            "GDTF Share Download",
+            "INFO",
         )
 
     def update_share_index(self):
@@ -122,7 +125,8 @@ def reload_share_profiles(result):
 
 def reload_local_profiles(result):
     print(result)
-    # Patch.DMX_Patch_Profile.load()
+    DMX_GDTF.getManufacturerList()
+    Profiles.DMX_Fixtures_Local_Profile.loadLocal()
     if result.status:
         ShowMessageBox(
             "File downloaded correctly. Status code was: {}".format(result.result.status_code),

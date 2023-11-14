@@ -219,7 +219,6 @@ class DMX(PropertyGroup):
     # - Link to file
     def new(self):
 
-        DMX_GDTF.getManufacturerList()
         # Remove old DMX collection from file if present
         if ("DMX" in bpy.data.collections):
             bpy.data.collections.remove(bpy.data.collections["DMX"])
@@ -906,7 +905,8 @@ def clean_module_imports():
 
 def onRegister():
     onLoadFile(None)
-    Profiles.DMX_Fixtures_Local_Profile.loadLocal(show_errors=False)
+    DMX_GDTF.getManufacturerList()
+    Profiles.DMX_Fixtures_Local_Profile.loadLocal()
     Profiles.DMX_Fixtures_Import_Gdtf_Profile.loadShare()
 
 def register():
