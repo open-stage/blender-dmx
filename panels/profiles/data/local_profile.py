@@ -34,7 +34,7 @@ class DMX_Fixtures_Local_Profile(PropertyGroup):
         return os.path.join(FILE_PATH, "..", "..", "..", "assets", "profiles")
 
     @staticmethod
-    def get_profile_list(show_errors = True):
+    def get_profile_list(show_errors = False):
         """List gdtf files in in profiles folder"""
 
         profiles_path = DMX_Fixtures_Local_Profile.get_profiles_path()
@@ -63,7 +63,7 @@ class DMX_Fixtures_Local_Profile(PropertyGroup):
         return profiles
 
     @staticmethod
-    def loadLocal(show_errors = True):
+    def loadLocal(show_errors = False):
         local_profiles = bpy.context.window_manager.dmx.imports.local_profiles
         local_profiles.clear()
         profiles = DMX_Fixtures_Local_Profile.get_profile_list(show_errors)
