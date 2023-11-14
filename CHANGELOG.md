@@ -1,5 +1,20 @@
 ### Changelog
 
+### 1.0.2
+* MVR improvements:
+  * Add collections for GroupObjects and Layers
+  * Support group object list
+  * Process child lists of MVR objects
+  * Apply scaling of 3D objects in correct order
+  * Load textures for 3D models
+* Fixture profiles management:
+  * Backport local and GDTF Share file management and import from development branch
+  * Add GDTF Share integration (can be used with username/password from gdtf-share.com)
+  * Improve local profiles handling
+  * Do not require Blender restart after GDTF profiles import
+* Improve GDTF parsing
+* Fix issue with localize structures by requesting localized versions of strings
+
 #### 1.0.1
 * Improved MVR import:
   * Import Focus Points and Fixture Color

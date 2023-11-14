@@ -9,8 +9,8 @@ BUILD_DIR = "build"
 branch_name = Repository(".").head.shorthand
 if branch_name == None:
     raise Exception("Run the script from the project root.")
-
-branch_name = "release_v1.0.1"
+print("branch name", branch_name)
+branch_name = "release_v1.0.2"
 
 release_name = branch_name
 if re.match(r"^release_v\d+\.\d+\.\d+$", branch_name):
@@ -34,7 +34,7 @@ os.mkdir(BUILD_DIR)
 os.mkdir(BUILD_DIR + "/dmx")
 
 # List of files/directories to skip during copy
-ignore = ignore_patterns("*.pyc", "__pycache__", ".mypy_cache", ".pytest_cache")
+ignore = ignore_patterns("*.pyc", "__pycache__", ".mypy_cache", ".pytest_cache", "data.json")
 
 print("Copying dependencies to build directory...")
 copytree("assets", BUILD_DIR + "/dmx/assets", ignore=ignore)
@@ -43,6 +43,8 @@ copytree("panels", BUILD_DIR + "/dmx/panels", ignore=ignore)
 copytree("pygdtf", BUILD_DIR + "/dmx/pygdtf", ignore=ignore)
 copytree("pymvr", BUILD_DIR + "/dmx/pymvr", ignore=ignore)
 copytree("sacn", BUILD_DIR + "/dmx/sacn", ignore=ignore)
+copytree("share_api_client", BUILD_DIR + "/dmx/share_api_client", ignore=ignore)
+copytree("preferences", BUILD_DIR + "/dmx/preferences", ignore=ignore)
 
 print("Copying source to build directory...")
 for filename in os.listdir("."):
