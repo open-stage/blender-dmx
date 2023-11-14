@@ -169,6 +169,9 @@ class DmxValue:
             self.value = int(str_repr.split("/")[0])
             self.byte_count = int(str_repr.split("/")[1])
 
+    def __str__(self):
+        return f"Value: {self.value}, Byte count: {self.byte_count}"
+
 
 class ColorCIE:
     def __init__(
