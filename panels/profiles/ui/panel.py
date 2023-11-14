@@ -90,7 +90,7 @@ class DMX_PT_Fixtures_Local_Fixtures(Panel):
     def draw(self, context):
         layout = self.layout
 
-        imports  = bpy.context.window_manager.dmx.imports
+        imports = bpy.context.window_manager.dmx.imports
 
         layout.template_list(
             "DMX_UL_Local_Fixtures",
@@ -104,6 +104,7 @@ class DMX_PT_Fixtures_Local_Fixtures(Panel):
 
         layout.operator(DMX_OP_Update_Local_Fixtures.bl_idname, icon=DMX_Icon.FILE_REFRESH)
         layout.operator(DMX_OP_Import_Fixture_From_File.bl_idname, icon=DMX_Icon.FILE)
+
 
 class DMX_PT_Fixtures_Local_Profile_Detail(Panel):
     bl_label = "Local Fixture details"
@@ -119,11 +120,15 @@ class DMX_PT_Fixtures_Local_Profile_Detail(Panel):
     def draw(self, context):
         layout = self.layout
 
-        local_profiles  = bpy.context.window_manager.dmx.imports.local_profiles
-        selected_fixture  = bpy.context.window_manager.dmx.imports.selected_local_fixture
+        local_profiles = bpy.context.window_manager.dmx.imports.local_profiles
+        selected_fixture = bpy.context.window_manager.dmx.imports.selected_local_fixture
         imports = context.window_manager.dmx.imports
         if not local_profiles:
             return
+        if selected_fixture >= len(local_profiles):
+            # this happens after deleting from the bottom of the list
+            return
+
         fixture = local_profiles[selected_fixture]
 
         col = layout.column()
@@ -148,13 +153,13 @@ class DMX_PT_Profiles_Holder(Panel):
     bl_region_type = "UI"
     bl_category = "DMX"
     bl_context = "objectmode"
-    bl_options = {'DEFAULT_CLOSED'}
+    bl_options = {"DEFAULT_CLOSED"}
 
     def draw(self, context):
         layout = self.layout
         dmx = context.scene.dmx
 
-    @classmethod 
+    @classmethod
     def poll(self, context):
         dmx = context.scene.dmx
-        return  dmx.collection is not None
+        return dmx.collection is not None
