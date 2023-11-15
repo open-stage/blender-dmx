@@ -362,7 +362,7 @@ class DMX(PropertyGroup):
         update = onBackgroundColor
         )
 
-    # # Setup > Models > Display Pigtails
+    # # Setup > Models > Display Pigtails, Select geometries
 
     def onDisplayPigtails(self, context):
         for fixture in self.fixtures:
@@ -371,9 +371,23 @@ class DMX(PropertyGroup):
                     obj.hide_set(not self.display_pigtails)
 
     display_pigtails: BoolProperty(
-        name = "Display pigtails",
+        name = "Display Pigtails",
         default = False,
         update = onDisplayPigtails)
+
+    def onSelectGeometries(self, context):
+        for fixture in self.fixtures:
+            for obj in fixture.collection.objects:
+                if obj.get("geometry_root", False):
+                    continue
+                if "Target" in obj.name:
+                    continue
+                obj.hide_select = not self.select_geometries
+
+    select_geometries: BoolProperty(
+        name = "Allow Selecting Geometries",
+        default = False,
+        update = onSelectGeometries)
 
     # # Logging levels
 
