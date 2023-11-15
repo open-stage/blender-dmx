@@ -348,6 +348,9 @@ class DMX_Fixture(PropertyGroup):
         position_x = None
         position_y = None
         position_z = None
+        rotation_x = None
+        rotation_y = None
+        rotation_z = None
         mixing={} #for now, only RGB mixing is per geometry
         
         for attribute in virtual_channels:
@@ -367,6 +370,9 @@ class DMX_Fixture(PropertyGroup):
                 elif attribute == "XYZ_X": position_x = data_virtual[attribute]
                 elif attribute == "XYZ_Y": position_y = data_virtual[attribute]
                 elif attribute == "XYZ_Z": position_z = data_virtual[attribute]
+                elif attribute == "Rot_X": rotation_x = data_virtual[attribute]
+                elif attribute == "Rot_Y": rotation_y = data_virtual[attribute]
+                elif attribute == "Rot_Z": rotation_z = data_virtual[attribute]
 
         for c in range(len(channels)):
             geometry=self.channels[c].geometry
@@ -386,6 +392,9 @@ class DMX_Fixture(PropertyGroup):
             elif (channels[c] == 'XYZ_X'): position_x = data[c]
             elif (channels[c] == 'XYZ_Y'): position_y = data[c]
             elif (channels[c] == 'XYZ_Z'): position_z = data[c]
+            elif (channels[c] == 'Rot_X'): rotation_x = data[c]
+            elif (channels[c] == 'Rot_Y'): rotation_y = data[c]
+            elif (channels[c] == 'Rot_Z'): rotation_z = data[c]
        
         for geometry, rgb in mixing.items():
             if (rgb[0] != None and rgb[1] != None and rgb[2] != None):
@@ -418,6 +427,8 @@ class DMX_Fixture(PropertyGroup):
             self.updateZoom(zoom)
 
         self.updatePosition(x=position_x, y=position_y, z=position_z)
+
+        self.updateRotation(x=rotation_x, y=rotation_y, z=rotation_z)
 
         if shutterDimmer[0] is not None or shutterDimmer[1] is not None:
             if shutterDimmer[0] is None:
@@ -555,25 +566,21 @@ class DMX_Fixture(PropertyGroup):
             base.location.y = (128-y) * 0.1
         if z is not None:
             base.location.z = (128-z) * 0.1
+    
+    def updateRotation(self, x=None, y=None, z=None):
+        base = self.objects["Root"].object
+        base.rotation_mode = 'XYZ'
+        if x is not None:
+            base.rotation_euler[0] = (x/127.0-1)*360*(math.pi/360)
+        if y is not None:
+            base.rotation_euler[1] = (y/127.0-1)*360*(math.pi/360)
+        if z is not None:
+            base.rotation_euler[2] = (z/127.0-1)*360*(math.pi/360)
         
-        # TODO: what should happen with the target...?
-        #if "Head" in self.objects:
-        #    head = self.objects["Head"].object
-        #else:
-        #    head = base
-
-        #head_location = head.matrix_world.translation
-        #target = self.objects['Target'].object
-        #eul = mathutils.Euler((0.0,base.rotation_euler[1],base.rotation_euler[0]), 'XYZ')
-        #vec = mathutils.Vector((0.0,0.0,-(target.location-head_location).length))
-        #vec.rotate(eul)
-        #target.location +=  head_location
-        #target.location = vec + head_location
-
     def updatePanTilt(self, pan, tilt):
         DMX_Log.log.info("Updating pan tilt")
-        pan = (pan/127.0-1)*355*(math.pi/360)
-        tilt = (tilt/127.0-1)*130*(math.pi/180)
+        pan = (pan/127.0-1)*540*(math.pi/360)
+        tilt = (tilt/127.0-1)*270*(math.pi/360)
 
         base = self.objects["Root"].object
         try:
@@ -583,6 +590,8 @@ class DMX_Fixture(PropertyGroup):
             return
 
         if "Target" in self.objects:
+            # calculate target position, head will follow
+
             head_location = head.matrix_world.translation
             pan = pan + base.rotation_euler[2] # take base z rotation into consideration
 
@@ -593,6 +602,23 @@ class DMX_Fixture(PropertyGroup):
             vec.rotate(eul)
 
             target.location = vec + head_location
+        else:
+            # for fixtures where we decided not to use target
+
+            pan_geometry = self.get_mobile_type("yoke")
+            tilt_geometry = self.get_mobile_type("head")
+            if pan_geometry:
+                pan_geometry.rotation_euler[2] = pan
+            if tilt_geometry:
+                tilt_geometry.rotation_euler[0] = tilt
+
+
+
+    def get_mobile_type(self, mobile_type):
+        for obj in self.collection.objects:
+            if obj.get("mobile_type", None) == mobile_type:
+                return obj
+
 
     def get_root(self, model_collection):
         for obj in model_collection.objects:
