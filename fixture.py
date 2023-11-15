@@ -339,6 +339,9 @@ class DMX_Fixture(PropertyGroup):
         rgb = [None,None,None]
         cmy = [None,None,None]
         zoom = None
+        position_x = None
+        position_y = None
+        position_z = None
         mixing={} #for now, only RGB mixing is per geometry
         
         for attribute in virtual_channels:
@@ -355,6 +358,9 @@ class DMX_Fixture(PropertyGroup):
                 elif attribute == "Pan": panTilt[0] = data_virtual[attribute]
                 elif attribute == "Tilt": panTilt[1] = data_virtual[attribute]
                 elif attribute == "Zoom": zoom = data_virtual[attribute]
+                elif attribute == "XYZ_X": position_x = data_virtual[attribute]
+                elif attribute == "XYZ_Y": position_y = data_virtual[attribute]
+                elif attribute == "XYZ_Z": position_z = data_virtual[attribute]
 
         for c in range(len(channels)):
             geometry=self.channels[c].geometry
@@ -371,6 +377,9 @@ class DMX_Fixture(PropertyGroup):
             elif (channels[c] == 'Pan'): panTilt[0] = data[c]
             elif (channels[c] == 'Tilt'): panTilt[1] = data[c]
             elif (channels[c] == 'Zoom'): zoom = data[c]
+            elif (channels[c] == 'XYZ_X'): position_x = data[c]
+            elif (channels[c] == 'XYZ_Y'): position_y = data[c]
+            elif (channels[c] == 'XYZ_Z'): position_z = data[c]
        
         for geometry, rgb in mixing.items():
             if (rgb[0] != None and rgb[1] != None and rgb[2] != None):
@@ -401,6 +410,8 @@ class DMX_Fixture(PropertyGroup):
 
         if (zoom != None):
             self.updateZoom(zoom)
+
+        self.updatePosition(x=position_x, y=position_y, z=position_z)
 
         if shutterDimmer[0] is not None or shutterDimmer[1] is not None:
             if shutterDimmer[0] is None:
@@ -529,6 +540,29 @@ class DMX_Fixture(PropertyGroup):
         except Exception as e:
             print("Error updating zoom", e)
         return zoom
+    
+    def updatePosition(self, x=None, y=None, z=None):
+        base = self.objects["Root"].object
+        if x is not None:
+            base.location.x = (128-x) * 0.1
+        if y is not None:
+            base.location.y = (128-y) * 0.1
+        if z is not None:
+            base.location.z = (128-z) * 0.1
+        
+        # TODO: what should happen with the target...?
+        #if "Head" in self.objects:
+        #    head = self.objects["Head"].object
+        #else:
+        #    head = base
+
+        #head_location = head.matrix_world.translation
+        #target = self.objects['Target'].object
+        #eul = mathutils.Euler((0.0,base.rotation_euler[1],base.rotation_euler[0]), 'XYZ')
+        #vec = mathutils.Vector((0.0,0.0,-(target.location-head_location).length))
+        #vec.rotate(eul)
+        #target.location +=  head_location
+        #target.location = vec + head_location
 
     def updatePanTilt(self, pan, tilt):
         DMX_Log.log.info("Updating pan tilt")
