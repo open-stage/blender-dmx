@@ -136,6 +136,11 @@ class DMX_Fixture(PropertyGroup):
         description="Display beam projection and cone",
         default = True)
 
+    add_target: BoolProperty(
+        name = "Add Target",
+        description="Add target for beam to follow",
+        default = True)
+
     gel_color: FloatVectorProperty(
         name = "Gel Color",
         subtype = "COLOR",
@@ -144,7 +149,7 @@ class DMX_Fixture(PropertyGroup):
         max = 1.0,
         default = (1.0,1.0,1.0,1.0))
 
-    def build(self, name, profile, mode, universe, address, gel_color, display_beams, mvr_position = None, focus_point = None):
+    def build(self, name, profile, mode, universe, address, gel_color, display_beams, add_target, mvr_position = None, focus_point = None):
 
         # (Edit) Store objects positions
         old_pos = {obj.name:obj.object.location.copy() for obj in self.objects}
@@ -166,6 +171,7 @@ class DMX_Fixture(PropertyGroup):
         self.address = address
         self.gel_color = list(gel_color)
         self.display_beams = display_beams
+        self.add_target = add_target
 
         # (Edit) Clear links and channel cache
         self.lights.clear()
@@ -192,7 +198,7 @@ class DMX_Fixture(PropertyGroup):
         if not any(self.mode == mode.name for mode in gdtf_profile.dmx_modes):
             self.mode = gdtf_profile.dmx_modes[0].name
 
-        model_collection = DMX_Model.getFixtureModelCollection(gdtf_profile, self.mode, self.display_beams)
+        model_collection = DMX_Model.getFixtureModelCollection(gdtf_profile, self.mode, self.display_beams, self.add_target)
 
         # Build DMX channels cache
         dmx_channels = pygdtf.utils.get_dmx_channels(gdtf_profile, self.mode)
@@ -576,16 +582,17 @@ class DMX_Fixture(PropertyGroup):
             DMX_Log.log.info("Escaping pan tilt update, not enough data")
             return
 
-        head_location = head.matrix_world.translation
-        pan = pan + base.rotation_euler[2] # take base z rotation into consideration
+        if "Target" in self.objects:
+            head_location = head.matrix_world.translation
+            pan = pan + base.rotation_euler[2] # take base z rotation into consideration
 
-        target = self.objects['Target'].object
-        
-        eul = mathutils.Euler((0.0,base.rotation_euler[1]+tilt,base.rotation_euler[0]+pan), 'XYZ')
-        vec = mathutils.Vector((0.0,0.0,-(target.location-head_location).length))
-        vec.rotate(eul)
+            target = self.objects['Target'].object
+            
+            eul = mathutils.Euler((0.0,base.rotation_euler[1]+tilt,base.rotation_euler[0]+pan), 'XYZ')
+            vec = mathutils.Vector((0.0,0.0,-(target.location-head_location).length))
+            vec.rotate(eul)
 
-        target.location = vec + head_location
+            target.location = vec + head_location
 
     def get_root(self, model_collection):
         for obj in model_collection.objects:

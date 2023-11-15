@@ -150,6 +150,7 @@ class DMX_Fixture_AddEdit():
             mode, channel_count = list(DMX_GDTF.getModes(context.add_edit_panel.profile).items())[0]
             context.add_edit_panel.mode =f"{mode}"
 
+
     profile: StringProperty(
         name = "Profile",
         description = "Fixture GDTF Profile",
@@ -192,6 +193,13 @@ class DMX_Fixture_AddEdit():
     display_beams: BoolProperty(
         name = "Display beams",
         description="Display beam projection and cone",
+        #update = onDisplayBeams,
+        default = True)
+
+    add_target: BoolProperty(
+        name = "Add Target",
+        description="Add target for beam to follow",
+        #update = onAddTarget,
         default = True)
 
     re_address_only: BoolProperty(
@@ -231,6 +239,7 @@ class DMX_Fixture_AddEdit():
             col.prop(self, "units")           #     Allow to define how many
         if not self.re_address_only:          # When adding and editing:
             col.prop(self, "display_beams")   #     Allow not to create and draw Beams (faster, only for emitter views)
+            col.prop(self, "add_target")      #     Should a target be added to the fixture
             col.prop(self, "gel_color")       #     This works when both adding AND when editing
 
 class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
@@ -252,7 +261,7 @@ class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
             self.report({'ERROR'}, "No DMX Mode selected.")
             return {'CANCELLED'}
         for i in range(self.units):
-            dmx.addFixture(self.name+" "+str(i+1), self.profile, self.universe, self.address, self.mode, self.gel_color, self.display_beams)
+            dmx.addFixture(self.name+" "+str(i+1), self.profile, self.universe, self.address, self.mode, self.gel_color, self.display_beams, self.add_target)
         return {'FINISHED'}
 
     def invoke(self, context, event):
@@ -278,7 +287,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             if (self.name != fixture.name and self.name in bpy.data.collections):
                 return {'CANCELLED'}
             if not self.re_address_only:
-                fixture.build(self.name, self.profile, self.mode, self.universe, self.address, self.gel_color, self.display_beams)
+                fixture.build(self.name, self.profile, self.mode, self.universe, self.address, self.gel_color, self.display_beams, self.add_target)
             else:
                 fixture.address = self.address
                 fixture.universe = self.universe
@@ -295,7 +304,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                 profile = self.profile if (self.profile != '') else fixture.profile
                 mode = self.mode if (self.mode != '') else fixture.mode
                 if not self.re_address_only:
-                    fixture.build(name, profile, mode, self.universe, address, self.gel_color, self.display_beams)
+                    fixture.build(name, profile, mode, self.universe, address, self.gel_color, self.display_beams, self.add_target)
                 else:
                     fixture.address = address
                     fixture.universe = universe
@@ -323,6 +332,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             self.gel_color = fixture.gel_color
             self.re_address_only = True
             self.display_beams = fixture.display_beams
+            self.add_target = fixture.add_target
             self.units = 0
         # Multiple fixtures
         else:
@@ -334,6 +344,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             self.gel_color = (255,255,255,255)
             self.units = 0
             self.display_beams = True
+            self.add_target = True
             self.re_address_only = True
 
         wm = context.window_manager

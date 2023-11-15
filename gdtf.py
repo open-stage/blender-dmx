@@ -134,10 +134,10 @@ class DMX_GDTF():
         return obj
 
     @staticmethod
-    def buildCollection(profile, mode, display_beams):
+    def buildCollection(profile, mode, display_beams, add_target):
 
         # Create model collection
-        collection = bpy.data.collections.new(DMX_GDTF.getName(profile, mode))
+        collection = bpy.data.collections.new(DMX_GDTF.getName(profile, mode, display_beams, add_target))
         objs = {}
         # Get root geometry reference from the selected DMX Mode
         dmx_mode = pygdtf.utils.get_dmx_mode_by_name(profile, mode)
@@ -374,11 +374,12 @@ class DMX_GDTF():
         update_geometry(root_geometry)
 
         # Add target for manipulating fixture
-        target = bpy.data.objects.new(name="Target", object_data=None)
-        collection.objects.link(target)
-        target.empty_display_size = 0.5
-        target.empty_display_type = 'PLAIN_AXES'
-        target.location = (0,0,-2)
+        if add_target:
+            target = bpy.data.objects.new(name="Target", object_data=None)
+            collection.objects.link(target)
+            target.empty_display_size = 0.5
+            target.empty_display_type = 'PLAIN_AXES'
+            target.location = (0,0,-2)
 
         dmx_channels = pygdtf.utils.get_dmx_channels(profile, mode)
         virtual_channels = pygdtf.utils.get_virtual_channels(profile, mode)
@@ -414,19 +415,21 @@ class DMX_GDTF():
                 if yoke.name == obj.name and len(obj.constraints):
                     constraint = obj.constraints[0]
                     if constraint.target == base:
-                        constraint = obj.constraints.new('LOCKED_TRACK')
-                        constraint.target = target
-                        constraint.lock_axis = "LOCK_Z"
+                        if add_target:
+                            constraint = obj.constraints.new('LOCKED_TRACK')
+                            constraint.target = target
+                            constraint.lock_axis = "LOCK_Z"
                     break
 
         # Track head to the target
-        if head is not None:
-            constraint = head.constraints.new('TRACK_TO')
-            constraint.target = target
-        else:
-            # make sure simple par fixtures can be controlled via Target
-            constraint = base.constraints.new('TRACK_TO')
-            constraint.target = target
+        if add_target:
+            if head is not None:
+                constraint = head.constraints.new('TRACK_TO')
+                constraint.target = target
+            else:
+                # make sure simple par fixtures can be controlled via Target
+                constraint = base.constraints.new('TRACK_TO')
+                constraint.target = target
 
         # Link objects to collection
         for name, obj in objs.items():
@@ -435,6 +438,6 @@ class DMX_GDTF():
         return collection
 
     @staticmethod
-    def getName(profile, dmx_mode):
+    def getName(profile, dmx_mode, display_beams, add_target):
         revision = profile.revisions[-1].text if len(profile.revisions) else ''
-        return f"{profile.manufacturer}, {profile.name}, {dmx_mode}, {revision}"
+        return f"{profile.manufacturer}, {profile.name}, {dmx_mode}, {revision}, {'with_beams' if display_beams else 'without_beams'}, {'with_target' if add_target else 'without_target'}"
