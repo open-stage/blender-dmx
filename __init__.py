@@ -712,11 +712,11 @@ class DMX(PropertyGroup):
     # Kernel Methods
     # # Fixtures
 
-    def addFixture(self, name, profile, universe, address, mode, gel_color, display_beams, position=None, focus_point=None):
+    def addFixture(self, name, profile, universe, address, mode, gel_color, display_beams, add_target, position=None, focus_point=None):
         bpy.app.handlers.depsgraph_update_post.clear()
         dmx = bpy.context.scene.dmx
         dmx.fixtures.add()
-        dmx.fixtures[-1].build(name, profile, mode, universe, address, gel_color, display_beams, position, focus_point)
+        dmx.fixtures[-1].build(name, profile, mode, universe, address, gel_color, display_beams, add_target, position, focus_point)
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
     def removeFixture(self, fixture):

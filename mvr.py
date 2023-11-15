@@ -322,6 +322,7 @@ def add_mvr_fixture(
         fixture.gdtf_mode,
         xyY2rgbaa(fixture.color),
         True,
+        True,
         position=fixture.matrix.matrix,
         focus_point=focus_point,
     )
