@@ -404,22 +404,27 @@ class DMX_GDTF():
 
         # This could be moved to the processing up higher,but for now, it's easier here
         head = get_axis("Tilt")
+        if head:
+            head["mobile_type"]="head"
         yoke = get_axis("Pan")
+        if yoke:
+            yoke["mobile_type"]="yoke"
         base = get_root()
         DMX_Log.log.info(f"Head: {head}, Yoke: {yoke}, Base: {base}")
 
 
         # If the root has a child with Pan, create Z rotation constraint
-        if yoke is not None:
-            for name, obj in objs.items():
-                if yoke.name == obj.name and len(obj.constraints):
-                    constraint = obj.constraints[0]
-                    if constraint.target == base:
-                        if add_target:
-                            constraint = obj.constraints.new('LOCKED_TRACK')
-                            constraint.target = target
-                            constraint.lock_axis = "LOCK_Z"
-                    break
+        if add_target:
+            if yoke is not None:
+                for name, obj in objs.items():
+                    if yoke.name == obj.name and len(obj.constraints):
+                        constraint = obj.constraints[0]
+                        if constraint.target == base:
+                            if add_target:
+                                constraint = obj.constraints.new('LOCKED_TRACK')
+                                constraint.target = target
+                                constraint.lock_axis = "LOCK_Z"
+                        break
 
         # Track head to the target
         if add_target:
