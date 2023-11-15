@@ -132,6 +132,8 @@ class DMX_PT_Setup_Debug(Panel):
         row = layout.row()
         row.prop(context.scene.dmx,'display_pigtails')
         row = layout.row()
+        row.prop(context.scene.dmx,'select_geometries')
+        row = layout.row()
         row.prop(context.scene.dmx, 'logging_level')
 
 # Panel #

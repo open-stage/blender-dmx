@@ -298,10 +298,15 @@ class DMX_Fixture(PropertyGroup):
         # Link collection to DMX collection
         bpy.context.scene.dmx.collection.children.link(self.collection)
 
-        # Set Pigtail visibility
+        # Set Pigtail visibility and Beam selection
         for obj in self.collection.objects:
             if "pigtail" in obj.get("geometry_type", ""):
                 obj.hide_set(not bpy.context.scene.dmx.display_pigtails)
+            if obj.get("geometry_root", False):
+                continue
+            if "Target" in obj.name:
+                continue
+            obj.hide_select = not bpy.context.scene.dmx.select_geometries
  
         self.clear()
         bpy.context.scene.dmx.render()
@@ -524,7 +529,6 @@ class DMX_Fixture(PropertyGroup):
         except Exception as e:
             print("Error updating zoom", e)
         return zoom
-
 
     def updatePanTilt(self, pan, tilt):
         DMX_Log.log.info("Updating pan tilt")
