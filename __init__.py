@@ -255,6 +255,10 @@ class DMX(PropertyGroup):
     # - Allocate static universe data
     def linkFile(self):
         print("DMX", "Linking to file")
+
+        DMX_GDTF.getManufacturerList()
+        Profiles.DMX_Fixtures_Local_Profile.loadLocal()
+        Profiles.DMX_Fixtures_Import_Gdtf_Profile.loadShare()
         DMX_Log.enable(self.logging_level)
         DMX_Log.log.info("BlenderDMX: Linking to file")
 
@@ -919,9 +923,6 @@ def clean_module_imports():
 
 def onRegister():
     onLoadFile(None)
-    DMX_GDTF.getManufacturerList()
-    Profiles.DMX_Fixtures_Local_Profile.loadLocal()
-    Profiles.DMX_Fixtures_Import_Gdtf_Profile.loadShare()
 
 def register():
 
