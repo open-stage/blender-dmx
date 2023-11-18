@@ -64,9 +64,37 @@ class DMX_ModelBuilder:
         for obj in objs:
             # gltf files sometimes include this mysterious object
             # so we delete it. there maybe others.
-            # this is actually against GDTF spec, the glb should
-            # contain only a single object
-            # maybe we should check if len(obj) is > 1
+            #
+            # I checked for the correct behavior:
+            # In GDTF, single model is defined by a single glb, but that glb can be made
+            # of several objects. We should merge them all together or provide an option
+            # to import them not merged. For fixtures, merging is typically what we want.
+
+            # here is example of code which could/should do this, but is not working yet:
+            #
+            # ver1
+            #if len(obj.children):
+            #    for c in obj.children:
+            #        if c.type == 'MESH':
+            #            c.select_set(True)
+            #            bpy.context.view_layer.objects.active = c
+            #        # c.users_collection[0].objects.unlink(c)
+            #    bpy.ops.object.join()
+            #    obj = bpy.context.view_layer.objects.selected[0]
+            #else:
+            #    obj.users_collection[0].objects.unlink(obj)
+            #
+            # ver 2
+            # obs = []
+            # for ob in obj.children:
+            #    if ob.type == 'MESH':
+            #        obs.append(ob)
+            # ctx = bpy.context.copy()
+            ## one of the objects to join
+            # ctx['active_object'] = obs[0]
+            # ctx['selected_objects'] = obs
+            # bpy.ops.object.join(ctx)
+
             if (obj.name == '_display_d'):
                 bpy.data.objects.remove(obj)
                 objs.remove(obj)
