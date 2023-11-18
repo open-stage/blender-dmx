@@ -193,6 +193,7 @@ class DMX_Fixture(PropertyGroup):
         # Import and deep copy Fixture Model Collection
         gdtf_profile = DMX_GDTF.loadProfile(profile)
 
+
         # Handle if dmx mode doesn't exist (maybe this is MVR import and GDTF files were replaced)
         # use mode[0] as default
         if not any(self.mode == mode.name for mode in gdtf_profile.dmx_modes):
@@ -312,6 +313,9 @@ class DMX_Fixture(PropertyGroup):
                 continue
             if "Target" in obj.name:
                 continue
+            if obj.get("2d_symbol", None) == "all":
+                obj.hide_set(not bpy.context.scene.dmx.display_2D)
+
             obj.hide_select = not bpy.context.scene.dmx.select_geometries
  
         self.clear()

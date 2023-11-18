@@ -8,6 +8,7 @@
 import os
 import bpy
 import copy
+import math
 
 from mathutils import Euler, Matrix
 
@@ -103,6 +104,22 @@ class DMX_GDTF():
         obj.users_collection[0].objects.unlink(obj)
         obj.rotation_euler = Euler((0, 0, 0), 'XYZ')
         obj.scale = (model.length/obj.dimensions.x,model.width/obj.dimensions.y,model.height/obj.dimensions.z)
+        return obj
+
+    @staticmethod
+    def load2D(profile):
+        current_path = os.path.dirname(os.path.realpath(__file__))
+        extract_to_folder_path = os.path.join(current_path, 'assets', 'models', profile.fixture_type_id)
+        filename = f"{profile.thumbnail}.svg"
+        obj = None
+        if filename in profile._package.namelist():
+            profile._package.extract(filename, extract_to_folder_path)
+            bpy.ops.wm.gpencil_import_svg(filepath="", directory=extract_to_folder_path, files=[{"name":filename}], scale=1)
+            if len(bpy.context.view_layer.objects.selected):
+                obj = bpy.context.view_layer.objects.selected[0]
+            if obj is not None:
+                obj.users_collection[0].objects.unlink(obj)
+                obj.rotation_euler[0]=-90*(math.pi/180)
         return obj
 
     @staticmethod
@@ -435,6 +452,30 @@ class DMX_GDTF():
                 # make sure simple par fixtures can be controlled via Target
                 constraint = base.constraints.new('TRACK_TO')
                 constraint.target = target
+
+        # 2D thumbnail planning symbol
+        obj = DMX_GDTF.load2D(profile)
+        if obj is not None:
+            # should probably always show it "on top"
+            obj["2d_symbol"] = "all"
+            objs["2d_symbol"] = obj
+            obj.show_in_front = True
+            obj.active_material.grease_pencil.show_stroke = True
+            #svg.data.layers[...].frames[0].strokes[0]
+            # add constraints
+            constraint_copyLocation = obj.constraints.new(
+                type="COPY_LOCATION"
+            )
+            constraint_copyRotation = obj.constraints.new(
+                type="COPY_ROTATION"
+            )
+            constraint_copyLocation.target = base
+            constraint_copyRotation.target = base
+            constraint_copyRotation.use_z = True
+            constraint_copyRotation.use_x = False
+            constraint_copyRotation.use_y = False
+
+
 
         # Link objects to collection
         for name, obj in objs.items():

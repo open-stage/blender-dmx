@@ -130,6 +130,8 @@ class DMX_PT_Setup_Debug(Panel):
         row = layout.row()
         row.prop(context.scene.dmx, 'mvr_import_in_progress')
         row = layout.row()
+        row.prop(context.scene.dmx,'display_2D')
+        row = layout.row()
         row.prop(context.scene.dmx,'display_pigtails')
         row = layout.row()
         row.prop(context.scene.dmx,'select_geometries')

@@ -374,10 +374,30 @@ class DMX(PropertyGroup):
                 if "pigtail" in obj.get("geometry_type", ""):
                     obj.hide_set(not self.display_pigtails)
 
+    def onDisplay2D(self, context):
+        for area in bpy.context.screen.areas:
+            if area.type == "VIEW_3D":
+                override = bpy.context.copy()
+                override["area"] = area
+                bpy.ops.view3d.view_axis(override, type='TOP', align_active=False) 
+        for fixture in self.fixtures:
+            for obj in fixture.collection.objects:
+                if obj.get("2d_symbol", None) == "all":
+                    obj.hide_set(not self.display_2D)
+                else:
+                    obj.hide_set(self.display_2D)
+                    if "pigtail" in obj.get("geometry_type", ""):
+                        obj.hide_set(not self.display_pigtails)
+
     display_pigtails: BoolProperty(
         name = "Display Pigtails",
         default = False,
         update = onDisplayPigtails)
+
+    display_2D: BoolProperty(
+        name = "Display 2D VIew",
+        default = False,
+        update = onDisplay2D)
 
     def onSelectGeometries(self, context):
         for fixture in self.fixtures:
