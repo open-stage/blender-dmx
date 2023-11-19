@@ -281,6 +281,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
         scene = context.scene
         dmx = scene.dmx
         selected = scene.dmx.selectedFixtures()
+        context.window_manager.dmx.pause_render = True # pause renderer as partially imported fixture can cause issues during updates
         # Single fixture
         if (len(selected) == 1):
             fixture = selected[0]
@@ -288,6 +289,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                 return {'CANCELLED'}
             if not self.re_address_only:
                 fixture.build(self.name, self.profile, self.mode, self.universe, self.address, self.gel_color, self.display_beams, self.add_target)
+                context.window_manager.dmx.pause_render = False
             else:
                 fixture.address = self.address
                 fixture.universe = self.universe
@@ -314,7 +316,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                 else:
                     address += len(fixture.channels)
 
-
+        context.window_manager.dmx.pause_render = False # re-enable renderer
         return {'FINISHED'}
 
     def invoke(self, context, event):
