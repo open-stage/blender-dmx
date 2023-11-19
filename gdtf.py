@@ -9,6 +9,7 @@ import os
 import bpy
 import copy
 import math
+import hashlib
 
 from mathutils import Euler, Matrix
 
@@ -486,4 +487,8 @@ class DMX_GDTF():
     @staticmethod
     def getName(profile, dmx_mode, display_beams, add_target):
         revision = profile.revisions[-1].text if len(profile.revisions) else ''
-        return f"{profile.manufacturer}, {profile.name}, {dmx_mode}, {revision}, {'with_beams' if display_beams else 'without_beams'}, {'with_target' if add_target else 'without_target'}"
+        name = f"{profile.manufacturer}, {profile.name}, {dmx_mode}, {revision}, {'with_beams' if display_beams else 'without_beams'}, {'with_target' if add_target else 'without_target'}"
+        # base64 encode the name as collections seems to have lenght limit 
+        # which causes collections not to be cached, thus slowing imports down
+        name = hashlib.shake_256(name.encode()).hexdigest(5)
+        return name

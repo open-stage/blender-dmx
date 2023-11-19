@@ -4,6 +4,7 @@ from dmx.util import xyY2rgbaa
 from dmx.io_scene_3ds.import_3ds import load_3ds
 from mathutils import Matrix
 import time
+import hashlib
 
 
 # importing from dmx didn't work, had to duplicate this function
@@ -227,6 +228,30 @@ def extract_mvr_textures(mvr_scene, folder):
         if name.endswith(".png"):
             mvr_scene._package.extract(name, folder)
 
+def getCollectionName(string):
+    name = hashlib.shake_256(string.encode()).hexdigest(5)
+    return name
+
+def loadModelAndPrepareMvrFileCollection(file, folder):
+
+    object_collection = bpy.data.collections.new(getCollectionName(file))
+    file_name = os.path.join(folder, file)
+    file_3ds = False
+    if file_name.split(".")[-1] == "glb":
+        bpy.ops.import_scene.gltf(filepath=file_name)
+    else:
+        load_3ds(file_name, bpy.context)
+        file_3ds = True
+    objs = list(bpy.context.view_layer.objects.selected)
+
+    for ob in objs:
+        if file_3ds:
+            ob.users_collection[0].objects.unlink(ob)
+        else:
+            bpy.context.scene.collection.objects.unlink(ob)
+        object_collection.objects.link(ob)
+    return object_collection
+
 
 def add_mvr_object(
     # This is just a basic implementation, layers, grouping, management need to be added...
@@ -244,24 +269,25 @@ def add_mvr_object(
     name = f"{name} {layer_index}-{mvr_object_index}"
     # bpy.app.handlers.depsgraph_update_post.clear()
 
-    collection_name = name
 
-    file_name = os.path.join(folder, file)
-    file_3ds = False
-    if file_name.split(".")[-1] == "glb":
-        bpy.ops.import_scene.gltf(filepath=file_name)
+    cached_collection_name = getCollectionName(file)
+    if cached_collection_name in bpy.data.collections:
+        mvr_file_collection = bpy.data.collections[cached_collection_name]
     else:
-        load_3ds(file_name, bpy.context)
-        file_3ds = True
+        mvr_file_collection = loadModelAndPrepareMvrFileCollection(file, folder)
 
+    collection_name = name
     object_collection = bpy.data.collections.new(collection_name)
-
-    objs = list(bpy.context.view_layer.objects.selected)
 
     local_scale = Matrix(local_transform).to_scale()
     global_scale = Matrix(global_transform).to_scale()
 
-    for ob in objs:
+    file_3ds = False
+    if file.split(".")[-1] != "glb":
+        file_3ds = True
+
+    for obj in mvr_file_collection.objects:
+        ob = obj.copy()
         ob.location = Matrix(local_transform).to_translation()
         ob.rotation_mode = "XYZ"
         ob.rotation_euler = Matrix(local_transform).to_euler("XYZ")
@@ -282,9 +308,6 @@ def add_mvr_object(
             ob.scale[0] *= 0.001
             ob.scale[1] *= 0.001
             ob.scale[2] *= 0.001
-            ob.users_collection[0].objects.unlink(ob)
-        else:
-            bpy.context.scene.collection.objects.unlink(ob)
 
         object_collection.objects.link(ob)
     group_collection.children.link(object_collection)
