@@ -58,6 +58,11 @@ from bpy.types import (PropertyGroup,
 
 class DMX_TempData(PropertyGroup):
 
+    pause_render: BoolProperty(
+        description="The renderer is paused during MVR import and in 2D view. This checkbox allows to re-enable it in case of some failure during import, which would leave it paused",
+        name = "Pause renderer",
+        default = False)
+
     manufacturers: CollectionProperty(
             name = "Manufacturers",
             type=PropertyGroup
@@ -136,11 +141,6 @@ class DMX(PropertyGroup):
                 DMX_PT_Programmer)
 
     linkedToFile = False
-
-    mvr_import_in_progress: BoolProperty(
-        description="The renderer is paused during MVR import. This checkbox allows to re-enable it in case of some failure during import, which would leave it paused",
-        name = "Pause renderer",
-        default = False)
 
     def register():
         for cls in DMX.classes_setup:
@@ -375,6 +375,7 @@ class DMX(PropertyGroup):
                     obj.hide_set(not self.display_pigtails)
 
     def onDisplay2D(self, context):
+        bpy.context.window_manager.dmx.pause_render = True # this stops the render loop, to prevent slowness and crashes
         for area in bpy.context.screen.areas:
             if area.type == "VIEW_3D":
                 override = bpy.context.copy()
@@ -388,6 +389,7 @@ class DMX(PropertyGroup):
                     obj.hide_set(self.display_2D)
                     if "pigtail" in obj.get("geometry_type", ""):
                         obj.hide_set(not self.display_pigtails)
+        bpy.context.window_manager.dmx.pause_render = self.display_2D # re-enable renderer if in 3D
 
     display_pigtails: BoolProperty(
         name = "Display Pigtails",
@@ -777,7 +779,7 @@ class DMX(PropertyGroup):
         bpy.app.handlers.depsgraph_update_post.clear()
 
         star_time = time.time()
-        self.mvr_import_in_progress = True # this stops the render loop, to prevent slowness and crashes
+        bpy.context.window_manager.dmx.pause_render = True # this stops the render loop, to prevent slowness and crashes
         already_extracted_files = {}
         mvr_scene = GeneralSceneDescription(file_name)
         current_path = os.path.dirname(os.path.realpath(__file__))
@@ -797,7 +799,7 @@ class DMX(PropertyGroup):
                 already_extracted_files,
                 layer_collection,
             )
-        self.mvr_import_in_progress = False # re-enable render loop
+        bpy.context.window_manager.dmx.pause_render = False # re-enable render loop
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
         print("MVR scene loaded in %.4f sec." % (time.time() - star_time))
 

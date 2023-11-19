@@ -128,7 +128,7 @@ class DMX_PT_Setup_Debug(Panel):
         layout = self.layout
         dmx = context.scene.dmx
         row = layout.row()
-        row.prop(context.scene.dmx, 'mvr_import_in_progress')
+        row.prop(context.window_manager.dmx, 'pause_render')
         row = layout.row()
         row.prop(context.scene.dmx,'display_2D')
         row = layout.row()
