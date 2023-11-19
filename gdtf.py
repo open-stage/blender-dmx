@@ -139,9 +139,14 @@ class DMX_GDTF():
             file_name=os.path.join(extract_to_folder_path, inside_zip_path)
             bpy.ops.import_scene.gltf(filepath=file_name)
 
-        obj = bpy.context.view_layer.objects.selected[0]
-        obj.users_collection[0].objects.unlink(obj)
-        obj.rotation_euler = Euler((0, 0, 0), 'XYZ')
+        objs = list(bpy.context.view_layer.objects.selected)
+
+        # if the model is made up of multiple parts we must join them
+        obj = DMX_GDTF.join_parts_apply_transforms(objs)
+
+        # we should not set rotation to 0, models might be pre-rotated
+        #obj.rotation_euler = Euler((0, 0, 0), 'XYZ')
+
         z=obj.dimensions.z or 1
         if obj.dimensions.z <= 0:
             DMX_Log.log.error(f"Model {obj.name} has no Z height, it will likely not work correctly.")
@@ -149,6 +154,46 @@ class DMX_GDTF():
             obj.scale.x*model.length/obj.dimensions.x,
             obj.scale.y*model.width/obj.dimensions.y,
             obj.scale.z*model.height/z)
+        return obj
+
+    @staticmethod
+    def join_parts_apply_transforms(objs):
+        """This ensures that glbs made of multiple parts are used as a single object.
+        This also hard applies not applied glb transforms"""
+
+        # can be tested on files as per this issue: https://github.com/open-stage/blender-dmx/issues/67 
+
+        join = False
+        for ob in objs:
+            mb = ob.matrix_basis
+            if ob.type == 'MESH':
+                ob.select_set(True)
+                join = True
+                bpy.context.view_layer.objects.active = ob
+                if hasattr(ob.data, "transform"):
+                    ob.data.transform(mb)
+            for child in ob.children:
+                child.matrix_local = mb @ child.matrix_local
+                if child.type == 'MESH':
+                    join = True
+                    child.select_set(True)
+                    bpy.context.view_layer.objects.active = child
+            ob.matrix_basis.identity()
+
+        if join:
+            bpy.ops.object.join()
+            objs = list(bpy.context.view_layer.objects.selected)
+
+        for obj in objs:
+            obj.users_collection[0].objects.unlink(obj)
+
+        obj = objs[0]
+
+        for ob in objs:
+            if ob.type == "MESH":
+                obj = ob
+                break
+
         return obj
 
     @staticmethod
@@ -238,8 +283,7 @@ class DMX_GDTF():
 
                 # Apply transforms to ensure that models are correctly rendered
                 # even if their transformations have not been applied prior to saving
-                # This solves 99% of known issues when loading glbs
-                # TODO: if the model is made of multiple smaller objects, we need to process them.
+                # without this, MVR fixtures are not loading correctly
 
                 mb = obj.matrix_basis
                 if hasattr(obj.data, "transform"):
@@ -312,7 +356,6 @@ class DMX_GDTF():
 
             #if (not sanitize_obj_name(geometry) in objs): return
             obj_child = objs[sanitize_obj_name(geometry)]
-
             position = Matrix(geometry.position.matrix).to_translation()
             obj_child.location[0] += (position[0]*-1) # a bug due to rotations of parents not being applied
             obj_child.location[1] += position[1]
