@@ -839,12 +839,8 @@ class DMX(PropertyGroup):
 
     def updatePreviewVolume(self):
         for fixture in self.fixtures:
-            if bpy.context.active_object is not None and bpy.context.active_object.name in fixture.collection.objects:
-                for light in fixture.lights:
-                    light.object.data.show_cone = self.volume_preview
-            else:
-                for light in fixture.lights:
-                    light.object.data.show_cone = False
+            for light in fixture.lights:
+                light.object.data.show_cone = self.volume_preview
 
     # # Universes
 
