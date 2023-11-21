@@ -376,11 +376,19 @@ class DMX(PropertyGroup):
 
     def onDisplay2D(self, context):
         bpy.context.window_manager.dmx.pause_render = True # this stops the render loop, to prevent slowness and crashes
-        for area in bpy.context.screen.areas:
-            if area.type == "VIEW_3D":
-                override = bpy.context.copy()
-                override["area"] = area
-                bpy.ops.view3d.view_axis(override, type='TOP', align_active=False) 
+        if self.display_2D:
+            self.volume_enabled = False
+            area  = [area for area in bpy.context.window.screen.areas if area.type == "VIEW_3D"][0]
+            with bpy.context.temp_override(
+                window=bpy.context.window,
+                area=area,
+                region=[region for region in area.regions if region.type == 'WINDOW'][0],
+                screen=bpy.context.window.screen
+            ):
+                bpy.ops.view3d.view_axis(type='TOP', align_active=True)
+                bpy.ops.view3d.view_selected()
+                area.spaces[0].shading.type = 'SOLID'
+
         for fixture in self.fixtures:
             for obj in fixture.collection.objects:
                 if obj.get("2d_symbol", None) == "all":
@@ -464,7 +472,8 @@ class DMX(PropertyGroup):
     # # Setup > Volume > Enabled
 
     def onVolumeEnabled(self, context):
-        self.volume.hide_set(not self.volume_enabled)
+        if self.volume is not None:
+            self.volume.hide_set(not self.volume_enabled)
 
     volume_enabled: BoolProperty(
         name = "Enable Volume Scatter",
