@@ -351,13 +351,16 @@ class DMX_GDTF():
             constraint.target = obj_child
             collection.objects.link(light_object)
         
-        def add_child_position(geometry):
+        def add_child_position(geometry, invertX = False):
             """Add a child, create a light source and emitter material for beams"""
 
             #if (not sanitize_obj_name(geometry) in objs): return
             obj_child = objs[sanitize_obj_name(geometry)]
             position = Matrix(geometry.position.matrix).to_translation()
-            obj_child.location[0] += (position[0]*-1) # a bug due to rotations of parents not being applied
+            if invertX:
+                obj_child.location[0] += (position[0]*-1) # still have not found the bug
+            else:
+                obj_child.location[0] += position[0]
             obj_child.location[1] += position[1]
             obj_child.location[2] += position[2]
 
@@ -404,7 +407,7 @@ class DMX_GDTF():
                 reference.name=sanitize_obj_name(geometry)
                 reference.position = geometry.position
 
-                add_child_position(reference)
+                add_child_position(reference, invertX=True)
 
                 if isinstance(reference, pygdtf.GeometryBeam):
                     create_beam(reference)
@@ -505,6 +508,8 @@ class DMX_GDTF():
             objs["2d_symbol"] = obj
             obj.show_in_front = True
             obj.active_material.grease_pencil.show_stroke = True
+            obj.data.pixel_factor = 2
+
             #svg.data.layers[...].frames[0].strokes[0]
             # add constraints
             constraint_copyLocation = obj.constraints.new(
