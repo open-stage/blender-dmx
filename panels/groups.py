@@ -20,7 +20,7 @@ from bpy.types import (Panel,
 
 class DMX_UL_Group(UIList):
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
-        icon = 'STICKY_UVS_LOC'
+        icon = "GROUP_VERTEX"
         if self.layout_type in {'DEFAULT', 'COMPACT'}:
             layout.label(text = item.name, icon = icon)
         elif self.layout_type in {'GRID'}:
@@ -154,4 +154,4 @@ class DMX_PT_Groups(Panel):
 
         layout.template_list("DMX_UL_Group", "", scene.dmx, "groups", scene.dmx, "group_list_i", rows=4)
 
-        layout.menu("DMX_MT_Group", text="...", icon="STICKY_UVS_LOC")
+        layout.menu("DMX_MT_Group", text="...", icon="GROUP_VERTEX")
