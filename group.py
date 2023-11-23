@@ -7,6 +7,7 @@
 
 import bpy
 import uuid
+import json
 
 from bpy.props import (PointerProperty,
                        StringProperty,
@@ -50,7 +51,7 @@ class DMX_Group(PropertyGroup):
         # and repopulate it
         if (len(sel_fixtures)):
             #self.runtime[self.name] = sel_fixtures;
-            self.dump = str([fixture.name for fixture in sel_fixtures])
+            self.dump = json.dumps([fixture.name for fixture in sel_fixtures])
         else:
             self.dump = ''
 
@@ -60,10 +61,7 @@ class DMX_Group(PropertyGroup):
         # which seems to mess with the runtime volatile data declared as runtime
         # However, a better way should be considered (a Blender String Array)
         #for fixture in self.runtime[self.name]:
-        for fixture in self.rebuild():
+        fixtures = bpy.context.scene.dmx.fixtures
+        for fixture in [fixtures[fxt] for fxt in json.loads(self.dump)]:
             fixture.select()
 
-    def rebuild(self):
-        fixtures = bpy.context.scene.dmx.fixtures
-        #self.runtime[self.name] = [fixtures[fxt[1:-1]] for fxt in self.dump.strip('[]').split(', ')]
-        return [fixtures[fxt[1:-1]] for fxt in self.dump.strip('[]').split(', ')]
