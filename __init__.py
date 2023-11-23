@@ -822,9 +822,18 @@ class DMX(PropertyGroup):
                 already_extracted_files,
                 layer_collection,
             )
+            self.clean_up_empty_mvr_collections(layer_collection)
+            if len(layer_collection.children) == 0:
+                bpy.context.scene.collection.children.unlink(layer_collection)
+
         bpy.context.window_manager.dmx.pause_render = False # re-enable render loop
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
         print("MVR scene loaded in %.4f sec." % (time.time() - star_time))
+
+    def clean_up_empty_mvr_collections(self,collections):
+        for collection in collections.children:
+            if len(collection.children) == 0:
+                collections.children.unlink(collection)
 
     def ensureUniverseExists(self, universe):
         # Allocate universes to be able to control devices
