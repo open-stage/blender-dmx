@@ -8,6 +8,7 @@
 import bpy
 import math
 import mathutils
+import uuid
 
 from dmx.material import getEmitterMaterial
 from dmx.model import DMX_Model
@@ -130,6 +131,12 @@ class DMX_Fixture(PropertyGroup):
         default = 1,
         min = 1,
         max = 512)
+
+    uuid: StringProperty(
+        name = "UUID",
+        description = "Unique ID, used for MVR",
+        default = str(uuid.uuid4())
+            )
         
     display_beams: BoolProperty(
         name = "Display beams",
@@ -149,7 +156,7 @@ class DMX_Fixture(PropertyGroup):
         max = 1.0,
         default = (1.0,1.0,1.0,1.0))
 
-    def build(self, name, profile, mode, universe, address, gel_color, display_beams, add_target, mvr_position = None, focus_point = None):
+    def build(self, name, profile, mode, universe, address, gel_color, display_beams, add_target, mvr_position = None, focus_point = None, uuid = None):
 
         # (Edit) Store objects positions
         old_pos = {obj.name:obj.object.location.copy() for obj in self.objects}
@@ -286,6 +293,8 @@ class DMX_Fixture(PropertyGroup):
             for obj in self.objects:
                 if 'Target' in obj.name:
                     obj.object.matrix_world=focus_point
+        if uuid is not None:
+            self.uuid = uuid
 
         # Setup emitter
         for obj in self.collection.objects:
