@@ -19,10 +19,15 @@ from bpy.types import (ID,
 
 from dmx.fixture import *
 
+class FixtureGroup():
+    def __init__(self, name, uuid):
+        self.name = name
+        self.uuid = uuid
+
 class DMX_Group(PropertyGroup):
 
     # This is only used to save the group to file
-    # as a string representation of the fixture names array
+    # as a json representation of the fixture names array
     dump: StringProperty(
         name = "DMX Groups"
     )
@@ -56,6 +61,7 @@ class DMX_Group(PropertyGroup):
             self.dump = ''
 
     def select(self):
+        # Comment left here for legacy reasons. We now use json to serialize the array
         # Rebuilding the groups array everytime takes a long time
         # This was done to avoid inconsistencies on Undo of unrelated Operators,
         # which seems to mess with the runtime volatile data declared as runtime

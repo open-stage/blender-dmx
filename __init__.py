@@ -40,6 +40,7 @@ from dmx.panels.programmer import *
 import dmx.panels.profiles as Profiles
 
 from dmx.preferences import DMX_Preferences
+from dmx.group import FixtureGroup
 
 from dmx.util import rgb_to_cmy, xyY2rgbaa
 
@@ -350,16 +351,18 @@ class DMX(PropertyGroup):
         if file_data_version < 3:
             print("Running migration 2→3")
             dmx = bpy.context.scene.dmx
-
+            print("Add UUID to fixtures")
             for fixture in dmx.fixtures:
                 if "uuid" not in fixture:
                     print("Adding UUID to", fixture.name)
                     fixture.uuid = str(uuid.uuid4())
-
+            print("Add UUID to groups, convert groups to json")
             for group in dmx.groups:
                 if "uuid" not in group:
                     print("Adding UUID to", group.name)
                     group.uuid = str(uuid.uuid4())
+                print("Migrating group")
+                group.dump = json.dumps([x[1:-1] for x in group.dump.strip('[]').split(', ')])
 
         # add here another if statement for next migration condition... like:
         # if file_data_version < 4: #...
@@ -817,7 +820,8 @@ class DMX(PropertyGroup):
             bpy.context.scene.collection.children.link(layer_collection)
 
             g_name = layer.name or "Layer"
-            fixture_group = f"{g_name} {layer_index}"
+            g_name = f"{g_name} {layer_index}"
+            fixture_group = FixtureGroup(g_name, layer.uuid)
 
             process_mvr_child_list(
                 self,

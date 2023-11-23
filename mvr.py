@@ -6,6 +6,7 @@ from mathutils import Matrix
 import time
 import hashlib
 import json
+from dmx.group import FixtureGroup
 
 
 # importing from dmx didn't work, had to duplicate this function
@@ -58,7 +59,8 @@ def process_mvr_child_list(
         )
         if fixture_group is None:
             g_name = truss_object.name or "Truss"
-            fixture_group = f"{g_name} {truss_index}"
+            g_name = f"{g_name} {truss_index}"
+            fixture_group = FixtureGroup(g_name, truss_object.uuid)
 
         if hasattr(truss_object, "child_list") and truss_object.child_list:
             process_mvr_child_list(
@@ -155,7 +157,8 @@ def process_mvr_child_list(
             # if group.child_list is not None:
             layer_group_index = f"{layer_index}-{group_index}"
             g_name = group.name or "Group"
-            fixture_group = f"{g_name} {group_index}"
+            g_name = f"{g_name} {group_index}"
+            fixture_group = FixtureGroup(g_name, group.uuid)
             process_mvr_child_list(
                 dmx,
                 group.child_list,
@@ -365,24 +368,19 @@ def add_mvr_fixture(
     )
     
     if fixture_group is not None:
-        print("process group", fixture_group)
         fixture_name = f"{fixture.name} {layer_index}-{fixture_index}"
         group = None
-        if fixture_group in dmx.groups:
-            print("found it", dmx.groups[fixture_group])
-            group = dmx.groups[fixture_group]
+        if fixture_group.name in dmx.groups:
+            group = dmx.groups[fixture_group.name]
         else:
             group = dmx.groups.add()
-            group.name = fixture_group
-        print("fixture name", fixture_name)
-        print("group", group.dump)
+            group.name = fixture_group.name
+            group.uuid = fixture_group.uuid
         if group.dump:
             dump = json.loads(group.dump)
         else:
             dump = []
-        print(type(dump), dump)
         dump.append(fixture_name)
-        print(dump, str(dump))
         group.dump = json.dumps(dump)
 
 
