@@ -428,6 +428,8 @@ class DMX(PropertyGroup):
             for obj in fixture.collection.objects:
                 if obj.get("geometry_root", False):
                     continue
+                if obj.get("2d_symbol", None):
+                    continue
                 if "Target" in obj.name:
                     continue
                 obj.hide_select = not self.select_geometries
@@ -813,6 +815,10 @@ class DMX(PropertyGroup):
         for layer_index, layer in enumerate(mvr_scene.layers):
             layer_collection = bpy.data.collections.new(layer.name or f"Layer {layer_index}")
             bpy.context.scene.collection.children.link(layer_collection)
+
+            g_name = layer.name or "Layer"
+            fixture_group = f"{g_name} {layer_index}"
+
             process_mvr_child_list(
                 self,
                 layer.child_list,
@@ -821,6 +827,7 @@ class DMX(PropertyGroup):
                 mvr_scene,
                 already_extracted_files,
                 layer_collection,
+                fixture_group
             )
             self.clean_up_empty_mvr_collections(layer_collection)
             if len(layer_collection.children) == 0:
@@ -951,8 +958,23 @@ def onUndo(scene):
 
 def onActiveChanged(*args):
     dmx = bpy.context.scene.dmx
-    if (dmx.volume_preview):
-        dmx.updatePreviewVolume()
+    # volume preview is now global
+    #if (dmx.volume_preview):
+    #    dmx.updatePreviewVolume()
+    if dmx.display_2D:
+        selected = False
+        for fixture in dmx.fixtures:
+            if bpy.context.active_object is not None and bpy.context.active_object.name in fixture.collection.objects:
+                selected = True
+                fixture.select()
+            else:
+                fixture.unselect()
+        if selected:
+            bpy.context.window_manager.dmx.pause_render = False
+            print("unpause")
+        else:
+            bpy.context.window_manager.dmx.pause_render = True
+
 
 #
 # Hot-Reload

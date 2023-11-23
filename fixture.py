@@ -262,6 +262,9 @@ class DMX_Fixture(PropertyGroup):
                 self.objects.add()
                 self.objects[-1].name = "Head"
                 self.objects["Head"].object = links[obj.name]
+            elif obj.get("2d_symbol", None) == "all":
+                self.objects.add().name = "2D Symbol"
+                self.objects["2D Symbol"].object = links[obj.name]
 
             # Link all other object to collection
             self.collection.objects.link(links[obj.name])
@@ -324,6 +327,7 @@ class DMX_Fixture(PropertyGroup):
                 continue
             if obj.get("2d_symbol", None) == "all":
                 obj.hide_set(not bpy.context.scene.dmx.display_2D)
+                continue
 
             obj.hide_select = not bpy.context.scene.dmx.select_geometries
  
@@ -657,12 +661,36 @@ class DMX_Fixture(PropertyGroup):
         return params
 
     def select(self):
-        self.objects["Root"].object.select_set(True)
+        dmx = bpy.context.scene.dmx
+        if dmx.display_2D:
+            # in 2D view deselect the 2D symbol, unhide the fixture and select base, 
+            # to allow movement and rotation 
+            self.objects["2D Symbol"].object.select_set(False)
+
+            for obj in self.collection.objects:
+                if "pigtail" in obj.get("geometry_type", ""):
+                    obj.hide_set(not bpy.context.scene.dmx.display_pigtails)
+                if obj.get("2d_symbol", None):
+                    continue
+                obj.hide_set(False)
+            self.objects["Root"].object.select_set(True)
+
+        else:
+            self.objects["Root"].object.select_set(True)
     
     def unselect(self):
+        dmx = bpy.context.scene.dmx
         self.objects["Root"].object.select_set(False)
         if ('Target' in self.objects):
             self.objects['Target'].object.select_set(False)
+        if "2D Symbol" in self.objects:
+            self.objects["2D Symbol"].object.select_set(False)
+        if dmx.display_2D:
+            for obj in self.collection.objects:
+                if obj.get("2d_symbol", None):
+                    continue
+                obj.hide_set(True)
+
 
     def toggleSelect(self):
         selected = False

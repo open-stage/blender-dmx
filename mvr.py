@@ -5,6 +5,7 @@ from dmx.io_scene_3ds.import_3ds import load_3ds
 from mathutils import Matrix
 import time
 import hashlib
+import json
 
 
 # importing from dmx didn't work, had to duplicate this function
@@ -38,6 +39,7 @@ def process_mvr_child_list(
     mvr_scene,
     already_extracted_files,
     layer_collection,
+    fixture_group = None
 ):
     if "MVR Trusses" in layer_collection:
         truss_collection = layer_collection["MVR Trusses"]
@@ -54,6 +56,9 @@ def process_mvr_child_list(
             already_extracted_files,
             truss_collection,
         )
+        if fixture_group is None:
+            g_name = truss_object.name or "Truss"
+            fixture_group = f"{g_name} {truss_index}"
 
         if hasattr(truss_object, "child_list") and truss_object.child_list:
             process_mvr_child_list(
@@ -64,6 +69,7 @@ def process_mvr_child_list(
                 mvr_scene,
                 already_extracted_files,
                 layer_collection,
+                fixture_group,
             )
 
     if "MVR Scene objects" in layer_collection:
@@ -110,6 +116,7 @@ def process_mvr_child_list(
                 mvr_scene,
                 already_extracted_files,
                 layer_collection,
+                fixture_group
             )
 
     for fixture_index, fixture in enumerate(child_list.fixtures):
@@ -128,6 +135,7 @@ def process_mvr_child_list(
             layer_index,
             focus_point,
             already_extracted_files,
+            fixture_group
         )
 
         if hasattr(fixture, "child_list") and fixture.child_list:
@@ -139,12 +147,15 @@ def process_mvr_child_list(
                 mvr_scene,
                 already_extracted_files,
                 layer_collection,
+                fixture_group
             )
 
     for group_index, group in enumerate(child_list.group_objects):
         if hasattr(group, "child_list") and group.child_list:
             # if group.child_list is not None:
             layer_group_index = f"{layer_index}-{group_index}"
+            g_name = group.name or "Group"
+            fixture_group = f"{g_name} {group_index}"
             process_mvr_child_list(
                 dmx,
                 group.child_list,
@@ -153,6 +164,7 @@ def process_mvr_child_list(
                 mvr_scene,
                 already_extracted_files,
                 layer_collection,
+                fixture_group,
             )
 
 
@@ -228,12 +240,13 @@ def extract_mvr_textures(mvr_scene, folder):
         if name.endswith(".png"):
             mvr_scene._package.extract(name, folder)
 
+
 def getCollectionName(string):
     name = hashlib.shake_256(string.encode()).hexdigest(5)
     return name
 
-def loadModelAndPrepareMvrFileCollection(file, folder):
 
+def loadModelAndPrepareMvrFileCollection(file, folder):
     object_collection = bpy.data.collections.new(getCollectionName(file))
     file_name = os.path.join(folder, file)
     file_3ds = False
@@ -268,7 +281,6 @@ def add_mvr_object(
     start_time = time.time()
     name = f"{name} {layer_index}-{mvr_object_index}"
     # bpy.app.handlers.depsgraph_update_post.clear()
-
 
     cached_collection_name = getCollectionName(file)
     if cached_collection_name in bpy.data.collections:
@@ -324,6 +336,7 @@ def add_mvr_fixture(
     layer_index,
     focus_point,
     already_extracted_files,
+    fixture_group = None,
 ):
     """Add fixture to the scene"""
     if f"{fixture.gdtf_spec}" in mvr_scene._package.namelist():
@@ -350,3 +363,32 @@ def add_mvr_fixture(
         focus_point=focus_point,
         uuid=fixture.uuid,
     )
+    
+    if fixture_group is not None:
+        print("process group", fixture_group)
+        fixture_name = f"{fixture.name} {layer_index}-{fixture_index}"
+        group = None
+        if fixture_group in dmx.groups:
+            print("found it", dmx.groups[fixture_group])
+            group = dmx.groups[fixture_group]
+        else:
+            group = dmx.groups.add()
+            group.name = fixture_group
+        print("fixture name", fixture_name)
+        print("group", group.dump)
+        if group.dump:
+            dump = json.loads(group.dump)
+        else:
+            dump = []
+        print(type(dump), dump)
+        dump.append(fixture_name)
+        print(dump, str(dump))
+        group.dump = json.dumps(dump)
+
+
+
+
+
+
+
+        
