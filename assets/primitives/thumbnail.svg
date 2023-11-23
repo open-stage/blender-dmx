@@ -1,0 +1,20 @@
+
+<svg height="238.000000mm" viewBox="-119.000000 -119.000000 238.000000 238.000000" width="238.000000mm" xmlns="http://www.w3.org/2000/svg">
+    <g>
+        <g/>
+        <g>
+            <circle cx="0.000000" cy="-0.000000" fill="#000000" r="119.000000" stroke="#FFFFFF"/>
+        </g>
+        <g>
+            <circle cx="0.000000" cy="-0.000000" fill="#000000" r="86.755539" stroke="#FFFFFF"/>
+        </g>
+        <g>
+            <path d="M 0.000000 -0.000000L 61.345430 -61.345430" fill="None" stroke="#FFFFFF"/>
+        </g>
+        <g>
+            <path d="M 0.000000 -0.000000L -61.345430 -61.345430" fill="None" stroke="#FFFFFF"/>
+        </g>
+        <g/>
+        <g/>
+    </g>
+</svg>
