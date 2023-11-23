@@ -613,6 +613,8 @@ class DMX(PropertyGroup):
     def onProgrammerDimmer(self, context):
         bpy.app.handlers.depsgraph_update_post.clear()
         for fixture in self.fixtures:
+            if fixture.collection is None:
+                continue
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
                     fixture.setDMX({
@@ -635,6 +637,8 @@ class DMX(PropertyGroup):
 
         bpy.app.handlers.depsgraph_update_post.clear()
         for fixture in self.fixtures:
+            if fixture.collection is None:
+                continue
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
                     rgb=[int(255*x) for x in self.programmer_color]
@@ -665,6 +669,8 @@ class DMX(PropertyGroup):
     def onProgrammerPan(self, context):
         bpy.app.handlers.depsgraph_update_post.clear()
         for fixture in self.fixtures:
+            if fixture.collection is None:
+                continue
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
                     fixture.setDMX({
@@ -683,6 +689,8 @@ class DMX(PropertyGroup):
     def onProgrammerTilt(self, context):
         bpy.app.handlers.depsgraph_update_post.clear()
         for fixture in self.fixtures:
+            if fixture.collection is None:
+                continue
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
                     fixture.setDMX({
@@ -694,6 +702,8 @@ class DMX(PropertyGroup):
     def onProgrammerZoom(self, context):
         bpy.app.handlers.depsgraph_update_post.clear()
         for fixture in self.fixtures:
+            if fixture.collection is None:
+                continue
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
                     fixture.setDMX({
@@ -705,6 +715,8 @@ class DMX(PropertyGroup):
     def onProgrammerShutter(self, context):
         bpy.app.handlers.depsgraph_update_post.clear()
         for fixture in self.fixtures:
+            if fixture.collection is None:
+                continue
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
                     fixture.setDMX({
@@ -750,7 +762,8 @@ class DMX(PropertyGroup):
         active = self.findFixture(bpy.context.active_object)
         if (not active): return
         data = active.getProgrammerData()
-        self.programmer_dimmer = data['Dimmer']/256.0
+        if 'Dimmer' in data:
+            self.programmer_dimmer = data['Dimmer']/256.0
         if 'Shutter1' in data:
             self.programmer_shutter = int(data['Shutter1']/256.0)
         if ('Zoom' in data):
