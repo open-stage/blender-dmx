@@ -10,6 +10,8 @@
 import bpy
 import os
 import shutil
+import uuid
+
 from dmx import pygdtf
 from dmx.gdtf import *
 import dmx.panels.profiles as Profiles
@@ -202,6 +204,11 @@ class DMX_Fixture_AddEdit():
         #update = onAddTarget,
         default = True)
 
+    uuid: StringProperty(
+        name = "UUID",
+        description = "Unique ID, used for MVR",
+        default = str(uuid.uuid4())
+            )
     re_address_only: BoolProperty(
         name = "Re-address only",
         description="Do not rebuild the model structure",
@@ -288,7 +295,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             if (self.name != fixture.name and self.name in bpy.data.collections):
                 return {'CANCELLED'}
             if not self.re_address_only:
-                fixture.build(self.name, self.profile, self.mode, self.universe, self.address, self.gel_color, self.display_beams, self.add_target)
+                fixture.build(self.name, self.profile, self.mode, self.universe, self.address, self.gel_color, self.display_beams, self.add_target, uuid = self.uuid)
                 context.window_manager.dmx.pause_render = False
             else:
                 fixture.address = self.address
@@ -306,7 +313,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                 profile = self.profile if (self.profile != '') else fixture.profile
                 mode = self.mode if (self.mode != '') else fixture.mode
                 if not self.re_address_only:
-                    fixture.build(name, profile, mode, self.universe, address, self.gel_color, self.display_beams, self.add_target)
+                    fixture.build(name, profile, mode, self.universe, address, self.gel_color, self.display_beams, self.add_target, uuid = self.uuid)
                 else:
                     fixture.address = address
                     fixture.universe = universe

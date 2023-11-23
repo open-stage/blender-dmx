@@ -209,7 +209,7 @@ class DMX(PropertyGroup):
 
     data_version: IntProperty(
             name = "BlenderDMX data version, bump when changing RNA structure and provide migration script",
-            default = 2,
+            default = 3,
             )
 
     # New DMX Scene
@@ -347,8 +347,22 @@ class DMX(PropertyGroup):
                         print("updating", obj.name)
                         obj.name = 'Root'
 
+        if file_data_version < 3:
+            print("Running migration 2→3")
+            dmx = bpy.context.scene.dmx
+
+            for fixture in dmx.fixtures:
+                if "uuid" not in fixture:
+                    print("Adding UUID to", fixture.name)
+                    fixture.uuid = str(uuid.uuid4())
+
+            for group in dmx.groups:
+                if "uuid" not in group:
+                    print("Adding UUID to", group.name)
+                    group.uuid = str(uuid.uuid4())
+
         # add here another if statement for next migration condition... like:
-        # if file_data_version < 3: #...
+        # if file_data_version < 4: #...
 
         self.collection["DMX_DataVersion"] = self.data_version # set data version to current
 
@@ -747,11 +761,11 @@ class DMX(PropertyGroup):
     # Kernel Methods
     # # Fixtures
 
-    def addFixture(self, name, profile, universe, address, mode, gel_color, display_beams, add_target, position=None, focus_point=None):
+    def addFixture(self, name, profile, universe, address, mode, gel_color, display_beams, add_target, position=None, focus_point=None, uuid = None):
         bpy.app.handlers.depsgraph_update_post.clear()
         dmx = bpy.context.scene.dmx
         dmx.fixtures.add()
-        dmx.fixtures[-1].build(name, profile, mode, universe, address, gel_color, display_beams, add_target, position, focus_point)
+        dmx.fixtures[-1].build(name, profile, mode, universe, address, gel_color, display_beams, add_target, position, focus_point, uuid)
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
     def removeFixture(self, fixture):

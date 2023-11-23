@@ -348,4 +348,5 @@ def add_mvr_fixture(
         True,
         position=fixture.matrix.matrix,
         focus_point=focus_point,
+        uuid=fixture.uuid,
     )

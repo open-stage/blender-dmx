@@ -6,6 +6,7 @@
 #
 
 import bpy
+import uuid
 
 from bpy.props import (PointerProperty,
                        StringProperty,
@@ -25,6 +26,11 @@ class DMX_Group(PropertyGroup):
         name = "DMX Groups"
     )
 
+    uuid: StringProperty(
+        name = "UUID",
+        description = "Unique ID, used for MVR",
+        default = str(uuid.uuid4())
+            )
     # The current groups are stored and acessed here
     # I'm not sure this data is safe for use with Undo
     # Commenting until a veredict is reached
