@@ -115,12 +115,18 @@ class DMX_GDTF():
         obj = None
         if filename in profile._package.namelist():
             profile._package.extract(filename, extract_to_folder_path)
-            bpy.ops.wm.gpencil_import_svg(filepath="", directory=extract_to_folder_path, files=[{"name":filename}], scale=1)
-            if len(bpy.context.view_layer.objects.selected):
-                obj = bpy.context.view_layer.objects.selected[0]
-            if obj is not None:
-                obj.users_collection[0].objects.unlink(obj)
-                obj.rotation_euler[0]=-90*(math.pi/180)
+        else:
+            #default 2D
+            extract_to_folder_path = os.path.join(current_path, 'assets', 'primitives')
+            filename = "thumbnail.svg"
+
+        bpy.ops.wm.gpencil_import_svg(filepath="", directory=extract_to_folder_path, files=[{"name":filename}], scale=1)
+        if len(bpy.context.view_layer.objects.selected):
+            obj = bpy.context.view_layer.objects.selected[0]
+        if obj is not None:
+            obj.name = "2D symbol"
+            obj.users_collection[0].objects.unlink(obj)
+            obj.rotation_euler[0]=-90*(math.pi/180)
         return obj
 
     @staticmethod
