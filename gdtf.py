@@ -164,36 +164,31 @@ class DMX_GDTF():
 
     @staticmethod
     def join_parts_apply_transforms(objs):
-        """This ensures that glbs made of multiple parts are used as a single object.
-        This also hard applies not applied glb transforms"""
+        """This ensures that glbs made of multiple parts are used as a single object"""
 
         # can be tested on files as per this issue: https://github.com/open-stage/blender-dmx/issues/67 
-
-        join = False
+        join = 0
+        single = None
         for ob in objs:
-            mb = ob.matrix_basis
-            if ob.type == 'MESH':
-                ob.select_set(True)
-                join = True
+            mb = ob.matrix_basis # apply some transforms
+            if ob.type == 'MESH' and all(x > 0 for x in ob.dimensions.to_tuple()):
+                ob.select_set(True) # objects for merging must be selected
+                join += 1
                 bpy.context.view_layer.objects.active = ob
+                single = ob
                 if hasattr(ob.data, "transform"):
                     ob.data.transform(mb)
-            for child in ob.children:
-                child.matrix_local = mb @ child.matrix_local
-                if child.type == 'MESH':
-                    join = True
-                    child.select_set(True)
-                    bpy.context.view_layer.objects.active = child
             ob.matrix_basis.identity()
 
-        if join:
-            bpy.ops.object.join()
+        if join>0:
+            bpy.ops.object.join() # join them together
             objs = list(bpy.context.view_layer.objects.selected)
 
         for obj in objs:
             obj.users_collection[0].objects.unlink(obj)
 
-        obj = objs[0]
+        if join == 1:
+            objs = [single] # if there was only a single object for merging
 
         for ob in objs:
             if ob.type == "MESH":
