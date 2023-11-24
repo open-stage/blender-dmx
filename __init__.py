@@ -139,6 +139,7 @@ class DMX(PropertyGroup):
                 DMX_OT_Programmer_SelectBodies,
                 DMX_OT_Programmer_SelectTargets,
                 DMX_OT_Programmer_SelectCamera,
+                DMX_OT_Programmer_TargetsToZero,
                 DMX_PT_Programmer)
 
     linkedToFile = False
@@ -988,7 +989,6 @@ def onActiveChanged(*args):
                 fixture.unselect()
         if selected:
             bpy.context.window_manager.dmx.pause_render = False
-            print("unpause")
         else:
             bpy.context.window_manager.dmx.pause_render = True
 

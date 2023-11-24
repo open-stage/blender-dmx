@@ -98,11 +98,30 @@ class DMX_OT_Programmer_Clear(Operator):
         scene.dmx.programmer_shutter = 0
         return {'FINISHED'}
 
+class DMX_OT_Programmer_TargetsToZero(Operator):
+    bl_label = "DMX > Programmer > Targets to zero"
+    bl_idname = "dmx.targets_to_zero"
+    bl_description = "Set Targets to 0"
+    bl_options = {'UNDO'}
+
+    def execute(self, context):
+        dmx = context.scene.dmx
+        select_targets(dmx)
+        for fixture in dmx.fixtures:
+            for obj in fixture.collection.objects:
+                if (obj in bpy.context.selected_objects):
+                    if ('Target' in fixture.objects):
+                        fixture.objects['Target'].object.location = ((0,0,0))
+                    break
+
+        return {'FINISHED'}
+
 class DMX_OT_Programmer_SelectBodies(Operator):
     bl_label = "DMX > Programmer > Select Bodies"
     bl_idname = "dmx.select_bodies"
     bl_description = "Select body from every fixture element selected"
     bl_options = {'UNDO'}
+
 
     def execute(self, context):
         dmx = context.scene.dmx
@@ -129,18 +148,7 @@ class DMX_OT_Programmer_SelectTargets(Operator):
 
     def execute(self, context):
         dmx = context.scene.dmx
-        targets = []
-        for fixture in dmx.fixtures:
-            for obj in fixture.collection.objects:
-                if (obj in bpy.context.selected_objects):
-                    if ('Target' in fixture.objects):
-                        targets.append(fixture.objects['Target'].object)
-                    break
-
-        if (len(targets)):
-            bpy.ops.object.select_all(action='DESELECT')
-            for target in targets:
-                target.select_set(True)
+        select_targets(dmx)
         return {'FINISHED'}
 
 class DMX_OT_Programmer_SelectCamera(Operator):
@@ -181,14 +189,18 @@ class DMX_PT_Programmer(Panel):
         scene = context.scene
         dmx = scene.dmx
 
+        selected = len(bpy.context.selected_objects) > 0
 
         row = layout.row()
         row.operator("dmx.select_all", text='', icon='SELECT_EXTEND')
         row.operator("dmx.select_invert", text='', icon='SELECT_SUBTRACT')
         row.operator("dmx.select_every_other", text='', icon='SELECT_INTERSECT')
-        row.operator("dmx.deselect_all", text='', icon='SELECT_SET')
+        c1 = row.column()
+        c2 = row.column()
+        c1.operator("dmx.deselect_all", text='', icon='SELECT_SET')
+        c2.operator("dmx.targets_to_zero", text="", icon="LIGHT_POINT")
+        c1.enabled = c2.enabled = selected
 
-        selected = len(bpy.context.selected_objects) > 0
         row = layout.row()
         row.operator("dmx.select_bodies", text="Bodies")
         row.operator("dmx.select_targets", text="Targets")
@@ -214,3 +226,17 @@ class DMX_PT_Programmer(Panel):
             layout.operator("dmx.clear", text="Clear")
         else:
             layout.operator("dmx.clear", text="Clear All")
+
+def select_targets(dmx):
+        targets = []
+        for fixture in dmx.fixtures:
+            for obj in fixture.collection.objects:
+                if (obj in bpy.context.selected_objects):
+                    if ('Target' in fixture.objects):
+                        targets.append(fixture.objects['Target'].object)
+                    break
+
+        if (len(targets)):
+            bpy.ops.object.select_all(action='DESELECT')
+            for target in targets:
+                target.select_set(True)
