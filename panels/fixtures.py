@@ -99,7 +99,8 @@ class DMX_MT_Fixture_Profiles(Menu):
         for profile in DMX_GDTF.getProfileList(manufacturer.name):
             row = layout.row()
             row.context_pointer_set("add_edit_panel", context.add_edit_panel)
-            row.operator(DMX_OT_Fixture_Profiles.bl_idname, text=profile[1].replace("_"," ")).profile = profile[0]
+            revision = f" ({profile[2]})" if profile[2] else ""
+            row.operator(DMX_OT_Fixture_Profiles.bl_idname, text=f"{profile[1]}{revision}".replace('_',' ')).profile = profile[0]
 
 class DMX_MT_Fixture_Mode(Menu):
     bl_label = "DMX > Fixture > Add > Mode"
