@@ -561,8 +561,8 @@ class DMX(PropertyGroup):
     # # DMX > ArtNet > Network Cards
 
     artnet_ipaddr : EnumProperty(
-        name = "Art-Net IPv4 Address",
-        description="The network card/interface to listen for ArtNet data",
+        name = "IPv4 Address",
+        description="The network card/interface to listen for Ethernet based DMX data",
         items = DMX_Network.cards()
     )
 
