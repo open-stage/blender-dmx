@@ -481,6 +481,35 @@ class DMX_OT_Fixture_Item(Operator):
         context.fixture.toggleSelect()
         return {'FINISHED'}
 
+
+
+class DMX_PT_Fixture_Columns_Setup(Panel):
+    bl_label = "Display Columns"
+    bl_idname = "DMX_PT_Fixture_Columns_Setup"
+    bl_parent_id = "DMX_PT_Fixtures"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_category = "DMX"
+    bl_context = "objectmode"
+    bl_options = {'DEFAULT_CLOSED'}
+
+    def draw(self, context):
+        layout = self.layout
+        dmx = context.scene.dmx
+
+        row = layout.row()
+        row.prop(dmx, "column_fixture_id")
+        row = layout.row()
+        row.prop(dmx, "column_custom_id")
+        row = layout.row()
+        row.prop(dmx, "column_fixture_id_numeric")
+        row = layout.row()
+        row.prop(dmx, "column_unit_number")
+        row = layout.row()
+        row.prop(dmx, "column_dmx_address")
+
+
+
 class DMX_PT_Fixtures(Panel):
     bl_label = "Fixtures"
     bl_idname = "DMX_PT_Fixtures"
@@ -508,13 +537,29 @@ class DMX_PT_Fixtures(Panel):
                 row.context_pointer_set("fixture", fixture)
                 row.operator('dmx.fixture_item', text=fixture.name, depress=selected, icon='OUTLINER_DATA_LIGHT')
 
-                if fixture.fixture_id:
+                if dmx.column_fixture_id:
                     c = row.column()
                     c.label(text=f"{fixture.fixture_id}")
                     c.ui_units_x = 2
 
-                c = row.column()
-                c.label(text=f"{fixture.universe}.{fixture.address}")
-                c.ui_units_x = 2
+                if dmx.column_unit_number:
+                    c = row.column()
+                    c.label(text=f"{fixture.unit_number}")
+                    c.ui_units_x = 2
+
+                if dmx.column_fixture_id_numeric:
+                    c = row.column()
+                    c.label(text=f"{fixture.fixture_id_numeric}")
+                    c.ui_units_x = 2
+
+                if dmx.column_custom_id:
+                    c = row.column()
+                    c.label(text=f"{fixture.custom_id}")
+                    c.ui_units_x = 2
+
+                if dmx.column_dmx_address:
+                    c = row.column()
+                    c.label(text=f"{fixture.universe}.{fixture.address}")
+                    c.ui_units_x = 2
             
         layout.menu('DMX_MT_Fixture', text="Fixtures", icon="OUTLINER_DATA_LIGHT")
