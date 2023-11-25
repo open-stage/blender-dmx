@@ -99,8 +99,8 @@ class DMX_GDTF():
     @staticmethod
     def loadPrimitive(model):
         primitive = str(model.primitive_type)
-        path = os.path.join(DMX_GDTF.getPrimitivesPath(), primitive+'.obj')
-        bpy.ops.import_scene.obj(filepath=path)
+        path = os.path.join(DMX_GDTF.getPrimitivesPath(), f"{primitive}.glb")
+        bpy.ops.import_scene.gltf(filepath=path)
         obj = bpy.context.view_layer.objects.selected[0]
         obj.users_collection[0].objects.unlink(obj)
         obj.rotation_euler = Euler((0, 0, 0), 'XYZ')
