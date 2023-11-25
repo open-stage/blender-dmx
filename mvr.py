@@ -32,16 +32,7 @@ def onDepsgraph(scene):
                 break
 
 
-def process_mvr_child_list(
-    dmx,
-    child_list,
-    layer_index,
-    extract_to_folder_path,
-    mvr_scene,
-    already_extracted_files,
-    layer_collection,
-    fixture_group = None
-):
+def process_mvr_child_list(dmx, child_list, layer_index, extract_to_folder_path, mvr_scene, already_extracted_files, layer_collection, fixture_group=None):
     if "MVR Trusses" in layer_collection:
         truss_collection = layer_collection["MVR Trusses"]
     else:
@@ -110,16 +101,7 @@ def process_mvr_child_list(
         )
 
         if hasattr(scene_object, "child_list") and scene_object.child_list:
-            process_mvr_child_list(
-                dmx,
-                scene_object.child_list,
-                scene_index,
-                extract_to_folder_path,
-                mvr_scene,
-                already_extracted_files,
-                layer_collection,
-                fixture_group
-            )
+            process_mvr_child_list(dmx, scene_object.child_list, scene_index, extract_to_folder_path, mvr_scene, already_extracted_files, layer_collection, fixture_group)
 
     for fixture_index, fixture in enumerate(child_list.fixtures):
         focus_point = None
@@ -137,20 +119,11 @@ def process_mvr_child_list(
             layer_index,
             focus_point,
             already_extracted_files,
-            fixture_group
+            fixture_group,
         )
 
         if hasattr(fixture, "child_list") and fixture.child_list:
-            process_mvr_child_list(
-                dmx,
-                fixture.child_list,
-                fixture_index,
-                extract_to_folder_path,
-                mvr_scene,
-                already_extracted_files,
-                layer_collection,
-                fixture_group
-            )
+            process_mvr_child_list(dmx, fixture.child_list, fixture_index, extract_to_folder_path, mvr_scene, already_extracted_files, layer_collection, fixture_group)
 
     for group_index, group in enumerate(child_list.group_objects):
         if hasattr(group, "child_list") and group.child_list:
@@ -339,7 +312,7 @@ def add_mvr_fixture(
     layer_index,
     focus_point,
     already_extracted_files,
-    fixture_group = None,
+    fixture_group=None,
 ):
     """Add fixture to the scene"""
     if f"{fixture.gdtf_spec}" in mvr_scene._package.namelist():
@@ -365,8 +338,12 @@ def add_mvr_fixture(
         position=fixture.matrix.matrix,
         focus_point=focus_point,
         uuid=fixture.uuid,
+        fixture_id=fixture.fixture_id,
+        custom_id=fixture.custom_id,
+        fixture_id_numeric=fixture.fixture_id_numeric,
+        unit_number=fixture.unit_number,
     )
-    
+
     if fixture_group is not None:
         fixture_name = f"{fixture.name} {layer_index}-{fixture_index}"
         group = None
@@ -382,11 +359,3 @@ def add_mvr_fixture(
             dump = []
         dump.append(fixture_name)
         group.dump = json.dumps(dump)
-
-
-
-
-
-
-
-        
