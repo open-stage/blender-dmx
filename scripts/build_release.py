@@ -3,14 +3,31 @@ import os
 import shutil
 from shutil import copytree, ignore_patterns
 from pygit2 import Repository
+import sys
 
 BUILD_DIR = "build"
+
+def read_version():
+    line = ""
+    with open("__init__.py", "r") as f:
+        while True:
+           line += f.readline().rstrip()
+           if "}" in line:
+               break
+    version_string = line.replace("bl_info = ","")
+    bl_info=eval(version_string)
+    x,y,z = bl_info["version"]
+    return f"{x}.{y}.{z}"
+
 
 branch_name = Repository(".").head.shorthand
 if branch_name == None:
     raise Exception("Run the script from the project root.")
-print("branch name", branch_name)
-branch_name = "release_v1.0.2"
+
+set_version = read_version()
+#branch_name = "release_v1.0.3"
+branch_version = branch_name[9:]
+
 
 release_name = branch_name
 if re.match(r"^release_v\d+\.\d+\.\d+$", branch_name):
@@ -18,6 +35,11 @@ if re.match(r"^release_v\d+\.\d+\.\d+$", branch_name):
         'Warning: This is not a release branch. The branch should be named "release_vX.Y.Z".'
     )
     release_name = branch_name[8:]
+
+
+if set_version != branch_version:
+    print(f"Branch version {branch_version} and add-on version {set_version} do not match. Exit!")
+    sys.exit()
 
 zip_name = "blenderDMX_" + release_name
 
@@ -54,6 +76,7 @@ for filename in os.listdir("."):
 print("Copying metadata to build directory...")
 shutil.copy2("CHANGELOG.md", BUILD_DIR + "/dmx")
 shutil.copy2("LICENSE", BUILD_DIR + "/dmx")
+shutil.copy2("README.md", BUILD_DIR + "/dmx")
 
 print("Zipping release...")
 shutil.make_archive(zip_name, "zip", BUILD_DIR)
