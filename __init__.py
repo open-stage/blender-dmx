@@ -241,7 +241,15 @@ class DMX(PropertyGroup):
         bpy.context.scene.collection.children.link(collection)
 
         # Set background to black (so it match the panel)
-        bpy.context.scene.world.node_tree.nodes['Background'].inputs[0].default_value = (0,0,0,0)
+        scene = bpy.context.scene
+
+        if scene.world is None:
+            # create a new world
+            new_world = bpy.data.worlds.new("New World")
+            new_world.use_nodes = True
+            scene.world = new_world
+
+        scene.world.node_tree.nodes['Background'].inputs[0].default_value = (0,0,0,0)
 
         # Create a DMX universe
         self.addUniverse()
