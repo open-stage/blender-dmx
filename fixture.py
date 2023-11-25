@@ -694,7 +694,6 @@ class DMX_Fixture(PropertyGroup):
         return params
 
     def select(self):
-        print("fixture", self.name, "id", self.fixture_id)
         dmx = bpy.context.scene.dmx
         if dmx.display_2D:
             # in 2D view deselect the 2D symbol, unhide the fixture and select base, 

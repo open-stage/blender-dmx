@@ -71,7 +71,7 @@ class DMX_OT_Network_Card(Operator):
 
     ip_addr: StringProperty(
         name = "IPv4",
-        description = "ArtNet IPv4 Address",
+        description = "IPv4 Address",
         default = ""
     )
 
