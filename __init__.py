@@ -18,6 +18,7 @@ import atexit
 from operator import attrgetter
 from threading import Timer
 import time
+import json
 
 from dmx.pymvr import GeneralSceneDescription
 from dmx.mvr import extract_mvr_textures, process_mvr_child_list
@@ -796,6 +797,7 @@ class DMX(PropertyGroup):
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
     def removeFixture(self, fixture):
+        self.remove_fixture_from_groups(fixture.name)
         for obj in fixture.collection.objects:
             bpy.data.objects.remove(obj)
         for obj in fixture.objects:
@@ -901,6 +903,14 @@ class DMX(PropertyGroup):
 
     def removeGroup(self, i):
         bpy.context.scene.dmx.groups.remove(i)
+
+    def remove_fixture_from_groups(self, fixture_name):
+        dmx = bpy.context.scene.dmx
+        for group in dmx.groups:
+            dump = json.loads(group.dump)
+            if fixture_name in dump:
+                dump.remove(fixture_name)
+                group.dump = json.dumps(dump)
 
     # # Preview Volume
 
