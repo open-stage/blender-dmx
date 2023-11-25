@@ -141,6 +141,7 @@ class DMX(PropertyGroup):
                 DMX_OT_Programmer_SelectTargets,
                 DMX_OT_Programmer_SelectCamera,
                 DMX_OT_Programmer_TargetsToZero,
+                DMX_PT_Fixture_Columns_Setup,
                 DMX_PT_Programmer)
 
     linkedToFile = False
@@ -159,6 +160,27 @@ class DMX(PropertyGroup):
                 bpy.utils.unregister_class(cls)
 
     # Blender RNA Properties
+
+    # fixture listing columns
+    column_fixture_id: BoolProperty(
+        name = "Fixture ID",
+        default = True)
+
+    column_unit_number: BoolProperty(
+        name = "Unit Number",
+        default = False)
+
+    column_custom_id: BoolProperty(
+        name = "Custom ID",
+        default = False)
+
+    column_fixture_id_numeric: BoolProperty(
+        name = "Fixture ID Numeric",
+        default = False)
+
+    column_dmx_address: BoolProperty(
+        name = "DMX Address",
+        default = True)
 
     collection: PointerProperty(
         name = "DMX Collection",
