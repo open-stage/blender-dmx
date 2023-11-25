@@ -138,6 +138,30 @@ class DMX_Fixture(PropertyGroup):
         default = str(uuid.uuid4())
             )
         
+    fixture_id: StringProperty(
+        name = "FixtureID",
+        description = "The Fixture ID is an identifier for the instance of this fixture that can be used to activate / select them for programming.",
+        default = ""
+            )
+
+    unit_number: IntProperty(
+        name = "UnitNumber",
+        description = "The identification of a fixture on its position. Use this as an alternative numbering scheme if the planning and programming numbering is different.",
+        default = 0
+            )
+
+    fixture_id_numeric: IntProperty(
+        name = "FixtureIDNumeric",
+        description = "The Fixture ID is an identifier for the instance of this fixture that can be used to activate / select them for programming.",
+        default = 0
+            )
+
+    custom_id: IntProperty(
+        name = "CustomId",
+        description = "The Fixture ID is an identifier for the instance of this fixture that can be used to activate / select them for programming.",
+        default = 0
+            )
+
     display_beams: BoolProperty(
         name = "Display beams",
         description="Display beam projection and cone",
@@ -156,7 +180,8 @@ class DMX_Fixture(PropertyGroup):
         max = 1.0,
         default = (1.0,1.0,1.0,1.0))
 
-    def build(self, name, profile, mode, universe, address, gel_color, display_beams, add_target, mvr_position = None, focus_point = None, uuid = None):
+    def build(self, name, profile, mode, universe, address, gel_color, display_beams, add_target, mvr_position = None, 
+              focus_point = None, uuid = None, fixture_id="", custom_id=0, fixture_id_numeric=0, unit_number=0):
 
         # (Edit) Store objects positions
         old_pos = {obj.name:obj.object.location.copy() for obj in self.objects}
@@ -172,6 +197,16 @@ class DMX_Fixture(PropertyGroup):
         self.name = name
         self.profile = profile
         self.mode = mode
+        if fixture_id is not None:
+            self.fixture_id = fixture_id
+        if custom_id is not None:
+            self.custom_id = custom_id
+        if fixture_id_numeric is not None:
+            self.fixture_id_numeric = fixture_id_numeric
+        if unit_number is not None:
+            self.unit_number = unit_number
+        if uuid is not None:
+            self.uuid = uuid
 
         # DMX Properties
         self.universe = universe
@@ -296,8 +331,6 @@ class DMX_Fixture(PropertyGroup):
             for obj in self.objects:
                 if 'Target' in obj.name:
                     obj.object.matrix_world=focus_point
-        if uuid is not None:
-            self.uuid = uuid
 
         # Setup emitter
         for obj in self.collection.objects:
@@ -661,6 +694,7 @@ class DMX_Fixture(PropertyGroup):
         return params
 
     def select(self):
+        print("fixture", self.name, "id", self.fixture_id)
         dmx = bpy.context.scene.dmx
         if dmx.display_2D:
             # in 2D view deselect the 2D symbol, unhide the fixture and select base, 

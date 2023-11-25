@@ -215,6 +215,12 @@ class DMX_Fixture_AddEdit():
         description="Do not rebuild the model structure",
         default = False)
 
+    fixture_id: StringProperty(
+        name = "Fixture ID",
+        description = "The Fixture ID is an identifier for the instance of this fixture that can be used to activate / select them for programming.",
+        default = ""
+            )
+
     units: IntProperty(
         name = "Units",
         description = "How many units of this light to add",
@@ -241,6 +247,7 @@ class DMX_Fixture_AddEdit():
         col.menu("DMX_MT_Fixture_Mode", text = text_mode)
         col.prop(self, "universe")
         col.prop(self, "address")
+        col.prop(self, "fixture_id")
         if self.units == 0:                   # Edit fixtures:
             col.prop(self, "re_address_only") #     Be default, only change address, don't rebuild models (slow)
         else:                                 # Adding new fixtures:
@@ -269,7 +276,7 @@ class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
             self.report({'ERROR'}, "No DMX Mode selected.")
             return {'CANCELLED'}
         for i in range(self.units):
-            dmx.addFixture(self.name+" "+str(i+1), self.profile, self.universe, self.address, self.mode, self.gel_color, self.display_beams, self.add_target)
+            dmx.addFixture(self.name+" "+str(i+1), self.profile, self.universe, self.address, self.mode, self.gel_color, self.display_beams, self.add_target, fixture_id = self.fixture_id)
         return {'FINISHED'}
 
     def invoke(self, context, event):
@@ -296,11 +303,12 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             if (self.name != fixture.name and self.name in bpy.data.collections):
                 return {'CANCELLED'}
             if not self.re_address_only:
-                fixture.build(self.name, self.profile, self.mode, self.universe, self.address, self.gel_color, self.display_beams, self.add_target, uuid = self.uuid)
+                fixture.build(self.name, self.profile, self.mode, self.universe, self.address, self.gel_color, self.display_beams, self.add_target, uuid = self.uuid, fixture_id = self.fixture_id)
                 context.window_manager.dmx.pause_render = False
             else:
                 fixture.address = self.address
                 fixture.universe = self.universe
+                fixture.fixture_id = self.fixture_id
         # Multiple fixtures
         else:
             address = self.address
@@ -311,10 +319,11 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                     return {'CANCELLED'}
             for i, fixture in enumerate(selected):
                 name = (self.name + ' ' + str(i+1)) if (self.name != '*') else fixture.name
+                fixture_id = f"{self.fixture_id}{i+1}" if (self.name != '*') else fixture.name
                 profile = self.profile if (self.profile != '') else fixture.profile
                 mode = self.mode if (self.mode != '') else fixture.mode
                 if not self.re_address_only:
-                    fixture.build(name, profile, mode, self.universe, address, self.gel_color, self.display_beams, self.add_target, uuid = self.uuid)
+                    fixture.build(name, profile, mode, self.universe, address, self.gel_color, self.display_beams, self.add_target, uuid = self.uuid, fixture_id = fixture_id)
                 else:
                     fixture.address = address
                     fixture.universe = universe
@@ -344,6 +353,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             self.display_beams = fixture.display_beams
             self.add_target = fixture.add_target
             self.units = 0
+            self.fixture_id = fixture.fixture_id
         # Multiple fixtures
         else:
             self.name = '*'
@@ -356,6 +366,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             self.display_beams = True
             self.add_target = True
             self.re_address_only = True
+            self.fixture_id = "*"
 
         wm = context.window_manager
         return wm.invoke_props_dialog(self)
@@ -496,8 +507,14 @@ class DMX_PT_Fixtures(Panel):
                 row = col.row()
                 row.context_pointer_set("fixture", fixture)
                 row.operator('dmx.fixture_item', text=fixture.name, depress=selected, icon='OUTLINER_DATA_LIGHT')
+
+                if fixture.fixture_id:
+                    c = row.column()
+                    c.label(text=f"{fixture.fixture_id}")
+                    c.ui_units_x = 2
+
                 c = row.column()
-                c.label(text=str(fixture.universe)+'.'+str(fixture.address))
-                c.ui_units_x = 2  
+                c.label(text=f"{fixture.universe}.{fixture.address}")
+                c.ui_units_x = 2
             
         layout.menu('DMX_MT_Fixture', text="Fixtures", icon="OUTLINER_DATA_LIGHT")
