@@ -1,5 +1,32 @@
 ### Changelog
 
+### 1.0.3
+
+* MVR Improvements:
+  * Add FixtureID, CustomId... from MVR to Fixture
+  * Create groups from MVR, migrate groups from str([]) to json
+  * Clean up unused MVR collections after MVR import
+  * Add UUID to fixtures and groups
+
+* GDTF Improvements:
+  * Handle models composed of multiple parts
+
+* App improvements:
+  * Add initial support for 2D symbols and 2D TOP planning view
+  * Speed up MVR import - fix GDTF collection caching, cache also MVR imported objects
+  * Converted Primitives to glb to ensure compatibility with Blender 4.x
+  * Increment data version and provide migration
+  * Remove fixture from groups when deleting fixture
+  * Display revision in fixture listing
+  * Create new World in case it is missing
+  * Allow centering selected fixture's Targets
+  * Handle time during fixture edit processing (prevent errors)
+  * Check for existence of Dimmer for fixtures without dimmer (prevent errors)
+  * Add possibility to make fixture geometries selectable
+  * Display Volume cone on all lights when enabled
+  * Add generix XYZ fixture to BlenderDMX
+  * Add support for XYZ Z,Y,Z a nd Rot X,Y,Z attributes and for devices without target
+
 ### 1.0.2
 * MVR improvements:
   * Add collections for GroupObjects and Layers
