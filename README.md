@@ -15,7 +15,7 @@ Then, download the `zip` file:
 
 ### LATEST RELEASE (STABLE): v1.0.3
 
-   1. From the [latest release](https://github.com/open-stage/blender-dmx/releases/latest) download the [blenderDMX_v1.0.3.zip](https://github.com/open-stage/blender-dmx/releases/download/v1.0.2/blenderDMX_v1.0.3.zip) file
+   1. From the [latest release](https://github.com/open-stage/blender-dmx/releases/latest) download the [blenderDMX_v1.0.3.zip](https://github.com/open-stage/blender-dmx/releases/download/v1.0.3/blenderDMX_v1.0.3.zip) file
 
 ### ROLLING RELEASE (UNSTABLE)
 
