@@ -395,60 +395,60 @@ class DMX_Fixture(PropertyGroup):
         rgb = [None,None,None]
         cmy = [None,None,None]
         zoom = None
-        position_x = None
-        position_y = None
-        position_z = None
-        rotation_x = None
-        rotation_y = None
-        rotation_z = None
-        mixing={} #for now, only RGB mixing is per geometry
+        rgb_mixing_geometries={} #for now, only RGB mixing is per geometry
+        xyz_moving_geometries={}
+        xyz_rotating_geometries={}
         
         for attribute in virtual_channels:
             geometry = None # for now. But, no way to know, as BlenderDMX controls are universal
             if attribute in data_virtual:
                 if attribute == "Shutter1": shutterDimmer[0] = data_virtual[attribute]
                 elif attribute == "Dimmer": shutterDimmer[1] = data_virtual[attribute]
-                elif attribute == "ColorAdd_R": mixing[geometry][0] = data_virtual[attribute]
-                elif attribute == "ColorAdd_G": mixing[geometry][1] = data_virtual[attribute]
-                elif attribute == "ColorAdd_B": mixing[geometry][2] = data_virtual[attribute]
+                elif attribute == "ColorAdd_R": rgb_mixing_geometries[geometry][0] = data_virtual[attribute]
+                elif attribute == "ColorAdd_G": rgb_mixing_geometries[geometry][1] = data_virtual[attribute]
+                elif attribute == "ColorAdd_B": rgb_mixing_geometries[geometry][2] = data_virtual[attribute]
                 elif attribute == "ColorSub_C": cmy[0] = data_virtual[attribute]
                 elif attribute == "ColorSub_M": cmy[1] = data_virtual[attribute]
                 elif attribute == "ColorSub_Y": cmy[2] = data_virtual[attribute]
                 elif attribute == "Pan": panTilt[0] = data_virtual[attribute]
                 elif attribute == "Tilt": panTilt[1] = data_virtual[attribute]
                 elif attribute == "Zoom": zoom = data_virtual[attribute]
-                elif attribute == "XYZ_X": position_x = data_virtual[attribute]
-                elif attribute == "XYZ_Y": position_y = data_virtual[attribute]
-                elif attribute == "XYZ_Z": position_z = data_virtual[attribute]
-                elif attribute == "Rot_X": rotation_x = data_virtual[attribute]
-                elif attribute == "Rot_Y": rotation_y = data_virtual[attribute]
-                elif attribute == "Rot_Z": rotation_z = data_virtual[attribute]
+                elif attribute == "XYZ_X": xyz_moving_geometries[geometry][0] = data_virtual[attribute]
+                elif attribute == "XYZ_Y": xyz_moving_geometries[geometry][1] = data_virtual[attribute]
+                elif attribute == "XYZ_Z": xyz_moving_geometries[geometry][2] = data_virtual[attribute]
+                elif attribute == "Rot_X": xyz_rotating_geometries[geometry][0] = data_virtual[attribute]
+                elif attribute == "Rot_Y": xyz_rotating_geometries[geometry][1] = data_virtual[attribute]
+                elif attribute == "Rot_Z": xyz_rotating_geometries[geometry][2] = data_virtual[attribute]
 
         for c in range(len(channels)):
             geometry=self.channels[c].geometry
-            if geometry not in mixing.keys():
-                mixing[geometry]=[None, None, None]
+            if geometry not in rgb_mixing_geometries.keys():
+                rgb_mixing_geometries[geometry]=[None, None, None]
+            if geometry not in xyz_moving_geometries.keys():
+                xyz_moving_geometries[geometry]=[None, None, None]
+            if geometry not in xyz_rotating_geometries.keys():
+                xyz_rotating_geometries[geometry]=[None, None, None]
             if (channels[c] == 'Dimmer'): shutterDimmer[1] = data[c]
             elif (channels[c] == 'Shutter1'): shutterDimmer[0] = data[c]
-            elif (channels[c] == 'ColorAdd_R'): mixing[geometry][0] = data[c]
-            elif (channels[c] == 'ColorAdd_G'): mixing[geometry][1] = data[c]
-            elif (channels[c] == 'ColorAdd_B'): mixing[geometry][2] = data[c]
+            elif (channels[c] == 'ColorAdd_R'): rgb_mixing_geometries[geometry][0] = data[c]
+            elif (channels[c] == 'ColorAdd_G'): rgb_mixing_geometries[geometry][1] = data[c]
+            elif (channels[c] == 'ColorAdd_B'): rgb_mixing_geometries[geometry][2] = data[c]
             elif (channels[c] == 'ColorSub_C'): cmy[0] = data[c]
             elif (channels[c] == 'ColorSub_M'): cmy[1] = data[c]
             elif (channels[c] == 'ColorSub_Y'): cmy[2] = data[c]
             elif (channels[c] == 'Pan'): panTilt[0] = data[c]
             elif (channels[c] == 'Tilt'): panTilt[1] = data[c]
             elif (channels[c] == 'Zoom'): zoom = data[c]
-            elif (channels[c] == 'XYZ_X'): position_x = data[c]
-            elif (channels[c] == 'XYZ_Y'): position_y = data[c]
-            elif (channels[c] == 'XYZ_Z'): position_z = data[c]
-            elif (channels[c] == 'Rot_X'): rotation_x = data[c]
-            elif (channels[c] == 'Rot_Y'): rotation_y = data[c]
-            elif (channels[c] == 'Rot_Z'): rotation_z = data[c]
+            elif (channels[c] == 'XYZ_X'): xyz_moving_geometries[geometry][0] = data[c]
+            elif (channels[c] == 'XYZ_Y'): xyz_moving_geometries[geometry][1] = data[c]
+            elif (channels[c] == 'XYZ_Z'): xyz_moving_geometries[geometry][2] = data[c]
+            elif (channels[c] == 'Rot_X'): xyz_rotating_geometries[geometry][0] = data[c]
+            elif (channels[c] == 'Rot_Y'): xyz_rotating_geometries[geometry][1] = data[c]
+            elif (channels[c] == 'Rot_Z'): xyz_rotating_geometries[geometry][2] = data[c]
        
-        for geometry, rgb in mixing.items():
+        for geometry, rgb in rgb_mixing_geometries.items():
             if (rgb[0] != None and rgb[1] != None and rgb[2] != None):
-                if len(mixing) == 1 or not self.light_object_for_geometry_exists(mixing):
+                if len(rgb_mixing_geometries) == 1 or not self.light_object_for_geometry_exists(rgb_mixing_geometries):
                     # do not apply for simple devices as trickle down is not implemented...
                     self.updateRGB(rgb, None)
                 else:
@@ -456,7 +456,7 @@ class DMX_Fixture(PropertyGroup):
             else:
                 # TODO: eliminate code duplication?
                 # This ensures that devices without RGB/CMY can still have color from the gel
-                if len(mixing) == 1 or not self.light_object_for_geometry_exists(mixing):
+                if len(rgb_mixing_geometries) == 1 or not self.light_object_for_geometry_exists(rgb_mixing_geometries):
                     # do not apply for simple devices as trickle down is not implemented...
                     self.updateRGB([255, 255, 255], None)
                 else:
@@ -475,10 +475,12 @@ class DMX_Fixture(PropertyGroup):
 
         if (zoom != None):
             self.updateZoom(zoom)
+        
+        for geometry, xyz in xyz_moving_geometries.items():
+            self.updatePosition(geometry=geometry, x=xyz[0], y=xyz[1], z=xyz[2])
 
-        self.updatePosition(x=position_x, y=position_y, z=position_z)
-
-        self.updateRotation(x=rotation_x, y=rotation_y, z=rotation_z)
+        for geometry, xyz in xyz_rotating_geometries.items():
+            self.updateRotation(geometry=geometry, x=xyz[0], y=xyz[1], z=xyz[2])
 
         if shutterDimmer[0] is not None or shutterDimmer[1] is not None:
             if shutterDimmer[0] is None:
@@ -608,24 +610,32 @@ class DMX_Fixture(PropertyGroup):
             print("Error updating zoom", e)
         return zoom
     
-    def updatePosition(self, x=None, y=None, z=None):
-        base = self.objects["Root"].object
+    def updatePosition(self, geometry = None, x=None, y=None, z=None):
+        if geometry is None:
+            geometry = self.objects["Root"].object
+        else:
+            geometry = self.get_object_by_geometry_name(geometry)
+
         if x is not None:
-            base.location.x = (128-x) * 0.1
+            geometry.location.x = (128-x) * 0.1
         if y is not None:
-            base.location.y = (128-y) * 0.1
+            geometry.location.y = (128-y) * 0.1
         if z is not None:
-            base.location.z = (128-z) * 0.1
+            geometry.location.z = (128-z) * 0.1
     
-    def updateRotation(self, x=None, y=None, z=None):
-        base = self.objects["Root"].object
-        base.rotation_mode = 'XYZ'
+    def updateRotation(self, geometry = None, x=None, y=None, z=None):
+        if geometry is None:
+            geometry = self.objects["Root"].object
+        else:
+            geometry = self.get_object_by_geometry_name(geometry)
+
+        geometry.rotation_mode = 'XYZ'
         if x is not None:
-            base.rotation_euler[0] = (x/127.0-1)*360*(math.pi/360)
+            geometry.rotation_euler[0] = (x/127.0-1)*360*(math.pi/360)
         if y is not None:
-            base.rotation_euler[1] = (y/127.0-1)*360*(math.pi/360)
+            geometry.rotation_euler[1] = (y/127.0-1)*360*(math.pi/360)
         if z is not None:
-            base.rotation_euler[2] = (z/127.0-1)*360*(math.pi/360)
+            geometry.rotation_euler[2] = (z/127.0-1)*360*(math.pi/360)
         
     def updatePanTilt(self, pan, tilt):
         DMX_Log.log.info("Updating pan tilt")
@@ -666,6 +676,13 @@ class DMX_Fixture(PropertyGroup):
             tilt_geometry.rotation_euler[0] = tilt
 
 
+
+    def get_object_by_geometry_name(self, geometry):
+        for obj in self.collection.objects:
+            if "original_name" not in obj:
+                continue
+            if obj["original_name"] == geometry:
+                return obj
 
     def get_mobile_type(self, mobile_type):
         for obj in self.collection.objects:
