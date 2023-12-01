@@ -469,7 +469,7 @@ class DMX_Fixture(PropertyGroup):
             if panTilt[0] is None:
                 panTilt[0] = 191 # if the device doesn't have pan, align head with base
             if panTilt[1] is None:
-                panTilt[1] = 190 # FIXME maybe: adjust this if you find a device that doesn't have tilt
+                panTilt[1] = 190
 
             self.updatePanTilt(panTilt[0], panTilt[1])
 
@@ -633,14 +633,15 @@ class DMX_Fixture(PropertyGroup):
         tilt = (tilt/127.0-1)*270*(math.pi/360)
 
         base = self.objects["Root"].object
-        try:
-            head = self.objects["Head"].object
-        except:
-            DMX_Log.log.info("Escaping pan tilt update, not enough data")
-            return
 
         if "Target" in self.objects:
             # calculate target position, head will follow
+            try:
+                head = self.objects["Head"].object
+            except Exception as e:
+                self.updatePanTiltDirectly(pan, tilt)
+                DMX_Log.log.info("Escaping pan tilt update, not enough data")
+                return
 
             head_location = head.matrix_world.translation
             pan = pan + base.rotation_euler[2] # take base z rotation into consideration
@@ -654,13 +655,15 @@ class DMX_Fixture(PropertyGroup):
             target.location = vec + head_location
         else:
             # for fixtures where we decided not to use target
+            self.updatePanTiltDirectly(pan, tilt)
 
-            pan_geometry = self.get_mobile_type("yoke")
-            tilt_geometry = self.get_mobile_type("head")
-            if pan_geometry:
-                pan_geometry.rotation_euler[2] = pan
-            if tilt_geometry:
-                tilt_geometry.rotation_euler[0] = tilt
+    def updatePanTiltDirectly(self, pan, tilt):
+        pan_geometry = self.get_mobile_type("yoke")
+        tilt_geometry = self.get_mobile_type("head")
+        if pan_geometry:
+            pan_geometry.rotation_euler[2] = pan
+        if tilt_geometry:
+            tilt_geometry.rotation_euler[0] = tilt
 
 
 
