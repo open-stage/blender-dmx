@@ -390,20 +390,19 @@ class DMX_Fixture(PropertyGroup):
         data = DMX_Data.get(self.universe, self.address, len(channels))
         data_virtual = DMX_Data.get_virtual(self.name)
         virtual_channels = [c.id for c in self.virtual_channels]
-        shutterDimmer = [None, None]
         panTilt = [None,None]
-        rgb = [None,None,None]
         cmy = [None,None,None]
         zoom = None
         rgb_mixing_geometries={} #for now, only RGB mixing is per geometry
         xyz_moving_geometries={}
         xyz_rotating_geometries={}
+        shutter_dimmer_geometries={}
         
         for attribute in virtual_channels:
             geometry = None # for now. But, no way to know, as BlenderDMX controls are universal
             if attribute in data_virtual:
-                if attribute == "Shutter1": shutterDimmer[0] = data_virtual[attribute]
-                elif attribute == "Dimmer": shutterDimmer[1] = data_virtual[attribute]
+                if attribute == "Shutter1": shutter_dimmer_geometries[geometry][0] = data_virtual[attribute]
+                elif attribute == "Dimmer": shutter_dimmer_geometries[geometry][1] = data_virtual[attribute]
                 elif attribute == "ColorAdd_R": rgb_mixing_geometries[geometry][0] = data_virtual[attribute]
                 elif attribute == "ColorAdd_G": rgb_mixing_geometries[geometry][1] = data_virtual[attribute]
                 elif attribute == "ColorAdd_B": rgb_mixing_geometries[geometry][2] = data_virtual[attribute]
@@ -428,8 +427,10 @@ class DMX_Fixture(PropertyGroup):
                 xyz_moving_geometries[geometry]=[None, None, None]
             if geometry not in xyz_rotating_geometries.keys():
                 xyz_rotating_geometries[geometry]=[None, None, None]
-            if (channels[c] == 'Dimmer'): shutterDimmer[1] = data[c]
-            elif (channels[c] == 'Shutter1'): shutterDimmer[0] = data[c]
+            if geometry not in shutter_dimmer_geometries.keys():
+                shutter_dimmer_geometries[geometry]=[None, None, None]
+            if (channels[c] == 'Dimmer'): shutter_dimmer_geometries[geometry][1] = data[c]
+            elif (channels[c] == 'Shutter1'): shutter_dimmer_geometries[geometry][0] = data[c]
             elif (channels[c] == 'ColorAdd_R'): rgb_mixing_geometries[geometry][0] = data[c]
             elif (channels[c] == 'ColorAdd_G'): rgb_mixing_geometries[geometry][1] = data[c]
             elif (channels[c] == 'ColorAdd_B'): rgb_mixing_geometries[geometry][2] = data[c]
@@ -445,23 +446,21 @@ class DMX_Fixture(PropertyGroup):
             elif (channels[c] == 'Rot_X'): xyz_rotating_geometries[geometry][0] = data[c]
             elif (channels[c] == 'Rot_Y'): xyz_rotating_geometries[geometry][1] = data[c]
             elif (channels[c] == 'Rot_Z'): xyz_rotating_geometries[geometry][2] = data[c]
-       
-        for geometry, rgb in rgb_mixing_geometries.items():
-            if (rgb[0] != None and rgb[1] != None and rgb[2] != None):
-                if len(rgb_mixing_geometries) == 1 or not self.light_object_for_geometry_exists(rgb_mixing_geometries):
-                    # do not apply for simple devices as trickle down is not implemented...
-                    self.updateRGB(rgb, None)
-                else:
-                    self.updateRGB(rgb, geometry)
-            else:
-                # TODO: eliminate code duplication?
-                # This ensures that devices without RGB/CMY can still have color from the gel
-                if len(rgb_mixing_geometries) == 1 or not self.light_object_for_geometry_exists(rgb_mixing_geometries):
-                    # do not apply for simple devices as trickle down is not implemented...
-                    self.updateRGB([255, 255, 255], None)
-                else:
-                    self.updateRGB([255, 255, 255], geometry)
+
+        self.remove_unset_geometries_from_multigeometry_attributes(rgb_mixing_geometries)
+        self.remove_unset_geometries_from_multigeometry_attributes(xyz_moving_geometries)
+        self.remove_unset_geometries_from_multigeometry_attributes(xyz_rotating_geometries)
+        self.remove_unset_geometries_from_multigeometry_attributes(shutter_dimmer_geometries)
         
+        for geometry, rgb in rgb_mixing_geometries.items():
+            if len(rgb_mixing_geometries)==1:
+                geometry = None
+            self.updateRGB(rgb, geometry)
+
+        if not len(rgb_mixing_geometries):# handle units without mixing
+            if not all([c == 1.0 for c in self.gel_color[:3]]): #gel color is set and has priority
+                    self.updateRGB([255, 255, 255], None)
+
         if (cmy[0] != None and cmy[1] != None and cmy[2] != None):
             self.updateCMY(cmy)
 
@@ -482,20 +481,32 @@ class DMX_Fixture(PropertyGroup):
         for geometry, xyz in xyz_rotating_geometries.items():
             self.updateRotation(geometry=geometry, x=xyz[0], y=xyz[1], z=xyz[2])
 
-        if shutterDimmer[0] is not None or shutterDimmer[1] is not None:
-            if shutterDimmer[0] is None:
-                shutterDimmer[0] = 0 # if device doesn't have shutter, set default value
-            self.updateShutterDimmer(shutterDimmer[0], shutterDimmer[1])
+        for geometry, shutter_dimmer in shutter_dimmer_geometries.items():
+            if len(shutter_dimmer_geometries)==1:
+                geometry = None
+            if shutter_dimmer[0] is not None or shutter_dimmer[1] is not None:
+                if shutter_dimmer[0] is None:
+                    shutter_dimmer[0] = 0 # if device doesn't have shutter, set default value
+                self.updateShutterDimmer(shutter_dimmer[0], shutter_dimmer[1], geometry)
 
-    def light_object_for_geometry_exists(self, mixing):
+    def remove_unset_geometries_from_multigeometry_attributes(self, dictionary):
+        """Remove items with values of all None"""
+
+        remove_empty_items = []
+        for geometry, items in dictionary.items():
+            if (items[0] is None and items[1] is None and items[2] is None):
+                remove_empty_items.append(geometry)
+        for geo in remove_empty_items:
+            del(dictionary[geo])
+
+    def light_object_for_geometry_exists(self, geometry):
         """Check if there is any light or emitter matching geometry name of a color attribute"""
-        for geo in mixing.keys():
-            for light in self.lights:
-                if geo in light.object.data.name:
-                    return True
-            for emitter_material in self.emitter_materials:
-                if geo in emitter_material.name:
-                    return True
+        for light in self.lights:
+            if geometry in light.object.data.name:
+                return True
+        for emitter_material in self.emitter_materials:
+            if geometry in emitter_material.name:
+                return True
         return False
 
     def get_channel_by_attribute(self, attribute):
@@ -503,14 +514,21 @@ class DMX_Fixture(PropertyGroup):
             if channel.id == attribute:
                 return channel
 
-    def updateShutterDimmer(self, shutter, dimmer):
+    def updateShutterDimmer(self, shutter, dimmer, geometry):
+        if geometry is not None:
+            geometry = geometry.replace(" ", "_")
         last_shutter_value = 0
         last_dimmer_value = 0
         try:
             for emitter_material in self.emitter_materials:
                 if shutter > 0:
                     break # no need to do the expensive value settings if we do this anyway in shutter timer
-                emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer/255.0)
+                if geometry is not None:
+                    if f"{geometry}" in emitter_material.name:
+                        DMX_Log.log.info("matched emitter")
+                        emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer/255.0)
+                else:
+                    emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer/255.0)
 
             for light in self.lights:
                 last_shutter_value = light.object.data['shutter_value']
@@ -519,7 +537,13 @@ class DMX_Fixture(PropertyGroup):
                 light.object.data['shutter_dimmer_value']=dimmer
                 if shutter > 0:
                     break # no need to do the expensive value settings if we do this anyway in shutter timer
-                light.object.data.energy = (dimmer/255.0) * light.object.data['flux']
+
+                if geometry is not None:
+                    if f"{geometry}" in  light.object.data.name:
+                        DMX_Log.log.info("matched emitter")
+                        light.object.data.energy = (dimmer/255.0) * light.object.data['flux']
+                else:
+                    light.object.data.energy = (dimmer/255.0) * light.object.data['flux']
 
         except Exception as e:
             print("Error updating dimmer", e)
@@ -565,6 +589,8 @@ class DMX_Fixture(PropertyGroup):
         return 1.0/24.0
 
     def updateRGB(self, rgb, geometry):
+        if geometry is not None:
+            geometry = geometry.replace(" ", "_")
         DMX_Log.log.info(("color change for geometry", geometry))
         try:
             rgb = [c/255.0-(1-gel) for (c, gel) in zip(rgb, self.gel_color[:3])]
@@ -580,7 +606,7 @@ class DMX_Fixture(PropertyGroup):
             for light in self.lights:
                 if geometry is not None:
                     DMX_Log.log.info(("light:", light.object.data.name))
-                    if f"{geometry}" in light.object.data.name:
+                    if f"{geometry}" in  light.object.data.name:
                         DMX_Log.log.info("matched light")
                         light.object.data.color = rgb
                 else:
