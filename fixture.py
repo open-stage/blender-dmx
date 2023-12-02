@@ -681,6 +681,7 @@ class DMX_Fixture(PropertyGroup):
 
             head_location = head.matrix_world.translation
             pan = pan + base.rotation_euler[2] # take base z rotation into consideration
+            tilt = tilt + base.rotation_euler[0] # take base x rotation into consideration
 
             target = self.objects['Target'].object
             
