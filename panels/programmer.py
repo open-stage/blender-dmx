@@ -23,6 +23,7 @@ class DMX_OT_Programmer_DeselectAll(Operator):
 
     def execute(self, context):
         bpy.ops.object.select_all(action='DESELECT')
+        bpy.context.scene.dmx.updatePreviewVolume()
         return {'FINISHED'}
 
 class DMX_OT_Programmer_SelectAll(Operator):
@@ -35,6 +36,7 @@ class DMX_OT_Programmer_SelectAll(Operator):
         dmx = context.scene.dmx
         for fixture in dmx.fixtures:
             fixture.select()
+        bpy.context.scene.dmx.updatePreviewVolume()
         return {'FINISHED'}
 
 class DMX_OT_Programmer_SelectInvert(Operator):
@@ -56,6 +58,7 @@ class DMX_OT_Programmer_SelectInvert(Operator):
             if fixture not in selected:
                 fixture.select()
 
+        bpy.context.scene.dmx.updatePreviewVolume()
         return {'FINISHED'}
 
 class DMX_OT_Programmer_SelectEveryOther(Operator):
@@ -71,6 +74,7 @@ class DMX_OT_Programmer_SelectEveryOther(Operator):
             if idx % 2 == 0:
                 fixture.select()
 
+        bpy.context.scene.dmx.updatePreviewVolume()
         return {'FINISHED'}
 
 class DMX_OT_Programmer_Clear(Operator):

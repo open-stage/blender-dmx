@@ -756,6 +756,8 @@ class DMX_Fixture(PropertyGroup):
 
         else:
             self.objects["Root"].object.select_set(True)
+
+        dmx.updatePreviewVolume()
     
     def unselect(self):
         dmx = bpy.context.scene.dmx
@@ -769,6 +771,7 @@ class DMX_Fixture(PropertyGroup):
                 if obj.get("2d_symbol", None):
                     continue
                 obj.hide_set(True)
+        dmx.updatePreviewVolume()
 
 
     def toggleSelect(self):
