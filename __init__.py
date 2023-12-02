@@ -688,7 +688,7 @@ class DMX(PropertyGroup):
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
     programmer_color: FloatVectorProperty(
-        name = "Programmer Color",
+        name = "",
         subtype = "COLOR",
         size = 4,
         min = 0.0,
