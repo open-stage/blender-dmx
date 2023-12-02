@@ -390,7 +390,7 @@ class DMX_Fixture(PropertyGroup):
         data = DMX_Data.get(self.universe, self.address, len(channels))
         data_virtual = DMX_Data.get_virtual(self.name)
         virtual_channels = [c.id for c in self.virtual_channels]
-        panTilt = [None,None]
+        panTilt = [None,None, 1, 1] # pan, tilt, 1 = 8bit, 256 = 16bit
         cmy = [None,None,None]
         zoom = None
         rgb_mixing_geometries={} #for now, only RGB mixing is per geometry
@@ -400,9 +400,21 @@ class DMX_Fixture(PropertyGroup):
         
         for attribute in virtual_channels:
             geometry = None # for now. But, no way to know, as BlenderDMX controls are universal
+            if geometry not in rgb_mixing_geometries.keys():
+                rgb_mixing_geometries[geometry]=[None, None, None]
+            if geometry not in xyz_moving_geometries.keys():
+                xyz_moving_geometries[geometry]=[None, None, None]
+            if geometry not in xyz_rotating_geometries.keys():
+                xyz_rotating_geometries[geometry]=[None, None, None]
+            if geometry not in shutter_dimmer_geometries.keys():
+                shutter_dimmer_geometries[geometry]=[None, None, None, 1] # + bits
             if attribute in data_virtual:
                 if attribute == "Shutter1": shutter_dimmer_geometries[geometry][0] = data_virtual[attribute]
                 elif attribute == "Dimmer": shutter_dimmer_geometries[geometry][1] = data_virtual[attribute]
+                elif attribute == "+Dimmer":
+                    shutter_dimmer_geometries[geometry][1] = shutter_dimmer_geometries[geometry][1] * 256 + data_virtual[attribute]
+                    shutter_dimmer_geometries[geometry][3] = 256
+
                 elif attribute == "ColorAdd_R": rgb_mixing_geometries[geometry][0] = data_virtual[attribute]
                 elif attribute == "ColorAdd_G": rgb_mixing_geometries[geometry][1] = data_virtual[attribute]
                 elif attribute == "ColorAdd_B": rgb_mixing_geometries[geometry][2] = data_virtual[attribute]
@@ -410,7 +422,13 @@ class DMX_Fixture(PropertyGroup):
                 elif attribute == "ColorSub_M": cmy[1] = data_virtual[attribute]
                 elif attribute == "ColorSub_Y": cmy[2] = data_virtual[attribute]
                 elif attribute == "Pan": panTilt[0] = data_virtual[attribute]
+                elif attribute == "+Pan":
+                    panTilt[0]  = panTilt[0] * 256 + data_virtual[attribute]
+                    panTilt[2] = 256 # 16bit
                 elif attribute == "Tilt": panTilt[1] = data_virtual[attribute]
+                elif attribute == "+Tilt":
+                    panTilt[1]  = panTilt[1] * 256 + data_virtual[attribute]
+                    panTilt[3] = 256 # 16bit
                 elif attribute == "Zoom": zoom = data_virtual[attribute]
                 elif attribute == "XYZ_X": xyz_moving_geometries[geometry][0] = data_virtual[attribute]
                 elif attribute == "XYZ_Y": xyz_moving_geometries[geometry][1] = data_virtual[attribute]
@@ -428,8 +446,11 @@ class DMX_Fixture(PropertyGroup):
             if geometry not in xyz_rotating_geometries.keys():
                 xyz_rotating_geometries[geometry]=[None, None, None]
             if geometry not in shutter_dimmer_geometries.keys():
-                shutter_dimmer_geometries[geometry]=[None, None, None]
+                shutter_dimmer_geometries[geometry]=[None, None, None, 1] # + bits
             if (channels[c] == 'Dimmer'): shutter_dimmer_geometries[geometry][1] = data[c]
+            if (channels[c] == '+Dimmer'):
+                shutter_dimmer_geometries[geometry][1] = shutter_dimmer_geometries[geometry][1] * 256 + data[c]
+                shutter_dimmer_geometries[geometry][3] = 256
             elif (channels[c] == 'Shutter1'): shutter_dimmer_geometries[geometry][0] = data[c]
             elif (channels[c] == 'ColorAdd_R'): rgb_mixing_geometries[geometry][0] = data[c]
             elif (channels[c] == 'ColorAdd_G'): rgb_mixing_geometries[geometry][1] = data[c]
@@ -437,8 +458,14 @@ class DMX_Fixture(PropertyGroup):
             elif (channels[c] == 'ColorSub_C'): cmy[0] = data[c]
             elif (channels[c] == 'ColorSub_M'): cmy[1] = data[c]
             elif (channels[c] == 'ColorSub_Y'): cmy[2] = data[c]
-            elif (channels[c] == 'Pan'): panTilt[0] = data[c]
-            elif (channels[c] == 'Tilt'): panTilt[1] = data[c]
+            elif (channels[c] == 'Pan'): panTilt[0]   = data[c]
+            elif (channels[c] == '+Pan'):
+                panTilt[0]  = panTilt[0] * 256 + data[c]
+                panTilt[2] = 256 # 16bit
+            elif (channels[c] == 'Tilt'): panTilt[1]  = data[c]
+            elif (channels[c] == '+Tilt'):
+                panTilt[1] = panTilt[1] * 256 + data[c]
+                panTilt[3] = 256 # 16bit
             elif (channels[c] == 'Zoom'): zoom = data[c]
             elif (channels[c] == 'XYZ_X'): xyz_moving_geometries[geometry][0] = data[c]
             elif (channels[c] == 'XYZ_Y'): xyz_moving_geometries[geometry][1] = data[c]
@@ -466,11 +493,11 @@ class DMX_Fixture(PropertyGroup):
 
         if panTilt[0] != None or panTilt[1] != None:
             if panTilt[0] is None:
-                panTilt[0] = 191 # if the device doesn't have pan, align head with base
+                panTilt[0] = 191 * panTilt[2] # if the device doesn't have pan, align head with base
             if panTilt[1] is None:
-                panTilt[1] = 190
+                panTilt[1] = 190 * panTilt[3]
 
-            self.updatePanTilt(panTilt[0], panTilt[1])
+            self.updatePanTilt(panTilt[0], panTilt[1], panTilt[2], panTilt[3])
 
         if (zoom != None):
             self.updateZoom(zoom)
@@ -487,7 +514,7 @@ class DMX_Fixture(PropertyGroup):
             if shutter_dimmer[0] is not None or shutter_dimmer[1] is not None:
                 if shutter_dimmer[0] is None:
                     shutter_dimmer[0] = 0 # if device doesn't have shutter, set default value
-                self.updateShutterDimmer(shutter_dimmer[0], shutter_dimmer[1], geometry)
+                self.updateShutterDimmer(shutter_dimmer[0], shutter_dimmer[1], geometry, shutter_dimmer[3])
 
     def remove_unset_geometries_from_multigeometry_attributes(self, dictionary):
         """Remove items with values of all None"""
@@ -514,7 +541,7 @@ class DMX_Fixture(PropertyGroup):
             if channel.id == attribute:
                 return channel
 
-    def updateShutterDimmer(self, shutter, dimmer, geometry):
+    def updateShutterDimmer(self, shutter, dimmer, geometry, bits):
         if geometry is not None:
             geometry = geometry.replace(" ", "_")
         last_shutter_value = 0
@@ -526,24 +553,25 @@ class DMX_Fixture(PropertyGroup):
                 if geometry is not None:
                     if f"{geometry}" in emitter_material.name:
                         DMX_Log.log.info("matched emitter")
-                        emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer/255.0)
+                        emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer/(255.0 * bits))
                 else:
-                    emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer/255.0)
+                    emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer/(255.0 * bits))
 
             for light in self.lights:
                 last_shutter_value = light.object.data['shutter_value']
                 last_dimmer_value = light.object.data['shutter_dimmer_value']
                 light.object.data['shutter_value']=shutter
                 light.object.data['shutter_dimmer_value']=dimmer
+                light.object.data['shutter_dimmer_bits']=bits
                 if shutter > 0:
                     break # no need to do the expensive value settings if we do this anyway in shutter timer
 
                 if geometry is not None:
                     if f"{geometry}" in  light.object.data.name:
                         DMX_Log.log.info("matched emitter")
-                        light.object.data.energy = (dimmer/255.0) * light.object.data['flux']
+                        light.object.data.energy = (dimmer/(255.0 * bits)) * light.object.data['flux']
                 else:
-                    light.object.data.energy = (dimmer/255.0) * light.object.data['flux']
+                    light.object.data.energy = (dimmer/(255.0 * bits)) * light.object.data['flux']
 
         except Exception as e:
             print("Error updating dimmer", e)
@@ -559,6 +587,7 @@ class DMX_Fixture(PropertyGroup):
 
             exit_timer = False
             dimmer_value = 0 # reused also for emitter
+            dimmer_bits = 1
 
             for light in self.lights:
                 if light.object.data['shutter_value'] == 0:
@@ -568,15 +597,16 @@ class DMX_Fixture(PropertyGroup):
                 dimmer_value = 0
                 if light.object.data['shutter_counter'] == 1:
                     dimmer_value = light.object.data['shutter_dimmer_value']
+                    dimmer_bits = light.object.data['shutter_dimmer_bits']
                 if light.object.data['shutter_counter'] > light.object.data['shutter_value']:
                     light.object.data['shutter_counter'] = 0
 
-                light.object.data.energy = (dimmer_value/255.0) * light.object.data['flux']
+                light.object.data.energy = (dimmer_value/(255.0 * dimmer_bits)) * light.object.data['flux']
                 light.object.data['shutter_counter'] +=1
 
             # Here we can reuse data we got from the light object...
             for emitter_material in self.emitter_materials:
-                emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer_value/255.0)
+                emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer_value/(255.0 * dimmer_bits))
 
             if exit_timer:
                 DMX_Log.log.info("Killing shutter timer")
@@ -663,10 +693,10 @@ class DMX_Fixture(PropertyGroup):
         if z is not None:
             geometry.rotation_euler[2] = (z/127.0-1)*360*(math.pi/360)
         
-    def updatePanTilt(self, pan, tilt):
+    def updatePanTilt(self, pan, tilt, pan_bits, tilt_bits):
         DMX_Log.log.info("Updating pan tilt")
-        pan = (pan/127.0-1)*540*(math.pi/360)
-        tilt = (tilt/127.0-1)*270*(math.pi/360)
+        pan = (pan/(pan_bits*127.0)-1)*540*(math.pi/360)
+        tilt = (tilt/(tilt_bits*127.0)-1)*270*(math.pi/360)
 
         base = self.objects["Root"].object
 
