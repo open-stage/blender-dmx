@@ -498,11 +498,22 @@ class DMX(PropertyGroup):
     def onVolumePreview(self, context):
         self.updatePreviewVolume()
 
-    volume_preview: BoolProperty(
-        name = "Preview Volume",
-        default = False,
-        update = onVolumePreview)
+    #volume_preview: BoolProperty(
+    #    name = "Preview Volume",
+    #    default = False,
+    #    update = onVolumePreview)
 
+    volume_preview: bpy.props.EnumProperty(
+        name= "Simple beam",
+        description= "Display 'fake' beam cone",
+        default = "NONE",
+        items= [
+                ("NONE", "None", "Cone not displayed"),
+                ("SELECTED", "Selected fixtures", "Shift select multiple"),
+                ("ALL", "All fixtures", "All fixtures"),
+        ],
+        update = onVolumePreview
+        )
     # # Setup > Volume > Disable Overlays
 
     def onDisableOverlays(self, context):
@@ -937,9 +948,29 @@ class DMX(PropertyGroup):
     # # Preview Volume
 
     def updatePreviewVolume(self):
-        for fixture in self.fixtures:
-            for light in fixture.lights:
-                light.object.data.show_cone = self.volume_preview
+        if self.volume_preview == "SELECTED":
+            self.disable_overlays = False # overlay must be enabled
+            for fixture in self.fixtures:
+                selected = False
+                if fixture is None:
+                    continue
+                if fixture.collection is None:
+                    continue
+                for obj in fixture.collection.objects:
+                    if obj in bpy.context.selected_objects:
+                        selected = True
+                for light in fixture.lights:
+                    light.object.data.show_cone = selected
+
+        elif self.volume_preview == "ALL":
+            self.disable_overlays = False # overlay must be enabled
+            for fixture in self.fixtures:
+                for light in fixture.lights:
+                    light.object.data.show_cone = True
+        else:
+            for fixture in self.fixtures:
+                for light in fixture.lights:
+                    light.object.data.show_cone = False
 
     # # Universes
 
@@ -1016,9 +1047,9 @@ def onUndo(scene):
 
 def onActiveChanged(*args):
     dmx = bpy.context.scene.dmx
-    # volume preview is now global
-    #if (dmx.volume_preview):
-    #    dmx.updatePreviewVolume()
+    if dmx.volume_preview == "SELECTED":
+        dmx.updatePreviewVolume()
+
     if dmx.display_2D:
         selected = False
         for fixture in dmx.fixtures:

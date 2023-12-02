@@ -70,4 +70,5 @@ class DMX_Group(PropertyGroup):
         fixtures = bpy.context.scene.dmx.fixtures
         for fixture in [fixtures[fxt] for fxt in json.loads(self.dump)]:
             fixture.select()
+        bpy.context.scene.dmx.updatePreviewVolume()
 
