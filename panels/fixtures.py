@@ -537,7 +537,7 @@ class DMX_PT_Fixtures(Panel):
                 row.context_pointer_set("fixture", fixture)
                 row.operator('dmx.fixture_item', text=fixture.name, depress=selected, icon='OUTLINER_DATA_LIGHT')
 
-                if dmx.column_fixture_id:
+                if dmx.column_fixture_id and fixture.fixture_id:
                     c = row.column()
                     c.label(text=f"{fixture.fixture_id}")
                     c.ui_units_x = 2
