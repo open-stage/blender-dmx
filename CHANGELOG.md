@@ -1,7 +1,24 @@
 ### Changelog
 
-### 1.0.3
 
+### 1.0.4
+* Fixing a color control bug with pixel devices like Spiider
+* Fix tilt movement when fixture is on the floor
+* More attributes are now applied (only) for correct geometries (RGB, XYZ
+  position and rotation, dimmer)
+* Extending Volume preview settings to now have the possibility to see the fake
+  beam cone for None, Selected fixtures or All fixtures
+* Adding RGB based color picker to the existing color picker in Programmer
+* Support for movement control of fixtures with pan only (without tilt)
+* Initial support for 16bit channels for smoother behavior: pan, tilt, dimmer
+* Group selection can now be additive (as before) or exclusive (only selected
+  group)
+* Allow freezing of pan/tilt movement to current position (for example after
+  Target adjustment). Indicated by LOCK icon in Fixture list
+* GDTF Share Password in Preferences now masked with \*\*\*\*\*
+* Fixture ID in Fixture list is now displayed only if not empty
+
+### 1.0.3
 * MVR Improvements:
   * Add FixtureID, CustomId... from MVR to Fixture
   * Create groups from MVR, migrate groups from str([]) to json

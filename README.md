@@ -1,21 +1,20 @@
 <p align="center">
-  <img src="https://i.ibb.co/Wn9wkH1/banner.png" />
+  <img src="https://github.com/open-stage/blender-dmx/assets/3680926/c7a8e6c5-786f-4f7b-88f5-374b8cb9e51e" />
 </p>
 
 # BlenderDMX
 
-A DMX visualization tool inside <a href="https://blender.org">Blender</a>, designed to offer a free, easy and fully packed solution for Lighting Designers. Fixture library is based on <a href="https://gdtf-share.com">GDTF</a> (via <a href="https://github.com/open-stage/python-gdtf">pygdtf</a>), scene import is based on <a href="https://gdtf-share.com">MVR</a> (via <a href="https://github.com/open-stage/python-mvr">pymvr</a>), GDTF/MVR resources and news: <a href="https://gdtf.eu">GDTF.eu</a>.
+A DMX visualization tool inside <a href="https://blender.org">Blender</a>, designed to offer a free, easy and fully packed solution for Lighting Designers. Device definition is based on <a href="https://gdtf-share.com">GDTF Specification</a>, utilizing the Fixture library on <a href="https://gdtf-share.com">GDTF Share</a>. GDTF import is based on <a href="https://github.com/open-stage/python-gdtf">pygdtf</a> - Python GDTF library, <a href="https://gdtf-share.com">MVR</a> scene import is based on <a href="https://github.com/open-stage/python-mvr">pymvr</a> - Python MVR library. For more GDTF/MVR resources and news see <a href="https://gdtf.eu">GDTF.eu</a>.
 
 ![](https://i.ibb.co/rvpKYxB/render-eevee-7.png)
 
 ## Download & Install
 
-First of all, make sure you have installed [Blender 3.0](https://www.blender.org/download/) or higher;
-Then, download the `zip` file:
+First of all, make sure you have installed [Blender 3.0](https://www.blender.org/download/) or higher (Blender 4.x is supported). Then, download the `zip` file:
 
-### LATEST RELEASE (STABLE): v1.0.3
+### LATEST RELEASE (STABLE): v1.0.4
 
-   1. From the [latest release](https://github.com/open-stage/blender-dmx/releases/latest) download the [blenderDMX_v1.0.3.zip](https://github.com/open-stage/blender-dmx/releases/download/v1.0.3/blenderDMX_v1.0.3.zip) file
+   1. From the [latest release](https://github.com/open-stage/blender-dmx/releases/latest) download the [blenderDMX_v1.0.4.zip](https://github.com/open-stage/blender-dmx/releases/download/v1.0.4/blenderDMX_v1.0.4.zip) file
 
 ### ROLLING RELEASE (UNSTABLE)
 
