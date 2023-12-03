@@ -9,18 +9,21 @@ class DMX_Preferences(AddonPreferences):
 
     share_api_username: StringProperty(
         default="",
-        name="GDTF Share API username",
+        name="GDTF Share Username",
         description="Username for GDTF Share",
     )
 
     share_api_password: StringProperty(
         default="",
-        name="GDTF Share API password",
+        name="GDTF Share Password",
+        subtype='PASSWORD',
         description="Password for GDTF Share",
     )
 
     def draw(self, context):
-        self.layout.use_property_split = True
-        self.layout.prop(self, "share_api_username")
-        self.layout.prop(self, "share_api_password")
+        layout = self.layout
+        layout.use_property_split = True
+        layout.label(text="Username and Password for GDTF Share. Get a free account at gdtf-share.com")
+        layout.prop(self, "share_api_username")
+        layout.prop(self, "share_api_password")
 
