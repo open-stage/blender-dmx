@@ -155,3 +155,6 @@ class DMX_PT_Groups(Panel):
         layout.template_list("DMX_UL_Group", "", scene.dmx, "groups", scene.dmx, "group_list_i", rows=4)
 
         layout.menu("DMX_MT_Group", text="...", icon="GROUP_VERTEX")
+
+        row = layout.row()
+        row.prop(bpy.context.window_manager.dmx, 'aditive_selection')

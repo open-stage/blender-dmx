@@ -68,6 +68,11 @@ class DMX_Group(PropertyGroup):
         # However, a better way should be considered (a Blender String Array)
         #for fixture in self.runtime[self.name]:
         fixtures = bpy.context.scene.dmx.fixtures
+
+        if not bpy.context.window_manager.dmx.aditive_selection:
+            bpy.ops.object.select_all(action='DESELECT')
+            bpy.context.scene.dmx.updatePreviewVolume()
+
         for fixture in [fixtures[fxt] for fxt in json.loads(self.dump)]:
             fixture.select()
         bpy.context.scene.dmx.updatePreviewVolume()
