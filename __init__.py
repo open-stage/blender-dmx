@@ -75,6 +75,10 @@ class DMX_TempData(PropertyGroup):
             type=Profiles.DMX_Fixtures_Imports
             )
 
+    aditive_selection: BoolProperty(
+        name = "Add to selection",
+        description="When selecting a group, add to existing selection",
+        default = True)
 
 class DMX(PropertyGroup):
 
