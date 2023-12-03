@@ -146,6 +146,8 @@ class DMX(PropertyGroup):
                 DMX_OT_Programmer_SelectCamera,
                 DMX_OT_Programmer_TargetsToZero,
                 DMX_PT_Fixture_Columns_Setup,
+                DMX_OT_Programmer_Set_Ignore_Movement,
+                DMX_OT_Programmer_Unset_Ignore_Movement,
                 DMX_PT_Programmer)
 
     linkedToFile = False
