@@ -15,6 +15,44 @@ from bpy.types import (Panel,
 
 # Operators #
 
+class DMX_OT_Programmer_Set_Ignore_Movement(Operator):
+    bl_label = "DMX > Programmer > Lock Movement"
+    bl_idname = "dmx.ignore_movement_true"
+    bl_description = "Ignore pan/tilt DMX data"
+    bl_options = {'UNDO'}
+
+    def execute(self, context):
+        dmx = context.scene.dmx
+        selected = []
+        for fixture in dmx.fixtures:
+            for obj in fixture.collection.objects:
+                if obj in bpy.context.selected_objects:
+                    selected.append(fixture)
+
+        for fixture in dmx.fixtures:
+            if fixture in selected:
+                fixture.ignore_movement_dmx = True
+        return {'FINISHED'}
+
+class DMX_OT_Programmer_Unset_Ignore_Movement(Operator):
+    bl_label = "DMX > Programmer > Unlock Movement"
+    bl_idname = "dmx.ignore_movement_false"
+    bl_description = "Allow pan/tilt DMX data"
+    bl_options = {'UNDO'}
+
+    def execute(self, context):
+        dmx = context.scene.dmx
+        selected = []
+        for fixture in dmx.fixtures:
+            for obj in fixture.collection.objects:
+                if obj in bpy.context.selected_objects:
+                    selected.append(fixture)
+
+        for fixture in dmx.fixtures:
+            if fixture in selected:
+                fixture.ignore_movement_dmx = False
+        return {'FINISHED'}
+
 class DMX_OT_Programmer_DeselectAll(Operator):
     bl_label = "DMX > Programmer > Deselect All"
     bl_idname = "dmx.deselect_all"
@@ -193,6 +231,14 @@ class DMX_PT_Programmer(Panel):
         scene = context.scene
         dmx = scene.dmx
 
+        locked = False
+
+        for fixture in dmx.fixtures:
+            for obj in fixture.collection.objects:
+                if obj in bpy.context.selected_objects:
+                    if fixture.ignore_movement_dmx is True:
+                        locked = True
+
         selected = len(bpy.context.selected_objects) > 0
 
         row = layout.row()
@@ -201,9 +247,14 @@ class DMX_PT_Programmer(Panel):
         row.operator("dmx.select_every_other", text='', icon='SELECT_INTERSECT')
         c1 = row.column()
         c2 = row.column()
+        c3 = row.column()
+        c4 = row.column()
         c1.operator("dmx.deselect_all", text='', icon='SELECT_SET')
         c2.operator("dmx.targets_to_zero", text="", icon="LIGHT_POINT")
-        c1.enabled = c2.enabled = selected
+        c3.operator("dmx.ignore_movement_true", text="", icon="LOCKED")
+        c4.operator("dmx.ignore_movement_false", text="", icon="UNLOCKED")
+        c1.enabled = c2.enabled = c3.enabled = selected
+        c4.enabled = locked and selected
 
         row = layout.row()
         row.operator("dmx.select_bodies", text="Bodies")

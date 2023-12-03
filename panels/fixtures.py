@@ -535,7 +535,7 @@ class DMX_PT_Fixtures(Panel):
 
                 row = col.row()
                 row.context_pointer_set("fixture", fixture)
-                row.operator('dmx.fixture_item', text=fixture.name, depress=selected, icon='OUTLINER_DATA_LIGHT')
+                row.operator('dmx.fixture_item', text=fixture.name, depress=selected, icon="LOCKED" if fixture.ignore_movement_dmx else 'OUTLINER_DATA_LIGHT')
 
                 if dmx.column_fixture_id and fixture.fixture_id:
                     c = row.column()

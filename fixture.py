@@ -180,6 +180,11 @@ class DMX_Fixture(PropertyGroup):
         max = 1.0,
         default = (1.0,1.0,1.0,1.0))
 
+    ignore_movement_dmx: BoolProperty(
+        name = "Ignore movement DMX",
+        description="Stay in position set by Target",
+        default = False)
+
     def build(self, name, profile, mode, universe, address, gel_color, display_beams, add_target, mvr_position = None, 
               focus_point = None, uuid = None, fixture_id="", custom_id=0, fixture_id_numeric=0, unit_number=0):
 
@@ -694,6 +699,8 @@ class DMX_Fixture(PropertyGroup):
             geometry.rotation_euler[2] = (z/127.0-1)*360*(math.pi/360)
         
     def updatePanTilt(self, pan, tilt, pan_bits, tilt_bits):
+        if self.ignore_movement_dmx:
+            return
         DMX_Log.log.info("Updating pan tilt")
         pan = (pan/(pan_bits*127.0)-1)*540*(math.pi/360)
         tilt = (tilt/(tilt_bits*127.0)-1)*270*(math.pi/360)
