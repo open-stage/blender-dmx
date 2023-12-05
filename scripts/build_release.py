@@ -27,7 +27,7 @@ if branch_name == None:
 set_version = read_version()
 #branch_name = "release_v1.0.3"
 branch_version = branch_name[9:]
-
+print(branch_name)
 
 release_name = branch_name
 if re.match(r"^release_v\d+\.\d+\.\d+$", branch_name):
@@ -38,8 +38,11 @@ if re.match(r"^release_v\d+\.\d+\.\d+$", branch_name):
 
 
 if set_version != branch_version:
-    print(f"Branch version {branch_version} and add-on version {set_version} do not match. Exit!")
-    sys.exit()
+    if len(sys.argv)>1: # any command line argument will do to skip version check
+        print("Continue for local testing")
+    else:
+        print(f"Branch version {branch_version} and add-on version {set_version} do not match. Exit!")
+        sys.exit()
 
 zip_name = "blenderDMX_" + release_name
 
@@ -65,6 +68,7 @@ copytree("panels", BUILD_DIR + "/dmx/panels", ignore=ignore)
 copytree("pygdtf", BUILD_DIR + "/dmx/pygdtf", ignore=ignore)
 copytree("pymvr", BUILD_DIR + "/dmx/pymvr", ignore=ignore)
 copytree("sacn", BUILD_DIR + "/dmx/sacn", ignore=ignore)
+copytree("ifaddr", BUILD_DIR + "/dmx/ifaddr", ignore=ignore)
 copytree("share_api_client", BUILD_DIR + "/dmx/share_api_client", ignore=ignore)
 copytree("preferences", BUILD_DIR + "/dmx/preferences", ignore=ignore)
 
