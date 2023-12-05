@@ -104,8 +104,6 @@ class DMX(PropertyGroup):
 
     classes = ( DMX_UL_Universe,
                 DMX_MT_Universe,
-                DMX_MT_NetworkCard,
-                DMX_OT_Network_Card,
                 DMX_PT_DMX,
                 DMX_PT_DMX_Universes,
                 DMX_PT_DMX_ArtNet,
@@ -329,6 +327,14 @@ class DMX(PropertyGroup):
 
         # Allocate universes data
         DMX_Data.setup(self.universes_n)
+
+        # make sure that selection of ip address points to an item in enum
+        dmx = bpy.context.scene.dmx
+        if not len(dmx.artnet_ipaddr):
+            if len(DMX_Network.cards(None, None)):
+                dmx.artnet_ipaddr = DMX_Network.cards(None, None)[0][0]
+            else:
+                return print("No network card detected")
 
         # Reset ArtNet status
         dmx = bpy.context.scene.dmx
@@ -599,9 +605,9 @@ class DMX(PropertyGroup):
     # # DMX > ArtNet > Network Cards
 
     artnet_ipaddr : EnumProperty(
-        name = "IPv4 Address",
-        description="The network card/interface to listen for Ethernet based DMX data",
-        items = DMX_Network.cards()
+        name = "IPv4 Address for ArtNet signal",
+        description="The network card/interface to listen for ArtNet DMX data",
+        items = DMX_Network.cards
     )
 
     # # DMX > sACN > Enable
@@ -626,14 +632,14 @@ class DMX(PropertyGroup):
 
     artnet_enabled : BoolProperty(
         name = "Enable Art-Net Input",
-        description="Enables the input of DMX data throught Art-Net.",
+        description="Enables the input of DMX data throught Art-Net on the selected network interface",
         default = False,
         update = onArtNetEnable
     )
 
     sacn_enabled : BoolProperty(
         name = "Enable sACN Input",
-        description="Enables the input of DMX data throught sACN.",
+        description="Enables the input of DMX data throught sACN on all detected network interfaces",
         default = False,
         update = onsACNEnable
     )

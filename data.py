@@ -124,7 +124,10 @@ class DMX_Data():
                 if DMX_Data._last_updated is None or (time.time() - DMX_Data._last_updated > 0.8 and changed):
                     # We limit update by time, too fast updates were troubling Blender's UI
                     for idx, val in enumerate(data):
-                        dmx.dmx_values[idx].channel = val
+                        try:
+                            dmx.dmx_values[idx].channel = val
+                        except Exception as e:
+                            print(e)
                     DMX_Data._last_updated = time.time()
                     print("update dmx")
 
