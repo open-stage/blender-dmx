@@ -12,6 +12,7 @@ import bpy
 
 from bpy.types import (Panel,
                        Operator)
+from dmx.osc_utils import DMX_OSC_Handlers
 
 # Operators #
 
@@ -61,6 +62,8 @@ class DMX_OT_Programmer_DeselectAll(Operator):
 
     def execute(self, context):
         bpy.ops.object.select_all(action='DESELECT')
+
+        DMX_OSC_Handlers.fixture_clear()
         bpy.context.scene.dmx.updatePreviewVolume()
         return {'FINISHED'}
 

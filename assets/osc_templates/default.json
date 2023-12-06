@@ -1,0 +1,18 @@
+{
+  "fixture_selection": [
+    {
+      "key": "/key/fixture",
+      "value": ""
+    },
+    {
+      "key": "/key/{fixture.fixture_id}",
+      "value": ""
+    }
+  ],
+  "fixture_clear": [
+    {
+      "key": "/key/clear",
+      "value": ""
+    }
+  ]
+}

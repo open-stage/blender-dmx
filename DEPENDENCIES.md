@@ -8,3 +8,4 @@ is a list of included libraries.
 * sACN / E1.31 module: https://github.com/Hundemeier/sacn
 * 3DS Importer: https://projects.blender.org/blender/blender-addons-contrib.git
 * ifaddr: https://github.com/pydron/ifaddr
+* oscpy: https://github.com/kivy/oscpy

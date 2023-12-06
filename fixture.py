@@ -20,7 +20,8 @@ from dmx import pygdtf
 from dmx.gdtf import DMX_GDTF
 from dmx.data import DMX_Data
 from dmx.util import cmy_to_rgb
-
+from dmx.osc_utils import DMX_OSC_Handlers
+import json
 from bpy.props import (IntProperty,
                        FloatProperty,
                        BoolProperty,
@@ -398,7 +399,7 @@ class DMX_Fixture(PropertyGroup):
         panTilt = [None,None, 1, 1] # pan, tilt, 1 = 8bit, 256 = 16bit
         cmy = [None,None,None]
         zoom = None
-        rgb_mixing_geometries={} #for now, only RGB mixing is per geometry
+        rgb_mixing_geometries={}
         xyz_moving_geometries={}
         xyz_rotating_geometries={}
         shutter_dimmer_geometries={}
@@ -795,6 +796,7 @@ class DMX_Fixture(PropertyGroup):
         else:
             self.objects["Root"].object.select_set(True)
 
+        DMX_OSC_Handlers.fixture_selection(self)
         dmx.updatePreviewVolume()
     
     def unselect(self):
