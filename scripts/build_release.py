@@ -69,6 +69,7 @@ copytree("pygdtf", BUILD_DIR + "/dmx/pygdtf", ignore=ignore)
 copytree("pymvr", BUILD_DIR + "/dmx/pymvr", ignore=ignore)
 copytree("sacn", BUILD_DIR + "/dmx/sacn", ignore=ignore)
 copytree("ifaddr", BUILD_DIR + "/dmx/ifaddr", ignore=ignore)
+copytree("oscpy", BUILD_DIR + "/dmx/oscpy", ignore=ignore)
 copytree("share_api_client", BUILD_DIR + "/dmx/share_api_client", ignore=ignore)
 copytree("preferences", BUILD_DIR + "/dmx/preferences", ignore=ignore)
 

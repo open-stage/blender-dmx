@@ -41,10 +41,13 @@ import dmx.panels.profiles as Profiles
 
 from dmx.preferences import DMX_Preferences
 from dmx.group import FixtureGroup
+from dmx.osc_utils import DMX_OSC_Templates
+from dmx.osc import DMX_OSC
 
 from dmx.util import rgb_to_cmy, xyY2rgbaa
 
 from bpy.props import (BoolProperty,
+                       StringProperty,
                        IntProperty,
                        FloatProperty,
                        FloatVectorProperty,
@@ -145,6 +148,7 @@ class DMX(PropertyGroup):
                 DMX_PT_Fixture_Columns_Setup,
                 DMX_OT_Programmer_Set_Ignore_Movement,
                 DMX_OT_Programmer_Unset_Ignore_Movement,
+                DMX_PT_DMX_OSC,
                 DMX_PT_Programmer)
 
     linkedToFile = False
@@ -344,6 +348,8 @@ class DMX(PropertyGroup):
         if (dmx.sacn_enabled and dmx.artnet_status != 'online'):
             dmx.sacn_enabled = False
             dmx.artnet_status = 'offline'
+        if dmx.osc_enabled:
+            dmx.osc_enabled = False
 
         # Rebuild group runtime dictionary (evaluating if this is gonna stay here)
         #DMX_Group.runtime = {}
@@ -610,8 +616,16 @@ class DMX(PropertyGroup):
         items = DMX_Network.cards
     )
 
-    # # DMX > sACN > Enable
+    # OSC functionality
 
+    def onOscEnable(self, context):
+        if self.osc_enabled:
+            DMX_OSC.enable()
+            DMX_OSC_Templates.read()
+        else:
+            DMX_OSC.disable()
+
+    # # DMX > sACN > Enable
     def onsACNEnable(self, context):
         dmx = bpy.context.scene.dmx
         if (self.sacn_enabled):
@@ -642,6 +656,25 @@ class DMX(PropertyGroup):
         description="Enables the input of DMX data throught sACN on all detected network interfaces",
         default = False,
         update = onsACNEnable
+    )
+
+    osc_enabled : BoolProperty(
+        name = "Enable OSC Output",
+        description="Enables Open Sound Control protocol to send fixture selection to a console",
+        default = False,
+        update = onOscEnable
+    )
+
+    osc_target_address : StringProperty(
+        name = "Target address",
+        description="Address of the host where you want to send the OSC signal. Address ending on .255 is a broadcast address to all hosts on the network",
+        default="0.0.0.0"
+    )
+
+    osc_target_port : IntProperty(
+        name = "Target port",
+        description="Port number of the host where you want to send the OSC signal",
+        default=42000
     )
     # # DMX > ArtNet > Status
 
@@ -1048,6 +1081,7 @@ def onLoadFile(scene):
     # Stop ArtNet
     DMX_ArtNet.disable()
     DMX_sACN.disable()
+    DMX_OSC.disable()
 
 @bpy.app.handlers.persistent
 def onUndo(scene):
@@ -1120,6 +1154,7 @@ def register():
     if bpy.app.version <= (2, 91, 0):
         atexit.register(DMX_ArtNet.disable)
         atexit.register(DMX_sACN.disable)
+        atexit.register(DMX_OSC.disable)
     
     Timer(1, onRegister, ()).start()
 
@@ -1127,6 +1162,7 @@ def unregister():
     # Stop ArtNet
     DMX_ArtNet.disable()
     DMX_sACN.disable()
+    DMX_OSC.disable()
 
     try:
         for cls in Profiles.classes:

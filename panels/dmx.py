@@ -21,6 +21,12 @@ from bpy.types import (Panel,
 
 from dmx.material import getVolumeScatterMaterial
 from dmx.util import getSceneRect
+from dmx.osc import DMX_OSC
+from dmx.osc_utils import DMX_OSC_Templates
+
+
+
+
 
 # List #
 
@@ -52,6 +58,28 @@ class DMX_MT_Universe(Menu):
 
 
 # Sub-panels #
+class DMX_PT_DMX_OSC(Panel):
+    bl_label = "OSC"
+    bl_idname = "DMX_PT_DMX_OSC"
+    bl_parent_id = "DMX_PT_DMX"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_category = "DMX"
+    bl_context = "objectmode"
+    bl_options = {'DEFAULT_CLOSED'}
+
+    def draw(self, context):
+        layout = self.layout
+        dmx = context.scene.dmx
+
+        row = layout.row()
+        row.prop(dmx, "osc_enabled")
+        row = layout.row()
+        row.prop(dmx, "osc_target_address")
+        row.enabled = not dmx.osc_enabled
+        row = layout.row()
+        row.prop(dmx, "osc_target_port")
+        row.enabled = not dmx.osc_enabled
 
 class DMX_PT_DMX_Universes(Panel):
     bl_label = "Universes"
@@ -135,7 +163,7 @@ class DMX_PT_DMX_LiveDMX(Panel):
 # Panel #
 
 class DMX_PT_DMX(Panel):
-    bl_label = "DMX"
+    bl_label = "Protocols"
     bl_idname = "DMX_PT_DMX"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
