@@ -11,6 +11,7 @@ import bpy
 import os
 import shutil
 import uuid
+import re
 
 from dmx import pygdtf
 from dmx.gdtf import *
@@ -507,6 +508,8 @@ class DMX_PT_Fixture_Columns_Setup(Panel):
         row.prop(dmx, "column_unit_number")
         row = layout.row()
         row.prop(dmx, "column_dmx_address")
+        row = layout.row()
+        row.prop(dmx, "fixtures_sorting_order")
 
 
 
@@ -519,6 +522,9 @@ class DMX_PT_Fixtures(Panel):
     bl_context = "objectmode"
 
     def draw(self, context):
+        def string_to_pairs(s, pairs=re.compile(r"(\D*)(\d*)").findall):
+            return [(text.lower(), int(digits or 0)) for (text, digits) in pairs(s)[:-1]]
+
         layout = self.layout
         scene = context.scene
         dmx = scene.dmx
@@ -526,7 +532,20 @@ class DMX_PT_Fixtures(Panel):
         if (len(scene.dmx.fixtures)):
             box = layout.box()
             col = box.column()
-            for fixture in scene.dmx.fixtures:
+            sorting_order = dmx.fixtures_sorting_order
+
+            if sorting_order == "ADDRESS":
+                fixtures = sorted(dmx.fixtures, key=lambda c: string_to_pairs(str(c.universe*1000+c.address)))
+            elif sorting_order == "NAME":
+                fixtures = sorted(dmx.fixtures, key=lambda c: string_to_pairs(c.name))
+            elif sorting_order == "FIXTURE_ID":
+                fixtures = sorted(dmx.fixtures, key=lambda c: string_to_pairs(str(c.fixture_id)))
+            elif sorting_order == "UNIT_NUMBER":
+                fixtures = sorted(dmx.fixtures, key=lambda c: string_to_pairs(str(c.unit_number)))
+            else:
+                fixtures = dmx.fixtures
+
+            for fixture in fixtures:
                 selected = False
                 for obj in fixture.collection.objects:
                     if (obj in bpy.context.selected_objects):
