@@ -314,13 +314,15 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
         else:
             address = self.address
             universe = self.universe
+            fixture_id = self.fixture_id
+
             for i, fixture in enumerate(selected):
                 name = self.name + ' ' + str(i+1)
                 if (name != fixture.name and name in bpy.data.collections):
                     return {'CANCELLED'}
             for i, fixture in enumerate(selected):
                 name = (self.name + ' ' + str(i+1)) if (self.name != '*') else fixture.name
-                fixture_id = f"{self.fixture_id}{i+1}" if (self.name != '*') else fixture.name
+                #fixture_id = f"{self.fixture_id}{i+1}" if (self.name != '*') else fixture.name
                 profile = self.profile if (self.profile != '') else fixture.profile
                 mode = self.mode if (self.mode != '') else fixture.mode
                 if not self.re_address_only:
@@ -328,6 +330,10 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                 else:
                     fixture.address = address
                     fixture.universe = universe
+                    fixture.fixture_id = fixture_id
+                if fixture_id.isnumeric():
+                    fixture_id = str(int(fixture_id)+1)
+
                 if (address + len(fixture.channels)) > 512:
                     universe += 1
                     address = 1
@@ -367,7 +373,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             self.display_beams = True
             self.add_target = True
             self.re_address_only = True
-            self.fixture_id = "*"
+            self.fixture_id = selected[0].fixture_id
 
         wm = context.window_manager
         return wm.invoke_props_dialog(self)

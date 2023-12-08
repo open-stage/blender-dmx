@@ -374,7 +374,7 @@ class DMX_Fixture(PropertyGroup):
 
             obj.hide_select = not bpy.context.scene.dmx.select_geometries
 
-        self.dmx_values.clear() 
+        self.dmx_values = ""
         self.clear()
         #bpy.context.scene.dmx.render()
         self.render()
