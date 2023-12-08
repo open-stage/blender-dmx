@@ -863,6 +863,17 @@ class DMX(PropertyGroup):
             self.programmer_tilt = data['Tilt']/127.0-1
 
 
+    fixtures_sorting_order: bpy.props.EnumProperty(
+        name= "Sort by",
+        description= "Fixture sorting order",
+        default = "ADDRESS",
+        items= [
+                ("ADDRESS", "DMX Address", "", "", 0),
+                ("NAME", "Name", "", "", 1),
+                ("FIXTURE_ID", "Fixture ID", "", "", 2),
+                ("UNIT_NUMBER", "Unit Number", "", "", 3),
+        ],
+        )
     # Kernel Methods
     # # Fixtures
 
