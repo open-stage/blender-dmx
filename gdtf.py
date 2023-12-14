@@ -327,12 +327,15 @@ class DMX_GDTF():
             collection.objects.link(camera_object)
 
         def create_beam(geometry):
-            if (not sanitize_obj_name(geometry) in objs): return
+            if (sanitize_obj_name(geometry) not in objs):
+                return
             obj_child = objs[sanitize_obj_name(geometry)]
             if "beam" not in obj_child.name.lower():
                 obj_child.name=f"Beam {obj_child.name}"
 
             if not display_beams: # Don't even create beam objects to save resources
+                return
+            if any(geometry.beam_type.value == x for x in ["None", "Glow"]):
                 return
 
             obj_child.visible_shadow = False
@@ -342,16 +345,27 @@ class DMX_GDTF():
             light_data['shutter_dimmer_value'] = 0
             light_data['shutter_counter'] = 0
             light_data.energy = light_data['flux'] #set by default to full brightness for devices without dimmer
+
+            light_data.spot_blend = calculate_spot_blend(geometry)
             light_data.spot_size = geometry.beam_angle
             light_data.spot_size = geometry.beam_angle*3.1415/180.0
             light_data.shadow_soft_size = geometry.beam_radius
-            light_object = bpy.data.objects.new(name=f"Spot", object_data=light_data)
+            light_object = bpy.data.objects.new(name="Spot", object_data=light_data)
             light_object.location = obj_child.location
             light_object.hide_select = True
             constraint = light_object.constraints.new('CHILD_OF')
             constraint.target = obj_child
             collection.objects.link(light_object)
         
+        def calculate_spot_blend(geometry):
+            """Return spot_blend value based on beam_type, maybe in the future
+            we can calculate different value based on beam/field angle...?"""
+
+            beam_type = geometry.beam_type.value
+            if any(beam_type == x for x in ["Wash", "Fresnel", "PC"]):
+                return 1.0
+            return 0.0
+
         def add_child_position(geometry, invertX = False):
             """Add a child, create a light source and emitter material for beams"""
 
