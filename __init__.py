@@ -901,6 +901,8 @@ class DMX(PropertyGroup):
     
     def findFixture(self, object):
         for fixture in self.fixtures:
+            if fixture is None:
+                return None
             if (object.name in fixture.collection.objects):
                 return fixture
         return None

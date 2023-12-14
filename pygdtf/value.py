@@ -115,7 +115,7 @@ class ComponentType(Enum):
 
 
 class BeamType(Enum):
-    permitted = ["Wash", "Spot", "None"]
+    permitted = ["Wash", "Spot", "None", "Rectangle", "PC", "Fresnel", "Glow"]
     _default = "Wash"
 
 
