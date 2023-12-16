@@ -56,8 +56,7 @@ class DMX_Group(PropertyGroup):
         # and repopulate it
         if (len(sel_fixtures)):
             #self.runtime[self.name] = sel_fixtures;
-            # TODO: it would be better to use fixture UUID
-            self.dump = json.dumps([fixture.name for fixture in sel_fixtures])
+            self.dump = json.dumps([fixture.uuid for fixture in sel_fixtures])
         else:
             self.dump = ''
 
@@ -68,13 +67,14 @@ class DMX_Group(PropertyGroup):
         # which seems to mess with the runtime volatile data declared as runtime
         # However, a better way should be considered (a Blender String Array)
         #for fixture in self.runtime[self.name]:
-        fixtures = bpy.context.scene.dmx.fixtures
+        dmx = bpy.context.scene.dmx
 
         if not bpy.context.window_manager.dmx.aditive_selection:
             bpy.ops.object.select_all(action='DESELECT')
             bpy.context.scene.dmx.updatePreviewVolume()
 
-        for fixture in [fixtures[fxt] for fxt in json.loads(self.dump)]:
-            fixture.select()
+        for fixture in [dmx.findFixtureByUUID(f_uuid) for f_uuid in json.loads(self.dump)]:
+            if fixture is not None:
+                fixture.select()
         bpy.context.scene.dmx.updatePreviewVolume()
 

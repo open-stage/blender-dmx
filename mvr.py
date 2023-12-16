@@ -401,8 +401,6 @@ def add_mvr_fixture(
         )
 
     if fixture_group is not None:
-        fixture_name = f"{fixture.name} {layer_index}-{fixture_index}"
-        group = None
         if fixture_group.name in dmx.groups:
             group = dmx.groups[fixture_group.name]
         else:
@@ -413,5 +411,5 @@ def add_mvr_fixture(
             dump = json.loads(group.dump)
         else:
             dump = []
-        dump.append(fixture_name)
+        dump.append(fixture.uuid_number)
         group.dump = json.dumps(dump)

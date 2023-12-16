@@ -18,6 +18,7 @@ from operator import attrgetter
 from threading import Timer
 import time
 import json
+import uuid as py_uuid
 
 from dmx.pymvr import GeneralSceneDescription
 from dmx.mvr import extract_mvr_textures, process_mvr_child_list
@@ -247,7 +248,7 @@ class DMX(PropertyGroup):
 
     data_version: IntProperty(
             name = "BlenderDMX data version, bump when changing RNA structure and provide migration script",
-            default = 3,
+            default = 4,
             )
 
     # New DMX Scene
@@ -410,17 +411,73 @@ class DMX(PropertyGroup):
             for fixture in dmx.fixtures:
                 if "uuid" not in fixture:
                     print("Adding UUID to", fixture.name)
-                    fixture.uuid = str(uuid.uuid4())
+                    fixture.uuid = str(py_uuid.uuid4())
             print("Add UUID to groups, convert groups to json")
             for group in dmx.groups:
                 if "uuid" not in group:
                     print("Adding UUID to", group.name)
-                    group.uuid = str(uuid.uuid4())
+                    group.uuid = str(py_uuid.uuid4())
                 print("Migrating group")
                 group.dump = json.dumps([x[1:-1] for x in group.dump.strip('[]').split(', ')])
 
+        if file_data_version < 4:
+            print("Running migration 3→4")
+            dmx = bpy.context.scene.dmx
+
+            def findFixtureUuidDuplicates(uuid):
+                found = []
+                for fixture in self.fixtures:
+                    if fixture is None:
+                        continue
+                    if fixture.uuid == uuid:
+                        found.append(fixture)
+                return found
+
+            def findGroupUuidDuplicates(uuid):
+                found = []
+                for group in self.groups:
+                    if group is None:
+                        continue
+                    if group.uuid == uuid:
+                        found.append(group)
+                return found
+
+            print("Ensure unique fixture UUID")
+            duplicates = []
+            for fixture in dmx.fixtures:
+                duplicates = findFixtureUuidDuplicates(fixture.uuid)
+                if len(duplicates) > 1:
+                    for fixture in duplicates:
+                        u = fixture.uuid
+                        fixture.uuid = str(py_uuid.uuid4())
+                        print("Updating fixture", fixture.name, u, fixture.uuid)
+
+            print("Ensure unique group UUID")
+            duplicates = []
+            for group in dmx.groups:
+                duplicates = findGroupUuidDuplicates(group.uuid)
+                if len(duplicates) > 1:
+                    for group in duplicates:
+                        u = group.uuid
+                        group.uuid = str(py_uuid.uuid4())
+                        print("Updating group", group.name, u, group.uuid)
+
+            print("Convert groups from fixture names to UUIDs")
+            for group in dmx.groups:
+                grouped_fixtures = json.loads(group.dump)
+                uuid_list = []
+                for g_fixture in grouped_fixtures:
+                    if g_fixture in dmx.fixtures:
+                        fixture = dmx.fixtures[g_fixture]
+                        if fixture is not None:
+                            uuid_list.append(fixture.uuid)
+                group.dump = json.dumps(uuid_list)
+            print("Groups updated")
+
+        print("Migration done")
+
         # add here another if statement for next migration condition... like:
-        # if file_data_version < 4: #...
+        # if file_data_version < 5: #...
 
         self.collection["DMX_DataVersion"] = self.data_version # set data version to current
 
@@ -886,12 +943,13 @@ class DMX(PropertyGroup):
         # TODO: fix order of attributes to match fixture.build()
         bpy.app.handlers.depsgraph_update_post.clear()
         dmx = bpy.context.scene.dmx
-        dmx.fixtures.add()
-        dmx.fixtures[-1].build(name, profile, mode, universe, address, gel_color, display_beams, add_target, position, focus_point, uuid, fixture_id, custom_id, fixture_id_numeric, unit_number)
+        new_fixture = dmx.fixtures.add()
+        new_fixture.uuid = str(py_uuid.uuid4()) # ensure clean uuid
+        new_fixture.build(name, profile, mode, universe, address, gel_color, display_beams, add_target, position, focus_point, uuid, fixture_id, custom_id, fixture_id_numeric, unit_number)
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
     def removeFixture(self, fixture):
-        self.remove_fixture_from_groups(fixture.name)
+        self.remove_fixture_from_groups(fixture.uuid)
         for obj in fixture.collection.objects:
             bpy.data.objects.remove(obj)
         for obj in fixture.objects:
@@ -908,8 +966,16 @@ class DMX(PropertyGroup):
     def findFixture(self, object):
         for fixture in self.fixtures:
             if fixture is None:
-                return None
+                continue
             if (object.name in fixture.collection.objects):
+                return fixture
+        return None
+
+    def findFixtureByUUID(self, uuid):
+        for fixture in self.fixtures:
+            if fixture is None:
+                continue
+            if  fixture.uuid == uuid:
                 return fixture
         return None
 
@@ -982,10 +1048,11 @@ class DMX(PropertyGroup):
 
     def createGroup(self, name):
         dmx = bpy.context.scene.dmx
-        dmx.groups.add()
-        group = dmx.groups[-1]
+        group = dmx.groups.add()
         group.name = name
+        group.uuid = str(py_uuid.uuid4()) #ensure clean uuid
         group.update()
+        print(group.dump)
         if (not len(group.dump)):
             print("DMX Group: no fixture selected!")
             dmx.groups.remove(len(dmx.groups)-1)
@@ -1005,12 +1072,12 @@ class DMX(PropertyGroup):
     def removeGroup(self, i):
         bpy.context.scene.dmx.groups.remove(i)
 
-    def remove_fixture_from_groups(self, fixture_name):
+    def remove_fixture_from_groups(self, fixture_uuid):
         dmx = bpy.context.scene.dmx
         for group in dmx.groups:
             dump = json.loads(group.dump)
-            if fixture_name in dump:
-                dump.remove(fixture_name)
+            if fixture_uuid in dump:
+                dump.remove(fixture_uuid)
                 group.dump = json.dumps(dump)
 
     # # Preview Volume
