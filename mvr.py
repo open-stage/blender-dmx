@@ -411,5 +411,5 @@ def add_mvr_fixture(
             dump = json.loads(group.dump)
         else:
             dump = []
-        dump.append(fixture.uuid_number)
+        dump.append(fixture.uuid)
         group.dump = json.dumps(dump)
