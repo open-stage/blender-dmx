@@ -56,6 +56,7 @@ class DMX_Group(PropertyGroup):
         # and repopulate it
         if (len(sel_fixtures)):
             #self.runtime[self.name] = sel_fixtures;
+            # TODO: it would be better to use fixture UUID
             self.dump = json.dumps([fixture.name for fixture in sel_fixtures])
         else:
             self.dump = ''
