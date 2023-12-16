@@ -322,10 +322,9 @@ class DMX_Fixture(PropertyGroup):
         # (Edit) Reload old positions and rotations
         bpy.context.view_layer.update()
         for obj in self.objects:
-            if obj.name in old_pos:
-                obj.object.location = old_pos[obj.name]
-
             if obj.object.get("geometry_root", False):
+                if obj.name in old_pos:
+                    obj.object.location = old_pos[obj.name]
                 if obj.name in old_rot:
                     obj.object.rotation_mode = 'XYZ'
                     obj.object.rotation_euler = old_rot[obj.name]
