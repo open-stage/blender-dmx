@@ -10,7 +10,7 @@
 import bpy
 import os
 import shutil
-import uuid
+import uuid as py_uuid
 import re
 
 from dmx import pygdtf
@@ -209,7 +209,7 @@ class DMX_Fixture_AddEdit():
     uuid: StringProperty(
         name = "UUID",
         description = "Unique ID, used for MVR",
-        default = str(uuid.uuid4())
+        default = str(py_uuid.uuid4())
             )
     re_address_only: BoolProperty(
         name = "Re-address only",
@@ -304,11 +304,12 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             if (self.name != fixture.name and self.name in bpy.data.collections):
                 return {'CANCELLED'}
             if not self.re_address_only:
-                fixture.build(self.name, self.profile, self.mode, self.universe, self.address, self.gel_color, self.display_beams, self.add_target, uuid = self.uuid, fixture_id = self.fixture_id)
+                fixture.build(self.name, self.profile, self.mode, self.universe, self.address, self.gel_color, self.display_beams, self.add_target, uuid = fixture.uuid, fixture_id = fixture.fixture_id)
                 context.window_manager.dmx.pause_render = False
             else:
                 fixture.address = self.address
                 fixture.universe = self.universe
+                dmx.ensureUniverseExists(self.universe)
                 fixture.fixture_id = self.fixture_id
         # Multiple fixtures
         else:
@@ -326,7 +327,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                 profile = self.profile if (self.profile != '') else fixture.profile
                 mode = self.mode if (self.mode != '') else fixture.mode
                 if not self.re_address_only:
-                    fixture.build(name, profile, mode, self.universe, address, self.gel_color, self.display_beams, self.add_target, uuid = self.uuid, fixture_id = fixture_id)
+                    fixture.build(name, profile, mode, self.universe, address, self.gel_color, self.display_beams, self.add_target, uuid = fixture.uuid, fixture_id = fixture_id)
                 else:
                     fixture.address = address
                     fixture.universe = universe
@@ -337,6 +338,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                 if (address + len(fixture.channels)) > 512:
                     universe += 1
                     address = 1
+                    dmx.ensureUniverseExists(universe)
                 else:
                     address += len(fixture.channels)
 
