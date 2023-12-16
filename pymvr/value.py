@@ -77,7 +77,17 @@ class Matrix:
                 [component[6], component[7], component[8], 0],
                 [component[9] * 0.001, component[10] * 0.001, component[11] * 0.001, 0],
             ]
+    def __eq__(self, other):
+        return self.matrix == other.matrix
 
+    def __ne__(self, other):
+        return self.matrix == other.matrix
+
+    def __str__(self):
+        return f"{self.matrix}"
+
+    def __repr__(self):
+        return f"{self.matrix}"
 
 # A node link represents a link to another node in the XML tree, starting from
 # start_point and traversing the tree with a decimal-point notation in str_link.

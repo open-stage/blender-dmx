@@ -7,6 +7,7 @@ import time
 import hashlib
 import json
 from dmx.group import FixtureGroup
+from dmx.mvr_objects import DMX_MVR_Object
 
 
 # importing from dmx didn't work, had to duplicate this function
@@ -33,8 +34,8 @@ def onDepsgraph(scene):
 
 
 def process_mvr_child_list(dmx, child_list, layer_index, extract_to_folder_path, mvr_scene, already_extracted_files, layer_collection, fixture_group=None):
-    if "MVR Trusses" in layer_collection:
-        truss_collection = layer_collection["MVR Trusses"]
+    if "MVR Trusses" in layer_collection.children:
+        truss_collection = layer_collection.children["MVR Trusses"]
     else:
         truss_collection = bpy.data.collections.new("MVR Trusses")
         layer_collection.children.link(truss_collection)
@@ -65,8 +66,8 @@ def process_mvr_child_list(dmx, child_list, layer_index, extract_to_folder_path,
                 fixture_group,
             )
 
-    if "MVR Scene objects" in layer_collection:
-        scene_collection_top = layer_collection["MVR Scene objects"]
+    if "MVR Scene objects" in layer_collection.children:
+        scene_collection_top = layer_collection.children["MVR Scene objects"]
     else:
         scene_collection_top = bpy.data.collections.new("MVR Scene objects")
         layer_collection.children.link(scene_collection_top)
@@ -90,6 +91,7 @@ def process_mvr_child_list(dmx, child_list, layer_index, extract_to_folder_path,
             scene_collection = bpy.data.collections.new(scene_name)
             scene_collection_top.children.link(scene_collection)
             collection = scene_collection
+            print("creating extra collection", scene_name)
 
         process_mvr_object(
             mvr_scene,
@@ -163,12 +165,31 @@ def process_mvr_object(
     folder = os.path.join(current_path, "assets", "models", "mvr")
     name = mvr_object.name
 
+    dmx = bpy.context.scene.dmx
+    previous_mvr_object = None
+    for existing_mvr_object in dmx.mvr_objects:
+        if existing_mvr_object.uuid == mvr_object.uuid:
+            previous_mvr_object = existing_mvr_object
+            print("Updating existing mvr object")
+            for child in existing_mvr_object.collection.children:
+                for obj in child.objects:
+                    bpy.data.objects.remove(obj)
+            break
+    if previous_mvr_object:
+        dmx_mvr_object = previous_mvr_object
+    else:
+        dmx_mvr_object = dmx.mvr_objects.add()
+        dmx_mvr_object.name = name
+        dmx_mvr_object.object_type = mvr_object.__class__.__name__
+        dmx_mvr_object.uuid = mvr_object.uuid
+        dmx_mvr_object.collection = bpy.data.collections.new(mvr_object.uuid)
+
     for geometry in geometry3ds:
         if geometry.file_name:
             file = geometry.file_name
             local_transform = geometry.matrix.matrix
             extract_mvr_object(file, mvr_scene, folder, already_extracted_files)
-            add_mvr_object(
+            coll = add_mvr_object(
                 name,
                 file,
                 folder,
@@ -179,6 +200,8 @@ def process_mvr_object(
                 group_collection,
                 mvr_object,
             )
+            if coll:
+                dmx_mvr_object.collection.children.link(coll)
 
     for symbol in symbols:
         symdefs = [sd for sd in mvr_scene.aux_data.symdefs if sd.uuid == symbol.symdef]
@@ -189,7 +212,7 @@ def process_mvr_object(
                     local_transform = geometry.matrix.matrix
 
                     extract_mvr_object(file, mvr_scene, folder, already_extracted_files)
-                    add_mvr_object(
+                    coll = add_mvr_object(
                         name,
                         file,
                         folder,
@@ -200,6 +223,8 @@ def process_mvr_object(
                         group_collection,
                         symbol,
                     )
+                    if coll:
+                        dmx_mvr_object.collection.children.link(coll)
 
 
 def extract_mvr_object(file, mvr_scene, folder, already_extracted_files):
@@ -280,7 +305,6 @@ def add_mvr_object(
         ob.rotation_mode = "XYZ"
         ob.rotation_euler = Matrix(local_transform).to_euler("XYZ")
         ob["file name"] = file
-        ob["uuid"] = mvr_object.uuid
 
         ob.matrix_world = global_transform
         # ob.location = Matrix(global_transform).to_translation()
@@ -298,9 +322,13 @@ def add_mvr_object(
             ob.scale[2] *= 0.001
 
         object_collection.objects.link(ob)
-    group_collection.children.link(object_collection)
-    # bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
-    print("MVR object loaded in %.4f sec." % (time.time() - start_time))
+
+    if len(object_collection.children) + len(object_collection.objects):
+        group_collection.children.link(object_collection)
+        print("MVR object loaded in %.4f sec." % (time.time() - start_time))
+        return object_collection
+
+    return None
 
 
 def add_mvr_fixture(
@@ -315,6 +343,14 @@ def add_mvr_fixture(
     fixture_group=None,
 ):
     """Add fixture to the scene"""
+
+    existing_fixture = None
+    for _fixture in dmx.fixtures:
+        if _fixture.uuid == fixture.uuid:
+            existing_fixture = _fixture
+            print(f"Update existing fixture {fixture.uuid}")
+            break
+
     if f"{fixture.gdtf_spec}" in mvr_scene._package.namelist():
         if fixture.gdtf_spec not in already_extracted_files.keys():
             mvr_scene._package.extract(fixture.gdtf_spec, extract_to_folder_path)
@@ -326,23 +362,43 @@ def add_mvr_fixture(
         fixture.gdtf_spec = "BlenderDMX@LED_PAR_64_RGBW@v0.3.gdtf"
 
     dmx.ensureUniverseExists(fixture.addresses[0].universe)
-    dmx.addFixture(
-        f"{fixture.name} {layer_index}-{fixture_index}",
-        fixture.gdtf_spec,
-        fixture.addresses[0].universe,
-        fixture.addresses[0].address,
-        fixture.gdtf_mode,
-        xyY2rgbaa(fixture.color),
-        True,
-        True,
-        position=fixture.matrix.matrix,
-        focus_point=focus_point,
-        uuid=fixture.uuid,
-        fixture_id=fixture.fixture_id,
-        custom_id=fixture.custom_id,
-        fixture_id_numeric=fixture.fixture_id_numeric,
-        unit_number=fixture.unit_number,
-    )
+
+    if existing_fixture is not None:
+        existing_fixture.build(
+            f"{fixture.name} {layer_index}-{fixture_index}",
+            fixture.gdtf_spec,
+            fixture.gdtf_mode,
+            fixture.addresses[0].universe,
+            fixture.addresses[0].address,
+            xyY2rgbaa(fixture.color),
+            True,
+            True,
+            mvr_position=fixture.matrix.matrix,
+            focus_point=focus_point,
+            uuid=fixture.uuid,
+            fixture_id=fixture.fixture_id,
+            custom_id=fixture.custom_id,
+            fixture_id_numeric=fixture.fixture_id_numeric,
+            unit_number=fixture.unit_number,
+        )
+    else:
+        dmx.addFixture(
+            f"{fixture.name} {layer_index}-{fixture_index}",
+            fixture.gdtf_spec,
+            fixture.addresses[0].universe,
+            fixture.addresses[0].address,
+            fixture.gdtf_mode,
+            xyY2rgbaa(fixture.color),
+            True,
+            True,
+            position=fixture.matrix.matrix,
+            focus_point=focus_point,
+            uuid=fixture.uuid,
+            fixture_id=fixture.fixture_id,
+            custom_id=fixture.custom_id,
+            fixture_id_numeric=fixture.fixture_id_numeric,
+            unit_number=fixture.unit_number,
+        )
 
     if fixture_group is not None:
         fixture_name = f"{fixture.name} {layer_index}-{fixture_index}"

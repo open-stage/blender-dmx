@@ -298,6 +298,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
         dmx = scene.dmx
         selected = scene.dmx.selectedFixtures()
         context.window_manager.dmx.pause_render = True # pause renderer as partially imported fixture can cause issues during updates
+        # TODO: handle re-grouping if fixture name changed
         # Single fixture
         if (len(selected) == 1):
             fixture = selected[0]

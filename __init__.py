@@ -45,6 +45,7 @@ from dmx.osc_utils import DMX_OSC_Templates
 from dmx.osc import DMX_OSC
 
 from dmx.util import rgb_to_cmy, xyY2rgbaa
+from dmx.mvr_objects import DMX_MVR_Object 
 
 from bpy.props import (BoolProperty,
                        StringProperty,
@@ -93,6 +94,7 @@ class DMX(PropertyGroup):
                     DMX_Emitter_Material,
                     DMX_Fixture_Channel,
                     DMX_Fixture,
+                    DMX_MVR_Object,
                     DMX_Group,
                     DMX_Universe,
                     DMX_Value,
@@ -215,6 +217,10 @@ class DMX(PropertyGroup):
     universes : CollectionProperty(
         name = "DMX Groups",
         type = DMX_Universe)
+
+    mvr_objects: CollectionProperty(
+        name = "MVR Objects",
+        type = DMX_MVR_Object)
 
     def prepare_empty_buffer(self, context):
         # Clear the buffer on change of every protocol
@@ -876,8 +882,8 @@ class DMX(PropertyGroup):
         )
     # Kernel Methods
     # # Fixtures
-
     def addFixture(self, name, profile, universe, address, mode, gel_color, display_beams, add_target, position=None, focus_point=None, uuid = None, fixture_id="", custom_id=0, fixture_id_numeric=0, unit_number=0):
+        # TODO: fix order of attributes to match fixture.build()
         bpy.app.handlers.depsgraph_update_post.clear()
         dmx = bpy.context.scene.dmx
         dmx.fixtures.add()
@@ -930,8 +936,13 @@ class DMX(PropertyGroup):
         extract_mvr_textures(mvr_scene, media_folder_path)
 
         for layer_index, layer in enumerate(mvr_scene.layers):
-            layer_collection = bpy.data.collections.new(layer.name or f"Layer {layer_index}")
-            bpy.context.scene.collection.children.link(layer_collection)
+
+            layer_collection_name = layer.name or f"Layer {layer_index}"
+            if layer_collection_name in bpy.context.scene.collection.children:
+                layer_collection = bpy.context.scene.collection.children[layer_collection_name]
+            else:
+                layer_collection = bpy.data.collections.new(layer.name or f"Layer {layer_index}")
+                bpy.context.scene.collection.children.link(layer_collection)
 
             g_name = layer.name or "Layer"
             g_name = f"{g_name} {layer_index}"
@@ -948,7 +959,7 @@ class DMX(PropertyGroup):
                 fixture_group
             )
             self.clean_up_empty_mvr_collections(layer_collection)
-            if len(layer_collection.children) == 0:
+            if len(layer_collection.all_objects) == 0:
                 bpy.context.scene.collection.children.unlink(layer_collection)
 
         bpy.context.window_manager.dmx.pause_render = False # re-enable render loop
@@ -957,7 +968,7 @@ class DMX(PropertyGroup):
 
     def clean_up_empty_mvr_collections(self,collections):
         for collection in collections.children:
-            if len(collection.children) == 0:
+            if len(collection.all_objects)  == 0:
                 collections.children.unlink(collection)
 
     def ensureUniverseExists(self, universe):

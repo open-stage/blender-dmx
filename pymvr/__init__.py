@@ -560,15 +560,17 @@ class Symdef(BaseNode):
         self.uuid = xml_node.attrib.get("uuid")
 
         self.symbol = [Symbol(xml_node=i) for i in xml_node.findall("Symbol")]
-        self.geometry3d = [Geometry3D(xml_node=i) for i in xml_node.findall("Geometry3D")]
+        _geometry3d = [Geometry3D(xml_node=i) for i in xml_node.findall("Geometry3D")]
         if xml_node.find("ChildList"):
             child_list = xml_node.find("ChildList")
 
             symbols = [Symbol(xml_node=i) for i in child_list.findall("Symbol")]
             geometry3ds = [Geometry3D(xml_node=i) for i in child_list.findall("Geometry3D")]
-            self.symbol += symbols  # TODO remove this over time, children should only be in the child_list
-            self.geometry3d += geometry3ds
+            self.symbol += symbols
+            _geometry3d += geometry3ds
 
+        # sometimes the list of geometry3d is full of duplicates, eliminate them here
+        self.geometry3d = list(set(_geometry3d))
 
 class Geometry3D(BaseNode):
     def __init__(
@@ -588,7 +590,19 @@ class Geometry3D(BaseNode):
             self.matrix = Matrix(str_repr=xml_node.find("Matrix").text)
 
     def __str__(self):
-        return f"{self.file_name}"
+        return f"{self.file_name} {self.matrix}"
+    
+    def __repr__(self):
+        return f"{self.file_name} {self.matrix}"
+
+    def __eq__(self, other):
+        return self.file_name == other.file_name and self.matrix == other.matrix
+
+    def __ne__(self, other):
+        return self.file_name != other.file_name or self.matrix != other.matrix
+
+    def __hash__(self):
+        return hash((self.file_name, str(self.matrix)))
 
 
 class Symbol(BaseNode):
