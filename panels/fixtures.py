@@ -300,6 +300,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
         if (len(selected) == 1):
             fixture = selected[0]
             if (self.name != fixture.name and self.name in bpy.data.collections):
+                self.report({'ERROR'}, "Fixture named " + self.name + " already exists")
                 return {'CANCELLED'}
             if not self.re_address_only:
                 fixture.build(self.name, self.profile, self.mode, self.universe, self.address, self.gel_color, self.display_beams, self.add_target, uuid = fixture.uuid, fixture_id = fixture.fixture_id)
@@ -318,6 +319,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             for i, fixture in enumerate(selected):
                 name = self.name + ' ' + str(i+1)
                 if (name != fixture.name and name in bpy.data.collections):
+                    self.report({'ERROR'}, "Fixture named " + self.name + " already exists")
                     return {'CANCELLED'}
             for i, fixture in enumerate(selected):
                 name = (self.name + ' ' + str(i+1)) if (self.name != '*') else fixture.name
@@ -489,6 +491,17 @@ class DMX_OT_Fixture_Item(Operator):
         return {'FINISHED'}
 
 
+class DMX_OT_Fixture_ForceRemove(Operator):
+    bl_label = ""
+    bl_idname = "dmx.force_remove_fixture"
+    bl_description = "Remove fixture"
+    bl_options = {'UNDO'}
+
+    def execute(self, context):
+        print("Removing fixture", context.fixture)
+        dmx = context.scene.dmx
+        dmx.removeFixture(context.fixture)
+        return {'FINISHED'}
 
 class DMX_PT_Fixture_Columns_Setup(Panel):
     bl_label = "Display Columns"
@@ -514,6 +527,8 @@ class DMX_PT_Fixture_Columns_Setup(Panel):
         row.prop(dmx, "column_unit_number")
         row = layout.row()
         row.prop(dmx, "column_dmx_address")
+        row = layout.row()
+        row.prop(dmx, "column_fixture_remove")
         row = layout.row()
         row.prop(dmx, "fixtures_sorting_order")
 
@@ -586,5 +601,8 @@ class DMX_PT_Fixtures(Panel):
                     c = row.column()
                     c.label(text=f"{fixture.universe}.{fixture.address}")
                     c.ui_units_x = 2
+
+                if dmx.column_fixture_remove:
+                    row.operator('dmx.force_remove_fixture', icon="CANCEL")
             
         layout.menu('DMX_MT_Fixture', text="Fixtures", icon="OUTLINER_DATA_LIGHT")

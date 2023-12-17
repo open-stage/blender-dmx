@@ -152,6 +152,7 @@ class DMX(PropertyGroup):
                 DMX_OT_Programmer_Set_Ignore_Movement,
                 DMX_OT_Programmer_Unset_Ignore_Movement,
                 DMX_PT_DMX_OSC,
+                DMX_OT_Fixture_ForceRemove,
                 DMX_PT_Programmer)
 
     linkedToFile = False
@@ -191,6 +192,10 @@ class DMX(PropertyGroup):
     column_dmx_address: BoolProperty(
         name = "DMX Address",
         default = True)
+
+    column_fixture_remove: BoolProperty(
+        name = "Remove Fixture",
+        default = False)
 
     collection: PointerProperty(
         name = "DMX Collection",
