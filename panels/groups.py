@@ -8,6 +8,7 @@
 #
 
 import bpy
+import json
 
 from bpy.props import (StringProperty)
 
@@ -21,8 +22,9 @@ from bpy.types import (Panel,
 class DMX_UL_Group(UIList):
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
         icon = "GROUP_VERTEX"
+        fixture_count = len(json.loads(item.dump))
         if self.layout_type in {'DEFAULT', 'COMPACT'}:
-            layout.label(text = item.name, icon = icon)
+            layout.label(text = f"{item.name} ({fixture_count})", icon = icon)
         elif self.layout_type in {'GRID'}:
             layout.alignment = 'CENTER'
             layout.label(text="", icon = icon)
