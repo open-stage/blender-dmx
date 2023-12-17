@@ -45,7 +45,7 @@ from dmx.group import FixtureGroup
 from dmx.osc_utils import DMX_OSC_Templates
 from dmx.osc import DMX_OSC
 
-from dmx.util import rgb_to_cmy, xyY2rgbaa
+from dmx.util import rgb_to_cmy, xyY2rgbaa, ShowMessageBox
 from dmx.mvr_objects import DMX_MVR_Object 
 
 from bpy.props import (BoolProperty,
@@ -945,7 +945,16 @@ class DMX(PropertyGroup):
         dmx = bpy.context.scene.dmx
         new_fixture = dmx.fixtures.add()
         new_fixture.uuid = str(py_uuid.uuid4()) # ensure clean uuid
-        new_fixture.build(name, profile, mode, universe, address, gel_color, display_beams, add_target, position, focus_point, uuid, fixture_id, custom_id, fixture_id_numeric, unit_number)
+        try:
+            new_fixture.build(name, profile, mode, universe, address, gel_color, display_beams, add_target, position, focus_point, uuid, fixture_id, custom_id, fixture_id_numeric, unit_number)
+        except Exception as e:
+            print("Error while adding fixture", e)
+            dmx.fixtures.remove(len(dmx.fixtures)-1)
+            ShowMessageBox(
+                f"{e}",
+                "Error while adding a fixture, see console for more details",
+                "ERROR",
+            )
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
     def removeFixture(self, fixture):
