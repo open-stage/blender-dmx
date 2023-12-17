@@ -17,7 +17,7 @@ from dmx.osc_utils import DMX_OSC_Handlers
 # Operators #
 
 class DMX_OT_Programmer_Set_Ignore_Movement(Operator):
-    bl_label = "DMX > Programmer > Lock Movement"
+    bl_label = "Lock Movement"
     bl_idname = "dmx.ignore_movement_true"
     bl_description = "Ignore pan/tilt DMX data"
     bl_options = {'UNDO'}
@@ -36,7 +36,7 @@ class DMX_OT_Programmer_Set_Ignore_Movement(Operator):
         return {'FINISHED'}
 
 class DMX_OT_Programmer_Unset_Ignore_Movement(Operator):
-    bl_label = "DMX > Programmer > Unlock Movement"
+    bl_label = "Unlock Movement"
     bl_idname = "dmx.ignore_movement_false"
     bl_description = "Allow pan/tilt DMX data"
     bl_options = {'UNDO'}
@@ -55,7 +55,7 @@ class DMX_OT_Programmer_Unset_Ignore_Movement(Operator):
         return {'FINISHED'}
 
 class DMX_OT_Programmer_DeselectAll(Operator):
-    bl_label = "DMX > Programmer > Deselect All"
+    bl_label = "Deselect All"
     bl_idname = "dmx.deselect_all"
     bl_description = "Deselect every object in the Scene"
     bl_options = {'UNDO'}
@@ -68,7 +68,7 @@ class DMX_OT_Programmer_DeselectAll(Operator):
         return {'FINISHED'}
 
 class DMX_OT_Programmer_SelectAll(Operator):
-    bl_label = "DMX > Programmer > Select All"
+    bl_label = "Select All"
     bl_idname = "dmx.select_all"
     bl_description = "Select every object in the Scene"
     bl_options = {'UNDO'}
@@ -80,8 +80,22 @@ class DMX_OT_Programmer_SelectAll(Operator):
         bpy.context.scene.dmx.updatePreviewVolume()
         return {'FINISHED'}
 
+class DMX_OT_Programmer_SelectFiltered(Operator):
+    bl_label = "Select Visible (only filtered)"
+    bl_idname = "dmx.select_filtered"
+    bl_description = "Select every object in the Scene which is visible in the fixtures list"
+    bl_options = {'UNDO'}
+
+    def execute(self, context):
+        dmx = context.scene.dmx
+        for fixture, enabled in zip(dmx.fixtures, dmx.fixtures_filter):
+            if enabled:
+                fixture.select()
+        bpy.context.scene.dmx.updatePreviewVolume()
+        return {'FINISHED'}
+
 class DMX_OT_Programmer_SelectInvert(Operator):
-    bl_label = "DMX > Programmer > Invert selection"
+    bl_label = "Invert selection"
     bl_idname = "dmx.select_invert"
     bl_description = "Invert the selection"
     bl_options = {'UNDO'}
@@ -103,7 +117,7 @@ class DMX_OT_Programmer_SelectInvert(Operator):
         return {'FINISHED'}
 
 class DMX_OT_Programmer_SelectEveryOther(Operator):
-    bl_label = "DMX > Programmer > Select every other light"
+    bl_label = "Select every other light"
     bl_idname = "dmx.select_every_other"
     bl_description = "Select every other light"
     bl_options = {'UNDO'}
@@ -119,7 +133,7 @@ class DMX_OT_Programmer_SelectEveryOther(Operator):
         return {'FINISHED'}
 
 class DMX_OT_Programmer_Clear(Operator):
-    bl_label = "DMX > Programmer > Clear"
+    bl_label = "Clear"
     bl_idname = "dmx.clear"
     bl_description = "Clear all DMX values to default and update fixtures"
     bl_options = {'UNDO'}
@@ -144,7 +158,7 @@ class DMX_OT_Programmer_Clear(Operator):
         return {'FINISHED'}
 
 class DMX_OT_Programmer_TargetsToZero(Operator):
-    bl_label = "DMX > Programmer > Targets to zero"
+    bl_label = "Targets to zero"
     bl_idname = "dmx.targets_to_zero"
     bl_description = "Set Targets to 0"
     bl_options = {'UNDO'}
@@ -162,7 +176,7 @@ class DMX_OT_Programmer_TargetsToZero(Operator):
         return {'FINISHED'}
 
 class DMX_OT_Programmer_SelectBodies(Operator):
-    bl_label = "DMX > Programmer > Select Bodies"
+    bl_label = "Select Bodies"
     bl_idname = "dmx.select_bodies"
     bl_description = "Select body from every fixture element selected"
     bl_options = {'UNDO'}
@@ -186,7 +200,7 @@ class DMX_OT_Programmer_SelectBodies(Operator):
         return {'FINISHED'}
 
 class DMX_OT_Programmer_SelectTargets(Operator):
-    bl_label = "DMX > Programmer > Select Targets"
+    bl_label = "Select Targets"
     bl_idname = "dmx.select_targets"
     bl_description = "Select target from every fixture element selected"
     bl_options = {'UNDO'}
@@ -197,7 +211,7 @@ class DMX_OT_Programmer_SelectTargets(Operator):
         return {'FINISHED'}
 
 class DMX_OT_Programmer_SelectCamera(Operator):
-    bl_label = "DMX > Programmer > Select Camera"
+    bl_label = "Select Camera"
     bl_idname = "dmx.toggle_camera"
     bl_description = "Select camera of the selected fixture"
     bl_options = {'UNDO'}
@@ -248,10 +262,12 @@ class DMX_PT_Programmer(Panel):
         row.operator("dmx.select_all", text='', icon='SELECT_EXTEND')
         row.operator("dmx.select_invert", text='', icon='SELECT_SUBTRACT')
         row.operator("dmx.select_every_other", text='', icon='SELECT_INTERSECT')
+        c0 = row.column()
         c1 = row.column()
         c2 = row.column()
         c3 = row.column()
         c4 = row.column()
+        c0.operator("dmx.select_filtered", text='', icon="SELECT_DIFFERENCE")
         c1.operator("dmx.deselect_all", text='', icon='SELECT_SET')
         c2.operator("dmx.targets_to_zero", text="", icon="LIGHT_POINT")
         c3.operator("dmx.ignore_movement_true", text="", icon="LOCKED")
