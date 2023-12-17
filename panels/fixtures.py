@@ -206,11 +206,6 @@ class DMX_Fixture_AddEdit():
         #update = onAddTarget,
         default = True)
 
-    uuid: StringProperty(
-        name = "UUID",
-        description = "Unique ID, used for MVR",
-        default = str(py_uuid.uuid4())
-            )
     re_address_only: BoolProperty(
         name = "Re-address only",
         description="Do not rebuild the model structure",
@@ -232,7 +227,8 @@ class DMX_Fixture_AddEdit():
     def draw(self, context):
         layout = self.layout
         col = layout.column()
-        col.prop(self, "name")
+        if not self.re_address_only:
+            col.prop(self, "name")
         col.context_pointer_set("add_edit_panel", self)
         text_profile = "GDTF Profile"
         if (self.profile != ""):
@@ -241,11 +237,13 @@ class DMX_Fixture_AddEdit():
                 text_profile = text_profile[0] + " > " + text_profile[1]
             else:
                 text_profile = "Unknown manufacturer" + " > " + text_profile[0]
-        col.menu("DMX_MT_Fixture_Manufacturers", text = text_profile)
+        if not self.re_address_only:
+            col.menu("DMX_MT_Fixture_Manufacturers", text = text_profile)
         text_mode = "DMX Mode"
         if (self.mode != ""):
             text_mode = self.mode
-        col.menu("DMX_MT_Fixture_Mode", text = text_mode)
+        if not self.re_address_only:
+            col.menu("DMX_MT_Fixture_Mode", text = text_mode)
         col.prop(self, "universe")
         col.prop(self, "address")
         col.prop(self, "fixture_id")
