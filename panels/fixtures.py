@@ -480,6 +480,56 @@ class DMX_OT_Fixture_Import_MVR(Operator):
 
 # Panel #
 
+class DMX_OT_Fixture_SelectPrevious(Operator):
+    bl_label = " "
+    bl_idname = "dmx.fixture_previous"
+    bl_description = "Select Previous Fixture"
+    bl_options = {'UNDO'}
+
+    def execute(self, context):
+        scene = context.scene
+        dmx = scene.dmx
+        selected_all = dmx.selectedFixtures()
+        fixtures = dmx.sortedFixtures()
+
+        for fixture in fixtures:
+            fixture.unselect()
+
+        for selected in selected_all:
+            for idx, fixture in enumerate(fixtures):
+                if fixture == selected:
+                    idx -= 1
+                    if idx < 0:
+                        idx = len(fixtures)-1
+                    fixtures[idx].select()
+                    break
+        return {'FINISHED'}
+
+class DMX_OT_Fixture_SelectNext(Operator):
+    bl_label = " "
+    bl_idname = "dmx.fixture_next"
+    bl_description = "Select Next Fixture"
+    bl_options = {'UNDO'}
+
+    def execute(self, context):
+        scene = context.scene
+        dmx = scene.dmx
+        selected_all = dmx.selectedFixtures()
+        fixtures = dmx.sortedFixtures()
+
+        for fixture in fixtures:
+            fixture.unselect()
+
+        for selected in selected_all:
+            for idx, fixture in enumerate(fixtures):
+                if fixture == selected:
+                    idx += 1
+                    if idx > len(fixtures)-1:
+                        idx = 0
+                    fixtures[idx].select()
+                    break
+        return {'FINISHED'}
+
 class DMX_OT_Fixture_Item(Operator):
     bl_label = "DMX > Fixture > Item"
     bl_idname = "dmx.fixture_item"
@@ -543,9 +593,6 @@ class DMX_PT_Fixtures(Panel):
     bl_context = "objectmode"
 
     def draw(self, context):
-        def string_to_pairs(s, pairs=re.compile(r"(\D*)(\d*)").findall):
-            return [(text.lower(), int(digits or 0)) for (text, digits) in pairs(s)[:-1]]
-
         layout = self.layout
         scene = context.scene
         dmx = scene.dmx
@@ -553,18 +600,7 @@ class DMX_PT_Fixtures(Panel):
         if (len(scene.dmx.fixtures)):
             box = layout.box()
             col = box.column()
-            sorting_order = dmx.fixtures_sorting_order
-
-            if sorting_order == "ADDRESS":
-                fixtures = sorted(dmx.fixtures, key=lambda c: string_to_pairs(str(c.universe*1000+c.address)))
-            elif sorting_order == "NAME":
-                fixtures = sorted(dmx.fixtures, key=lambda c: string_to_pairs(c.name))
-            elif sorting_order == "FIXTURE_ID":
-                fixtures = sorted(dmx.fixtures, key=lambda c: string_to_pairs(str(c.fixture_id)))
-            elif sorting_order == "UNIT_NUMBER":
-                fixtures = sorted(dmx.fixtures, key=lambda c: string_to_pairs(str(c.unit_number)))
-            else:
-                fixtures = dmx.fixtures
+            fixtures = dmx.sortedFixtures()
 
             for fixture in fixtures:
                 selected = False

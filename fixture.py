@@ -767,6 +767,8 @@ class DMX_Fixture(PropertyGroup):
 
 
     def get_root(self, model_collection):
+        if model_collection.objects is None:
+            return None
         for obj in model_collection.objects:
             if obj.get("geometry_root", False):
                 return obj
@@ -815,7 +817,8 @@ class DMX_Fixture(PropertyGroup):
     
     def unselect(self):
         dmx = bpy.context.scene.dmx
-        self.objects["Root"].object.select_set(False)
+        if "Root" in self.objects:
+            self.objects["Root"].object.select_set(False)
         if ('Target' in self.objects):
             self.objects['Target'].object.select_set(False)
         if "2D Symbol" in self.objects:
