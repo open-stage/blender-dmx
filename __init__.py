@@ -19,6 +19,7 @@ from threading import Timer
 import time
 import json
 import uuid as py_uuid
+import re
 
 from dmx.pymvr import GeneralSceneDescription
 from dmx.mvr import extract_mvr_textures, process_mvr_child_list
@@ -153,15 +154,30 @@ class DMX(PropertyGroup):
                 DMX_OT_Programmer_Unset_Ignore_Movement,
                 DMX_PT_DMX_OSC,
                 DMX_OT_Fixture_ForceRemove,
+                DMX_OT_Fixture_SelectNext,
+                DMX_OT_Fixture_SelectPrevious,
                 DMX_PT_Programmer)
 
     linkedToFile = False
+    _keymaps = []
 
     def register():
         for cls in DMX.classes_setup:
             bpy.utils.register_class(cls)
 
+        # register key shortcuts
+        wm = bpy.context.window_manager
+        km = wm.keyconfigs.addon.keymaps.new(name='3D View Generic', space_type='VIEW_3D')
+        kmi = km.keymap_items.new('dmx.fixture_next', 'RIGHT_ARROW', 'PRESS', ctrl=True)
+        DMX._keymaps.append((km, kmi))
+        kmi = km.keymap_items.new('dmx.fixture_previous', 'LEFT_ARROW', 'PRESS', ctrl=True)
+        DMX._keymaps.append((km, kmi))
+
     def unregister():
+        # unregister keymaps
+        for km, kmi in DMX._keymaps: km.keymap_items.remove(kmi)
+        DMX._keymaps.clear()
+
         if (DMX.linkedToFile):
             for cls in DMX.classes:
                 bpy.utils.unregister_class(cls)
@@ -1001,6 +1017,27 @@ class DMX(PropertyGroup):
                     selected.append(fixture)
                     break
         return selected
+
+
+    def sortedFixtures(self):
+        def string_to_pairs(s, pairs=re.compile(r"(\D*)(\d*)").findall):
+            return [(text.lower(), int(digits or 0)) for (text, digits) in pairs(s)[:-1]]
+
+        sorting_order = self.fixtures_sorting_order
+
+        if sorting_order == "ADDRESS":
+            fixtures = sorted(self.fixtures, key=lambda c: string_to_pairs(str(c.universe*1000+c.address)))
+        elif sorting_order == "NAME":
+            fixtures = sorted(self.fixtures, key=lambda c: string_to_pairs(c.name))
+        elif sorting_order == "FIXTURE_ID":
+            fixtures = sorted(self.fixtures, key=lambda c: string_to_pairs(str(c.fixture_id)))
+        elif sorting_order == "UNIT_NUMBER":
+            fixtures = sorted(self.fixtures, key=lambda c: string_to_pairs(str(c.unit_number)))
+        else:
+            fixtures = self.fixtures
+
+        return fixtures
+
 
     def addMVR(self, file_name):
 
