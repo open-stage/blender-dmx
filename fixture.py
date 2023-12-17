@@ -840,6 +840,14 @@ class DMX_Fixture(PropertyGroup):
         if (selected): self.unselect()
         else: self.select()
 
+    def is_selected(self):
+        selected = False
+        for obj in self.objects:
+            if (obj.object in bpy.context.selected_objects):
+                selected = True
+                break
+        return selected
+
     def clear(self):
         for i, ch in enumerate(self.channels):
             data = DMX_Data.set(self.universe, self.address+i, ch.default)

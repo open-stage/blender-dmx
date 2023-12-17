@@ -161,6 +161,7 @@ class DMX(PropertyGroup):
                 DMX_PT_Groups,
                 DMX_OT_Programmer_DeselectAll,
                 DMX_OT_Programmer_SelectAll,
+                DMX_OT_Programmer_SelectFiltered,
                 DMX_OT_Programmer_SelectInvert,
                 DMX_OT_Programmer_SelectEveryOther,
                 DMX_OT_Programmer_Clear,
@@ -168,10 +169,11 @@ class DMX(PropertyGroup):
                 DMX_OT_Programmer_SelectTargets,
                 DMX_OT_Programmer_SelectCamera,
                 DMX_OT_Programmer_TargetsToZero,
-                DMX_PT_Fixture_Columns_Setup,
                 DMX_OT_Programmer_Set_Ignore_Movement,
                 DMX_OT_Programmer_Unset_Ignore_Movement,
                 DMX_PT_DMX_OSC,
+                DMX_UL_Fixtures,
+                DMX_OP_Delete_Fixture,
                 DMX_PT_DMX_MVR_X,
                 DMX_UL_MVR_Commit,
                 DMX_OP_MVR_Refresh,
@@ -183,6 +185,7 @@ class DMX(PropertyGroup):
 
     linkedToFile = False
     _keymaps = []
+    fixtures_filter = []
 
     def register():
         for cls in DMX.classes_setup:
@@ -231,10 +234,6 @@ class DMX(PropertyGroup):
     column_dmx_address: BoolProperty(
         name = "DMX Address",
         default = True)
-
-    column_fixture_remove: BoolProperty(
-        name = "Remove Fixture",
-        default = False)
 
     collection: PointerProperty(
         name = "DMX Collection",
@@ -294,6 +293,12 @@ class DMX(PropertyGroup):
             name = "BlenderDMX data version, bump when changing RNA structure and provide migration script",
             default = 4,
             )
+
+    selected_fixture_index: IntProperty() # Just a fake value, we need as the Fixture list requires it
+
+    fixture_properties_editable: BoolProperty(
+        name = "Editable",
+        default = False)
 
     # New DMX Scene
     # - Remove any previous DMX objects/collections
@@ -1027,9 +1032,9 @@ class DMX(PropertyGroup):
         description= "Fixture sorting order",
         default = "ADDRESS",
         items= [
-                ("ADDRESS", "DMX Address", "", "", 0),
-                ("NAME", "Name", "", "", 1),
-                ("FIXTURE_ID", "Fixture ID", "", "", 2),
+                ("NAME", "Name", "", "", 0),
+                ("FIXTURE_ID", "Fixture ID", "", "", 1),
+                ("ADDRESS", "DMX Address", "", "", 2),
                 ("UNIT_NUMBER", "Unit Number", "", "", 3),
         ],
         )
@@ -1095,6 +1100,7 @@ class DMX(PropertyGroup):
 
 
     def sortedFixtures(self):
+
         def string_to_pairs(s, pairs=re.compile(r"(\D*)(\d*)").findall):
             return [(text.lower(), int(digits or 0)) for (text, digits) in pairs(s)[:-1]]
 
@@ -1324,7 +1330,8 @@ class DMX(PropertyGroup):
         for fixture in self.fixtures:
             fixture.render()
 
-
+    def set_fixtures_filter(self, fixtures_filter):
+        DMX.fixtures_filter = fixtures_filter
 
 
 # Handlers #

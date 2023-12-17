@@ -10,18 +10,15 @@
 import bpy
 import os
 import shutil
-import uuid as py_uuid
 import re
 
-from dmx import pygdtf
 from dmx.gdtf import *
 import dmx.panels.profiles as Profiles
 
 from bpy.props import (IntProperty,
-                       FloatProperty,
                        BoolProperty,
                        FloatVectorProperty,
-                       EnumProperty,
+                       PointerProperty,
                        StringProperty,
                        CollectionProperty)
 
@@ -29,10 +26,10 @@ from bpy.types import (Panel,
                        Menu,
                        Operator,
                        UIList,
-                       PropertyGroup)
+                       )
 
-from dmx.model import DMX_Model
 from dmx.gdtf import DMX_GDTF
+from dmx.fixture import DMX_Fixture
 
 # Menus #
 
@@ -553,92 +550,202 @@ class DMX_OT_Fixture_ForceRemove(Operator):
         dmx.removeFixture(context.fixture)
         return {'FINISHED'}
 
-class DMX_PT_Fixture_Columns_Setup(Panel):
-    bl_label = "Display Columns"
-    bl_idname = "DMX_PT_Fixture_Columns_Setup"
-    bl_parent_id = "DMX_PT_Fixtures"
-    bl_space_type = "VIEW_3D"
-    bl_region_type = "UI"
-    bl_category = "DMX"
-    bl_context = "objectmode"
-    bl_options = {'DEFAULT_CLOSED'}
-
-    def draw(self, context):
-        layout = self.layout
-        dmx = context.scene.dmx
-
-        row = layout.row()
-        row.prop(dmx, "column_fixture_id")
-        row = layout.row()
-        row.prop(dmx, "column_custom_id")
-        row = layout.row()
-        row.prop(dmx, "column_fixture_id_numeric")
-        row = layout.row()
-        row.prop(dmx, "column_unit_number")
-        row = layout.row()
-        row.prop(dmx, "column_dmx_address")
-        row = layout.row()
-        row.prop(dmx, "column_fixture_remove")
-        row = layout.row()
-        row.prop(dmx, "fixtures_sorting_order")
-
 
 
 class DMX_PT_Fixtures(Panel):
     bl_label = "Fixtures"
-    bl_idname = "DMX_PT_Fixtures"
+    #bl_parent_id = "DMX_PT_Profiles"
+    bl_idname = "DMX_PT_FixturesNEW"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
     bl_category = "DMX"
     bl_context = "objectmode"
-
+    # bl_parent_id = "DMX_PT_Patch"
+    #bl_options = {"DEFAULT_CLOSED"}
+    
     def draw(self, context):
         layout = self.layout
         scene = context.scene
         dmx = scene.dmx
+        
+        row = layout.row()
+        c = row.column()
+        c.label(text="Name")
+        c.ui_units_x = 8 
 
-        if (len(scene.dmx.fixtures)):
-            box = layout.box()
-            col = box.column()
-            fixtures = dmx.sortedFixtures()
+        if dmx.column_fixture_id:
+            c = row.column()
+            c.label(text="F ID")
+            c.ui_units_x = 2
 
-            for fixture in fixtures:
-                selected = False
-                for obj in fixture.collection.objects:
-                    if (obj in bpy.context.selected_objects):
-                        selected = True
-                        break
+        if dmx.column_unit_number:
+            c = row.column()
+            c.ui_units_x = 2
+            c.label(text="Unit #")
 
-                row = col.row()
-                row.context_pointer_set("fixture", fixture)
-                row.operator('dmx.fixture_item', text=fixture.name, depress=selected, icon="LOCKED" if fixture.ignore_movement_dmx else 'OUTLINER_DATA_LIGHT')
+        if dmx.column_fixture_id_numeric:
+            c = row.column()
+            c.label(text="F ID #")
+            c.ui_units_x = 2
 
-                if dmx.column_fixture_id and fixture.fixture_id:
-                    c = row.column()
-                    c.label(text=f"{fixture.fixture_id}")
-                    c.ui_units_x = 2
+        if dmx.column_custom_id:
+            c = row.column()
+            c.label(text="Cst ID")
+            c.ui_units_x = 2
 
-                if dmx.column_unit_number:
-                    c = row.column()
-                    c.label(text=f"{fixture.unit_number}")
-                    c.ui_units_x = 2
+        if dmx.column_dmx_address:
+            c = row.column()
+            c.ui_units_x = 2
+            if dmx.fixture_properties_editable:
+                c.label(text="Uni")
+                c = row.column()
+                c.ui_units_x = 2
+                c.label(text="Addr")
+            else:
+                c.label(text="Uni.Addr")
+    
+        if dmx.fixture_properties_editable:
+            c = row.column()
+            c.ui_units_x = 2
+            c.label(text="Del")
 
-                if dmx.column_fixture_id_numeric:
-                    c = row.column()
-                    c.label(text=f"{fixture.fixture_id_numeric}")
-                    c.ui_units_x = 2
+        layout.template_list(
+            "DMX_UL_Fixtures",
+            "",
+            dmx,
+            "fixtures",
+            dmx,
+            "selected_fixture_index",
+            rows=4,
+        )
 
-                if dmx.column_custom_id:
-                    c = row.column()
-                    c.label(text=f"{fixture.custom_id}")
-                    c.ui_units_x = 2
-
-                if dmx.column_dmx_address:
-                    c = row.column()
-                    c.label(text=f"{fixture.universe}.{fixture.address}")
-                    c.ui_units_x = 2
-
-                if dmx.column_fixture_remove:
-                    row.operator('dmx.force_remove_fixture', icon="CANCEL")
-            
         layout.menu('DMX_MT_Fixture', text="Fixtures", icon="OUTLINER_DATA_LIGHT")
+
+class DMX_UL_Fixtures(UIList):
+
+    def str_to_digit(self, s):
+        out = 0
+        try:
+            digs=re.compile(r"(\d*)").findall
+            out = int(digs(s)[-2]) or 0
+        except Exception as e:
+            print("Error converting text to digit", e, s)
+        return out
+
+    def draw_filter(self, context, layout):
+
+        dmx = context.scene.dmx
+
+        row = layout.row()
+        row.prop(self, "filter_name", text="")
+        row = layout.row()
+        col = row.column()
+        col.prop(dmx, "column_fixture_id")
+        col.prop(dmx, "column_custom_id")
+        row = row.row()
+        col = row.column()
+        col.prop(dmx, "column_fixture_id_numeric")
+        col.prop(dmx, "column_unit_number")
+        row = row.row()
+        col = row.column()
+        col.prop(dmx, "column_dmx_address")
+        col.prop(dmx, "fixture_properties_editable")
+        row = layout.row()
+        row.prop(dmx, "fixtures_sorting_order")
+
+    def filter_items(self, context, data, propname):
+        vgroups = getattr(data, propname)
+        helper_funcs = bpy.types.UI_UL_list
+        dmx = context.scene.dmx
+
+        # Default return values.
+        flt_flags = []
+        flt_neworder = []
+
+        flt_flags = helper_funcs.filter_items_by_name(self.filter_name, self.bitflag_filter_item, vgroups, "name")
+        if not flt_flags:
+            flt_flags = [self.bitflag_filter_item] * len(vgroups)
+        dmx.set_fixtures_filter(flt_flags)
+
+        sorting_order = dmx.fixtures_sorting_order
+
+        if sorting_order == "ADDRESS":
+            _sort = [(idx, vgroups[vg.name].universe*1000+vgroups[vg.name].address) for idx, vg in enumerate(vgroups)]
+            flt_neworder = helper_funcs.sort_items_helper(_sort, lambda e: e[1], False)
+        elif sorting_order == "NAME":
+            flt_neworder = helper_funcs.sort_items_by_name(vgroups, "name")
+        elif sorting_order == "FIXTURE_ID":
+            _sort = [(idx, self.str_to_digit(vgroups[vg.name].fixture_id)) for idx, vg in enumerate(vgroups)]
+            flt_neworder = helper_funcs.sort_items_helper(_sort, lambda e: e[1], False)
+        elif sorting_order == "UNIT_NUMBER":
+            _sort = [(idx, vgroups[vg.name].unit_number) for idx, vg in enumerate(vgroups)]
+            flt_neworder = helper_funcs.sort_items_helper(_sort, lambda e: e[1], False)
+        else:
+            flt_neworder=[]
+        return flt_flags, flt_neworder
+
+    def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
+        self.use_filter_show = True
+        scene = context.scene
+        dmx = scene.dmx
+
+        col = layout.column()
+        col.context_pointer_set("fixture", item)
+        col.operator('dmx.fixture_item', text=f"{item.name}", depress=item.is_selected(), icon="LOCKED" if item.ignore_movement_dmx else 'OUTLINER_DATA_LIGHT')
+        col.ui_units_x = 6
+
+        if dmx.column_fixture_id:
+            c = layout.column()
+            #c.label(text=f"{item.fixture_id}")
+            c.ui_units_x = 2
+            c.prop(item, "fixture_id", text="")
+            c.enabled = dmx.fixture_properties_editable
+
+        if dmx.column_unit_number:
+            c = layout.column()
+            c.ui_units_x = 2
+            c.prop(item, "unit_number", text="")
+            c.enabled = dmx.fixture_properties_editable
+
+        if dmx.column_fixture_id_numeric:
+            c = layout.column()
+            c.prop(item, "fixture_id_numeric", text="")
+            c.ui_units_x = 2
+            c.enabled = dmx.fixture_properties_editable
+
+        if dmx.column_custom_id:
+            c = layout.column()
+            c.prop(item, "custom_id", text="")
+            c.ui_units_x = 2
+            c.enabled = dmx.fixture_properties_editable
+
+        if dmx.column_dmx_address:
+            c = layout.column()
+            c.ui_units_x = 2
+            if dmx.fixture_properties_editable:
+                c.prop(item, "universe", text="")
+                c = layout.column()
+                c.prop(item, "address", text="")
+                c.ui_units_x = 2
+            else:
+                c.label(text=f"{item.universe}.{item.address}")
+    
+        if dmx.fixture_properties_editable:
+            col = layout.column()
+            col.context_pointer_set("fixture", item)
+            col.operator("dmx.force_remove_fixture", text="", icon="CANCEL")
+
+
+class DMX_OP_Delete_Fixture(Operator):
+    bl_label = "Delete fixture"
+    bl_description = "Delete fixture from local filesystem"
+    bl_idname = "dmx.delete_local_fixture"
+    bl_options = {"UNDO"}
+
+    index: IntProperty()
+
+    def execute(self, context):
+        #Profiles.controller.DMX_Fixtures_Manager.delete_local_fixture(self, self.index)
+        #DMX_GDTF.getManufacturerList()
+        #Profiles.DMX_Fixtures_Local_Profile.loadLocal()
+        return {"FINISHED"}
