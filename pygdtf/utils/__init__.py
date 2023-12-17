@@ -25,7 +25,7 @@ def get_geometry_by_name(gdtf_profile: "pygdtf.FixtureType" = None, geometry_nam
     """Recursively find a geometry of a given name"""
 
     def iterate_geometries(collector):
-        if collector.name == geometry_name:
+        if type(collector) is not pygdtf.FixtureType and collector.name == geometry_name:
             matched.append(collector)
         for g in collector.geometries:
             if g.name == geometry_name:

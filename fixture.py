@@ -802,10 +802,13 @@ class DMX_Fixture(PropertyGroup):
                 if obj.get("2d_symbol", None):
                     continue
                 obj.hide_set(False)
-            self.objects["Root"].object.select_set(True)
+
+            if "Root" in self.objects:
+                self.objects["Root"].object.select_set(True)
 
         else:
-            self.objects["Root"].object.select_set(True)
+            if "Root" in self.objects:
+                self.objects["Root"].object.select_set(True)
 
         DMX_OSC_Handlers.fixture_selection(self)
         dmx.updatePreviewVolume()

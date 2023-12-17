@@ -123,3 +123,9 @@ def xyY2rgba(xyz):
     green = (rgb[1] - lowest) / alpha
     blue = (rgb[2] - lowest) / alpha
     return (int(red), int(green), int(blue), int(alpha * 100))
+
+def ShowMessageBox(message="", title="Message Box", icon="INFO"):
+    def draw(self, context):
+        self.layout.label(text=message)
+
+    bpy.context.window_manager.popup_menu(draw, title=title, icon=icon)
