@@ -9,3 +9,4 @@ is a list of included libraries.
 * 3DS Importer: https://projects.blender.org/blender/blender-addons-contrib.git
 * ifaddr: https://github.com/pydron/ifaddr
 * oscpy: https://github.com/kivy/oscpy
+* zeroconf: https://github.com/python-zeroconf/python-zeroconf
