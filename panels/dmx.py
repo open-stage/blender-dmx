@@ -8,10 +8,13 @@
 #
 
 import bpy
+import os
+from datetime import datetime
 from dmx.data import DMX_Data
 from bpy.props import (PointerProperty,
                        EnumProperty,
-                       StringProperty)
+                       StringProperty,
+                       IntProperty)
 
 from bpy.types import (Panel,
                        Menu,
@@ -23,9 +26,91 @@ from dmx.material import getVolumeScatterMaterial
 from dmx.util import getSceneRect
 from dmx.osc import DMX_OSC
 from dmx.osc_utils import DMX_OSC_Templates
+from dmx.mvrx_protocol import DMX_MVR_X_Protocol
+
+
+class DMX_OP_MVR_Test(Operator):
+    bl_label = "Test"
+    bl_description = "Test operator"
+    bl_idname = "dmx.mvr_test"
+    bl_options = {"UNDO"}
+
+    def execute(self, context):
+        print("Test")
+        DMX_MVR_X_Protocol._instance.client.join_mvr()
+
+        return {"FINISHED"}
 
 
 
+class DMX_OP_MVR_Import(Operator):
+    bl_label = "Import"
+    bl_description = "Import commit"
+    bl_idname = "dmx.mvr_import"
+    bl_options = {"UNDO"}
+
+    uuid: StringProperty()
+
+    def execute(self, context):
+        scene = context.scene
+        dmx = scene.dmx
+        ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
+        clients = context.window_manager.dmx.mvr_xchange
+        all_clients = context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
+        selected = clients.selected_mvr_client
+        for client in all_clients:
+            if client.station_uuid == selected:
+                break
+        for commit in client.commits:
+            if commit.commit_uuid == self.uuid:
+                print("import", commit)
+                path = os.path.join(ADDON_PATH, "..", "assets", "mvrs", f"{commit.commit_uuid}.mvr")
+                print(path)
+                dmx.addMVR(path)
+                break
+        return {"FINISHED"}
+
+class DMX_OP_MVR_Download(Operator):
+    bl_label = "Download"
+    bl_description = "Download commit"
+    bl_idname = "dmx.mvr_download"
+    bl_options = {"UNDO"}
+
+    uuid: StringProperty()
+
+    def execute(self, context):
+        print("downloading")
+
+        clients = context.window_manager.dmx.mvr_xchange
+        all_clients = clients.mvr_xchange_clients
+        selected = clients.selected_mvr_client
+        for client in all_clients:
+            if client.station_uuid == selected:
+                break
+        print("got client", client.station_name)
+        for commit in client.commits:
+            print(commit.commit_uuid)
+            if commit.commit_uuid == self.uuid:
+                print("downloading", commit)
+                DMX_MVR_X_Protocol.request_file(commit)
+                break
+
+        return {"FINISHED"}
+
+class DMX_UL_MVR_Commit(UIList):
+    def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
+        scene = context.scene
+        dmx = scene.dmx
+        icon = "GROUP_VERTEX"
+        #layout.context_pointer_set("mvr_xchange_clients", item)
+        col = layout.column()
+        col.label(text = f"{item.comment}", icon="CHECKBOX_HLT" if item.timestamp_saved else "CHECKBOX_DEHLT")
+        col = layout.column()
+        col.operator("dmx.mvr_download", text="", icon="IMPORT").uuid = item.commit_uuid
+        col.enabled = dmx.mvrx_enabled
+        col = layout.column()
+        col.operator("dmx.mvr_import", text="", icon="CHECKBOX_HLT").uuid = item.commit_uuid
+        col.enabled = item.timestamp_saved > 0
 
 
 # List #
@@ -80,6 +165,56 @@ class DMX_PT_DMX_OSC(Panel):
         row = layout.row()
         row.prop(dmx, "osc_target_port")
         row.enabled = not dmx.osc_enabled
+
+class DMX_PT_DMX_MVR_X(Panel):
+    bl_label = "MVR-xchange"
+    bl_idname = "DMX_PT_DMX_MVR_Xchange"
+    bl_parent_id = "DMX_PT_DMX"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_category = "DMX"
+    bl_context = "objectmode"
+    bl_options = {'DEFAULT_CLOSED'}
+
+    def draw(self, context):
+        layout = self.layout
+        dmx = context.scene.dmx
+
+        row = layout.row()
+        row.prop(dmx, "zeroconf_enabled")
+        row = layout.row()
+
+        clients = context.window_manager.dmx.mvr_xchange
+        all_clients = clients.mvr_xchange_clients
+        if not all_clients:
+            selected = None
+        else:
+            selected = clients.selected_mvr_client
+
+        client = None
+        for client in all_clients:
+            if client.station_uuid ==selected:
+                break
+
+        row.prop(clients, "selected_mvr_client", text="")
+        row.enabled = not dmx.mvrx_enabled
+        row = layout.row()
+        row.prop(dmx, "mvrx_enabled")
+        row.enabled = len(all_clients) > 0
+        if not client:
+            return
+        row = layout.row()
+        row.label(text = f"{client.station_name}", icon = "LINKED" if dmx.mvrx_enabled else "UNLINKED")
+        #row.operator("dmx.mvr_test", text="Test", icon="IMPORT")
+        layout.template_list(
+            "DMX_UL_MVR_Commit",
+            "",
+            client,
+            "commits",
+            clients,
+            "selected_commit",
+            rows=4,
+        )
 
 class DMX_PT_DMX_Universes(Panel):
     bl_label = "Universes"

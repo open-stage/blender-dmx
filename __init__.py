@@ -20,6 +20,8 @@ import time
 import json
 import uuid as py_uuid
 import re
+from datetime import datetime
+import pathlib
 
 from dmx.pymvr import GeneralSceneDescription
 from dmx.mvr import extract_mvr_textures, process_mvr_child_list
@@ -41,13 +43,16 @@ from dmx.panels.groups import *
 from dmx.panels.programmer import *
 import dmx.panels.profiles as Profiles
 
-from dmx.preferences import DMX_Preferences
+from dmx.preferences import DMX_Preferences, DMX_Regenrate_UUID
 from dmx.group import FixtureGroup
 from dmx.osc_utils import DMX_OSC_Templates
 from dmx.osc import DMX_OSC
+from dmx.mdns import DMX_Zeroconf
 
 from dmx.util import rgb_to_cmy, xyY2rgbaa, ShowMessageBox
 from dmx.mvr_objects import DMX_MVR_Object 
+from dmx.mvr_xchange import *
+from dmx.mvrx_protocol import DMX_MVR_X_Protocol
 
 from bpy.props import (BoolProperty,
                        StringProperty,
@@ -55,6 +60,7 @@ from bpy.props import (BoolProperty,
                        FloatProperty,
                        FloatVectorProperty,
                        PointerProperty,
+                        EnumProperty,
                        CollectionProperty)
 
 from bpy.types import (PropertyGroup,
@@ -85,6 +91,12 @@ class DMX_TempData(PropertyGroup):
         description="When selecting a group, add to existing selection",
         default = True)
 
+
+    mvr_xchange: PointerProperty(
+            name = "MVR-xchange",
+            type=DMX_MVR_Xchange
+            )
+
 class DMX(PropertyGroup):
 
     # Base classes to be registered
@@ -101,6 +113,12 @@ class DMX(PropertyGroup):
                     DMX_Universe,
                     DMX_Value,
                     DMX_PT_Setup,
+                    DMX_OP_MVR_Download,
+                    DMX_OP_MVR_Import,
+                    DMX_MVR_Xchange_Commit,
+                    DMX_MVR_Xchange_Client,
+                    DMX_MVR_Xchange,
+                    DMX_Regenrate_UUID,
                     DMX_Preferences)
 
     # Classes to be registered
@@ -153,6 +171,9 @@ class DMX(PropertyGroup):
                 DMX_OT_Programmer_Set_Ignore_Movement,
                 DMX_OT_Programmer_Unset_Ignore_Movement,
                 DMX_PT_DMX_OSC,
+                DMX_PT_DMX_MVR_X,
+                DMX_UL_MVR_Commit,
+                DMX_OP_MVR_Test,
                 DMX_OT_Fixture_ForceRemove,
                 DMX_OT_Fixture_SelectNext,
                 DMX_OT_Fixture_SelectPrevious,
@@ -385,6 +406,8 @@ class DMX(PropertyGroup):
         #    group.rebuild()
 
         self.migrations()
+        self.ensure_application_uuid()
+
 
     # Unlink Add-on from file
     # This is only called when the DMX collection is externally removed
@@ -406,6 +429,13 @@ class DMX(PropertyGroup):
     # Callback Properties
 
     # # Setup > Background > Color
+
+    def ensure_application_uuid(self):
+        addon_name = pathlib.Path(__file__).parent.parts[-1]
+        prefs = bpy.context.preferences.addons[addon_name].preferences
+        application_uuid = prefs.get("application_uuid", 0)
+        if application_uuid == 0:
+            prefs["application_uuid"] = str(py_uuid.uuid4()) # must never be 0
 
     def migrations(self):
         """Provide migration scripts when bumping the data_version"""
@@ -580,7 +610,7 @@ class DMX(PropertyGroup):
     def onLoggingLevel(self, context):
         DMX_Log.log.setLevel(self.logging_level)
 
-    logging_level: bpy.props.EnumProperty(
+    logging_level: EnumProperty(
         name= "Logging Level",
         description= "logging level",
         default = "ERROR",
@@ -604,7 +634,7 @@ class DMX(PropertyGroup):
     #    default = False,
     #    update = onVolumePreview)
 
-    volume_preview: bpy.props.EnumProperty(
+    volume_preview: EnumProperty(
         name= "Simple beam",
         description= "Display 'fake' beam cone",
         default = "NONE",
@@ -699,6 +729,34 @@ class DMX(PropertyGroup):
         description="The network card/interface to listen for ArtNet DMX data",
         items = DMX_Network.cards
     )
+    #zeroconf - mvr-xchange
+
+    def onZeroconfEnable(self, context):
+        if self.zeroconf_enabled:
+            clients  = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
+            clients.clear()
+            DMX_Zeroconf.enable()
+        else:
+            DMX_Zeroconf.disable()
+
+    def onMVR_xchange_enable(self, context):
+        if self.mvrx_enabled:
+            clients = context.window_manager.dmx.mvr_xchange
+            all_clients = context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
+            selected = clients.selected_mvr_client
+            selected_client = None
+            for selected_client in all_clients:
+                if selected_client.station_uuid == selected:
+                    break
+            if not selected_client:
+                return
+            print(selected_client.ip_address, selected_client.station_name)
+            DMX_MVR_X_Protocol.enable(selected_client)
+        else:
+            DMX_MVR_X_Protocol.disable()
+
+
+
 
     # OSC functionality
 
@@ -759,6 +817,20 @@ class DMX(PropertyGroup):
         name = "Target port",
         description="Port number of the host where you want to send the OSC signal",
         default=42000
+    )
+
+    zeroconf_enabled : BoolProperty(
+        name = "Enable MVR-xchange discovery",
+        description="Enables MVR-xchange discovery",
+        default = False,
+        update = onZeroconfEnable
+    )
+
+    mvrx_enabled : BoolProperty(
+        name = "Enable MVR-xchange connection",
+        description="Connects to MVR-xchange client",
+        default = False,
+        update = onMVR_xchange_enable
     )
     # # DMX > ArtNet > Status
 
@@ -947,7 +1019,7 @@ class DMX(PropertyGroup):
             self.programmer_tilt = data['Tilt']/127.0-1
 
 
-    fixtures_sorting_order: bpy.props.EnumProperty(
+    fixtures_sorting_order: EnumProperty(
         name= "Sort by",
         description= "Fixture sorting order",
         default = "ADDRESS",
@@ -1095,6 +1167,77 @@ class DMX(PropertyGroup):
             self.addUniverse()
         self.universes_n = len(self.universes)
 
+    def createMVR_Client(self, station_name, station_uuid, ip_address, port):
+        clients  = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
+        for client in clients:
+            if client.station_uuid == station_uuid:
+                return # client already in the list
+
+        client = clients.add()
+        client.station_name = station_name
+        client.station_uuid = station_uuid
+        now = int(datetime.now().timestamp())
+        client.last_seen = now
+        client.ip_address = ip_address
+        client.port = port
+
+    def removeMVR_Client(self, station_name, station_uuid, ip_addres, port):
+        clients  = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
+        for client in clients:
+            if client.station_uuid == station_uuid:
+                clients.remove(client)
+                break
+
+    def updateMVR_Client(self, station_name, station_uuid, ip_address, port):
+        clients  = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
+        updated = False
+        for client in clients:
+            if client.station_uuid == station_uuid:
+                client.station_name = station_name
+                now = int(datetime.now().timestamp())
+                client.last_seen = now
+                client.ip_address = ip_address
+                client.port = port
+                updated = True
+                break
+        if not updated:
+            self.createMVR_Client(station_name, station_uuid, ip_address, port)
+
+    def createMVR_Commits(self, commits, station_uuid):
+        clients  = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
+        for client in clients:
+            if client.station_uuid == station_uuid:
+                client.commits.clear()
+
+                for commit in commits:
+
+                    if "FileName" in commit:
+                        filename = commit["FileName"]
+                    else:
+                        filename = commit["Comment"]
+                    if not len(filename):
+                        filename = commit["FileUUID"]
+
+                    now = int(datetime.now().timestamp())
+                    client.last_seen = now
+                    new_commit = client.commits.add()
+                    new_commit.station_uuid = station_uuid
+                    new_commit.comment = commit["Comment"]
+                    new_commit.commit_uuid = commit["FileUUID"]
+                    new_commit.file_size = commit["FileSize"]
+                    new_commit.file_name = filename
+                    new_commit.timestamp = now
+
+    def fetched_mvr_downloaded_file(self, commit):
+        clients  = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
+        now = int(datetime.now().timestamp())
+        for client in clients:
+            if client.station_uuid == commit.station_uuid:
+                for c_commit in client.commits:
+                    if c_commit.commit_uuid == commit.commit_uuid:
+                        c_commit.timestamp_saved = now
+
+
     # # Groups
 
     def createGroup(self, name):
@@ -1174,6 +1317,8 @@ class DMX(PropertyGroup):
             fixture.render()
 
 
+
+
 # Handlers #
 
 
@@ -1224,6 +1369,8 @@ def onLoadFile(scene):
     DMX_ArtNet.disable()
     DMX_sACN.disable()
     DMX_OSC.disable()
+    DMX_MVR_X_Protocol.disable()
+    DMX_Zeroconf.disable()
 
 @bpy.app.handlers.persistent
 def onUndo(scene):
@@ -1305,6 +1452,8 @@ def unregister():
     DMX_ArtNet.disable()
     DMX_sACN.disable()
     DMX_OSC.disable()
+    DMX_MVR_X_Protocol.disable()
+    DMX_Zeroconf.disable()
 
     try:
         for cls in Profiles.classes:
