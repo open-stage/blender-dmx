@@ -27,6 +27,6 @@ jobs:
           ls -la
       - uses: actions/upload-artifact@v3
         with:
-          name: blenderDMX_${{ env.REF }}.zip
+          name: blenderDMX_${{ env.REF }}
           path: build/
 
