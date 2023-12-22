@@ -89,7 +89,11 @@ shutil.copy2("README.md", BUILD_DIR + "/dmx")
 print("Zipping release...")
 shutil.make_archive(zip_name, "zip", BUILD_DIR)
 
-print("Clearing build directory...")
-shutil.rmtree(BUILD_DIR)
+if len(sys.argv)>1: # any command line argument will do to skip version check
+    if sys.argv[1] == "github":
+        print("Keeping the build directory")
+else:
+    print("Clearing build directory...")
+    shutil.rmtree(BUILD_DIR)
 
 print("Build successfull! Have a great release!")
