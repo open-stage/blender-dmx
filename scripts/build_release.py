@@ -4,19 +4,21 @@ import shutil
 from shutil import copytree, ignore_patterns
 from pygit2 import Repository
 import sys
+import os
 
 BUILD_DIR = "build"
+
 
 def read_version():
     line = ""
     with open("__init__.py", "r") as f:
         while True:
-           line += f.readline().rstrip()
-           if "}" in line:
-               break
-    version_string = line.replace("bl_info = ","")
-    bl_info=eval(version_string)
-    x,y,z = bl_info["version"]
+            line += f.readline().rstrip()
+            if "}" in line:
+                break
+    version_string = line.replace("bl_info = ", "")
+    bl_info = eval(version_string)
+    x, y, z = bl_info["version"]
     return f"{x}.{y}.{z}"
 
 
@@ -25,20 +27,18 @@ if branch_name == None:
     raise Exception("Run the script from the project root.")
 
 set_version = read_version()
-#branch_name = "release_v1.0.3"
+# branch_name = "release_v1.0.3"
 branch_version = branch_name[9:]
 print(branch_name)
 
 release_name = branch_name
 if re.match(r"^release_v\d+\.\d+\.\d+$", branch_name):
-    print(
-        'Warning: This is not a release branch. The branch should be named "release_vX.Y.Z".'
-    )
+    print('Warning: This is not a release branch. The branch should be named "release_vX.Y.Z".')
     release_name = branch_name[8:]
 
 
 if set_version != branch_version:
-    if len(sys.argv)>1: # any command line argument will do to skip version check
+    if len(sys.argv) > 1:  # any command line argument will do to skip version check
         print("Continue for local testing")
     else:
         print(f"Branch version {branch_version} and add-on version {set_version} do not match. Exit!")
@@ -89,11 +89,12 @@ shutil.copy2("README.md", BUILD_DIR + "/dmx")
 print("Zipping release...")
 shutil.make_archive(zip_name, "zip", BUILD_DIR)
 
-if len(sys.argv)>1: # any command line argument will do to skip version check
+if len(sys.argv) > 1:  # any command line argument will do to skip version check
     if sys.argv[1] == "github":
         print("Keeping the build directory")
-else:
-    print("Clearing build directory...")
-    shutil.rmtree(BUILD_DIR)
+        sys.exit()
+
+print("Clearing build directory...")
+shutil.rmtree(BUILD_DIR)
 
 print("Build successfull! Have a great release!")

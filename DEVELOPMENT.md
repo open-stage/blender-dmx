@@ -2,7 +2,7 @@
 
 ### Formatting
 
-Use `ruff` to format the code.
+Use `ruff` to format the code. Formatting code with Blender can be problematic as short lines are typically better.
 
 ### Logging
 
