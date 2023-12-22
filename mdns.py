@@ -21,9 +21,10 @@ class DMX_Zeroconf:
         self._dmx = bpy.context.scene.dmx
 
     def callback(zeroconf: Zeroconf, service_type: str, name: str, state_change: ServiceStateChange) -> None:
-        #print(f"Service {name} of type {service_type} state changed: {state_change}")
+        # print(f"Service {name} of type {service_type} state changed: {state_change}")
 
         info = zeroconf.get_service_info(service_type, name)
+        service_name = name.replace(f".{service_type}", "")
         station_name = ""
         station_uuid = ""
         ip_address = ""
@@ -43,7 +44,7 @@ class DMX_Zeroconf:
                     station_name = info.properties[b"StationName"].decode("utf-8")
                 if b"StationUUID" in info.properties:
                     station_uuid = info.properties[b"StationUUID"].decode("utf-")
-
+        station_name = f"{station_name} ({service_name})"
         if state_change is ServiceStateChange.Added:
             DMX_Zeroconf._instance._dmx.createMVR_Client(station_name, station_uuid, ip_address, int(port))
         elif state_change is ServiceStateChange.Updated:

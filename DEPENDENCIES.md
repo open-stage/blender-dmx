@@ -10,3 +10,4 @@ is a list of included libraries.
 * ifaddr: https://github.com/pydron/ifaddr
 * oscpy: https://github.com/kivy/oscpy
 * zeroconf: https://github.com/python-zeroconf/python-zeroconf
+* async_timeout: https://github.com/aio-libs/async-timeout/

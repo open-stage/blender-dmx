@@ -1,5 +1,10 @@
 ### Changelog
 
+### 1.0.6
+
+* Initial support for MVR-xchange protocol added
+* Added ArtPoll reply
+
 ### 1.0.5
 
 * Set beam type based on Spot/Wash/None beam types as defined in GDTF
