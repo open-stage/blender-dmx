@@ -242,7 +242,7 @@ class DMX_PT_DMX_Universes(Panel):
         #layout.menu("dmx.menu.universe", text="...", icon="FILE_VOLUME")
 
 class DMX_PT_DMX_ArtNet(Panel):
-    bl_label = "Network"
+    bl_label = "Art-Net"
     bl_idname = "DMX_PT_DMX_ArtNet"
     bl_parent_id = "DMX_PT_DMX"
     bl_space_type = "VIEW_3D"
@@ -261,11 +261,25 @@ class DMX_PT_DMX_ArtNet(Panel):
         
         row = layout.row()
         row.prop(dmx, "artnet_enabled")
+        layout.label(text='Status: ' + layout.enum_item_name(dmx, 'artnet_status', dmx.artnet_status))
+
+class DMX_PT_DMX_sACN(Panel):
+    bl_label = "sACN"
+    bl_idname = "DMX_PT_DMX_sACN"
+    bl_parent_id = "DMX_PT_DMX"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_category = "DMX"
+    bl_context = "objectmode"
+    bl_options = {'DEFAULT_CLOSED'}
+
+    def draw(self, context):
+        layout = self.layout
+        dmx = context.scene.dmx
+
         row = layout.row()
         row.prop(dmx, "sacn_enabled")
-        row.enabled = (dmx.artnet_status == 'offline' or dmx.artnet_status == 'listen' or dmx.artnet_status == 'online')
-
-        layout.label(text='Status: ' + layout.enum_item_name(dmx, 'artnet_status', dmx.artnet_status))
+        layout.label(text='Status: ' + dmx.sacn_status)
 
 class DMX_UL_LiveDMX_items(UIList):
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):

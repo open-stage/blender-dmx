@@ -131,8 +131,9 @@ class DMX(PropertyGroup):
                 DMX_MT_Universe,
                 DMX_PT_DMX,
                 DMX_PT_DMX_Universes,
-                DMX_PT_DMX_ArtNet,
                 DMX_PT_DMX_LiveDMX,
+                DMX_PT_DMX_ArtNet,
+                DMX_PT_DMX_sACN,
                 DMX_OT_Setup_Volume_Create,
                 DMX_PT_Setup_Background,
                 DMX_PT_Setup_Volume,
@@ -394,9 +395,9 @@ class DMX(PropertyGroup):
         if (dmx.artnet_enabled and dmx.artnet_status != 'online'):
             dmx.artnet_enabled = False
             dmx.artnet_status = 'offline'
-        if (dmx.sacn_enabled and dmx.artnet_status != 'online'):
+        if (dmx.sacn_enabled and dmx.sacn_status != 'online'):
             dmx.sacn_enabled = False
-            dmx.artnet_status = 'offline'
+            dmx.sacn_status = 'offline'
         if dmx.osc_enabled:
             dmx.osc_enabled = False
 
@@ -769,14 +770,11 @@ class DMX(PropertyGroup):
 
     # # DMX > sACN > Enable
     def onsACNEnable(self, context):
-        dmx = bpy.context.scene.dmx
-        if (self.sacn_enabled):
+        if self.sacn_enabled:
             DMX_sACN.enable()
-            dmx.artnet_status = 'online'
             
         else:
             DMX_sACN.disable()
-            dmx.artnet_status = 'online'
             
     # # DMX > ArtNet > Enable
 
@@ -837,6 +835,10 @@ class DMX(PropertyGroup):
     artnet_status : EnumProperty(
         name = "Art-Net Status",
         items = DMX_ArtNet.status()
+    )
+    sacn_status : StringProperty(
+        name = "sACN Status",
+        default = "offline"
     )
 
     # # Groups > List
