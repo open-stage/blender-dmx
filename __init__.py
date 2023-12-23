@@ -1374,6 +1374,14 @@ def onLoadFile(scene):
     DMX_MVR_X_Protocol.disable()
     DMX_Zeroconf.disable()
 
+    # register a "bdmxX" namespace to get current value of a DMX channel,
+    # the syntax is #bdmxX(universe, address), where X is c or f (coarse, fine)
+    # for example: #bdmxc(1,1)
+    data_get_coarse = DMX_Data.get_coarse
+    data_get_fine = DMX_Data.get_fine
+    bpy.app.driver_namespace['bdmxc'] = data_get_coarse
+    bpy.app.driver_namespace['bdmxf'] = data_get_fine
+
 @bpy.app.handlers.persistent
 def onUndo(scene):
     if (not scene.dmx.collection and DMX.linkedToFile):
