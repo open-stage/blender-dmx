@@ -57,20 +57,29 @@ class DMX_ArtNet(threading.Thread):
         self._socket.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
         self._socket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
         self._socket.bind((ip_addr, ARTNET_PORT))
-        self._socket.settimeout(30)
+        self._socket.settimeout(20)
         self._stopped = False
 
     def stop(self):
         try:
             self._socket.shutdown(SHUT_RDWR)
         except Exception as e:
-            print(e)
-        self._stopped = True
+            print("Error while stopping", e)
+            raise ValueError("Socket closing error")
+        finally:
+            self._stopped = True
+
 
     def run(self):
         while not self._stopped:
-            data = self._socket.recv(1024)
+            data = b""
+            try:
+                data = self._socket.recv(1024)
+            except Exception as e:
+                print(e)
             print("data", data)
+            if len(data) < 8:
+                continue
             if struct.unpack("!8s", data[:8])[0] != ArtnetPacket.ARTNET_HEADER:
                 continue
             opcode = struct.unpack("<H", data[8:10])[0]
@@ -178,8 +187,11 @@ class DMX_ArtNet(threading.Thread):
         if DMX_ArtNet._thread:
             print("Stopping ArtNet client...", end="", flush=True)
             dmx.artnet_status = "stop"
-            DMX_ArtNet._thread.stop()
-            DMX_ArtNet._thread.join()
+            try:
+                DMX_ArtNet._thread.stop()
+                DMX_ArtNet._thread.join()
+            except Exception as e:
+                print("Error - ", e)
             DMX_ArtNet._thread = None
             dmx.artnet_status = "offline"
             print("DONE")
