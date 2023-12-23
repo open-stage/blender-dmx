@@ -28,7 +28,7 @@ class DMX_sACN:
             return
         DMX_Data.set_universe(packet.universe, bytearray(packet.dmxData), "sACN")
         try:
-            dmx.artnet_status = "online"
+            dmx.sacn_status = "online"
         except Exception as e:
             print("Error when setting status", e)
 
@@ -50,7 +50,7 @@ class DMX_sACN:
             DMX_Log.log.info(("Joining sACN universe:", universe))
             DMX_sACN._instance.receiver.join_multicast(universe)
         bpy.app.timers.register(DMX_sACN.run_render)
-        dmx.artnet_status = "listen"
+        dmx.sacn_status = "listen"
 
     @staticmethod
     def disable():
@@ -63,7 +63,7 @@ class DMX_sACN:
             DMX_sACN._instance.receiver.stop()
             DMX_sACN._instance.data = None
             DMX_sACN._instance = None
-            dmx.artnet_status = "offline"
+        dmx.sacn_status = "offline"
 
         if bpy.app.timers.is_registered(DMX_sACN.run_render):
             bpy.app.timers.unregister(DMX_sACN.run_render)
