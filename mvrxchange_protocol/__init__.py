@@ -6,9 +6,10 @@ from threading import Thread
 import struct
 from queue import Queue
 import time
+import selectors
 
 # A very rudimentary MVR-xchange client
-# The socket handling is lame at this point, reconnecting socket on every send (which is not often though)
+# For some reason, some apps close the socket, so we must ensure to reconnect
 
 
 class client(Thread):
@@ -22,17 +23,26 @@ class client(Thread):
         self.port = port
         self.filepath = ""
         self.commit = ""
+        self.sel = selectors.DefaultSelector()
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self.socket.connect((ip_address, port))
-        if timeout is not None and self.socket is not None:
-            self.socket.settimeout(timeout)
+        self.socket.setblocking(False)
+        self.socket.connect_ex((ip_address, port))
+        events = selectors.EVENT_READ | selectors.EVENT_WRITE
+        self.sel.register(self.socket, events)
+        # if timeout is not None and self.socket is not None:
+        #    self.socket.settimeout(timeout)
 
-    def reconnect(self):
+    def reconnect(self, sock):
         print("reconnecting")
+        self.sel.unregister(sock)
+        self.sel.close()
         self.socket.close()
+        self.sel = selectors.DefaultSelector()
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.socket.connect((self.ip_address, self.port))
+        self.socket.connect_ex((self.ip_address, self.port))
+        events = selectors.EVENT_READ | selectors.EVENT_WRITE
+        self.sel.register(self.socket, events)
 
     def join_mvr(self):
         self.send(self.join_message())
@@ -48,42 +58,57 @@ class client(Thread):
     def stop(self):
         self.running = False
         if self.socket is not None:
+            self.sel.close()
             self.socket.close()
         self.join()
 
     def send(self, message):
         self.queue.put(message)
+        events = selectors.EVENT_READ | selectors.EVENT_WRITE
+        self.sel.modify(self.socket, events)
 
     def run(self):
         data = b""
-        if self.socket is None:
-            return
+
         while self.running:
-            message = None
-            try:
-                new_data = self.socket.recv(1024)
-                data += new_data
-            except Exception as e:
-                ...
-            else:
-                if data:
-                    header = self.parse_header(data)
-                    if header["error"]:
-                        data = b""
-                        continue
+            events = self.sel.select(timeout=1)
+            if events:
+                for key, mask in events:
+                    sock = key.fileobj
+                    if mask & selectors.EVENT_READ:
+                        try:
+                            recv_data = sock.recv(1024)  # Should be ready to read
+                        except BlockingIOError:
+                            print(".")
+                        else:
+                            if recv_data:
+                                print(f"Received {recv_data!r}")
+                                data += recv_data
+                                if data:
+                                    header = self.parse_header(data)
+                                    if header["error"]:
+                                        data = b""
 
-                    if len(data) >= header["total_len"]:
-                        self.parse_data(data, self.callback)
-                        data = b""
+                                    if len(data) >= header["total_len"]:
+                                        print("go to parsing")
+                                        self.parse_data(data, self.callback)
+                                        data = b""
 
-            if not self.queue.empty():
-                message = self.queue.get()
-                if message:
-                    self.reconnect()
-                    self.socket.sendall(message)
+                        if not recv_data:
+                            self.reconnect(sock)
 
-            if not data:
-                time.sleep(0.2)
+                    if not self.queue.empty():
+                        if mask & selectors.EVENT_WRITE:
+                            message = self.queue.get()
+                            if message:
+                                sock.sendall(message)
+
+                            if self.queue.empty():
+                                events = selectors.EVENT_READ
+                                self.sel.modify(self.socket, events)
+
+                    if data == b"":
+                        time.sleep(0.2)
 
     def parse_header(self, data):
         header = {"error": True}
@@ -98,6 +123,7 @@ class client(Thread):
         return header
 
     def parse_data(self, data, callback):
+        print("parsing", data)
         header = self.parse_header(data)
         if header["type"] == 0:  # json
             json_data = json.loads(data[28:].decode("utf-8"))

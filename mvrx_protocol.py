@@ -18,7 +18,7 @@ class DMX_MVR_X_Protocol:
 
         addon_name = pathlib.Path(__file__).parent.parts[-1]
         prefs = bpy.context.preferences.addons[addon_name].preferences
-        application_uuid = prefs.get("application_uuid", str(py_uuid.uuid4())) # must never be 0
+        application_uuid = prefs.get("application_uuid", str(py_uuid.uuid4()))  # must never be 0
         self.application_uuid = application_uuid
         # print("bl info", application_info) # TODO: use this in the future
 
@@ -53,10 +53,7 @@ class DMX_MVR_X_Protocol:
         DMX_MVR_X_Protocol._instance = DMX_MVR_X_Protocol()
         print("Connecting to MVR-xchange client", client.ip_address, client.port)
         try:
-            DMX_MVR_X_Protocol._instance.client = mvrx_protocol.client(
-                client.ip_address, client.port, timeout=0, 
-                callback=DMX_MVR_X_Protocol.callback, 
-                application_uuid=DMX_MVR_X_Protocol._instance.application_uuid)
+            DMX_MVR_X_Protocol._instance.client = mvrx_protocol.client(client.ip_address, client.port, timeout=0, callback=DMX_MVR_X_Protocol.callback, application_uuid=DMX_MVR_X_Protocol._instance.application_uuid)
 
         except Exception as e:
             print("Cannot connect to host", e)

@@ -29,6 +29,17 @@ from dmx.osc_utils import DMX_OSC_Templates
 from dmx.mvrx_protocol import DMX_MVR_X_Protocol
 
 
+class DMX_OP_MVR_Refresh(Operator):
+    bl_label = "Refresh"
+    bl_description = "Refresh"
+    bl_idname = "dmx.mvr_refresh"
+    bl_options = {"UNDO"}
+
+    def execute(self, context):
+        DMX_MVR_X_Protocol._instance.client.join_mvr()
+        return {"FINISHED"}
+
+
 class DMX_OP_MVR_Test(Operator):
     bl_label = "Test"
     bl_description = "Test operator"
@@ -40,8 +51,6 @@ class DMX_OP_MVR_Test(Operator):
         DMX_MVR_X_Protocol._instance.client.join_mvr()
 
         return {"FINISHED"}
-
-
 
 class DMX_OP_MVR_Import(Operator):
     bl_label = "Import"
@@ -199,13 +208,17 @@ class DMX_PT_DMX_MVR_X(Panel):
         row.prop(clients, "selected_mvr_client", text="")
         row.enabled = not dmx.mvrx_enabled
         row = layout.row()
+        col = row.column()
         row.prop(dmx, "mvrx_enabled")
+        col = row.column()
+        col.operator("dmx.mvr_refresh", text="", icon="FILE_REFRESH")
+        col.enabled = dmx.mvrx_enabled
+        #row.operator("dmx.mvr_test", text="Test", icon="CANCEL")
         row.enabled = len(all_clients) > 0
         if not client:
             return
         row = layout.row()
         row.label(text = f"{client.station_name}", icon = "LINKED" if dmx.mvrx_enabled else "UNLINKED")
-        #row.operator("dmx.mvr_test", text="Test", icon="IMPORT")
         layout.template_list(
             "DMX_UL_MVR_Commit",
             "",
