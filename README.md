@@ -10,7 +10,7 @@ A DMX visualization tool inside <a href="https://blender.org">Blender</a>, desig
 
 ## Download & Install
 
-First of all, make sure you have installed [Blender 3.0](https://www.blender.org/download/) or higher (Blender 4.x is supported). Then, download the `zip` file:
+First of all, make sure you have installed [Blender 3.4](https://www.blender.org/download/) or higher (Blender 4.x is supported). Then, download the `zip` file:
 
 ### LATEST RELEASE (STABLE): v1.0.6
 
