@@ -29,6 +29,8 @@ class DMX_MVR_X_Protocol:
         uuid = data["StationUUID"]
         if "Files" in data:
             DMX_MVR_X_Protocol._instance._dmx.createMVR_Commits(data["Files"], uuid)
+        if "FileUUID" in data:
+            DMX_MVR_X_Protocol._instance._dmx.createMVR_Commits([data], uuid)
 
         if "file_downloaded" in data:
             DMX_MVR_X_Protocol._instance._dmx.fetched_mvr_downloaded_file(data["file_downloaded"])

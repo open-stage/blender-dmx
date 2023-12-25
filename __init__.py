@@ -1210,10 +1210,10 @@ class DMX(PropertyGroup):
         clients  = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
         for client in clients:
             if client.station_uuid == station_uuid:
-                client.commits.clear()
+                #client.commits.clear()
 
                 for commit in commits:
-
+                    skip = False
                     if "FileName" in commit:
                         filename = commit["FileName"]
                     else:
@@ -1221,15 +1221,20 @@ class DMX(PropertyGroup):
                     if not len(filename):
                         filename = commit["FileUUID"]
 
-                    now = int(datetime.now().timestamp())
-                    client.last_seen = now
-                    new_commit = client.commits.add()
-                    new_commit.station_uuid = station_uuid
-                    new_commit.comment = commit["Comment"]
-                    new_commit.commit_uuid = commit["FileUUID"]
-                    new_commit.file_size = commit["FileSize"]
-                    new_commit.file_name = filename
-                    new_commit.timestamp = now
+                    for existing_commit in client.commits:
+                        if existing_commit.commit_uuid == commit["FileUUID"]:
+                            skip = True
+                            continue
+                    if not skip:
+                        now = int(datetime.now().timestamp())
+                        client.last_seen = now
+                        new_commit = client.commits.add()
+                        new_commit.station_uuid = station_uuid
+                        new_commit.comment = commit["Comment"]
+                        new_commit.commit_uuid = commit["FileUUID"]
+                        new_commit.file_size = commit["FileSize"]
+                        new_commit.file_name = filename
+                        new_commit.timestamp = now
 
     def fetched_mvr_downloaded_file(self, commit):
         clients  = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
