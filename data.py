@@ -66,14 +66,14 @@ class DMX_Data():
                 print("DMX", "Universe Allocated: ", u)
 
     @staticmethod
-    def get_coarse(universe, addr):
-        """Used for the namespace bdmxc function 
+    def get_value_8(universe, addr):
+        """Used for the namespace bdmx8 function 
         Returns single 8bit value """
         return DMX_Data.get(universe, addr, 1)[0]
 
     @staticmethod
-    def get_fine(universe, addr):
-        """Used for the namespace bdmxf function
+    def get_value_16(universe, addr):
+        """Used for the namespace bdmx16 function
         Returns single 16bit value"""
         data = DMX_Data.get(universe, addr, 2)
         return data[0]*256+data[1]
