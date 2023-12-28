@@ -1,5 +1,23 @@
 ### Changelog
 
+
+### 1.0.7
+
+* New Fixture UI List:
+    * Better scrolling and filtering
+    * In-place editing of some attributes
+    * New editing of XYZ position transforms
+* Indicate that Blender 3.4 and higher is required
+* Improvements to MVR-xchange:
+    * Support for MVR_COMMIT message
+    * Rewrite of the protocol code
+* Add custom namespace driver for Blender, to use DMX for general animations of
+  any 3D objects in Blender
+* Improved Network DMX protocols:
+    * Separate sACN from Art-Net
+    * Improve Art-Net handling (ArtPoll, error messages, timeout)
+    * Universe setting made clearer
+
 ### 1.0.6
 
 * Initial support for MVR-xchange protocol added
