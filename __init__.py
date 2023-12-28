@@ -1370,11 +1370,12 @@ def onDepsgraph(scene):
 
 @bpy.app.handlers.persistent
 def onLoadFile(scene):
-    if ('DMX' in bpy.data.scenes['Scene'].collection.children):
-        print("DMX", "File contains DMX show, linking...")
-        bpy.context.scene.dmx.linkFile()
-    else:
-        bpy.context.scene.dmx.unlinkFile()
+    if "Scene" in bpy.data.scenes:
+        if ('DMX' in bpy.data.scenes['Scene'].collection.children):
+            print("DMX", "File contains DMX show, linking...")
+            bpy.context.scene.dmx.linkFile()
+        else:
+            bpy.context.scene.dmx.unlinkFile()
 
     # Selection callback
     handle = object()
