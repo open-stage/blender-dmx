@@ -141,6 +141,5 @@ class DMX_Data():
                         except Exception as e:
                             print(e)
                     DMX_Data._last_updated = time.time()
-                    print("update dmx")
 
         return changed

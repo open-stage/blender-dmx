@@ -56,8 +56,14 @@ class DMX_ArtNet(threading.Thread):
         self._socket = socket(AF_INET, SOCK_DGRAM)
         self._socket.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
         self._socket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
-        self._socket.bind((ip_addr, ARTNET_PORT))
-        self._socket.settimeout(20)
+        try:
+            self._socket.bind((ip_addr, ARTNET_PORT))
+        except OSError as e:
+            print(e)
+            self._dmx.artnet_status = "socket_error"
+            raise ValueError("Socket opening error")
+
+        #self._socket.settimeout(30)
         self._stopped = False
 
     def stop(self):
@@ -65,9 +71,9 @@ class DMX_ArtNet(threading.Thread):
             self._socket.shutdown(SHUT_RDWR)
         except Exception as e:
             print("Error while stopping", e)
-            raise ValueError("Socket closing error")
-        finally:
             self._stopped = True
+            raise ValueError("Socket closing error")
+        self._stopped = True
 
 
     def run(self):
@@ -77,7 +83,6 @@ class DMX_ArtNet(threading.Thread):
                 data = self._socket.recv(1024)
             except Exception as e:
                 print(e)
-            print("data", data)
             if len(data) < 8:
                 continue
             if struct.unpack("!8s", data[:8])[0] != ArtnetPacket.ARTNET_HEADER:
@@ -93,6 +98,7 @@ class DMX_ArtNet(threading.Thread):
         self._dmx.artnet_status = "socket_close"
         self._socket.close()
         self._dmx.artnet_status = "offline"
+        self._stopped = True
 
     def handle_ArtPoll(self):
         """ArtPoll is a message to find out which other ArtNet devices are in the network.
@@ -125,14 +131,14 @@ class DMX_ArtNet(threading.Thread):
         else:
             ip = "0.0.0.0"
         ip = [int(i) for i in ip.split(".")]
-        content += [i.to_bytes() for i in ip]
+        content += [struct.pack('B', i) for i in ip]
         # Port
         content.append(struct.pack("<H", 0x1936))
         # Firmware Version
         content.append(struct.pack("!H", 1))
         # Net and subnet of this node
-        content.append(ip[1].to_bytes())
-        content.append(ip[0].to_bytes())
+        content.append(struct.pack('B', ip[1]))
+        content.append(struct.pack('B', ip[0]))
         # OEM Code (E:Cue 1x DMX Out)
         content.append(struct.pack("H", 0)) #0000
         # UBEA Version -> Nope -> 0
@@ -169,7 +175,11 @@ class DMX_ArtNet(threading.Thread):
         print("\t%s:%s" % (dmx.artnet_ipaddr, ARTNET_PORT))
         dmx.artnet_status = "socket_open"
 
-        DMX_ArtNet._thread = DMX_ArtNet(dmx.artnet_ipaddr)
+        try:
+            DMX_ArtNet._thread = DMX_ArtNet(dmx.artnet_ipaddr)
+        except Exception as e:
+            print(e)
+            return
         DMX_ArtNet._thread.start()
 
         bpy.app.timers.register(DMX_ArtNet.run_render)
@@ -203,6 +213,7 @@ class DMX_ArtNet(threading.Thread):
         return [
             ("offline", "Offline", ""),
             ("socket_open", "Opening socket...", ""),
+            ("socket_error", "Error opening socket... Close other Art-Net applications, re-enable Art-Net in BlenderDMX and start the other application", ""),
             ("listen", "Waiting for data...", ""),
             ("online", "Online", ""),
             ("stop", "Stopping thread...", ""),
