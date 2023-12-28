@@ -131,7 +131,7 @@ class DMX_UL_Universe(UIList):
         if self.layout_type in {'DEFAULT', 'COMPACT'}:
             col = layout.column()
             col.label(text=f"{item.id}", icon=icon)
-            col.ui_units_x = 2
+            col.ui_units_x = 3
             col = layout.column()
             col.prop(item, "name", text="", emboss=False)
             col = layout.column()
