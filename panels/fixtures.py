@@ -573,27 +573,28 @@ class DMX_PT_Fixtures(Panel):
         c.label(text="Name")
         c.ui_units_x = 8 
 
-        if dmx.column_fixture_id:
+        if dmx.column_fixture_id and not dmx.fixture_properties_editable:
+
             c = row.column()
             c.label(text="F ID")
             c.ui_units_x = 2
 
-        if dmx.column_unit_number:
+        if dmx.column_unit_number and not dmx.fixture_properties_editable:
             c = row.column()
             c.ui_units_x = 2
             c.label(text="Unit #")
 
-        if dmx.column_fixture_id_numeric:
+        if dmx.column_fixture_id_numeric and not dmx.fixture_properties_editable:
             c = row.column()
             c.label(text="F ID #")
             c.ui_units_x = 2
 
-        if dmx.column_custom_id:
+        if dmx.column_custom_id and not dmx.fixture_properties_editable:
             c = row.column()
             c.label(text="Cst ID")
             c.ui_units_x = 2
 
-        if dmx.column_dmx_address:
+        if dmx.column_dmx_address and not dmx.fixture_properties_editable:
             c = row.column()
             c.ui_units_x = 2
             if dmx.fixture_properties_editable:
@@ -604,11 +605,6 @@ class DMX_PT_Fixtures(Panel):
             else:
                 c.label(text="Uni.Addr")
     
-        if dmx.fixture_properties_editable:
-            c = row.column()
-            c.ui_units_x = 2
-            c.label(text="Del")
-
         layout.template_list(
             "DMX_UL_Fixtures",
             "",
@@ -730,6 +726,23 @@ class DMX_UL_Fixtures(UIList):
             else:
                 c.label(text=f"{item.universe}.{item.address}")
     
+        if dmx.fixture_properties_editable:
+            body = None
+            for obj in item.collection.objects:
+                if obj.get("geometry_root", False):
+                    body = obj
+                    break
+            if body is not None:
+                col = layout.column()
+                col.prop(body, "location", index=0, text='')
+                col.ui_units_x = 3
+                col = layout.column()
+                col.ui_units_x = 3
+                col.prop(body, "location", index=1, text='')
+                col = layout.column()
+                col.prop(body, "location", index=2, text='')
+                col.ui_units_x = 3
+
         if dmx.fixture_properties_editable:
             col = layout.column()
             col.context_pointer_set("fixture", item)
