@@ -270,16 +270,25 @@ class DMX(PropertyGroup):
         # Clear the buffer on change of every protocol
         DMX_Data.prepare_empty_buffer()
 
-    selected_live_dmx_source : EnumProperty(
-        name = "DMX Source",
-        description="The network protocol for which to show live DMX values",
-        default = "BLENDERDMX",
-        items = network_options_list,
-        update = prepare_empty_buffer,
-    )
-    selected_live_dmx_universe: IntProperty(
-        min = 0,
-        update = prepare_empty_buffer,
+
+    def get_dmx_universes(self, context):
+        #print(self, context)
+        data = []
+        for universe in self.universes:
+            data.append((str(universe.id), universe.name, str(universe.input), "", universe.id))
+        return data
+
+    def get_selected_live_dmx_universe(self):
+        for universe in self.universes:
+            selected_universe = universe
+            if self.selected_live_dmx == str(universe.id):
+                break
+        return selected_universe
+
+    selected_live_dmx: EnumProperty(
+        name = "Universe",
+        description="",
+        items = get_dmx_universes
     )
 
     dmx_values: CollectionProperty(
@@ -1319,7 +1328,7 @@ class DMX(PropertyGroup):
 
     def addUniverse(self):
         id = len(self.universes)
-        DMX_Universe.add(self, id, "DMX %d"%id)
+        DMX_Universe.add(self, id, "Universe %d"%id)
 
     def removeUniverse(self, i):
         DMX_Universe.remove(self, i)

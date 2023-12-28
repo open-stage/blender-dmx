@@ -129,8 +129,13 @@ class DMX_UL_Universe(UIList):
         ob = data
         icon = "FILE_VOLUME"
         if self.layout_type in {'DEFAULT', 'COMPACT'}:
-            layout.prop(item, "name", text="", emboss=False, icon=icon)
-            layout.label(text=item.input)
+            col = layout.column()
+            col.label(text=f"{item.id}", icon=icon)
+            col.ui_units_x = 2
+            col = layout.column()
+            col.prop(item, "name", text="", emboss=False)
+            col = layout.column()
+            col.label(text=item.input)
         elif self.layout_type in {'GRID'}:
             layout.alignment = 'CENTER'
             layout.label(text=str(item.id), icon=icon)
@@ -267,6 +272,11 @@ class DMX_PT_DMX_ArtNet(Panel):
     def draw(self, context):
         layout = self.layout
         dmx = context.scene.dmx
+        
+        artnet_universes = []
+        for universe in dmx.universes:
+            if universe.input == "ARTNET":
+                artnet_universes.append(universe)
 
         row = layout.row()
         row.prop(dmx, "artnet_ipaddr", text="IPv4")
@@ -274,6 +284,9 @@ class DMX_PT_DMX_ArtNet(Panel):
         
         row = layout.row()
         row.prop(dmx, "artnet_enabled")
+        row.enabled = len(artnet_universes)>0
+        row = layout.row()
+        row.label(text=f"Art-Net set for {len(artnet_universes)} universe(s)")
         layout.label(text='Status: ' + layout.enum_item_name(dmx, 'artnet_status', dmx.artnet_status))
 
 class DMX_PT_DMX_sACN(Panel):
@@ -290,8 +303,18 @@ class DMX_PT_DMX_sACN(Panel):
         layout = self.layout
         dmx = context.scene.dmx
 
+        sacn_universes = []
+        for index, universe in enumerate(dmx.universes):
+            if index == 0:  # invalid for sACN
+                continue
+            if universe.input == "sACN":
+                sacn_universes.append(universe)
+
         row = layout.row()
         row.prop(dmx, "sacn_enabled")
+        row.enabled = len(sacn_universes)>0
+        row = layout.row()
+        row.label(text=f"sACN set for {len(sacn_universes)} universe(s)")
         layout.label(text='Status: ' + dmx.sacn_status)
 
 class DMX_UL_LiveDMX_items(UIList):
@@ -316,10 +339,18 @@ class DMX_PT_DMX_LiveDMX(Panel):
     def draw(self, context):
         layout = self.layout
         dmx = context.scene.dmx
+        selected_universe = dmx.get_selected_live_dmx_universe()
 
         row = layout.row()
-        row.prop(dmx, "selected_live_dmx_source", text="Source")
-        row.prop(dmx, "selected_live_dmx_universe", text="Universe")
+        row.prop(dmx, "selected_live_dmx", text="Source")
+        row = layout.row()
+        col = row.column()
+        col.label(text=f"{selected_universe.id}")
+        col.ui_units_x = 2
+        col = row.column()
+        row.label(text=f"{selected_universe.name}")
+        col = row.column()
+        row.label(text=f"{selected_universe.input}")
         layout.template_list("DMX_UL_LiveDMX_items", "", dmx, "dmx_values", dmx, "dmx_value_index", type='GRID')
 
 # Panel #
