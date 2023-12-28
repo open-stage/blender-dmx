@@ -123,12 +123,18 @@ class DMX_Fixture(PropertyGroup):
         type = DMX_Fixture_Channel
     )
 
+    def ensure_universe_exists(self, context):
+        dmx = bpy.context.scene.dmx
+        dmx.ensureUniverseExists(self.universe)
+
     universe : IntProperty(
         name = "Fixture > Universe",
         description="Fixture DMX Universe",
         default = 0,
         min = 0,
-        max = 511)
+        max = 511,
+        update = ensure_universe_exists
+        )
 
     address : IntProperty(
         name = "Fixture > Address",

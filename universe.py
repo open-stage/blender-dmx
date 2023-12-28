@@ -29,7 +29,7 @@ class DMX_Universe(PropertyGroup):
     name: StringProperty (
         name = "Name",
         description = "Name of the universe",
-        default = "DMX 0"
+        default = "Universe 0"
     )
 
     input: EnumProperty (

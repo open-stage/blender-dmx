@@ -95,10 +95,9 @@ class DMX_Data():
         if addr > 511:
             return
 
-
         if DMX_Data._dmx is not None:
             dmx = DMX_Data._dmx
-            if dmx.selected_live_dmx_source == "BLENDERDMX":
+            if dmx.get_selected_live_dmx_universe().input == "BLENDERDMX":
                 dmx = bpy.context.scene.dmx
                 dmx.dmx_values[addr-1].channel=val
         DMX_Data._universes[universe][addr-1] = val
@@ -132,7 +131,8 @@ class DMX_Data():
 
         if DMX_Data._dmx is not None:
             dmx = DMX_Data._dmx
-            if dmx.selected_live_dmx_source == source and dmx.selected_live_dmx_universe == universe:
+            selected_live_dmx_universe = dmx.get_selected_live_dmx_universe()
+            if selected_live_dmx_universe.input == source and selected_live_dmx_universe.id == universe:
                 if DMX_Data._last_updated is None or (time.time() - DMX_Data._last_updated > 0.8 and changed):
                     # We limit update by time, too fast updates were troubling Blender's UI
                     for idx, val in enumerate(data):
