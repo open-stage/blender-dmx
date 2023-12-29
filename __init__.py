@@ -1397,13 +1397,11 @@ def onLoadFile(scene):
     DMX_MVR_X_Protocol.disable()
     DMX_Zeroconf.disable()
 
-    # register a "bdmxX" namespace to get current value of a DMX channel,
-    # the syntax is #bdmxX(universe, address), where X is 8 or 16 (8bit or 16bit)
-    # for example: #bdmx8(1,1)
-    data_get_8 = DMX_Data.get_value_8
-    data_get_16 = DMX_Data.get_value_16
-    bpy.app.driver_namespace['bdmx8'] = data_get_8
-    bpy.app.driver_namespace['bdmx16'] = data_get_16
+    # register a "bdmx" namespace to get current value of a DMX channel,
+    # the syntax is #bdmx(universe, channel(s)), where the channel can be 
+    # multiple, to receive 8, 16, 24... bits of data:
+    # for example: #bdmx(1,1) , #bdmx(1,1,2)
+    bpy.app.driver_namespace['bdmx'] = DMX_Data.get_value
 
 @bpy.app.handlers.persistent
 def onUndo(scene):
