@@ -18,7 +18,6 @@ import dmx.panels.profiles as Profiles
 from bpy.props import (IntProperty,
                        BoolProperty,
                        FloatVectorProperty,
-                       PointerProperty,
                        StringProperty,
                        CollectionProperty)
 
@@ -29,7 +28,6 @@ from bpy.types import (Panel,
                        )
 
 from dmx.gdtf import DMX_GDTF
-from dmx.fixture import DMX_Fixture
 
 # Menus #
 

@@ -7,25 +7,10 @@
 #   http://www.github.com/open-stage/BlenderDMX
 #
 
-import bpy
 import os
-from datetime import datetime
-from dmx.data import DMX_Data
-from bpy.props import (PointerProperty,
-                       EnumProperty,
-                       StringProperty,
-                       IntProperty)
 
-from bpy.types import (Panel,
-                       Menu,
-                       Operator,
-                       UIList,
-                       PropertyGroup)
-
-from dmx.material import getVolumeScatterMaterial
-from dmx.util import getSceneRect
-from dmx.osc import DMX_OSC
-from dmx.osc_utils import DMX_OSC_Templates
+from bpy.props import StringProperty
+from bpy.types import Menu, Operator, Panel, UIList
 from dmx.mvrx_protocol import DMX_MVR_X_Protocol
 
 
