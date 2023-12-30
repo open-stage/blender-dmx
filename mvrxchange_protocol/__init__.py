@@ -79,7 +79,7 @@ class client(Thread):
                         try:
                             recv_data = sock.recv(1024)  # Should be ready to read
                         except BlockingIOError:
-                            print(".")
+                            pass
                         else:
                             if recv_data:
                                 print(f"Received {recv_data!r}")
@@ -90,9 +90,10 @@ class client(Thread):
                                         data = b""
 
                                     if len(data) >= header["total_len"]:
+                                        total_len = header["total_len"]
                                         print("go to parsing")
-                                        self.parse_data(data, self.callback)
-                                        data = b""
+                                        self.parse_data(data[:total_len], self.callback)
+                                        data = data[total_len:]
 
                         if not recv_data:
                             self.reconnect(sock)
