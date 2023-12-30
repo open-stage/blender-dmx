@@ -10,9 +10,7 @@
 #
 
 import bpy
-from bpy.props import PointerProperty
-from bpy.types import (Panel, Operator)
-
+from bpy.types import Operator, Panel
 from dmx.material import getVolumeScatterMaterial
 from dmx.util import getSceneRect
 

@@ -9,9 +9,7 @@
 #
 
 import bpy
-
-from bpy.types import (Panel,
-                       Operator)
+from bpy.types import Operator, Panel
 from dmx.osc_utils import DMX_OSC_Handlers
 
 # Operators #
