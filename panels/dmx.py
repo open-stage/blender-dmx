@@ -340,6 +340,8 @@ class DMX_PT_DMX_LiveDMX(Panel):
         layout = self.layout
         dmx = context.scene.dmx
         selected_universe = dmx.get_selected_live_dmx_universe()
+        if selected_universe is None: # this should not happen
+            raise ValueError("Missing selected universe, as if DMX base class is empty...")
 
         row = layout.row()
         row.prop(dmx, "selected_live_dmx", text="Source")
