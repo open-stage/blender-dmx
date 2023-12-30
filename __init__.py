@@ -279,6 +279,7 @@ class DMX(PropertyGroup):
         return data
 
     def get_selected_live_dmx_universe(self):
+        selected_universe = None
         for universe in self.universes:
             selected_universe = universe
             if self.selected_live_dmx == str(universe.id):
