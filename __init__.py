@@ -235,6 +235,10 @@ class DMX(PropertyGroup):
         name = "DMX Address",
         default = True)
 
+    column_fixture_position: BoolProperty(
+        name = "Position",
+        default = False)
+
     collection: PointerProperty(
         name = "DMX Collection",
         type = Collection)
