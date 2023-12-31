@@ -645,6 +645,8 @@ class DMX_UL_Fixtures(UIList):
         col = row.column()
         col.prop(dmx, "column_dmx_address")
         col.prop(dmx, "fixture_properties_editable")
+        if dmx.fixture_properties_editable:
+            col.prop(dmx, "column_fixture_position")
         row = layout.row()
         row.prop(dmx, "fixtures_sorting_order")
 
@@ -725,7 +727,7 @@ class DMX_UL_Fixtures(UIList):
             else:
                 c.label(text=f"{item.universe}.{item.address}")
     
-        if dmx.fixture_properties_editable:
+        if dmx.fixture_properties_editable and dmx.column_fixture_position:
             body = None
             for obj in item.collection.objects:
                 if obj.get("geometry_root", False):
