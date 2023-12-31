@@ -620,8 +620,9 @@ class DMX_UL_Fixtures(UIList):
     def str_to_digit(self, s):
         out = 0
         try:
-            digs=re.compile(r"(\d*)").findall
-            out = int(digs(s)[-2]) or 0
+            if len(s):
+                digs=re.compile(r"(\d*)").findall
+                out = int(digs(s)[-2]) or 0
         except Exception as e:
             print("Error converting text to digit", e, s)
         return out
