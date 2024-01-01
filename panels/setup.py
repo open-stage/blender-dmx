@@ -13,6 +13,8 @@ import bpy
 from bpy.types import Operator, Panel
 from dmx.material import getVolumeScatterMaterial
 from dmx.util import getSceneRect
+import dmx.version as version
+from dmx import bl_info as application_info
 
 # Operators #
 
@@ -135,6 +137,10 @@ class DMX_PT_Setup_Debug(Panel):
         row.prop(context.scene.dmx,'select_geometries')
         row = layout.row()
         row.prop(context.scene.dmx, 'logging_level')
+        row = layout.row()
+        layout.operator("dmx.check_version", text="Check for BlenderDMX updates")
+        row = layout.row()
+        row.label(text = f"Status: {context.window_manager.dmx.release_version_status}")
 
 # Panel #
 
@@ -152,3 +158,37 @@ class DMX_PT_Setup(Panel):
         dmx = context.scene.dmx
         if (not dmx.collection):
             layout.operator("dmx.new_show", text="Create New Show", icon="LIGHT")
+
+class DMX_OT_VersionCheck(Operator):
+    bl_label = "Check version"
+    bl_description = "Check if there is new release of BlenderDMX"
+    bl_idname = "dmx.check_version"
+    bl_options = {'UNDO'}
+
+    def callback(self, data, context):
+        temp_data = context.window_manager.dmx
+        text = "Unknown version error"
+        if "error" in data:
+            text = data["error"]
+        else:
+            try:
+                current_version = application_info["version"]
+                new_version = data["name"]
+                res = version.version_compare(current_version, new_version)
+            except Exception as e:
+                text = f"{e.__class__.__name__} {e}"
+            else:
+                if res < 0:
+                    text = f"New version {new_version} available"
+                elif res > 0:
+                    text = "You are using pre-release version"
+                else:
+                    text = "You are using latest version"
+
+        temp_data.release_version_status = text
+
+    def execute(self, context):
+        temp_data = context.window_manager.dmx
+        temp_data.release_version_status = "Checking..."
+        version.get_latest_release(self.callback, context)
+        return {'FINISHED'}
