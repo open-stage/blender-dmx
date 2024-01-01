@@ -25,22 +25,20 @@ class DMX_MVR_Xchange_Client(PropertyGroup):
     commits: CollectionProperty(name="Commits", type=DMX_MVR_Xchange_Commit)
 
     def get_clients(self, context):
-        #print(self, context)
-        clients  = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
+        # print(self, context)
+        clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
+        dmx = bpy.context.scene.dmx
         data = []
-        for client in clients:
-            data.append((client.station_uuid, client.station_name, client.station_uuid))
+        for index, client in enumerate(clients):
+            icon = "DEFAULT_TEST"
+            if any("Production Assist" in x for x in [client.provider, client.station_name]):
+                icon = "PRODUCTION_ASSIST"
+            data.append((client.station_uuid, client.station_name, client.station_uuid, dmx.custom_icons[icon].icon_id, index))
         return data
+
 
 class DMX_MVR_Xchange(PropertyGroup):
     selected_commit: IntProperty(default=0)
-    mvr_xchange_clients: CollectionProperty(
-            name = "MVR-xchange Clients",
-            type=DMX_MVR_Xchange_Client
-            )
+    mvr_xchange_clients: CollectionProperty(name="MVR-xchange Clients", type=DMX_MVR_Xchange_Client)
 
-    selected_mvr_client: EnumProperty(
-        name = "Client",
-        description="",
-        items = DMX_MVR_Xchange_Client.get_clients
-    )
+    selected_mvr_client: EnumProperty(name="Client", description="", items=DMX_MVR_Xchange_Client.get_clients)

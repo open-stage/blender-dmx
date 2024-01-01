@@ -53,6 +53,7 @@ from dmx.util import rgb_to_cmy, xyY2rgbaa, ShowMessageBox
 from dmx.mvr_objects import DMX_MVR_Object 
 from dmx.mvr_xchange import *
 from dmx.mvrx_protocol import DMX_MVR_X_Protocol
+import bpy.utils.previews
 
 from bpy.props import (BoolProperty,
                        StringProperty,
@@ -186,8 +187,17 @@ class DMX(PropertyGroup):
     linkedToFile = False
     _keymaps = []
     fixtures_filter = []
+    custom_icons = None
 
     def register():
+        #custom icons
+        DMX.custom_icons = bpy.utils.previews.new()
+
+        ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
+        path = os.path.join(ADDON_PATH, "assets", "icons")
+        DMX.custom_icons.load("DEFAULT_TEST", os.path.join(path, "erlenmeyer.png"), "IMAGE")
+        DMX.custom_icons.load("PRODUCTION_ASSIST", os.path.join(path, "pa.png"), "IMAGE")
+
         for cls in DMX.classes_setup:
             bpy.utils.register_class(cls)
 
@@ -199,10 +209,13 @@ class DMX(PropertyGroup):
         kmi = km.keymap_items.new('dmx.fixture_previous', 'LEFT_ARROW', 'PRESS', ctrl=True)
         DMX._keymaps.append((km, kmi))
 
+
     def unregister():
         # unregister keymaps
         for km, kmi in DMX._keymaps: km.keymap_items.remove(kmi)
         DMX._keymaps.clear()
+        bpy.utils.previews.remove(DMX.custom_icons)
+
 
         if (DMX.linkedToFile):
             for cls in DMX.classes:
@@ -1211,16 +1224,21 @@ class DMX(PropertyGroup):
                 clients.remove(client)
                 break
 
-    def updateMVR_Client(self, station_name, station_uuid, ip_address, port):
+    def updateMVR_Client(self, station_uuid, station_name=None, ip_address=None, port=None, provider=None):
         clients  = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
         updated = False
         for client in clients:
             if client.station_uuid == station_uuid:
-                client.station_name = station_name
+                if station_name:
+                    client.station_name = station_name
                 now = int(datetime.now().timestamp())
                 client.last_seen = now
-                client.ip_address = ip_address
-                client.port = port
+                if ip_address:
+                    client.ip_address = ip_address
+                if port:
+                    client.port = port
+                if provider:
+                    client.provider = provider
                 updated = True
                 break
         if not updated:
