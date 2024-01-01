@@ -98,6 +98,12 @@ class DMX_TempData(PropertyGroup):
             type=DMX_MVR_Xchange
             )
 
+    release_version_status: StringProperty(
+        name = "Status",
+        description="Information about latest release of BlenderDMX",
+        default="Not checked"
+    )
+
 class DMX(PropertyGroup):
 
     # Base classes to be registered
@@ -182,6 +188,7 @@ class DMX(PropertyGroup):
                 DMX_OT_Fixture_ForceRemove,
                 DMX_OT_Fixture_SelectNext,
                 DMX_OT_Fixture_SelectPrevious,
+                DMX_OT_VersionCheck,
                 DMX_PT_Programmer)
 
     linkedToFile = False
