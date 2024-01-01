@@ -487,6 +487,9 @@ class DMX_OT_Fixture_SelectPrevious(Operator):
         selected_all = dmx.selectedFixtures()
         fixtures = dmx.sortedFixtures()
 
+        if not selected_all and fixtures:
+            selected_all = [fixtures[-1]] # if nothing is selected, select last
+
         for fixture in fixtures:
             fixture.unselect()
 
@@ -511,6 +514,9 @@ class DMX_OT_Fixture_SelectNext(Operator):
         dmx = scene.dmx
         selected_all = dmx.selectedFixtures()
         fixtures = dmx.sortedFixtures()
+
+        if not selected_all and fixtures:
+            selected_all = [fixtures[0]] # if nothing is selected, select first
 
         for fixture in fixtures:
             fixture.unselect()
