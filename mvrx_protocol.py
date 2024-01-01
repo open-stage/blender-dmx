@@ -22,6 +22,7 @@ class DMX_MVR_X_Protocol:
         self.application_uuid = application_uuid
         # print("bl info", application_info) # TODO: use this in the future
 
+    @staticmethod
     def callback(data):
         if "StationUUID" not in data:
             print("Bad response", data)
@@ -31,7 +32,9 @@ class DMX_MVR_X_Protocol:
             DMX_MVR_X_Protocol._instance._dmx.createMVR_Commits(data["Files"], uuid)
         if "FileUUID" in data:
             DMX_MVR_X_Protocol._instance._dmx.createMVR_Commits([data], uuid)
-
+        if "Provider" in data:
+            provider = data["Provider"]
+            DMX_MVR_X_Protocol._instance._dmx.updateMVR_Client(provider = provider, station_uuid = uuid)
         if "file_downloaded" in data:
             DMX_MVR_X_Protocol._instance._dmx.fetched_mvr_downloaded_file(data["file_downloaded"])
 

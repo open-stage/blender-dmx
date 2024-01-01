@@ -48,9 +48,9 @@ class DMX_Zeroconf:
         if state_change is ServiceStateChange.Added:
             DMX_Zeroconf._instance._dmx.createMVR_Client(station_name, station_uuid, ip_address, int(port))
         elif state_change is ServiceStateChange.Updated:
-            DMX_Zeroconf._instance._dmx.updateMVR_Client(station_name, station_uuid, ip_address, int(port))
+            DMX_Zeroconf._instance._dmx.updateMVR_Client(station_uuid, station_name, ip_address, int(port))
         else:  # removed
-            DMX_Zeroconf._instance._dmx.removeMVR_Client(station_name, station_uuid, ip_address, int(port))
+            DMX_Zeroconf._instance._dmx.removeMVR_Client(station_uuid, station_name, ip_address, int(port))
 
     @staticmethod
     def enable():
