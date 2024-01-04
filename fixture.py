@@ -9,8 +9,9 @@ import bpy
 import math
 import mathutils
 import uuid
+import random
 
-from dmx.material import getEmitterMaterial
+from dmx.material import getEmitterMaterial, get_gobo_material
 from dmx.model import DMX_Model
 from dmx.logging import DMX_Log
 
@@ -33,6 +34,7 @@ from bpy.props import (IntProperty,
 from bpy.types import (PropertyGroup,
                        Collection,
                        Object,
+                       Image,
                        Material)
 
 # Shader Nodes default labels
@@ -60,6 +62,11 @@ class DMX_Fixture_Object(PropertyGroup):
     object: PointerProperty(
         name = "Fixture > Object",
         type = Object)
+
+class DMX_Fixture_Image(PropertyGroup):
+    image: PointerProperty(
+        name = "Fixture > Image",
+        type = Image)
 
 class DMX_Emitter_Material(PropertyGroup):
     material: PointerProperty(
@@ -95,12 +102,21 @@ class DMX_Fixture(PropertyGroup):
         type = DMX_Fixture_Object
     )
 
+    images: CollectionProperty(
+        name = "Fixture > Images",
+        type = DMX_Fixture_Image
+    )
+
     dmx_values: StringProperty(
             name = "Temporary DMX cache for speedups",
             default=""
     )
     emitter_materials: CollectionProperty(
         name = "Fixture > Materials",
+        type = DMX_Emitter_Material)
+
+    gobo_materials: CollectionProperty(
+        name = "Fixture > Gobo Materials",
         type = DMX_Emitter_Material)
 
     # DMX properties
@@ -233,10 +249,12 @@ class DMX_Fixture(PropertyGroup):
 
         # (Edit) Clear links and channel cache
         self.lights.clear()
+        self.images.clear()
         self.objects.clear()
         self.channels.clear()
         self.virtual_channels.clear()
         self.emitter_materials.clear()
+        self.gobo_materials.clear()
 
         # Create clean Collection
         # (Blender creates the collection with selected objects/collections)
@@ -251,6 +269,15 @@ class DMX_Fixture(PropertyGroup):
         # Import and deep copy Fixture Model Collection
         gdtf_profile = DMX_GDTF.loadProfile(profile)
 
+        # Get all gobos
+        if bpy.context.scene.dmx.gobo_support:
+            gobos = DMX_GDTF.extract_gobos(gdtf_profile)
+
+            for image in gobos:
+                gobo = self.images.add()
+                gobo.name = image["name"]
+                gobo.image = image["image"].copy()
+                gobo.image.pack()
 
         # Handle if dmx mode doesn't exist (maybe this is MVR import and GDTF files were replaced)
         # use mode[0] as default
@@ -295,6 +322,8 @@ class DMX_Fixture(PropertyGroup):
             # Cache access to base (root) and head for faster rendering.
             # Fixtures with multiple pan/tilts will still have issues
             # but that would anyway require geometry → attribute approach
+
+            print("obj", obj)
             if obj.type == 'LIGHT':
                 links[obj.name].data = obj.data.copy()
                 self.lights.add()
@@ -324,6 +353,8 @@ class DMX_Fixture(PropertyGroup):
         for obj in self.collection.objects:
             for constraint in obj.constraints:
                 constraint.target = links[constraint.target.name]
+
+
 
         # (Edit) Reload old positions and rotations
         bpy.context.view_layer.update()
@@ -360,6 +391,18 @@ class DMX_Fixture(PropertyGroup):
                 emitter.material_slots[0].material = emitter_material
                 emitter.material_slots[0].material.shadow_method = 'NONE' # eevee
                 self.emitter_materials[-1].material = emitter_material
+
+            if "gobo" in obj.get("geometry_type", ""):
+                material = self.gobo_materials.add()
+                material.name = obj.name
+
+                gobo_material = get_gobo_material(obj.name)
+                obj.active_material = gobo_material
+                obj.active_material.shadow_method = "CLIP"
+                obj.active_material.blend_method = "BLEND"
+                obj.material_slots[0].link = 'OBJECT' # ensure that each fixture has it's own material
+                obj.material_slots[0].material = gobo_material
+                material.material = gobo_material
 
 
         # Link collection to DMX collection
@@ -403,6 +446,7 @@ class DMX_Fixture(PropertyGroup):
         if bpy.context.window_manager.dmx.pause_render:
         # do not run dender loop during MVR import
             return
+
         channels = [c.id for c in self.channels]
         data = DMX_Data.get(self.universe, self.address, len(channels))
 
@@ -420,6 +464,7 @@ class DMX_Fixture(PropertyGroup):
         xyz_moving_geometries={}
         xyz_rotating_geometries={}
         shutter_dimmer_geometries={}
+        gobo1 = [None, None]
         
         for attribute in virtual_channels:
             geometry = None # for now. But, no way to know, as BlenderDMX controls are universal
@@ -490,6 +535,10 @@ class DMX_Fixture(PropertyGroup):
                 panTilt[1] = panTilt[1] * 256 + data[c]
                 panTilt[3] = 256 # 16bit
             elif (channels[c] == 'Zoom'): zoom = data[c]
+            elif (channels[c] == 'Gobo1'): gobo1[0] = data[c]
+            elif (channels[c] == 'Gobo1Pos'): gobo1[1] = data[c]
+            elif (channels[c] == 'Gobo2'): gobo1[0] = data[c]
+            elif (channels[c] == 'Gobo2Pos'): gobo1[1] = data[c]
             elif (channels[c] == 'XYZ_X'): xyz_moving_geometries[geometry][0] = data[c]
             elif (channels[c] == 'XYZ_Y'): xyz_moving_geometries[geometry][1] = data[c]
             elif (channels[c] == 'XYZ_Z'): xyz_moving_geometries[geometry][2] = data[c]
@@ -524,7 +573,10 @@ class DMX_Fixture(PropertyGroup):
 
         if (zoom != None):
             self.updateZoom(zoom)
-        
+
+        if gobo1[0] is not None:
+            self.updateGobo(gobo1)
+
         for geometry, xyz in xyz_moving_geometries.items():
             self.updatePosition(geometry=geometry, x=xyz[0], y=xyz[1], z=xyz[2])
 
@@ -682,13 +734,41 @@ class DMX_Fixture(PropertyGroup):
 
     def updateZoom(self, zoom):
         try:
-            spot_size=zoom*3.1415/180.0
+            spot_size = math.radians(zoom)
+            gobo_diameter = 2.2 * 0.01 * math.tan(math.radians(zoom/2))
+            # 2x because result is 1/2 of diameter
+            # .2 because there was a bit of a spill
+            # 0.01 is distance from the beam
+            # zoom/2 because we need 1/2 of the beam angle
+            
+            for obj in self.collection.objects:
+                if "gobo" in obj.get("geometry_type", ""):
+                    obj.dimensions = (gobo_diameter, gobo_diameter, 0)
+                    break
+
             for light in self.lights:
                 light.object.data.spot_size=spot_size
         except Exception as e:
             print("Error updating zoom", e)
         return zoom
-    
+   
+    def updateGobo(self, gobo1):
+        if gobo1[0] == 0:
+            self.hide_gobo()
+            return
+        
+        self.hide_gobo(False)
+        index = int(gobo1[0]/(255/len(self.images)-1))
+        self.set_gobo(index)
+
+        if gobo1[1] is None:
+            return
+
+        for obj in self.collection.objects:
+            if "gobo" in obj.get("geometry_type", ""):
+                obj.rotation_euler[2] = (gobo1[1]/127.0-1)*360*(math.pi/360)
+                break
+
     def updatePosition(self, geometry = None, x=None, y=None, z=None):
         if geometry is None:
             geometry = self.objects["Root"].object
@@ -857,6 +937,27 @@ class DMX_Fixture(PropertyGroup):
     def clear(self):
         for i, ch in enumerate(self.channels):
             data = DMX_Data.set(self.universe, self.address+i, ch.default)
+
+    def set_gobo(self, index=-1):
+        print("set gobo", index)
+        for obj in self.collection.objects:
+            if "gobo" in obj.get("geometry_type", ""):
+                material = self.gobo_materials[obj.name].material
+                print("1", index)
+                if 0 > index or index >= len(self.images):
+                    index = random.randrange(0, len(self.images))
+                print("2", index)
+                image = material.node_tree.nodes.get("Image Texture")
+                img = self.images[index].image
+                image.image = img
+                break
+
+    def hide_gobo(self, hide = True):
+        for obj in self.collection.objects:
+            if "gobo" in obj.get("geometry_type", ""):
+                obj.hide_set(hide)
+                break
+
 
     def onDepsgraphUpdate(self):
         # Check if any object was deleted

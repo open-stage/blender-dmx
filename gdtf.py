@@ -10,6 +10,7 @@ import bpy
 import copy
 import math
 import hashlib
+from types import SimpleNamespace
 
 from mathutils import Euler, Matrix
 
@@ -86,6 +87,8 @@ class DMX_GDTF():
             bpy.ops.mesh.primitive_cube_add(size=1.0)
         elif (primitive == 'Pigtail'):
             bpy.ops.mesh.primitive_cube_add(size=1.0)
+        elif (primitive == 'Plane'):
+            bpy.ops.mesh.primitive_plane_add(size=2)
         elif (primitive == 'Cylinder'):
             bpy.ops.mesh.primitive_cylinder_add(vertices=16, radius=0.5, depth=1.0)
         elif (primitive == 'Sphere'):
@@ -106,6 +109,22 @@ class DMX_GDTF():
         obj.rotation_euler = Euler((0, 0, 0), 'XYZ')
         obj.scale = (model.length/obj.dimensions.x,model.width/obj.dimensions.y,model.height/obj.dimensions.z)
         return obj
+
+    @staticmethod
+    def extract_gobos(profile):
+        gobos = []
+        current_path = os.path.dirname(os.path.realpath(__file__))
+        extract_to_folder_path = os.path.join(current_path, 'assets', 'models', profile.fixture_type_id)
+        for image_name in profile._package.namelist():
+            if image_name.startswith("wheels"):
+                profile._package.extract(image_name, extract_to_folder_path)
+                image_path = os.path.join(extract_to_folder_path, image_name)
+                image = bpy.data.images.load(image_path)
+                image["content_type"] = "image"
+                # TODO: we could add gobo names from Wheels
+                gobo = {"name": image_name, "image" : image}
+                gobos.append(gobo)
+        return gobos
 
     @staticmethod
     def load2D(profile):
@@ -349,13 +368,29 @@ class DMX_GDTF():
             light_data.spot_blend = calculate_spot_blend(geometry)
             light_data.spot_size = geometry.beam_angle
             light_data.spot_size = geometry.beam_angle*3.1415/180.0
-            light_data.shadow_soft_size = geometry.beam_radius
+            if not bpy.context.scene.dmx.gobo_support:
+                light_data.shadow_soft_size = geometry.beam_radius # non zero spot diameter causes gobos to be blurry
+            light_data.shadow_buffer_clip_start=0.0001
             light_object = bpy.data.objects.new(name="Spot", object_data=light_data)
             light_object.location = obj_child.location
             light_object.hide_select = True
             constraint = light_object.constraints.new('CHILD_OF')
             constraint.target = obj_child
             collection.objects.link(light_object)
+
+            if bpy.context.scene.dmx.gobo_support:
+                goboGeometry = SimpleNamespace(name="gobo", length=2, width=2, height = 0, primitive_type = "Plane")
+                create_gobo(geometry, goboGeometry)
+
+        def create_gobo(geometry, goboGeometry):
+            obj = DMX_GDTF.loadBlenderPrimitive(goboGeometry)
+            obj["geometry_type"] = "gobo"
+            obj.name = goboGeometry.name
+            objs[sanitize_obj_name(goboGeometry)]=obj
+
+            constraint_child_to_parent(geometry, goboGeometry)
+            obj = objs[sanitize_obj_name(goboGeometry)]
+            obj.location[2] += -0.01
         
         def calculate_spot_blend(geometry):
             """Return spot_blend value based on beam_type, maybe in the future
@@ -388,6 +423,7 @@ class DMX_GDTF():
             obj_child.scale[2] *= scale[2]
 
         def constraint_child_to_parent(parent_geometry, child_geometry):
+            print("constrain", parent_geometry, child_geometry)
             if (not sanitize_obj_name(parent_geometry) in objs): return
             obj_parent = objs[sanitize_obj_name(parent_geometry)]
             if (not sanitize_obj_name(child_geometry) in objs): return
