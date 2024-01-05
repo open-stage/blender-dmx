@@ -117,9 +117,13 @@ class DMX_GDTF():
         extract_to_folder_path = os.path.join(current_path, 'assets', 'models', profile.fixture_type_id)
         for image_name in profile._package.namelist():
             if image_name.startswith("wheels"):
-                profile._package.extract(image_name, extract_to_folder_path)
-                image_path = os.path.join(extract_to_folder_path, image_name)
-                image = bpy.data.images.load(image_path)
+                short_name = image_name.replace("wheels/", "", 1)
+                if short_name in bpy.data.images:
+                    image = bpy.data.images[short_name]
+                else:
+                    profile._package.extract(image_name, extract_to_folder_path)
+                    image_path = os.path.join(extract_to_folder_path, image_name)
+                    image = bpy.data.images.load(image_path)
                 image["content_type"] = "image"
                 # TODO: we could add gobo names from Wheels
                 gobo = {"name": image_name, "image" : image}
@@ -368,8 +372,7 @@ class DMX_GDTF():
             light_data.spot_blend = calculate_spot_blend(geometry)
             light_data.spot_size = geometry.beam_angle
             light_data.spot_size = geometry.beam_angle*3.1415/180.0
-            if not bpy.context.scene.dmx.gobo_support:
-                light_data.shadow_soft_size = geometry.beam_radius # non zero spot diameter causes gobos to be blurry
+            light_data.shadow_soft_size = geometry.beam_radius # non zero spot diameter causes gobos to be blurry
             light_data.shadow_buffer_clip_start=0.0001
             light_object = bpy.data.objects.new(name="Spot", object_data=light_data)
             light_object.location = obj_child.location
@@ -378,9 +381,8 @@ class DMX_GDTF():
             constraint.target = obj_child
             collection.objects.link(light_object)
 
-            if bpy.context.scene.dmx.gobo_support:
-                goboGeometry = SimpleNamespace(name="gobo", length=2, width=2, height = 0, primitive_type = "Plane")
-                create_gobo(geometry, goboGeometry)
+            goboGeometry = SimpleNamespace(name=f"gobo {sanitize_obj_name(geometry)}", length=2, width=2, height = 0, primitive_type = "Plane")
+            create_gobo(geometry, goboGeometry)
 
         def create_gobo(geometry, goboGeometry):
             obj = DMX_GDTF.loadBlenderPrimitive(goboGeometry)
@@ -423,7 +425,6 @@ class DMX_GDTF():
             obj_child.scale[2] *= scale[2]
 
         def constraint_child_to_parent(parent_geometry, child_geometry):
-            print("constrain", parent_geometry, child_geometry)
             if (not sanitize_obj_name(parent_geometry) in objs): return
             obj_parent = objs[sanitize_obj_name(parent_geometry)]
             if (not sanitize_obj_name(child_geometry) in objs): return

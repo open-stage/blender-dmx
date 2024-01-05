@@ -142,22 +142,6 @@ class DMX_PT_Setup_Debug(Panel):
         row = layout.row()
         row.label(text = f"Status: {context.window_manager.dmx.release_version_status}")
 
-class DMX_PT_Setup_Experimental(Panel):
-    bl_label = "Experimental"
-    bl_idname = "DMX_PT_Setup_Experimental"
-    bl_parent_id = "DMX_PT_Setup"
-    bl_space_type = "VIEW_3D"
-    bl_region_type = "UI"
-    bl_category = "DMX"
-    bl_context = "objectmode"
-    bl_options = {'DEFAULT_CLOSED'}
-
-    def draw(self, context):
-        layout = self.layout
-        dmx = context.scene.dmx
-        row = layout.row()
-        row.prop(dmx, 'gobo_support')
-
 # Panel #
 
 class DMX_PT_Setup(Panel):
