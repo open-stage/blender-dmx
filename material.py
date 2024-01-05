@@ -80,14 +80,15 @@ def get_gobo_material(name):
     material.use_nodes = True
     material.node_tree.nodes.remove(material.node_tree.nodes[PRINCIPLED_BSDF])
     matout = material.node_tree.nodes.get(MATERIAL_OUTPUT)
-    matout.target = "EEVEE"
-    mix = material.node_tree.nodes.new(SHADER_NODE_MIX_SHADER)
-    mix.inputs[0].default_value = 0.010
-    material.node_tree.links.new(matout.inputs[0], mix.outputs[0])
+    #matout.target = "EEVEE"
+    #mix = material.node_tree.nodes.new(SHADER_NODE_MIX_SHADER)
+    #mix.inputs[0].default_value = 0.010
+    #material.node_tree.links.new(matout.inputs[0], mix.outputs[0])
     bsdf = material.node_tree.nodes.new(SHADER_NODE_BSDF_TRANSPARENT)
-    material.node_tree.links.new(bsdf.outputs[0], mix.inputs[1])
+    #material.node_tree.links.new(bsdf.outputs[0], mix.inputs[1])
+    material.node_tree.links.new(matout.inputs[0], bsdf.outputs[0])
     image = material.node_tree.nodes.new(SHADER_NODE_TEX_IMAGE)
-    material.node_tree.links.new(image.outputs[1], mix.inputs[2])
+    #material.node_tree.links.new(image.outputs[1], mix.inputs[2])
     material.node_tree.links.new(image.outputs[0], bsdf.inputs[0])
-    material.node_tree.links.new(bsdf.outputs[0], mix.inputs[1])
+    #material.node_tree.links.new(bsdf.outputs[0], mix.inputs[1])
     return material
