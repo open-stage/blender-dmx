@@ -151,7 +151,9 @@ class DMX_OT_Programmer_Clear(Operator):
         scene.dmx.programmer_dimmer = 0.0
         scene.dmx.programmer_pan = 0.0
         scene.dmx.programmer_tilt = 0.0
-        scene.dmx.programmer_zoom = 0
+        scene.dmx.programmer_zoom = 25
+        scene.dmx.programmer_gobo = 0
+        scene.dmx.programmer_gobo_index = 63
         scene.dmx.programmer_shutter = 0
         return {'FINISHED'}
 
@@ -247,14 +249,15 @@ class DMX_PT_Programmer(Panel):
         dmx = scene.dmx
 
         locked = False
-
+        selected_fixtures = []
         for fixture in dmx.fixtures:
             for obj in fixture.collection.objects:
                 if obj in bpy.context.selected_objects:
+                    selected_fixtures.append(fixture)
                     if fixture.ignore_movement_dmx is True:
                         locked = True
 
-        selected = len(bpy.context.selected_objects) > 0
+        selected = len(selected_fixtures) > 0
 
         row = layout.row()
         row.operator("dmx.select_all", text='', icon='SELECT_EXTEND')
@@ -276,24 +279,35 @@ class DMX_PT_Programmer(Panel):
         row = layout.row()
         row.operator("dmx.select_bodies", text="Bodies")
         row.operator("dmx.select_targets", text="Targets")
-        if len(bpy.context.selected_objects) == 1:
-            for fixture in dmx.fixtures:
-                for obj in fixture.collection.objects:
-                    if (obj in bpy.context.selected_objects):
-                        for obj in fixture.collection.objects:
-                            if "MediaCamera" in obj.name:
-                                row.operator("dmx.toggle_camera", text="Camera")
+        if len(selected_fixtures) == 1:
+            for obj in selected_fixtures[0].collection.objects:
+                if "MediaCamera" in obj.name:
+                    row.operator("dmx.toggle_camera", text="Camera")
         row.enabled = selected
 
         layout.template_color_picker(scene.dmx,"programmer_color", value_slider=True)
         layout.prop(scene.dmx, "programmer_color")
         layout.prop(scene.dmx,"programmer_dimmer", text="Dimmer")
-
-        layout.prop(scene.dmx,"programmer_pan", text="Pan")
-        layout.prop(scene.dmx,"programmer_tilt", text="Tilt")
-
-        layout.prop(scene.dmx,"programmer_zoom", text="Zoom")
-        layout.prop(scene.dmx,"programmer_shutter", text="Strobe")
+        
+        if len(selected_fixtures) == 1:
+            if selected_fixtures[0].has_attribute("Pan"):
+                layout.prop(scene.dmx,"programmer_pan", text="Pan")
+            if selected_fixtures[0].has_attribute("Tilt"):
+                layout.prop(scene.dmx,"programmer_tilt", text="Tilt")
+            if selected_fixtures[0].has_attribute("Zoom"):
+                layout.prop(scene.dmx,"programmer_zoom", text="Zoom")
+            if selected_fixtures[0].has_attribute("Gobo"):
+                layout.prop(scene.dmx,"programmer_gobo", text="Gobo")
+                layout.prop(scene.dmx,"programmer_gobo_index", text="GoboPos")
+            if selected_fixtures[0].has_attribute("shutter", lower = True):
+                layout.prop(scene.dmx,"programmer_shutter", text="Strobe")
+        else:
+            layout.prop(scene.dmx,"programmer_pan", text="Pan")
+            layout.prop(scene.dmx,"programmer_tilt", text="Tilt")
+            layout.prop(scene.dmx,"programmer_zoom", text="Zoom")
+            layout.prop(scene.dmx,"programmer_gobo", text="Gobo")
+            layout.prop(scene.dmx,"programmer_gobo_index", text="GoboPos")
+            layout.prop(scene.dmx,"programmer_shutter", text="Strobe")
 
         if (selected):
             layout.operator("dmx.clear", text="Clear")

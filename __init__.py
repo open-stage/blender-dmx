@@ -147,7 +147,6 @@ class DMX(PropertyGroup):
                 DMX_PT_Setup_Background,
                 DMX_PT_Setup_Volume,
                 DMX_PT_Setup_Debug,
-                DMX_PT_Setup_Experimental,
                 DMX_MT_Fixture,
                 DMX_MT_Fixture_Manufacturers,
                 DMX_MT_Fixture_Profiles,
@@ -335,11 +334,6 @@ class DMX(PropertyGroup):
 
     fixture_properties_editable: BoolProperty(
         name = "Editable",
-        default = False)
-    
-    gobo_support: BoolProperty(
-        name = "Gobo support",
-        description = "Crashes Cycles",
         default = False)
 
     # New DMX Scene
@@ -999,12 +993,41 @@ class DMX(PropertyGroup):
                 continue
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
-                    print("set zoom", self.programmer_zoom)
                     deg =self.programmer_zoom
-                    print("deg", deg)
-                    print("size", 2* 1 * math.tan(math.radians(deg/2)))
                     fixture.setDMX({
                         'Zoom':int(self.programmer_zoom)
+                    })
+        self.render()
+        bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
+    
+    def onProgrammerGobo(self, context):
+        bpy.app.handlers.depsgraph_update_post.clear()
+        for fixture in self.fixtures:
+            if fixture.collection is None:
+                continue
+            for obj in fixture.collection.objects:
+                if (obj in bpy.context.selected_objects):
+                    fixture.setDMX({
+                        'Gobo1':int(self.programmer_gobo)
+                    })
+                    fixture.setDMX({
+                        'Gobo2':int(self.programmer_gobo)
+                    })
+        self.render()
+        bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
+
+    def onProgrammerGoboIndex(self, context):
+        bpy.app.handlers.depsgraph_update_post.clear()
+        for fixture in self.fixtures:
+            if fixture.collection is None:
+                continue
+            for obj in fixture.collection.objects:
+                if (obj in bpy.context.selected_objects):
+                    fixture.setDMX({
+                        'Gobo1Pos':int(self.programmer_gobo_index)
+                    })
+                    fixture.setDMX({
+                        'Gobo2Pos':int(self.programmer_gobo_index)
                     })
         self.render()
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
@@ -1036,6 +1059,20 @@ class DMX(PropertyGroup):
         default = 25,
         update = onProgrammerZoom)
 
+    programmer_gobo: IntProperty(
+        name = "Programmer Gobo",
+        min = 0,
+        max = 255,
+        default = 0,
+        update = onProgrammerGobo)
+
+    programmer_gobo_index: IntProperty(
+        name = "Programmer Gobo Index",
+        min = 0,
+        max = 255,
+        default = 63,
+        update = onProgrammerGoboIndex)
+
     programmer_shutter: IntProperty(
         name = "Programmer Shutter",
         min = 0,
@@ -1045,7 +1082,6 @@ class DMX(PropertyGroup):
     # # Programmer > Sync
 
     def syncProgrammer(self):
-        print("sync prog")
         n = len(bpy.context.selected_objects)
         if (n < 1):
             self.programmer_dimmer = 0
@@ -1054,6 +1090,8 @@ class DMX(PropertyGroup):
             self.programmer_tilt = 0
             self.programmer_zoom = 25
             self.programmer_shutter = 0
+            self.programmer_gobo = 0
+            self.programmer_gobo_index = 63
             return
         elif (n > 1): return
         if (not bpy.context.active_object): return
@@ -1067,6 +1105,14 @@ class DMX(PropertyGroup):
             self.programmer_shutter = int(data['Shutter1']/256.0)
         if ('Zoom' in data):
             self.programmer_zoom = int(data['Zoom'])
+        if ('Gobo1' in data):
+            self.programmer_gobo = int(data['Gobo1'])
+        if ('Gobo2' in data):
+            self.programmer_gobo = int(data['Gobo2'])
+        if ('Gobo1Pos' in data):
+            self.programmer_gobo_index = int(data['Gobo1Pos'])
+        if ('Gobo2Pos' in data):
+            self.programmer_gobo_index = int(data['Gobo2Pos'])
         if ('ColorAdd_R' in data and 'ColorAdd_G' in data and 'ColorAdd_B' in data):
             self.programmer_color = (data['ColorAdd_R'],data['ColorAdd_G'],data['ColorAdd_B'],255)
         if ('Pan' in data):
