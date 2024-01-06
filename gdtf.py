@@ -370,9 +370,8 @@ class DMX_GDTF():
             light_data.energy = light_data['flux'] #set by default to full brightness for devices without dimmer
 
             light_data.spot_blend = calculate_spot_blend(geometry)
-            light_data.spot_size = geometry.beam_angle
-            light_data.spot_size = geometry.beam_angle*3.1415/180.0
-            light_data.shadow_soft_size = geometry.beam_radius # non zero spot diameter causes gobos to be blurry
+            light_data.spot_size = math.radians(geometry.beam_angle)
+            light_data.shadow_soft_size = geometry.beam_radius
             light_data.shadow_buffer_clip_start=0.0001
             light_object = bpy.data.objects.new(name="Spot", object_data=light_data)
             light_object.location = obj_child.location
@@ -381,12 +380,15 @@ class DMX_GDTF():
             constraint.target = obj_child
             collection.objects.link(light_object)
 
-            goboGeometry = SimpleNamespace(name=f"gobo {sanitize_obj_name(geometry)}", length=2, width=2, height = 0, primitive_type = "Plane")
+            goboGeometry = SimpleNamespace(name=f"gobo {sanitize_obj_name(geometry)}", 
+                                           length=2, width=2, height = 0, primitive_type = "Plane", 
+                                           beam_radius = geometry.beam_radius)
             create_gobo(geometry, goboGeometry)
 
         def create_gobo(geometry, goboGeometry):
             obj = DMX_GDTF.loadBlenderPrimitive(goboGeometry)
             obj["geometry_type"] = "gobo"
+            obj["beam_radius"] = goboGeometry.beam_radius
             obj.name = goboGeometry.name
             objs[sanitize_obj_name(goboGeometry)]=obj
 
