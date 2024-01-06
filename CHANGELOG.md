@@ -1,5 +1,14 @@
 ### Changelog
 
+### 1.0.8
+
+* Initial GOBO from GDTF support with indexing and rotation
+* Programmer improvements (name/count of selection, fixture specific control)
+* Add on-line version check into Extras
+* If no fixture is selected, select first/last on Ctrl-Right/Left
+* MVR-xchange improvements and custom icons
+* Hide/show positions in Fixtures edit list
+* Updating bdmx driver syntax to #bdmx
 
 ### 1.0.7
 
