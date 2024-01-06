@@ -487,9 +487,6 @@ class DMX_OT_Fixture_SelectPrevious(Operator):
         selected_all = dmx.selectedFixtures()
         fixtures = dmx.sortedFixtures()
 
-        if not selected_all and fixtures:
-            selected_all = [fixtures[-1]] # if nothing is selected, select last
-
         for fixture in fixtures:
             fixture.unselect()
 
@@ -501,6 +498,10 @@ class DMX_OT_Fixture_SelectPrevious(Operator):
                         idx = len(fixtures)-1
                     fixtures[idx].select()
                     break
+
+        if not selected_all and fixtures:
+            fixtures[-1].select()
+
         return {'FINISHED'}
 
 class DMX_OT_Fixture_SelectNext(Operator):
@@ -515,9 +516,6 @@ class DMX_OT_Fixture_SelectNext(Operator):
         selected_all = dmx.selectedFixtures()
         fixtures = dmx.sortedFixtures()
 
-        if not selected_all and fixtures:
-            selected_all = [fixtures[0]] # if nothing is selected, select first
-
         for fixture in fixtures:
             fixture.unselect()
 
@@ -529,6 +527,10 @@ class DMX_OT_Fixture_SelectNext(Operator):
                         idx = 0
                     fixtures[idx].select()
                     break
+
+        if not selected_all and fixtures:
+            fixtures[0].select()
+
         return {'FINISHED'}
 
 class DMX_OT_Fixture_Item(Operator):

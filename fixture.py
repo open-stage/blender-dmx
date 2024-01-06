@@ -459,13 +459,14 @@ class DMX_Fixture(PropertyGroup):
         channels = [c.id for c in self.channels]
         data = DMX_Data.get(self.universe, self.address, len(channels))
 
-        s_data = json.dumps([int(b) for b in data]) # create cache, this maybe is not fast enough
-        if self.dmx_values == s_data: # this helps to eliminate flicker with Ethernet DMX signal when the data is not changing
-                return
-        self.dmx_values  = s_data
-
         data_virtual = DMX_Data.get_virtual(self.name)
         virtual_channels = [c.id for c in self.virtual_channels]
+
+        s_data = json.dumps([int(b) for b in data] + [int(b) for b in data_virtual.values()]) # create cache, this maybe is not fast enough
+        if self.dmx_values == s_data: # this helps to eliminate flicker with Ethernet DMX signal when the data is not changing
+            return
+        self.dmx_values  = s_data
+
         panTilt = [None,None, 1, 1] # pan, tilt, 1 = 8bit, 256 = 16bit
         cmy = [None,None,None]
         zoom = None

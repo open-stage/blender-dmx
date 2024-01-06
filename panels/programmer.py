@@ -259,6 +259,14 @@ class DMX_PT_Programmer(Panel):
 
         selected = len(selected_fixtures) > 0
 
+        selected_fixture_label = ""
+        if len(selected_fixtures) == 0:
+            selected_fixture_label = "Nothing selected"
+        elif len(selected_fixtures) == 1:
+            selected_fixture_label = selected_fixtures[0].name
+        else:
+            selected_fixture_label = f"{len(selected_fixtures)} selected"
+
         row = layout.row()
         row.operator("dmx.select_all", text='', icon='SELECT_EXTEND')
         row.operator("dmx.select_invert", text='', icon='SELECT_SUBTRACT')
@@ -276,6 +284,8 @@ class DMX_PT_Programmer(Panel):
         c1.enabled = c2.enabled = c3.enabled = selected
         c4.enabled = locked and selected
 
+        row = layout.row()
+        row.label(text=selected_fixture_label)
         row = layout.row()
         row.operator("dmx.select_bodies", text="Bodies")
         row.operator("dmx.select_targets", text="Targets")
