@@ -993,7 +993,6 @@ class DMX(PropertyGroup):
                 continue
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
-                    deg =self.programmer_zoom
                     fixture.setDMX({
                         'Zoom':int(self.programmer_zoom)
                     })
@@ -1098,7 +1097,6 @@ class DMX(PropertyGroup):
         active = self.findFixture(bpy.context.active_object)
         if (not active): return
         data = active.getProgrammerData()
-        print("data", data)
         if 'Dimmer' in data:
             self.programmer_dimmer = data['Dimmer']/256.0
         if 'Shutter1' in data:
