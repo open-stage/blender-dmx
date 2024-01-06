@@ -182,7 +182,6 @@ class DMX(PropertyGroup):
                 DMX_OT_Programmer_Unset_Ignore_Movement,
                 DMX_PT_DMX_OSC,
                 DMX_UL_Fixtures,
-                DMX_OP_Delete_Fixture,
                 DMX_PT_DMX_MVR_X,
                 DMX_UL_MVR_Commit,
                 DMX_OP_MVR_Refresh,
