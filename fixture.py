@@ -312,7 +312,7 @@ class DMX_Fixture(PropertyGroup):
             for image in gobos:
                 gobo = self.images.add()
                 gobo.name = image["name"]
-                gobo.image = image["image"].copy()
+                gobo.image = image["image"]
                 gobo.image.pack()
 
         links = {}
@@ -335,7 +335,8 @@ class DMX_Fixture(PropertyGroup):
                 self.lights[-1].name = light_name
                 self.lights[light_name].object = links[obj.name]
                 if has_gobos:
-                    self.lights[light_name].object.data.shadow_soft_size = 0 # non zero spot diameter causes gobos to be blurry
+                    self.lights[light_name].object.data.shadow_soft_size = 0.001 # larger spot diameter causes gobos to be blurry
+                    self.lights[light_name].object.data.shadow_buffer_clip_start = 0.002
             elif 'Target' in obj.name:
                 self.objects.add()
                 self.objects[-1].name = 'Target'
@@ -753,6 +754,10 @@ class DMX_Fixture(PropertyGroup):
             
             for obj in self.collection.objects:
                 if "gobo" in obj.get("geometry_type", ""):
+                    beam_diameter = obj.get("beam_radius", 0) * 2
+                    if beam_diameter:
+                        if gobo_diameter > beam_diameter:
+                            gobo_diameter = beam_diameter
                     obj.dimensions = (gobo_diameter, gobo_diameter, 0)
 
             for light in self.lights:
