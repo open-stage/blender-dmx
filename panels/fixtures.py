@@ -551,11 +551,9 @@ class DMX_OT_Fixture_ForceRemove(Operator):
     bl_options = {'UNDO'}
 
     def execute(self, context):
-        print("Removing fixture", context.fixture)
         dmx = context.scene.dmx
         dmx.removeFixture(context.fixture)
         return {'FINISHED'}
-
 
 
 class DMX_PT_Fixtures(Panel):
@@ -757,17 +755,3 @@ class DMX_UL_Fixtures(UIList):
             col.context_pointer_set("fixture", item)
             col.operator("dmx.force_remove_fixture", text="", icon="CANCEL")
 
-
-class DMX_OP_Delete_Fixture(Operator):
-    bl_label = "Delete fixture"
-    bl_description = "Delete fixture from local filesystem"
-    bl_idname = "dmx.delete_local_fixture"
-    bl_options = {"UNDO"}
-
-    index: IntProperty()
-
-    def execute(self, context):
-        #Profiles.controller.DMX_Fixtures_Manager.delete_local_fixture(self, self.index)
-        #DMX_GDTF.getManufacturerList()
-        #Profiles.DMX_Fixtures_Local_Profile.loadLocal()
-        return {"FINISHED"}
