@@ -168,7 +168,7 @@ class DMX_GDTF():
             file_name=os.path.join(extract_to_folder_path, inside_zip_path)
             bpy.ops.import_scene.gltf(filepath=file_name)
 
-        objs = list(bpy.context.view_layer.objects.selected)
+        objs = list(bpy.context.selected_objects)
 
         # if the model is made up of multiple parts we must join them
         obj = DMX_GDTF.join_parts_apply_transforms(objs)
@@ -187,19 +187,29 @@ class DMX_GDTF():
 
     @staticmethod
     def join_parts_apply_transforms(objs):
-        """This ensures that glbs made of multiple parts are used as a single object"""
+        """This ensures that glbs made of multiple parts are used as a single object.
+        It feels convoluted but without this and all particular steps, some fixture files
+        do not load correctly. Surely there is better way. 
+        Can be tested on files as per this issue: https://github.com/open-stage/blender-dmx/issues/67 
+        """
 
-        # can be tested on files as per this issue: https://github.com/open-stage/blender-dmx/issues/67 
+        # this first extra pass helps with Harmann fixture models but breaks other fixture.
+        #meshes = [ob for ob in objs if ob.type=="MESH" and ob.data.vertices.items()]
+        #if len(meshes)>1:
+        #    bpy.context.view_layer.objects.active = meshes[0]
+        #    bpy.ops.object.join()
+        #    objs = list(bpy.context.selected_objects)
+
         join = 0
         single = None
         for ob in objs:
             mb = ob.matrix_basis # apply some transforms
-            if ob.type == 'MESH' and all(x > 0 for x in ob.dimensions.to_tuple()):
+            if ob.type == 'MESH' and ob.data.vertices.items():
                 ob.select_set(True) # objects for merging must be selected
                 join += 1
                 bpy.context.view_layer.objects.active = ob
                 single = ob
-                if hasattr(ob.data, "transform"):
+                if hasattr(ob.data, "transform"): # glb files
                     ob.data.transform(mb)
             ob.matrix_basis.identity()
 
