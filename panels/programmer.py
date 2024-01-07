@@ -105,7 +105,7 @@ class DMX_OT_Programmer_SelectInvert(Operator):
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
                     selected.append(fixture)
-                    fixture.unselect() 
+                    fixture.unselect()
 
         for fixture in dmx.fixtures:
             if fixture not in selected:
@@ -298,7 +298,7 @@ class DMX_PT_Programmer(Panel):
         layout.template_color_picker(scene.dmx,"programmer_color", value_slider=True)
         layout.prop(scene.dmx, "programmer_color")
         layout.prop(scene.dmx,"programmer_dimmer", text="Dimmer")
-        
+
         if len(selected_fixtures) == 1:
             if selected_fixtures[0].has_attribute("Pan"):
                 layout.prop(scene.dmx,"programmer_pan", text="Pan")

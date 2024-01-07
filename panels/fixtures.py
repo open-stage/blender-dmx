@@ -53,7 +53,7 @@ class DMX_MT_Fixture(Menu):
             if (selected): break
 
         # "Edit"
-        row = layout.row()  
+        row = layout.row()
         row.operator("dmx.edit_fixture", text = "Edit", icon="GREASEPENCIL")
         row.enabled = len(dmx.fixtures) and selected
 
@@ -61,11 +61,11 @@ class DMX_MT_Fixture(Menu):
         row = layout.row()
         row.operator("dmx.remove_fixture", text="Remove", icon="REMOVE")
         row.enabled = len(dmx.fixtures) and selected
-        
+
         # "Import GDTF Profile"
         row = layout.row()
         row.operator("dmx.import_gdtf_profile", text="Import GDTF Profile", icon="IMPORT")
-        
+
         # "Import MVR scene"
         row = layout.row()
         row.operator("dmx.import_mvr_scene", text="Import MVR scene", icon="IMPORT")
@@ -566,16 +566,16 @@ class DMX_PT_Fixtures(Panel):
     bl_context = "objectmode"
     # bl_parent_id = "DMX_PT_Patch"
     #bl_options = {"DEFAULT_CLOSED"}
-    
+
     def draw(self, context):
         layout = self.layout
         scene = context.scene
         dmx = scene.dmx
-        
+
         row = layout.row()
         c = row.column()
         c.label(text="Name")
-        c.ui_units_x = 8 
+        c.ui_units_x = 8
 
         if dmx.column_fixture_id and not dmx.fixture_properties_editable:
 
@@ -608,7 +608,7 @@ class DMX_PT_Fixtures(Panel):
                 c.label(text="Addr")
             else:
                 c.label(text="Uni.Addr")
-    
+
         layout.template_list(
             "DMX_UL_Fixtures",
             "",
@@ -732,7 +732,7 @@ class DMX_UL_Fixtures(UIList):
                 c.ui_units_x = 2
             else:
                 c.label(text=f"{item.universe}.{item.address}")
-    
+
         if dmx.fixture_properties_editable and dmx.column_fixture_position:
             body = None
             for obj in item.collection.objects:

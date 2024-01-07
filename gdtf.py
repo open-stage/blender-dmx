@@ -72,7 +72,7 @@ class DMX_GDTF():
             dmx_channels_flattened = [channel for break_channels in dmx_channels for channel in break_channels]
             modes[mode.name] = len(dmx_channels_flattened)
         return modes
- 
+
     @staticmethod
     def loadProfile(filename):
         path = os.path.join(DMX_GDTF.getProfilesPath(), filename)
@@ -156,7 +156,7 @@ class DMX_GDTF():
     def loadModel(profile, model):
         current_path = os.path.dirname(os.path.realpath(__file__))
         extract_to_folder_path = os.path.join(current_path, 'assets', 'models', profile.fixture_type_id)
-        
+
         if model.file.extension.lower() == "3ds":
             inside_zip_path =f"models/3ds/{model.file.name}.{model.file.extension}"
             profile._package.extract(inside_zip_path, extract_to_folder_path)
@@ -189,8 +189,8 @@ class DMX_GDTF():
     def join_parts_apply_transforms(objs):
         """This ensures that glbs made of multiple parts are used as a single object.
         It feels convoluted but without this and all particular steps, some fixture files
-        do not load correctly. Surely there is better way. 
-        Can be tested on files as per this issue: https://github.com/open-stage/blender-dmx/issues/67 
+        do not load correctly. Surely there is better way.
+        Can be tested on files as per this issue: https://github.com/open-stage/blender-dmx/issues/67
         """
 
         # this first extra pass helps with Harmann fixture models but breaks other fixture.
@@ -249,7 +249,7 @@ class DMX_GDTF():
         def load_geometries(geometry):
             """Load 3d models, primitives and shapes"""
             DMX_Log.log.info(f"loading geometry {geometry.name}")
-            
+
             if isinstance(geometry, pygdtf.GeometryReference):
                 reference = pygdtf.utils.get_geometry_by_name(profile, geometry.geometry)
                 geometry.model = reference.model
@@ -297,7 +297,7 @@ class DMX_GDTF():
             # Blender primitives
             else:
                 obj = DMX_GDTF.loadBlenderPrimitive(model)
-                
+
             # If object was created
             if (obj != None):
                 if sanitize_obj_name(geometry) == sanitize_obj_name(root_geometry):
@@ -405,7 +405,7 @@ class DMX_GDTF():
             constraint_child_to_parent(geometry, goboGeometry)
             obj = objs[sanitize_obj_name(goboGeometry)]
             obj.location[2] += -0.01
-        
+
         def calculate_spot_blend(geometry):
             """Return spot_blend value based on beam_type, maybe in the future
             we can calculate different value based on beam/field angle...?"""
@@ -600,7 +600,7 @@ class DMX_GDTF():
     def getName(profile, dmx_mode, display_beams, add_target):
         revision = profile.revisions[-1].text if len(profile.revisions) else ''
         name = f"{profile.manufacturer}, {profile.name}, {dmx_mode}, {revision}, {'with_beams' if display_beams else 'without_beams'}, {'with_target' if add_target else 'without_target'}"
-        # base64 encode the name as collections seems to have lenght limit 
+        # base64 encode the name as collections seems to have lenght limit
         # which causes collections not to be cached, thus slowing imports down
         name = hashlib.shake_256(name.encode()).hexdigest(5)
         return name

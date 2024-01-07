@@ -58,7 +58,7 @@ class DMX_OT_Setup_Volume_Create(Operator):
             material = getVolumeScatterMaterial()
             dmx.volume.data.materials.append(material)
             dmx.volume_nodetree = dmx.volume.data.materials[0].node_tree
-        
+
         old_collections = dmx.volume.users_collection
         if (dmx.collection not in old_collections):
             dmx.collection.objects.link(dmx.volume)

@@ -80,7 +80,7 @@ class DMX_Data():
         if (universe >= len(DMX_Data._universes)): return bytearray([0]*n)
         if (addr + n > 512): return bytearray([0]*n)
         return DMX_Data._universes[universe][addr-1:addr+n-1]
-    
+
     @staticmethod
     def set(universe, addr, val):
         DMX_Log.log.debug((universe, addr, val))

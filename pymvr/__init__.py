@@ -2,7 +2,7 @@ from typing import List, Union, Optional
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 import zipfile
-from dmx.pymvr.value import Matrix, ColorCIE
+from .value import Matrix, ColorCIE # type: ignore
 
 
 def _find_root(pkg: "zipfile.ZipFile") -> "ElementTree.Element":
@@ -593,7 +593,7 @@ class Geometry3D(BaseNode):
 
     def __str__(self):
         return f"{self.file_name} {self.matrix}"
-    
+
     def __repr__(self):
         return f"{self.file_name} {self.matrix}"
 

@@ -42,11 +42,11 @@ class DMX_MVR_Object(PropertyGroup):
         description = "UUID",
         default = str(uuid.uuid4())
             )
-        
+
     object_type: StringProperty(
         name = "Object type",
         description = "Simple object classification",
-        default = "SceneObject" #Layer, Truss, 
+        default = "SceneObject" #Layer, Truss,
             )
     classing: StringProperty(
         name = "Classing",
