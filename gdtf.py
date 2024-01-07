@@ -88,7 +88,7 @@ class DMX_GDTF():
         elif (primitive == 'Pigtail'):
             bpy.ops.mesh.primitive_cube_add(size=1.0)
         elif (primitive == 'Plane'):
-            bpy.ops.mesh.primitive_plane_add(size=2)
+            bpy.ops.mesh.primitive_plane_add(size=1.0)
         elif (primitive == 'Cylinder'):
             bpy.ops.mesh.primitive_cylinder_add(vertices=16, radius=0.5, depth=1.0)
         elif (primitive == 'Sphere'):
@@ -390,8 +390,8 @@ class DMX_GDTF():
             constraint.target = obj_child
             collection.objects.link(light_object)
 
-            goboGeometry = SimpleNamespace(name=f"gobo {sanitize_obj_name(geometry)}", 
-                                           length=2, width=2, height = 0, primitive_type = "Plane", 
+            goboGeometry = SimpleNamespace(name=f"gobo {sanitize_obj_name(geometry)}",
+                                           length=0.1, width=0.1, height = 0, primitive_type = "Plane",
                                            beam_radius = geometry.beam_radius)
             create_gobo(geometry, goboGeometry)
 
@@ -400,11 +400,9 @@ class DMX_GDTF():
             obj["geometry_type"] = "gobo"
             obj["beam_radius"] = goboGeometry.beam_radius
             obj.name = goboGeometry.name
-            objs[sanitize_obj_name(goboGeometry)]=obj
-
-            constraint_child_to_parent(geometry, goboGeometry)
-            obj = objs[sanitize_obj_name(goboGeometry)]
+            objs[sanitize_obj_name(goboGeometry)]= obj
             obj.location[2] += -0.01
+            constraint_child_to_parent(geometry, goboGeometry)
 
         def calculate_spot_blend(geometry):
             """Return spot_blend value based on beam_type, maybe in the future

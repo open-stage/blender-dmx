@@ -306,6 +306,7 @@ class DMX_Fixture(PropertyGroup):
             virtual_channel.default = ch['default']
             if "Gobo" in ch["id"]:
                 has_gobos = True
+
         # Get all gobos
         if has_gobos:
             gobos = DMX_GDTF.extract_gobos(gdtf_profile)
@@ -315,6 +316,9 @@ class DMX_Fixture(PropertyGroup):
                 gobo.image = image["image"]
                 gobo.image.pack()
 
+        if not len(self.images):
+            has_gobos = False # faulty GDTF might have channels but no images
+
         links = {}
         base = self.get_root(model_collection)
         head = self.get_tilt(model_collection)
@@ -323,7 +327,7 @@ class DMX_Fixture(PropertyGroup):
         for obj in model_collection.objects:
             # Copy object
             links[obj.name] = obj.copy()
-            # If light, copy object data, 
+            # If light, copy object data,
             # Cache access to base (root) and head for faster rendering.
             # Fixtures with multiple pan/tilts will still have issues
             # but that would anyway require geometry → attribute approach
@@ -771,6 +775,10 @@ class DMX_Fixture(PropertyGroup):
 
     def updateGobo(self, gobo1):
         if gobo1[0] == 0:
+            self.hide_gobo()
+            return
+
+        if not len(self.images):
             self.hide_gobo()
             return
 
