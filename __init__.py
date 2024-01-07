@@ -52,7 +52,7 @@ from dmx.osc import DMX_OSC
 from dmx.mdns import DMX_Zeroconf
 
 from dmx.util import rgb_to_cmy, xyY2rgbaa, ShowMessageBox
-from dmx.mvr_objects import DMX_MVR_Object 
+from dmx.mvr_objects import DMX_MVR_Object
 from dmx.mvr_xchange import *
 from dmx.mvrx_protocol import DMX_MVR_X_Protocol
 import bpy.utils.previews
@@ -814,10 +814,10 @@ class DMX(PropertyGroup):
     def onsACNEnable(self, context):
         if self.sacn_enabled:
             DMX_sACN.enable()
-            
+
         else:
             DMX_sACN.disable()
-            
+
     # # DMX > ArtNet > Enable
 
     def onArtNetEnable(self, context):
@@ -920,7 +920,7 @@ class DMX(PropertyGroup):
     # # Programmer > Color
 
     def onProgrammerColor(self, context):
-        
+
 
         bpy.app.handlers.depsgraph_update_post.clear()
         for fixture in self.fixtures:
@@ -998,7 +998,7 @@ class DMX(PropertyGroup):
                     })
         self.render()
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
-    
+
     def onProgrammerGobo(self, context):
         bpy.app.handlers.depsgraph_update_post.clear()
         for fixture in self.fixtures:
@@ -1050,7 +1050,7 @@ class DMX(PropertyGroup):
         max = 1.0,
         default = 0.0,
         update = onProgrammerTilt)
-    
+
     programmer_zoom: IntProperty(
         name = "Programmer Zoom",
         min = 1,
@@ -1165,7 +1165,7 @@ class DMX(PropertyGroup):
         for fixture in self.fixtures:
             if (fixture.collection == collection):
                 return fixture
-    
+
     def findFixture(self, object):
         for fixture in self.fixtures:
             if fixture is None:
@@ -1529,7 +1529,7 @@ def clean_module_imports():
             continue
         if name.startswith(__name__):
             del sys.modules[name]
-    return None 
+    return None
 
 #
 # Blender Add-On
@@ -1564,7 +1564,7 @@ def register():
         atexit.register(DMX_ArtNet.disable)
         atexit.register(DMX_sACN.disable)
         atexit.register(DMX_OSC.disable)
-    
+
     Timer(1, onRegister, ()).start()
 
 def unregister():

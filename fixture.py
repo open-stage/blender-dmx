@@ -124,12 +124,12 @@ class DMX_Fixture(PropertyGroup):
     profile: StringProperty(
         name = "Fixture > Profile",
         default = "")
-    
+
     mode : StringProperty(
         name = "Fixture > Mode",
         description="Fixture DMX Mode",
         default = '')
-    
+
     channels: CollectionProperty(
         name = "Fixture > Channels",
         type = DMX_Fixture_Channel
@@ -164,7 +164,7 @@ class DMX_Fixture(PropertyGroup):
         description = "Unique ID, used for MVR",
         default = str(uuid.uuid4())
             )
-        
+
     fixture_id: StringProperty(
         name = "FixtureID",
         description = "The Fixture ID is an identifier for the instance of this fixture that can be used to activate / select them for programming.",
@@ -218,7 +218,7 @@ class DMX_Fixture(PropertyGroup):
         # (Edit) Store objects positions
         old_pos = {obj.name:obj.object.location.copy() for obj in self.objects}
         old_rot = {obj.name:obj.object.rotation_euler.copy() for obj in self.objects}
-        
+
         # (Edit) Collection with this name already exists, delete it
         if (self.name in bpy.data.collections):
             for obj in bpy.data.collections[self.name].objects:
@@ -439,7 +439,7 @@ class DMX_Fixture(PropertyGroup):
         self.clear()
         #bpy.context.scene.dmx.render()
         self.render()
-    
+
     # Interface Methods #
 
     def setDMX(self, pvalues):
@@ -479,7 +479,7 @@ class DMX_Fixture(PropertyGroup):
         xyz_rotating_geometries={}
         shutter_dimmer_geometries={}
         gobo1 = [None, None]
-        
+
         for attribute in virtual_channels:
             geometry = None # for now. But, no way to know, as BlenderDMX controls are universal
             if geometry not in rgb_mixing_geometries.keys():
@@ -564,7 +564,7 @@ class DMX_Fixture(PropertyGroup):
         self.remove_unset_geometries_from_multigeometry_attributes(xyz_moving_geometries)
         self.remove_unset_geometries_from_multigeometry_attributes(xyz_rotating_geometries)
         self.remove_unset_geometries_from_multigeometry_attributes(shutter_dimmer_geometries)
-        
+
         for geometry, rgb in rgb_mixing_geometries.items():
             if len(rgb_mixing_geometries)==1:
                 geometry = None
@@ -670,7 +670,7 @@ class DMX_Fixture(PropertyGroup):
                 DMX_Log.log.info("Register shutter timer")
 
         return dimmer
-    
+
     def runStrobe(self):
         try:
 
@@ -754,7 +754,7 @@ class DMX_Fixture(PropertyGroup):
             # .2 because there was a bit of a spill
             # 0.01 is distance from the beam
             # zoom/2 because we need 1/2 of the beam angle
-            
+
             for obj in self.collection.objects:
                 if "gobo" in obj.get("geometry_type", ""):
                     beam_diameter = obj.get("beam_radius", 0) * 2
@@ -768,12 +768,12 @@ class DMX_Fixture(PropertyGroup):
         except Exception as e:
             print("Error updating zoom", e)
         return zoom
-   
+
     def updateGobo(self, gobo1):
         if gobo1[0] == 0:
             self.hide_gobo()
             return
-        
+
         self.hide_gobo(False)
         index = int(gobo1[0]/int(255/(len(self.images)-1)))
         self.set_gobo(index)
@@ -803,7 +803,7 @@ class DMX_Fixture(PropertyGroup):
             geometry.location.y = (128-y) * 0.1
         if z is not None:
             geometry.location.z = (128-z) * 0.1
-    
+
     def updateRotation(self, geometry = None, x=None, y=None, z=None):
         if geometry is None:
             geometry = self.objects["Root"].object
@@ -817,7 +817,7 @@ class DMX_Fixture(PropertyGroup):
             geometry.rotation_euler[1] = (y/127.0-1)*360*(math.pi/360)
         if z is not None:
             geometry.rotation_euler[2] = (z/127.0-1)*360*(math.pi/360)
-        
+
     def updatePanTilt(self, pan, tilt, pan_bits, tilt_bits):
         if self.ignore_movement_dmx:
             return
@@ -841,7 +841,7 @@ class DMX_Fixture(PropertyGroup):
             tilt = tilt + base.rotation_euler[0] # take base x rotation into consideration
 
             target = self.objects['Target'].object
-            
+
             eul = mathutils.Euler((0.0,base.rotation_euler[1]+tilt,base.rotation_euler[0]+pan), 'XYZ')
             vec = mathutils.Vector((0.0,0.0,-(target.location-head_location).length))
             vec.rotate(eul)
@@ -902,8 +902,8 @@ class DMX_Fixture(PropertyGroup):
     def select(self):
         dmx = bpy.context.scene.dmx
         if dmx.display_2D:
-            # in 2D view deselect the 2D symbol, unhide the fixture and select base, 
-            # to allow movement and rotation 
+            # in 2D view deselect the 2D symbol, unhide the fixture and select base,
+            # to allow movement and rotation
             self.objects["2D Symbol"].object.select_set(False)
 
             for obj in self.collection.objects:
@@ -922,7 +922,7 @@ class DMX_Fixture(PropertyGroup):
 
         DMX_OSC_Handlers.fixture_selection(self)
         dmx.updatePreviewVolume()
-    
+
     def unselect(self):
         dmx = bpy.context.scene.dmx
         if "Root" in self.objects:
@@ -978,7 +978,7 @@ class DMX_Fixture(PropertyGroup):
                 break
 
     def has_attribute(self, attribute, lower = False):
-        
+
         def low(id):
             if lower:
                 return id.lower()

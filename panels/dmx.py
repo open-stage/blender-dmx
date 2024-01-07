@@ -257,7 +257,7 @@ class DMX_PT_DMX_ArtNet(Panel):
     def draw(self, context):
         layout = self.layout
         dmx = context.scene.dmx
-        
+
         artnet_universes = []
         for universe in dmx.universes:
             if universe.input == "ARTNET":
@@ -266,7 +266,7 @@ class DMX_PT_DMX_ArtNet(Panel):
         row = layout.row()
         row.prop(dmx, "artnet_ipaddr", text="IPv4")
         row.enabled = not dmx.artnet_enabled
-        
+
         row = layout.row()
         row.prop(dmx, "artnet_enabled")
         row.enabled = len(artnet_universes)>0
