@@ -23,6 +23,7 @@ import uuid as py_uuid
 import re
 from datetime import datetime
 import pathlib
+import traceback
 
 from dmx.pymvr import GeneralSceneDescription
 from dmx.mvr import extract_mvr_textures, process_mvr_child_list
@@ -1147,6 +1148,7 @@ class DMX(PropertyGroup):
                 "Error while adding a fixture, see console for more details",
                 "ERROR",
             )
+            traceback.print_exception(e)
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
     def removeFixture(self, fixture):
