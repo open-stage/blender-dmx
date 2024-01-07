@@ -109,6 +109,8 @@ class BaseChildNode(BaseNode):
         _gdtf_spec = xml_node.find("GDTFSpec")
         if _gdtf_spec is not None:
             self.gdtf_spec = _gdtf_spec.text
+            if self.gdtf_spec is not None:
+                self.gdtf_spec = self.gdtf_spec.encode("utf-8").decode("cp437")
             if self.gdtf_spec is not None and len(self.gdtf_spec) > 5:
                 if self.gdtf_spec[-5:].lower() != ".gdtf":
                     self.gdtf_spec = f"{self.gdtf_spec}.gdtf"
@@ -585,7 +587,7 @@ class Geometry3D(BaseNode):
         super().__init__(*args, **kwargs)
 
     def _read_xml(self, xml_node: "Element"):
-        self.file_name = xml_node.attrib.get("fileName")
+        self.file_name = xml_node.attrib.get("fileName", "").encode("utf-8").decode("cp437")
         if xml_node.find("Matrix") is not None:
             self.matrix = Matrix(str_repr=xml_node.find("Matrix").text)
 
