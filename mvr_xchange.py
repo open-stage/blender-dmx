@@ -21,6 +21,7 @@ class DMX_MVR_Xchange_Client(PropertyGroup):
     last_seen: IntProperty(name="Last Seen Time")
     station_name: StringProperty(name="Station Name")
     station_uuid: StringProperty(name="Station UUID")
+    service_name: StringProperty(name="MVR-xchange group")
     provider: StringProperty(name="Provider")
     commits: CollectionProperty(name="Commits", type=DMX_MVR_Xchange_Commit)
 
