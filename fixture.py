@@ -482,7 +482,7 @@ class DMX_Fixture(PropertyGroup):
         xyz_moving_geometries={}
         xyz_rotating_geometries={}
         shutter_dimmer_geometries={}
-        gobo1 = [None, None]
+        gobo1 = [None, None] #gobo selection (Gobo1, Gobo2), gobo indexing/rotation (Gobo1Pos, Gobo2Pos)
 
         for attribute in virtual_channels:
             geometry = None # for now. But, no way to know, as BlenderDMX controls are universal

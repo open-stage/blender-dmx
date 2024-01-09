@@ -11,7 +11,7 @@ import os
 
 from bpy.props import StringProperty
 from bpy.types import Menu, Operator, Panel, UIList
-from dmx.mvrx_protocol import DMX_MVR_X_Protocol
+from dmx.mvrx_protocol import DMX_MVR_X_Client
 
 
 class DMX_OP_MVR_Refresh(Operator):
@@ -21,7 +21,7 @@ class DMX_OP_MVR_Refresh(Operator):
     bl_options = {"UNDO"}
 
     def execute(self, context):
-        DMX_MVR_X_Protocol._instance.client.join_mvr()
+        DMX_MVR_X_Client.re_join()
         return {"FINISHED"}
 
 
@@ -33,7 +33,7 @@ class DMX_OP_MVR_Test(Operator):
 
     def execute(self, context):
         print("Test")
-        DMX_MVR_X_Protocol._instance.client.join_mvr()
+        DMX_MVR_X_Client.re_join()
 
         return {"FINISHED"}
 
@@ -86,7 +86,7 @@ class DMX_OP_MVR_Download(Operator):
             print(commit.commit_uuid)
             if commit.commit_uuid == self.uuid:
                 print("downloading", commit)
-                DMX_MVR_X_Protocol.request_file(commit)
+                DMX_MVR_X_Client.request_file(commit)
                 break
 
         return {"FINISHED"}

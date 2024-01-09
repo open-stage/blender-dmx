@@ -54,7 +54,7 @@ from dmx.mdns import DMX_Zeroconf
 from dmx.util import rgb_to_cmy, xyY2rgbaa, ShowMessageBox
 from dmx.mvr_objects import DMX_MVR_Object
 from dmx.mvr_xchange import *
-from dmx.mvrx_protocol import DMX_MVR_X_Protocol
+from dmx.mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server
 import bpy.utils.previews
 
 from bpy.props import (BoolProperty,
@@ -774,13 +774,17 @@ class DMX(PropertyGroup):
     )
     #zeroconf - mvr-xchange
 
-    def onZeroconfEnable(self, context):
+    def onZeroconfEnableDiscovery(self, context):
         if self.zeroconf_enabled:
             clients  = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
             clients.clear()
-            DMX_Zeroconf.enable()
+            DMX_Log.log.info("Enable mdns discovery")
+            DMX_Zeroconf.enable_discovery()
         else:
-            DMX_Zeroconf.disable()
+            DMX_Log.log.info("Disable mdns discovery")
+            DMX_Zeroconf.close()
+            clients  = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
+            clients.clear()
 
     def onMVR_xchange_enable(self, context):
         if self.mvrx_enabled:
@@ -794,9 +798,20 @@ class DMX(PropertyGroup):
             if not selected_client:
                 return
             print(selected_client.ip_address, selected_client.station_name)
-            DMX_MVR_X_Protocol.enable(selected_client)
+            DMX_MVR_X_Server.enable()
+            DMX_MVR_X_Server._instance.server.get_port()
+            DMX_Zeroconf.enable_server(selected_client.service_name, DMX_MVR_X_Server.get_port())
+            DMX_MVR_X_Client.join(selected_client)
         else:
-            DMX_MVR_X_Protocol.disable()
+            print("leave client")
+            DMX_MVR_X_Client.leave()
+            print("disable client")
+            DMX_MVR_X_Client.disable()
+            print("disable server")
+            DMX_MVR_X_Server.disable()
+            print("disable mdns")
+            DMX_Zeroconf.disable_server()
+            print("disabled all")
 
 
 
@@ -863,7 +878,7 @@ class DMX(PropertyGroup):
         name = "Enable MVR-xchange discovery",
         description="Enables MVR-xchange discovery",
         default = False,
-        update = onZeroconfEnable
+        update = onZeroconfEnableDiscovery
     )
 
     mvrx_enabled : BoolProperty(
@@ -1269,7 +1284,15 @@ class DMX(PropertyGroup):
             self.addUniverse()
         self.universes_n = len(self.universes)
 
-    def createMVR_Client(self, station_name, station_uuid, ip_address, port):
+    def createMVR_Client(self, station_name = None, station_uuid = None, service_name = None, ip_address = None, port = None, provider = None):
+
+        addon_name = pathlib.Path(__file__).parent.parts[-1]
+        prefs = bpy.context.preferences.addons[addon_name].preferences
+        application_uuid = prefs.get("application_uuid", str(py_uuid.uuid4()))  # must never be 0
+        if application_uuid == station_uuid:
+            print("This is myself, do not register as a client")
+            return
+
         clients  = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
         for client in clients:
             if client.station_uuid == station_uuid:
@@ -1278,19 +1301,22 @@ class DMX(PropertyGroup):
         client = clients.add()
         client.station_name = station_name
         client.station_uuid = station_uuid
+        client.service_name = service_name
         now = int(datetime.now().timestamp())
         client.last_seen = now
         client.ip_address = ip_address
         client.port = port
+        if provider:
+            client.provider = provider
 
-    def removeMVR_Client(self, station_name, station_uuid, ip_addres, port):
+    def removeMVR_Client(self, station_name, station_uuid, service_name, ip_addres, port):
         clients  = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
         for client in clients:
             if client.station_uuid == station_uuid:
                 clients.remove(client)
                 break
 
-    def updateMVR_Client(self, station_uuid, station_name=None, ip_address=None, port=None, provider=None):
+    def updateMVR_Client(self, station_uuid, station_name=None, service_name = None, ip_address=None, port=None, provider=None):
         clients  = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
         updated = False
         for client in clients:
@@ -1305,10 +1331,12 @@ class DMX(PropertyGroup):
                     client.port = port
                 if provider:
                     client.provider = provider
+                if service_name:
+                    client.service_name = service_name
                 updated = True
                 break
         if not updated:
-            self.createMVR_Client(station_name, station_uuid, ip_address, port)
+            self.createMVR_Client(station_name, station_uuid, service_name, ip_address, port)
 
     def createMVR_Commits(self, commits, station_uuid):
         clients  = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
@@ -1483,8 +1511,13 @@ def onLoadFile(scene):
     DMX_ArtNet.disable()
     DMX_sACN.disable()
     DMX_OSC.disable()
-    DMX_MVR_X_Protocol.disable()
-    DMX_Zeroconf.disable()
+    print("disable client")
+    DMX_MVR_X_Client.disable()
+    print("disable server")
+    DMX_MVR_X_Server.disable()
+    print("disable mdns")
+    DMX_Zeroconf.close()
+    print("done")
 
     # register a "bdmx" namespace to get current value of a DMX channel,
     # the syntax is #bdmx(universe, channel(s)), where the channel can be 
@@ -1572,8 +1605,13 @@ def unregister():
     DMX_ArtNet.disable()
     DMX_sACN.disable()
     DMX_OSC.disable()
-    DMX_MVR_X_Protocol.disable()
-    DMX_Zeroconf.disable()
+    print("disable client")
+    DMX_MVR_X_Client.disable()
+    print("disable server")
+    DMX_MVR_X_Server.disable()
+    print("disable mdns")
+    DMX_Zeroconf.close()
+    print("done")
 
     try:
         for cls in Profiles.classes:
