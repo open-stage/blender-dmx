@@ -92,11 +92,10 @@ class server(Thread):
         if mask & selectors.EVENT_WRITE:
             if len(data.outb):
                 msg = data.outb.pop(0)
-                print("this it the message", msg)
-                DMX_Log.log.debug("send msg" + str(msg))
+                DMX_Log.log.debug("send msg" + str(msg)) # strange, but logger didn't want to convert it via f-strings
                 header = mvr_message.parse_header(msg)
                 if not header["Error"]:
-                    DMX_Log.log.debug("Reply" +  str(msg))
+                    DMX_Log.log.debug("Reply" +  str(msg)) # same here
                 sock.sendall(msg)  # Should be ready to write
                 # sent = sock.send(data.outb)  # Should be ready to write
                 # data.outb = data.outb[sent:]
