@@ -57,13 +57,13 @@ class client(Thread):
     def join_mvr(self):
         self.send(mvr_message.create_message("MVR_JOIN", uuid=self.application_uuid))
 
-    def leave_mvr(self):
-        self.send(mvr_message.create_message("MVR_LEAVE", uuid=self.application_uuid))
+    def leave_mvr(self, client):
+        self.send(mvr_message.create_message("MVR_LEAVE", station_uuid=client.station_uuid))
 
     def request_file(self, commit, path):
         self.filepath = path
         self.commit = commit
-        self.send(mvr_message.create_message("MVR_REQUEST", uuid=self.application_uuid, file_uuid=commit.commit_uuid))
+        self.send(mvr_message.create_message("MVR_REQUEST", uuid=commit.station_uuid, file_uuid=commit.commit_uuid))
 
     def stop(self):
         self.running = False

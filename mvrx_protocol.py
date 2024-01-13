@@ -112,7 +112,8 @@ class DMX_MVR_X_Client:
         if DMX_MVR_X_Client._instance:
             if DMX_MVR_X_Client._instance.client:
                 DMX_MVR_X_Client.connect()
-                DMX_MVR_X_Client._instance.client.leave_mvr()
+                client = DMX_MVR_X_Client._instance.selected_client
+                DMX_MVR_X_Client._instance.client.leave_mvr(client)
                 time.sleep(0.3)
                 DMX_MVR_X_Client._instance.client.stop()
             DMX_MVR_X_Client._instance = None
