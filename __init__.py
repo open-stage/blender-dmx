@@ -629,7 +629,7 @@ class DMX(PropertyGroup):
             ):
                 bpy.ops.view3d.view_axis(type='TOP', align_active=True)
                 bpy.ops.view3d.view_selected()
-                area.spaces[0].shading.type = 'SOLID'
+                area.spaces[0].shading.type = 'MATERIAL'
 
         for fixture in self.fixtures:
             for obj in fixture.collection.objects:
