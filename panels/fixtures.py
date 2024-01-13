@@ -206,6 +206,16 @@ class DMX_Fixture_AddEdit():
         description="Do not rebuild the model structure",
         default = False)
 
+    increment_address: BoolProperty(
+        name = "Increment DMX address",
+        description="Increment DMX address",
+        default = True)
+
+    increment_fixture_id: BoolProperty(
+        name = "Increment Fixture ID",
+        description="Increment Fixture ID if numeric",
+        default = True)
+
     fixture_id: StringProperty(
         name = "Fixture ID",
         description = "The Fixture ID is an identifier for the instance of this fixture that can be used to activate / select them for programming.",
@@ -246,6 +256,8 @@ class DMX_Fixture_AddEdit():
             col.prop(self, "re_address_only") #     Be default, only change address, don't rebuild models (slow)
         else:                                 # Adding new fixtures:
             col.prop(self, "units")           #     Allow to define how many
+        col.prop(self, "increment_address")
+        col.prop(self, "increment_fixture_id")
         if not self.re_address_only:          # When adding and editing:
             col.prop(self, "display_beams")   #     Allow not to create and draw Beams (faster, only for emitter views)
             col.prop(self, "add_target")      #     Should a target be added to the fixture
@@ -269,8 +281,29 @@ class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
         if (not len(self.mode)):
             self.report({'ERROR'}, "No DMX Mode selected.")
             return {'CANCELLED'}
+        address = self.address
+        universe = self.universe
+        fixture_id = self.fixture_id
         for i in range(self.units):
-            dmx.addFixture(self.name+" "+str(i+1), self.profile, self.universe, self.address, self.mode, self.gel_color, self.display_beams, self.add_target, fixture_id = self.fixture_id)
+            DMX_Log.log.debug(f"Adding fixture {self.name}")
+            dmx.addFixture(self.name+" "+str(i+1), self.profile, universe, address, self.mode, 
+                           self.gel_color, self.display_beams, self.add_target, fixture_id = fixture_id)
+            fixture = dmx.fixtures[-1]
+            DMX_Log.log.debug(f"Added fixture {fixture}")
+            if not fixture:
+                continue
+
+            if self.increment_fixture_id:
+                if fixture_id.isnumeric():
+                    fixture_id = str(int(fixture_id)+1)
+            if self.increment_address:
+                if (address + len(fixture.channels)) > 512:
+                    universe += 1
+                    address = 1
+                    dmx.ensureUniverseExists(universe)
+                else:
+                    address += len(fixture.channels)
+
         return {'FINISHED'}
 
     def invoke(self, context, event):
@@ -327,15 +360,18 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                     fixture.address = address
                     fixture.universe = universe
                     fixture.fixture_id = fixture_id
-                if fixture_id.isnumeric():
-                    fixture_id = str(int(fixture_id)+1)
 
-                if (address + len(fixture.channels)) > 512:
-                    universe += 1
-                    address = 1
-                    dmx.ensureUniverseExists(universe)
-                else:
-                    address += len(fixture.channels)
+                if self.increment_fixture_id:
+                    if fixture_id.isnumeric():
+                        fixture_id = str(int(fixture_id)+1)
+
+                if self.increment_address:
+                    if (address + len(fixture.channels)) > 512:
+                        universe += 1
+                        address = 1
+                        dmx.ensureUniverseExists(universe)
+                    else:
+                        address += len(fixture.channels)
 
         context.window_manager.dmx.pause_render = False # re-enable renderer
         return {'FINISHED'}
