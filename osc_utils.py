@@ -3,6 +3,7 @@ import json
 import os
 
 from dmx.osc import DMX_OSC
+from dmx.logging import DMX_Log
 
 
 class DMX_OSC_Templates:
@@ -20,7 +21,7 @@ class DMX_OSC_Templates:
         if DMX_OSC_Templates.instance is None:
             DMX_OSC_Templates.instance = DMX_OSC_Templates()
 
-        print("reading data")
+        DMX_Log.log.debug("reading data")
         ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
         template_path = os.path.join(ADDON_PATH, "assets", "osc_templates", template_name)
 

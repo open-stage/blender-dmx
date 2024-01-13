@@ -26,7 +26,7 @@ class DMX_Zeroconf:
         self.application_uuid = application_uuid
 
     def callback(zeroconf: Zeroconf, service_type: str, name: str, state_change: ServiceStateChange) -> None:
-        # print(f"Service {name} of type {service_type} state changed: {state_change}")
+        DMX_Log.log.debug(f"Service {name} of type {service_type} state changed: {state_change}")
 
         info = zeroconf.get_service_info(service_type, name)
         service_name = name.replace(f".{service_type}", "")
@@ -50,6 +50,7 @@ class DMX_Zeroconf:
                 if b"StationUUID" in info.properties:
                     station_uuid = info.properties[b"StationUUID"].decode("utf-")
         station_name = f"{station_name} ({service_name})"
+        DMX_Log.log.info(info)
         if state_change is ServiceStateChange.Added:
             DMX_Zeroconf._instance._dmx.createMVR_Client(station_name, station_uuid, service_name, ip_address, int(port))
         elif state_change is ServiceStateChange.Updated:
@@ -65,19 +66,18 @@ class DMX_Zeroconf:
         services = ["_mvrxchange._tcp.local."]
         DMX_Zeroconf._instance.browser = ServiceBrowser(DMX_Zeroconf._instance.zeroconf, services, handlers=[DMX_Zeroconf.callback])
         DMX_Log.log.info("Enabling Zeroconf")
-        print("starting mvrx discovery")
+        DMX_Log.log.info("starting mvrx discovery")
 
     @staticmethod
     def close():
         if DMX_Zeroconf._instance:
             if DMX_Zeroconf._instance.browser:
                 DMX_Zeroconf._instance.browser.cancel()
-                print("closing mvrx discovery")
+                DMX_Log.log.info("closing mvrx discovery")
             if DMX_Zeroconf._instance.info:
                 DMX_Zeroconf._instance.zeroconf.unregister_service(DMX_Zeroconf._instance.info)
             DMX_Zeroconf._instance.zeroconf.close()
             DMX_Zeroconf._instance = None
-        print("done")
 
     @staticmethod
     def enable_server(server_name="test_mvr", port=9999):
@@ -98,7 +98,7 @@ class DMX_Zeroconf:
             properties=desc,
             server=f"{host_name}.local.",
         )
-        print(DMX_Zeroconf._instance.info)
+        DMX_Log.log.debug(DMX_Zeroconf._instance.info)
 
         DMX_Zeroconf._instance.zeroconf.register_service(DMX_Zeroconf._instance.info, cooperating_responders=True)
 

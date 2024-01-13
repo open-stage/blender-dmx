@@ -27,7 +27,7 @@ class DMX_MVR_X_Client:
     @staticmethod
     def callback(data):
         if "StationUUID" not in data:
-            print("Bad response", data)
+            DMX_Log.log.debug(f"Bad response {data}")
             return
         uuid = data["StationUUID"]
         if "Commits" in data:
@@ -58,7 +58,7 @@ class DMX_MVR_X_Client:
                 DMX_MVR_X_Client.connect()
                 DMX_MVR_X_Client._instance.client.request_file(commit, path)
             except Exception as e:
-                print("problem requesting file", e)
+                DMX_Log.log.debug(f"problem requesting file {e}")
                 return
             DMX_Log.log.info("Requesting file")
 
@@ -68,10 +68,11 @@ class DMX_MVR_X_Client:
             return
         if DMX_MVR_X_Client._instance.client:
             try:
+                DMX_Log.log.debug(f"re-joining")
                 DMX_MVR_X_Client.connect()
                 DMX_MVR_X_Client._instance.client.join_mvr()
             except Exception as e:
-                print("problem re_joining", e)
+                DMX_Log.log.debug(f"problem re_joining {e}")
                 return
 
     @staticmethod
@@ -80,14 +81,14 @@ class DMX_MVR_X_Client:
             return
         try:
             client = DMX_MVR_X_Client._instance.selected_client
-            print("Connecting to MVR-xchange client", client.ip_address, client.port)
+            DMX_Log.log.info(f"Connecting to MVR-xchange client {client.ip_address} {client.port}")
             DMX_MVR_X_Client._instance.client = mvrx_client.client(client.ip_address, client.port, timeout=0, callback=DMX_MVR_X_Client.callback, application_uuid=DMX_MVR_X_Client._instance.application_uuid)
 
         except Exception as e:
-            print("Cannot connect to host", e)
+            DMX_Log.log.error(f"Cannot connect to host {e}")
             return
         DMX_MVR_X_Client._instance.client.start()
-        print("thread started")
+        DMX_Log.log.debug("thread started")
 
     @staticmethod
     def join(client):
@@ -101,14 +102,10 @@ class DMX_MVR_X_Client:
     @staticmethod
     def disable():
         if DMX_MVR_X_Client._instance:
-            print("stop one")
             if DMX_MVR_X_Client._instance.client:
-                print("stop two")
                 DMX_MVR_X_Client._instance.client.stop()
             DMX_MVR_X_Client._instance = None
-            print("stopped")
             DMX_Log.log.info("Disabling MVR")
-        print("i am gone")
 
     @staticmethod
     def leave():
@@ -138,11 +135,11 @@ class DMX_MVR_X_Server:
 
     @staticmethod
     def callback(json_data, data):
-        print("callback", json_data, data)
+        DMX_Log.log.debug(("callback", json_data, data))
         addr, port = data.addr
 
         if "StationUUID" not in json_data:
-            print("Bad response", json_data)
+            DMX_Log.log.error(f"Bad response {json_data}")
             return
         uuid = json_data["StationUUID"]
         if "Commits" in json_data:
@@ -167,7 +164,7 @@ class DMX_MVR_X_Server:
                 try:
                     DMX_MVR_X_Server._instance.server.request_file(commit, path)
                 except:
-                    print("problem requesting file")
+                    DMX_Log.log.error("problem requesting file")
                     return
                 DMX_Log.log.info("Requesting file")
 
@@ -180,7 +177,7 @@ class DMX_MVR_X_Server:
             DMX_MVR_X_Server._instance.server = mvrx_server.server(callback=DMX_MVR_X_Server.callback, uuid=DMX_MVR_X_Server._instance.application_uuid)
 
         except Exception as e:
-            print("Cannot connect to host", e)
+            DMX_Log.log.error(f"Cannot connect to host {e}")
             return
         DMX_MVR_X_Server._instance.server.start()
 

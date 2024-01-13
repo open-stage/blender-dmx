@@ -13,16 +13,16 @@ class DMX_OSC:
         self._dmx = bpy.context.scene.dmx
 
     def callback(*values):
-        print("Got OSC message, values: {}".format(values))
+        DMX_Log.log.debug("Got OSC message, values: {}".format(values))
 
     @staticmethod
     def send(data_path: str, data_value: str):
         if not DMX_OSC._instance:
-            print("no OSC instance...")
+            DMX_Log.log.debug("no OSC instance...")
             return
         data_path = bytes(data_path, "utf-8")
         data_value = bytes(data_value, "utf-8")
-        print("OSC sending:", data_path, data_value)
+        DMX_Log.log.debug(("OSC sending:", data_path, data_value))
         dmx = bpy.context.scene.dmx
         DMX_OSC._instance.server.send_message(data_path, [data_value], dmx.osc_target_address, dmx.osc_target_port)
 

@@ -9,12 +9,13 @@ from uuid import uuid4
 import time
 from datetime import datetime
 from dmx.mvrxchange.mvr_message import mvr_message
+from dmx.logging import DMX_Log
 
 
 class server(Thread):
     def __init__(self, callback, uuid=str(uuid4())):
         Thread.__init__(self, name=f"server {int(datetime.now().timestamp())}")
-        print(self.name)
+        DMX_Log.log.debug(self.name)
         self.uuid = uuid
         self.running = True
         self.callback = callback
@@ -24,7 +25,7 @@ class server(Thread):
         self.lsock.bind(("", 0))
         self.port = self.lsock.getsockname()[1]
         self.lsock.listen()
-        print(f"Listening on {self.port}, {uuid}")
+        DMX_Log.log.debug(f"Listening on {self.port}, {uuid}")
         self.lsock.setblocking(False)
         self.sel.register(self.lsock, selectors.EVENT_READ, data=None)
         self.files = []
@@ -38,7 +39,7 @@ class server(Thread):
 
     def accept_wrapper(self, sock):
         conn, addr = sock.accept()  # Should be ready to read
-        print(f"Accepted connection from {addr}")
+        DMX_Log.log.debug(f"Accepted connection from {addr}")
         conn.setblocking(False)
         data = types.SimpleNamespace(addr=addr, inb=b"", outb=[], file_uuid="")
         events = selectors.EVENT_READ | selectors.EVENT_WRITE
@@ -48,7 +49,7 @@ class server(Thread):
         return self.port
 
     def parse_data(self, data):
-        print("parse data", data)
+        DMX_Log.log.debug(f"parse data {data}")
         header = mvr_message.parse_header(data.inb)
         if header["Type"] == 0:  # json
             json_data = json.loads(data.inb[28:].decode("utf-8"))
@@ -56,7 +57,7 @@ class server(Thread):
         else:  # file
             local_path = os.path.dirname(os.path.abspath(__file__))
             path = os.path.join(local_path, "mvrs", f"{data.file_uuid}.mvr")
-            print("writing file")
+            DMX_Log.log.debug("writing file")
             with open(path, "bw") as f:
                 f.write(data.inb[28:])
             # time.sleep(0.1)
@@ -71,36 +72,37 @@ class server(Thread):
             recv_data = sock.recv(1024)  # Should be ready to read
             if recv_data:
                 data.inb += recv_data
-                print("server received", len(data.inb), data.inb, data.addr, "\n")
+                DMX_Log.log.debug(("server received", len(data.inb), data.inb, data.addr, "\n"))
                 header = mvr_message.parse_header(data.inb)
-                print("header", header)
+                DMX_Log.log.debug(f"header {header}")
                 if header["Error"]:
-                    print("error", data.inb)
+                    DMX_Log.log.error(f"error {data.inb}")
                     data.inb = b""
                 elif len(data.inb) >= header["Total_len"]:
                     total_len = header["Total_len"]
                     left_over = data.inb[total_len:]
-                    print("go to parsing", left_over)
+                    DMX_Log.log.debug(f"go to parsing {left_over}")
                     data.inb = data.inb[:total_len]
                     self.parse_data(data)
                     data.inb = left_over
             else:
-                print(f"Closing connection to {data.addr}")
+                DMX_Log.log.debug(f"Closing connection to {data.addr}")
                 self.sel.unregister(sock)
                 sock.close()
         if mask & selectors.EVENT_WRITE:
             if len(data.outb):
                 msg = data.outb.pop(0)
-                print("send msg", msg)
+                print("this it the message", msg)
+                DMX_Log.log.debug("send msg" + str(msg))
                 header = mvr_message.parse_header(msg)
                 if not header["Error"]:
-                    print("Reply", msg)
+                    DMX_Log.log.debug("Reply" +  str(msg))
                 sock.sendall(msg)  # Should be ready to write
                 # sent = sock.send(data.outb)  # Should be ready to write
                 # data.outb = data.outb[sent:]
 
     def process_json_message(self, json_data, data):
-        print("Json message", json_data, data, "\n")
+        DMX_Log.log.debug(f"Json message {json_data} {data}")
         self.callback(json_data, data)
         if json_data["Type"] == "MVR_JOIN":
             data.outb.append(mvr_message.create_message("MVR_JOIN_RET", ok="false", nok_reason="Not accepting connections at this point", uuid = self.uuid))
@@ -115,7 +117,7 @@ class server(Thread):
             local_path = os.path.dirname(os.path.abspath(__file__))
             file_uuid = json_data["FileUUID"]
             file_path = os.path.join(local_path, "mvrs", f"{file_uuid}.mvr")
-            print("sending file")
+            DMX_Log.log.debug("sending file")
             if not os.path.exists(file_path):
                 file_uuid = "B905D390-A281-11EE-BA6D-A0595013B622"
                 file_path = os.path.join(local_path, "mvrs", f"{file_uuid}.mvr")

@@ -9,6 +9,7 @@ import time
 import selectors
 from datetime import datetime
 from dmx.mvrxchange.mvr_message import mvr_message
+from dmx.logging import DMX_Log
 
 # A very rudimentary MVR-xchange client
 # For some reason, some apps close the socket, so we must ensure to reconnect
@@ -17,7 +18,7 @@ from dmx.mvrxchange.mvr_message import mvr_message
 class client(Thread):
     def __init__(self, ip_address, port, callback, timeout=None, application_uuid=0):
         Thread.__init__(self, name=f"client {int(datetime.now().timestamp())}")
-        print(self.name)
+        DMX_Log.log.debug(self.name)
         self.callback = callback
         self.running = True
         self.queue = Queue()
@@ -37,7 +38,7 @@ class client(Thread):
         #    self.socket.settimeout(timeout)
 
     def reconnect(self, sock):
-        print("reconnecting")
+        DMX_Log.log.info("reconnecting")
         self.sel.unregister(sock)
         self.sel.close()
         self.socket.close()
@@ -48,7 +49,7 @@ class client(Thread):
         self.sel.register(self.socket, events)
 
     def disconnect(self, sock):
-        print("disconnecting")
+        DMX_Log.log.info("disconnecting")
         self.sel.unregister(sock)
         self.sel.close()
         self.socket.close()
@@ -72,6 +73,7 @@ class client(Thread):
         self.join()
 
     def send(self, message):
+        DMX_Log.log.debug(f"Send message {message}")
         self.queue.put(message)
         events = selectors.EVENT_READ | selectors.EVENT_WRITE
         self.sel.modify(self.socket, events)
@@ -91,7 +93,7 @@ class client(Thread):
                             pass
                         else:
                             if recv_data:
-                                print(f"Received {recv_data!r}")
+                                DMX_Log.log.debug(f"Received {recv_data!r}")
                                 data += recv_data
                                 if data:
                                     header = mvr_message.parse_header(data)
@@ -100,7 +102,7 @@ class client(Thread):
 
                                     if len(data) >= header["Total_len"]:
                                         total_len = header["Total_len"]
-                                        print("go to parsing")
+                                        DMX_Log.log.debug("go to parsing")
                                         self.parse_data(data[:total_len], self.callback)
                                         data = data[total_len:]
 
@@ -122,7 +124,7 @@ class client(Thread):
                         time.sleep(0.2)
 
     def parse_data(self, data, callback):
-        print("parsing", data)
+        DMX_Log.log.debug(f"parsing {data}")
         header = mvr_message.parse_header(data)
         if header["Type"] == 0:  # json
             json_data = json.loads(data[28:].decode("utf-8"))

@@ -34,10 +34,7 @@ def getEmitterMaterial(name):
     if PRINCIPLED_BSDF in material.node_tree.nodes:
         material.node_tree.nodes.remove(material.node_tree.nodes[PRINCIPLED_BSDF])
     else:
-        DMX_Log.log.error(
-            """BSDF material could not be removed when adding new Emitter,
-                         this could cause issues. Set Logging level to Info to get more details."""
-        )
+        DMX_Log.log.error("BSDF material could not be removed when adding new Emitter, this could cause issues. Set Logging level to Info to get more details.")
         if DMX_Log.log.isEnabledFor(logging.INFO):
             print("Nodes in material tree nodes:")
             for node in material.node_tree.nodes:
@@ -59,10 +56,7 @@ def getVolumeScatterMaterial():
     if PRINCIPLED_BSDF in material.node_tree.nodes:
         material.node_tree.nodes.remove(material.node_tree.nodes[PRINCIPLED_BSDF])
     else:
-        DMX_Log.log.error(
-            """BSDF material could not be removed when adding creating Volume,
-                       this could cause issues. Set Logging level to Info to get more details."""
-        )
+        DMX_Log.log.error("BSDF material could not be removed when adding creating Volume, this could cause issues. Set Logging level to Info to get more details")
         if DMX_Log.log.isEnabledFor(logging.INFO):
             print("Nodes in material tree nodes:")
             for node in material.node_tree.nodes:

@@ -6,6 +6,8 @@ import threading
 
 from dmx.data import DMX_Data
 from dmx.network import DMX_Network
+from dmx.logging import DMX_Log
+
 # ArtnetPacket class taken from here:
 # https://gist.github.com/alarrosa14/07bd1ee88a19204cbf22
 # Thank you, @alarrosa!
@@ -34,7 +36,7 @@ class ArtnetPacket:
 
     def build(udp_data):
         if struct.unpack("!8s", udp_data[:8])[0] != ArtnetPacket.ARTNET_HEADER:
-            print("Received a non Art-Net packet")
+            DMX_Log.log.debug("Received a non Art-Net packet")
             return None
 
         packet = ArtnetPacket()
@@ -59,7 +61,7 @@ class DMX_ArtNet(threading.Thread):
         try:
             self._socket.bind((ip_addr, ARTNET_PORT))
         except OSError as e:
-            print(e)
+            DMX_Log.log.error(e)
             self._dmx.artnet_status = "socket_error"
             raise ValueError("Socket opening error")
 
@@ -70,7 +72,7 @@ class DMX_ArtNet(threading.Thread):
         try:
             self._socket.shutdown(SHUT_RDWR)
         except Exception as e:
-            print("Error while stopping", e)
+            DMX_Log.log.error(f"Error while stopping {e}")
             self._stopped = True
             raise ValueError("Socket closing error")
         self._stopped = True
@@ -82,7 +84,7 @@ class DMX_ArtNet(threading.Thread):
             try:
                 data = self._socket.recv(1024)
             except Exception as e:
-                print(e)
+                DMX_Log.log.error(e)
             if len(data) < 8:
                 continue
             if struct.unpack("!8s", data[:8])[0] != ArtnetPacket.ARTNET_HEADER:
@@ -92,9 +94,9 @@ class DMX_ArtNet(threading.Thread):
                 self.handleArtNet(data)
             elif opcode == ArtnetPacket.opcode_ArtPoll:
                 self.handle_ArtPoll()
-            # print(packet)
+            # DMX_Log.log.debug(packet)
             # self._socket.close()
-        print("Closing socket...")
+        DMX_Log.log.info("Closing socket...")
         self._dmx.artnet_status = "socket_close"
         self._socket.close()
         self._dmx.artnet_status = "offline"
@@ -167,25 +169,26 @@ class DMX_ArtNet(threading.Thread):
     @staticmethod
     def enable():
         if DMX_ArtNet._thread:
-            return print("ArtNet client already started.")
+            DMX_Log.log.warning("ArtNet client was already started before.")
+            return
 
         dmx = bpy.context.scene.dmx
 
-        print("Starting ArtNet client...")
-        print("\t%s:%s" % (dmx.artnet_ipaddr, ARTNET_PORT))
+        DMX_Log.log.info("Starting ArtNet client...")
+        DMX_Log.log.info("\t%s:%s" % (dmx.artnet_ipaddr, ARTNET_PORT))
         dmx.artnet_status = "socket_open"
 
         try:
             DMX_ArtNet._thread = DMX_ArtNet(dmx.artnet_ipaddr)
         except Exception as e:
-            print(e)
+            DMX_Log.log.error(e)
             return
         DMX_ArtNet._thread.start()
 
         bpy.app.timers.register(DMX_ArtNet.run_render)
 
         dmx.artnet_status = "listen"
-        print("ArtNet client started.")
+        DMX_Log.log.info("ArtNet client started.")
 
     @staticmethod
     def disable():
@@ -195,16 +198,16 @@ class DMX_ArtNet(threading.Thread):
         dmx = bpy.context.scene.dmx
 
         if DMX_ArtNet._thread:
-            print("Stopping ArtNet client...", end="", flush=True)
+            DMX_Log.log.info("Stopping ArtNet client...")
             dmx.artnet_status = "stop"
             try:
                 DMX_ArtNet._thread.stop()
                 DMX_ArtNet._thread.join()
             except Exception as e:
-                print("Error - ", e)
+                DMX_Log.log.exception(e)
             DMX_ArtNet._thread = None
             dmx.artnet_status = "offline"
-            print("DONE")
+            DMX_Log.log.info("DONE")
         elif dmx:
             dmx.artnet_status = "offline"
 
