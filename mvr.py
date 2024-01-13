@@ -91,7 +91,7 @@ def process_mvr_child_list(dmx, child_list, layer_index, extract_to_folder_path,
             scene_collection = bpy.data.collections.new(scene_name)
             scene_collection_top.children.link(scene_collection)
             collection = scene_collection
-            print("creating extra collection", scene_name)
+            DMX_Log.log.info(("creating extra collection", scene_name))
 
         process_mvr_object(
             mvr_scene,
@@ -170,7 +170,7 @@ def process_mvr_object(
     for existing_mvr_object in dmx.mvr_objects:
         if existing_mvr_object.uuid == mvr_object.uuid:
             previous_mvr_object = existing_mvr_object
-            print("Updating existing mvr object")
+            DMX_Log.log.info("Updating existing mvr object")
             for child in existing_mvr_object.collection.children:
                 for obj in child.objects:
                     bpy.data.objects.remove(obj)
@@ -348,7 +348,7 @@ def add_mvr_fixture(
     for _fixture in dmx.fixtures:
         if _fixture.uuid == fixture.uuid:
             existing_fixture = _fixture
-            print(f"Update existing fixture {fixture.uuid}")
+            DMX_Log.log.info(f"Update existing fixture {fixture.uuid}")
             break
 
     if f"{fixture.gdtf_spec}" in mvr_scene._package.namelist():

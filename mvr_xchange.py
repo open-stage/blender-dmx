@@ -26,7 +26,6 @@ class DMX_MVR_Xchange_Client(PropertyGroup):
     commits: CollectionProperty(name="Commits", type=DMX_MVR_Xchange_Commit)
 
     def get_clients(self, context):
-        # print(self, context)
         clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
         dmx = bpy.context.scene.dmx
         data = []

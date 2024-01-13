@@ -106,6 +106,24 @@ class DMX_TempData(PropertyGroup):
         default="Not checked"
     )
 
+    def onUpdateLoggingFilter(self, context):
+        DMX_Log.update_filters()
+
+    logging_filter_mvr_xchange: BoolProperty(
+        name = "MVR-xchange",
+        default = False,
+        update = onUpdateLoggingFilter)
+
+    logging_filter_dmx_in: BoolProperty(
+        name = "DMX Data",
+        default = False,
+        update = onUpdateLoggingFilter)
+
+    logging_filter_fixture: BoolProperty(
+        name = "Fixture",
+        default = False,
+        update = onUpdateLoggingFilter)
+
 class DMX(PropertyGroup):
 
     # Base classes to be registered
@@ -406,8 +424,8 @@ class DMX(PropertyGroup):
         else:
             self.volume = None
 
-        print("DMX", "\tDMX collection:", self.collection)
-        print("DMX", "\tDMX_Volume object:", self.volume)
+        DMX_Log.log.info(f"DMX collection: {self.collection}")
+        DMX_Log.log.info(f"DMX_Volume object: {self.volume}")
 
         if (self.collection):
             # Second step registration (if not already registered)
@@ -430,7 +448,8 @@ class DMX(PropertyGroup):
             if len(DMX_Network.cards(None, None)):
                 dmx.artnet_ipaddr = DMX_Network.cards(None, None)[0][0]
             else:
-                return print("No network card detected")
+                DMX_Log.log.warning("No network card detected")
+                return
 
         # Reset ArtNet status
         dmx = bpy.context.scene.dmx
@@ -455,7 +474,7 @@ class DMX(PropertyGroup):
     # Unlink Add-on from file
     # This is only called when the DMX collection is externally removed
     def unlinkFile(self):
-        print("DMX", "Unlinking from file")
+        print("Unlinking from file")
 
         # Unlink pointer properties
         self.collection  = None
@@ -486,36 +505,36 @@ class DMX(PropertyGroup):
 
         if ("DMX_DataVersion" in self.collection):
             file_data_version = self.collection["DMX_DataVersion"]
-        print("Data version", file_data_version)
+        DMX_Log.log.info(f"Data version: {file_data_version}")
 
         if file_data_version < 2: # migration for sw. version 0.5 → 1.0
-            print("Running migration 1→2")
+            DMX_Log.log.info("Running migration 1→2")
             dmx = bpy.context.scene.dmx
 
             for fixture in dmx.fixtures:
                 for obj in fixture.objects:
                     if any(obj.name == name for name in ['Body', 'Base']):
-                        print("updating", obj.name)
+                        DMX_Log.log.info(f"updating {obj.name}")
                         obj.name = 'Root'
 
         if file_data_version < 3:
-            print("Running migration 2→3")
+            DMX_Log.log.info("Running migration 2→3")
             dmx = bpy.context.scene.dmx
-            print("Add UUID to fixtures")
+            DMX_Log.log.info("Add UUID to fixtures")
             for fixture in dmx.fixtures:
                 if "uuid" not in fixture:
-                    print("Adding UUID to", fixture.name)
+                    DMX_Log.log.info(f"Adding UUID to {fixture.name}")
                     fixture.uuid = str(py_uuid.uuid4())
-            print("Add UUID to groups, convert groups to json")
+            DMX_Log.log.info("Add UUID to groups, convert groups to json")
             for group in dmx.groups:
                 if "uuid" not in group:
-                    print("Adding UUID to", group.name)
+                    DMX_Log.log.info("Adding UUID to {group.name}")
                     group.uuid = str(py_uuid.uuid4())
-                print("Migrating group")
+                DMX_Log.log.info("Migrating group")
                 group.dump = json.dumps([x[1:-1] for x in group.dump.strip('[]').split(', ')])
 
         if file_data_version < 4:
-            print("Running migration 3→4")
+            DMX_Log.log.info("Running migration 3→4")
             dmx = bpy.context.scene.dmx
 
             def findFixtureUuidDuplicates(uuid):
@@ -536,7 +555,7 @@ class DMX(PropertyGroup):
                         found.append(group)
                 return found
 
-            print("Ensure unique fixture UUID")
+            DMX_Log.log.info("Ensure unique fixture UUID")
             duplicates = []
             for fixture in dmx.fixtures:
                 duplicates = findFixtureUuidDuplicates(fixture.uuid)
@@ -544,9 +563,9 @@ class DMX(PropertyGroup):
                     for fixture in duplicates:
                         u = fixture.uuid
                         fixture.uuid = str(py_uuid.uuid4())
-                        print("Updating fixture", fixture.name, u, fixture.uuid)
+                        DMX_Log.log.info(("Updating fixture", fixture.name, u, fixture.uuid))
 
-            print("Ensure unique group UUID")
+            DMX_Log.log.info("Ensure unique group UUID")
             duplicates = []
             for group in dmx.groups:
                 duplicates = findGroupUuidDuplicates(group.uuid)
@@ -554,9 +573,9 @@ class DMX(PropertyGroup):
                     for group in duplicates:
                         u = group.uuid
                         group.uuid = str(py_uuid.uuid4())
-                        print("Updating group", group.name, u, group.uuid)
+                        DMX_Log.log.info(("Updating group", group.name, u, group.uuid))
 
-            print("Convert groups from fixture names to UUIDs")
+            DMX_Log.log.info("Convert groups from fixture names to UUIDs")
             for group in dmx.groups:
                 grouped_fixtures = json.loads(group.dump)
                 uuid_list = []
@@ -566,9 +585,9 @@ class DMX(PropertyGroup):
                         if fixture is not None:
                             uuid_list.append(fixture.uuid)
                 group.dump = json.dumps(uuid_list)
-            print("Groups updated")
+            DMX_Log.log.info("Groups updated")
 
-        print("Migration done")
+        DMX_Log.log.info("Migration done")
 
         # add here another if statement for next migration condition... like:
         # if file_data_version < 5: #...
@@ -651,7 +670,7 @@ class DMX(PropertyGroup):
     # # Logging levels
 
     def onLoggingLevel(self, context):
-        DMX_Log.log.setLevel(self.logging_level)
+        DMX_Log.set_level(self.logging_level)
 
     logging_level: EnumProperty(
         name= "Logging Level",
@@ -661,8 +680,8 @@ class DMX(PropertyGroup):
                 ('CRITICAL', "Critical", "", "TOOL_SETTINGS", 0),
                 ('ERROR', "Error", "", 'ERROR', 1),
                 ('WARNING', "Warning", "", "CANCEL", 2),
-                ('DEBUG', "Debug", "", "OUTLINER_OB_LIGHT",3),
-                ('INFO', "Info", "", "INFO", 4),
+                ('INFO', "Info", "", "INFO", 3),
+                ('DEBUG', "Debug", "", "OUTLINER_OB_LIGHT",4),
         ],
         update = onLoggingLevel
         )
@@ -797,21 +816,21 @@ class DMX(PropertyGroup):
                     break
             if not selected_client:
                 return
-            print(selected_client.ip_address, selected_client.station_name)
+            DMX_Log.log.debug((selected_client.ip_address, selected_client.station_name))
             DMX_MVR_X_Server.enable()
             DMX_MVR_X_Server._instance.server.get_port()
             DMX_Zeroconf.enable_server(selected_client.service_name, DMX_MVR_X_Server.get_port())
             DMX_MVR_X_Client.join(selected_client)
         else:
-            print("leave client")
+            DMX_Log.log.info("leave client")
             DMX_MVR_X_Client.leave()
-            print("disable client")
+            DMX_Log.log.info("disable client")
             DMX_MVR_X_Client.disable()
-            print("disable server")
+            DMX_Log.log.info("disable server")
             DMX_MVR_X_Server.disable()
-            print("disable mdns")
+            DMX_Log.log.info("disable mdns")
             DMX_Zeroconf.disable_server()
-            print("disabled all")
+            DMX_Log.log.info("disabled all")
 
 
 
@@ -1156,7 +1175,7 @@ class DMX(PropertyGroup):
         try:
             new_fixture.build(name, profile, mode, universe, address, gel_color, display_beams, add_target, position, focus_point, uuid, fixture_id, custom_id, fixture_id_numeric, unit_number)
         except Exception as e:
-            print("Error while adding fixture", e)
+            DMX_Log.log.error(f"Error while adding fixture {e}")
             dmx.fixtures.remove(len(dmx.fixtures)-1)
             ShowMessageBox(
                 f"{e}",
@@ -1164,6 +1183,7 @@ class DMX(PropertyGroup):
                 "ERROR",
             )
             traceback.print_exception(e)
+            DMX_Log.log.exception(e)
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
     def removeFixture(self, fixture):
@@ -1284,13 +1304,13 @@ class DMX(PropertyGroup):
             self.addUniverse()
         self.universes_n = len(self.universes)
 
-    def createMVR_Client(self, station_name = None, station_uuid = None, service_name = None, ip_address = None, port = None, provider = None):
+    def createMVR_Client(self, station_name = "", station_uuid = "", service_name = "", ip_address = "", port = 0, provider = ""):
 
         addon_name = pathlib.Path(__file__).parent.parts[-1]
         prefs = bpy.context.preferences.addons[addon_name].preferences
         application_uuid = prefs.get("application_uuid", str(py_uuid.uuid4()))  # must never be 0
         if application_uuid == station_uuid:
-            print("This is myself, do not register as a client")
+            DMX_Log.log.info("This is myself, do not register as an MVR-xchange provider")
             return
 
         clients  = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
@@ -1299,9 +1319,10 @@ class DMX(PropertyGroup):
                 return # client already in the list
 
         client = clients.add()
-        client.station_name = station_name
+        client.station_name = station_name or ""
         client.station_uuid = station_uuid
         client.service_name = service_name
+        client.provider = provider or ""
         now = int(datetime.now().timestamp())
         client.last_seen = now
         client.ip_address = ip_address
@@ -1386,9 +1407,9 @@ class DMX(PropertyGroup):
         group.name = name
         group.uuid = str(py_uuid.uuid4()) #ensure clean uuid
         group.update()
-        print(group.dump)
+        DMX_Log.log.info(group.dump)
         if (not len(group.dump)):
-            print("DMX Group: no fixture selected!")
+            DMX_Log.log.info("DMX Group: no fixture selected!")
             dmx.groups.remove(len(dmx.groups)-1)
             return False
         return True
@@ -1511,13 +1532,9 @@ def onLoadFile(scene):
     DMX_ArtNet.disable()
     DMX_sACN.disable()
     DMX_OSC.disable()
-    print("disable client")
     DMX_MVR_X_Client.disable()
-    print("disable server")
     DMX_MVR_X_Server.disable()
-    print("disable mdns")
     DMX_Zeroconf.close()
-    print("done")
 
     # register a "bdmx" namespace to get current value of a DMX channel,
     # the syntax is #bdmx(universe, channel(s)), where the channel can be 
@@ -1605,13 +1622,9 @@ def unregister():
     DMX_ArtNet.disable()
     DMX_sACN.disable()
     DMX_OSC.disable()
-    print("disable client")
     DMX_MVR_X_Client.disable()
-    print("disable server")
     DMX_MVR_X_Server.disable()
-    print("disable mdns")
     DMX_Zeroconf.close()
-    print("done")
 
     try:
         for cls in Profiles.classes:
@@ -1626,7 +1639,7 @@ def unregister():
         bpy.utils.unregister_class(DMX)
 
     except Exception as e:
-        print(e)
+        DMX_Log.log.exception(e)
 
     # Append handlers
     bpy.app.handlers.load_post.clear()

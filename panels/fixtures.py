@@ -424,7 +424,7 @@ class DMX_OT_Fixture_Import_GDTF(Operator):
         folder_path = os.path.join(folder_path, '..', 'assets', 'profiles')
         for file in self.files:
             file_path = os.path.join(self.directory, file.name)
-            print('Importing GDTF Profile: %s' % file_path)
+            DMX_Log.log.info('Importing GDTF Profile: %s' % file_path)
             shutil.copy(file_path, folder_path)
         DMX_GDTF.getManufacturerList()
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
@@ -630,7 +630,8 @@ class DMX_UL_Fixtures(UIList):
                 digs=re.compile(r"(\d*)").findall
                 out = int(digs(s)[-2]) or 0
         except Exception as e:
-            print("Error converting text to digit", e, s)
+            DMX_Log.log.error(f"Error converting text to digit {e} {s}")
+            DMX_Log.log.exception(e)
         return out
 
     def draw_filter(self, context, layout):

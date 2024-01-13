@@ -57,13 +57,13 @@ class DMX_Data():
         old_n = len(DMX_Data._universes)
         # shrinking (less universes then before)
         if (universes < old_n):
-            print("DMX", "Universes Deallocated: ", universes, " to ", old_n)
+            DMX_Log.log.info(f"DMX Universes Deallocated: {universes}, to {old_n}")
             DMX_Data._universes = DMX_Data._universes[:universes]
         # growing (more universes then before)
         else:
             for u in range(old_n,universes):
                 DMX_Data._universes.append(bytearray([0]*512))
-                print("DMX", "Universe Allocated: ", u)
+                DMX_Log.log.debug(f"DMX Universe Allocated: {u}")
 
     @staticmethod
     def get_value(universe, *channels):
@@ -138,7 +138,7 @@ class DMX_Data():
                         try:
                             dmx.dmx_values[idx].channel = val
                         except Exception as e:
-                            print(e)
+                            DMX_Log.log.exception(e)
                     DMX_Data._last_updated = time.time()
 
         return changed

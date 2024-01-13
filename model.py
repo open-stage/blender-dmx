@@ -8,6 +8,7 @@
 import bpy
 
 from dmx.gdtf import DMX_GDTF
+from dmx.logging import DMX_Log
 
 
 class DMX_Model:
@@ -33,7 +34,7 @@ class DMX_Model:
         try:
             new_collection = DMX_GDTF.buildCollection(profile, dmx_mode, display_beams, add_target)
         except Exception as e:
-            print("Error", e)
+            DMX_Log.log.error(f"Error {e}")
             if name in collections:
                 collections.remove(collections[name])
             return None

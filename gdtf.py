@@ -288,7 +288,8 @@ class DMX_GDTF():
                 try:
                     obj = DMX_GDTF.loadModel(profile, model)
                 except Exception as e:
-                    print("Error importing 3D model:", e)
+                    DMX_Log.log.error(f"Error importing 3D model: {e}")
+                    DMX_Log.log.exception(e)
                     model.primitive_type="Cube"
                     obj = DMX_GDTF.loadBlenderPrimitive(model)
             # BlenderDMX primitives

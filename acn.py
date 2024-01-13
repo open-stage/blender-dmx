@@ -30,7 +30,7 @@ class DMX_sACN:
         try:
             dmx.sacn_status = "online"
         except Exception as e:
-            print("Error when setting status", e)
+            DMX_Log.log.error(f"Error when setting status {f}")
 
     @staticmethod
     def enable():

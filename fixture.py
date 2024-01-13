@@ -667,7 +667,7 @@ class DMX_Fixture(PropertyGroup):
                     light.object.data.energy = (dimmer/(255.0 * bits)) * light.object.data['flux']
 
         except Exception as e:
-            print("Error updating dimmer", e)
+            DMX_Log.log.error(f"Error updating dimmer {e}")
 
         if (last_shutter_value == 0 or last_dimmer_value == 0) and shutter != 0:
                 bpy.app.timers.register(self.runStrobe)
@@ -706,7 +706,7 @@ class DMX_Fixture(PropertyGroup):
                 return None # exit the timer
 
         except Exception as e:
-            DMX_Log.log.error("Error updating lights and emitters", e)
+            DMX_Log.log.error(f"Error updating lights and emitters {e}")
             DMX_Log.log.info("Killing shutter timer")
             return None # kills the timer
         return 1.0/24.0
@@ -735,7 +735,7 @@ class DMX_Fixture(PropertyGroup):
                 else:
                     light.object.data.color = rgb
         except Exception as e:
-            print("Error updating RGB", e)
+            DMX_Log.log.error(f"Error updating RGB {e}")
         return rgb
 
 
@@ -770,7 +770,7 @@ class DMX_Fixture(PropertyGroup):
             for light in self.lights:
                 light.object.data.spot_size=spot_size
         except Exception as e:
-            print("Error updating zoom", e)
+            DMX_Log.log.error(f"Error updating zoom {e}")
         return zoom
 
     def updateGobo(self, gobo1):
