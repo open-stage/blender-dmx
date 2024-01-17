@@ -33,8 +33,7 @@ class DMX_Data():
     _universes = []
     _virtuals = {} # Virtual channels. These are per fixture and have an attribute and a value
     _dmx = None # Cache access to the context.scene
-    _last_updated = None # Last update time of UI with live DMX values
-
+    _live_view_data = [0]*512
     @staticmethod
     def prepare_empty_buffer():
         # Prepare structure in the dmx_values collection, this is then used for the LiveDMX table
@@ -45,7 +44,6 @@ class DMX_Data():
             for i in buffer:
                 dmx.dmx_values.add()
                 dmx.dmx_values[-1].channel=i
-        DMX_Data._last_updated = None
 
     @staticmethod
     def setup(universes):
@@ -122,9 +120,10 @@ class DMX_Data():
         if (universe >= len(DMX_Data._universes)):
             return
 
-        changed = DMX_Data._universes[universe] != data
-        if changed:
+        dmx_changed = DMX_Data._universes[universe] != data
+        if dmx_changed:
             DMX_Data._universes[universe] = data
+
 
         if DMX_Data._dmx is not None:
             dmx = bpy.context.scene.dmx
@@ -132,13 +131,5 @@ class DMX_Data():
             if selected_live_dmx_universe is None: # this should not happen
                 raise ValueError("Missing selected universe, as if DMX base class is empty...")
             if selected_live_dmx_universe.input == source and selected_live_dmx_universe.id == universe:
-                if DMX_Data._last_updated is None or (time.time() - DMX_Data._last_updated > 0.8 and changed):
-                    # We limit update by time, too fast updates were troubling Blender's UI
-                    for idx, val in enumerate(data):
-                        try:
-                            dmx.dmx_values[idx].channel = val
-                        except Exception as e:
-                            DMX_Log.log.exception(e)
-                    DMX_Data._last_updated = time.time()
-
-        return changed
+                if dmx_changed:
+                    DMX_Data._live_view_data = data
