@@ -163,9 +163,10 @@ class DMX(PropertyGroup):
                 DMX_PT_DMX_ArtNet,
                 DMX_PT_DMX_sACN,
                 DMX_OT_Setup_Volume_Create,
-                DMX_PT_Setup_Background,
                 DMX_PT_Setup_Volume,
-                DMX_PT_Setup_Debug,
+                DMX_PT_Setup_Viewport,
+                DMX_PT_Setup_Logging,
+                DMX_PT_Setup_Extras,
                 DMX_MT_Fixture,
                 DMX_MT_Fixture_Manufacturers,
                 DMX_MT_Fixture_Profiles,
@@ -652,7 +653,7 @@ class DMX(PropertyGroup):
         update = onDisplayPigtails)
 
     display_2D: BoolProperty(
-        name = "Display 2D VIew",
+        name = "Display 2D View",
         default = False,
         update = onDisplay2D)
 
