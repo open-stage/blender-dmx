@@ -12,6 +12,7 @@ import os
 from bpy.props import StringProperty
 from bpy.types import Menu, Operator, Panel, UIList
 from dmx.mvrx_protocol import DMX_MVR_X_Client
+from dmx.data import DMX_Data
 
 
 class DMX_OP_MVR_Refresh(Operator):
@@ -305,7 +306,7 @@ class DMX_PT_DMX_sACN(Panel):
 class DMX_UL_LiveDMX_items(UIList):
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
         layout.alignment = 'CENTER'
-        layout.label(text=f"{index+1}: {item.channel}")
+        layout.label(text=f"{index+1}: {DMX_Data._live_view_data[index]}")
 
     def invoke(self, context, event):
         pass

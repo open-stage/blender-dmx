@@ -252,6 +252,7 @@ class DMX(PropertyGroup):
             for cls in DMX.classes_setup:
                 bpy.utils.unregister_class(cls)
 
+
     # Blender RNA Properties
 
     # fixture listing columns
@@ -330,18 +331,22 @@ class DMX(PropertyGroup):
                 break
         return selected_universe
 
+    def reset_live_dmx_data(self, context):
+        DMX_Data._live_view_data = [0] * 512
+
     selected_live_dmx: EnumProperty(
         name = "Universe",
         description="",
+        update = reset_live_dmx_data,
         items = get_dmx_universes
     )
 
-    dmx_values: CollectionProperty(
-        name = "DMX buffer",
-        type = DMX_Value
+    dmx_values: CollectionProperty( # this only creates an array which is used for live view panel.
+        name = "DMX buffer",        # but the values themselves come from DMX_Data class because
+        type = DMX_Value            # updating this RNA many times per second crashed blender
     )
 
-    dmx_value_index: IntProperty() # Just a fake value, we need as the live DMX UI Panel requires it
+    dmx_value_index: IntProperty() # Unused, but the live DMX UI Panel requires it
 
     data_version: IntProperty(
             name = "BlenderDMX data version, bump when changing RNA structure and provide migration script",

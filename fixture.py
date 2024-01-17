@@ -22,7 +22,6 @@ from dmx.gdtf import DMX_GDTF
 from dmx.data import DMX_Data
 from dmx.util import cmy_to_rgb
 from dmx.osc_utils import DMX_OSC_Handlers
-import json
 from bpy.props import (IntProperty,
                        FloatProperty,
                        BoolProperty,
@@ -107,10 +106,6 @@ class DMX_Fixture(PropertyGroup):
         type = DMX_Fixture_Image
     )
 
-    dmx_values: StringProperty(
-            name = "Temporary DMX cache for speedups",
-            default=""
-    )
     emitter_materials: CollectionProperty(
         name = "Fixture > Materials",
         type = DMX_Emitter_Material)
@@ -255,6 +250,9 @@ class DMX_Fixture(PropertyGroup):
         self.virtual_channels.clear()
         self.emitter_materials.clear()
         self.gobo_materials.clear()
+
+        # Custom python data storage, outside of bpy.props. So called ID props
+        self["dmx_values"] = []
 
         # Create clean Collection
         # (Blender creates the collection with selected objects/collections)
@@ -439,7 +437,6 @@ class DMX_Fixture(PropertyGroup):
 
             obj.hide_select = not bpy.context.scene.dmx.select_geometries
 
-        self.dmx_values = ""
         self.clear()
         #bpy.context.scene.dmx.render()
         self.render()
@@ -465,15 +462,15 @@ class DMX_Fixture(PropertyGroup):
             return
 
         channels = [c.id for c in self.channels]
-        data = DMX_Data.get(self.universe, self.address, len(channels))
-
-        data_virtual = DMX_Data.get_virtual(self.name)
         virtual_channels = [c.id for c in self.virtual_channels]
 
-        s_data = json.dumps([int(b) for b in data] + [int(b) for b in data_virtual.values()]) # create cache, this maybe is not fast enough
-        if self.dmx_values == s_data: # this helps to eliminate flicker with Ethernet DMX signal when the data is not changing
+        data = DMX_Data.get(self.universe, self.address, len(channels))
+        data_virtual = DMX_Data.get_virtual(self.name)
+
+        s_data = [int(b) for b in data] + [int(b) for b in data_virtual.values()] # create cache
+        if list(self["dmx_values"]) == s_data: # this helps to eliminate flicker with Ethernet DMX signal when the data for this particular device is not changing
             return
-        self.dmx_values  = s_data
+        self["dmx_values"]  = s_data
 
         panTilt = [None,None, 1, 1] # pan, tilt, 1 = 8bit, 256 = 16bit
         cmy = [None,None,None]
