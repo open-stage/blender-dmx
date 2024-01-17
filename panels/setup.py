@@ -70,25 +70,8 @@ class DMX_OT_Setup_Volume_Create(Operator):
 
         return {'FINISHED'}
 
-# Sub-panels #
-
-class DMX_PT_Setup_Background(Panel):
-    bl_label = "Background"
-    bl_idname = "DMX_PT_Setup_Background"
-    bl_parent_id = "DMX_PT_Setup"
-    bl_space_type = "VIEW_3D"
-    bl_region_type = "UI"
-    bl_category = "DMX"
-    bl_context = "objectmode"
-    bl_options = {'DEFAULT_CLOSED'}
-
-    def draw(self, context):
-        layout = self.layout
-        dmx = context.scene.dmx
-        layout.prop(context.scene.dmx,'background_color',text='')
-
 class DMX_PT_Setup_Volume(Panel):
-    bl_label = "Volume"
+    bl_label = "Beam Volume"
     bl_idname = "DMX_PT_Setup_Volume"
     bl_parent_id = "DMX_PT_Setup"
     bl_space_type = "VIEW_3D"
@@ -114,9 +97,9 @@ class DMX_PT_Setup_Volume(Panel):
         row.prop(context.scene.dmx, 'volume_density')
         row.enabled = (dmx.volume != None)
 
-class DMX_PT_Setup_Debug(Panel):
-    bl_label = "Extras"
-    bl_idname = "DMX_PT_Setup_Debug"
+class DMX_PT_Setup_Viewport(Panel):
+    bl_label = "Viewport"
+    bl_idname = "DMX_PT_Setup_Viewport"
     bl_parent_id = "DMX_PT_Setup"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
@@ -128,6 +111,10 @@ class DMX_PT_Setup_Debug(Panel):
         layout = self.layout
         dmx = context.scene.dmx
         row = layout.row()
+        row.label(text = "Background Color")
+        row = layout.row()
+        row.prop(context.scene.dmx,'background_color',text='')
+        row = layout.row()
         row.prop(context.window_manager.dmx, 'pause_render')
         row = layout.row()
         row.prop(context.scene.dmx,'display_2D')
@@ -135,6 +122,37 @@ class DMX_PT_Setup_Debug(Panel):
         row.prop(context.scene.dmx,'display_pigtails')
         row = layout.row()
         row.prop(context.scene.dmx,'select_geometries')
+
+class DMX_PT_Setup_Extras(Panel):
+    bl_label = "Extras"
+    bl_idname = "DMX_PT_Setup_Extras"
+    bl_parent_id = "DMX_PT_Setup"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_category = "DMX"
+    bl_context = "objectmode"
+    bl_options = {'DEFAULT_CLOSED'}
+
+    def draw(self, context):
+        layout = self.layout
+        dmx = context.scene.dmx
+        layout.operator("dmx.check_version", text="Check for BlenderDMX updates", icon="SHADING_WIRE")
+        row = layout.row()
+        row.label(text = f"Status: {context.window_manager.dmx.release_version_status}")
+
+class DMX_PT_Setup_Logging(Panel):
+    bl_label = "Logging"
+    bl_idname = "DMX_PT_Setup_Logging"
+    bl_parent_id = "DMX_PT_Setup"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_category = "DMX"
+    bl_context = "objectmode"
+    bl_options = {'DEFAULT_CLOSED'}
+
+    def draw(self, context):
+        layout = self.layout
+        dmx = context.scene.dmx
         row = layout.row()
         row.prop(context.scene.dmx, 'logging_level')
         row = layout.row()
@@ -143,12 +161,6 @@ class DMX_PT_Setup_Debug(Panel):
         row.prop(context.window_manager.dmx, "logging_filter_mvr_xchange", toggle=True)
         row.prop(context.window_manager.dmx, "logging_filter_dmx_in", toggle=True)
         row.prop(context.window_manager.dmx, "logging_filter_fixture", toggle=True)
-        layout.separator()
-        row = layout.row()
-        layout.operator("dmx.check_version", text="Check for BlenderDMX updates", icon="SHADING_WIRE")
-        row = layout.row()
-        row.label(text = f"Status: {context.window_manager.dmx.release_version_status}")
-
 # Panel #
 
 class DMX_PT_Setup(Panel):
