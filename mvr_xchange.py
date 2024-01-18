@@ -4,7 +4,11 @@ from bpy.types import PropertyGroup
 
 
 class DMX_MVR_Xchange_Commit(PropertyGroup):
-    commit_uuid: StringProperty(name="File UUID")
+    def onUpdate(self, context):
+        # empty callback just for automatic UI updates
+        return
+
+    commit_uuid: StringProperty(name="File UUID", update=onUpdate)
     comment: StringProperty(name="Comment")
     file_name: StringProperty(name="File Name")
     station_uuid: StringProperty(name="Station UUID")
@@ -15,10 +19,14 @@ class DMX_MVR_Xchange_Commit(PropertyGroup):
 
 
 class DMX_MVR_Xchange_Client(PropertyGroup):
+    def onUpdate(self, context):
+        # empty callback just for automatic UI updates
+        return
+
     ip_address: StringProperty(name="IP Address")
     port: IntProperty(name="Port")
     subscribed: BoolProperty(name="Subscribed to")
-    last_seen: IntProperty(name="Last Seen Time")
+    last_seen: IntProperty(name="Last Seen Time", update=onUpdate)
     station_name: StringProperty(name="Station Name")
     station_uuid: StringProperty(name="Station UUID")
     service_name: StringProperty(name="MVR-xchange group")

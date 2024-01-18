@@ -12,7 +12,11 @@ class DMX_Fixtures_Import_Gdtf_Profile_Dmx_Mode(PropertyGroup):
 
 
 class DMX_Fixtures_Import_Gdtf_Profile(PropertyGroup):
-    name: StringProperty(name="Fixture name", description="Manufacturer and fixture name")
+    def onUpdate(self, context):
+        # for UI updates only
+        return
+
+    name: StringProperty(name="Fixture name", description="Manufacturer and fixture name", update=onUpdate)
     fixture: StringProperty(name="Fixture name", description="Fixture name")
     manufacturer: StringProperty(name="Manufacturer", description="Manufacturer name")
 
