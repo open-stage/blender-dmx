@@ -1,5 +1,26 @@
 ### Changelog
 
+### 1.1.0
+
+* MVR-xchange:
+    * Add proper listener and sender (client and server) to MVR-xchange, to match the Spec
+    * Many other improvements to MVR-xchange
+* Logging:
+    * Ensure that logger is not initialized multiple times
+    * Add logging to file
+    * Add filters to allow logging only specific parts of the app
+    * Convert most prints() to log
+* UI:
+    * Speed up LiveDMX view refresh
+    * When adding/editing fixtures, allow to (not)increment address/id
+    * Set 2D view to Material rather then Solid
+    * Reorganize Setup panels
+    * Ensure automatic UI refresh for several panels
+* GDTF/MVR/Fixtures:
+    * Speed up DMX values caching for render loop bypass
+    * Scale gobo planes during fixture creation
+    * Unzip correctly files with non latin encoding in file names
+
 ### 1.0.8
 
 * Initial GOBO from GDTF support with indexing and rotation
