@@ -351,7 +351,7 @@ class DMX(PropertyGroup):
 
     data_version: IntProperty(
             name = "BlenderDMX data version, bump when changing RNA structure and provide migration script",
-            default = 4,
+            default = 5,
             )
 
     selected_fixture_index: IntProperty() # Just a fake value, we need as the Fixture list requires it
@@ -511,6 +511,8 @@ class DMX(PropertyGroup):
 
         if ("DMX_DataVersion" in self.collection):
             file_data_version = self.collection["DMX_DataVersion"]
+
+        self.logging_level = "INFO"
         DMX_Log.log.info(f"Data version: {file_data_version}")
 
         if file_data_version < 2: # migration for sw. version 0.5 → 1.0
@@ -593,10 +595,19 @@ class DMX(PropertyGroup):
                 group.dump = json.dumps(uuid_list)
             DMX_Log.log.info("Groups updated")
 
-        DMX_Log.log.info("Migration done")
+        if file_data_version < 5:
+            DMX_Log.log.info("Running migration 4→5")
+            dmx = bpy.context.scene.dmx
+            for fixture in dmx.fixtures:
+                if "dmx_values" not in fixture:
+                    DMX_Log.log.info("Adding dmx_value array to fixture")
+                    fixture["dmx_values"] = []
 
+
+        DMX_Log.log.info("Migration done.")
+        self.logging_level = "ERROR"
         # add here another if statement for next migration condition... like:
-        # if file_data_version < 5: #...
+        # if file_data_version < 6: #...
 
         self.collection["DMX_DataVersion"] = self.data_version # set data version to current
 

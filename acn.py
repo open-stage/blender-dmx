@@ -28,9 +28,10 @@ class DMX_sACN:
             return
         DMX_Data.set_universe(packet.universe, bytearray(packet.dmxData), "sACN")
         try:
-            dmx.sacn_status = "online"
+            if dmx.sacn_status != "online":
+                dmx.sacn_status = "online"
         except Exception as e:
-            DMX_Log.log.error(f"Error when setting status {f}")
+            DMX_Log.log.error(f"Error when setting status {e}")
 
     @staticmethod
     def enable():
@@ -63,7 +64,7 @@ class DMX_sACN:
             DMX_sACN._instance.receiver.stop()
             DMX_sACN._instance.data = None
             DMX_sACN._instance = None
-        dmx.sacn_status = "offline"
+        dmx.set_acn_status = "offline"
 
         if bpy.app.timers.is_registered(DMX_sACN.run_render):
             bpy.app.timers.unregister(DMX_sACN.run_render)
