@@ -8,6 +8,7 @@ import hashlib
 import json
 from dmx.group import FixtureGroup
 from dmx.mvr_objects import DMX_MVR_Object
+from dmx.logging import DMX_Log
 
 
 # importing from dmx didn't work, had to duplicate this function

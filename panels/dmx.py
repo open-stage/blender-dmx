@@ -13,7 +13,7 @@ from bpy.props import StringProperty
 from bpy.types import Menu, Operator, Panel, UIList
 from dmx.mvrx_protocol import DMX_MVR_X_Client
 from dmx.data import DMX_Data
-
+from dmx.logging import DMX_Log
 
 class DMX_OP_MVR_Refresh(Operator):
     bl_label = "Refresh"
@@ -58,9 +58,9 @@ class DMX_OP_MVR_Import(Operator):
                 break
         for commit in client.commits:
             if commit.commit_uuid == self.uuid:
-                print("import", commit)
+                DMX_Log.log.info("import", commit)
                 path = os.path.join(ADDON_PATH, "..", "assets", "mvrs", f"{commit.commit_uuid}.mvr")
-                print(path)
+                DMX_Log.log.info(path)
                 dmx.addMVR(path)
                 break
         return {"FINISHED"}
@@ -74,7 +74,7 @@ class DMX_OP_MVR_Download(Operator):
     uuid: StringProperty()
 
     def execute(self, context):
-        print("downloading")
+        DMX_Log.log.info("downloading")
 
         clients = context.window_manager.dmx.mvr_xchange
         all_clients = clients.mvr_xchange_clients
@@ -82,11 +82,11 @@ class DMX_OP_MVR_Download(Operator):
         for client in all_clients:
             if client.station_uuid == selected:
                 break
-        print("got client", client.station_name)
+        DMX_Log.log.info("got client", client.station_name)
         for commit in client.commits:
-            print(commit.commit_uuid)
+            DMX_Log.log.info(commit.commit_uuid)
             if commit.commit_uuid == self.uuid:
-                print("downloading", commit)
+                DMX_Log.log.info("downloading", commit)
                 DMX_MVR_X_Client.request_file(commit)
                 break
 
