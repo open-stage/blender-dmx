@@ -88,7 +88,7 @@ class mvr_message:
     }
 
     @staticmethod
-    def create_message(message, files=[], uuid=None, file_uuid=None, ok=None, nok_reason=None, station_uuid = None):
+    def create_message(message, files=[], uuid=None, file_uuid=None, ok=None, nok_reason=None):
         if message == "MVR_JOIN_RET":
             response = mvr_message.join_message_ret
             response["StationUUID"] = uuid
@@ -116,7 +116,7 @@ class mvr_message:
             return mvr_message.craft_packet(response)
         elif message == "MVR_LEAVE":
             response = mvr_message.leave_message
-            response["FromStationUUID"] = station_uuid
+            response["FromStationUUID"] = uuid
             return mvr_message.craft_packet(response)
         elif message == "MVR_REQUEST":
             response = mvr_message.request_message

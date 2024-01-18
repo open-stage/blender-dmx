@@ -57,8 +57,8 @@ class client(Thread):
     def join_mvr(self):
         self.send(mvr_message.create_message("MVR_JOIN", uuid=self.application_uuid))
 
-    def leave_mvr(self, client):
-        self.send(mvr_message.create_message("MVR_LEAVE", station_uuid=client.station_uuid))
+    def leave_mvr(self):
+        self.send(mvr_message.create_message("MVR_LEAVE", uuid=self.application_uuid))
 
     def request_file(self, commit, path):
         self.filepath = path
@@ -107,7 +107,7 @@ class client(Thread):
                                         data = data[total_len:]
 
                         if not recv_data:
-                            #self.disconnect(sock)
+                            # self.disconnect(sock)
                             return
 
                     if not self.queue.empty():

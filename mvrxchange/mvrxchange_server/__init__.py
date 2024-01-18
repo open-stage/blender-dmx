@@ -92,10 +92,10 @@ class server(Thread):
         if mask & selectors.EVENT_WRITE:
             if len(data.outb):
                 msg = data.outb.pop(0)
-                DMX_Log.log.debug("send msg" + str(msg)) # strange, but logger didn't want to convert it via f-strings
+                DMX_Log.log.debug("send msg" + str(msg))  # strange, but logger didn't want to convert it via f-strings
                 header = mvr_message.parse_header(msg)
                 if not header["Error"]:
-                    DMX_Log.log.debug("Reply" +  str(msg)) # same here
+                    DMX_Log.log.debug("Reply" + str(msg))  # same here
                 sock.sendall(msg)  # Should be ready to write
                 # sent = sock.send(data.outb)  # Should be ready to write
                 # data.outb = data.outb[sent:]
@@ -107,9 +107,9 @@ class server(Thread):
             data.outb.append(mvr_message.create_message("MVR_JOIN_RET", ok="false", nok_reason="Not accepting connections at this point", uuid = self.uuid))
             # data.outb.append(mvr_message.create_message("MVR_JOIN_RET"))
         if json_data["Type"] == "MVR_LEAVE":
-            data.outb.append(mvr_message.create_message("MVR_LEAVE_RET", uuid = self.uuid))
+            data.outb.append(mvr_message.create_message("MVR_LEAVE_RET", uuid=self.uuid))
         if json_data["Type"] == "MVR_COMMIT":
-            data.outb.append(mvr_message.create_message("MVR_COMMIT_RET", uuid = self.uuid))
+            data.outb.append(mvr_message.create_message("MVR_COMMIT_RET", uuid=self.uuid))
 
         if json_data["Type"] == "MVR_REQUEST":
             # Leaving this here for the future
