@@ -469,6 +469,7 @@ class DMX_Fixture(PropertyGroup):
 
         s_data = [int(b) for b in data] + [int(b) for b in data_virtual.values()] # create cache
         if list(self["dmx_values"]) == s_data: # this helps to eliminate flicker with Ethernet DMX signal when the data for this particular device is not changing
+            DMX_Log.log.debug("caching DMX")
             return
         self["dmx_values"]  = s_data
 
