@@ -14,10 +14,13 @@ from bpy.types import Menu, Operator, Panel, UIList
 from dmx.mvrx_protocol import DMX_MVR_X_Client
 from dmx.data import DMX_Data
 from dmx.logging import DMX_Log
+import uuid as py_uuid
+from datetime import datetime
+
 
 class DMX_OP_MVR_Refresh(Operator):
     bl_label = "Refresh"
-    bl_description = "Refresh"
+    bl_description = "Resends Join message"
     bl_idname = "dmx.mvr_refresh"
     bl_options = {"UNDO"}
 
@@ -26,15 +29,22 @@ class DMX_OP_MVR_Refresh(Operator):
         return {"FINISHED"}
 
 
-class DMX_OP_MVR_Test(Operator):
-    bl_label = "Test"
-    bl_description = "Test operator"
-    bl_idname = "dmx.mvr_test"
+class DMX_OP_MVR_Request(Operator):
+    bl_label = "Request current version"
+    bl_description = "Sends the Request message"
+    bl_idname = "dmx.mvr_request"
     bl_options = {"UNDO"}
 
+    station_uuid: StringProperty()
+
     def execute(self, context):
-        print("Test")
-        DMX_MVR_X_Client.re_join()
+        uuid = str(py_uuid.uuid4())
+        mvr_commit = {"FileUUID": uuid, "StationUUID": self.station_uuid,
+                      "Comment": datetime.now().strftime("%H:%M:%S %B %d, %Y"), "FileSize": 0}
+
+        last_commit = DMX_MVR_X_Client.create_self_request_commit(mvr_commit)
+        if last_commit:
+            DMX_MVR_X_Client.request_file(last_commit)
 
         return {"FINISHED"}
 
@@ -58,7 +68,7 @@ class DMX_OP_MVR_Import(Operator):
                 break
         for commit in client.commits:
             if commit.commit_uuid == self.uuid:
-                DMX_Log.log.info("import", commit)
+                DMX_Log.log.info(f"import {commit}")
                 path = os.path.join(ADDON_PATH, "..", "assets", "mvrs", f"{commit.commit_uuid}.mvr")
                 DMX_Log.log.info(path)
                 dmx.addMVR(path)
@@ -201,9 +211,12 @@ class DMX_PT_DMX_MVR_X(Panel):
         row = layout.row()
         col = row.column()
         row.prop(dmx, "mvrx_enabled")
-        col = row.column()
-        col.operator("dmx.mvr_refresh", text="", icon="FILE_REFRESH")
-        col.enabled = dmx.mvrx_enabled
+        col1 = row.column()
+        col1.operator("dmx.mvr_refresh", text="", icon="FILE_REFRESH")
+        col2 = row.column()
+        if client:
+            col2.operator("dmx.mvr_request", text="", icon="IMPORT").station_uuid = client.station_uuid
+        col1.enabled = col2.enabled = dmx.mvrx_enabled
         #row.operator("dmx.mvr_test", text="Test", icon="CANCEL")
         row.enabled = len(all_clients) > 0
         if not client:

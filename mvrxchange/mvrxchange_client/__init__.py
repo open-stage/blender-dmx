@@ -63,7 +63,11 @@ class client(Thread):
     def request_file(self, commit, path):
         self.filepath = path
         self.commit = commit
-        self.send(mvr_message.create_message("MVR_REQUEST", uuid=commit.station_uuid, file_uuid=commit.commit_uuid))
+        if commit.self_requested: # we need to provide empty UUID in this case
+            commit_uuid = ""
+        else:
+            commit_uuid = commit.commit_uuid
+        self.send(mvr_message.create_message("MVR_REQUEST", uuid=commit.station_uuid, file_uuid=commit_uuid))
 
     def stop(self):
         self.running = False
