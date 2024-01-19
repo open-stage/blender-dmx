@@ -16,6 +16,7 @@ class DMX_MVR_Xchange_Commit(PropertyGroup):
     timestamp: IntProperty(name="Time of info")
     timestamp_saved: IntProperty(name="Time of saving")
     subscribed: BoolProperty(name="Subscribed to")
+    self_requested: BoolProperty(name="We requested latest file without UUID")
 
 
 class DMX_MVR_Xchange_Client(PropertyGroup):

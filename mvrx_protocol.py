@@ -48,12 +48,28 @@ class DMX_MVR_X_Client:
             dmx.mvrx_enabled = False
 
     @staticmethod
+    def create_self_request_commit(mvr_commit):
+        """used when requesting commit ourselves just by mvr_request"""
+        uuid = mvr_commit["FileUUID"]
+        station_uuid = mvr_commit["StationUUID"]
+        DMX_MVR_X_Server._instance._dmx.createMVR_Commits([mvr_commit], station_uuid)
+        clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
+
+        for client in clients:
+            if client.station_uuid == station_uuid:
+                for mvr_commit in client.commits:
+                    if mvr_commit.commit_uuid == uuid:
+                        mvr_commit.self_requested = True
+                        return mvr_commit
+
+    @staticmethod
     def request_file(commit):
         if not DMX_MVR_X_Client._instance:
             return
         if DMX_MVR_X_Client._instance.client:
             ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
             path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid}.mvr")
+            DMX_Log.log.debug(f"path {path}")
             try:
                 DMX_MVR_X_Client.connect()
                 DMX_MVR_X_Client._instance.client.request_file(commit, path)
@@ -151,7 +167,7 @@ class DMX_MVR_X_Server:
             station_name = ""
             if "StationName" in json_data:
                 station_name = json_data["StationName"]
-            DMX_MVR_X_Server._instance._dmx.createMVR_Client(station_name = station_name, station_uuid=uuid, service_name = None, ip_address=addr, port=port, provider = provider)
+            DMX_MVR_X_Server._instance._dmx.createMVR_Client(station_name=station_name, station_uuid=uuid, service_name=None, ip_address=addr, port=port, provider=provider)
         if "file_downloaded" in json_data:
             DMX_MVR_X_Server._instance._dmx.fetched_mvr_downloaded_file(json_data["file_downloaded"])
 

@@ -205,7 +205,7 @@ class DMX(PropertyGroup):
                 DMX_PT_DMX_MVR_X,
                 DMX_UL_MVR_Commit,
                 DMX_OP_MVR_Refresh,
-                DMX_OP_MVR_Test,
+                DMX_OP_MVR_Request,
                 DMX_OT_Fixture_ForceRemove,
                 DMX_OT_Fixture_SelectNext,
                 DMX_OT_Fixture_SelectPrevious,
