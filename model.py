@@ -28,6 +28,7 @@ class DMX_Model:
         # If the fixture collection was already imported for this model
         # just return it
         if name in collections:
+            DMX_Log.log.debug(f"Getting collection from cache: {name}")
             return collections[name]
 
         # Otherwise, build it from profile

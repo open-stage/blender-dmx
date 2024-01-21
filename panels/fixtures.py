@@ -14,6 +14,7 @@ import re
 
 from dmx.gdtf import *
 import dmx.panels.profiles as Profiles
+from dmx.util import pad_number
 
 from bpy.props import (IntProperty,
                        BoolProperty,
@@ -286,7 +287,7 @@ class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
         fixture_id = self.fixture_id
         for i in range(self.units):
             DMX_Log.log.debug(f"Adding fixture {self.name}")
-            dmx.addFixture(self.name+" "+str(i+1), self.profile, universe, address, self.mode, 
+            dmx.addFixture(f"{self.name} {pad_number(i+1)}", self.profile, universe, address, self.mode,
                            self.gel_color, self.display_beams, self.add_target, fixture_id = fixture_id)
             fixture = dmx.fixtures[-1]
             DMX_Log.log.debug(f"Added fixture {fixture}")
@@ -307,7 +308,8 @@ class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
         return {'FINISHED'}
 
     def invoke(self, context, event):
-        self.name = "Fixture "+str(len(context.scene.dmx.fixtures)+1)
+        fixtures_len = len(context.scene.dmx.fixtures)
+        self.name = f"Fixture {pad_number(fixtures_len + 1)}"
         self.units = 1
         DMX_Fixture_AddEdit.profile_list_items = []
         wm = context.window_manager
@@ -345,12 +347,12 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             fixture_id = self.fixture_id
 
             for i, fixture in enumerate(selected):
-                name = self.name + ' ' + str(i+1)
+                name = f"{self.name} {pad_number(i+1)}"
                 if (name != fixture.name and name in bpy.data.collections):
                     self.report({'ERROR'}, "Fixture named " + self.name + " already exists")
                     return {'CANCELLED'}
             for i, fixture in enumerate(selected):
-                name = (self.name + ' ' + str(i+1)) if (self.name != '*') else fixture.name
+                name = f"{self.name} {pad_number(i+1)}" if (self.name != '*') else fixture.name
                 #fixture_id = f"{self.fixture_id}{i+1}" if (self.name != '*') else fixture.name
                 profile = self.profile if (self.profile != '') else fixture.profile
                 mode = self.mode if (self.mode != '') else fixture.mode
@@ -500,7 +502,7 @@ class DMX_OT_Fixture_Import_MVR(Operator):
         folder_path = os.path.join(folder_path, '..', 'assets', 'profiles')
         for file in self.files:
             file_path = os.path.join(self.directory, file.name)
-            print(f'Processing MVR file: {file_path}')
+            print("INFO", f'Processing MVR file: {file_path}')
             dmx = context.scene.dmx
             dmx.addMVR(file_path)
             #shutil.copy(file_path, folder_path)
@@ -575,8 +577,31 @@ class DMX_OT_Fixture_Item(Operator):
     bl_description = "Select Fixture"
     bl_options = {'UNDO'}
 
-    def execute(self, context):
-        context.fixture.toggleSelect()
+    def invoke(self, context, event):
+        scene = context.scene
+        dmx = scene.dmx
+
+        if event.shift:
+            from_fixture_index = dmx.selected_fixture_index
+            from_fixture_fixture = dmx.get_fixture_by_index(from_fixture_index)
+            context.fixture.toggleSelect()
+            to_fixture_index = dmx.selected_fixture_index
+
+            sorted_fixtures = dmx.sortedFixtures()
+
+            start_selecting = False
+            for sorted_fixture in sorted_fixtures:
+                if start_selecting:
+                    sorted_fixture.select()
+                    if sorted_fixture == context.fixture or sorted_fixture == from_fixture_fixture:
+                        break
+
+                if sorted_fixture == from_fixture_fixture or sorted_fixture == context.fixture:
+                    start_selecting = True
+        else:
+            context.fixture.toggleSelect()
+
+        DMX_Log.log.info(dmx.selected_fixture_index)
         return {'FINISHED'}
 
 
@@ -791,4 +816,3 @@ class DMX_UL_Fixtures(UIList):
             col = layout.column()
             col.context_pointer_set("fixture", item)
             col.operator("dmx.force_remove_fixture", text="", icon="CANCEL")
-
