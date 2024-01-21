@@ -354,7 +354,28 @@ class DMX(PropertyGroup):
             default = 5,
             )
 
-    selected_fixture_index: IntProperty() # Just a fake value, we need as the Fixture list requires it
+    def get_fixture_by_index(self, index):
+        for idx, fixture in enumerate(self.fixtures):
+            if idx == index:
+                return fixture
+
+    def on_ui_selection_change(self, context):
+        """ If fixture selection is changed via UILists 'normal' interaction, rather then an operator.
+        Not currently used, as this starts to create circular updates and we would need to pass info
+        if fixture was actually being selected or unselected.
+        """
+        return
+        for idx, fixture in enumerate(self.fixtures):
+            if idx == self.selected_fixture_index:
+                if not fixture.is_selected():
+                    #fixture.toggleSelect()
+                    fixture.select()
+                    return
+
+    selected_fixture_index: IntProperty(
+            default = 0,
+            update = on_ui_selection_change
+            ) # Just a fake value, we need as the Fixture list requires it
 
     fixture_properties_editable: BoolProperty(
         name = "Editable",
@@ -410,7 +431,7 @@ class DMX(PropertyGroup):
     # - If DMX collection was linked, register addon
     # - Allocate static universe data
     def linkFile(self):
-        print("DMX", "Linking to file")
+        print("INFO", "Linking to file")
 
         DMX_GDTF.getManufacturerList()
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
@@ -480,7 +501,7 @@ class DMX(PropertyGroup):
     # Unlink Add-on from file
     # This is only called when the DMX collection is externally removed
     def unlinkFile(self):
-        print("Unlinking from file")
+        print("INFO", "Unlinking from file")
 
         # Unlink pointer properties
         self.collection  = None
@@ -1269,7 +1290,7 @@ class DMX(PropertyGroup):
 
         bpy.app.handlers.depsgraph_update_post.clear()
 
-        star_time = time.time()
+        start_time = time.time()
         bpy.context.window_manager.dmx.pause_render = True # this stops the render loop, to prevent slowness and crashes
         already_extracted_files = {}
         mvr_scene = GeneralSceneDescription(file_name)
@@ -1307,7 +1328,7 @@ class DMX(PropertyGroup):
 
         bpy.context.window_manager.dmx.pause_render = False # re-enable render loop
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
-        print("MVR scene loaded in %.4f sec." % (time.time() - star_time))
+        print("INFO", "MVR scene loaded in %.4f sec." % (time.time() - start_time))
 
     def clean_up_empty_mvr_collections(self,collections):
         for collection in collections.children:
@@ -1527,7 +1548,7 @@ def onDepsgraph(scene):
 def onLoadFile(scene):
     if "Scene" in bpy.data.scenes:
         if ('DMX' in bpy.data.scenes['Scene'].collection.children):
-            print("DMX", "File contains DMX show, linking...")
+            print("INFO", "File contains DMX show, linking...")
             bpy.context.scene.dmx.linkFile()
         else:
             bpy.context.scene.dmx.unlinkFile()
@@ -1554,7 +1575,7 @@ def onLoadFile(scene):
     DMX_Zeroconf.close()
 
     # register a "bdmx" namespace to get current value of a DMX channel,
-    # the syntax is #bdmx(universe, channel(s)), where the channel can be 
+    # the syntax is #bdmx(universe, channel(s)), where the channel can be
     # multiple, to receive 8, 16, 24... bits of data:
     # for example: #bdmx(1,1) , #bdmx(1,1,2)
     bpy.app.driver_namespace['bdmx'] = DMX_Data.get_value

@@ -207,7 +207,7 @@ class DMX_Fixture(PropertyGroup):
         description="Stay in position set by Target",
         default = False)
 
-    def build(self, name, profile, mode, universe, address, gel_color, display_beams, add_target, mvr_position = None, 
+    def build(self, name, profile, mode, universe, address, gel_color, display_beams, add_target, mvr_position = None,
               focus_point = None, uuid = None, fixture_id="", custom_id=0, fixture_id_numeric=0, unit_number=0):
 
         # (Edit) Store objects positions
@@ -928,6 +928,17 @@ class DMX_Fixture(PropertyGroup):
 
         DMX_OSC_Handlers.fixture_selection(self)
         dmx.updatePreviewVolume()
+        self.sync_fixture_selection()
+
+    def sync_fixture_selection(self):
+        """This sets the active selection in the Fixtures list, as
+        we may select by shortcuts, mouse or an operator """
+
+        dmx = bpy.context.scene.dmx
+        for idx, fixture in enumerate(dmx.fixtures):
+            if fixture == self:
+                dmx.selected_fixture_index = idx
+                return
 
     def unselect(self):
         dmx = bpy.context.scene.dmx
@@ -943,6 +954,7 @@ class DMX_Fixture(PropertyGroup):
                     continue
                 obj.hide_set(True)
         dmx.updatePreviewVolume()
+        self.sync_fixture_selection()
 
 
     def toggleSelect(self):
