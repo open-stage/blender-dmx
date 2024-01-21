@@ -4,6 +4,13 @@
 
 Use `ruff` to format the code. Formatting code with Blender can be problematic as short lines are typically better.
 
+### Pre-commit-hooks
+
+There is a configuration for [pre-commit](https://pre-commit.com/) which is not
+enabled by default. You can run this manually by (ensure that `python -m pip
+install pre-commit` is installed) running `pre-commit`. Note that it checks for
+print statements. Print statements with "INFO" as first argument are skipped.
+
 ### Logging
 
 Use [predefined python logging module](https://docs.python.org/3/library/logging.html?highlight=logging#module-logging) instead of print. If not imported yet, import it into your class:
@@ -18,6 +25,6 @@ Then use it. Choose appropriate level. Default level is `Error`, which means `Er
 DMX_LOG.log.critical("Logging critical message here, level 50")
 DMX_LOG.log.error("Logging error message here, level 40")
 DMX_LOG.log.warning("Logging warning message here, level 30")
-DMX_LOG.log.debug("Logging debug message here, level 20")
-DMX_LOG.log.info("Logging info message here, level 10")
+DMX_LOG.log.info("Logging info message here, level 20")
+DMX_LOG.log.debug("Logging debug message here, level 10")
 ```
