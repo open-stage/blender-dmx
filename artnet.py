@@ -141,13 +141,18 @@ class DMX_ArtNet(threading.Thread):
         # Net and subnet of this node
         content.append(struct.pack('B', ip[1]))
         content.append(struct.pack('B', ip[0]))
-        # OEM Code (E:Cue 1x DMX Out)
-        content.append(struct.pack("H", 0)) #0000
+
+        # BlenderDMX OEM registered code, do not reuse if copying this code.
+        # Programmers: do not copy for other Art-Net implementations,
+        # apply for your OEM code here: https://art-net.org.uk/join-the-club/oem-code-application/
+        # the process is simple.
+        content.append(struct.pack("H", 0x962C))
+
         # UBEA Version -> Nope -> 0
         # Status1
         content.append(struct.pack("H", 0))
         # Manufacture ESTA Code
-        content.append(struct.pack("<H", 32767)) # test code
+        content.append(struct.pack("<H", 32767)) # ESTA RDM test code since we did not apply
         # Short Name
         content.append(struct.pack("18s", b"BlenderDMX"))
         content.append(struct.pack("64s", b"BlenderDMX GDTF & MVR plugin for Blender"))
