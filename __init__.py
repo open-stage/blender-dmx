@@ -37,6 +37,7 @@ from dmx.artnet import *
 from dmx.acn import DMX_sACN
 from dmx.network import *
 from dmx.logging import *
+from dmx.panels.recorder import *
 
 from dmx.panels.setup import *
 from dmx.panels.dmx import *
@@ -210,7 +211,9 @@ class DMX(PropertyGroup):
                 DMX_OT_Fixture_SelectNext,
                 DMX_OT_Fixture_SelectPrevious,
                 DMX_OT_VersionCheck,
-                DMX_PT_Programmer)
+                DMX_PT_Programmer,
+                DMX_OT_Recorder_AddKeyframe,
+                DMX_PT_Recorder  )
 
     linkedToFile = False
     _keymaps = []
