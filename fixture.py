@@ -456,10 +456,17 @@ class DMX_Fixture(PropertyGroup):
                     DMX_Log.log.info(("Set Virtual data", attribute, value))
                     DMX_Data.set_virtual(self.name, attribute, value)
 
-    def render(self):
+    def render(self, record_keyframe = False):
+
+        DMX_Log.log.info(f"start render, record: {record_keyframe}")
+
         if bpy.context.window_manager.dmx.pause_render:
         # do not run dender loop during MVR import
             return
+        if record_keyframe:
+            current_frame = bpy.data.scenes[0].frame_current
+        else:
+            current_frame = -1
 
         channels = [c.id for c in self.channels]
         virtual_channels = [c.id for c in self.virtual_channels]
@@ -469,8 +476,9 @@ class DMX_Fixture(PropertyGroup):
 
         s_data = [int(b) for b in data] + [int(b) for b in data_virtual.values()] # create cache
         if list(self["dmx_values"]) == s_data: # this helps to eliminate flicker with Ethernet DMX signal when the data for this particular device is not changing
-            DMX_Log.log.debug("caching DMX")
-            return
+            if not record_keyframe:
+                DMX_Log.log.debug("caching DMX")
+                return
         self["dmx_values"]  = s_data
 
         panTilt = [None,None, 1, 1] # pan, tilt, 1 = 8bit, 256 = 16bit
@@ -570,14 +578,14 @@ class DMX_Fixture(PropertyGroup):
         for geometry, rgb in rgb_mixing_geometries.items():
             if len(rgb_mixing_geometries)==1:
                 geometry = None
-            self.updateRGB(rgb, geometry)
+            self.updateRGB(rgb, geometry, current_frame)
 
         if not len(rgb_mixing_geometries):# handle units without mixing
             if not all([c == 1.0 for c in self.gel_color[:3]]): #gel color is set and has priority
-                    self.updateRGB([255, 255, 255], None)
+                    self.updateRGB([255, 255, 255], None, current_frame)
 
         if (cmy[0] != None and cmy[1] != None and cmy[2] != None):
-            self.updateCMY(cmy)
+            self.updateCMY(cmy, current_frame)
 
         if panTilt[0] != None or panTilt[1] != None:
             if panTilt[0] is None:
@@ -585,19 +593,19 @@ class DMX_Fixture(PropertyGroup):
             if panTilt[1] is None:
                 panTilt[1] = 190 * panTilt[3]
 
-            self.updatePanTilt(panTilt[0], panTilt[1], panTilt[2], panTilt[3])
+            self.updatePanTilt(panTilt[0], panTilt[1], panTilt[2], panTilt[3], current_frame)
 
         if (zoom != None):
-            self.updateZoom(zoom)
+            self.updateZoom(zoom, current_frame)
 
         if gobo1[0] is not None:
-            self.updateGobo(gobo1)
+            self.updateGobo(gobo1, current_frame)
 
         for geometry, xyz in xyz_moving_geometries.items():
-            self.updatePosition(geometry=geometry, x=xyz[0], y=xyz[1], z=xyz[2])
+            self.updatePosition(geometry=geometry, x=xyz[0], y=xyz[1], z=xyz[2], current_frame=current_frame)
 
         for geometry, xyz in xyz_rotating_geometries.items():
-            self.updateRotation(geometry=geometry, x=xyz[0], y=xyz[1], z=xyz[2])
+            self.updateRotation(geometry=geometry, x=xyz[0], y=xyz[1], z=xyz[2], current_frame=current_frame)
 
         for geometry, shutter_dimmer in shutter_dimmer_geometries.items():
             if len(shutter_dimmer_geometries)==1:
@@ -605,7 +613,7 @@ class DMX_Fixture(PropertyGroup):
             if shutter_dimmer[0] is not None or shutter_dimmer[1] is not None:
                 if shutter_dimmer[0] is None:
                     shutter_dimmer[0] = 0 # if device doesn't have shutter, set default value
-                self.updateShutterDimmer(shutter_dimmer[0], shutter_dimmer[1], geometry, shutter_dimmer[3])
+                self.updateShutterDimmer(shutter_dimmer[0], shutter_dimmer[1], geometry, shutter_dimmer[3], current_frame)
 
     def remove_unset_geometries_from_multigeometry_attributes(self, dictionary):
         """Remove items with values of all None"""
@@ -632,7 +640,7 @@ class DMX_Fixture(PropertyGroup):
             if channel.id == attribute:
                 return channel
 
-    def updateShutterDimmer(self, shutter, dimmer, geometry, bits):
+    def updateShutterDimmer(self, shutter, dimmer, geometry, bits, current_frame):
         if geometry is not None:
             geometry = geometry.replace(" ", "_")
         last_shutter_value = 0
@@ -647,6 +655,8 @@ class DMX_Fixture(PropertyGroup):
                         emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer/(255.0 * bits))
                 else:
                     emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer/(255.0 * bits))
+                if current_frame:
+                    emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].keyframe_insert(data_path='default_value', frame=current_frame)
 
             for light in self.lights:
                 last_shutter_value = light.object.data['shutter_value']
@@ -663,6 +673,9 @@ class DMX_Fixture(PropertyGroup):
                         light.object.data.energy = (dimmer/(255.0 * bits)) * light.object.data['flux']
                 else:
                     light.object.data.energy = (dimmer/(255.0 * bits)) * light.object.data['flux']
+
+                if current_frame:
+                    light.object.data.keyframe_insert(data_path='energy', frame=current_frame)
 
         except Exception as e:
             DMX_Log.log.error(f"Error updating dimmer {e}")
@@ -709,7 +722,7 @@ class DMX_Fixture(PropertyGroup):
             return None # kills the timer
         return 1.0/24.0
 
-    def updateRGB(self, rgb, geometry):
+    def updateRGB(self, rgb, geometry, current_frame):
         if geometry is not None:
             geometry = geometry.replace(" ", "_")
         DMX_Log.log.info(("color change for geometry", geometry))
@@ -724,6 +737,10 @@ class DMX_Fixture(PropertyGroup):
                         emitter_material.material.node_tree.nodes[1].inputs[COLOR].default_value = rgb + [1]
                 else:
                     emitter_material.material.node_tree.nodes[1].inputs[COLOR].default_value = rgb + [1]
+
+                if current_frame:
+                    emitter_material.material.node_tree.nodes[1].inputs[COLOR].keyframe_insert(data_path='default_value', frame=current_frame)
+
             for light in self.lights:
                 if geometry is not None:
                     DMX_Log.log.info(("light:", light.object.data.name))
@@ -732,23 +749,30 @@ class DMX_Fixture(PropertyGroup):
                         light.object.data.color = rgb
                 else:
                     light.object.data.color = rgb
+
+                if current_frame:
+                    light.object.data.keyframe_insert(data_path='color', frame=current_frame)
         except Exception as e:
             DMX_Log.log.error(f"Error updating RGB {e}")
         return rgb
 
 
-    def updateCMY(self, cmy):
+    def updateCMY(self, cmy, current_frame):
         rgb=[0,0,0]
         rgb=cmy_to_rgb(cmy)
         rgb = [c/255.0-(1-gel) for (c, gel) in zip(rgb, self.gel_color[:3])]
         #rgb = [c/255.0 for c in rgb]
         for emitter_material in self.emitter_materials:
             emitter_material.material.node_tree.nodes[1].inputs[COLOR].default_value = rgb + [1]
+            if current_frame:
+                emitter_material.material.node_tree.nodes[1].inputs[COLOR].keyframe_insert(data_path='default_value', frame=current_frame)
         for light in self.lights:
             light.object.data.color = rgb
+            if current_frame:
+                light.object.data.keyframe_insert(data_path='color', frame=current_frame)
         return cmy
 
-    def updateZoom(self, zoom):
+    def updateZoom(self, zoom, current_frame):
         try:
             spot_size = math.radians(zoom)
             gobo_diameter = 2.2 * 0.01 * math.tan(math.radians(zoom/2))
@@ -764,14 +788,18 @@ class DMX_Fixture(PropertyGroup):
                         if gobo_diameter > beam_diameter:
                             gobo_diameter = beam_diameter
                     obj.dimensions = (gobo_diameter, gobo_diameter, 0)
+                    if current_frame:
+                        obj.keyframe_insert(data_path='scale', frame=current_frame)
 
             for light in self.lights:
                 light.object.data.spot_size=spot_size
+                if current_frame:
+                    light.object.data.keyframe_insert(data_path='spot_size', frame=current_frame)
         except Exception as e:
             DMX_Log.log.error(f"Error updating zoom {e}")
         return zoom
 
-    def updateGobo(self, gobo1):
+    def updateGobo(self, gobo1, current_frame):
         if gobo1[0] == 0:
             self.hide_gobo()
             return
@@ -782,7 +810,7 @@ class DMX_Fixture(PropertyGroup):
 
         self.hide_gobo(False)
         index = int(gobo1[0]/int(255/(len(self.images)-1)))
-        self.set_gobo(index)
+        self.set_gobo(index, current_frame=current_frame)
 
         if gobo1[1] is None:
             return
@@ -797,7 +825,10 @@ class DMX_Fixture(PropertyGroup):
                     value = gobo1[1]-128-62 # rotating in both direction, slowest in the middle
                     driver.driver.expression=f"frame*{value*0.005}"
 
-    def updatePosition(self, geometry = None, x=None, y=None, z=None):
+                if current_frame:
+                    obj.keyframe_insert(data_path='rotation_euler', frame=current_frame)
+
+    def updatePosition(self, geometry = None, x=None, y=None, z=None, current_frame=None):
         if geometry is None:
             geometry = self.objects["Root"].object
         else:
@@ -810,7 +841,10 @@ class DMX_Fixture(PropertyGroup):
         if z is not None:
             geometry.location.z = (128-z) * 0.1
 
-    def updateRotation(self, geometry = None, x=None, y=None, z=None):
+        if current_frame:
+            geometry.keyframe_insert(data_path="location", frame=current_frame)
+
+    def updateRotation(self, geometry = None, x=None, y=None, z=None, current_frame=None):
         if geometry is None:
             geometry = self.objects["Root"].object
         else:
@@ -824,7 +858,10 @@ class DMX_Fixture(PropertyGroup):
         if z is not None:
             geometry.rotation_euler[2] = (z/127.0-1)*360*(math.pi/360)
 
-    def updatePanTilt(self, pan, tilt, pan_bits, tilt_bits):
+        if current_frame:
+            geometry.keyframe_insert(data_path="rotation_euler", frame=current_frame)
+
+    def updatePanTilt(self, pan, tilt, pan_bits, tilt_bits, current_frame):
         if self.ignore_movement_dmx:
             return
         DMX_Log.log.info("Updating pan tilt")
@@ -838,7 +875,7 @@ class DMX_Fixture(PropertyGroup):
             try:
                 head = self.objects["Head"].object
             except Exception as e:
-                self.updatePanTiltDirectly(pan, tilt)
+                self.updatePanTiltDirectly(pan, tilt, current_frame)
                 DMX_Log.log.info("Escaping pan tilt update, not enough data")
                 return
 
@@ -853,17 +890,27 @@ class DMX_Fixture(PropertyGroup):
             vec.rotate(eul)
 
             target.location = vec + head_location
+
+            if current_frame:
+                target.keyframe_insert(data_path="location", frame=current_frame)
+                target.keyframe_insert(data_path="rotation_euler", frame=current_frame)
         else:
             # for fixtures where we decided not to use target
-            self.updatePanTiltDirectly(pan, tilt)
+            self.updatePanTiltDirectly(pan, tilt, current_frame)
 
-    def updatePanTiltDirectly(self, pan, tilt):
+    def updatePanTiltDirectly(self, pan, tilt, current_frame):
         pan_geometry = self.get_mobile_type("yoke")
         tilt_geometry = self.get_mobile_type("head")
         if pan_geometry:
             pan_geometry.rotation_euler[2] = pan
+            if current_frame:
+                pan_geometry.keyframe_insert(data_path="location", frame=current_frame)
+                pan_geometry.keyframe_insert(data_path="rotation_euler", frame=current_frame)
         if tilt_geometry:
             tilt_geometry.rotation_euler[0] = tilt
+            if current_frame:
+                tilt_geometry.keyframe_insert(data_path="location", frame=current_frame)
+                tilt_geometry.keyframe_insert(data_path="rotation_euler", frame=current_frame)
 
 
 
@@ -978,7 +1025,7 @@ class DMX_Fixture(PropertyGroup):
         for i, ch in enumerate(self.channels):
             data = DMX_Data.set(self.universe, self.address+i, ch.default)
 
-    def set_gobo(self, index=-1):
+    def set_gobo(self, index=-1, current_frame=None):
         for obj in self.collection.objects:
             if "gobo" in obj.get("geometry_type", ""):
                 material = self.gobo_materials[obj.name].material
@@ -987,6 +1034,8 @@ class DMX_Fixture(PropertyGroup):
                 image = material.node_tree.nodes.get("Image Texture")
                 img = self.images[index].image
                 image.image = img
+                #if current_frame:
+                    #image.keyframe_insert(data_path='default_value', frame=current_frame) #???
                 break
 
     def hide_gobo(self, hide = True):
