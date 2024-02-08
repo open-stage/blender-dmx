@@ -1515,8 +1515,14 @@ class DMX(PropertyGroup):
     # # Render
 
     def render(self):
+        if bpy.context.scene.tool_settings.use_keyframe_insert_auto:
+            #make the frame the same for all fixtures
+            current_frame = bpy.data.scenes[0].frame_current
+        else:
+            current_frame = -1
+
         for fixture in self.fixtures:
-            fixture.render()
+            fixture.render(current_frame=current_frame)
 
     def set_fixtures_filter(self, fixtures_filter):
         DMX.fixtures_filter = fixtures_filter
