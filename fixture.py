@@ -456,17 +456,11 @@ class DMX_Fixture(PropertyGroup):
                     DMX_Log.log.info(("Set Virtual data", attribute, value))
                     DMX_Data.set_virtual(self.name, attribute, value)
 
-    def render(self, record_keyframe = False):
-
-        DMX_Log.log.info(f"start render, record: {record_keyframe}")
+    def render(self, skip_cache = False, current_frame = -1):
 
         if bpy.context.window_manager.dmx.pause_render:
-        # do not run dender loop during MVR import
+        # do not run render loop during MVR import
             return
-        if record_keyframe:
-            current_frame = bpy.data.scenes[0].frame_current
-        else:
-            current_frame = -1
 
         channels = [c.id for c in self.channels]
         virtual_channels = [c.id for c in self.virtual_channels]
@@ -476,7 +470,7 @@ class DMX_Fixture(PropertyGroup):
 
         s_data = [int(b) for b in data] + [int(b) for b in data_virtual.values()] # create cache
         if list(self["dmx_values"]) == s_data: # this helps to eliminate flicker with Ethernet DMX signal when the data for this particular device is not changing
-            if not record_keyframe:
+            if not skip_cache: # allow to save a keyframe when using the programmer in Blender
                 DMX_Log.log.debug("caching DMX")
                 return
         self["dmx_values"]  = s_data

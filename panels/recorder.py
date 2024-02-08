@@ -22,9 +22,12 @@ class DMX_OT_Recorder_AddKeyframe(Operator):
         #DMX_Recorder.add_keyframe()
         dmx = bpy.context.scene.dmx
         DMX_Log.log.debug("run add frame")
+
+        #make the frame the same for all fixtures
+        current_frame = bpy.data.scenes[0].frame_current
+
         for fixture in dmx.fixtures:
-            #self.add_fixture_keyframe(fixture)
-            fixture.render(record=True)
+            fixture.render(skip_cache=True, current_frame=current_frame)
             DMX_Log.log.debug(f"keyframe fixture {fixture.name}")
         return {'FINISHED'}
 
@@ -42,3 +45,4 @@ class DMX_PT_Recorder(Panel):
         layout = self.layout
         scene = context.scene
         layout.operator("dmx.recorder_add_keyframe", text='Add Keyframe', icon='PLUS')
+        layout.prop(scene.tool_settings, "use_keyframe_insert_auto")
