@@ -354,7 +354,7 @@ class DMX(PropertyGroup):
 
     data_version: IntProperty(
             name = "BlenderDMX data version, bump when changing RNA structure and provide migration script",
-            default = 5,
+            default = 6,
             )
 
     def get_fixture_by_index(self, index):
@@ -627,6 +627,9 @@ class DMX(PropertyGroup):
                     DMX_Log.log.info("Adding dmx_value array to fixture")
                     fixture["dmx_values"] = []
 
+        if file_data_version < 6:
+            DMX_Log.log.info("Running migration 5→6")
+            DMX_Log.log.info("To make gobos working again, edit fixtures with gobos - re-load GDTF files (Fixtures → Edit, uncheck Re-address only)")
 
         DMX_Log.log.info("Migration done.")
         self.logging_level = "ERROR"

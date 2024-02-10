@@ -66,6 +66,9 @@ class DMX_Fixture_Image(PropertyGroup):
     image: PointerProperty(
         name = "Fixture > Image",
         type = Image)
+    count: IntProperty(
+            default = 0
+            )
 
 class DMX_Emitter_Material(PropertyGroup):
     material: PointerProperty(
@@ -307,14 +310,14 @@ class DMX_Fixture(PropertyGroup):
 
         # Get all gobos
         if has_gobos:
-            gobos = DMX_GDTF.extract_gobos(gdtf_profile)
-            for image in gobos:
-                gobo = self.images.add()
-                gobo.name = image["name"]
-                gobo.image = image["image"]
-                gobo.image.pack()
+            gobo_seq = DMX_GDTF.extract_gobos_as_sequence(gdtf_profile)
+            gobo = self.images.add()
+            gobo.name = "gobos"
+            gobo.image = gobo_seq
+            gobo.count = gobo_seq["count"]
+            gobo.image.pack()
 
-        if not len(self.images):
+        if "gobos" not in self.images:
             has_gobos = False # faulty GDTF might have channels but no images
 
         links = {}
@@ -438,7 +441,7 @@ class DMX_Fixture(PropertyGroup):
             obj.hide_select = not bpy.context.scene.dmx.select_geometries
 
         self.clear()
-        #bpy.context.scene.dmx.render()
+        self.hide_gobo()
         self.render()
 
     # Interface Methods #
@@ -794,19 +797,25 @@ class DMX_Fixture(PropertyGroup):
         return zoom
 
     def updateGobo(self, gobo1, current_frame):
+        if "gobos" not in self.images:
+            self.hide_gobo()
+            return
+
+        gobos = self.images["gobos"]
         if gobo1[0] == 0:
             self.hide_gobo()
             return
 
-        if not len(self.images):
+        if not gobos.count:
             self.hide_gobo()
             return
 
         self.hide_gobo(False)
-        index = int(gobo1[0]/int(255/(len(self.images)-1)))
+        index = int(gobo1[0]/int(255/(gobos.count-1)))
         self.set_gobo(index, current_frame=current_frame)
 
         if gobo1[1] is None:
+            #self.hide_gobo() #?
             return
 
         for obj in self.collection.objects:
@@ -1020,23 +1029,36 @@ class DMX_Fixture(PropertyGroup):
             data = DMX_Data.set(self.universe, self.address+i, ch.default)
 
     def set_gobo(self, index=-1, current_frame=None):
+        gobos = self.images["gobos"]
         for obj in self.collection.objects:
             if "gobo" in obj.get("geometry_type", ""):
                 material = self.gobo_materials[obj.name].material
-                if 0 > index or index >= len(self.images):
-                    index = random.randrange(0, len(self.images))
-                image = material.node_tree.nodes.get("Image Texture")
-                img = self.images[index].image
-                image.image = img
-                #if current_frame:
-                    #image.keyframe_insert(data_path='default_value', frame=current_frame) #???
+                if 0 > index or index >= gobos.count:
+                    index = random.randrange(0, gobos.count)
+                texture = material.node_tree.nodes.get("Image Texture")
+                if texture.image is None:
+                    texture.image = gobos.image
+                    texture.image.source = "SEQUENCE"
+                    texture.image_user.frame_duration = 1
+                    texture.image_user.use_auto_refresh = True
+                texture.image_user.frame_offset = index
+                if current_frame:
+                    texture.image_user.keyframe_insert(data_path="frame_offset", frame=current_frame)
                 break
 
     def hide_gobo(self, hide = True):
         for obj in self.collection.objects:
             if "gobo" in obj.get("geometry_type", ""):
                 obj.hide_set(hide)
+                self.handle_visibility_when_animating(obj, hide)
                 break
+
+    def handle_visibility_when_animating(self, obj, hide):
+        if bpy.context.scene.tool_settings.use_keyframe_insert_auto:
+            current_frame = bpy.data.scenes[0].frame_current
+            obj.hide_set(False)
+            obj.hide_render = hide
+            obj.keyframe_insert("hide_render", frame = current_frame)
 
     def has_attribute(self, attribute, lower = False):
 
