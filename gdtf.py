@@ -11,14 +11,13 @@ import copy
 import math
 import hashlib
 from types import SimpleNamespace
-
+import pathlib
 from mathutils import Euler, Matrix
 
 from dmx import pygdtf
 from dmx.logging import DMX_Log
 from dmx.io_scene_3ds.import_3ds import load_3ds
 from dmx.util import sanitize_obj_name
-
 
 class DMX_GDTF():
 
@@ -112,6 +111,7 @@ class DMX_GDTF():
 
     @staticmethod
     def extract_gobos(profile):
+        """now unused as we need sequences for keyframe animating"""
         gobos = []
         current_path = os.path.dirname(os.path.realpath(__file__))
         extract_to_folder_path = os.path.join(current_path, 'assets', 'models', profile.fixture_type_id)
@@ -128,7 +128,37 @@ class DMX_GDTF():
                 # TODO: we could add gobo names from Wheels
                 gobo = {"name": image_name, "image" : image}
                 gobos.append(gobo)
+
         return gobos
+
+    @staticmethod
+    def extract_gobos_as_sequence(profile):
+        current_path = os.path.dirname(os.path.realpath(__file__))
+        gdtf_path = os.path.join(current_path, 'assets', 'models', profile.fixture_type_id)
+        images_path = os.path.join(gdtf_path, "wheels")
+        sequence_path = os.path.join(gdtf_path, "sequence")
+
+        #TODO: do the extracting and renaming in one step by renaming filename in zipfile infolist
+        for image_name in profile._package.namelist():
+            if image_name.startswith("wheels"):
+                profile._package.extract(image_name, gdtf_path)
+
+        if not os.path.isdir(sequence_path):
+           os.makedirs(sequence_path)
+        first = ""
+        count = 0
+        for idx, image in enumerate(pathlib.Path(images_path).rglob("*"), start=1):
+            destination = pathlib.Path(sequence_path, f"image_{idx:04}{image.suffix}")
+            if idx == 1:
+                first = str(destination.resolve())
+            destination.write_bytes(image.read_bytes())
+            count = idx
+        sequence = bpy.data.images.load(first)
+
+        #TODO: add names from wheels
+        #TODO: add some structure to indicate which gobo belongs to which wheel
+        sequence["count"] = count
+        return sequence
 
     @staticmethod
     def load2D(profile):
