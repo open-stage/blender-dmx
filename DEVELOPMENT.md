@@ -2,7 +2,7 @@
 
 ### Formatting
 
-Use `ruff` to format the code. Formatting code with Blender can be problematic as short lines are typically better.
+Use `ruff` to format the code. Formatting code with Blender RNA structures can be problematic as short lines are typically better.
 
 ### Pre-commit-hooks
 
@@ -10,6 +10,7 @@ There is a configuration for [pre-commit](https://pre-commit.com/) which is not
 enabled by default. You can run this manually by (ensure that `python -m pip
 install pre-commit` is installed) running `pre-commit`. Note that it checks for
 print statements. Print statements with "INFO" as first argument are skipped.
+This runs on staged files.
 
 ### Logging
 

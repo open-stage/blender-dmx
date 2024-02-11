@@ -1,5 +1,13 @@
 ### Changelog
 
+### 1.2.0
+
+    * Initial keyframing support with Auto Keying and Manual Keyframe insert
+    * Add new default 2D symbol based on BlenderDMX logo
+    * Use BlenderDMX's own Art-Net OEM code into ArtPollReply
+    * Select multiple fixtures in Fixture list with Shift
+    * Add button to request latest version of an MVR scene from MVR-xchange
+
 ### 1.1.0
 
 * MVR-xchange:
