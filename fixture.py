@@ -459,7 +459,7 @@ class DMX_Fixture(PropertyGroup):
                     DMX_Log.log.info(("Set Virtual data", attribute, value))
                     DMX_Data.set_virtual(self.name, attribute, value)
 
-    def render(self, skip_cache = False, current_frame = -1):
+    def render(self, skip_cache = False, current_frame = None):
 
         if bpy.context.window_manager.dmx.pause_render:
         # do not run render loop during MVR import
@@ -684,6 +684,7 @@ class DMX_Fixture(PropertyGroup):
         return dimmer
 
     def runStrobe(self):
+        #TODO: try to convert strobe to a blender driver, less resources and keyframable
         try:
 
             exit_timer = False
@@ -798,19 +799,19 @@ class DMX_Fixture(PropertyGroup):
 
     def updateGobo(self, gobo1, current_frame):
         if "gobos" not in self.images:
-            self.hide_gobo()
+            self.hide_gobo(current_frame=current_frame)
             return
 
         gobos = self.images["gobos"]
         if gobo1[0] == 0:
-            self.hide_gobo()
+            self.hide_gobo(current_frame=current_frame)
             return
 
         if not gobos.count:
-            self.hide_gobo()
+            self.hide_gobo(current_frame=current_frame)
             return
 
-        self.hide_gobo(False)
+        self.hide_gobo(False, current_frame=current_frame)
         index = int(gobo1[0]/int(255/(gobos.count-1)))
         self.set_gobo(index, current_frame=current_frame)
 
@@ -843,9 +844,9 @@ class DMX_Fixture(PropertyGroup):
             geometry.location.y = (128-y) * 0.1
         if z is not None:
             geometry.location.z = (128-z) * 0.1
-
-        if current_frame:
-            geometry.keyframe_insert(data_path="location", frame=current_frame)
+        if geometry is not None:
+            if current_frame:
+                geometry.keyframe_insert(data_path="location", frame=current_frame)
 
     def updateRotation(self, geometry = None, x=None, y=None, z=None, current_frame=None):
         if geometry is None:
@@ -860,9 +861,9 @@ class DMX_Fixture(PropertyGroup):
             geometry.rotation_euler[1] = (y/127.0-1)*360*(math.pi/360)
         if z is not None:
             geometry.rotation_euler[2] = (z/127.0-1)*360*(math.pi/360)
-
-        if current_frame:
-            geometry.keyframe_insert(data_path="rotation_euler", frame=current_frame)
+        if geometry is not None:
+            if current_frame:
+                geometry.keyframe_insert(data_path="rotation_euler", frame=current_frame)
 
     def updatePanTilt(self, pan, tilt, pan_bits, tilt_bits, current_frame):
         if self.ignore_movement_dmx:
@@ -1046,19 +1047,13 @@ class DMX_Fixture(PropertyGroup):
                     texture.image_user.keyframe_insert(data_path="frame_offset", frame=current_frame)
                 break
 
-    def hide_gobo(self, hide = True):
+    def hide_gobo(self, hide = True, current_frame = None):
         for obj in self.collection.objects:
             if "gobo" in obj.get("geometry_type", ""):
-                obj.hide_set(hide)
-                self.handle_visibility_when_animating(obj, hide)
+                obj.hide_viewport = hide
+                if current_frame:
+                    obj.keyframe_insert("hide_viewport", frame = current_frame)
                 break
-
-    def handle_visibility_when_animating(self, obj, hide):
-        if bpy.context.scene.tool_settings.use_keyframe_insert_auto:
-            current_frame = bpy.data.scenes[0].frame_current
-            obj.hide_set(False)
-            obj.hide_render = hide
-            obj.keyframe_insert("hide_render", frame = current_frame)
 
     def has_attribute(self, attribute, lower = False):
 

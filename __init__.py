@@ -213,7 +213,10 @@ class DMX(PropertyGroup):
                 DMX_OT_VersionCheck,
                 DMX_PT_Programmer,
                 DMX_OT_Recorder_AddKeyframe,
-                DMX_PT_Recorder  )
+                DMX_PT_Recorder,
+                DMX_PT_DMX_Recorder_Delete,
+                DMX_OT_Recorder_Delete_Keyframes_Selected,
+                DMX_OT_Recorder_Delete_Keyframes_All)
 
     linkedToFile = False
     _keymaps = []
@@ -1156,6 +1159,7 @@ class DMX(PropertyGroup):
         max = 255,
         default = 0,
         update = onProgrammerShutter)
+
     # # Programmer > Sync
 
     def syncProgrammer(self):
@@ -1522,7 +1526,7 @@ class DMX(PropertyGroup):
             #make the frame the same for all fixtures
             current_frame = bpy.data.scenes[0].frame_current
         else:
-            current_frame = -1
+            current_frame = None
 
         for fixture in self.fixtures:
             fixture.render(current_frame=current_frame)
