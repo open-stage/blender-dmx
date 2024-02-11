@@ -2,7 +2,7 @@ bl_info = {
     "name": "DMX",
     "description": "DMX visualization and programming, with GDTF/MVR and Network support",
     "author": "open-stage",
-    "version": (1, 1, 0),
+    "version": (1, 2, 0),
     "blender": (3, 4, 0),
     "location": "3D View > DMX",
     "doc_url": "https://github.com/open-stage/blender-dmx/wiki",
