@@ -295,29 +295,32 @@ class DMX_PT_Programmer(Panel):
                     row.operator("dmx.toggle_camera", text="Camera")
         row.enabled = selected
 
-        layout.template_color_picker(scene.dmx,"programmer_color", value_slider=True)
-        layout.prop(scene.dmx, "programmer_color")
-        layout.prop(scene.dmx,"programmer_dimmer", text="Dimmer")
+        box = layout.column().box()
+        box.template_color_picker(scene.dmx,"programmer_color", value_slider=True)
+        box.prop(scene.dmx, "programmer_color")
+        box.prop(scene.dmx,"programmer_dimmer", text="Dimmer")
 
         if len(selected_fixtures) == 1:
             if selected_fixtures[0].has_attribute("Pan"):
-                layout.prop(scene.dmx,"programmer_pan", text="Pan")
+                box.prop(scene.dmx,"programmer_pan", text="Pan")
             if selected_fixtures[0].has_attribute("Tilt"):
-                layout.prop(scene.dmx,"programmer_tilt", text="Tilt")
+                box.prop(scene.dmx,"programmer_tilt", text="Tilt")
             if selected_fixtures[0].has_attribute("Zoom"):
-                layout.prop(scene.dmx,"programmer_zoom", text="Zoom")
+                box.prop(scene.dmx,"programmer_zoom", text="Zoom")
             if selected_fixtures[0].has_attribute("Gobo"):
-                layout.prop(scene.dmx,"programmer_gobo", text="Gobo")
-                layout.prop(scene.dmx,"programmer_gobo_index", text="GoboPos")
+                box.prop(scene.dmx,"programmer_gobo", text="Gobo")
+                box.prop(scene.dmx,"programmer_gobo_index", text="GoboPos")
             if selected_fixtures[0].has_attribute("shutter", lower = True):
-                layout.prop(scene.dmx,"programmer_shutter", text="Strobe")
+                box.prop(scene.dmx,"programmer_shutter", text="Strobe")
         else:
-            layout.prop(scene.dmx,"programmer_pan", text="Pan")
-            layout.prop(scene.dmx,"programmer_tilt", text="Tilt")
-            layout.prop(scene.dmx,"programmer_zoom", text="Zoom")
-            layout.prop(scene.dmx,"programmer_gobo", text="Gobo")
-            layout.prop(scene.dmx,"programmer_gobo_index", text="GoboPos")
-            layout.prop(scene.dmx,"programmer_shutter", text="Strobe")
+            box.prop(scene.dmx,"programmer_pan", text="Pan")
+            box.prop(scene.dmx,"programmer_tilt", text="Tilt")
+            box.prop(scene.dmx,"programmer_zoom", text="Zoom")
+            box.prop(scene.dmx,"programmer_gobo", text="Gobo")
+            box.prop(scene.dmx,"programmer_gobo_index", text="GoboPos")
+            box.prop(scene.dmx,"programmer_shutter", text="Strobe")
+
+        box.enabled = selected
 
         if (selected):
             layout.operator("dmx.clear", text="Clear")
