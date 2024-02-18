@@ -109,7 +109,13 @@ class DMX_ArtNet(threading.Thread):
 
     def handleArtNet(self, data):
         packet = ArtnetPacket.build(data)
-        self._dmx.artnet_status = "online"
+
+        try:
+            if self._dmx.artnet_status != "online":
+                self._dmx.artnet_status = "online"
+        except Exception as e:
+            DMX_Log.log.error(f"Error when setting status {e}")
+
         if packet.universe >= len(self._dmx.universes):
             return
         if not self._dmx.universes[packet.universe]:
