@@ -251,6 +251,7 @@ def getCollectionName(string):
 def loadModelAndPrepareMvrFileCollection(file, folder):
     object_collection = bpy.data.collections.new(getCollectionName(file))
     file_name = os.path.join(folder, file)
+    DMX_Log.log.debug(f"filename to be loaded {file_name}")
     file_3ds = False
     if file_name.split(".")[-1] == "glb":
         bpy.ops.import_scene.gltf(filepath=file_name)
@@ -288,7 +289,11 @@ def add_mvr_object(
     if cached_collection_name in bpy.data.collections:
         mvr_file_collection = bpy.data.collections[cached_collection_name]
     else:
-        mvr_file_collection = loadModelAndPrepareMvrFileCollection(file, folder)
+        file_name = os.path.join(folder, file)
+        if os.path.isfile(file_name):
+            mvr_file_collection = loadModelAndPrepareMvrFileCollection(file, folder)
+        else:
+            return
 
     collection_name = name
     object_collection = bpy.data.collections.new(collection_name)
