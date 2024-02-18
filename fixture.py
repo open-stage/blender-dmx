@@ -11,7 +11,7 @@ import mathutils
 import uuid
 import random
 
-from dmx.material import getEmitterMaterial, get_gobo_material
+from dmx.material import getEmitterMaterial, get_gobo_material, set_light_nodes
 from dmx.model import DMX_Model
 from dmx.logging import DMX_Log
 
@@ -424,20 +424,8 @@ class DMX_Fixture(PropertyGroup):
 
 
         # setup light for gobo in cycles
-        SHADER_NODE_TEX_IMAGE = bpy.app.translations.pgettext("ShaderNodeTexImage")
-        SHADER_NODE_EMISSION = bpy.app.translations.pgettext("Emission")
-        SHADER_NODE_MIX = bpy.app.translations.pgettext("ShaderNodeMix")
         for light in self.lights:
-            light_obj = light.object
-            light_obj.data.use_nodes = True
-            emission = light_obj.data.node_tree.nodes.get(SHADER_NODE_EMISSION)
-            image = light_obj.data.node_tree.nodes.new(SHADER_NODE_TEX_IMAGE)
-            mix = light_obj.data.node_tree.nodes.new(SHADER_NODE_MIX)
-            mix.data_type="RGBA"
-            mix.name = "Mix"
-            mix.inputs[0].default_value = 1
-            light_obj.data.node_tree.links.new(mix.outputs["Result"], emission.inputs[0])
-            light_obj.data.node_tree.links.new(image.outputs[0], mix.inputs["A"])
+            set_light_nodes(light)
 
         # Link collection to DMX collection
         bpy.context.scene.dmx.collection.children.link(self.collection)

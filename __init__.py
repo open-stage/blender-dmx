@@ -57,6 +57,7 @@ from dmx.mvr_objects import DMX_MVR_Object
 from dmx.mvr_xchange import *
 from dmx.mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server
 import bpy.utils.previews
+from dmx.material import set_light_nodes
 
 from bpy.props import (BoolProperty,
                        StringProperty,
@@ -357,7 +358,7 @@ class DMX(PropertyGroup):
 
     data_version: IntProperty(
             name = "BlenderDMX data version, bump when changing RNA structure and provide migration script",
-            default = 6,
+            default = 7,
             )
 
     def get_fixture_by_index(self, index):
@@ -633,6 +634,14 @@ class DMX(PropertyGroup):
         if file_data_version < 6:
             DMX_Log.log.info("Running migration 5→6")
             DMX_Log.log.info("To make gobos working again, edit fixtures with gobos - re-load GDTF files (Fixtures → Edit, uncheck Re-address only)")
+
+        if file_data_version < 7:
+            DMX_Log.log.info("Running migration 5→6")
+            dmx = bpy.context.scene.dmx
+            for fixture in dmx.fixtures:
+                for light in fixture.lights:
+                    DMX_Log.log.info("Adding nodes to light")
+                    set_light_nodes(light)
 
         DMX_Log.log.info("Migration done.")
         self.logging_level = "ERROR"
