@@ -52,6 +52,11 @@ def clear_animation_data(fixture):
             ld.animation_data.action = None
             ld.animation_data_clear()
 
+        ld_tree = ld.node_tree
+        if ld_tree.animation_data:
+            ld_tree.animation_data.action = None
+            ld_tree.animation_data_clear()
+
 
 class DMX_OT_Recorder_Delete_Keyframes_All(Operator):
     bl_label = "DMX > Recorder > Delete Keyframes for all fixtures"
