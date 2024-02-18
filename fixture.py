@@ -423,6 +423,22 @@ class DMX_Fixture(PropertyGroup):
                 material.material = gobo_material
 
 
+        # setup light for gobo in cycles
+        SHADER_NODE_TEX_IMAGE = bpy.app.translations.pgettext("ShaderNodeTexImage")
+        SHADER_NODE_EMISSION = bpy.app.translations.pgettext("Emission")
+        SHADER_NODE_MIX = bpy.app.translations.pgettext("ShaderNodeMix")
+        for light in self.lights:
+            light_obj = light.object
+            light_obj.data.use_nodes = True
+            emission = light_obj.data.node_tree.nodes.get(SHADER_NODE_EMISSION)
+            image = light_obj.data.node_tree.nodes.new(SHADER_NODE_TEX_IMAGE)
+            mix = light_obj.data.node_tree.nodes.new(SHADER_NODE_MIX)
+            mix.data_type="RGBA"
+            mix.name = "Mix"
+            mix.inputs[0].default_value = 1
+            light_obj.data.node_tree.links.new(mix.outputs["Result"], emission.inputs[0])
+            light_obj.data.node_tree.links.new(image.outputs[0], mix.inputs["A"])
+
         # Link collection to DMX collection
         bpy.context.scene.dmx.collection.children.link(self.collection)
 
@@ -819,7 +835,7 @@ class DMX_Fixture(PropertyGroup):
             #self.hide_gobo() #?
             return
 
-        for obj in self.collection.objects:
+        for obj in self.collection.objects: #EEVEE
             if "gobo" in obj.get("geometry_type", ""):
                 if gobo1[1]<128: # half for indexing
                     obj.driver_remove("rotation_euler")
@@ -831,6 +847,19 @@ class DMX_Fixture(PropertyGroup):
 
                 if current_frame:
                     obj.keyframe_insert(data_path='rotation_euler', frame=current_frame)
+
+        for light in self.lights: #CYCLES
+            light_obj = light.object
+            if gobo1[1]<128: # half for indexing
+                light_obj.driver_remove("rotation_euler")
+                light_obj.rotation_euler[2] = (gobo1[1]/62.0-1)*360*(math.pi/360)
+            else: # half for rotation
+                driver = light_obj.driver_add("rotation_euler", 2)
+                value = gobo1[1]-128-62 # rotating in both direction, slowest in the middle
+                driver.driver.expression=f"frame*{value*0.005}"
+
+            if current_frame:
+                light_obj.keyframe_insert(data_path='rotation_euler', frame=current_frame)
 
     def updatePosition(self, geometry = None, x=None, y=None, z=None, current_frame=None):
         if geometry is None:
@@ -1031,7 +1060,7 @@ class DMX_Fixture(PropertyGroup):
 
     def set_gobo(self, index=-1, current_frame=None):
         gobos = self.images["gobos"]
-        for obj in self.collection.objects:
+        for obj in self.collection.objects: #EEVEE
             if "gobo" in obj.get("geometry_type", ""):
                 material = self.gobo_materials[obj.name].material
                 if 0 > index or index >= gobos.count:
@@ -1047,6 +1076,18 @@ class DMX_Fixture(PropertyGroup):
                     texture.image_user.keyframe_insert(data_path="frame_offset", frame=current_frame)
                 break
 
+        for light in self.lights: # CYCLES
+            light_obj = light.object
+            texture = light_obj.data.node_tree.nodes.get("Image Texture")
+            if texture.image is None:
+                texture.image = gobos.image
+                texture.image.source = "SEQUENCE"
+                texture.image_user.frame_duration = 1
+                texture.image_user.use_auto_refresh = True
+            texture.image_user.frame_offset = index
+            if current_frame:
+                texture.image_user.keyframe_insert(data_path="frame_offset", frame=current_frame)
+
     def hide_gobo(self, hide = True, current_frame = None):
         for obj in self.collection.objects:
             if "gobo" in obj.get("geometry_type", ""):
@@ -1054,6 +1095,12 @@ class DMX_Fixture(PropertyGroup):
                 if current_frame:
                     obj.keyframe_insert("hide_viewport", frame = current_frame)
                 break
+        for light in self.lights: # CYCLES
+            light_obj = light.object
+            mix_factor = light_obj.data.node_tree.nodes.get("Mix").inputs["Factor"]
+            mix_factor.default_value = 1 if hide else 0
+            if current_frame:
+                mix_factor.keyframe_insert(data_path="default_value", frame=current_frame)
 
     def has_attribute(self, attribute, lower = False):
 
