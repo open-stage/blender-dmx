@@ -21,6 +21,7 @@ EMISSION = bpy.app.translations.pgettext("Emission")
 SHADER_NODE_MIX_SHADER = bpy.app.translations.pgettext("ShaderNodeMixShader")
 SHADER_NODE_BSDF_TRANSPARENT = bpy.app.translations.pgettext("ShaderNodeBsdfTransparent")
 SHADER_NODE_TEX_IMAGE = bpy.app.translations.pgettext("ShaderNodeTexImage")
+SHADER_NODE_MIX = bpy.app.translations.pgettext("ShaderNodeMix")
 
 
 # <get Emitter Material>
@@ -91,3 +92,15 @@ def get_gobo_material(name):
     material.node_tree.links.new(image.outputs[0], bsdf.inputs[0])
     # material.node_tree.links.new(bsdf.outputs[0], mix.inputs[1])
     return material
+
+def set_light_nodes(light):
+    light_obj = light.object
+    light_obj.data.use_nodes = True
+    emission = light_obj.data.node_tree.nodes.get(EMISSION)
+    image = light_obj.data.node_tree.nodes.new(SHADER_NODE_TEX_IMAGE)
+    mix = light_obj.data.node_tree.nodes.new(SHADER_NODE_MIX)
+    mix.data_type="RGBA"
+    mix.name = "Mix"
+    mix.inputs[0].default_value = 1
+    light_obj.data.node_tree.links.new(mix.outputs["Result"], emission.inputs[0])
+    light_obj.data.node_tree.links.new(image.outputs[0], mix.inputs["A"])
