@@ -57,8 +57,7 @@ from dmx.mvr_objects import DMX_MVR_Object
 from dmx.mvr_xchange import *
 from dmx.mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server
 import bpy.utils.previews
-from dmx.material import set_light_nodes
-
+from dmx.material import set_light_nodes, getVolumeScatterMaterial
 from bpy.props import (BoolProperty,
                        StringProperty,
                        IntProperty,
@@ -643,6 +642,17 @@ class DMX(PropertyGroup):
                     DMX_Log.log.info("Adding nodes to light")
                     set_light_nodes(light)
 
+
+        if "DMX_Volume" in bpy.data.objects:
+            objs = bpy.data.objects
+            objs.remove(objs["DMX_Volume"], do_unlink=True)
+            DMX_Log.log.info("Updating Volume box")
+
+        if "DMX_Volume" in bpy.data.materials:
+            objs = bpy.data.materials
+            objs.remove(objs["DMX_Volume"], do_unlink=True)
+            DMX_Log.log.info("Updating Volume material")
+
         DMX_Log.log.info("Migration done.")
         self.logging_level = "ERROR"
         # add here another if statement for next migration condition... like:
@@ -793,15 +803,28 @@ class DMX(PropertyGroup):
 
     # #  Setup > Volume > Density
 
+    def onVolumeNoiseScale(self, context):
+        if (not self.volume_nodetree):
+            self.volume_nodetree = self.volume.data.materials[0].node_tree
+        self.volume_nodetree.nodes["Noise Texture"].inputs['Scale'].default_value = self.volume_noise_scale
+
+    volume_noise_scale: FloatProperty(
+        name = "Noise Scale",
+        description="Volume Noise Scale",
+        default = 1,
+        min = 0,
+        max = 100,
+        update = onVolumeNoiseScale)
+
     def onVolumeDensity(self, context):
         if (not self.volume_nodetree):
             self.volume_nodetree = self.volume.data.materials[0].node_tree
-        self.volume_nodetree.nodes[1].inputs['Density'].default_value = self.volume_density
+        self.volume_nodetree.nodes["Volume Scatter"].inputs['Density'].default_value = self.volume_density
 
     volume_density: FloatProperty(
         name = "Density",
         description="Volume Scatter Density",
-        default = 1,
+        default = 0.1,
         min = 0,
         max = 1,
         update = onVolumeDensity)

@@ -22,6 +22,9 @@ SHADER_NODE_MIX_SHADER = bpy.app.translations.pgettext("ShaderNodeMixShader")
 SHADER_NODE_BSDF_TRANSPARENT = bpy.app.translations.pgettext("ShaderNodeBsdfTransparent")
 SHADER_NODE_TEX_IMAGE = bpy.app.translations.pgettext("ShaderNodeTexImage")
 SHADER_NODE_MIX = bpy.app.translations.pgettext("ShaderNodeMix")
+SHADER_NODE_COLOR_RAMP = bpy.app.translations.pgettext("ShaderNodeValToRGB")
+SHADER_NODE_NOISE_TEXTURE = bpy.app.translations.pgettext("ShaderNodeTexNoise")
+
 
 
 # <get Emitter Material>
@@ -63,8 +66,18 @@ def getVolumeScatterMaterial():
             for node in material.node_tree.nodes:
                 print(node)
 
-    material.node_tree.nodes.new(SHADER_NODE_VOLUMESCATTER)
-    material.node_tree.links.new(material.node_tree.nodes[MATERIAL_OUTPUT].inputs[1], material.node_tree.nodes[VOLUME_SCATTER].outputs[0])
+    volume_scatter = material.node_tree.nodes.new(SHADER_NODE_VOLUMESCATTER)
+    volume_scatter.name="Volume Scatter"
+    color_ramp = material.node_tree.nodes.new(SHADER_NODE_COLOR_RAMP)
+    color_ramp.name = "Color Ramp"
+    noise_texture = material.node_tree.nodes.new(SHADER_NODE_NOISE_TEXTURE)
+    noise_texture.name = "Noise Texture"
+    material.node_tree.links.new(material.node_tree.nodes[MATERIAL_OUTPUT].inputs[1], volume_scatter.outputs[0])
+    material.node_tree.links.new(noise_texture.outputs[0],color_ramp.inputs[0])
+    material.node_tree.links.new(color_ramp.outputs[0], volume_scatter.inputs[0])
+    volume_scatter.inputs['Density'].default_value = 0.1
+    material.node_tree.nodes["Color Ramp"].color_ramp.elements[0].position = 0.444
+    material.node_tree.nodes["Color Ramp"].color_ramp.elements[1].position = 1
     return material
 
 
