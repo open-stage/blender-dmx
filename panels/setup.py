@@ -93,9 +93,11 @@ class DMX_PT_Setup_Volume(Panel):
         row.prop(context.scene.dmx, 'volume_enabled')
         row.enabled = (dmx.volume != None)
 
-        row = layout.row()
-        row.prop(context.scene.dmx, 'volume_density')
-        row.enabled = (dmx.volume != None)
+        row_den = layout.row()
+        row_den.prop(context.scene.dmx, 'volume_density')
+        row_scale = layout.row()
+        row_scale.prop(context.scene.dmx, 'volume_noise_scale')
+        row_den.enabled = row_scale.enabled = (dmx.volume != None)
 
 class DMX_PT_Setup_Viewport(Panel):
     bl_label = "Viewport"
