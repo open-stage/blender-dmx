@@ -7,13 +7,15 @@ from bpy.props import IntProperty, StringProperty, CollectionProperty
 from dmx.gdtf import *
 import dmx.panels.profiles as Profiles
 
+from dmx.i18n import DMX_Lang
+_ = DMX_Lang._
 
 # Import Fixtures
 
 
 class DMX_OP_Import_Fixture_From_Share(Operator):
-    bl_label = "Import from Share"
-    bl_description = "Import fixture from GDTF Share"
+    bl_label = _("Import from Share")
+    bl_description = _("Import fixture from GDTF Share")
     bl_idname = "dmx.import_fixture_from_share"
     bl_options = {"UNDO"}
 
@@ -26,19 +28,19 @@ class DMX_OP_Import_Fixture_From_Share(Operator):
 
 
 class DMX_OP_Import_Fixture_Update_Share(Operator):
-    bl_label = "Update GDTF Share index"
-    bl_description = "Update data index of GDTF Share"
-    bl_idname = "dmx.import_fixture_update_share"
-    bl_options = {"UNDO"}
+    bl_label = _("Update GDTF Share index")
+    bl_description = _("Update data index of GDTF Share")
+    bl_idname = _("dmx.import_fixture_update_share")
+    bl_options = {_("UNDO")}
 
     def execute(self, context):
         Profiles.controller.DMX_Fixtures_Manager.update_share_index(self)
-        return {"FINISHED"}
+        return {_("FINISHED")}
 
 
 class DMX_OP_Import_Fixture_From_File(Operator):
-    bl_label = "Import from file"
-    bl_description = "Import fixture from local filesystem"
+    bl_label = _("Import from file")
+    bl_description = _("Import fixture from local filesystem")
     bl_idname = "dmx.import_fixture_from_file"
     bl_options = {"UNDO"}
 
@@ -72,8 +74,8 @@ class DMX_OP_Import_Fixture_From_File(Operator):
 
 
 class DMX_OP_Delete_Local_Fixture(Operator):
-    bl_label = "Delete fixture"
-    bl_description = "Delete fixture from local filesystem"
+    bl_label = _("Delete fixture")
+    bl_description = _("Delete fixture from local filesystem")
     bl_idname = "dmx.delete_local_fixture"
     bl_options = {"UNDO"}
 
@@ -87,8 +89,8 @@ class DMX_OP_Delete_Local_Fixture(Operator):
 
 
 class DMX_OP_Update_Local_Fixtures(Operator):
-    bl_label = "Refresh files listing"
-    bl_description = "Update list of local files"
+    bl_label = _("Refresh files listing")
+    bl_description = _("Update list of local files")
     bl_idname = "dmx.update_local_fixtures"
     bl_options = {"UNDO"}
 

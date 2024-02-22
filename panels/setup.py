@@ -16,11 +16,13 @@ from dmx.util import getSceneRect
 import dmx.version as version
 from dmx import bl_info as application_info
 
+from dmx.i18n import DMX_Lang
+_ = DMX_Lang._
 # Operators #
 
 class DMX_OT_Setup_NewShow(Operator):
-    bl_label = "DMX > Setup > New Show"
-    bl_description = "Clear any existing DMX data and create a new show."
+    bl_label = _("DMX > Setup > New Show")
+    bl_description = _("Clear any existing DMX data and create a new show.")
     bl_idname = "dmx.new_show"
     bl_options = {'UNDO'}
 
@@ -30,8 +32,8 @@ class DMX_OT_Setup_NewShow(Operator):
         return {'FINISHED'}
 
 class DMX_OT_Setup_Volume_Create(Operator):
-    bl_label = "DMX > Setup > Create/Update Volume Box"
-    bl_description = "Create/Update a Box on the scene bounds with a Volume Scatter shader"
+    bl_label = _("DMX > Setup > Create/Update Volume Box")
+    bl_description = _("Create/Update a Box on the scene bounds with a Volume Scatter shader")
     bl_idname = "dmx.create_volume"
     bl_options = {'UNDO'}
 
@@ -71,7 +73,7 @@ class DMX_OT_Setup_Volume_Create(Operator):
         return {'FINISHED'}
 
 class DMX_PT_Setup_Volume(Panel):
-    bl_label = "Beam Volume"
+    bl_label = _("Beam Volume")
     bl_idname = "DMX_PT_Setup_Volume"
     bl_parent_id = "DMX_PT_Setup"
     bl_space_type = "VIEW_3D"
@@ -87,7 +89,7 @@ class DMX_PT_Setup_Volume(Panel):
         layout.prop(context.scene.dmx, 'volume_preview')
         layout.prop(context.scene.dmx, 'disable_overlays')
 
-        layout.operator("dmx.create_volume", text = ('Update Volume Box' if dmx.volume else 'Create Volume Box'), icon='MESH_CUBE')
+        layout.operator("dmx.create_volume", text = (_("Update Volume Box") if dmx.volume else _("Create Volume Box")), icon='MESH_CUBE')
 
         row = layout.row()
         row.prop(context.scene.dmx, 'volume_enabled')
@@ -100,7 +102,7 @@ class DMX_PT_Setup_Volume(Panel):
         row_den.enabled = row_scale.enabled = (dmx.volume != None)
 
 class DMX_PT_Setup_Viewport(Panel):
-    bl_label = "Viewport"
+    bl_label = _("Viewport")
     bl_idname = "DMX_PT_Setup_Viewport"
     bl_parent_id = "DMX_PT_Setup"
     bl_space_type = "VIEW_3D"
@@ -113,7 +115,7 @@ class DMX_PT_Setup_Viewport(Panel):
         layout = self.layout
         dmx = context.scene.dmx
         row = layout.row()
-        row.label(text = "Background Color")
+        row.label(text = _("Background Color"))
         row = layout.row()
         row.prop(context.scene.dmx,'background_color',text='')
         row = layout.row()
@@ -126,7 +128,7 @@ class DMX_PT_Setup_Viewport(Panel):
         row.prop(context.scene.dmx,'select_geometries')
 
 class DMX_PT_Setup_Extras(Panel):
-    bl_label = "Extras"
+    bl_label = _("Extras")
     bl_idname = "DMX_PT_Setup_Extras"
     bl_parent_id = "DMX_PT_Setup"
     bl_space_type = "VIEW_3D"
@@ -138,12 +140,12 @@ class DMX_PT_Setup_Extras(Panel):
     def draw(self, context):
         layout = self.layout
         dmx = context.scene.dmx
-        layout.operator("dmx.check_version", text="Check for BlenderDMX updates", icon="SHADING_WIRE")
+        layout.operator("dmx.check_version", text=_("Check for BlenderDMX updates"), icon="SHADING_WIRE")
         row = layout.row()
-        row.label(text = f"Status: {context.window_manager.dmx.release_version_status}")
+        row.label(text = _("Status: {}").format(context.window_manager.dmx.release_version_status))
 
 class DMX_PT_Setup_Logging(Panel):
-    bl_label = "Logging"
+    bl_label = _("Logging")
     bl_idname = "DMX_PT_Setup_Logging"
     bl_parent_id = "DMX_PT_Setup"
     bl_space_type = "VIEW_3D"
@@ -158,7 +160,7 @@ class DMX_PT_Setup_Logging(Panel):
         row = layout.row()
         row.prop(context.scene.dmx, 'logging_level')
         row = layout.row()
-        row.label(text="Log filter")
+        row.label(text=_("Log filter"))
         row = layout.row(align=True)
         row.prop(context.window_manager.dmx, "logging_filter_mvr_xchange", toggle=True)
         row.prop(context.window_manager.dmx, "logging_filter_dmx_in", toggle=True)
@@ -166,7 +168,7 @@ class DMX_PT_Setup_Logging(Panel):
 # Panel #
 
 class DMX_PT_Setup(Panel):
-    bl_label = "Setup"
+    bl_label = _("Setup")
     bl_idname = "DMX_PT_Setup"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
@@ -178,17 +180,17 @@ class DMX_PT_Setup(Panel):
         layout = self.layout
         dmx = context.scene.dmx
         if (not dmx.collection):
-            layout.operator("dmx.new_show", text="Create New Show", icon="LIGHT")
+            layout.operator("dmx.new_show", text=_("Create New Show"), icon="LIGHT")
 
 class DMX_OT_VersionCheck(Operator):
-    bl_label = "Check version"
-    bl_description = "Check if there is new release of BlenderDMX"
+    bl_label = _("Check version")
+    bl_description = _("Check if there is new release of BlenderDMX")
     bl_idname = "dmx.check_version"
     bl_options = {'UNDO'}
 
     def callback(self, data, context):
         temp_data = context.window_manager.dmx
-        text = "Unknown version error"
+        text = _("Unknown version error")
         if "error" in data:
             text = data["error"]
         else:
@@ -200,17 +202,17 @@ class DMX_OT_VersionCheck(Operator):
                 text = f"{e.__class__.__name__} {e}"
             else:
                 if res < 0:
-                    text = f"New version {new_version} available"
+                    text = _("New version {} available").format(new_version)
                 elif res > 0:
-                    text = "You are using pre-release version"
+                    text = _("You are using pre-release version")
                 else:
-                    text = "You are using latest version of BlenderDMX"
+                    text = _("You are using latest version of BlenderDMX")
 
         self.report({"INFO"}, f"{text}")
         temp_data.release_version_status = text
 
     def execute(self, context):
         temp_data = context.window_manager.dmx
-        temp_data.release_version_status = "Checking..."
+        temp_data.release_version_status = _("Checking...")
         version.get_latest_release(self.callback, context)
         return {'FINISHED'}

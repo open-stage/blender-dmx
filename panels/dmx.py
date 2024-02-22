@@ -17,10 +17,12 @@ from dmx.logging import DMX_Log
 import uuid as py_uuid
 from datetime import datetime
 
+from dmx.i18n import DMX_Lang
+_ = DMX_Lang._
 
 class DMX_OP_MVR_Refresh(Operator):
-    bl_label = "Refresh"
-    bl_description = "Resends Join message"
+    bl_label = _("Refresh")
+    bl_description = _("Resends Join message")
     bl_idname = "dmx.mvr_refresh"
     bl_options = {"UNDO"}
 
@@ -30,8 +32,8 @@ class DMX_OP_MVR_Refresh(Operator):
 
 
 class DMX_OP_MVR_Request(Operator):
-    bl_label = "Request current version"
-    bl_description = "Sends the Request message"
+    bl_label = _("Request current version")
+    bl_description = _("Sends the Request message")
     bl_idname = "dmx.mvr_request"
     bl_options = {"UNDO"}
 
@@ -49,8 +51,8 @@ class DMX_OP_MVR_Request(Operator):
         return {"FINISHED"}
 
 class DMX_OP_MVR_Import(Operator):
-    bl_label = "Import"
-    bl_description = "Import commit"
+    bl_label = _("Import")
+    bl_description = _("Import commit")
     bl_idname = "dmx.mvr_import"
     bl_options = {"UNDO"}
 
@@ -76,8 +78,8 @@ class DMX_OP_MVR_Import(Operator):
         return {"FINISHED"}
 
 class DMX_OP_MVR_Download(Operator):
-    bl_label = "Download"
-    bl_description = "Download commit"
+    bl_label = _("Download")
+    bl_description = _("Download commit")
     bl_idname = "dmx.mvr_download"
     bl_options = {"UNDO"}
 
@@ -139,7 +141,7 @@ class DMX_UL_Universe(UIList):
 # Menus #
 
 class DMX_MT_Universe(Menu):
-    bl_label = "DMX > Universe Menu"
+    bl_label = _("DMX > Universe Menu")
     bl_idname = "DMX_MT_Universe"
 
     def draw(self, context):
@@ -154,7 +156,7 @@ class DMX_MT_Universe(Menu):
 
 # Sub-panels #
 class DMX_PT_DMX_OSC(Panel):
-    bl_label = "OSC"
+    bl_label = _("OSC")
     bl_idname = "DMX_PT_DMX_OSC"
     bl_parent_id = "DMX_PT_DMX"
     bl_space_type = "VIEW_3D"
@@ -177,7 +179,7 @@ class DMX_PT_DMX_OSC(Panel):
         row.enabled = not dmx.osc_enabled
 
 class DMX_PT_DMX_MVR_X(Panel):
-    bl_label = "MVR-xchange"
+    bl_label = _("MVR-xchange")
     bl_idname = "DMX_PT_DMX_MVR_Xchange"
     bl_parent_id = "DMX_PT_DMX"
     bl_space_type = "VIEW_3D"
@@ -234,7 +236,7 @@ class DMX_PT_DMX_MVR_X(Panel):
         )
 
 class DMX_PT_DMX_Universes(Panel):
-    bl_label = "Universes"
+    bl_label = _("Universes")
     bl_idname = "DMX_PT_DMX_Universes"
     bl_parent_id = "DMX_PT_DMX"
     bl_space_type = "VIEW_3D"
@@ -259,7 +261,7 @@ class DMX_PT_DMX_Universes(Panel):
         #layout.menu("dmx.menu.universe", text="...", icon="FILE_VOLUME")
 
 class DMX_PT_DMX_ArtNet(Panel):
-    bl_label = "Art-Net"
+    bl_label = _("Art-Net")
     bl_idname = "DMX_PT_DMX_ArtNet"
     bl_parent_id = "DMX_PT_DMX"
     bl_space_type = "VIEW_3D"
@@ -286,10 +288,10 @@ class DMX_PT_DMX_ArtNet(Panel):
         row.enabled = len(artnet_universes)>0
         row = layout.row()
         row.label(text=f"Art-Net set for {len(artnet_universes)} universe(s)")
-        layout.label(text='Status: ' + layout.enum_item_name(dmx, 'artnet_status', dmx.artnet_status))
+        layout.label(text=_("Status") + ": " + layout.enum_item_name(dmx, 'artnet_status', dmx.artnet_status))
 
 class DMX_PT_DMX_sACN(Panel):
-    bl_label = "sACN"
+    bl_label = _("sACN")
     bl_idname = "DMX_PT_DMX_sACN"
     bl_parent_id = "DMX_PT_DMX"
     bl_space_type = "VIEW_3D"
@@ -313,8 +315,8 @@ class DMX_PT_DMX_sACN(Panel):
         row.prop(dmx, "sacn_enabled")
         row.enabled = len(sacn_universes)>0
         row = layout.row()
-        row.label(text=f"sACN set for {len(sacn_universes)} universe(s)")
-        layout.label(text='Status: ' + dmx.sacn_status)
+        row.label(text=_("sACN set for {} universe(s)").format(len(sacn_universes)))
+        layout.label(text=_("Status") + ": " + dmx.sacn_status)
 
 class DMX_UL_LiveDMX_items(UIList):
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
@@ -325,7 +327,7 @@ class DMX_UL_LiveDMX_items(UIList):
         pass
 
 class DMX_PT_DMX_LiveDMX(Panel):
-    bl_label = "Live DMX"
+    bl_label = _("Live DMX")
     bl_idname = "DMX_PT_DMX_LiveDMX"
     bl_parent_id = "DMX_PT_DMX"
     bl_space_type = "VIEW_3D"
@@ -357,7 +359,7 @@ class DMX_PT_DMX_LiveDMX(Panel):
 # Panel #
 
 class DMX_PT_DMX(Panel):
-    bl_label = "Protocols"
+    bl_label = _("Protocols")
     bl_idname = "DMX_PT_DMX"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"

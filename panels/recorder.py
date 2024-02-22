@@ -11,11 +11,13 @@ import bpy
 from bpy.types import Panel, Operator
 from dmx.logging import DMX_Log
 
+from dmx.i18n import DMX_Lang
+_ = DMX_Lang._
 
 class DMX_OT_Recorder_AddKeyframe(Operator):
-    bl_label = "DMX > Recorder > Add Keyframe"
+    bl_label = _("DMX > Recorder > Add Keyframe")
     bl_idname = "dmx.recorder_add_keyframe"
-    bl_description = "Add a Keyframe with the current DMX data"
+    bl_description = _("Add a Keyframe with the current DMX data")
     bl_options = {"UNDO"}
 
     def execute(self, context):
@@ -59,9 +61,9 @@ def clear_animation_data(fixture):
 
 
 class DMX_OT_Recorder_Delete_Keyframes_All(Operator):
-    bl_label = "DMX > Recorder > Delete Keyframes for all fixtures"
+    bl_label = _("DMX > Recorder > Delete Keyframes for all fixtures")
     bl_idname = "dmx.recorder_delete_keyframes_all"
-    bl_description = "Deletes all keyframes from all fixtures"
+    bl_description = _("Deletes all keyframes from all fixtures")
     bl_options = {"UNDO"}
 
     def execute(self, context):
@@ -74,9 +76,9 @@ class DMX_OT_Recorder_Delete_Keyframes_All(Operator):
 
 
 class DMX_OT_Recorder_Delete_Keyframes_Selected(Operator):
-    bl_label = "DMX > Recorder > Delete All Keyframes from selected fixtures"
+    bl_label = _("DMX > Recorder > Delete All Keyframes from selected fixtures")
     bl_idname = "dmx.recorder_delete_keyframes_selected"
-    bl_description = "Deletes all keyframes from selected fixtures"
+    bl_description = _("Deletes all keyframes from selected fixtures")
     bl_options = {"UNDO"}
 
     def execute(self, context):
@@ -99,7 +101,7 @@ class DMX_OT_Recorder_Delete_Keyframes_Selected(Operator):
 
 
 class DMX_PT_Recorder(Panel):
-    bl_label = "Keyframe Recorder"
+    bl_label = _("Keyframe Recorder")
     bl_idname = "DMX_PT_Recorder"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
@@ -110,12 +112,12 @@ class DMX_PT_Recorder(Panel):
     def draw(self, context):
         layout = self.layout
         scene = context.scene
-        layout.operator("dmx.recorder_add_keyframe", text="Add Keyframe", icon="PLUS")
+        layout.operator("dmx.recorder_add_keyframe", text=_("Add Keyframe"), icon="PLUS")
         layout.prop(scene.tool_settings, "use_keyframe_insert_auto")
 
 
 class DMX_PT_DMX_Recorder_Delete(Panel):
-    bl_label = "Delete Keyframes"
+    bl_label = _("Delete Keyframes")
     bl_idname = "DMX_PT_DMX_Recorder_Delete"
     bl_parent_id = "DMX_PT_Recorder"
     bl_space_type = "VIEW_3D"
@@ -137,9 +139,9 @@ class DMX_PT_DMX_Recorder_Delete(Panel):
         fixtures_exist = len(dmx.fixtures) > 0
 
         row = layout.row()
-        row.operator("dmx.recorder_delete_keyframes_selected", text="Delete from selected fixtures", icon="SELECT_DIFFERENCE")
+        row.operator("dmx.recorder_delete_keyframes_selected", text=_("Delete from selected fixtures"), icon="SELECT_DIFFERENCE")
         row.enabled = selected
 
         row = layout.row()
-        row.operator("dmx.recorder_delete_keyframes_all", text="Delete from all fixtures", icon="SELECT_EXTEND")
+        row.operator("dmx.recorder_delete_keyframes_all", text=_("Delete from all fixtures"), icon="SELECT_EXTEND")
         row.enabled = fixtures_exist

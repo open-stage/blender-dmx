@@ -12,12 +12,14 @@ import bpy
 from bpy.types import Operator, Panel
 from dmx.osc_utils import DMX_OSC_Handlers
 
+from dmx.i18n import DMX_Lang
+_ = DMX_Lang._
 # Operators #
 
 class DMX_OT_Programmer_Set_Ignore_Movement(Operator):
-    bl_label = "Lock Movement"
+    bl_label = _("Lock Movement")
     bl_idname = "dmx.ignore_movement_true"
-    bl_description = "Ignore pan/tilt DMX data"
+    bl_description = _("Ignore pan/tilt DMX data")
     bl_options = {'UNDO'}
 
     def execute(self, context):
@@ -34,9 +36,9 @@ class DMX_OT_Programmer_Set_Ignore_Movement(Operator):
         return {'FINISHED'}
 
 class DMX_OT_Programmer_Unset_Ignore_Movement(Operator):
-    bl_label = "Unlock Movement"
+    bl_label = _("Unlock Movement")
     bl_idname = "dmx.ignore_movement_false"
-    bl_description = "Allow pan/tilt DMX data"
+    bl_description = _("Allow pan/tilt DMX data")
     bl_options = {'UNDO'}
 
     def execute(self, context):
@@ -53,9 +55,9 @@ class DMX_OT_Programmer_Unset_Ignore_Movement(Operator):
         return {'FINISHED'}
 
 class DMX_OT_Programmer_DeselectAll(Operator):
-    bl_label = "Deselect All"
+    bl_label = _("Deselect All")
     bl_idname = "dmx.deselect_all"
-    bl_description = "Deselect every object in the Scene"
+    bl_description = _("Deselect every object in the Scene")
     bl_options = {'UNDO'}
 
     def execute(self, context):
@@ -66,9 +68,9 @@ class DMX_OT_Programmer_DeselectAll(Operator):
         return {'FINISHED'}
 
 class DMX_OT_Programmer_SelectAll(Operator):
-    bl_label = "Select All"
+    bl_label = _("Select All")
     bl_idname = "dmx.select_all"
-    bl_description = "Select every object in the Scene"
+    bl_description = _("Select every object in the Scene")
     bl_options = {'UNDO'}
 
     def execute(self, context):
@@ -79,9 +81,9 @@ class DMX_OT_Programmer_SelectAll(Operator):
         return {'FINISHED'}
 
 class DMX_OT_Programmer_SelectFiltered(Operator):
-    bl_label = "Select Visible (only filtered)"
+    bl_label = _("Select Visible (only filtered)")
     bl_idname = "dmx.select_filtered"
-    bl_description = "Select every object in the Scene which is visible in the fixtures list"
+    bl_description = _("Select every object in the Scene which is visible in the fixtures list")
     bl_options = {'UNDO'}
 
     def execute(self, context):
@@ -93,9 +95,9 @@ class DMX_OT_Programmer_SelectFiltered(Operator):
         return {'FINISHED'}
 
 class DMX_OT_Programmer_SelectInvert(Operator):
-    bl_label = "Invert selection"
+    bl_label = _("Invert selection")
     bl_idname = "dmx.select_invert"
-    bl_description = "Invert the selection"
+    bl_description = _("Invert the selection")
     bl_options = {'UNDO'}
 
     def execute(self, context):
@@ -115,9 +117,9 @@ class DMX_OT_Programmer_SelectInvert(Operator):
         return {'FINISHED'}
 
 class DMX_OT_Programmer_SelectEveryOther(Operator):
-    bl_label = "Select every other light"
+    bl_label = _("Select every other light")
     bl_idname = "dmx.select_every_other"
-    bl_description = "Select every other light"
+    bl_description = _("Select every other light")
     bl_options = {'UNDO'}
 
     def execute(self, context):
@@ -131,9 +133,9 @@ class DMX_OT_Programmer_SelectEveryOther(Operator):
         return {'FINISHED'}
 
 class DMX_OT_Programmer_Clear(Operator):
-    bl_label = "Clear"
+    bl_label = _("Clear")
     bl_idname = "dmx.clear"
-    bl_description = "Clear all DMX values to default and update fixtures"
+    bl_description = _("Clear all DMX values to default and update fixtures")
     bl_options = {'UNDO'}
 
     def execute(self, context):
@@ -158,9 +160,9 @@ class DMX_OT_Programmer_Clear(Operator):
         return {'FINISHED'}
 
 class DMX_OT_Programmer_TargetsToZero(Operator):
-    bl_label = "Targets to zero"
+    bl_label = _("Targets to zero")
     bl_idname = "dmx.targets_to_zero"
-    bl_description = "Set Targets to 0"
+    bl_description = _("Set Targets' position to 0")
     bl_options = {'UNDO'}
 
     def execute(self, context):
@@ -176,9 +178,9 @@ class DMX_OT_Programmer_TargetsToZero(Operator):
         return {'FINISHED'}
 
 class DMX_OT_Programmer_SelectBodies(Operator):
-    bl_label = "Select Bodies"
+    bl_label = _("Select Bodies")
     bl_idname = "dmx.select_bodies"
-    bl_description = "Select body from every fixture element selected"
+    bl_description = _("Select body from every fixture element selected")
     bl_options = {'UNDO'}
 
 
@@ -200,9 +202,9 @@ class DMX_OT_Programmer_SelectBodies(Operator):
         return {'FINISHED'}
 
 class DMX_OT_Programmer_SelectTargets(Operator):
-    bl_label = "Select Targets"
-    bl_idname = "dmx.select_targets"
-    bl_description = "Select target from every fixture element selected"
+    bl_label = _("Select Targets")
+    bl_idname = _("dmx.select_targets")
+    bl_description = _("Select target from every fixture element selected")
     bl_options = {'UNDO'}
 
     def execute(self, context):
@@ -211,9 +213,9 @@ class DMX_OT_Programmer_SelectTargets(Operator):
         return {'FINISHED'}
 
 class DMX_OT_Programmer_SelectCamera(Operator):
-    bl_label = "Select Camera"
+    bl_label = _("Select Camera")
     bl_idname = "dmx.toggle_camera"
-    bl_description = "Select camera of the selected fixture"
+    bl_description = _("Select camera of the selected fixture")
     bl_options = {'UNDO'}
 
     def execute(self, context):
@@ -236,7 +238,7 @@ class DMX_OT_Programmer_SelectCamera(Operator):
 # Panels #
 
 class DMX_PT_Programmer(Panel):
-    bl_label = "Programmer"
+    bl_label = _("Programmer")
     bl_idname = "DMX_PT_Programmer"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
@@ -261,11 +263,11 @@ class DMX_PT_Programmer(Panel):
 
         selected_fixture_label = ""
         if len(selected_fixtures) == 0:
-            selected_fixture_label = "Nothing selected"
+            selected_fixture_label = _("Nothing selected")
         elif len(selected_fixtures) == 1:
             selected_fixture_label = selected_fixtures[0].name
         else:
-            selected_fixture_label = f"{len(selected_fixtures)} selected"
+            selected_fixture_label = _("{} selected").format(len(selected_fixtures))
 
         row = layout.row()
         row.operator("dmx.select_all", text='', icon='SELECT_EXTEND')
@@ -302,30 +304,30 @@ class DMX_PT_Programmer(Panel):
 
         if len(selected_fixtures) == 1:
             if selected_fixtures[0].has_attribute("Pan"):
-                box.prop(scene.dmx,"programmer_pan", text="Pan")
+                box.prop(scene.dmx,"programmer_pan", text=_("Pan"))
             if selected_fixtures[0].has_attribute("Tilt"):
-                box.prop(scene.dmx,"programmer_tilt", text="Tilt")
+                box.prop(scene.dmx,"programmer_tilt", text=_("Tilt"))
             if selected_fixtures[0].has_attribute("Zoom"):
-                box.prop(scene.dmx,"programmer_zoom", text="Zoom")
+                box.prop(scene.dmx,"programmer_zoom", text=_("Zoom"))
             if selected_fixtures[0].has_attribute("Gobo"):
-                box.prop(scene.dmx,"programmer_gobo", text="Gobo")
-                box.prop(scene.dmx,"programmer_gobo_index", text="GoboPos")
+                box.prop(scene.dmx,"programmer_gobo", text=_("Gobo"))
+                box.prop(scene.dmx,"programmer_gobo_index", text=_("GoboPos"))
             if selected_fixtures[0].has_attribute("shutter", lower = True):
-                box.prop(scene.dmx,"programmer_shutter", text="Strobe")
+                box.prop(scene.dmx,"programmer_shutter", text=_("Strobe"))
         else:
-            box.prop(scene.dmx,"programmer_pan", text="Pan")
-            box.prop(scene.dmx,"programmer_tilt", text="Tilt")
-            box.prop(scene.dmx,"programmer_zoom", text="Zoom")
-            box.prop(scene.dmx,"programmer_gobo", text="Gobo")
-            box.prop(scene.dmx,"programmer_gobo_index", text="GoboPos")
-            box.prop(scene.dmx,"programmer_shutter", text="Strobe")
+            box.prop(scene.dmx,"programmer_pan", text=_("Pan"))
+            box.prop(scene.dmx,"programmer_tilt", text=_("Tilt"))
+            box.prop(scene.dmx,"programmer_zoom", text=_("Zoom"))
+            box.prop(scene.dmx,"programmer_gobo", text=_("Gobo"))
+            box.prop(scene.dmx,"programmer_gobo_index", text=_("GoboPos"))
+            box.prop(scene.dmx,"programmer_shutter", text=_("Strobe"))
 
         box.enabled = selected
 
         if (selected):
-            layout.operator("dmx.clear", text="Clear")
+            layout.operator("dmx.clear", text=_("Clear"))
         else:
-            layout.operator("dmx.clear", text="Clear All")
+            layout.operator("dmx.clear", text=_("Clear All"))
 
 def select_targets(dmx):
         targets = []

@@ -5,24 +5,27 @@ from bpy.types import PropertyGroup
 from bpy.props import StringProperty, CollectionProperty, IntProperty
 from dmx import pygdtf
 
+from dmx.i18n import DMX_Lang
+_ = DMX_Lang._
+
 class DMX_Fixtures_Local_ProfileMode(PropertyGroup):
-    name: StringProperty(name="Name", description="The name of the DMX profile.")
+    name: StringProperty(name=_("Name"), description=_("The name of the DMX profile."))
 
     footprint: IntProperty(
-        name="Channel count",
-        description="Number of channels"
+        name=_("Channel count"),
+        description=_("Number of channels")
     )
 
 
 class DMX_Fixtures_Local_Profile(PropertyGroup):
-    name: StringProperty(name="Name", description="The name of the DMX profile.")
+    name: StringProperty(name=_("Name"), description=_("The name of the DMX profile."))
 
     short_name: StringProperty(
-        name="Short Name",
-        description="The short name of the DMX profile, all caps, used as suggestion for fixture names.",
+        name=_("Short Name"),
+        description=_("The short name of the DMX profile, all caps, used as suggestion for fixture names."),
     )
 
-    filename: StringProperty(name="Filename", description="The name of the DMX profile.")
+    filename: StringProperty(name=_("Filename"), description=_("The name of the DMX profile."))
 
     modes: CollectionProperty(type=DMX_Fixtures_Local_ProfileMode)
 
@@ -59,7 +62,7 @@ class DMX_Fixtures_Local_Profile(PropertyGroup):
                 errors.append(f"{file}: {e}")
 
         if show_errors and errors:
-            MultiLineMessage(message=errors, title="Some fixtures could not be processed", icon="ERROR")
+            MultiLineMessage(message=errors, title=_("Some fixtures could not be processed"), icon="ERROR")
         return profiles
 
     @staticmethod
