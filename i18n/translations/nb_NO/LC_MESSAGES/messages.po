@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-22 20:52+0100\n"
+"POT-Creation-Date: 2024-02-22 21:37+0100\n"
 "PO-Revision-Date: 2023-04-02 13:37+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language: nb_NO\n"
@@ -40,8 +40,9 @@ msgid "Import"
 msgstr ""
 
 #: ../panels/dmx.py:55
+#, fuzzy
 msgid "Import commit"
-msgstr ""
+msgstr "Importer fra deling"
 
 #: ../panels/dmx.py:81
 msgid "Download"
@@ -52,8 +53,9 @@ msgid "Download commit"
 msgstr ""
 
 #: ../panels/dmx.py:144
+#, fuzzy
 msgid "DMX > Universe Menu"
-msgstr ""
+msgstr "DMX-univers"
 
 #: ../panels/dmx.py:159
 msgid "OSC"
@@ -104,12 +106,14 @@ msgid "Remove"
 msgstr ""
 
 #: ../panels/fixtures.py:71 ../panels/fixtures.py:436
+#, fuzzy
 msgid "Import GDTF Profile"
-msgstr ""
+msgstr "GDTF-profil"
 
 #: ../panels/fixtures.py:75 ../panels/fixtures.py:476
+#, fuzzy
 msgid "Import MVR scene"
-msgstr ""
+msgstr "Importer fra deling"
 
 #: ../panels/fixtures.py:79
 msgid "DMX > Fixture > Add > Manufacturers"
@@ -128,34 +132,39 @@ msgid "DMX > Fixture > Add > Manufacturers > Profiles"
 msgstr ""
 
 #: ../panels/fixtures.py:125 ../panels/fixtures.py:158
+#, fuzzy
 msgid "Profile"
-msgstr ""
+msgstr "GDTF-profil"
 
 #: ../panels/fixtures.py:126 ../panels/fixtures.py:159
+#, fuzzy
 msgid "Fixture GDTF Profile"
-msgstr ""
+msgstr "GDTF-profil"
 
 #: ../panels/fixtures.py:139 ../panels/fixtures.py:183
+#, fuzzy
 msgid "Mode"
-msgstr ""
+msgstr "GDTF-modus"
 
 #: ../panels/fixtures.py:140
+#, fuzzy
 msgid "Fixture GDTF Mode"
-msgstr ""
+msgstr "GDTF-modus"
 
 #: ../panels/fixtures.py:165 ../panels/fixtures.py:641 ../panels/groups.py:70
 #: ../panels/profiles/data/local_profile.py:12
 #: ../panels/profiles/data/local_profile.py:21
 msgid "Name"
-msgstr ""
+msgstr "Navn"
 
 #: ../panels/fixtures.py:169
+#, fuzzy
 msgid "Universe"
-msgstr ""
+msgstr "DMX-univers"
 
 #: ../panels/fixtures.py:170
 msgid "DMX Universe"
-msgstr ""
+msgstr "DMX-univers"
 
 #: ../panels/fixtures.py:176
 msgid "Address"
@@ -166,8 +175,9 @@ msgid "DMX Address"
 msgstr ""
 
 #: ../panels/fixtures.py:184 ../panels/fixtures.py:251
+#, fuzzy
 msgid "DMX Mode"
-msgstr ""
+msgstr "DMX-modus"
 
 #: ../panels/fixtures.py:189
 msgid "Gel Color"
@@ -213,7 +223,7 @@ msgstr ""
 
 #: ../panels/fixtures.py:230
 msgid "Units"
-msgstr ""
+msgstr "Enheter"
 
 #: ../panels/fixtures.py:231
 msgid "How many units of this light to add"
@@ -221,11 +231,12 @@ msgstr ""
 
 #: ../panels/fixtures.py:242
 msgid "GDTF Profile"
-msgstr ""
+msgstr "GDTF-profil"
 
 #: ../panels/fixtures.py:248
+#, fuzzy
 msgid "Unknown manufacturer"
-msgstr ""
+msgstr "Utviklernavn"
 
 #: ../panels/fixtures.py:271
 msgid "DMX: Add Fixture"
@@ -241,12 +252,14 @@ msgid "Fixture named {} already exists"
 msgstr ""
 
 #: ../panels/fixtures.py:283
+#, fuzzy
 msgid "No GDTF Profile selected."
-msgstr ""
+msgstr "Ingen profil valgt"
 
 #: ../panels/fixtures.py:286
+#, fuzzy
 msgid "No DMX Mode selected."
-msgstr ""
+msgstr "Ingen profil valgt"
 
 #: ../panels/fixtures.py:322
 msgid "DMX: Edit Fixture"
@@ -301,16 +314,18 @@ msgid "DMX > Group Menu"
 msgstr ""
 
 #: ../panels/groups.py:46
+#, fuzzy
 msgid "Create"
-msgstr ""
+msgstr "Opprettet av"
 
 #: ../panels/groups.py:50
 msgid "Update"
 msgstr ""
 
 #: ../panels/groups.py:54
+#, fuzzy
 msgid "Rename"
-msgstr ""
+msgstr "Navn"
 
 #: ../panels/groups.py:64
 msgid "DMX > Group > Create"
@@ -321,8 +336,9 @@ msgid "Create DMX group from selected fixtures"
 msgstr ""
 
 #: ../panels/groups.py:71
+#, fuzzy
 msgid "Group Name"
-msgstr ""
+msgstr "Kort navn"
 
 #: ../panels/programmer.py:20
 msgid "Lock Movement"
@@ -422,19 +438,22 @@ msgstr ""
 
 #: ../panels/programmer.py:241
 msgid "Programmer"
-msgstr ""
+msgstr "Programmerer"
 
 #: ../panels/programmer.py:266
+#, fuzzy
 msgid "Nothing selected"
-msgstr ""
+msgstr "Ingen profil valgt"
 
 #: ../panels/programmer.py:270
+#, fuzzy
 msgid "{} selected"
-msgstr ""
+msgstr "Ingen profil valgt"
 
 #: ../panels/programmer.py:307 ../panels/programmer.py:318
+#, fuzzy
 msgid "Pan"
-msgstr ""
+msgstr "Utvid"
 
 #: ../panels/programmer.py:309 ../panels/programmer.py:319
 msgid "Tilt"
@@ -603,16 +622,18 @@ msgstr ""
 
 #: ../panels/profiles/controller/manager.py:44
 #: ../panels/profiles/controller/manager.py:79
+#, fuzzy
 msgid "GDTF Share API credentials missing"
-msgstr ""
+msgstr "API-nøkkel for GDTF-deling"
 
 #: ../panels/profiles/controller/manager.py:66
 msgid "Downloading {}"
 msgstr ""
 
 #: ../panels/profiles/controller/manager.py:67
+#, fuzzy
 msgid "GDTF Share Download"
-msgstr ""
+msgstr "API-nøkkel for GDTF-deling"
 
 #: ../panels/profiles/controller/manager.py:117
 msgid "Share index updated. Status code was: {}"
@@ -650,7 +671,7 @@ msgstr ""
 #: ../panels/profiles/data/local_profile.py:21
 #: ../panels/profiles/data/local_profile.py:28
 msgid "The name of the DMX profile."
-msgstr ""
+msgstr "Navnet på DMX-profilen."
 
 #: ../panels/profiles/data/local_profile.py:15
 msgid "Channel count"
@@ -662,7 +683,7 @@ msgstr ""
 
 #: ../panels/profiles/data/local_profile.py:24
 msgid "Short Name"
-msgstr ""
+msgstr "Kort navn"
 
 #: ../panels/profiles/data/local_profile.py:25
 msgid ""
@@ -672,7 +693,7 @@ msgstr ""
 
 #: ../panels/profiles/data/local_profile.py:28
 msgid "Filename"
-msgstr ""
+msgstr "Filnavn"
 
 #: ../panels/profiles/data/local_profile.py:65
 msgid "Some fixtures could not be processed"
@@ -684,7 +705,7 @@ msgstr ""
 
 #: ../panels/profiles/data/share_profile.py:13
 msgid "DMX Footprint"
-msgstr ""
+msgstr "DMX-fotavtrykk"
 
 #: ../panels/profiles/data/share_profile.py:21
 #: ../panels/profiles/data/share_profile.py:22
@@ -701,7 +722,7 @@ msgstr ""
 
 #: ../panels/profiles/data/share_profile.py:23
 msgid "Manufacturer name"
-msgstr ""
+msgstr "Utviklernavn"
 
 #: ../panels/profiles/data/share_profile.py:25
 msgid "Revision"
@@ -713,35 +734,36 @@ msgstr ""
 
 #: ../panels/profiles/data/share_profile.py:27
 msgid "Uploaded by"
-msgstr ""
+msgstr "Opplastet av"
 
 #: ../panels/profiles/data/share_profile.py:27
 msgid "File uploaded by"
-msgstr ""
+msgstr "Fil opplastet av"
 
 #: ../panels/profiles/data/share_profile.py:29
 msgid "Created by"
-msgstr ""
+msgstr "Opprettet av"
 
 #: ../panels/profiles/data/share_profile.py:29
 msgid "File created by"
-msgstr ""
+msgstr "Fil opprettet av"
 
 #: ../panels/profiles/data/share_profile.py:31
 msgid "Rating"
-msgstr ""
+msgstr "Vurdering"
 
 #: ../panels/profiles/data/share_profile.py:34
 msgid "Revision ID"
-msgstr ""
+msgstr "Versjons-ID"
 
 #: ../panels/profiles/data/share_profile.py:34
 msgid "File identifier in the GDTF Share"
 msgstr ""
 
 #: ../panels/profiles/data/share_profile.py:36
+#, fuzzy
 msgid "DMX Modes"
-msgstr ""
+msgstr "DMX-modus"
 
 #: ../panels/profiles/ui/list.py:35 ../panels/profiles/ui/list.py:67
 msgid "DMX Mode Name"
@@ -749,11 +771,11 @@ msgstr ""
 
 #: ../panels/profiles/ui/list.py:38 ../panels/profiles/ui/list.py:70
 msgid "Footprint"
-msgstr ""
+msgstr "Fotavtrykk"
 
 #: ../panels/profiles/ui/operator.py:17
 msgid "Import from Share"
-msgstr ""
+msgstr "Importer fra deling"
 
 #: ../panels/profiles/ui/operator.py:18
 msgid "Import fixture from GDTF Share"
@@ -804,8 +826,9 @@ msgid "Update list of local files"
 msgstr ""
 
 #: ../panels/profiles/ui/panel.py:17
+#, fuzzy
 msgid "GDTF Share"
-msgstr ""
+msgstr "API-nøkkel for GDTF-deling"
 
 #: ../panels/profiles/ui/panel.py:45
 msgid "Fixture details"
@@ -820,8 +843,9 @@ msgid "Local Fixture details"
 msgstr ""
 
 #: ../panels/profiles/ui/panel.py:153
+#, fuzzy
 msgid "Profiles"
-msgstr ""
+msgstr "GDTF-profil"
 
 #~ msgid ""
 #~ "Get API key from GDTF Share "
@@ -832,133 +856,13 @@ msgstr ""
 #~ msgid "GDTF Share API key missing"
 #~ msgstr ""
 
-#~ msgid "Share index updated. Status code was: {}"
-#~ msgstr ""
-
-#~ msgid "GDTF Share updated"
-#~ msgstr ""
-
-#~ msgid "Error while updating Share index. Error code was: {}"
-#~ msgstr ""
-
-#~ msgid "GDTF Share update error"
-#~ msgstr ""
-
-#~ msgid "File downloaded correctly. Status code was: {}"
-#~ msgstr ""
-
-#~ msgid "GDTF file downloaded"
-#~ msgstr ""
-
-#~ msgid "Error downloading GDTF file. Error code was: {}"
-#~ msgstr ""
-
-#~ msgid "GDTF Share download error"
-#~ msgstr ""
-
 #~ msgid "Message Box"
-#~ msgstr ""
-
-#~ msgid "Mode name"
-#~ msgstr ""
-
-#~ msgid "DMX Footprint"
-#~ msgstr "DMX-fotavtrykk"
-
-#~ msgid "Fixture name"
-#~ msgstr ""
-
-#~ msgid "Manufacturer and fixture name"
-#~ msgstr ""
-
-#~ msgid "Manufacturer"
-#~ msgstr ""
-
-#~ msgid "Manufacturer name"
-#~ msgstr "Utviklernavn"
-
-#~ msgid "Revision"
-#~ msgstr ""
-
-#~ msgid "Revision text"
-#~ msgstr ""
-
-#~ msgid "Uploaded by"
-#~ msgstr "Opplastet av"
-
-#~ msgid "File uploaded by"
-#~ msgstr "Fil opplastet av"
-
-#~ msgid "Created by"
-#~ msgstr "Opprettet av"
-
-#~ msgid "File created by"
-#~ msgstr "Fil opprettet av"
-
-#~ msgid "Rating"
-#~ msgstr "Vurdering"
-
-#~ msgid "Revision ID"
-#~ msgstr "Versjons-ID"
-
-#~ msgid "File identifier in the GDTF Share"
-#~ msgstr ""
-
-#~ msgid "DMX Modes"
-#~ msgstr "DMX-modus"
-
-#~ msgid "DMX Mode Name"
-#~ msgstr ""
-
-#~ msgid "Footprint"
-#~ msgstr "Fotavtrykk"
-
-#~ msgid "Import from Share"
-#~ msgstr "Importer fra deling"
-
-#~ msgid "Import fixture from GDTF Share"
-#~ msgstr ""
-
-#~ msgid "Update GDTF Share index"
-#~ msgstr ""
-
-#~ msgid "Update data index of GDTF Share"
-#~ msgstr ""
-
-#~ msgid "Import from file"
-#~ msgstr ""
-
-#~ msgid "Import fixture from local filesystem"
-#~ msgstr ""
-
-#~ msgid "File Path"
-#~ msgstr ""
-
-#~ msgid "Files"
-#~ msgstr ""
-
-#~ msgid "Delete fixture"
-#~ msgstr ""
-
-#~ msgid "Delete fixture from local filesystem"
-#~ msgstr ""
-
-#~ msgid "Refresh files listing"
-#~ msgstr ""
-
-#~ msgid "Update list of local files"
 #~ msgstr ""
 
 #~ msgid "DMX Fixtures import"
 #~ msgstr ""
 
-#~ msgid "Fixture details"
-#~ msgstr ""
-
 #~ msgid "DMX Local fixtures"
-#~ msgstr ""
-
-#~ msgid "Local Fixture details"
 #~ msgstr ""
 
 #~ msgid "Number of Channels"
@@ -967,14 +871,8 @@ msgstr ""
 #~ msgid "The number of channels of the current profile."
 #~ msgstr ""
 
-#~ msgid "DMX Address"
-#~ msgstr ""
-
 #~ msgid "The DMX address of the fixture at the current universe."
 #~ msgstr ""
-
-#~ msgid "DMX Universe"
-#~ msgstr "DMX-univers"
 
 #~ msgid "The DMX universe to which the fixture is currently addressed."
 #~ msgstr ""
@@ -985,20 +883,11 @@ msgstr ""
 #~ msgid "A numeric unique identifier for the fixture."
 #~ msgstr ""
 
-#~ msgid "Name"
-#~ msgstr "Navn"
-
 #~ msgid "A unique name for the fixture."
 #~ msgstr ""
 
-#~ msgid "GDTF Profile"
-#~ msgstr "GDTF-profil"
-
 #~ msgid "The GDTF profile of the fixture."
 #~ msgstr ""
-
-#~ msgid "GDTF Mode"
-#~ msgstr "GDTF-modus"
 
 #~ msgid "The GDTF mode of the current profile."
 #~ msgstr ""
@@ -1014,9 +903,6 @@ msgstr ""
 #~ " sources limitation."
 #~ msgstr ""
 
-#~ msgid "Gel Color"
-#~ msgstr ""
-
 #~ msgid ""
 #~ "Color of the gel applied to the"
 #~ " fixture, in case the profile doesn't"
@@ -1025,9 +911,6 @@ msgstr ""
 
 #~ msgid "A unique name for the fixture batch."
 #~ msgstr ""
-
-#~ msgid "Units"
-#~ msgstr "Enheter"
 
 #~ msgid "The number of fixtures inside this batch."
 #~ msgstr ""
@@ -1044,20 +927,8 @@ msgstr ""
 #~ msgid "Overrides the footprint of each fixture."
 #~ msgstr ""
 
-#~ msgid "Expand"
-#~ msgstr "Utvid"
-
 #~ msgid "Expands/shrinks the list of fixtures in this batch."
 #~ msgstr ""
-
-#~ msgid "The name of the DMX profile."
-#~ msgstr "Navnet på DMX-profilen."
-
-#~ msgid "Short Name"
-#~ msgstr "Kort navn"
-
-#~ msgid "Filename"
-#~ msgstr "Filnavn"
 
 #~ msgid "Type"
 #~ msgstr "Type"
@@ -1079,9 +950,6 @@ msgstr ""
 
 #~ msgid "The type of DMX source of the universe."
 #~ msgstr ""
-
-#~ msgid "No Profile selected"
-#~ msgstr "Ingen profil valgt"
 
 #~ msgid "Add Universe"
 #~ msgstr "Legg til univers"
@@ -1119,18 +987,6 @@ msgstr ""
 #~ msgid "DMX Patch"
 #~ msgstr ""
 
-#~ msgid "Universes"
-#~ msgstr ""
-
-#~ msgid "Fixtures"
-#~ msgstr ""
-
-#~ msgid "GDTF Share API key"
-#~ msgstr "API-nøkkel for GDTF-deling"
-
 #~ msgid "Private API key for GDTF Share"
 #~ msgstr "Privat API-nøkkel for GDTF-delingen"
-
-#~ msgid "Programmer"
-#~ msgstr "Programmerer"
 
