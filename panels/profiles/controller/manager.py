@@ -9,6 +9,10 @@ import dmx.panels.profiles as Profiles
 
 execution_queue = queue.Queue()
 
+from dmx.i18n import DMX_Lang
+
+_ = DMX_Lang._
+
 
 class DMX_Fixtures_Manager:
     # Source Management
@@ -36,8 +40,8 @@ class DMX_Fixtures_Manager:
 
         if api_username is None or len(api_username) < 2 or api_password is None or len(api_password) < 2:
             ShowMessageBox(
-                "Get GDTF Share account and fill it into BlenderDMX addon preferences.",
-                "GDTF Share API credentials missing",
+                _("Get GDTF Share account and fill it into BlenderDMX addon preferences."),
+                _("GDTF Share API credentials missing"),
                 "ERROR",
             )
             return
@@ -59,8 +63,8 @@ class DMX_Fixtures_Manager:
         )
 
         ShowMessageBox(
-            f"Downloading {imports.share_profiles[index]['fixture']}",
-            "GDTF Share Download",
+            _("Downloading {}").format(imports.share_profiles[index]["fixture"]),
+            _("GDTF Share Download"),
             "INFO",
         )
 
@@ -71,8 +75,8 @@ class DMX_Fixtures_Manager:
         api_password = prefs.get("share_api_password", None)
         if api_username is None or len(api_username) < 2 or api_password is None or len(api_password) < 2:
             ShowMessageBox(
-                "Get GDTF Share account and fill it into BlenderDMX addon preferences.",
-                "GDTF Share API credentials missing",
+                _("Get GDTF Share account and fill it into BlenderDMX addon preferences."),
+                _("GDTF Share API credentials missing"),
                 "ERROR",
             )
             return
@@ -110,14 +114,14 @@ def reload_share_profiles(result):
     print(result)
     if result.status:
         ShowMessageBox(
-            "Share index updated. Status code was: {}".format(result.result.status_code),
-            "GDTF Share updated",
+            _("Share index updated. Status code was: {}").format(result.result.status_code),
+            _("GDTF Share updated"),
             "INFO",
         )
     else:
         ShowMessageBox(
-            "Error while updating Share index. Error code was: {}".format(result.result.status_code),
-            "GDTF Share update error",
+            _("Error while updating Share index. Error code was: {}").format(result.result.status_code),
+            _("GDTF Share update error"),
             "ERROR",
         )
     Profiles.DMX_Fixtures_Import_Gdtf_Profile.loadShare()
@@ -129,14 +133,14 @@ def reload_local_profiles(result):
     Profiles.DMX_Fixtures_Local_Profile.loadLocal()
     if result.status:
         ShowMessageBox(
-            "File downloaded correctly. Status code was: {}".format(result.result.status_code),
-            "GDTF file downloaded",
+            _("File downloaded correctly. Status code was: {}").format(result.result.status_code),
+            _("GDTF file downloaded"),
             "INFO",
         )
     else:
         ShowMessageBox(
-            "Error downloading GDTF file. Error code was: {}".format(result.result.status_code),
-            "GDTF Share download error",
+            _("Error downloading GDTF file. Error code was: {}").format(result.result.status_code),
+            _("GDTF Share download error"),
             "ERROR",
         )
 

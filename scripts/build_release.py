@@ -75,6 +75,7 @@ copytree("mvrxchange", BUILD_DIR + "/dmx/mvrxchange", ignore=ignore)
 copytree("zeroconf", BUILD_DIR + "/dmx/zeroconf", ignore=ignore)
 copytree("async_timeout", BUILD_DIR + "/dmx/async_timeout", ignore=ignore)
 copytree("preferences", BUILD_DIR + "/dmx/preferences", ignore=ignore)
+copytree("i18n", BUILD_DIR + "/dmx/i18n", ignore=ignore)
 
 print("Copying source to build directory...")
 for filename in os.listdir("."):

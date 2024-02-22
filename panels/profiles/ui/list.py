@@ -5,6 +5,8 @@ from dmx.icon import DMX_Icon
 
 from .operator import DMX_OP_Import_Fixture_From_Share, DMX_OP_Delete_Local_Fixture
 
+from dmx.i18n import DMX_Lang
+_ = DMX_Lang._
 
 class DMX_UL_Share_Fixtures(UIList):
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
@@ -30,10 +32,10 @@ class DMX_UL_Share_Fixtures_Dmx_Modes(UIList):
             row.emboss = "PULLDOWN_MENU"
             col = row.column()
             col.ui_units_x = 5
-            col.label(text="DMX Mode Name")
+            col.label(text=_("DMX Mode Name"))
             col = row.column()
             col.ui_units_x = 5
-            col.label(text="Footprint")
+            col.label(text=_("Footprint"))
             row = main_col.row()
 
         col = row.column()
@@ -62,10 +64,10 @@ class DMX_UL_Local_Fixtures_Dmx_Modes(UIList):
             row.emboss = "PULLDOWN_MENU"
             col = row.column()
             col.ui_units_x = 5
-            col.label(text="DMX Mode Name")
+            col.label(text=_("DMX Mode Name"))
             col = row.column()
             col.ui_units_x = 5
-            col.label(text="Footprint")
+            col.label(text=_("Footprint"))
             row = main_col.row()
 
         col = row.column()

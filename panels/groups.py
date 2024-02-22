@@ -17,6 +17,8 @@ from bpy.types import (Panel,
                        Operator,
                        UIList)
 
+from dmx.i18n import DMX_Lang
+_ = DMX_Lang._
 # List #
 
 class DMX_UL_Group(UIList):
@@ -32,7 +34,7 @@ class DMX_UL_Group(UIList):
 # Menus #
 
 class DMX_MT_Group(Menu):
-    bl_label = "DMX > Group Menu"
+    bl_label = _("DMX > Group Menu")
     bl_idname = "DMX_MT_Group"
 
     def draw(self, context):
@@ -41,32 +43,32 @@ class DMX_MT_Group(Menu):
         dmx = scene.dmx
 
         row = layout.row()
-        row.operator("dmx.create_group", text="Create", icon="ADD")
+        row.operator("dmx.create_group", text=_("Create"), icon="ADD")
         row.enabled = (len(bpy.context.selected_objects) and 1)
 
         row = layout.row()
-        row.operator("dmx.update_group", text="Update", icon="FILE_REFRESH")
+        row.operator("dmx.update_group", text=_("Update"), icon="FILE_REFRESH")
         row.enabled = (len(bpy.context.selected_objects) and len(dmx.groups) and scene.dmx.group_list_i >= 0 and scene.dmx.group_list_i < len(dmx.groups))
 
         row = layout.row()
-        row.operator("dmx.rename_group", text="Rename", icon="SYNTAX_OFF")
+        row.operator("dmx.rename_group", text=_("Rename"), icon="SYNTAX_OFF")
         row.enabled = (len(dmx.groups) and scene.dmx.group_list_i >= 0 and scene.dmx.group_list_i < len(dmx.groups))
 
         row = layout.row()
-        row.operator("dmx.remove_group", text="Remove", icon="REMOVE")
+        row.operator("dmx.remove_group", text=_("Remove"), icon="REMOVE")
         row.enabled = (len(dmx.groups) and scene.dmx.group_list_i >= 0 and scene.dmx.group_list_i < len(dmx.groups))
 
 # Operators #
 
 class DMX_OT_Group_Create(Operator):
-    bl_label = "DMX > Group > Create"
+    bl_label = _("DMX > Group > Create")
     bl_idname = "dmx.create_group"
-    bl_description = "Create DMX group from selected fixtures"
+    bl_description = _("Create DMX group from selected fixtures")
     bl_options = {'UNDO'}
 
     name: StringProperty(
-        name = "Name",
-        description = "Group Name",
+        name = _("Name"),
+        description = _("Group Name"),
         default = "Group")
 
     def draw(self, context):

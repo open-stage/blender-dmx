@@ -9,9 +9,12 @@ from .operator import (
     DMX_OP_Update_Local_Fixtures,
 )
 
+from dmx.i18n import DMX_Lang
+
+_ = DMX_Lang._
 
 class DMX_PT_Fixtures_Import(Panel):
-    bl_label = "GDTF Share"
+    bl_label = _("GDTF Share")
     bl_idname = "DMX_PT_Fixtures_Import"
     bl_parent_id = "DMX_PT_Profiles"
     bl_space_type = "VIEW_3D"
@@ -39,7 +42,7 @@ class DMX_PT_Fixtures_Import(Panel):
 
 
 class DMX_PT_Fixtures_Import_Profile_Detail(Panel):
-    bl_label = "Fixture details"
+    bl_label = _("Fixture details")
     bl_idname = "DMX_PT_Fixtures_Import_Profile_Detail"
     bl_space_type = "VIEW_3D"
     bl_parent_id = "DMX_PT_Profiles"
@@ -77,7 +80,7 @@ class DMX_PT_Fixtures_Import_Profile_Detail(Panel):
 
 
 class DMX_PT_Fixtures_Local_Fixtures(Panel):
-    bl_label = "Local Fixture files"
+    bl_label = _("Local Fixture files")
     bl_parent_id = "DMX_PT_Profiles"
     bl_idname = "DMX_PT_Local_Fixtures"
     bl_space_type = "VIEW_3D"
@@ -107,7 +110,7 @@ class DMX_PT_Fixtures_Local_Fixtures(Panel):
 
 
 class DMX_PT_Fixtures_Local_Profile_Detail(Panel):
-    bl_label = "Local Fixture details"
+    bl_label = _("Local Fixture details")
     bl_parent_id = "DMX_PT_Profiles"
     bl_idname = "DMX_PT_Fixtures_Local_Profile_Detail"
     bl_space_type = "VIEW_3D"
@@ -147,7 +150,7 @@ class DMX_PT_Fixtures_Local_Profile_Detail(Panel):
 
 
 class DMX_PT_Profiles_Holder(Panel):
-    bl_label = "Profiles"
+    bl_label = _("Profiles")
     bl_idname = "DMX_PT_Profiles"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"

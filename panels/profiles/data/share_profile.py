@@ -5,10 +5,12 @@ import json
 from bpy.types import PropertyGroup
 from bpy.props import StringProperty, CollectionProperty, IntProperty
 
+from dmx.i18n import DMX_Lang
+_ = DMX_Lang._
 
 class DMX_Fixtures_Import_Gdtf_Profile_Dmx_Mode(PropertyGroup):
-    name: StringProperty(name="Mode name")
-    footprint: IntProperty(name="DMX Footprint")
+    name: StringProperty(name=_("Mode name"))
+    footprint: IntProperty(name=_("DMX Footprint"))
 
 
 class DMX_Fixtures_Import_Gdtf_Profile(PropertyGroup):
@@ -16,22 +18,22 @@ class DMX_Fixtures_Import_Gdtf_Profile(PropertyGroup):
         # for UI updates only
         return
 
-    name: StringProperty(name="Fixture name", description="Manufacturer and fixture name", update=onUpdate)
-    fixture: StringProperty(name="Fixture name", description="Fixture name")
-    manufacturer: StringProperty(name="Manufacturer", description="Manufacturer name")
+    name: StringProperty(name=_("Fixture name"), description=_("Manufacturer and fixture name"), update=onUpdate)
+    fixture: StringProperty(name=_("Fixture name"), description=_("Fixture name"))
+    manufacturer: StringProperty(name=_("Manufacturer"), description=_("Manufacturer name"))
 
-    revision: StringProperty(name="Revision", description="Revision text")
+    revision: StringProperty(name=_("Revision"), description=_("Revision text"))
 
-    uploader: StringProperty(name="Uploaded by", description="File uploaded by")
+    uploader: StringProperty(name=_("Uploaded by"), description=_("File uploaded by"))
 
-    creator: StringProperty(name="Created by", description="File created by")
+    creator: StringProperty(name=_("Created by"), description=_("File created by"))
     rating: StringProperty(
-        name="Rating",
+        name=_("Rating"),
     )
 
-    rid: IntProperty(name="Revision ID", description="File identifier in the GDTF Share")
+    rid: IntProperty(name=_("Revision ID"), description=_("File identifier in the GDTF Share"))
 
-    modes: CollectionProperty(name="DMX Modes", type=DMX_Fixtures_Import_Gdtf_Profile_Dmx_Mode)
+    modes: CollectionProperty(name=_("DMX Modes"), type=DMX_Fixtures_Import_Gdtf_Profile_Dmx_Mode)
 
     @staticmethod
     def get_profile_list():
