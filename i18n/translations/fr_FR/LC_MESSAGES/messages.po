@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-22 20:52+0100\n"
+"POT-Creation-Date: 2024-02-22 21:37+0100\n"
 "PO-Revision-Date: 2023-03-31 21:37+0000\n"
 "Last-Translator: max <ombre_1@hotmail.fr>\n"
 "Language: fr_FR\n"
@@ -40,8 +40,9 @@ msgid "Import"
 msgstr ""
 
 #: ../panels/dmx.py:55
+#, fuzzy
 msgid "Import commit"
-msgstr ""
+msgstr "Importer du fichier"
 
 #: ../panels/dmx.py:81
 msgid "Download"
@@ -52,8 +53,9 @@ msgid "Download commit"
 msgstr ""
 
 #: ../panels/dmx.py:144
+#, fuzzy
 msgid "DMX > Universe Menu"
-msgstr ""
+msgstr "Univers DMX"
 
 #: ../panels/dmx.py:159
 msgid "OSC"
@@ -65,7 +67,7 @@ msgstr ""
 
 #: ../panels/dmx.py:239
 msgid "Universes"
-msgstr ""
+msgstr "Univers"
 
 #: ../panels/dmx.py:264
 msgid "Art-Net"
@@ -92,8 +94,9 @@ msgid "Protocols"
 msgstr ""
 
 #: ../panels/fixtures.py:39
+#, fuzzy
 msgid "DMX > Fixture Menu"
-msgstr ""
+msgstr "Projecteurs DMX importés"
 
 #: ../panels/fixtures.py:61
 msgid "Edit"
@@ -104,12 +107,14 @@ msgid "Remove"
 msgstr ""
 
 #: ../panels/fixtures.py:71 ../panels/fixtures.py:436
+#, fuzzy
 msgid "Import GDTF Profile"
-msgstr ""
+msgstr "Importer du fichier"
 
 #: ../panels/fixtures.py:75 ../panels/fixtures.py:476
+#, fuzzy
 msgid "Import MVR scene"
-msgstr ""
+msgstr "Importer du fichier"
 
 #: ../panels/fixtures.py:79
 msgid "DMX > Fixture > Add > Manufacturers"
@@ -120,58 +125,66 @@ msgid "DMX > Fixture > Add > Profiles"
 msgstr ""
 
 #: ../panels/fixtures.py:106 ../panels/fixtures.py:135
+#, fuzzy
 msgid "DMX > Fixture > Add > Mode"
-msgstr ""
+msgstr "Projecteurs DMX importés"
 
 #: ../panels/fixtures.py:121
 msgid "DMX > Fixture > Add > Manufacturers > Profiles"
 msgstr ""
 
 #: ../panels/fixtures.py:125 ../panels/fixtures.py:158
+#, fuzzy
 msgid "Profile"
-msgstr ""
+msgstr "Profile GDTF"
 
 #: ../panels/fixtures.py:126 ../panels/fixtures.py:159
+#, fuzzy
 msgid "Fixture GDTF Profile"
-msgstr ""
+msgstr "Profile GDTF"
 
 #: ../panels/fixtures.py:139 ../panels/fixtures.py:183
+#, fuzzy
 msgid "Mode"
-msgstr ""
+msgstr "nom du mode"
 
 #: ../panels/fixtures.py:140
+#, fuzzy
 msgid "Fixture GDTF Mode"
-msgstr ""
+msgstr "Mode GDTF"
 
 #: ../panels/fixtures.py:165 ../panels/fixtures.py:641 ../panels/groups.py:70
 #: ../panels/profiles/data/local_profile.py:12
 #: ../panels/profiles/data/local_profile.py:21
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
 #: ../panels/fixtures.py:169
+#, fuzzy
 msgid "Universe"
-msgstr ""
+msgstr "Univers"
 
 #: ../panels/fixtures.py:170
 msgid "DMX Universe"
-msgstr ""
+msgstr "Univers DMX"
 
 #: ../panels/fixtures.py:176
+#, fuzzy
 msgid "Address"
-msgstr ""
+msgstr "Adresse DMX"
 
 #: ../panels/fixtures.py:177
 msgid "DMX Address"
-msgstr ""
+msgstr "Adresse DMX"
 
 #: ../panels/fixtures.py:184 ../panels/fixtures.py:251
+#, fuzzy
 msgid "DMX Mode"
-msgstr ""
+msgstr "Mode DMX"
 
 #: ../panels/fixtures.py:189
 msgid "Gel Color"
-msgstr ""
+msgstr "Couleur de Gelat"
 
 #: ../panels/fixtures.py:197
 msgid "Display beams"
@@ -190,20 +203,23 @@ msgid "Add target for beam to follow"
 msgstr ""
 
 #: ../panels/fixtures.py:214 ../panels/fixtures.py:215
+#, fuzzy
 msgid "Increment DMX address"
-msgstr ""
+msgstr "Adresse DMX"
 
 #: ../panels/fixtures.py:219
+#, fuzzy
 msgid "Increment Fixture ID"
-msgstr ""
+msgstr "Supprimer projecteur"
 
 #: ../panels/fixtures.py:220
 msgid "Increment Fixture ID if numeric"
 msgstr ""
 
 #: ../panels/fixtures.py:224
+#, fuzzy
 msgid "Fixture ID"
-msgstr ""
+msgstr "Projecteurs"
 
 #: ../panels/fixtures.py:225
 msgid ""
@@ -213,7 +229,7 @@ msgstr ""
 
 #: ../panels/fixtures.py:230
 msgid "Units"
-msgstr ""
+msgstr "Unité"
 
 #: ../panels/fixtures.py:231
 msgid "How many units of this light to add"
@@ -221,19 +237,22 @@ msgstr ""
 
 #: ../panels/fixtures.py:242
 msgid "GDTF Profile"
-msgstr ""
+msgstr "Profile GDTF"
 
 #: ../panels/fixtures.py:248
+#, fuzzy
 msgid "Unknown manufacturer"
-msgstr ""
+msgstr "Constructeur"
 
 #: ../panels/fixtures.py:271
+#, fuzzy
 msgid "DMX: Add Fixture"
-msgstr ""
+msgstr "Adresse DMX"
 
 #: ../panels/fixtures.py:273
+#, fuzzy
 msgid "Add fixtures to the show"
-msgstr ""
+msgstr "Projecteurs DMX importés"
 
 #: ../panels/fixtures.py:280 ../panels/fixtures.py:336
 #: ../panels/fixtures.py:355
@@ -241,76 +260,89 @@ msgid "Fixture named {} already exists"
 msgstr ""
 
 #: ../panels/fixtures.py:283
+#, fuzzy
 msgid "No GDTF Profile selected."
-msgstr ""
+msgstr "Profile GDTF"
 
 #: ../panels/fixtures.py:286
+#, fuzzy
 msgid "No DMX Mode selected."
-msgstr ""
+msgstr "Mode DMX"
 
 #: ../panels/fixtures.py:322
+#, fuzzy
 msgid "DMX: Edit Fixture"
-msgstr ""
+msgstr "Supprimer projecteur"
 
 #: ../panels/fixtures.py:324
+#, fuzzy
 msgid "Edit selected fixtures"
-msgstr ""
+msgstr "Supprimer projecteur"
 
 #: ../panels/fixtures.py:420
+#, fuzzy
 msgid "DMX > Fixture > Remove"
-msgstr ""
+msgstr "Projecteurs DMX importés"
 
 #: ../panels/fixtures.py:422
+#, fuzzy
 msgid "Remove selected fixtures from Scene"
-msgstr ""
+msgstr "Supprimer projecteur d'un fichier local"
 
 #: ../panels/fixtures.py:438
+#, fuzzy
 msgid "Import fixture from GDTF Profile"
-msgstr ""
+msgstr "Importer un projecteur depuis un fichier local"
 
 #: ../panels/fixtures.py:444 ../panels/fixtures.py:484
 msgid "File Path"
-msgstr ""
+msgstr "Chemin d'accès"
 
 #: ../panels/fixtures.py:449 ../panels/fixtures.py:489
 msgid "Files"
-msgstr ""
+msgstr "Fichier"
 
 #: ../panels/fixtures.py:478
+#, fuzzy
 msgid "Import fixtures from MVR scene file. This may take a long time!"
-msgstr ""
+msgstr "Importer un projecteur depuis un fichier local"
 
 #: ../panels/fixtures.py:578
+#, fuzzy
 msgid "DMX > Fixture > Item"
-msgstr ""
+msgstr "Projecteurs DMX importés"
 
 #: ../panels/fixtures.py:580
+#, fuzzy
 msgid "Select Fixture"
-msgstr ""
+msgstr "Supprimer projecteur"
 
 #: ../panels/fixtures.py:614
+#, fuzzy
 msgid "Remove fixture"
-msgstr ""
+msgstr "Supprimer projecteur"
 
 #: ../panels/fixtures.py:624 ../panels/fixtures.py:686
 msgid "Fixtures"
-msgstr ""
+msgstr "Projecteurs"
 
 #: ../panels/groups.py:37
 msgid "DMX > Group Menu"
 msgstr ""
 
 #: ../panels/groups.py:46
+#, fuzzy
 msgid "Create"
-msgstr ""
+msgstr "Crée par"
 
 #: ../panels/groups.py:50
 msgid "Update"
 msgstr ""
 
 #: ../panels/groups.py:54
+#, fuzzy
 msgid "Rename"
-msgstr ""
+msgstr "Nom"
 
 #: ../panels/groups.py:64
 msgid "DMX > Group > Create"
@@ -321,8 +353,9 @@ msgid "Create DMX group from selected fixtures"
 msgstr ""
 
 #: ../panels/groups.py:71
+#, fuzzy
 msgid "Group Name"
-msgstr ""
+msgstr "nom du mode"
 
 #: ../panels/programmer.py:20
 msgid "Lock Movement"
@@ -349,8 +382,9 @@ msgid "Deselect every object in the Scene"
 msgstr ""
 
 #: ../panels/programmer.py:71
+#, fuzzy
 msgid "Select All"
-msgstr ""
+msgstr "Séquenceur"
 
 #: ../panels/programmer.py:73
 msgid "Select every object in the Scene"
@@ -433,8 +467,9 @@ msgid "{} selected"
 msgstr ""
 
 #: ../panels/programmer.py:307 ../panels/programmer.py:318
+#, fuzzy
 msgid "Pan"
-msgstr ""
+msgstr "Déplier"
 
 #: ../panels/programmer.py:309 ../panels/programmer.py:319
 msgid "Tilt"
@@ -493,16 +528,19 @@ msgid "Add Keyframe"
 msgstr ""
 
 #: ../panels/recorder.py:120
+#, fuzzy
 msgid "Delete Keyframes"
-msgstr ""
+msgstr "Supprimer projecteur"
 
 #: ../panels/recorder.py:142
+#, fuzzy
 msgid "Delete from selected fixtures"
-msgstr ""
+msgstr "Supprimer projecteur"
 
 #: ../panels/recorder.py:146
+#, fuzzy
 msgid "Delete from all fixtures"
-msgstr ""
+msgstr "Supprimer projecteur"
 
 #: ../panels/setup.py:24
 msgid "DMX > Setup > New Show"
@@ -611,8 +649,9 @@ msgid "Downloading {}"
 msgstr ""
 
 #: ../panels/profiles/controller/manager.py:67
+#, fuzzy
 msgid "GDTF Share Download"
-msgstr ""
+msgstr "Fichier GDTF téléchargé"
 
 #: ../panels/profiles/controller/manager.py:117
 msgid "Share index updated. Status code was: {}"
@@ -636,11 +675,11 @@ msgstr ""
 
 #: ../panels/profiles/controller/manager.py:137
 msgid "GDTF file downloaded"
-msgstr ""
+msgstr "Fichier GDTF téléchargé"
 
 #: ../panels/profiles/controller/manager.py:142
 msgid "Error downloading GDTF file. Error code was: {}"
-msgstr ""
+msgstr "Erreur de téléchargement du fichier GDTF. Le code erreur est : {}"
 
 #: ../panels/profiles/controller/manager.py:143
 msgid "GDTF Share download error"
@@ -657,8 +696,9 @@ msgid "Channel count"
 msgstr ""
 
 #: ../panels/profiles/data/local_profile.py:16
+#, fuzzy
 msgid "Number of channels"
-msgstr ""
+msgstr "Nombre de canaux"
 
 #: ../panels/profiles/data/local_profile.py:24
 msgid "Short Name"
@@ -672,7 +712,7 @@ msgstr ""
 
 #: ../panels/profiles/data/local_profile.py:28
 msgid "Filename"
-msgstr ""
+msgstr "Nom du fichier"
 
 #: ../panels/profiles/data/local_profile.py:65
 msgid "Some fixtures could not be processed"
@@ -680,7 +720,7 @@ msgstr ""
 
 #: ../panels/profiles/data/share_profile.py:12
 msgid "Mode name"
-msgstr ""
+msgstr "nom du mode"
 
 #: ../panels/profiles/data/share_profile.py:13
 msgid "DMX Footprint"
@@ -689,19 +729,19 @@ msgstr ""
 #: ../panels/profiles/data/share_profile.py:21
 #: ../panels/profiles/data/share_profile.py:22
 msgid "Fixture name"
-msgstr ""
+msgstr "Nom du projecteur"
 
 #: ../panels/profiles/data/share_profile.py:21
 msgid "Manufacturer and fixture name"
-msgstr ""
+msgstr "Nom du Constructeur et du projecteur"
 
 #: ../panels/profiles/data/share_profile.py:23
 msgid "Manufacturer"
-msgstr ""
+msgstr "Constructeur"
 
 #: ../panels/profiles/data/share_profile.py:23
 msgid "Manufacturer name"
-msgstr ""
+msgstr "Nom du constructeur"
 
 #: ../panels/profiles/data/share_profile.py:25
 msgid "Revision"
@@ -713,23 +753,23 @@ msgstr ""
 
 #: ../panels/profiles/data/share_profile.py:27
 msgid "Uploaded by"
-msgstr ""
+msgstr "Mise a jour par"
 
 #: ../panels/profiles/data/share_profile.py:27
 msgid "File uploaded by"
-msgstr ""
+msgstr "Fichier mis en ligne par"
 
 #: ../panels/profiles/data/share_profile.py:29
 msgid "Created by"
-msgstr ""
+msgstr "Crée par"
 
 #: ../panels/profiles/data/share_profile.py:29
 msgid "File created by"
-msgstr ""
+msgstr "Fichier crée par"
 
 #: ../panels/profiles/data/share_profile.py:31
 msgid "Rating"
-msgstr ""
+msgstr "évaluation"
 
 #: ../panels/profiles/data/share_profile.py:34
 msgid "Revision ID"
@@ -740,12 +780,13 @@ msgid "File identifier in the GDTF Share"
 msgstr ""
 
 #: ../panels/profiles/data/share_profile.py:36
+#, fuzzy
 msgid "DMX Modes"
-msgstr ""
+msgstr "Mode DMX"
 
 #: ../panels/profiles/ui/list.py:35 ../panels/profiles/ui/list.py:67
 msgid "DMX Mode Name"
-msgstr ""
+msgstr "Nom du mode DMX"
 
 #: ../panels/profiles/ui/list.py:38 ../panels/profiles/ui/list.py:70
 msgid "Footprint"
@@ -781,47 +822,50 @@ msgstr ""
 
 #: ../panels/profiles/ui/operator.py:42
 msgid "Import from file"
-msgstr ""
+msgstr "Importer du fichier"
 
 #: ../panels/profiles/ui/operator.py:43
 msgid "Import fixture from local filesystem"
-msgstr ""
+msgstr "Importer un projecteur depuis un fichier local"
 
 #: ../panels/profiles/ui/operator.py:77
 msgid "Delete fixture"
-msgstr ""
+msgstr "Supprimer projecteur"
 
 #: ../panels/profiles/ui/operator.py:78
 msgid "Delete fixture from local filesystem"
-msgstr ""
+msgstr "Supprimer projecteur d'un fichier local"
 
 #: ../panels/profiles/ui/operator.py:92
 msgid "Refresh files listing"
-msgstr ""
+msgstr "Rafraichir la liste de fichier"
 
 #: ../panels/profiles/ui/operator.py:93
 msgid "Update list of local files"
-msgstr ""
+msgstr "Mise à jour de la liste des fichiers locaux"
 
 #: ../panels/profiles/ui/panel.py:17
+#, fuzzy
 msgid "GDTF Share"
-msgstr ""
+msgstr "Profile GDTF"
 
 #: ../panels/profiles/ui/panel.py:45
 msgid "Fixture details"
-msgstr ""
+msgstr "Détail du projecteur"
 
 #: ../panels/profiles/ui/panel.py:83
+#, fuzzy
 msgid "Local Fixture files"
-msgstr ""
+msgstr "Détail du projecteur"
 
 #: ../panels/profiles/ui/panel.py:113
 msgid "Local Fixture details"
 msgstr ""
 
 #: ../panels/profiles/ui/panel.py:153
+#, fuzzy
 msgid "Profiles"
-msgstr ""
+msgstr "Fichier"
 
 #~ msgid ""
 #~ "Get API key from GDTF Share "
@@ -832,149 +876,17 @@ msgstr ""
 #~ msgid "GDTF Share API key missing"
 #~ msgstr ""
 
-#~ msgid "Share index updated. Status code was: {}"
-#~ msgstr ""
-
-#~ msgid "GDTF Share updated"
-#~ msgstr ""
-
-#~ msgid "Error while updating Share index. Error code was: {}"
-#~ msgstr ""
-
-#~ msgid "GDTF Share update error"
-#~ msgstr ""
-
-#~ msgid "File downloaded correctly. Status code was: {}"
-#~ msgstr ""
-
-#~ msgid "GDTF file downloaded"
-#~ msgstr "Fichier GDTF téléchargé"
-
-#~ msgid "Error downloading GDTF file. Error code was: {}"
-#~ msgstr "Erreur de téléchargement du fichier GDTF. Le code erreur est : {}"
-
-#~ msgid "GDTF Share download error"
-#~ msgstr ""
-
 #~ msgid "Message Box"
 #~ msgstr "Boite de dialogue"
-
-#~ msgid "Mode name"
-#~ msgstr "nom du mode"
-
-#~ msgid "DMX Footprint"
-#~ msgstr ""
-
-#~ msgid "Fixture name"
-#~ msgstr "Nom du projecteur"
-
-#~ msgid "Manufacturer and fixture name"
-#~ msgstr "Nom du Constructeur et du projecteur"
-
-#~ msgid "Manufacturer"
-#~ msgstr "Constructeur"
-
-#~ msgid "Manufacturer name"
-#~ msgstr "Nom du constructeur"
-
-#~ msgid "Revision"
-#~ msgstr ""
-
-#~ msgid "Revision text"
-#~ msgstr ""
-
-#~ msgid "Uploaded by"
-#~ msgstr "Mise a jour par"
-
-#~ msgid "File uploaded by"
-#~ msgstr "Fichier mis en ligne par"
-
-#~ msgid "Created by"
-#~ msgstr "Crée par"
-
-#~ msgid "File created by"
-#~ msgstr "Fichier crée par"
-
-#~ msgid "Rating"
-#~ msgstr "évaluation"
-
-#~ msgid "Revision ID"
-#~ msgstr ""
-
-#~ msgid "File identifier in the GDTF Share"
-#~ msgstr ""
-
-#~ msgid "DMX Modes"
-#~ msgstr "Mode DMX"
-
-#~ msgid "DMX Mode Name"
-#~ msgstr "Nom du mode DMX"
-
-#~ msgid "Footprint"
-#~ msgstr ""
-
-#~ msgid "Import from Share"
-#~ msgstr ""
-
-#~ msgid "Import fixture from GDTF Share"
-#~ msgstr ""
-
-#~ msgid "Update GDTF Share index"
-#~ msgstr ""
-
-#~ msgid "Update data index of GDTF Share"
-#~ msgstr ""
-
-#~ msgid "Import from file"
-#~ msgstr "Importer du fichier"
-
-#~ msgid "Import fixture from local filesystem"
-#~ msgstr "Importer un projecteur depuis un fichier local"
-
-#~ msgid "File Path"
-#~ msgstr "Chemin d'accès"
-
-#~ msgid "Files"
-#~ msgstr "Fichier"
-
-#~ msgid "Delete fixture"
-#~ msgstr "Supprimer projecteur"
-
-#~ msgid "Delete fixture from local filesystem"
-#~ msgstr "Supprimer projecteur d'un fichier local"
-
-#~ msgid "Refresh files listing"
-#~ msgstr "Rafraichir la liste de fichier"
-
-#~ msgid "Update list of local files"
-#~ msgstr "Mise à jour de la liste des fichiers locaux"
-
-#~ msgid "DMX Fixtures import"
-#~ msgstr "Projecteurs DMX importés"
-
-#~ msgid "Fixture details"
-#~ msgstr "Détail du projecteur"
 
 #~ msgid "DMX Local fixtures"
 #~ msgstr ""
 
-#~ msgid "Local Fixture details"
-#~ msgstr ""
-
-#~ msgid "Number of Channels"
-#~ msgstr "Nombre de canaux"
-
 #~ msgid "The number of channels of the current profile."
 #~ msgstr ""
 
-#~ msgid "DMX Address"
-#~ msgstr "Adresse DMX"
-
 #~ msgid "The DMX address of the fixture at the current universe."
 #~ msgstr ""
-
-#~ msgid "DMX Universe"
-#~ msgstr "Univers DMX"
 
 #~ msgid "The DMX universe to which the fixture is currently addressed."
 #~ msgstr ""
@@ -985,20 +897,11 @@ msgstr ""
 #~ msgid "A numeric unique identifier for the fixture."
 #~ msgstr ""
 
-#~ msgid "Name"
-#~ msgstr "Nom"
-
 #~ msgid "A unique name for the fixture."
 #~ msgstr "Nom unique du projecteur."
 
-#~ msgid "GDTF Profile"
-#~ msgstr "Profile GDTF"
-
 #~ msgid "The GDTF profile of the fixture."
 #~ msgstr ""
-
-#~ msgid "GDTF Mode"
-#~ msgstr "Mode GDTF"
 
 #~ msgid "The GDTF mode of the current profile."
 #~ msgstr ""
@@ -1014,9 +917,6 @@ msgstr ""
 #~ " sources limitation."
 #~ msgstr ""
 
-#~ msgid "Gel Color"
-#~ msgstr "Couleur de Gelat"
-
 #~ msgid ""
 #~ "Color of the gel applied to the"
 #~ " fixture, in case the profile doesn't"
@@ -1026,14 +926,8 @@ msgstr ""
 #~ msgid "A unique name for the fixture batch."
 #~ msgstr ""
 
-#~ msgid "Units"
-#~ msgstr "Unité"
-
 #~ msgid "The number of fixtures inside this batch."
 #~ msgstr ""
-
-#~ msgid "Sequential"
-#~ msgstr "Séquenceur"
 
 #~ msgid ""
 #~ "True if the batch fixtures are "
@@ -1044,20 +938,8 @@ msgstr ""
 #~ msgid "Overrides the footprint of each fixture."
 #~ msgstr ""
 
-#~ msgid "Expand"
-#~ msgstr "Déplier"
-
 #~ msgid "Expands/shrinks the list of fixtures in this batch."
 #~ msgstr ""
-
-#~ msgid "The name of the DMX profile."
-#~ msgstr ""
-
-#~ msgid "Short Name"
-#~ msgstr ""
-
-#~ msgid "Filename"
-#~ msgstr "Nom du fichier"
 
 #~ msgid "Type"
 #~ msgstr "Type"
@@ -1122,18 +1004,9 @@ msgstr ""
 #~ msgid "DMX Patch"
 #~ msgstr "Patch DMX"
 
-#~ msgid "Universes"
-#~ msgstr "Univers"
-
-#~ msgid "Fixtures"
-#~ msgstr "Projecteurs"
-
 #~ msgid "GDTF Share API key"
 #~ msgstr ""
 
 #~ msgid "Private API key for GDTF Share"
-#~ msgstr ""
-
-#~ msgid "Programmer"
 #~ msgstr ""
 

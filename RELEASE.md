@@ -1,6 +1,13 @@
 * Checkout a new branch `release_v_X.Y.Z`
 * Add changes to CHANGELOG.md
 * Update versions (in text and in links) in README.md
+* Update translations:
+
+cd i18n/
+pybabel extract -F babel.cfg -o messages.pot ../
+pybabel update -i messages.pot -d translations
+pybabel compile -d translations
+
 * Update __init__.py → bl_info → version
 * Check that ./assets/* doesn't include extra GDTF files or folders
 * Generate a release:

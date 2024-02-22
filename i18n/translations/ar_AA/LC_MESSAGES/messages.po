@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-22 20:52+0100\n"
+"POT-Creation-Date: 2024-02-22 21:37+0100\n"
 "PO-Revision-Date: 2023-12-02 14:06+0000\n"
 "Last-Translator: bass python <pythonbass@gmail.com>\n"
 "Language: ar_AA\n"
@@ -39,8 +39,9 @@ msgid "Import"
 msgstr ""
 
 #: ../panels/dmx.py:55
+#, fuzzy
 msgid "Import commit"
-msgstr ""
+msgstr "استيراد من ملف"
 
 #: ../panels/dmx.py:81
 msgid "Download"
@@ -51,8 +52,9 @@ msgid "Download commit"
 msgstr ""
 
 #: ../panels/dmx.py:144
+#, fuzzy
 msgid "DMX > Universe Menu"
-msgstr ""
+msgstr "عالم دي إم إكس"
 
 #: ../panels/dmx.py:159
 msgid "OSC"
@@ -64,7 +66,7 @@ msgstr ""
 
 #: ../panels/dmx.py:239
 msgid "Universes"
-msgstr ""
+msgstr "الأكوان"
 
 #: ../panels/dmx.py:264
 msgid "Art-Net"
@@ -91,24 +93,28 @@ msgid "Protocols"
 msgstr ""
 
 #: ../panels/fixtures.py:39
+#, fuzzy
 msgid "DMX > Fixture Menu"
-msgstr ""
+msgstr "استيراد تركيبات DMX"
 
 #: ../panels/fixtures.py:61
 msgid "Edit"
 msgstr ""
 
 #: ../panels/fixtures.py:66 ../panels/groups.py:58
+#, fuzzy
 msgid "Remove"
-msgstr ""
+msgstr "إزالة لاعبا اساسيا"
 
 #: ../panels/fixtures.py:71 ../panels/fixtures.py:436
+#, fuzzy
 msgid "Import GDTF Profile"
-msgstr ""
+msgstr "استيراد من ملف"
 
 #: ../panels/fixtures.py:75 ../panels/fixtures.py:476
+#, fuzzy
 msgid "Import MVR scene"
-msgstr ""
+msgstr "استيراد من المشاركة"
 
 #: ../panels/fixtures.py:79
 msgid "DMX > Fixture > Add > Manufacturers"
@@ -119,58 +125,66 @@ msgid "DMX > Fixture > Add > Profiles"
 msgstr ""
 
 #: ../panels/fixtures.py:106 ../panels/fixtures.py:135
+#, fuzzy
 msgid "DMX > Fixture > Add > Mode"
-msgstr ""
+msgstr "استيراد تركيبات DMX"
 
 #: ../panels/fixtures.py:121
 msgid "DMX > Fixture > Add > Manufacturers > Profiles"
 msgstr ""
 
 #: ../panels/fixtures.py:125 ../panels/fixtures.py:158
+#, fuzzy
 msgid "Profile"
-msgstr ""
+msgstr "الملف الشخصي لـ GDTF"
 
 #: ../panels/fixtures.py:126 ../panels/fixtures.py:159
+#, fuzzy
 msgid "Fixture GDTF Profile"
-msgstr ""
+msgstr "الملف الشخصي لـ GDTF"
 
 #: ../panels/fixtures.py:139 ../panels/fixtures.py:183
+#, fuzzy
 msgid "Mode"
-msgstr ""
+msgstr "اسم الوضع"
 
 #: ../panels/fixtures.py:140
+#, fuzzy
 msgid "Fixture GDTF Mode"
-msgstr ""
+msgstr "وضع GDTF"
 
 #: ../panels/fixtures.py:165 ../panels/fixtures.py:641 ../panels/groups.py:70
 #: ../panels/profiles/data/local_profile.py:12
 #: ../panels/profiles/data/local_profile.py:21
 msgid "Name"
-msgstr ""
+msgstr "الاسم"
 
 #: ../panels/fixtures.py:169
+#, fuzzy
 msgid "Universe"
-msgstr ""
+msgstr "الأكوان"
 
 #: ../panels/fixtures.py:170
 msgid "DMX Universe"
-msgstr ""
+msgstr "عالم دي إم إكس"
 
 #: ../panels/fixtures.py:176
+#, fuzzy
 msgid "Address"
-msgstr ""
+msgstr "عنوان دي إم إكس"
 
 #: ../panels/fixtures.py:177
 msgid "DMX Address"
-msgstr ""
+msgstr "عنوان دي إم إكس"
 
 #: ../panels/fixtures.py:184 ../panels/fixtures.py:251
+#, fuzzy
 msgid "DMX Mode"
-msgstr ""
+msgstr "أوضاع دي إم إكس"
 
 #: ../panels/fixtures.py:189
 msgid "Gel Color"
-msgstr ""
+msgstr "لون جل"
 
 #: ../panels/fixtures.py:197
 msgid "Display beams"
@@ -189,20 +203,23 @@ msgid "Add target for beam to follow"
 msgstr ""
 
 #: ../panels/fixtures.py:214 ../panels/fixtures.py:215
+#, fuzzy
 msgid "Increment DMX address"
-msgstr ""
+msgstr "عنوان دي إم إكس"
 
 #: ../panels/fixtures.py:219
+#, fuzzy
 msgid "Increment Fixture ID"
-msgstr ""
+msgstr "إزالة لاعبا اساسيا"
 
 #: ../panels/fixtures.py:220
 msgid "Increment Fixture ID if numeric"
 msgstr ""
 
 #: ../panels/fixtures.py:224
+#, fuzzy
 msgid "Fixture ID"
-msgstr ""
+msgstr "مباراة قادمة"
 
 #: ../panels/fixtures.py:225
 msgid ""
@@ -212,7 +229,7 @@ msgstr ""
 
 #: ../panels/fixtures.py:230
 msgid "Units"
-msgstr ""
+msgstr "الوحدات"
 
 #: ../panels/fixtures.py:231
 msgid "How many units of this light to add"
@@ -220,19 +237,22 @@ msgstr ""
 
 #: ../panels/fixtures.py:242
 msgid "GDTF Profile"
-msgstr ""
+msgstr "الملف الشخصي لـ GDTF"
 
 #: ../panels/fixtures.py:248
+#, fuzzy
 msgid "Unknown manufacturer"
-msgstr ""
+msgstr "مصنّع"
 
 #: ../panels/fixtures.py:271
+#, fuzzy
 msgid "DMX: Add Fixture"
-msgstr ""
+msgstr "تركيبات DMX المحلية"
 
 #: ../panels/fixtures.py:273
+#, fuzzy
 msgid "Add fixtures to the show"
-msgstr ""
+msgstr "إضافة دفعة تركيبات"
 
 #: ../panels/fixtures.py:280 ../panels/fixtures.py:336
 #: ../panels/fixtures.py:355
@@ -240,76 +260,89 @@ msgid "Fixture named {} already exists"
 msgstr ""
 
 #: ../panels/fixtures.py:283
+#, fuzzy
 msgid "No GDTF Profile selected."
-msgstr ""
+msgstr "لم يتم تحديد ملف تعريف"
 
 #: ../panels/fixtures.py:286
+#, fuzzy
 msgid "No DMX Mode selected."
-msgstr ""
+msgstr "لم يتم تحديد ملف تعريف"
 
 #: ../panels/fixtures.py:322
+#, fuzzy
 msgid "DMX: Edit Fixture"
-msgstr ""
+msgstr "حذف لاعبا اساسيا"
 
 #: ../panels/fixtures.py:324
+#, fuzzy
 msgid "Edit selected fixtures"
-msgstr ""
+msgstr "حذف لاعبا اساسيا"
 
 #: ../panels/fixtures.py:420
+#, fuzzy
 msgid "DMX > Fixture > Remove"
-msgstr ""
+msgstr "استيراد تركيبات DMX"
 
 #: ../panels/fixtures.py:422
+#, fuzzy
 msgid "Remove selected fixtures from Scene"
-msgstr ""
+msgstr "قم بإزالة هذه المباراة من التصحيح."
 
 #: ../panels/fixtures.py:438
+#, fuzzy
 msgid "Import fixture from GDTF Profile"
-msgstr ""
+msgstr "استيراد لاعبا أساسيا من مشاركة GDTF"
 
 #: ../panels/fixtures.py:444 ../panels/fixtures.py:484
 msgid "File Path"
-msgstr ""
+msgstr "مسیر فایل"
 
 #: ../panels/fixtures.py:449 ../panels/fixtures.py:489
 msgid "Files"
-msgstr ""
+msgstr "الوثائق"
 
 #: ../panels/fixtures.py:478
+#, fuzzy
 msgid "Import fixtures from MVR scene file. This may take a long time!"
-msgstr ""
+msgstr "استيراد لاعبا أساسيا من نظام الملفات المحلي"
 
 #: ../panels/fixtures.py:578
+#, fuzzy
 msgid "DMX > Fixture > Item"
-msgstr ""
+msgstr "استيراد تركيبات DMX"
 
 #: ../panels/fixtures.py:580
+#, fuzzy
 msgid "Select Fixture"
-msgstr ""
+msgstr "حذف لاعبا اساسيا"
 
 #: ../panels/fixtures.py:614
+#, fuzzy
 msgid "Remove fixture"
-msgstr ""
+msgstr "إزالة لاعبا اساسيا"
 
 #: ../panels/fixtures.py:624 ../panels/fixtures.py:686
 msgid "Fixtures"
-msgstr ""
+msgstr "مباراة قادمة"
 
 #: ../panels/groups.py:37
 msgid "DMX > Group Menu"
 msgstr ""
 
 #: ../panels/groups.py:46
+#, fuzzy
 msgid "Create"
-msgstr ""
+msgstr "أُنشئ بواسطة"
 
 #: ../panels/groups.py:50
 msgid "Update"
 msgstr ""
 
 #: ../panels/groups.py:54
+#, fuzzy
 msgid "Rename"
-msgstr ""
+msgstr "الاسم"
 
 #: ../panels/groups.py:64
 msgid "DMX > Group > Create"
@@ -320,8 +353,9 @@ msgid "Create DMX group from selected fixtures"
 msgstr ""
 
 #: ../panels/groups.py:71
+#, fuzzy
 msgid "Group Name"
-msgstr ""
+msgstr "اسم الوضع"
 
 #: ../panels/programmer.py:20
 msgid "Lock Movement"
@@ -348,8 +382,9 @@ msgid "Deselect every object in the Scene"
 msgstr ""
 
 #: ../panels/programmer.py:71
+#, fuzzy
 msgid "Select All"
-msgstr ""
+msgstr "‏Sequential"
 
 #: ../panels/programmer.py:73
 msgid "Select every object in the Scene"
@@ -421,19 +456,22 @@ msgstr ""
 
 #: ../panels/programmer.py:241
 msgid "Programmer"
-msgstr ""
+msgstr "مبرمج"
 
 #: ../panels/programmer.py:266
+#, fuzzy
 msgid "Nothing selected"
-msgstr ""
+msgstr "لم يتم تحديد ملف تعريف"
 
 #: ../panels/programmer.py:270
+#, fuzzy
 msgid "{} selected"
-msgstr ""
+msgstr "لم يتم تحديد ملف تعريف"
 
 #: ../panels/programmer.py:307 ../panels/programmer.py:318
+#, fuzzy
 msgid "Pan"
-msgstr ""
+msgstr "توسيع"
 
 #: ../panels/programmer.py:309 ../panels/programmer.py:319
 msgid "Tilt"
@@ -492,16 +530,19 @@ msgid "Add Keyframe"
 msgstr ""
 
 #: ../panels/recorder.py:120
+#, fuzzy
 msgid "Delete Keyframes"
-msgstr ""
+msgstr "حذف لاعبا اساسيا"
 
 #: ../panels/recorder.py:142
+#, fuzzy
 msgid "Delete from selected fixtures"
-msgstr ""
+msgstr "حذف لاعبا اساسيا"
 
 #: ../panels/recorder.py:146
+#, fuzzy
 msgid "Delete from all fixtures"
-msgstr ""
+msgstr "حذف لاعبا اساسيا"
 
 #: ../panels/setup.py:24
 msgid "DMX > Setup > New Show"
@@ -597,71 +638,77 @@ msgstr ""
 
 #: ../panels/profiles/controller/manager.py:43
 #: ../panels/profiles/controller/manager.py:78
+#, fuzzy
 msgid "Get GDTF Share account and fill it into BlenderDMX addon preferences."
 msgstr ""
+"احصل على مفتاح API من حساب GDTF Share واملأه في تفضيلات BlenderDMX "
+"الإضافية."
 
 #: ../panels/profiles/controller/manager.py:44
 #: ../panels/profiles/controller/manager.py:79
+#, fuzzy
 msgid "GDTF Share API credentials missing"
-msgstr ""
+msgstr "مفتاح GDTF Share API مفقود"
 
 #: ../panels/profiles/controller/manager.py:66
 msgid "Downloading {}"
 msgstr ""
 
 #: ../panels/profiles/controller/manager.py:67
+#, fuzzy
 msgid "GDTF Share Download"
-msgstr ""
+msgstr "خطأ في تنزيل مشاركة GDTF"
 
 #: ../panels/profiles/controller/manager.py:117
 msgid "Share index updated. Status code was: {}"
-msgstr ""
+msgstr "تم تحديث فهرس المشاركة. رمز الحالة كان: {}"
 
 #: ../panels/profiles/controller/manager.py:118
 msgid "GDTF Share updated"
-msgstr ""
+msgstr "تم تحديث مشاركة GDTF"
 
 #: ../panels/profiles/controller/manager.py:123
 msgid "Error while updating Share index. Error code was: {}"
-msgstr ""
+msgstr "حدث خطأ أثناء تحديث فهرس المشاركة. رمز الخطأ كان: {}"
 
 #: ../panels/profiles/controller/manager.py:124
 msgid "GDTF Share update error"
-msgstr ""
+msgstr "خطأ في تحديث مشاركة GDTF"
 
 #: ../panels/profiles/controller/manager.py:136
 msgid "File downloaded correctly. Status code was: {}"
-msgstr ""
+msgstr "تم تنزيل الملف بشكل صحيح. رمز الحالة كان: {}"
 
 #: ../panels/profiles/controller/manager.py:137
 msgid "GDTF file downloaded"
-msgstr ""
+msgstr "تم تنزيل ملف GDTF"
 
 #: ../panels/profiles/controller/manager.py:142
 msgid "Error downloading GDTF file. Error code was: {}"
-msgstr ""
+msgstr "حدث خطأ أثناء تنزيل ملف GDTF. رمز الخطأ كان: {}"
 
 #: ../panels/profiles/controller/manager.py:143
 msgid "GDTF Share download error"
-msgstr ""
+msgstr "خطأ في تنزيل مشاركة GDTF"
 
 #: ../panels/profiles/data/local_profile.py:12
 #: ../panels/profiles/data/local_profile.py:21
 #: ../panels/profiles/data/local_profile.py:28
 msgid "The name of the DMX profile."
-msgstr ""
+msgstr "اسم ملف تعريف DMX."
 
 #: ../panels/profiles/data/local_profile.py:15
 msgid "Channel count"
 msgstr ""
 
 #: ../panels/profiles/data/local_profile.py:16
+#, fuzzy
 msgid "Number of channels"
-msgstr ""
+msgstr "عدد القنوات"
 
 #: ../panels/profiles/data/local_profile.py:24
 msgid "Short Name"
-msgstr ""
+msgstr "الاسم المختصر"
 
 #: ../panels/profiles/data/local_profile.py:25
 msgid ""
@@ -671,7 +718,7 @@ msgstr ""
 
 #: ../panels/profiles/data/local_profile.py:28
 msgid "Filename"
-msgstr ""
+msgstr "اسم الملف"
 
 #: ../panels/profiles/data/local_profile.py:65
 msgid "Some fixtures could not be processed"
@@ -679,96 +726,97 @@ msgstr ""
 
 #: ../panels/profiles/data/share_profile.py:12
 msgid "Mode name"
-msgstr ""
+msgstr "اسم الوضع"
 
 #: ../panels/profiles/data/share_profile.py:13
 msgid "DMX Footprint"
-msgstr ""
+msgstr "بصمة دي إم إكس"
 
 #: ../panels/profiles/data/share_profile.py:21
 #: ../panels/profiles/data/share_profile.py:22
 msgid "Fixture name"
-msgstr ""
+msgstr "اسم لاعبا أساسيا"
 
 #: ../panels/profiles/data/share_profile.py:21
 msgid "Manufacturer and fixture name"
-msgstr ""
+msgstr "اسم الشركة المصنعة والجهاز"
 
 #: ../panels/profiles/data/share_profile.py:23
 msgid "Manufacturer"
-msgstr ""
+msgstr "مصنّع"
 
 #: ../panels/profiles/data/share_profile.py:23
 msgid "Manufacturer name"
-msgstr ""
+msgstr "اسم المصنع"
 
 #: ../panels/profiles/data/share_profile.py:25
 msgid "Revision"
-msgstr ""
+msgstr "مراجعة"
 
 #: ../panels/profiles/data/share_profile.py:25
 msgid "Revision text"
-msgstr ""
+msgstr "نص المراجعة"
 
 #: ../panels/profiles/data/share_profile.py:27
 msgid "Uploaded by"
-msgstr ""
+msgstr "صاحب الموضوع"
 
 #: ../panels/profiles/data/share_profile.py:27
 msgid "File uploaded by"
-msgstr ""
+msgstr "تم رفع الملف بواسطة"
 
 #: ../panels/profiles/data/share_profile.py:29
 msgid "Created by"
-msgstr ""
+msgstr "أُنشئ بواسطة"
 
 #: ../panels/profiles/data/share_profile.py:29
 msgid "File created by"
-msgstr ""
+msgstr "الملف الذي تم إنشاؤه بواسطة"
 
 #: ../panels/profiles/data/share_profile.py:31
 msgid "Rating"
-msgstr ""
+msgstr "التقييم"
 
 #: ../panels/profiles/data/share_profile.py:34
 msgid "Revision ID"
-msgstr ""
+msgstr "معرف المراجعة"
 
 #: ../panels/profiles/data/share_profile.py:34
 msgid "File identifier in the GDTF Share"
-msgstr ""
+msgstr "معرف الملف في مشاركة GDTF"
 
 #: ../panels/profiles/data/share_profile.py:36
 msgid "DMX Modes"
-msgstr ""
+msgstr "أوضاع دي إم إكس"
 
 #: ../panels/profiles/ui/list.py:35 ../panels/profiles/ui/list.py:67
 msgid "DMX Mode Name"
-msgstr ""
+msgstr "اسم وضع DMX"
 
 #: ../panels/profiles/ui/list.py:38 ../panels/profiles/ui/list.py:70
 msgid "Footprint"
-msgstr ""
+msgstr "اثار"
 
 #: ../panels/profiles/ui/operator.py:17
 msgid "Import from Share"
-msgstr ""
+msgstr "استيراد من المشاركة"
 
 #: ../panels/profiles/ui/operator.py:18
 msgid "Import fixture from GDTF Share"
-msgstr ""
+msgstr "استيراد لاعبا أساسيا من مشاركة GDTF"
 
 #: ../panels/profiles/ui/operator.py:31
 msgid "Update GDTF Share index"
-msgstr ""
+msgstr "تحديث فهرس مشاركة GDTF"
 
 #: ../panels/profiles/ui/operator.py:32
 msgid "Update data index of GDTF Share"
-msgstr ""
+msgstr "تحديث فهرس البيانات لمشاركة GDTF"
 
 #: ../panels/profiles/ui/operator.py:33
+#, fuzzy
 msgid "dmx.import_fixture_update_share"
-msgstr ""
+msgstr "استيراد لاعبا أساسيا من مشاركة GDTF"
 
 #: ../panels/profiles/ui/operator.py:34
 msgid "UNDO"
@@ -780,203 +828,59 @@ msgstr ""
 
 #: ../panels/profiles/ui/operator.py:42
 msgid "Import from file"
-msgstr ""
+msgstr "استيراد من ملف"
 
 #: ../panels/profiles/ui/operator.py:43
 msgid "Import fixture from local filesystem"
-msgstr ""
+msgstr "استيراد لاعبا أساسيا من نظام الملفات المحلي"
 
 #: ../panels/profiles/ui/operator.py:77
 msgid "Delete fixture"
-msgstr ""
+msgstr "حذف لاعبا اساسيا"
 
 #: ../panels/profiles/ui/operator.py:78
 msgid "Delete fixture from local filesystem"
-msgstr ""
+msgstr "حذف لاعبا اساسيا من نظام الملفات المحلي"
 
 #: ../panels/profiles/ui/operator.py:92
 msgid "Refresh files listing"
-msgstr ""
+msgstr "تحديث قائمة الملفات"
 
 #: ../panels/profiles/ui/operator.py:93
 msgid "Update list of local files"
-msgstr ""
+msgstr "تحديث قائمة الملفات المحلية"
 
 #: ../panels/profiles/ui/panel.py:17
+#, fuzzy
 msgid "GDTF Share"
-msgstr ""
+msgstr "تم تحديث مشاركة GDTF"
 
 #: ../panels/profiles/ui/panel.py:45
 msgid "Fixture details"
-msgstr ""
+msgstr "تفاصيل المباراة"
 
 #: ../panels/profiles/ui/panel.py:83
+#, fuzzy
 msgid "Local Fixture files"
-msgstr ""
+msgstr "تفاصيل المباراة المحلية"
 
 #: ../panels/profiles/ui/panel.py:113
 msgid "Local Fixture details"
-msgstr ""
+msgstr "تفاصيل المباراة المحلية"
 
 #: ../panels/profiles/ui/panel.py:153
+#, fuzzy
 msgid "Profiles"
-msgstr ""
-
-#~ msgid ""
-#~ "Get API key from GDTF Share "
-#~ "account and fill it into BlenderDMX "
-#~ "addon preferences."
-#~ msgstr ""
-#~ "احصل على مفتاح API من حساب GDTF"
-#~ " Share واملأه في تفضيلات BlenderDMX "
-#~ "الإضافية."
-
-#~ msgid "GDTF Share API key missing"
-#~ msgstr "مفتاح GDTF Share API مفقود"
-
-#~ msgid "Share index updated. Status code was: {}"
-#~ msgstr "تم تحديث فهرس المشاركة. رمز الحالة كان: {}"
-
-#~ msgid "GDTF Share updated"
-#~ msgstr "تم تحديث مشاركة GDTF"
-
-#~ msgid "Error while updating Share index. Error code was: {}"
-#~ msgstr "حدث خطأ أثناء تحديث فهرس المشاركة. رمز الخطأ كان: {}"
-
-#~ msgid "GDTF Share update error"
-#~ msgstr "خطأ في تحديث مشاركة GDTF"
-
-#~ msgid "File downloaded correctly. Status code was: {}"
-#~ msgstr "تم تنزيل الملف بشكل صحيح. رمز الحالة كان: {}"
-
-#~ msgid "GDTF file downloaded"
-#~ msgstr "تم تنزيل ملف GDTF"
-
-#~ msgid "Error downloading GDTF file. Error code was: {}"
-#~ msgstr "حدث خطأ أثناء تنزيل ملف GDTF. رمز الخطأ كان: {}"
-
-#~ msgid "GDTF Share download error"
-#~ msgstr "خطأ في تنزيل مشاركة GDTF"
+msgstr "الوثائق"
 
 #~ msgid "Message Box"
 #~ msgstr "مربع الرسالة"
 
-#~ msgid "Mode name"
-#~ msgstr "اسم الوضع"
-
-#~ msgid "DMX Footprint"
-#~ msgstr "بصمة دي إم إكس"
-
-#~ msgid "Fixture name"
-#~ msgstr "اسم لاعبا أساسيا"
-
-#~ msgid "Manufacturer and fixture name"
-#~ msgstr "اسم الشركة المصنعة والجهاز"
-
-#~ msgid "Manufacturer"
-#~ msgstr "مصنّع"
-
-#~ msgid "Manufacturer name"
-#~ msgstr "اسم المصنع"
-
-#~ msgid "Revision"
-#~ msgstr "مراجعة"
-
-#~ msgid "Revision text"
-#~ msgstr "نص المراجعة"
-
-#~ msgid "Uploaded by"
-#~ msgstr "صاحب الموضوع"
-
-#~ msgid "File uploaded by"
-#~ msgstr "تم رفع الملف بواسطة"
-
-#~ msgid "Created by"
-#~ msgstr "أُنشئ بواسطة"
-
-#~ msgid "File created by"
-#~ msgstr "الملف الذي تم إنشاؤه بواسطة"
-
-#~ msgid "Rating"
-#~ msgstr "التقييم"
-
-#~ msgid "Revision ID"
-#~ msgstr "معرف المراجعة"
-
-#~ msgid "File identifier in the GDTF Share"
-#~ msgstr "معرف الملف في مشاركة GDTF"
-
-#~ msgid "DMX Modes"
-#~ msgstr "أوضاع دي إم إكس"
-
-#~ msgid "DMX Mode Name"
-#~ msgstr "اسم وضع DMX"
-
-#~ msgid "Footprint"
-#~ msgstr "اثار"
-
-#~ msgid "Import from Share"
-#~ msgstr "استيراد من المشاركة"
-
-#~ msgid "Import fixture from GDTF Share"
-#~ msgstr "استيراد لاعبا أساسيا من مشاركة GDTF"
-
-#~ msgid "Update GDTF Share index"
-#~ msgstr "تحديث فهرس مشاركة GDTF"
-
-#~ msgid "Update data index of GDTF Share"
-#~ msgstr "تحديث فهرس البيانات لمشاركة GDTF"
-
-#~ msgid "Import from file"
-#~ msgstr "استيراد من ملف"
-
-#~ msgid "Import fixture from local filesystem"
-#~ msgstr "استيراد لاعبا أساسيا من نظام الملفات المحلي"
-
-#~ msgid "File Path"
-#~ msgstr "مسیر فایل"
-
-#~ msgid "Files"
-#~ msgstr "الوثائق"
-
-#~ msgid "Delete fixture"
-#~ msgstr "حذف لاعبا اساسيا"
-
-#~ msgid "Delete fixture from local filesystem"
-#~ msgstr "حذف لاعبا اساسيا من نظام الملفات المحلي"
-
-#~ msgid "Refresh files listing"
-#~ msgstr "تحديث قائمة الملفات"
-
-#~ msgid "Update list of local files"
-#~ msgstr "تحديث قائمة الملفات المحلية"
-
-#~ msgid "DMX Fixtures import"
-#~ msgstr "استيراد تركيبات DMX"
-
-#~ msgid "Fixture details"
-#~ msgstr "تفاصيل المباراة"
-
-#~ msgid "DMX Local fixtures"
-#~ msgstr "تركيبات DMX المحلية"
-
-#~ msgid "Local Fixture details"
-#~ msgstr "تفاصيل المباراة المحلية"
-
-#~ msgid "Number of Channels"
-#~ msgstr "عدد القنوات"
-
 #~ msgid "The number of channels of the current profile."
 #~ msgstr "عدد قنوات الملف الشخصي الحالي."
 
-#~ msgid "DMX Address"
-#~ msgstr "عنوان دي إم إكس"
-
 #~ msgid "The DMX address of the fixture at the current universe."
 #~ msgstr "عنوان DMX الخاص بالجهاز في الكون الحالي."
-
-#~ msgid "DMX Universe"
-#~ msgstr "عالم دي إم إكس"
 
 #~ msgid "The DMX universe to which the fixture is currently addressed."
 #~ msgstr "عالم DMX الذي يتم توجيه التركيب إليه حاليًا."
@@ -987,20 +891,11 @@ msgstr ""
 #~ msgid "A numeric unique identifier for the fixture."
 #~ msgstr "معرف رقمي فريد للتركيب."
 
-#~ msgid "Name"
-#~ msgstr "الاسم"
-
 #~ msgid "A unique name for the fixture."
 #~ msgstr "اسم فريد للتركيبة."
 
-#~ msgid "GDTF Profile"
-#~ msgstr "الملف الشخصي لـ GDTF"
-
 #~ msgid "The GDTF profile of the fixture."
 #~ msgstr "ملف تعريف GDTF للتركيبة."
-
-#~ msgid "GDTF Mode"
-#~ msgstr "وضع GDTF"
 
 #~ msgid "The GDTF mode of the current profile."
 #~ msgstr "وضع GDTF لملف التعريف الحالي."
@@ -1021,9 +916,6 @@ msgstr ""
 #~ " في اعتبارك أن Blender لديه حدود "
 #~ "128 مصدرًا للضوء."
 
-#~ msgid "Gel Color"
-#~ msgstr "لون جل"
-
 #~ msgid ""
 #~ "Color of the gel applied to the"
 #~ " fixture, in case the profile doesn't"
@@ -1036,14 +928,8 @@ msgstr ""
 #~ msgid "A unique name for the fixture batch."
 #~ msgstr "اسم فريد لمجموعة التركيبات."
 
-#~ msgid "Units"
-#~ msgstr "الوحدات"
-
 #~ msgid "The number of fixtures inside this batch."
 #~ msgstr "عدد التركيبات داخل هذه الدفعة."
-
-#~ msgid "Sequential"
-#~ msgstr "‏Sequential"
 
 #~ msgid ""
 #~ "True if the batch fixtures are "
@@ -1054,20 +940,8 @@ msgstr ""
 #~ msgid "Overrides the footprint of each fixture."
 #~ msgstr "يتجاوز البصمة لكل تركيبات."
 
-#~ msgid "Expand"
-#~ msgstr "توسيع"
-
 #~ msgid "Expands/shrinks the list of fixtures in this batch."
 #~ msgstr "توسيع/تقليص قائمة التركيبات في هذه الدفعة."
-
-#~ msgid "The name of the DMX profile."
-#~ msgstr "اسم ملف تعريف DMX."
-
-#~ msgid "Short Name"
-#~ msgstr "الاسم المختصر"
-
-#~ msgid "Filename"
-#~ msgstr "اسم الملف"
 
 #~ msgid "Type"
 #~ msgstr "نوع"
@@ -1090,29 +964,17 @@ msgstr ""
 #~ msgid "The type of DMX source of the universe."
 #~ msgstr "نوع مصدر DMX للكون."
 
-#~ msgid "No Profile selected"
-#~ msgstr "لم يتم تحديد ملف تعريف"
-
 #~ msgid "Add Universe"
 #~ msgstr "أضف الكون"
 
 #~ msgid "Add a new Universe to the Patch."
 #~ msgstr "أضف عالمًا جديدًا إلى التصحيح."
 
-#~ msgid "Remove Fixture"
-#~ msgstr "إزالة لاعبا اساسيا"
-
-#~ msgid "Remove this Fixture from the Patch."
-#~ msgstr "قم بإزالة هذه المباراة من التصحيح."
-
 #~ msgid "Add Single Fixture"
 #~ msgstr "إضافة تركيبات واحدة"
 
 #~ msgid "Add a single new Fixture to the Patch."
 #~ msgstr "أضف تركيبًا واحدًا جديدًا إلى التصحيح."
-
-#~ msgid "Add Fixture Batch"
-#~ msgstr "إضافة دفعة تركيبات"
 
 #~ msgid "Add new Fixture Batch to the Patch."
 #~ msgstr "أضف دفعة تركيبات جديدة إلى التصحيح."
@@ -1132,18 +994,9 @@ msgstr ""
 #~ msgid "DMX Patch"
 #~ msgstr "تصحيح دي إم إكس"
 
-#~ msgid "Universes"
-#~ msgstr "الأكوان"
-
-#~ msgid "Fixtures"
-#~ msgstr "مباراة قادمة"
-
 #~ msgid "GDTF Share API key"
 #~ msgstr "مفتاح GDTF Share API"
 
 #~ msgid "Private API key for GDTF Share"
 #~ msgstr "مفتاح API الخاص لمشاركة GDTF"
-
-#~ msgid "Programmer"
-#~ msgstr "مبرمج"
 
