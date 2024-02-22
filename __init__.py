@@ -5,7 +5,7 @@ bl_info = {
     "version": (1, 2, 0),
     "blender": (3, 4, 0),
     "location": "3D View > DMX",
-    "doc_url": "https://github.com/open-stage/blender-dmx/wiki",
+    "doc_url": "https://blenderdmx.eu/docs/faq/",
     "tracker_url": "https://github.com/open-stage/blender-dmx/issues",
     "category": "Lighting",
 }
