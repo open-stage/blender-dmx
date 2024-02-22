@@ -8,62 +8,61 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-02-22 21:37+0100\n"
-"PO-Revision-Date: 2023-03-27 20:18+0000\n"
+"PO-Revision-Date: 2024-02-23 15:29+0000\n"
 "Last-Translator: vanous <petr+weblate@linuks.cz>\n"
+"Language-Team: Czech <https://hosted.weblate.org/projects/blenderdmx/main/cs/"
+">\n"
 "Language: cs_CZ\n"
-"Language-Team: Czech "
-"<https://hosted.weblate.org/projects/blenderdmx/main/cs/>\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
+"X-Generator: Weblate 5.5-dev\n"
 "Generated-By: Babel 2.14.0\n"
 
 #: ../panels/dmx.py:24
 msgid "Refresh"
-msgstr ""
+msgstr "Obnovit"
 
 #: ../panels/dmx.py:25
 msgid "Resends Join message"
-msgstr ""
+msgstr "Obnovit připojení"
 
 #: ../panels/dmx.py:35
 msgid "Request current version"
-msgstr ""
+msgstr "Vyžádat aktuální verzi"
 
 #: ../panels/dmx.py:36
 msgid "Sends the Request message"
-msgstr ""
+msgstr "Odeslat žádost"
 
 #: ../panels/dmx.py:54
 msgid "Import"
-msgstr ""
+msgstr "Import"
 
 #: ../panels/dmx.py:55
-#, fuzzy
 msgid "Import commit"
-msgstr "Import ze souboru"
+msgstr "Importovat"
 
 #: ../panels/dmx.py:81
 msgid "Download"
-msgstr ""
+msgstr "Stáhnout"
 
 #: ../panels/dmx.py:82
 msgid "Download commit"
-msgstr ""
+msgstr "Stáhnout verzi"
 
 #: ../panels/dmx.py:144
-#, fuzzy
 msgid "DMX > Universe Menu"
-msgstr "DMX Univers"
+msgstr "DMX Univers Menu"
 
 #: ../panels/dmx.py:159
 msgid "OSC"
-msgstr ""
+msgstr "OSC"
 
 #: ../panels/dmx.py:182
 msgid "MVR-xchange"
-msgstr ""
+msgstr "MVR-xchange"
 
 #: ../panels/dmx.py:239
 msgid "Universes"
@@ -71,88 +70,79 @@ msgstr "DMX Universe"
 
 #: ../panels/dmx.py:264
 msgid "Art-Net"
-msgstr ""
+msgstr "Art-Net"
 
 #: ../panels/dmx.py:291 ../panels/dmx.py:319
 msgid "Status"
-msgstr ""
+msgstr "Stav"
 
 #: ../panels/dmx.py:294
 msgid "sACN"
-msgstr ""
+msgstr "sACN"
 
 #: ../panels/dmx.py:318
 msgid "sACN set for {} universe(s)"
-msgstr ""
+msgstr "sACN nastaveno pro {} univers(y)"
 
 #: ../panels/dmx.py:330
 msgid "Live DMX"
-msgstr ""
+msgstr "Aktuální DMX"
 
 #: ../panels/dmx.py:362
 msgid "Protocols"
-msgstr ""
+msgstr "Protokoly"
 
 #: ../panels/fixtures.py:39
-#, fuzzy
 msgid "DMX > Fixture Menu"
-msgstr "Import DMX svítidel"
+msgstr "Menu Svítidel"
 
 #: ../panels/fixtures.py:61
 msgid "Edit"
-msgstr ""
+msgstr "Editovat"
 
 #: ../panels/fixtures.py:66 ../panels/groups.py:58
-#, fuzzy
 msgid "Remove"
-msgstr "Odebrat svítidlo"
+msgstr "Odebrat"
 
 #: ../panels/fixtures.py:71 ../panels/fixtures.py:436
-#, fuzzy
 msgid "Import GDTF Profile"
-msgstr "Import ze souboru"
+msgstr "Importovat GDTF soubor"
 
 #: ../panels/fixtures.py:75 ../panels/fixtures.py:476
-#, fuzzy
 msgid "Import MVR scene"
-msgstr "Import z Share"
+msgstr "Importovat MVR scénu"
 
 #: ../panels/fixtures.py:79
 msgid "DMX > Fixture > Add > Manufacturers"
-msgstr ""
+msgstr "Menu Výrobce"
 
 #: ../panels/fixtures.py:93
 msgid "DMX > Fixture > Add > Profiles"
-msgstr ""
+msgstr "Menu profily"
 
 #: ../panels/fixtures.py:106 ../panels/fixtures.py:135
-#, fuzzy
 msgid "DMX > Fixture > Add > Mode"
-msgstr "Import DMX svítidel"
+msgstr "Menu Mód"
 
 #: ../panels/fixtures.py:121
 msgid "DMX > Fixture > Add > Manufacturers > Profiles"
-msgstr ""
+msgstr "Menu Profily"
 
 #: ../panels/fixtures.py:125 ../panels/fixtures.py:158
-#, fuzzy
 msgid "Profile"
-msgstr "GDTF Profil"
+msgstr "Profil"
 
 #: ../panels/fixtures.py:126 ../panels/fixtures.py:159
-#, fuzzy
 msgid "Fixture GDTF Profile"
-msgstr "GDTF Profil"
+msgstr "GDTF Profil Svítidla"
 
 #: ../panels/fixtures.py:139 ../panels/fixtures.py:183
-#, fuzzy
 msgid "Mode"
-msgstr "Název módu"
+msgstr "Mód"
 
 #: ../panels/fixtures.py:140
-#, fuzzy
 msgid "Fixture GDTF Mode"
-msgstr "GDTF Mód"
+msgstr "GDTF Mód Svítidla"
 
 #: ../panels/fixtures.py:165 ../panels/fixtures.py:641 ../panels/groups.py:70
 #: ../panels/profiles/data/local_profile.py:12
@@ -161,27 +151,24 @@ msgid "Name"
 msgstr "Název"
 
 #: ../panels/fixtures.py:169
-#, fuzzy
 msgid "Universe"
-msgstr "DMX Universe"
+msgstr "Univers"
 
 #: ../panels/fixtures.py:170
 msgid "DMX Universe"
 msgstr "DMX Univers"
 
 #: ../panels/fixtures.py:176
-#, fuzzy
 msgid "Address"
-msgstr "Adresa DMX"
+msgstr "Adresa"
 
 #: ../panels/fixtures.py:177
 msgid "DMX Address"
 msgstr "Adresa DMX"
 
 #: ../panels/fixtures.py:184 ../panels/fixtures.py:251
-#, fuzzy
 msgid "DMX Mode"
-msgstr "Dmx Módy"
+msgstr "DMX Mód"
 
 #: ../panels/fixtures.py:189
 msgid "Gel Color"
@@ -189,44 +176,43 @@ msgstr "Barva gelu"
 
 #: ../panels/fixtures.py:197
 msgid "Display beams"
-msgstr ""
+msgstr "Zobrazit kužel paprsku"
 
 #: ../panels/fixtures.py:198
 msgid "Display beam projection and cone"
-msgstr ""
+msgstr "Zobrazit projekci paprsku a kužele"
 
 #: ../panels/fixtures.py:203
 msgid "Add Target"
-msgstr ""
+msgstr "Přidat Cíl"
 
 #: ../panels/fixtures.py:204
 msgid "Add target for beam to follow"
-msgstr ""
+msgstr "Přidat cíl pro navádění kužele paprsku"
 
 #: ../panels/fixtures.py:214 ../panels/fixtures.py:215
-#, fuzzy
 msgid "Increment DMX address"
-msgstr "Adresa DMX"
+msgstr "Inkrementovat DMX adresu"
 
 #: ../panels/fixtures.py:219
-#, fuzzy
 msgid "Increment Fixture ID"
-msgstr "Odebrat svítidlo"
+msgstr "Inkrementovat ID Svítidla"
 
 #: ../panels/fixtures.py:220
 msgid "Increment Fixture ID if numeric"
-msgstr ""
+msgstr "Inkrementovat ID Svítidla, je-li ID číslo"
 
 #: ../panels/fixtures.py:224
-#, fuzzy
 msgid "Fixture ID"
-msgstr "Svítidla"
+msgstr "ID Svítidla"
 
 #: ../panels/fixtures.py:225
 msgid ""
 "The Fixture ID is an identifier for the instance of this fixture that can"
 " be used to activate / select them for programming."
 msgstr ""
+"ID Svítidla je identifikátor zařízení použitý k aktivaci / selekci při "
+"programování."
 
 #: ../panels/fixtures.py:230
 msgid "Units"
@@ -234,66 +220,56 @@ msgstr "Jednotky"
 
 #: ../panels/fixtures.py:231
 msgid "How many units of this light to add"
-msgstr ""
+msgstr "Kolik kusů tohoto svítidla přidat"
 
 #: ../panels/fixtures.py:242
 msgid "GDTF Profile"
 msgstr "GDTF Profil"
 
 #: ../panels/fixtures.py:248
-#, fuzzy
 msgid "Unknown manufacturer"
-msgstr "Výrobce"
+msgstr "Neznámý výrobce"
 
 #: ../panels/fixtures.py:271
-#, fuzzy
 msgid "DMX: Add Fixture"
-msgstr "DMX Lokální svítidla"
+msgstr "Menu Přidat Svítidlo"
 
 #: ../panels/fixtures.py:273
-#, fuzzy
 msgid "Add fixtures to the show"
-msgstr "Přidání skupiny světel"
+msgstr "Přidat svítidlo do show"
 
 #: ../panels/fixtures.py:280 ../panels/fixtures.py:336
 #: ../panels/fixtures.py:355
 msgid "Fixture named {} already exists"
-msgstr ""
+msgstr "Svítidlo s názvem {} již existuje"
 
 #: ../panels/fixtures.py:283
-#, fuzzy
 msgid "No GDTF Profile selected."
-msgstr "Není vybrán žádný profil"
+msgstr "Není vybrán žádný GDTF profil"
 
 #: ../panels/fixtures.py:286
-#, fuzzy
 msgid "No DMX Mode selected."
-msgstr "Není vybrán žádný profil"
+msgstr "Není vybrán žádný DMX Mód"
 
 #: ../panels/fixtures.py:322
-#, fuzzy
 msgid "DMX: Edit Fixture"
-msgstr "Smazat zařízení"
+msgstr "Menu Editovat Svítidlo"
 
 #: ../panels/fixtures.py:324
-#, fuzzy
 msgid "Edit selected fixtures"
-msgstr "Smazat zařízení"
+msgstr "Editovat vybraná svítidla"
 
 #: ../panels/fixtures.py:420
-#, fuzzy
 msgid "DMX > Fixture > Remove"
-msgstr "Import DMX svítidel"
+msgstr "Menu Odebrat svítidlo"
 
 #: ../panels/fixtures.py:422
-#, fuzzy
 msgid "Remove selected fixtures from Scene"
-msgstr "Odebrat toto svítidlo z patche."
+msgstr "Odebrat vybraná svítidla ze scény"
 
 #: ../panels/fixtures.py:438
-#, fuzzy
 msgid "Import fixture from GDTF Profile"
-msgstr "Importovat zařízení z GDTF Share"
+msgstr "Importovat svítidlo z GDTF Share"
 
 #: ../panels/fixtures.py:444 ../panels/fixtures.py:484
 msgid "File Path"
@@ -304,22 +280,18 @@ msgid "Files"
 msgstr "Soubory"
 
 #: ../panels/fixtures.py:478
-#, fuzzy
 msgid "Import fixtures from MVR scene file. This may take a long time!"
-msgstr "Importovat světlo ze souboru"
+msgstr "Importovat data z MVR souboru. To může trvat dlouho!"
 
 #: ../panels/fixtures.py:578
-#, fuzzy
 msgid "DMX > Fixture > Item"
-msgstr "Import DMX svítidel"
+msgstr "Menu Svítidlo"
 
 #: ../panels/fixtures.py:580
-#, fuzzy
 msgid "Select Fixture"
-msgstr "Smazat zařízení"
+msgstr "Vybrat Svítidlo"
 
 #: ../panels/fixtures.py:614
-#, fuzzy
 msgid "Remove fixture"
 msgstr "Odebrat svítidlo"
 
@@ -329,115 +301,111 @@ msgstr "Svítidla"
 
 #: ../panels/groups.py:37
 msgid "DMX > Group Menu"
-msgstr ""
+msgstr "Menu Skupiny"
 
 #: ../panels/groups.py:46
-#, fuzzy
 msgid "Create"
-msgstr "Vytvořeno"
+msgstr "Vytvořit"
 
 #: ../panels/groups.py:50
 msgid "Update"
-msgstr ""
+msgstr "Aktualizovat"
 
 #: ../panels/groups.py:54
-#, fuzzy
 msgid "Rename"
-msgstr "Název"
+msgstr "Přejmenovat"
 
 #: ../panels/groups.py:64
 msgid "DMX > Group > Create"
-msgstr ""
+msgstr "Menu Vytvořit"
 
 #: ../panels/groups.py:66
 msgid "Create DMX group from selected fixtures"
-msgstr ""
+msgstr "Vytvořit DMX skupinu z vybraných svítidel"
 
 #: ../panels/groups.py:71
-#, fuzzy
 msgid "Group Name"
-msgstr "Název módu"
+msgstr "Název Skupiny"
 
 #: ../panels/programmer.py:20
 msgid "Lock Movement"
-msgstr ""
+msgstr "Uzamknout Pohyb"
 
 #: ../panels/programmer.py:22
 msgid "Ignore pan/tilt DMX data"
-msgstr ""
+msgstr "Ignorovat pan/tilt data z DMX"
 
 #: ../panels/programmer.py:39
 msgid "Unlock Movement"
-msgstr ""
+msgstr "Odemknout Pohyb"
 
 #: ../panels/programmer.py:41
 msgid "Allow pan/tilt DMX data"
-msgstr ""
+msgstr "Povolit pan/tilt data z DMX"
 
 #: ../panels/programmer.py:58
 msgid "Deselect All"
-msgstr ""
+msgstr "Odznačit Vše"
 
 #: ../panels/programmer.py:60
 msgid "Deselect every object in the Scene"
-msgstr ""
+msgstr "Zrušit výběr na všech svítidel scény"
 
 #: ../panels/programmer.py:71
-#, fuzzy
 msgid "Select All"
-msgstr "Sekvenční"
+msgstr "Vybrat Vše"
 
 #: ../panels/programmer.py:73
 msgid "Select every object in the Scene"
-msgstr ""
+msgstr "Vybrat všechna svítidla ve scéně"
 
 #: ../panels/programmer.py:84
 msgid "Select Visible (only filtered)"
-msgstr ""
+msgstr "Vybrat Viditelné (filtrované)"
 
 #: ../panels/programmer.py:86
 msgid "Select every object in the Scene which is visible in the fixtures list"
-msgstr ""
+msgstr "Vybere všechna svítidla který jsou viditelná v seznamu svítidel"
 
 #: ../panels/programmer.py:98
 msgid "Invert selection"
-msgstr ""
+msgstr "Invertovat výběr"
 
 #: ../panels/programmer.py:100
 msgid "Invert the selection"
-msgstr ""
+msgstr "Invertuje výběr"
 
 #: ../panels/programmer.py:120 ../panels/programmer.py:122
 msgid "Select every other light"
-msgstr ""
+msgstr "Vybrat každé druhé svítidlo"
 
 #: ../panels/programmer.py:136 ../panels/programmer.py:328
 msgid "Clear"
-msgstr ""
+msgstr "Vyčistit"
 
 #: ../panels/programmer.py:138
 msgid "Clear all DMX values to default and update fixtures"
-msgstr ""
+msgstr "Vyčistit DMX hodnoty do výchozích a aktualizovat svítidla"
 
 #: ../panels/programmer.py:163
 msgid "Targets to zero"
-msgstr ""
+msgstr "Cíle na nulu"
 
 #: ../panels/programmer.py:165
 msgid "Set Targets' position to 0"
-msgstr ""
+msgstr "Nastaví Cíle paprsků na 0 scény"
 
 #: ../panels/programmer.py:181
 msgid "Select Bodies"
-msgstr ""
+msgstr "Vybrat Svítidlo"
 
 #: ../panels/programmer.py:183
 msgid "Select body from every fixture element selected"
-msgstr ""
+msgstr "Vybere tělo/základnu všech vybraných svítidel"
 
 #: ../panels/programmer.py:205
 msgid "Select Targets"
-msgstr ""
+msgstr "Vybrat Cíle"
 
 #: ../panels/programmer.py:206
 msgid "dmx.select_targets"
@@ -445,220 +413,209 @@ msgstr ""
 
 #: ../panels/programmer.py:207
 msgid "Select target from every fixture element selected"
-msgstr ""
+msgstr "Vybere cíl paprsku každého označeného svítidla"
 
 #: ../panels/programmer.py:216
 msgid "Select Camera"
-msgstr ""
+msgstr "Vybrat Kameru"
 
 #: ../panels/programmer.py:218
 msgid "Select camera of the selected fixture"
-msgstr ""
+msgstr "Vybere kameru zvoleného svítidla"
 
 #: ../panels/programmer.py:241
 msgid "Programmer"
 msgstr "Programátor"
 
 #: ../panels/programmer.py:266
-#, fuzzy
 msgid "Nothing selected"
-msgstr "Není vybrán žádný profil"
+msgstr "Není vybráno žádné svítidlo"
 
 #: ../panels/programmer.py:270
-#, fuzzy
 msgid "{} selected"
-msgstr "Není vybrán žádný profil"
+msgstr "{} vybraných"
 
 #: ../panels/programmer.py:307 ../panels/programmer.py:318
-#, fuzzy
 msgid "Pan"
-msgstr "Rozbalit"
+msgstr "Pan"
 
 #: ../panels/programmer.py:309 ../panels/programmer.py:319
 msgid "Tilt"
-msgstr ""
+msgstr "Tilt"
 
 #: ../panels/programmer.py:311 ../panels/programmer.py:320
 msgid "Zoom"
-msgstr ""
+msgstr "Zoom"
 
 #: ../panels/programmer.py:313 ../panels/programmer.py:321
 msgid "Gobo"
-msgstr ""
+msgstr "Gobo"
 
 #: ../panels/programmer.py:314 ../panels/programmer.py:322
 msgid "GoboPos"
-msgstr ""
+msgstr "Rotace Goba"
 
 #: ../panels/programmer.py:316 ../panels/programmer.py:323
 msgid "Strobe"
-msgstr ""
+msgstr "Strobo"
 
 #: ../panels/programmer.py:330
 msgid "Clear All"
-msgstr ""
+msgstr "Vyčistit vše"
 
 #: ../panels/recorder.py:18
 msgid "DMX > Recorder > Add Keyframe"
-msgstr ""
+msgstr "Menu přidat snímek"
 
 #: ../panels/recorder.py:20
 msgid "Add a Keyframe with the current DMX data"
-msgstr ""
+msgstr "Přidat klíčový snímek s aktuálními daty DMX"
 
 #: ../panels/recorder.py:64
 msgid "DMX > Recorder > Delete Keyframes for all fixtures"
-msgstr ""
+msgstr "Menu Vymazat snímky pro všechna svítidla"
 
 #: ../panels/recorder.py:66
 msgid "Deletes all keyframes from all fixtures"
-msgstr ""
+msgstr "Odstraní všechny snímky ze všech svítidel"
 
 #: ../panels/recorder.py:79
 msgid "DMX > Recorder > Delete All Keyframes from selected fixtures"
-msgstr ""
+msgstr "Menu Vymazat snímky z vybraných svítidel"
 
 #: ../panels/recorder.py:81
 msgid "Deletes all keyframes from selected fixtures"
-msgstr ""
+msgstr "Odstraní všechny snímky z vybraných svítidel"
 
 #: ../panels/recorder.py:104
 msgid "Keyframe Recorder"
-msgstr ""
+msgstr "Rekordér snímků"
 
 #: ../panels/recorder.py:115
 msgid "Add Keyframe"
-msgstr ""
+msgstr "Přidat snímek"
 
 #: ../panels/recorder.py:120
-#, fuzzy
 msgid "Delete Keyframes"
-msgstr "Smazat zařízení"
+msgstr "Smazat snímek"
 
 #: ../panels/recorder.py:142
-#, fuzzy
 msgid "Delete from selected fixtures"
-msgstr "Smazat zařízení"
+msgstr "Odstranit z vybraných svítidel"
 
 #: ../panels/recorder.py:146
-#, fuzzy
 msgid "Delete from all fixtures"
-msgstr "Smazat zařízení"
+msgstr "Odstraní ze všech svítidel"
 
 #: ../panels/setup.py:24
 msgid "DMX > Setup > New Show"
-msgstr ""
+msgstr "Menu Nová show"
 
 #: ../panels/setup.py:25
 msgid "Clear any existing DMX data and create a new show."
-msgstr ""
+msgstr "Vyčistí existující DMX data a vytvoří novou show."
 
 #: ../panels/setup.py:35
 msgid "DMX > Setup > Create/Update Volume Box"
-msgstr ""
+msgstr "Menu Vytvořit/aktualizovat těleso pro zobrazení kužele paprsku"
 
 #: ../panels/setup.py:36
 msgid "Create/Update a Box on the scene bounds with a Volume Scatter shader"
-msgstr ""
+msgstr "Vytvořit/aktualizovat těleso pro Volume Scatter shader"
 
 #: ../panels/setup.py:76
 msgid "Beam Volume"
-msgstr ""
+msgstr "Prostorový Kužel Paprsku"
 
 #: ../panels/setup.py:92
 msgid "Update Volume Box"
-msgstr ""
+msgstr "Aktualizovat Těleso Prostorového Paprsku"
 
 #: ../panels/setup.py:92
 msgid "Create Volume Box"
-msgstr ""
+msgstr "Vytvořit Těleso Prostorového Paprsku"
 
 #: ../panels/setup.py:105
 msgid "Viewport"
-msgstr ""
+msgstr "Pohled"
 
 #: ../panels/setup.py:118
 msgid "Background Color"
-msgstr ""
+msgstr "Barva Pozadí"
 
 #: ../panels/setup.py:131
 msgid "Extras"
-msgstr ""
+msgstr "Doplňky"
 
 #: ../panels/setup.py:143
 msgid "Check for BlenderDMX updates"
-msgstr ""
+msgstr "Kontrola aktualizace BlenderDMX"
 
 #: ../panels/setup.py:145
 msgid "Status: {}"
-msgstr ""
+msgstr "Stav: {}"
 
 #: ../panels/setup.py:148
 msgid "Logging"
-msgstr ""
+msgstr "Záznam logu"
 
 #: ../panels/setup.py:163
 msgid "Log filter"
-msgstr ""
+msgstr "Filtr logu"
 
 #: ../panels/setup.py:171
 msgid "Setup"
-msgstr ""
+msgstr "Nastavení"
 
 #: ../panels/setup.py:183
 msgid "Create New Show"
-msgstr ""
+msgstr "Vytvořit Novou Show"
 
 #: ../panels/setup.py:186
 msgid "Check version"
-msgstr ""
+msgstr "Kontrola verze"
 
 #: ../panels/setup.py:187
 msgid "Check if there is new release of BlenderDMX"
-msgstr ""
+msgstr "Zkontrolujte, zda je nová verze BlenderDMX"
 
 #: ../panels/setup.py:193
 msgid "Unknown version error"
-msgstr ""
+msgstr "Neznámá chyba verze"
 
 #: ../panels/setup.py:205
 msgid "New version {} available"
-msgstr ""
+msgstr "Nová verze {} k dispozici"
 
 #: ../panels/setup.py:207
 msgid "You are using pre-release version"
-msgstr ""
+msgstr "Používáte pre-release verzi"
 
 #: ../panels/setup.py:209
 msgid "You are using latest version of BlenderDMX"
-msgstr ""
+msgstr "Používáte nejnovější verzi BlenderDMX"
 
 #: ../panels/setup.py:216
 msgid "Checking..."
-msgstr ""
+msgstr "Kontrola..."
 
 #: ../panels/profiles/controller/manager.py:43
 #: ../panels/profiles/controller/manager.py:78
-#, fuzzy
 msgid "Get GDTF Share account and fill it into BlenderDMX addon preferences."
-msgstr ""
-"Získejte API klíč z účtu GDTF Share a zadejte jej do předvoleb doplňku "
-"BlenderDMX."
+msgstr "Získejte GDTF Share účet a zadejte jej do předvoleb doplňku BlenderDMX."
 
 #: ../panels/profiles/controller/manager.py:44
 #: ../panels/profiles/controller/manager.py:79
-#, fuzzy
 msgid "GDTF Share API credentials missing"
-msgstr "Chybí GDTF Share klíč API"
+msgstr "Chybí data účtu pro přihlášení k GDTF Share"
 
 #: ../panels/profiles/controller/manager.py:66
 msgid "Downloading {}"
-msgstr ""
+msgstr "Stahování {}"
 
 #: ../panels/profiles/controller/manager.py:67
-#, fuzzy
 msgid "GDTF Share Download"
-msgstr "Chyba při stahování z GDTF Share"
+msgstr "Stahování z GDTF Share"
 
 #: ../panels/profiles/controller/manager.py:117
 msgid "Share index updated. Status code was: {}"
@@ -700,10 +657,9 @@ msgstr "Název profilu DMX."
 
 #: ../panels/profiles/data/local_profile.py:15
 msgid "Channel count"
-msgstr ""
+msgstr "Počet kanálů"
 
 #: ../panels/profiles/data/local_profile.py:16
-#, fuzzy
 msgid "Number of channels"
 msgstr "Počet kanálů"
 
@@ -716,6 +672,8 @@ msgid ""
 "The short name of the DMX profile, all caps, used as suggestion for "
 "fixture names."
 msgstr ""
+"Krátké jméno profilu DMX, kapitálkami, používané jako návrh na název "
+"svítidla."
 
 #: ../panels/profiles/data/local_profile.py:28
 msgid "Filename"
@@ -723,7 +681,7 @@ msgstr "Jméno souboru"
 
 #: ../panels/profiles/data/local_profile.py:65
 msgid "Some fixtures could not be processed"
-msgstr ""
+msgstr "Některá svítidla se nepodařilo zpracovat"
 
 #: ../panels/profiles/data/share_profile.py:12
 msgid "Mode name"
@@ -787,9 +745,8 @@ msgid "File identifier in the GDTF Share"
 msgstr "Identifikátor souboru v GDTF Share"
 
 #: ../panels/profiles/data/share_profile.py:36
-#, fuzzy
 msgid "DMX Modes"
-msgstr "Dmx Módy"
+msgstr "DMX Módy"
 
 #: ../panels/profiles/ui/list.py:35 ../panels/profiles/ui/list.py:67
 msgid "DMX Mode Name"
@@ -816,9 +773,8 @@ msgid "Update data index of GDTF Share"
 msgstr "Aktualizovat index dat GDTF Share"
 
 #: ../panels/profiles/ui/operator.py:33
-#, fuzzy
 msgid "dmx.import_fixture_update_share"
-msgstr "Importovat zařízení z GDTF Share"
+msgstr ""
 
 #: ../panels/profiles/ui/operator.py:34
 msgid "UNDO"
@@ -853,27 +809,24 @@ msgid "Update list of local files"
 msgstr "Aktualizace seznamu místních souborů"
 
 #: ../panels/profiles/ui/panel.py:17
-#, fuzzy
 msgid "GDTF Share"
-msgstr "GDTF Share aktualizován"
+msgstr "GDTF Share"
 
 #: ../panels/profiles/ui/panel.py:45
 msgid "Fixture details"
 msgstr "Podrobnosti o svítidle"
 
 #: ../panels/profiles/ui/panel.py:83
-#, fuzzy
 msgid "Local Fixture files"
-msgstr "Podrobnosti o svítidle"
+msgstr "Lokální Soubory Svítidel"
 
 #: ../panels/profiles/ui/panel.py:113
 msgid "Local Fixture details"
 msgstr "Podrobnosti o svítidle"
 
 #: ../panels/profiles/ui/panel.py:153
-#, fuzzy
 msgid "Profiles"
-msgstr "Soubory"
+msgstr "Profily"
 
 #~ msgid "Select DMX Universe"
 #~ msgstr "Zvolte DMX Universe"
@@ -1014,4 +967,3 @@ msgstr "Soubory"
 
 #~ msgid "Private API key for GDTF Share"
 #~ msgstr "Soukromý klíč API pro GDTF Share"
-
