@@ -745,11 +745,11 @@ class DMX(PropertyGroup):
         description= "logging level",
         default = "ERROR",
         items= [
-                ('CRITICAL', "Critical", "", "TOOL_SETTINGS", 0),
-                ('ERROR', "Error", "", 'ERROR', 1),
-                ('WARNING', "Warning", "", "CANCEL", 2),
-                ('INFO', "Info", "", "INFO", 3),
-                ('DEBUG', "Debug", "", "OUTLINER_OB_LIGHT",4),
+                ('CRITICAL', _("Critical"), "", "TOOL_SETTINGS", 0),
+                ('ERROR', _("Error"), "", 'ERROR', 1),
+                ('WARNING', _("Warning"), "", "CANCEL", 2),
+                ('INFO', _("Info"), "", "INFO", 3),
+                ('DEBUG', _("Debug"), "", "OUTLINER_OB_LIGHT",4),
         ],
         update = onLoggingLevel
         )
@@ -769,9 +769,9 @@ class DMX(PropertyGroup):
         description= _("Display 'fake' beam cone"),
         default = "NONE",
         items= [
-                ("NONE", "None", "Cone not displayed"),
-                ("SELECTED", "Selected fixtures", "Shift select multiple"),
-                ("ALL", "All fixtures", "All fixtures"),
+                ("NONE", _("None"), "Cone not displayed"),
+                ("SELECTED", _("Selected fixtures"), "Shift select multiple"),
+                ("ALL", _("All fixtures"), "All fixtures"),
         ],
         update = onVolumePreview
         )
@@ -1181,7 +1181,7 @@ class DMX(PropertyGroup):
         update = onProgrammerGobo)
 
     programmer_gobo_index: IntProperty(
-        name = "Programmer Gobo Index",
+        name = "Gobo Rotation",
         min = 0,
         max = 255,
         default = 63,
@@ -1240,10 +1240,10 @@ class DMX(PropertyGroup):
         description= _("Fixture sorting order"),
         default = "ADDRESS",
         items= [
-                ("NAME", "Name", "", "", 0),
-                ("FIXTURE_ID", "Fixture ID", "", "", 1),
-                ("ADDRESS", "DMX Address", "", "", 2),
-                ("UNIT_NUMBER", "Unit Number", "", "", 3),
+                ("NAME", _("Name"), "", "", 0),
+                ("FIXTURE_ID", _("Fixture ID"), "", "", 1),
+                ("ADDRESS", _("DMX Address"), "", "", 2),
+                ("UNIT_NUMBER", _("Unit Number"), "", "", 3),
         ],
         )
     # Kernel Methods

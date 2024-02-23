@@ -32,7 +32,7 @@ class DMX_OP_MVR_Refresh(Operator):
 
 
 class DMX_OP_MVR_Request(Operator):
-    bl_label = _("Request current version")
+    bl_label = _("Request latest version")
     bl_description = _("Sends the Request message")
     bl_idname = "dmx.mvr_request"
     bl_options = {"UNDO"}
@@ -249,7 +249,7 @@ class DMX_PT_DMX_Universes(Panel):
         layout = self.layout
         dmx = context.scene.dmx
 
-        layout.prop(dmx, "universes_n", text="Universes")
+        layout.prop(dmx, "universes_n", text=_("Universes"))
 
         layout.template_list("DMX_UL_Universe", "", dmx, "universes", dmx, "universe_list_i")
 
@@ -280,14 +280,14 @@ class DMX_PT_DMX_ArtNet(Panel):
                 artnet_universes.append(universe)
 
         row = layout.row()
-        row.prop(dmx, "artnet_ipaddr", text="IPv4")
+        row.prop(dmx, "artnet_ipaddr", text=_("IPv4"))
         row.enabled = not dmx.artnet_enabled
 
         row = layout.row()
         row.prop(dmx, "artnet_enabled")
         row.enabled = len(artnet_universes)>0
         row = layout.row()
-        row.label(text=f"Art-Net set for {len(artnet_universes)} universe(s)")
+        row.label(text=_("Art-Net set for {} universe(s)").format(len(artnet_universes)))
         layout.label(text=_("Status") + ": " + layout.enum_item_name(dmx, 'artnet_status', dmx.artnet_status))
 
 class DMX_PT_DMX_sACN(Panel):
@@ -345,7 +345,7 @@ class DMX_PT_DMX_LiveDMX(Panel):
             raise ValueError("Missing selected universe, as if DMX base class is empty...")
 
         row = layout.row()
-        row.prop(dmx, "selected_live_dmx", text="Source")
+        row.prop(dmx, "selected_live_dmx", text=_("Source"))
         row = layout.row()
         col = row.column()
         col.label(text=f"{selected_universe.id}")
