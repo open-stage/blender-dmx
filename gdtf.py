@@ -421,8 +421,9 @@ class DMX_GDTF():
             constraint.target = obj_child
             collection.objects.link(light_object)
 
+            gobo_radius = 2.2 * 0.01 * math.tan(math.radians(geometry.beam_angle/2))
             goboGeometry = SimpleNamespace(name=f"gobo {sanitize_obj_name(geometry)}",
-                                           length=0.1, width=0.1, height = 0, primitive_type = "Plane",
+                                           length=gobo_radius, width=gobo_radius, height = 0, primitive_type = "Plane",
                                            beam_radius = geometry.beam_radius)
             create_gobo(geometry, goboGeometry)
 
