@@ -46,7 +46,7 @@ class DMX_MT_Fixture(Menu):
 
         # "Add"
         row = layout.row()
-        row.operator("dmx.add_fixture", text="Add", icon="ADD")
+        row.operator("dmx.add_fixture", text=_("Add"), icon="ADD")
 
         selected = False
         for fixture in dmx.fixtures:
@@ -644,34 +644,34 @@ class DMX_PT_Fixtures(Panel):
         if dmx.column_fixture_id and not dmx.fixture_properties_editable:
 
             c = row.column()
-            c.label(text="F ID")
+            c.label(text=_("F ID"))
             c.ui_units_x = 2
 
         if dmx.column_unit_number and not dmx.fixture_properties_editable:
             c = row.column()
             c.ui_units_x = 2
-            c.label(text="Unit #")
+            c.label(text=_("Unit #"))
 
         if dmx.column_fixture_id_numeric and not dmx.fixture_properties_editable:
             c = row.column()
-            c.label(text="F ID #")
+            c.label(text=_("F ID #"))
             c.ui_units_x = 2
 
         if dmx.column_custom_id and not dmx.fixture_properties_editable:
             c = row.column()
-            c.label(text="Cst ID")
+            c.label(text=_("Cst ID"))
             c.ui_units_x = 2
 
         if dmx.column_dmx_address and not dmx.fixture_properties_editable:
             c = row.column()
             c.ui_units_x = 2
             if dmx.fixture_properties_editable:
-                c.label(text="Uni")
+                c.label(text=_("Uni"))
                 c = row.column()
                 c.ui_units_x = 2
-                c.label(text="Addr")
+                c.label(text=_("Addr"))
             else:
-                c.label(text="Uni.Addr")
+                c.label(text=_("Uni.Addr"))
 
         layout.template_list(
             "DMX_UL_Fixtures",

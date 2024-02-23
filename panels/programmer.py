@@ -289,18 +289,18 @@ class DMX_PT_Programmer(Panel):
         row = layout.row()
         row.label(text=selected_fixture_label)
         row = layout.row()
-        row.operator("dmx.select_bodies", text="Bodies")
-        row.operator("dmx.select_targets", text="Targets")
+        row.operator("dmx.select_bodies", text=_("Bodies"))
+        row.operator("dmx.select_targets", text=_("Targets"))
         if len(selected_fixtures) == 1:
             for obj in selected_fixtures[0].collection.objects:
                 if "MediaCamera" in obj.name:
-                    row.operator("dmx.toggle_camera", text="Camera")
+                    row.operator("dmx.toggle_camera", text=_("Camera"))
         row.enabled = selected
 
         box = layout.column().box()
         box.template_color_picker(scene.dmx,"programmer_color", value_slider=True)
         box.prop(scene.dmx, "programmer_color")
-        box.prop(scene.dmx,"programmer_dimmer", text="Dimmer")
+        box.prop(scene.dmx,"programmer_dimmer", text=_("Dimmer"))
 
         if len(selected_fixtures) == 1:
             if selected_fixtures[0].has_attribute("Pan"):

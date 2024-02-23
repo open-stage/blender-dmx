@@ -101,6 +101,7 @@ def get_gobo_material(name):
     # material.node_tree.links.new(bsdf.outputs[0], mix.inputs[1])
     material.node_tree.links.new(matout.inputs[0], bsdf.outputs[0])
     image = material.node_tree.nodes.new(SHADER_NODE_TEX_IMAGE)
+    image.name = "Image Texture"
     # material.node_tree.links.new(image.outputs[1], mix.inputs[2])
     material.node_tree.links.new(image.outputs[0], bsdf.inputs[0])
     # material.node_tree.links.new(bsdf.outputs[0], mix.inputs[1])
@@ -111,6 +112,7 @@ def set_light_nodes(light):
     light_obj.data.use_nodes = True
     emission = light_obj.data.node_tree.nodes.get(EMISSION)
     image = light_obj.data.node_tree.nodes.new(SHADER_NODE_TEX_IMAGE)
+    image.name = "Image Texture"
     mix = light_obj.data.node_tree.nodes.new(SHADER_NODE_MIX)
     mix.data_type="RGBA"
     mix.name = "Mix"
