@@ -72,37 +72,39 @@ from bpy.types import (PropertyGroup,
                        Collection,
                        NodeTree)
 
+from dmx.i18n import DMX_Lang
+_ = DMX_Lang._
 
 class DMX_TempData(PropertyGroup):
 
     pause_render: BoolProperty(
         description="The renderer is paused during MVR import and in 2D view. This checkbox allows to re-enable it in case of some failure during import, which would leave it paused",
-        name = "Pause renderer",
+        name = _("Pause renderer"),
         default = False)
 
     manufacturers: CollectionProperty(
-            name = "Manufacturers",
+            name = _("Manufacturers"),
             type=PropertyGroup
             )
 
     imports: PointerProperty(
-            name = "Imports",
+            name = _("Imports"),
             type=Profiles.DMX_Fixtures_Imports
             )
 
     aditive_selection: BoolProperty(
-        name = "Add to selection",
+        name = _("Add to selection"),
         description="When selecting a group, add to existing selection",
         default = True)
 
 
     mvr_xchange: PointerProperty(
-            name = "MVR-xchange",
+            name = _("MVR-xchange"),
             type=DMX_MVR_Xchange
             )
 
     release_version_status: StringProperty(
-        name = "Status",
+        name = _("Status"),
         description="Information about latest release of BlenderDMX",
         default="Not checked"
     )
@@ -111,17 +113,17 @@ class DMX_TempData(PropertyGroup):
         DMX_Log.update_filters()
 
     logging_filter_mvr_xchange: BoolProperty(
-        name = "MVR-xchange",
+        name = _("MVR-xchange"),
         default = False,
         update = onUpdateLoggingFilter)
 
     logging_filter_dmx_in: BoolProperty(
-        name = "DMX Data",
+        name = _("DMX Data"),
         default = False,
         update = onUpdateLoggingFilter)
 
     logging_filter_fixture: BoolProperty(
-        name = "Fixture",
+        name = _("Fixture"),
         default = False,
         update = onUpdateLoggingFilter)
 
@@ -763,8 +765,8 @@ class DMX(PropertyGroup):
     #    update = onVolumePreview)
 
     volume_preview: EnumProperty(
-        name= "Simple beam",
-        description= "Display 'fake' beam cone",
+        name= _("Simple beam"),
+        description= _("Display 'fake' beam cone"),
         default = "NONE",
         items= [
                 ("NONE", "None", "Cone not displayed"),
@@ -786,7 +788,7 @@ class DMX(PropertyGroup):
 
 
     disable_overlays: BoolProperty(
-        name = "Disable Overlays",
+        name = _("Disable Overlays"),
         default = False,
         update = onDisableOverlays)
 
@@ -797,7 +799,7 @@ class DMX(PropertyGroup):
             self.volume.hide_set(not self.volume_enabled)
 
     volume_enabled: BoolProperty(
-        name = "Enable Volume Scatter",
+        name = _("Enable Volume Scatter"),
         default = True,
         update = onVolumeEnabled)
 
@@ -809,8 +811,8 @@ class DMX(PropertyGroup):
         self.volume_nodetree.nodes["Noise Texture"].inputs['Scale'].default_value = self.volume_noise_scale
 
     volume_noise_scale: FloatProperty(
-        name = "Noise Scale",
-        description="Volume Noise Scale",
+        name = _("Noise Scale"),
+        description=_("Volume Noise Scale"),
         default = 1,
         min = 0,
         max = 100,
@@ -822,8 +824,8 @@ class DMX(PropertyGroup):
         self.volume_nodetree.nodes["Volume Scatter"].inputs['Density'].default_value = self.volume_density
 
     volume_density: FloatProperty(
-        name = "Density",
-        description="Volume Scatter Density",
+        name = _("Density"),
+        description=_("Volume Scatter Density"),
         default = 0.1,
         min = 0,
         max = 1,
@@ -847,8 +849,8 @@ class DMX(PropertyGroup):
 
 
     universes_n : IntProperty(
-        name = "Number of universes",
-        description="The number of universes set on the panel",
+        name = _("Number of universes"),
+        description=_("The number of universes set on the panel"),
         default = 0,
         min = 0,
         soft_min = 1,
@@ -858,16 +860,16 @@ class DMX(PropertyGroup):
     # # DMX > Universes > List Index
 
     universe_list_i : IntProperty(
-        name = "Universe List Item",
-        description="The selected element on the universe list",
+        name = _("Universe List Item"),
+        description=_("The selected element on the universe list"),
         default = 0
         )
 
     # # DMX > ArtNet > Network Cards
 
     artnet_ipaddr : EnumProperty(
-        name = "IPv4 Address for ArtNet signal",
-        description="The network card/interface to listen for ArtNet DMX data",
+        name = _("IPv4 Address for ArtNet signal"),
+        description=_("The network card/interface to listen for ArtNet DMX data"),
         items = DMX_Network.cards
     )
     #zeroconf - mvr-xchange
@@ -940,59 +942,59 @@ class DMX(PropertyGroup):
             DMX_ArtNet.disable()
 
     artnet_enabled : BoolProperty(
-        name = "Enable Art-Net Input",
-        description="Enables the input of DMX data throught Art-Net on the selected network interface",
+        name = _("Enable Art-Net Input"),
+        description=_("Enables the input of DMX data throught Art-Net on the selected network interface"),
         default = False,
         update = onArtNetEnable
     )
 
     sacn_enabled : BoolProperty(
-        name = "Enable sACN Input",
-        description="Enables the input of DMX data throught sACN on all detected network interfaces",
+        name = _("Enable sACN Input"),
+        description=_("Enables the input of DMX data throught sACN on all detected network interfaces"),
         default = False,
         update = onsACNEnable
     )
 
     osc_enabled : BoolProperty(
-        name = "Enable OSC Output",
-        description="Enables Open Sound Control protocol to send fixture selection to a console",
+        name = _("Enable OSC Output"),
+        description=_("Enables Open Sound Control protocol to send fixture selection to a console"),
         default = False,
         update = onOscEnable
     )
 
     osc_target_address : StringProperty(
-        name = "Target address",
-        description="Address of the host where you want to send the OSC signal. Address ending on .255 is a broadcast address to all hosts on the network",
+        name = _("OSC Target address"),
+        description=_("Address of the host where you want to send the OSC signal. Address ending on .255 is a broadcast address to all hosts on the network"),
         default="0.0.0.0"
     )
 
     osc_target_port : IntProperty(
-        name = "Target port",
-        description="Port number of the host where you want to send the OSC signal",
+        name = _("OSC Target port"),
+        description=_("Port number of the host where you want to send the OSC signal"),
         default=42000
     )
 
     zeroconf_enabled : BoolProperty(
-        name = "Enable MVR-xchange discovery",
-        description="Enables MVR-xchange discovery",
+        name = _("Enable MVR-xchange discovery"),
+        description=_("Enables MVR-xchange discovery"),
         default = False,
         update = onZeroconfEnableDiscovery
     )
 
     mvrx_enabled : BoolProperty(
-        name = "Enable MVR-xchange connection",
-        description="Connects to MVR-xchange client",
+        name = _("Enable MVR-xchange connection"),
+        description=_("Connects to MVR-xchange client"),
         default = False,
         update = onMVR_xchange_enable
     )
     # # DMX > ArtNet > Status
 
     artnet_status : EnumProperty(
-        name = "Art-Net Status",
+        name = _("Art-Net Status"),
         items = DMX_ArtNet.status()
     )
     sacn_status : StringProperty(
-        name = "sACN Status",
+        name = _("sACN Status"),
         default = "offline"
     )
 
@@ -1002,8 +1004,8 @@ class DMX(PropertyGroup):
         self.groups[self.group_list_i].select()
 
     group_list_i : IntProperty(
-        name = "Group List i",
-        description="The selected element on the group list",
+        name = _("Group List i"),
+        description=_("The selected element on the group list"),
         default = 0,
         update = onGroupList
         )
@@ -1234,8 +1236,8 @@ class DMX(PropertyGroup):
 
 
     fixtures_sorting_order: EnumProperty(
-        name= "Sort by",
-        description= "Fixture sorting order",
+        name= _("Sort by"),
+        description= _("Fixture sorting order"),
         default = "ADDRESS",
         items= [
                 ("NAME", "Name", "", "", 0),

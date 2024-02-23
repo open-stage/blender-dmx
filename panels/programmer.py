@@ -57,7 +57,7 @@ class DMX_OT_Programmer_Unset_Ignore_Movement(Operator):
 class DMX_OT_Programmer_DeselectAll(Operator):
     bl_label = _("Deselect All")
     bl_idname = "dmx.deselect_all"
-    bl_description = _("Deselect every object in the Scene")
+    bl_description = _("Deselect every fixture in the Scene")
     bl_options = {'UNDO'}
 
     def execute(self, context):
@@ -70,7 +70,7 @@ class DMX_OT_Programmer_DeselectAll(Operator):
 class DMX_OT_Programmer_SelectAll(Operator):
     bl_label = _("Select All")
     bl_idname = "dmx.select_all"
-    bl_description = _("Select every object in the Scene")
+    bl_description = _("Select every fixture in the Scene")
     bl_options = {'UNDO'}
 
     def execute(self, context):
@@ -83,7 +83,7 @@ class DMX_OT_Programmer_SelectAll(Operator):
 class DMX_OT_Programmer_SelectFiltered(Operator):
     bl_label = _("Select Visible (only filtered)")
     bl_idname = "dmx.select_filtered"
-    bl_description = _("Select every object in the Scene which is visible in the fixtures list")
+    bl_description = _("Select every fixture which is visible in the fixtures list")
     bl_options = {'UNDO'}
 
     def execute(self, context):
@@ -162,7 +162,7 @@ class DMX_OT_Programmer_Clear(Operator):
 class DMX_OT_Programmer_TargetsToZero(Operator):
     bl_label = _("Targets to zero")
     bl_idname = "dmx.targets_to_zero"
-    bl_description = _("Set Targets' position to 0")
+    bl_description = _("Set Targets' position to 0 of the Scene")
     bl_options = {'UNDO'}
 
     def execute(self, context):
@@ -178,9 +178,9 @@ class DMX_OT_Programmer_TargetsToZero(Operator):
         return {'FINISHED'}
 
 class DMX_OT_Programmer_SelectBodies(Operator):
-    bl_label = _("Select Bodies")
+    bl_label = _("Select Fixtures")
     bl_idname = "dmx.select_bodies"
-    bl_description = _("Select body from every fixture element selected")
+    bl_description = _("Select base/body of every selected fixture")
     bl_options = {'UNDO'}
 
 
@@ -203,7 +203,7 @@ class DMX_OT_Programmer_SelectBodies(Operator):
 
 class DMX_OT_Programmer_SelectTargets(Operator):
     bl_label = _("Select Targets")
-    bl_idname = _("dmx.select_targets")
+    bl_idname = "dmx.select_targets"
     bl_description = _("Select target from every fixture element selected")
     bl_options = {'UNDO'}
 
@@ -311,7 +311,7 @@ class DMX_PT_Programmer(Panel):
                 box.prop(scene.dmx,"programmer_zoom", text=_("Zoom"))
             if selected_fixtures[0].has_attribute("Gobo"):
                 box.prop(scene.dmx,"programmer_gobo", text=_("Gobo"))
-                box.prop(scene.dmx,"programmer_gobo_index", text=_("GoboPos"))
+                box.prop(scene.dmx,"programmer_gobo_index", text=_("Gobo Rotation"))
             if selected_fixtures[0].has_attribute("shutter", lower = True):
                 box.prop(scene.dmx,"programmer_shutter", text=_("Strobe"))
         else:
@@ -319,7 +319,7 @@ class DMX_PT_Programmer(Panel):
             box.prop(scene.dmx,"programmer_tilt", text=_("Tilt"))
             box.prop(scene.dmx,"programmer_zoom", text=_("Zoom"))
             box.prop(scene.dmx,"programmer_gobo", text=_("Gobo"))
-            box.prop(scene.dmx,"programmer_gobo_index", text=_("GoboPos"))
+            box.prop(scene.dmx,"programmer_gobo_index", text=_("Gobo Rotation"))
             box.prop(scene.dmx,"programmer_shutter", text=_("Strobe"))
 
         box.enabled = selected

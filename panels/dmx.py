@@ -22,7 +22,7 @@ _ = DMX_Lang._
 
 class DMX_OP_MVR_Refresh(Operator):
     bl_label = _("Refresh")
-    bl_description = _("Resends Join message")
+    bl_description = _("Refresh connection")
     bl_idname = "dmx.mvr_refresh"
     bl_options = {"UNDO"}
 
