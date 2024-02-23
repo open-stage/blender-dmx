@@ -1,5 +1,18 @@
 ### Changelog
 
+### 1.3.0
+
+    * Add support for gobos in Cycles
+    * Add translation of UI
+    * Add Noise Scatter to Volume box
+    * Enable programmer only if any fixture is selected
+    * Small improvements:
+        * GDTF download: Better sanitizing of GDTF download file name
+        * Handle ArtNet status setting error
+        * MVR import: check if file exists before loading it
+        * Handle fixtures without dimmer
+        * Handle fixtures with gobo but without zoom
+
 ### 1.2.0
 
     * Initial keyframing support with Auto Keying and Manual Keyframe insert
