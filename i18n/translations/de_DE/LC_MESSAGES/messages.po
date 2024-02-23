@@ -7,26 +7,211 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-22 21:37+0100\n"
+"POT-Creation-Date: 2024-02-23 17:34+0100\n"
 "PO-Revision-Date: 2024-02-23 15:29+0000\n"
 "Last-Translator: Konrad Dieter Einfach <einfachkonrad@gmail.com>\n"
-"Language-Team: German <https://hosted.weblate.org/projects/blenderdmx/main/"
-"de/>\n"
 "Language: de_DE\n"
+"Language-Team: German "
+"<https://hosted.weblate.org/projects/blenderdmx/main/de/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.5-dev\n"
 "Generated-By: Babel 2.14.0\n"
+
+#: ../__init__.py:82
+msgid "Pause renderer"
+msgstr ""
+
+#: ../__init__.py:86
+#, fuzzy
+msgid "Manufacturers"
+msgstr "Hersteller"
+
+#: ../__init__.py:91
+#, fuzzy
+msgid "Imports"
+msgstr "Importieren"
+
+#: ../__init__.py:96
+#, fuzzy
+msgid "Add to selection"
+msgstr "Auswahl umkehren"
+
+#: ../__init__.py:102 ../__init__.py:116 ../panels/dmx.py:182
+msgid "MVR-xchange"
+msgstr "MVR‐xchange"
+
+#: ../__init__.py:107 ../panels/dmx.py:291 ../panels/dmx.py:319
+msgid "Status"
+msgstr "Status"
+
+#: ../__init__.py:121
+#, fuzzy
+msgid "DMX Data"
+msgstr "DMX-Modus"
+
+#: ../__init__.py:126
+#, fuzzy
+msgid "Fixture"
+msgstr "Fixtures"
+
+#: ../__init__.py:768
+msgid "Simple beam"
+msgstr ""
+
+#: ../__init__.py:769
+msgid "Display 'fake' beam cone"
+msgstr ""
+
+#: ../__init__.py:791
+msgid "Disable Overlays"
+msgstr ""
+
+#: ../__init__.py:802
+msgid "Enable Volume Scatter"
+msgstr ""
+
+#: ../__init__.py:814
+msgid "Noise Scale"
+msgstr ""
+
+#: ../__init__.py:815
+msgid "Volume Noise Scale"
+msgstr ""
+
+#: ../__init__.py:827
+msgid "Density"
+msgstr ""
+
+#: ../__init__.py:828
+msgid "Volume Scatter Density"
+msgstr ""
+
+#: ../__init__.py:852
+#, fuzzy
+msgid "Number of universes"
+msgstr "Anzahl der Kanäle"
+
+#: ../__init__.py:853
+msgid "The number of universes set on the panel"
+msgstr ""
+
+#: ../__init__.py:863
+#, fuzzy
+msgid "Universe List Item"
+msgstr "Universen"
+
+#: ../__init__.py:864
+msgid "The selected element on the universe list"
+msgstr ""
+
+#: ../__init__.py:871
+msgid "IPv4 Address for ArtNet signal"
+msgstr ""
+
+#: ../__init__.py:872
+msgid "The network card/interface to listen for ArtNet DMX data"
+msgstr ""
+
+#: ../__init__.py:945
+msgid "Enable Art-Net Input"
+msgstr ""
+
+#: ../__init__.py:946
+msgid ""
+"Enables the input of DMX data throught Art-Net on the selected network "
+"interface"
+msgstr ""
+
+#: ../__init__.py:952
+msgid "Enable sACN Input"
+msgstr ""
+
+#: ../__init__.py:953
+msgid ""
+"Enables the input of DMX data throught sACN on all detected network "
+"interfaces"
+msgstr ""
+
+#: ../__init__.py:959
+msgid "Enable OSC Output"
+msgstr ""
+
+#: ../__init__.py:960
+msgid "Enables Open Sound Control protocol to send fixture selection to a console"
+msgstr ""
+
+#: ../__init__.py:966
+#, fuzzy
+msgid "OSC Target address"
+msgstr "DMX-Adresse"
+
+#: ../__init__.py:967
+msgid ""
+"Address of the host where you want to send the OSC signal. Address ending"
+" on .255 is a broadcast address to all hosts on the network"
+msgstr ""
+
+#: ../__init__.py:972
+msgid "OSC Target port"
+msgstr ""
+
+#: ../__init__.py:973
+msgid "Port number of the host where you want to send the OSC signal"
+msgstr ""
+
+#: ../__init__.py:978
+msgid "Enable MVR-xchange discovery"
+msgstr ""
+
+#: ../__init__.py:979
+msgid "Enables MVR-xchange discovery"
+msgstr ""
+
+#: ../__init__.py:985
+msgid "Enable MVR-xchange connection"
+msgstr ""
+
+#: ../__init__.py:986
+msgid "Connects to MVR-xchange client"
+msgstr ""
+
+#: ../__init__.py:993
+#, fuzzy
+msgid "Art-Net Status"
+msgstr "Art‐Net"
+
+#: ../__init__.py:997
+#, fuzzy
+msgid "sACN Status"
+msgstr "Status"
+
+#: ../__init__.py:1007
+msgid "Group List i"
+msgstr ""
+
+#: ../__init__.py:1008
+msgid "The selected element on the group list"
+msgstr ""
+
+#: ../__init__.py:1239
+msgid "Sort by"
+msgstr ""
+
+#: ../__init__.py:1240
+#, fuzzy
+msgid "Fixture sorting order"
+msgstr "GDTF-Modus"
 
 #: ../panels/dmx.py:24
 msgid "Refresh"
 msgstr "Aktualisieren"
 
 #: ../panels/dmx.py:25
-msgid "Resends Join message"
-msgstr ""
+#, fuzzy
+msgid "Refresh connection"
+msgstr "Dateiliste aktualisieren"
 
 #: ../panels/dmx.py:35
 msgid "Request current version"
@@ -60,10 +245,6 @@ msgstr "DMX > Universen"
 msgid "OSC"
 msgstr "OSC"
 
-#: ../panels/dmx.py:182
-msgid "MVR-xchange"
-msgstr "MVR‐xchange"
-
 #: ../panels/dmx.py:239
 msgid "Universes"
 msgstr "Universen"
@@ -71,10 +252,6 @@ msgstr "Universen"
 #: ../panels/dmx.py:264
 msgid "Art-Net"
 msgstr "Art‐Net"
-
-#: ../panels/dmx.py:291 ../panels/dmx.py:319
-msgid "Status"
-msgstr "Status"
 
 #: ../panels/dmx.py:294
 msgid "sACN"
@@ -191,6 +368,11 @@ msgstr ""
 msgid "Add target for beam to follow"
 msgstr ""
 
+#: ../panels/fixtures.py:209
+#, fuzzy
+msgid "Re-address only"
+msgstr "Adresse"
+
 #: ../panels/fixtures.py:214 ../panels/fixtures.py:215
 #, fuzzy
 msgid "Increment DMX address"
@@ -211,8 +393,8 @@ msgstr "Fixture ID"
 
 #: ../panels/fixtures.py:225
 msgid ""
-"The Fixture ID is an identifier for the instance of this fixture that can"
-" be used to activate / select them for programming."
+"The Fixture ID is an identifier of this fixture that can be used to "
+"activate / select them for programming."
 msgstr ""
 
 #: ../panels/fixtures.py:230
@@ -282,7 +464,7 @@ msgstr "Datein"
 
 #: ../panels/fixtures.py:478
 #, fuzzy
-msgid "Import fixtures from MVR scene file. This may take a long time!"
+msgid "Import data MVR scene file. This may take a long time!"
 msgstr "Importiere Fixtures aus der MVR-Datei. Das kann eine Weile dauern!"
 
 #: ../panels/fixtures.py:578
@@ -355,8 +537,9 @@ msgid "Deselect All"
 msgstr "Auswahl löschen"
 
 #: ../panels/programmer.py:60
-msgid "Deselect every object in the Scene"
-msgstr ""
+#, fuzzy
+msgid "Deselect every fixture in the Scene"
+msgstr "Wähltalle Objekte der Szene aus"
 
 #: ../panels/programmer.py:71
 msgid "Select All"
@@ -364,7 +547,7 @@ msgstr "Alles auswählen"
 
 #: ../panels/programmer.py:73
 #, fuzzy
-msgid "Select every object in the Scene"
+msgid "Select every fixture in the Scene"
 msgstr "Wähltalle Objekte der Szene aus"
 
 #: ../panels/programmer.py:84
@@ -372,7 +555,7 @@ msgid "Select Visible (only filtered)"
 msgstr ""
 
 #: ../panels/programmer.py:86
-msgid "Select every object in the Scene which is visible in the fixtures list"
+msgid "Select every fixture which is visible in the fixtures list"
 msgstr ""
 
 #: ../panels/programmer.py:98
@@ -400,23 +583,21 @@ msgid "Targets to zero"
 msgstr ""
 
 #: ../panels/programmer.py:165
-msgid "Set Targets' position to 0"
+msgid "Set Targets' position to 0 of the Scene"
 msgstr ""
 
 #: ../panels/programmer.py:181
-msgid "Select Bodies"
-msgstr ""
+#, fuzzy
+msgid "Select Fixtures"
+msgstr "Fixture auswählen"
 
 #: ../panels/programmer.py:183
-msgid "Select body from every fixture element selected"
-msgstr ""
+#, fuzzy
+msgid "Select base/body of every selected fixture"
+msgstr "Wählt die Kamera der auswählten Fixture aus"
 
 #: ../panels/programmer.py:205
 msgid "Select Targets"
-msgstr ""
-
-#: ../panels/programmer.py:206
-msgid "dmx.select_targets"
 msgstr ""
 
 #: ../panels/programmer.py:207
@@ -461,9 +642,8 @@ msgid "Gobo"
 msgstr "Gobo"
 
 #: ../panels/programmer.py:314 ../panels/programmer.py:322
-#, fuzzy
-msgid "GoboPos"
-msgstr "Gobo-Position"
+msgid "Gobo Rotation"
+msgstr ""
 
 #: ../panels/programmer.py:316 ../panels/programmer.py:323
 msgid "Strobe"
@@ -775,57 +955,44 @@ msgstr "Name des DMX-Modus"
 msgid "Footprint"
 msgstr "Footprint"
 
-#: ../panels/profiles/ui/operator.py:17
+#: ../panels/profiles/ui/operator.py:18
 msgid "Import from Share"
 msgstr "Aus GDTF-Share importieren"
 
-#: ../panels/profiles/ui/operator.py:18
+#: ../panels/profiles/ui/operator.py:19
 msgid "Import fixture from GDTF Share"
 msgstr "Fixture aus GDTF-Share importieren"
 
-#: ../panels/profiles/ui/operator.py:31
+#: ../panels/profiles/ui/operator.py:32
 msgid "Update GDTF Share index"
 msgstr "GDTF-Share-Index aktualisieren"
 
-#: ../panels/profiles/ui/operator.py:32
+#: ../panels/profiles/ui/operator.py:33
 #, fuzzy
 msgid "Update data index of GDTF Share"
 msgstr "Aktualisiere Daten von GDTF-Share"
 
-#: ../panels/profiles/ui/operator.py:33
-#, fuzzy
-msgid "dmx.import_fixture_update_share"
-msgstr "Fixture von GDTF-Share importieren"
-
-#: ../panels/profiles/ui/operator.py:34
-msgid "UNDO"
-msgstr "Rückgängig"
-
-#: ../panels/profiles/ui/operator.py:38
-msgid "FINISHED"
-msgstr "Fertig"
-
-#: ../panels/profiles/ui/operator.py:42
+#: ../panels/profiles/ui/operator.py:43
 msgid "Import from file"
 msgstr "Aus Datei importieren"
 
-#: ../panels/profiles/ui/operator.py:43
+#: ../panels/profiles/ui/operator.py:44
 msgid "Import fixture from local filesystem"
 msgstr "Fixture aus lokalen Dateien importieren"
 
-#: ../panels/profiles/ui/operator.py:77
+#: ../panels/profiles/ui/operator.py:78
 msgid "Delete fixture"
 msgstr "Fixture löschen"
 
-#: ../panels/profiles/ui/operator.py:78
+#: ../panels/profiles/ui/operator.py:79
 msgid "Delete fixture from local filesystem"
 msgstr "Fixture aus lokalen Dateien löschen"
 
-#: ../panels/profiles/ui/operator.py:92
+#: ../panels/profiles/ui/operator.py:93
 msgid "Refresh files listing"
 msgstr "Dateiliste aktualisieren"
 
-#: ../panels/profiles/ui/operator.py:93
+#: ../panels/profiles/ui/operator.py:94
 msgid "Update list of local files"
 msgstr "Liste der lokalen Dateien aktualisieren"
 
@@ -973,3 +1140,44 @@ msgstr "Profile"
 
 #~ msgid "Private API key for GDTF Share"
 #~ msgstr ""
+
+#~ msgid "Resends Join message"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The Fixture ID is an identifier "
+#~ "for the instance of this fixture "
+#~ "that can be used to activate / "
+#~ "select them for programming."
+#~ msgstr ""
+
+#~ msgid "Deselect every object in the Scene"
+#~ msgstr ""
+
+#~ msgid "Select every object in the Scene which is visible in the fixtures list"
+#~ msgstr ""
+
+#~ msgid "Set Targets' position to 0"
+#~ msgstr ""
+
+#~ msgid "Select Bodies"
+#~ msgstr ""
+
+#~ msgid "Select body from every fixture element selected"
+#~ msgstr ""
+
+#~ msgid "dmx.select_targets"
+#~ msgstr ""
+
+#~ msgid "GoboPos"
+#~ msgstr "Gobo-Position"
+
+#~ msgid "dmx.import_fixture_update_share"
+#~ msgstr "Fixture von GDTF-Share importieren"
+
+#~ msgid "UNDO"
+#~ msgstr "Rückgängig"
+
+#~ msgid "FINISHED"
+#~ msgstr "Fertig"
+
