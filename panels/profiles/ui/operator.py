@@ -6,6 +6,7 @@ from bpy.types import Operator, Menu
 from bpy.props import IntProperty, StringProperty, CollectionProperty
 from dmx.gdtf import *
 import dmx.panels.profiles as Profiles
+from dmx.logging import *
 
 from dmx.i18n import DMX_Lang
 _ = DMX_Lang._
@@ -30,12 +31,12 @@ class DMX_OP_Import_Fixture_From_Share(Operator):
 class DMX_OP_Import_Fixture_Update_Share(Operator):
     bl_label = _("Update GDTF Share index")
     bl_description = _("Update data index of GDTF Share")
-    bl_idname = _("dmx.import_fixture_update_share")
-    bl_options = {_("UNDO")}
+    bl_idname = "dmx.import_fixture_update_share"
+    bl_options = {"UNDO"}
 
     def execute(self, context):
         Profiles.controller.DMX_Fixtures_Manager.update_share_index(self)
-        return {_("FINISHED")}
+        return {"FINISHED"}
 
 
 class DMX_OP_Import_Fixture_From_File(Operator):
@@ -66,7 +67,7 @@ class DMX_OP_Import_Fixture_From_File(Operator):
 
         for file in self.files:
             file_path = os.path.join(self.directory, file.name)
-            print("Importing GDTF Profile: %s" % file_path)
+            DMX_Log.log.info("Importing GDTF Profile: {}".format(file_path))
             shutil.copy(file_path, folder_path)
         DMX_GDTF.getManufacturerList()
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()

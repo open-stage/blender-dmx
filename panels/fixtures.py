@@ -206,7 +206,7 @@ class DMX_Fixture_AddEdit():
         default = True)
 
     re_address_only: BoolProperty(
-        name = "Re-address only",
+        name = _("Re-address only"),
         description="Do not rebuild the model structure",
         default = False)
 
@@ -222,7 +222,7 @@ class DMX_Fixture_AddEdit():
 
     fixture_id: StringProperty(
         name = _("Fixture ID"),
-        description = _("The Fixture ID is an identifier for the instance of this fixture that can be used to activate / select them for programming."),
+        description = _("The Fixture ID is an identifier of this fixture that can be used to activate / select them for programming."),
         default = ""
             )
 
@@ -475,7 +475,7 @@ class DMX_OT_Fixture_Import_GDTF(Operator):
 class DMX_OT_Fixture_Import_MVR(Operator):
     bl_label = _("Import MVR scene")
     bl_idname = "dmx.import_mvr_scene"
-    bl_description = _("Import fixtures from MVR scene file. This may take a long time!")
+    bl_description = _("Import data MVR scene file. This may take a long time!")
     bl_options = {'UNDO'}
 
     filter_glob: StringProperty(default="*.mvr", options={'HIDDEN'})
