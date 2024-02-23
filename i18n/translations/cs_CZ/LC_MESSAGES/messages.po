@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-23 17:34+0100\n"
+"POT-Creation-Date: 2024-02-23 22:03+0100\n"
 "PO-Revision-Date: 2024-02-23 15:29+0000\n"
 "Last-Translator: vanous <petr+weblate@linuks.cz>\n"
 "Language: cs_CZ\n"
@@ -56,6 +56,27 @@ msgstr "DMX Mód"
 msgid "Fixture"
 msgstr "Svítidla"
 
+#: ../__init__.py:748
+msgid "Critical"
+msgstr ""
+
+#: ../__init__.py:749
+msgid "Error"
+msgstr ""
+
+#: ../__init__.py:750
+#, fuzzy
+msgid "Warning"
+msgstr "Hodnocení"
+
+#: ../__init__.py:751
+msgid "Info"
+msgstr ""
+
+#: ../__init__.py:752
+msgid "Debug"
+msgstr ""
+
 #: ../__init__.py:768
 #, fuzzy
 msgid "Simple beam"
@@ -65,6 +86,20 @@ msgstr "Zobrazit kužel paprsku"
 #, fuzzy
 msgid "Display 'fake' beam cone"
 msgstr "Zobrazit kužel paprsku"
+
+#: ../__init__.py:772
+msgid "None"
+msgstr ""
+
+#: ../__init__.py:773
+#, fuzzy
+msgid "Selected fixtures"
+msgstr "Vybrat Svítidlo"
+
+#: ../__init__.py:774
+#, fuzzy
+msgid "All fixtures"
+msgstr "Svítidla"
 
 #: ../__init__.py:791
 msgid "Disable Overlays"
@@ -208,6 +243,24 @@ msgstr ""
 msgid "Fixture sorting order"
 msgstr "GDTF Mód Svítidla"
 
+#: ../__init__.py:1243 ../panels/fixtures.py:165 ../panels/fixtures.py:641
+#: ../panels/groups.py:70 ../panels/profiles/data/local_profile.py:12
+#: ../panels/profiles/data/local_profile.py:21
+msgid "Name"
+msgstr "Název"
+
+#: ../__init__.py:1244 ../panels/fixtures.py:224
+msgid "Fixture ID"
+msgstr "ID Svítidla"
+
+#: ../__init__.py:1245 ../panels/fixtures.py:177
+msgid "DMX Address"
+msgstr "Adresa DMX"
+
+#: ../__init__.py:1246
+msgid "Unit Number"
+msgstr ""
+
 #: ../panels/dmx.py:24
 msgid "Refresh"
 msgstr "Obnovit"
@@ -218,7 +271,8 @@ msgid "Refresh connection"
 msgstr "Obnovit výpis souborů"
 
 #: ../panels/dmx.py:35
-msgid "Request current version"
+#, fuzzy
+msgid "Request latest version"
 msgstr "Vyžádat aktuální verzi"
 
 #: ../panels/dmx.py:36
@@ -249,13 +303,22 @@ msgstr "DMX Univers Menu"
 msgid "OSC"
 msgstr "OSC"
 
-#: ../panels/dmx.py:239
+#: ../panels/dmx.py:239 ../panels/dmx.py:252
 msgid "Universes"
 msgstr "DMX Universe"
 
 #: ../panels/dmx.py:264
 msgid "Art-Net"
 msgstr "Art-Net"
+
+#: ../panels/dmx.py:283
+msgid "IPv4"
+msgstr ""
+
+#: ../panels/dmx.py:290
+#, fuzzy
+msgid "Art-Net set for {} universe(s)"
+msgstr "sACN nastaveno pro {} univers(y)"
 
 #: ../panels/dmx.py:294
 msgid "sACN"
@@ -269,6 +332,10 @@ msgstr "sACN nastaveno pro {} univers(y)"
 msgid "Live DMX"
 msgstr "Aktuální DMX"
 
+#: ../panels/dmx.py:348
+msgid "Source"
+msgstr ""
+
 #: ../panels/dmx.py:362
 msgid "Protocols"
 msgstr "Protokoly"
@@ -276,6 +343,11 @@ msgstr "Protokoly"
 #: ../panels/fixtures.py:39
 msgid "DMX > Fixture Menu"
 msgstr "Menu Svítidel"
+
+#: ../panels/fixtures.py:49
+#, fuzzy
+msgid "Add"
+msgstr "Adresa"
 
 #: ../panels/fixtures.py:61
 msgid "Edit"
@@ -325,12 +397,6 @@ msgstr "Mód"
 msgid "Fixture GDTF Mode"
 msgstr "GDTF Mód Svítidla"
 
-#: ../panels/fixtures.py:165 ../panels/fixtures.py:641 ../panels/groups.py:70
-#: ../panels/profiles/data/local_profile.py:12
-#: ../panels/profiles/data/local_profile.py:21
-msgid "Name"
-msgstr "Název"
-
 #: ../panels/fixtures.py:169
 msgid "Universe"
 msgstr "Univers"
@@ -342,10 +408,6 @@ msgstr "DMX Univers"
 #: ../panels/fixtures.py:176
 msgid "Address"
 msgstr "Adresa"
-
-#: ../panels/fixtures.py:177
-msgid "DMX Address"
-msgstr "Adresa DMX"
 
 #: ../panels/fixtures.py:184 ../panels/fixtures.py:251
 msgid "DMX Mode"
@@ -387,10 +449,6 @@ msgstr "Inkrementovat ID Svítidla"
 #: ../panels/fixtures.py:220
 msgid "Increment Fixture ID if numeric"
 msgstr "Inkrementovat ID Svítidla, je-li ID číslo"
-
-#: ../panels/fixtures.py:224
-msgid "Fixture ID"
-msgstr "ID Svítidla"
 
 #: ../panels/fixtures.py:225
 #, fuzzy
@@ -486,6 +544,37 @@ msgstr "Odebrat svítidlo"
 #: ../panels/fixtures.py:624 ../panels/fixtures.py:686
 msgid "Fixtures"
 msgstr "Svítidla"
+
+#: ../panels/fixtures.py:647
+msgid "F ID"
+msgstr ""
+
+#: ../panels/fixtures.py:653
+#, fuzzy
+msgid "Unit #"
+msgstr "Jednotky"
+
+#: ../panels/fixtures.py:657
+msgid "F ID #"
+msgstr ""
+
+#: ../panels/fixtures.py:662
+msgid "Cst ID"
+msgstr ""
+
+#: ../panels/fixtures.py:669
+#, fuzzy
+msgid "Uni"
+msgstr "Jednotky"
+
+#: ../panels/fixtures.py:672
+#, fuzzy
+msgid "Addr"
+msgstr "Adresa"
+
+#: ../panels/fixtures.py:674
+msgid "Uni.Addr"
+msgstr ""
 
 #: ../panels/groups.py:37
 msgid "DMX > Group Menu"
@@ -624,6 +713,25 @@ msgstr "Není vybráno žádné svítidlo"
 #: ../panels/programmer.py:270
 msgid "{} selected"
 msgstr "{} vybraných"
+
+#: ../panels/programmer.py:292
+#, fuzzy
+msgid "Bodies"
+msgstr "Mód"
+
+#: ../panels/programmer.py:293
+#, fuzzy
+msgid "Targets"
+msgstr "Přidat Cíl"
+
+#: ../panels/programmer.py:297
+#, fuzzy
+msgid "Camera"
+msgstr "Vybrat Kameru"
+
+#: ../panels/programmer.py:303
+msgid "Dimmer"
+msgstr ""
 
 #: ../panels/programmer.py:307 ../panels/programmer.py:318
 msgid "Pan"

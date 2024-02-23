@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-23 17:34+0100\n"
+"POT-Creation-Date: 2024-02-23 22:03+0100\n"
 "PO-Revision-Date: 2023-08-11 16:50+0000\n"
 "Last-Translator: \"YuxiangWang_0525(John Frederick Wang)\" "
 "<1n3-3z0la8jxie@dingtalk.com>\n"
@@ -56,6 +56,27 @@ msgstr "DMX模式"
 msgid "Fixture"
 msgstr "装置"
 
+#: ../__init__.py:748
+msgid "Critical"
+msgstr ""
+
+#: ../__init__.py:749
+msgid "Error"
+msgstr ""
+
+#: ../__init__.py:750
+#, fuzzy
+msgid "Warning"
+msgstr "评分"
+
+#: ../__init__.py:751
+msgid "Info"
+msgstr ""
+
+#: ../__init__.py:752
+msgid "Debug"
+msgstr ""
+
 #: ../__init__.py:768
 msgid "Simple beam"
 msgstr ""
@@ -63,6 +84,20 @@ msgstr ""
 #: ../__init__.py:769
 msgid "Display 'fake' beam cone"
 msgstr ""
+
+#: ../__init__.py:772
+msgid "None"
+msgstr ""
+
+#: ../__init__.py:773
+#, fuzzy
+msgid "Selected fixtures"
+msgstr "删除装置"
+
+#: ../__init__.py:774
+#, fuzzy
+msgid "All fixtures"
+msgstr "装置"
 
 #: ../__init__.py:791
 msgid "Disable Overlays"
@@ -202,6 +237,25 @@ msgstr ""
 msgid "Fixture sorting order"
 msgstr "GDTF模式"
 
+#: ../__init__.py:1243 ../panels/fixtures.py:165 ../panels/fixtures.py:641
+#: ../panels/groups.py:70 ../panels/profiles/data/local_profile.py:12
+#: ../panels/profiles/data/local_profile.py:21
+msgid "Name"
+msgstr "名称"
+
+#: ../__init__.py:1244 ../panels/fixtures.py:224
+#, fuzzy
+msgid "Fixture ID"
+msgstr "装置"
+
+#: ../__init__.py:1245 ../panels/fixtures.py:177
+msgid "DMX Address"
+msgstr "DMX地址"
+
+#: ../__init__.py:1246
+msgid "Unit Number"
+msgstr ""
+
 #: ../panels/dmx.py:24
 msgid "Refresh"
 msgstr ""
@@ -212,7 +266,7 @@ msgid "Refresh connection"
 msgstr "刷新文件列表"
 
 #: ../panels/dmx.py:35
-msgid "Request current version"
+msgid "Request latest version"
 msgstr ""
 
 #: ../panels/dmx.py:36
@@ -245,12 +299,20 @@ msgstr "DMX 范围"
 msgid "OSC"
 msgstr ""
 
-#: ../panels/dmx.py:239
+#: ../panels/dmx.py:239 ../panels/dmx.py:252
 msgid "Universes"
 msgstr "范围"
 
 #: ../panels/dmx.py:264
 msgid "Art-Net"
+msgstr ""
+
+#: ../panels/dmx.py:283
+msgid "IPv4"
+msgstr ""
+
+#: ../panels/dmx.py:290
+msgid "Art-Net set for {} universe(s)"
 msgstr ""
 
 #: ../panels/dmx.py:294
@@ -265,6 +327,10 @@ msgstr ""
 msgid "Live DMX"
 msgstr ""
 
+#: ../panels/dmx.py:348
+msgid "Source"
+msgstr ""
+
 #: ../panels/dmx.py:362
 msgid "Protocols"
 msgstr ""
@@ -273,6 +339,11 @@ msgstr ""
 #, fuzzy
 msgid "DMX > Fixture Menu"
 msgstr "导入DMX装置"
+
+#: ../panels/fixtures.py:49
+#, fuzzy
+msgid "Add"
+msgstr "DMX地址"
 
 #: ../panels/fixtures.py:61
 msgid "Edit"
@@ -330,12 +401,6 @@ msgstr "模式名称"
 msgid "Fixture GDTF Mode"
 msgstr "GDTF模式"
 
-#: ../panels/fixtures.py:165 ../panels/fixtures.py:641 ../panels/groups.py:70
-#: ../panels/profiles/data/local_profile.py:12
-#: ../panels/profiles/data/local_profile.py:21
-msgid "Name"
-msgstr "名称"
-
 #: ../panels/fixtures.py:169
 #, fuzzy
 msgid "Universe"
@@ -348,10 +413,6 @@ msgstr "DMX 范围"
 #: ../panels/fixtures.py:176
 #, fuzzy
 msgid "Address"
-msgstr "DMX地址"
-
-#: ../panels/fixtures.py:177
-msgid "DMX Address"
 msgstr "DMX地址"
 
 #: ../panels/fixtures.py:184 ../panels/fixtures.py:251
@@ -397,11 +458,6 @@ msgstr "移除装置"
 #: ../panels/fixtures.py:220
 msgid "Increment Fixture ID if numeric"
 msgstr ""
-
-#: ../panels/fixtures.py:224
-#, fuzzy
-msgid "Fixture ID"
-msgstr "装置"
 
 #: ../panels/fixtures.py:225
 msgid ""
@@ -507,6 +563,37 @@ msgstr "移除装置"
 #: ../panels/fixtures.py:624 ../panels/fixtures.py:686
 msgid "Fixtures"
 msgstr "装置"
+
+#: ../panels/fixtures.py:647
+msgid "F ID"
+msgstr ""
+
+#: ../panels/fixtures.py:653
+#, fuzzy
+msgid "Unit #"
+msgstr "单位"
+
+#: ../panels/fixtures.py:657
+msgid "F ID #"
+msgstr ""
+
+#: ../panels/fixtures.py:662
+msgid "Cst ID"
+msgstr ""
+
+#: ../panels/fixtures.py:669
+#, fuzzy
+msgid "Uni"
+msgstr "单位"
+
+#: ../panels/fixtures.py:672
+#, fuzzy
+msgid "Addr"
+msgstr "DMX地址"
+
+#: ../panels/fixtures.py:674
+msgid "Uni.Addr"
+msgstr ""
 
 #: ../panels/groups.py:37
 msgid "DMX > Group Menu"
@@ -649,6 +736,24 @@ msgstr "未选择配置文件"
 #, fuzzy
 msgid "{} selected"
 msgstr "未选择配置文件"
+
+#: ../panels/programmer.py:292
+#, fuzzy
+msgid "Bodies"
+msgstr "模式名称"
+
+#: ../panels/programmer.py:293
+msgid "Targets"
+msgstr ""
+
+#: ../panels/programmer.py:297
+#, fuzzy
+msgid "Camera"
+msgstr "名称"
+
+#: ../panels/programmer.py:303
+msgid "Dimmer"
+msgstr ""
 
 #: ../panels/programmer.py:307 ../panels/programmer.py:318
 #, fuzzy
@@ -1197,5 +1302,8 @@ msgstr "文件"
 #~ msgstr ""
 
 #~ msgid "FINISHED"
+#~ msgstr ""
+
+#~ msgid "Request current version"
 #~ msgstr ""
 

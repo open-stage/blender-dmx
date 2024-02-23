@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-23 17:34+0100\n"
+"POT-Creation-Date: 2024-02-23 22:03+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language: sv\n"
@@ -50,12 +50,44 @@ msgstr ""
 msgid "Fixture"
 msgstr ""
 
+#: ../__init__.py:748
+msgid "Critical"
+msgstr ""
+
+#: ../__init__.py:749
+msgid "Error"
+msgstr ""
+
+#: ../__init__.py:750
+msgid "Warning"
+msgstr ""
+
+#: ../__init__.py:751
+msgid "Info"
+msgstr ""
+
+#: ../__init__.py:752
+msgid "Debug"
+msgstr ""
+
 #: ../__init__.py:768
 msgid "Simple beam"
 msgstr ""
 
 #: ../__init__.py:769
 msgid "Display 'fake' beam cone"
+msgstr ""
+
+#: ../__init__.py:772
+msgid "None"
+msgstr ""
+
+#: ../__init__.py:773
+msgid "Selected fixtures"
+msgstr ""
+
+#: ../__init__.py:774
+msgid "All fixtures"
 msgstr ""
 
 #: ../__init__.py:791
@@ -192,6 +224,24 @@ msgstr ""
 msgid "Fixture sorting order"
 msgstr ""
 
+#: ../__init__.py:1243 ../panels/fixtures.py:165 ../panels/fixtures.py:641
+#: ../panels/groups.py:70 ../panels/profiles/data/local_profile.py:12
+#: ../panels/profiles/data/local_profile.py:21
+msgid "Name"
+msgstr ""
+
+#: ../__init__.py:1244 ../panels/fixtures.py:224
+msgid "Fixture ID"
+msgstr ""
+
+#: ../__init__.py:1245 ../panels/fixtures.py:177
+msgid "DMX Address"
+msgstr ""
+
+#: ../__init__.py:1246
+msgid "Unit Number"
+msgstr ""
+
 #: ../panels/dmx.py:24
 msgid "Refresh"
 msgstr ""
@@ -201,7 +251,7 @@ msgid "Refresh connection"
 msgstr ""
 
 #: ../panels/dmx.py:35
-msgid "Request current version"
+msgid "Request latest version"
 msgstr ""
 
 #: ../panels/dmx.py:36
@@ -232,12 +282,20 @@ msgstr ""
 msgid "OSC"
 msgstr ""
 
-#: ../panels/dmx.py:239
+#: ../panels/dmx.py:239 ../panels/dmx.py:252
 msgid "Universes"
 msgstr ""
 
 #: ../panels/dmx.py:264
 msgid "Art-Net"
+msgstr ""
+
+#: ../panels/dmx.py:283
+msgid "IPv4"
+msgstr ""
+
+#: ../panels/dmx.py:290
+msgid "Art-Net set for {} universe(s)"
 msgstr ""
 
 #: ../panels/dmx.py:294
@@ -252,12 +310,20 @@ msgstr ""
 msgid "Live DMX"
 msgstr ""
 
+#: ../panels/dmx.py:348
+msgid "Source"
+msgstr ""
+
 #: ../panels/dmx.py:362
 msgid "Protocols"
 msgstr ""
 
 #: ../panels/fixtures.py:39
 msgid "DMX > Fixture Menu"
+msgstr ""
+
+#: ../panels/fixtures.py:49
+msgid "Add"
 msgstr ""
 
 #: ../panels/fixtures.py:61
@@ -308,12 +374,6 @@ msgstr ""
 msgid "Fixture GDTF Mode"
 msgstr ""
 
-#: ../panels/fixtures.py:165 ../panels/fixtures.py:641 ../panels/groups.py:70
-#: ../panels/profiles/data/local_profile.py:12
-#: ../panels/profiles/data/local_profile.py:21
-msgid "Name"
-msgstr ""
-
 #: ../panels/fixtures.py:169
 msgid "Universe"
 msgstr ""
@@ -324,10 +384,6 @@ msgstr ""
 
 #: ../panels/fixtures.py:176
 msgid "Address"
-msgstr ""
-
-#: ../panels/fixtures.py:177
-msgid "DMX Address"
 msgstr ""
 
 #: ../panels/fixtures.py:184 ../panels/fixtures.py:251
@@ -368,10 +424,6 @@ msgstr ""
 
 #: ../panels/fixtures.py:220
 msgid "Increment Fixture ID if numeric"
-msgstr ""
-
-#: ../panels/fixtures.py:224
-msgid "Fixture ID"
 msgstr ""
 
 #: ../panels/fixtures.py:225
@@ -463,6 +515,34 @@ msgstr ""
 
 #: ../panels/fixtures.py:624 ../panels/fixtures.py:686
 msgid "Fixtures"
+msgstr ""
+
+#: ../panels/fixtures.py:647
+msgid "F ID"
+msgstr ""
+
+#: ../panels/fixtures.py:653
+msgid "Unit #"
+msgstr ""
+
+#: ../panels/fixtures.py:657
+msgid "F ID #"
+msgstr ""
+
+#: ../panels/fixtures.py:662
+msgid "Cst ID"
+msgstr ""
+
+#: ../panels/fixtures.py:669
+msgid "Uni"
+msgstr ""
+
+#: ../panels/fixtures.py:672
+msgid "Addr"
+msgstr ""
+
+#: ../panels/fixtures.py:674
+msgid "Uni.Addr"
 msgstr ""
 
 #: ../panels/groups.py:37
@@ -595,6 +675,22 @@ msgstr ""
 
 #: ../panels/programmer.py:270
 msgid "{} selected"
+msgstr ""
+
+#: ../panels/programmer.py:292
+msgid "Bodies"
+msgstr ""
+
+#: ../panels/programmer.py:293
+msgid "Targets"
+msgstr ""
+
+#: ../panels/programmer.py:297
+msgid "Camera"
+msgstr ""
+
+#: ../panels/programmer.py:303
+msgid "Dimmer"
 msgstr ""
 
 #: ../panels/programmer.py:307 ../panels/programmer.py:318
@@ -1175,5 +1271,8 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid "FINISHED"
+#~ msgstr ""
+
+#~ msgid "Request current version"
 #~ msgstr ""
 
