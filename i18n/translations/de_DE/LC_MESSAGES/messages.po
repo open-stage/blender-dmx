@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-23 17:34+0100\n"
+"POT-Creation-Date: 2024-02-23 22:03+0100\n"
 "PO-Revision-Date: 2024-02-23 15:29+0000\n"
 "Last-Translator: Konrad Dieter Einfach <einfachkonrad@gmail.com>\n"
 "Language: de_DE\n"
@@ -56,6 +56,27 @@ msgstr "DMX-Modus"
 msgid "Fixture"
 msgstr "Fixtures"
 
+#: ../__init__.py:748
+msgid "Critical"
+msgstr ""
+
+#: ../__init__.py:749
+msgid "Error"
+msgstr ""
+
+#: ../__init__.py:750
+#, fuzzy
+msgid "Warning"
+msgstr "Bewertung"
+
+#: ../__init__.py:751
+msgid "Info"
+msgstr ""
+
+#: ../__init__.py:752
+msgid "Debug"
+msgstr ""
+
 #: ../__init__.py:768
 msgid "Simple beam"
 msgstr ""
@@ -63,6 +84,20 @@ msgstr ""
 #: ../__init__.py:769
 msgid "Display 'fake' beam cone"
 msgstr ""
+
+#: ../__init__.py:772
+msgid "None"
+msgstr ""
+
+#: ../__init__.py:773
+#, fuzzy
+msgid "Selected fixtures"
+msgstr "Fixture auswählen"
+
+#: ../__init__.py:774
+#, fuzzy
+msgid "All fixtures"
+msgstr "Fixtures"
 
 #: ../__init__.py:791
 msgid "Disable Overlays"
@@ -204,6 +239,24 @@ msgstr ""
 msgid "Fixture sorting order"
 msgstr "GDTF-Modus"
 
+#: ../__init__.py:1243 ../panels/fixtures.py:165 ../panels/fixtures.py:641
+#: ../panels/groups.py:70 ../panels/profiles/data/local_profile.py:12
+#: ../panels/profiles/data/local_profile.py:21
+msgid "Name"
+msgstr "Name"
+
+#: ../__init__.py:1244 ../panels/fixtures.py:224
+msgid "Fixture ID"
+msgstr "Fixture ID"
+
+#: ../__init__.py:1245 ../panels/fixtures.py:177
+msgid "DMX Address"
+msgstr "DMX-Adresse"
+
+#: ../__init__.py:1246
+msgid "Unit Number"
+msgstr ""
+
 #: ../panels/dmx.py:24
 msgid "Refresh"
 msgstr "Aktualisieren"
@@ -214,7 +267,7 @@ msgid "Refresh connection"
 msgstr "Dateiliste aktualisieren"
 
 #: ../panels/dmx.py:35
-msgid "Request current version"
+msgid "Request latest version"
 msgstr ""
 
 #: ../panels/dmx.py:36
@@ -245,13 +298,21 @@ msgstr "DMX > Universen"
 msgid "OSC"
 msgstr "OSC"
 
-#: ../panels/dmx.py:239
+#: ../panels/dmx.py:239 ../panels/dmx.py:252
 msgid "Universes"
 msgstr "Universen"
 
 #: ../panels/dmx.py:264
 msgid "Art-Net"
 msgstr "Art‐Net"
+
+#: ../panels/dmx.py:283
+msgid "IPv4"
+msgstr ""
+
+#: ../panels/dmx.py:290
+msgid "Art-Net set for {} universe(s)"
+msgstr ""
 
 #: ../panels/dmx.py:294
 msgid "sACN"
@@ -265,6 +326,10 @@ msgstr ""
 msgid "Live DMX"
 msgstr "Live-DMX"
 
+#: ../panels/dmx.py:348
+msgid "Source"
+msgstr ""
+
 #: ../panels/dmx.py:362
 msgid "Protocols"
 msgstr "Protokolle"
@@ -272,6 +337,11 @@ msgstr "Protokolle"
 #: ../panels/fixtures.py:39
 msgid "DMX > Fixture Menu"
 msgstr "DMX > Fixtures"
+
+#: ../panels/fixtures.py:49
+#, fuzzy
+msgid "Add"
+msgstr "Adresse"
 
 #: ../panels/fixtures.py:61
 msgid "Edit"
@@ -322,12 +392,6 @@ msgstr "Modus"
 msgid "Fixture GDTF Mode"
 msgstr "GDTF-Modus"
 
-#: ../panels/fixtures.py:165 ../panels/fixtures.py:641 ../panels/groups.py:70
-#: ../panels/profiles/data/local_profile.py:12
-#: ../panels/profiles/data/local_profile.py:21
-msgid "Name"
-msgstr "Name"
-
 #: ../panels/fixtures.py:169
 msgid "Universe"
 msgstr "Universum"
@@ -339,10 +403,6 @@ msgstr "DMX-Universum"
 #: ../panels/fixtures.py:176
 msgid "Address"
 msgstr "Adresse"
-
-#: ../panels/fixtures.py:177
-msgid "DMX Address"
-msgstr "DMX-Adresse"
 
 #: ../panels/fixtures.py:184 ../panels/fixtures.py:251
 msgid "DMX Mode"
@@ -386,10 +446,6 @@ msgstr "Fixture löschen"
 #: ../panels/fixtures.py:220
 msgid "Increment Fixture ID if numeric"
 msgstr ""
-
-#: ../panels/fixtures.py:224
-msgid "Fixture ID"
-msgstr "Fixture ID"
 
 #: ../panels/fixtures.py:225
 msgid ""
@@ -484,6 +540,37 @@ msgstr "Fixture löschen"
 #: ../panels/fixtures.py:624 ../panels/fixtures.py:686
 msgid "Fixtures"
 msgstr "Fixtures"
+
+#: ../panels/fixtures.py:647
+msgid "F ID"
+msgstr ""
+
+#: ../panels/fixtures.py:653
+#, fuzzy
+msgid "Unit #"
+msgstr "Anzahl"
+
+#: ../panels/fixtures.py:657
+msgid "F ID #"
+msgstr ""
+
+#: ../panels/fixtures.py:662
+msgid "Cst ID"
+msgstr ""
+
+#: ../panels/fixtures.py:669
+#, fuzzy
+msgid "Uni"
+msgstr "Anzahl"
+
+#: ../panels/fixtures.py:672
+#, fuzzy
+msgid "Addr"
+msgstr "Adresse"
+
+#: ../panels/fixtures.py:674
+msgid "Uni.Addr"
+msgstr ""
 
 #: ../panels/groups.py:37
 msgid "DMX > Group Menu"
@@ -624,6 +711,25 @@ msgstr "Nichts ausgewählt"
 #: ../panels/programmer.py:270
 msgid "{} selected"
 msgstr "{} ausgewählt"
+
+#: ../panels/programmer.py:292
+#, fuzzy
+msgid "Bodies"
+msgstr "Modus"
+
+#: ../panels/programmer.py:293
+#, fuzzy
+msgid "Targets"
+msgstr "Status"
+
+#: ../panels/programmer.py:297
+#, fuzzy
+msgid "Camera"
+msgstr "Kamera auswählen"
+
+#: ../panels/programmer.py:303
+msgid "Dimmer"
+msgstr ""
 
 #: ../panels/programmer.py:307 ../panels/programmer.py:318
 msgid "Pan"
@@ -1180,4 +1286,7 @@ msgstr "Profile"
 
 #~ msgid "FINISHED"
 #~ msgstr "Fertig"
+
+#~ msgid "Request current version"
+#~ msgstr ""
 
