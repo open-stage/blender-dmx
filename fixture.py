@@ -488,7 +488,7 @@ class DMX_Fixture(PropertyGroup):
         rgb_mixing_geometries={}
         xyz_moving_geometries={}
         xyz_rotating_geometries={}
-        shutter_dimmer_geometries={}
+        shutter_dimmer_geometries={} # item: shutter, dimmer, unused, dimmer bits
         gobo1 = [None, None] #gobo selection (Gobo1, Gobo2), gobo indexing/rotation (Gobo1Pos, Gobo2Pos)
 
         for attribute in virtual_channels:
@@ -614,6 +614,8 @@ class DMX_Fixture(PropertyGroup):
             if shutter_dimmer[0] is not None or shutter_dimmer[1] is not None:
                 if shutter_dimmer[0] is None:
                     shutter_dimmer[0] = 0 # if device doesn't have shutter, set default value
+                if shutter_dimmer[1] is None:
+                    shutter_dimmer[1] = 100 # if device doesn't have dimmer, set default value
                 self.updateShutterDimmer(shutter_dimmer[0], shutter_dimmer[1], geometry, shutter_dimmer[3], current_frame)
 
     def remove_unset_geometries_from_multigeometry_attributes(self, dictionary):
