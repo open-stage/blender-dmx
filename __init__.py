@@ -266,15 +266,15 @@ class DMX(PropertyGroup):
 
     # fixture listing columns
     column_fixture_id: BoolProperty(
-        name = "Fixture ID",
+        name = _("Fixture ID"),
         default = True)
 
     column_unit_number: BoolProperty(
-        name = "Unit Number",
+        name = _("Unit Number"),
         default = False)
 
     column_custom_id: BoolProperty(
-        name = "Custom ID",
+        name = _("Custom ID"),
         default = False)
 
     column_fixture_id_numeric: BoolProperty(
@@ -282,15 +282,15 @@ class DMX(PropertyGroup):
         default = False)
 
     column_dmx_address: BoolProperty(
-        name = "DMX Address",
+        name = _("DMX Address"),
         default = True)
 
     column_fixture_position: BoolProperty(
-        name = "Position",
+        name = _("Position"),
         default = False)
 
     collection: PointerProperty(
-        name = "DMX Collection",
+        name = _("DMX Collection"),
         type = Collection)
 
     volume: PointerProperty(
@@ -344,7 +344,7 @@ class DMX(PropertyGroup):
         DMX_Data._live_view_data = [0] * 512
 
     selected_live_dmx: EnumProperty(
-        name = "Universe",
+        name = _("Universe"),
         description="",
         update = reset_live_dmx_data,
         items = get_dmx_universes
@@ -386,7 +386,7 @@ class DMX(PropertyGroup):
             ) # Just a fake value, we need as the Fixture list requires it
 
     fixture_properties_editable: BoolProperty(
-        name = "Editable",
+        name = _("Editable"),
         default = False)
 
     # New DMX Scene
@@ -724,12 +724,12 @@ class DMX(PropertyGroup):
         bpy.context.window_manager.dmx.pause_render = self.display_2D # re-enable renderer if in 3D
 
     display_pigtails: BoolProperty(
-        name = "Display Pigtails",
+        name = _("Display Pigtails"),
         default = False,
         update = onDisplayPigtails)
 
     display_2D: BoolProperty(
-        name = "Display 2D View",
+        name = _("Display 2D View"),
         default = False,
         update = onDisplay2D)
 
@@ -745,7 +745,7 @@ class DMX(PropertyGroup):
                 obj.hide_select = not self.select_geometries
 
     select_geometries: BoolProperty(
-        name = "Allow Selecting Geometries",
+        name = _("Allow Selecting Geometries"),
         default = False,
         update = onSelectGeometries)
 
@@ -755,7 +755,7 @@ class DMX(PropertyGroup):
         DMX_Log.set_level(self.logging_level)
 
     logging_level: EnumProperty(
-        name= "Logging Level",
+        name= _("Logging Level"),
         description= "logging level",
         default = "ERROR",
         items= [

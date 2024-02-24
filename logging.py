@@ -42,7 +42,7 @@ class DMX_Log:
 
     @staticmethod
     def set_level(level):
-        DMX_Log.log.critical(f"Update logging level {level}")
+        DMX_Log.log.critical(f"Update logging level to {level}")
         DMX_Log.log.setLevel(level)
 
     @staticmethod
