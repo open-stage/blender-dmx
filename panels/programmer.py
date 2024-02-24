@@ -300,27 +300,27 @@ class DMX_PT_Programmer(Panel):
         box = layout.column().box()
         box.template_color_picker(scene.dmx,"programmer_color", value_slider=True)
         box.prop(scene.dmx, "programmer_color")
-        box.prop(scene.dmx,"programmer_dimmer", text=_("Dimmer"))
+        box.prop(scene.dmx,"programmer_dimmer", text=_("Dimmer"), translate = False)
 
         if len(selected_fixtures) == 1:
             if selected_fixtures[0].has_attribute("Pan"):
-                box.prop(scene.dmx,"programmer_pan", text=_("Pan"))
+                box.prop(scene.dmx,"programmer_pan", text=_("Pan"), translate = False)
             if selected_fixtures[0].has_attribute("Tilt"):
-                box.prop(scene.dmx,"programmer_tilt", text=_("Tilt"))
+                box.prop(scene.dmx,"programmer_tilt", text=_("Tilt"), translate = False)
             if selected_fixtures[0].has_attribute("Zoom"):
-                box.prop(scene.dmx,"programmer_zoom", text=_("Zoom"))
+                box.prop(scene.dmx,"programmer_zoom", text=_("Zoom"), translate = False)
             if selected_fixtures[0].has_attribute("Gobo"):
-                box.prop(scene.dmx,"programmer_gobo", text=_("Gobo"))
-                box.prop(scene.dmx,"programmer_gobo_index", text=_("Gobo Rotation"))
+                box.prop(scene.dmx,"programmer_gobo", text=_("Gobo"), translate = False)
+                box.prop(scene.dmx,"programmer_gobo_index", text=_("Gobo Rotation"), translate = False)
             if selected_fixtures[0].has_attribute("shutter", lower = True):
-                box.prop(scene.dmx,"programmer_shutter", text=_("Strobe"))
+                box.prop(scene.dmx,"programmer_shutter", text=_("Strobe"), translate = False)
         else:
-            box.prop(scene.dmx,"programmer_pan", text=_("Pan"))
-            box.prop(scene.dmx,"programmer_tilt", text=_("Tilt"))
-            box.prop(scene.dmx,"programmer_zoom", text=_("Zoom"))
-            box.prop(scene.dmx,"programmer_gobo", text=_("Gobo"))
-            box.prop(scene.dmx,"programmer_gobo_index", text=_("Gobo Rotation"))
-            box.prop(scene.dmx,"programmer_shutter", text=_("Strobe"))
+            box.prop(scene.dmx,"programmer_pan", text=_("Pan"), translate = False)
+            box.prop(scene.dmx,"programmer_tilt", text=_("Tilt"), translate = False)
+            box.prop(scene.dmx,"programmer_zoom", text=_("Zoom"), translate = False)
+            box.prop(scene.dmx,"programmer_gobo", text=_("Gobo"), translate = False)
+            box.prop(scene.dmx,"programmer_gobo_index", text=_("Gobo Rotation"), translate = False)
+            box.prop(scene.dmx,"programmer_shutter", text=_("Strobe"), translate = False)
 
         box.enabled = selected
 
