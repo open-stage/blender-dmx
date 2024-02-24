@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-23 22:03+0100\n"
+"POT-Creation-Date: 2024-02-24 10:37+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language: tr\n"
@@ -50,196 +50,232 @@ msgstr ""
 msgid "Fixture"
 msgstr ""
 
-#: ../__init__.py:748
+#: ../__init__.py:269 ../__init__.py:1257 ../panels/fixtures.py:224
+msgid "Fixture ID"
+msgstr ""
+
+#: ../__init__.py:273 ../__init__.py:1259
+msgid "Unit Number"
+msgstr ""
+
+#: ../__init__.py:277
+msgid "Custom ID"
+msgstr ""
+
+#: ../__init__.py:285 ../__init__.py:1258 ../panels/fixtures.py:177
+msgid "DMX Address"
+msgstr ""
+
+#: ../__init__.py:289
+msgid "Position"
+msgstr ""
+
+#: ../__init__.py:293
+msgid "DMX Collection"
+msgstr ""
+
+#: ../__init__.py:347 ../panels/fixtures.py:169
+msgid "Universe"
+msgstr ""
+
+#: ../__init__.py:389
+msgid "Editable"
+msgstr ""
+
+#: ../__init__.py:726
+msgid "Display Pigtails"
+msgstr ""
+
+#: ../__init__.py:731
+msgid "Display 2D View"
+msgstr ""
+
+#: ../__init__.py:747
+msgid "Allow Selecting Geometries"
+msgstr ""
+
+#: ../__init__.py:757
+msgid "Logging Level"
+msgstr ""
+
+#: ../__init__.py:761
 msgid "Critical"
 msgstr ""
 
-#: ../__init__.py:749
+#: ../__init__.py:762
 msgid "Error"
 msgstr ""
 
-#: ../__init__.py:750
+#: ../__init__.py:763
 msgid "Warning"
 msgstr ""
 
-#: ../__init__.py:751
+#: ../__init__.py:764
 msgid "Info"
 msgstr ""
 
-#: ../__init__.py:752
+#: ../__init__.py:765
 msgid "Debug"
 msgstr ""
 
-#: ../__init__.py:768
+#: ../__init__.py:781
 msgid "Simple beam"
 msgstr ""
 
-#: ../__init__.py:769
+#: ../__init__.py:782
 msgid "Display 'fake' beam cone"
 msgstr ""
 
-#: ../__init__.py:772
+#: ../__init__.py:785
 msgid "None"
 msgstr ""
 
-#: ../__init__.py:773
+#: ../__init__.py:786
 msgid "Selected fixtures"
 msgstr ""
 
-#: ../__init__.py:774
+#: ../__init__.py:787
 msgid "All fixtures"
 msgstr ""
 
-#: ../__init__.py:791
+#: ../__init__.py:804
 msgid "Disable Overlays"
 msgstr ""
 
-#: ../__init__.py:802
+#: ../__init__.py:815
 msgid "Enable Volume Scatter"
 msgstr ""
 
-#: ../__init__.py:814
+#: ../__init__.py:827
 msgid "Noise Scale"
 msgstr ""
 
-#: ../__init__.py:815
+#: ../__init__.py:828
 msgid "Volume Noise Scale"
 msgstr ""
 
-#: ../__init__.py:827
+#: ../__init__.py:840
 msgid "Density"
 msgstr ""
 
-#: ../__init__.py:828
+#: ../__init__.py:841
 msgid "Volume Scatter Density"
 msgstr ""
 
-#: ../__init__.py:852
+#: ../__init__.py:865
 msgid "Number of universes"
 msgstr ""
 
-#: ../__init__.py:853
+#: ../__init__.py:866
 msgid "The number of universes set on the panel"
 msgstr ""
 
-#: ../__init__.py:863
+#: ../__init__.py:876
 msgid "Universe List Item"
 msgstr ""
 
-#: ../__init__.py:864
+#: ../__init__.py:877
 msgid "The selected element on the universe list"
 msgstr ""
 
-#: ../__init__.py:871
+#: ../__init__.py:884
 msgid "IPv4 Address for ArtNet signal"
 msgstr ""
 
-#: ../__init__.py:872
+#: ../__init__.py:885
 msgid "The network card/interface to listen for ArtNet DMX data"
 msgstr ""
 
-#: ../__init__.py:945
+#: ../__init__.py:958
 msgid "Enable Art-Net Input"
 msgstr ""
 
-#: ../__init__.py:946
+#: ../__init__.py:959
 msgid ""
 "Enables the input of DMX data throught Art-Net on the selected network "
 "interface"
 msgstr ""
 
-#: ../__init__.py:952
+#: ../__init__.py:965
 msgid "Enable sACN Input"
 msgstr ""
 
-#: ../__init__.py:953
+#: ../__init__.py:966
 msgid ""
 "Enables the input of DMX data throught sACN on all detected network "
 "interfaces"
 msgstr ""
 
-#: ../__init__.py:959
+#: ../__init__.py:972
 msgid "Enable OSC Output"
 msgstr ""
 
-#: ../__init__.py:960
+#: ../__init__.py:973
 msgid "Enables Open Sound Control protocol to send fixture selection to a console"
 msgstr ""
 
-#: ../__init__.py:966
+#: ../__init__.py:979
 msgid "OSC Target address"
 msgstr ""
 
-#: ../__init__.py:967
+#: ../__init__.py:980
 msgid ""
 "Address of the host where you want to send the OSC signal. Address ending"
 " on .255 is a broadcast address to all hosts on the network"
 msgstr ""
 
-#: ../__init__.py:972
+#: ../__init__.py:985
 msgid "OSC Target port"
 msgstr ""
 
-#: ../__init__.py:973
+#: ../__init__.py:986
 msgid "Port number of the host where you want to send the OSC signal"
 msgstr ""
 
-#: ../__init__.py:978
+#: ../__init__.py:991
 msgid "Enable MVR-xchange discovery"
 msgstr ""
 
-#: ../__init__.py:979
+#: ../__init__.py:992
 msgid "Enables MVR-xchange discovery"
 msgstr ""
 
-#: ../__init__.py:985
+#: ../__init__.py:998
 msgid "Enable MVR-xchange connection"
 msgstr ""
 
-#: ../__init__.py:986
+#: ../__init__.py:999
 msgid "Connects to MVR-xchange client"
 msgstr ""
 
-#: ../__init__.py:993
+#: ../__init__.py:1006
 msgid "Art-Net Status"
 msgstr ""
 
-#: ../__init__.py:997
+#: ../__init__.py:1010
 msgid "sACN Status"
 msgstr ""
 
-#: ../__init__.py:1007
+#: ../__init__.py:1020
 msgid "Group List i"
 msgstr ""
 
-#: ../__init__.py:1008
+#: ../__init__.py:1021
 msgid "The selected element on the group list"
 msgstr ""
 
-#: ../__init__.py:1239
+#: ../__init__.py:1252
 msgid "Sort by"
 msgstr ""
 
-#: ../__init__.py:1240
+#: ../__init__.py:1253
 msgid "Fixture sorting order"
 msgstr ""
 
-#: ../__init__.py:1243 ../panels/fixtures.py:165 ../panels/fixtures.py:641
+#: ../__init__.py:1256 ../panels/fixtures.py:165 ../panels/fixtures.py:641
 #: ../panels/groups.py:70 ../panels/profiles/data/local_profile.py:12
 #: ../panels/profiles/data/local_profile.py:21
 msgid "Name"
-msgstr ""
-
-#: ../__init__.py:1244 ../panels/fixtures.py:224
-msgid "Fixture ID"
-msgstr ""
-
-#: ../__init__.py:1245 ../panels/fixtures.py:177
-msgid "DMX Address"
-msgstr ""
-
-#: ../__init__.py:1246
-msgid "Unit Number"
 msgstr ""
 
 #: ../panels/dmx.py:24
@@ -372,10 +408,6 @@ msgstr ""
 
 #: ../panels/fixtures.py:140
 msgid "Fixture GDTF Mode"
-msgstr ""
-
-#: ../panels/fixtures.py:169
-msgid "Universe"
 msgstr ""
 
 #: ../panels/fixtures.py:170
@@ -765,95 +797,95 @@ msgstr ""
 msgid "Delete from all fixtures"
 msgstr ""
 
-#: ../panels/setup.py:24
+#: ../panels/setup.py:26
 msgid "DMX > Setup > New Show"
 msgstr ""
 
-#: ../panels/setup.py:25
+#: ../panels/setup.py:27
 msgid "Clear any existing DMX data and create a new show."
 msgstr ""
 
-#: ../panels/setup.py:35
+#: ../panels/setup.py:39
 msgid "DMX > Setup > Create/Update Volume Box"
 msgstr ""
 
-#: ../panels/setup.py:36
+#: ../panels/setup.py:40
 msgid "Create/Update a Box on the scene bounds with a Volume Scatter shader"
 msgstr ""
 
-#: ../panels/setup.py:76
+#: ../panels/setup.py:80
 msgid "Beam Volume"
 msgstr ""
 
-#: ../panels/setup.py:92
+#: ../panels/setup.py:96
 msgid "Update Volume Box"
 msgstr ""
 
-#: ../panels/setup.py:92
+#: ../panels/setup.py:96
 msgid "Create Volume Box"
 msgstr ""
 
-#: ../panels/setup.py:105
+#: ../panels/setup.py:109
 msgid "Viewport"
 msgstr ""
 
-#: ../panels/setup.py:118
+#: ../panels/setup.py:122
 msgid "Background Color"
 msgstr ""
 
-#: ../panels/setup.py:131
+#: ../panels/setup.py:135
 msgid "Extras"
 msgstr ""
 
-#: ../panels/setup.py:143
+#: ../panels/setup.py:147
 msgid "Check for BlenderDMX updates"
 msgstr ""
 
-#: ../panels/setup.py:145
+#: ../panels/setup.py:149
 msgid "Status: {}"
 msgstr ""
 
-#: ../panels/setup.py:148
+#: ../panels/setup.py:152
 msgid "Logging"
 msgstr ""
 
-#: ../panels/setup.py:163
+#: ../panels/setup.py:167
 msgid "Log filter"
 msgstr ""
 
-#: ../panels/setup.py:171
+#: ../panels/setup.py:175
 msgid "Setup"
 msgstr ""
 
-#: ../panels/setup.py:183
+#: ../panels/setup.py:187
 msgid "Create New Show"
 msgstr ""
 
-#: ../panels/setup.py:186
+#: ../panels/setup.py:190
 msgid "Check version"
 msgstr ""
 
-#: ../panels/setup.py:187
+#: ../panels/setup.py:191
 msgid "Check if there is new release of BlenderDMX"
 msgstr ""
 
-#: ../panels/setup.py:193
+#: ../panels/setup.py:197
 msgid "Unknown version error"
 msgstr ""
 
-#: ../panels/setup.py:205
+#: ../panels/setup.py:209
 msgid "New version {} available"
 msgstr ""
 
-#: ../panels/setup.py:207
+#: ../panels/setup.py:211
 msgid "You are using pre-release version"
 msgstr ""
 
-#: ../panels/setup.py:209
+#: ../panels/setup.py:213
 msgid "You are using latest version of BlenderDMX"
 msgstr ""
 
-#: ../panels/setup.py:216
+#: ../panels/setup.py:220
 msgid "Checking..."
 msgstr ""
 
