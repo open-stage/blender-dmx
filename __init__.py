@@ -504,7 +504,9 @@ class DMX(PropertyGroup):
 
         self.migrations()
         self.ensure_application_uuid()
-
+        self.check_python_version()
+        self.check_blender_version()
+        Timer(1, bpy.ops.dmx.check_version, ()).start()
 
     # Unlink Add-on from file
     # This is only called when the DMX collection is externally removed
@@ -526,6 +528,18 @@ class DMX(PropertyGroup):
     # Callback Properties
 
     # # Setup > Background > Color
+
+    def check_python_version(self):
+        if not sys.version_info >= (3, 8):
+            print("INFO",f"Python version of at least 3.8 is needed, you are using {sys.version} ❌")
+            return
+        print("INFO",f"Python version: {sys.version} ✅")
+
+    def check_blender_version(self):
+        if not bpy.app.version >= (3, 4):
+            print("INFO",f"Blender version of at least 3.4 is needed, you are using {bpy.app.version} ❌")
+            return
+        print("INFO",f"Blender version: {bpy.app.version} ✅")
 
     def ensure_application_uuid(self):
         addon_name = pathlib.Path(__file__).parent.parts[-1]

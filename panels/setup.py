@@ -29,6 +29,7 @@ class DMX_OT_Setup_NewShow(Operator):
     def execute(self, context):
         # DMX setup
         context.scene.dmx.new()
+
         return {'FINISHED'}
 
 class DMX_OT_Setup_Volume_Create(Operator):
