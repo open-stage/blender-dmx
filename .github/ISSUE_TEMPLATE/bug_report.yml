@@ -1,0 +1,51 @@
+name: Bug report
+description: Create a report to help us improve.
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to make BlenderDMX better!
+
+        If you just have a question, something seems not working or you have a suggestion, please ask first in the user group on [Discord](https://discord.gg/FQVVyc45T9)
+  - type: checkboxes
+    attributes:
+      label: Please confirm that;
+      options:
+        - label: I have checked the [documentation](https://blenderdmx.eu/docs/faq/), and I didn't find a solution to my problem / an answer to my question.
+          required: true
+        - label: I have searched the [issues](https://github.com/open-stage/blender-dmx/issues), and I didn't find a solution to my problem / an answer to my question.
+          required: true
+        - label: I have asked in the user group on [Discord](https://discord.gg/FQVVyc45T9) for ideas and solutions.
+          required: true
+  - type: input
+    id: version
+    attributes:
+      label: What is your Blender version?
+      description: |
+        This can be found in "Menu > Blender logo > About Blender" in Blender.
+        Do note that Blender 3.4 and higher (4.x is also supported) is required for BlenderDMX.
+      placeholder: e.g. "3.6.7" or "4.0.2"
+    validations:
+      required: true
+  - type: dropdown
+    id: system
+    attributes:
+      label: What operating system are you using Blender on?
+      options:
+        - Windows
+        - Linux
+        - macOS
+    validations:
+      required: true
+  - type: textarea
+    id: content
+    attributes:
+      label: What happened?
+      description: >
+        Please note that new issues about already solved/documented topics
+        **could be closed without further comments.** Same for too generic or incomplete reports.
+        You can also attach log files, just make sure that they don't contain private information.
+      placeholder: |
+        Steps to reproduce the behavior;
+    validations:
+      required: true

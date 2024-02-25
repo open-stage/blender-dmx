@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ask a question
+    url: https://discord.gg/FQVVyc45T9
+    about: If you have a question or something is not working, first ask in the user group on Discord.
+  - name: Website
+    url: https://blenderdmx.eu/docs/faq/
+    about: Visit BlenderDMX website for documentation, FAQ, getting started and common troubleshooting.
