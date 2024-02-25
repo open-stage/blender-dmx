@@ -434,12 +434,16 @@ class DMX_Fixture(PropertyGroup):
         for obj in self.collection.objects:
             if "pigtail" in obj.get("geometry_type", ""):
                 obj.hide_set(not bpy.context.scene.dmx.display_pigtails)
+                obj.hide_viewport = not bpy.context.scene.dmx.display_pigtails
+                obj.hide_render = not bpy.context.scene.dmx.display_pigtails
             if obj.get("geometry_root", False):
                 continue
             if "Target" in obj.name:
                 continue
             if obj.get("2d_symbol", None) == "all":
                 obj.hide_set(not bpy.context.scene.dmx.display_2D)
+                obj.hide_viewport = not bpy.context.scene.dmx.display_2D
+                obj.hide_render = not bpy.context.scene.dmx.display_2D
                 continue
 
             obj.hide_select = not bpy.context.scene.dmx.select_geometries
@@ -985,9 +989,13 @@ class DMX_Fixture(PropertyGroup):
             for obj in self.collection.objects:
                 if "pigtail" in obj.get("geometry_type", ""):
                     obj.hide_set(not bpy.context.scene.dmx.display_pigtails)
+                    obj.hide_viewport = not bpy.context.scene.dmx.display_pigtails
+                    obj.hide_render = not bpy.context.scene.dmx.display_pigtails
                 if obj.get("2d_symbol", None):
                     continue
                 obj.hide_set(False)
+                obj.hide_viewport = False
+                obj.hide_render = False
 
             if "Root" in self.objects:
                 self.objects["Root"].object.select_set(True)
@@ -1023,6 +1031,8 @@ class DMX_Fixture(PropertyGroup):
                 if obj.get("2d_symbol", None):
                     continue
                 obj.hide_set(True)
+                obj.hide_viewport = True
+                obj.hide_render = True
         dmx.updatePreviewVolume()
         self.sync_fixture_selection()
 

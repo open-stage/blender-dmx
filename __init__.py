@@ -697,6 +697,8 @@ class DMX(PropertyGroup):
             for obj in fixture.collection.objects:
                 if "pigtail" in obj.get("geometry_type", ""):
                     obj.hide_set(not self.display_pigtails)
+                    obj.hide_viewport = not self.display_pigtails
+                    obj.hide_render = not self.display_pigtails
 
     def onDisplay2D(self, context):
         bpy.context.window_manager.dmx.pause_render = True # this stops the render loop, to prevent slowness and crashes
@@ -717,10 +719,14 @@ class DMX(PropertyGroup):
             for obj in fixture.collection.objects:
                 if obj.get("2d_symbol", None) == "all":
                     obj.hide_set(not self.display_2D)
+                    obj.hide_viewport = not self.display_2D
+                    obj.hide_render = not self.display_2D
                 else:
                     obj.hide_set(self.display_2D)
                     if "pigtail" in obj.get("geometry_type", ""):
                         obj.hide_set(not self.display_pigtails)
+                        obj.hide_viewport = not self.display_pigtails
+                        obj.hide_render = not self.display_pigtails
         bpy.context.window_manager.dmx.pause_render = self.display_2D # re-enable renderer if in 3D
 
     display_pigtails: BoolProperty(
