@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-02-24 10:37+0100\n"
-"PO-Revision-Date: 2024-02-23 21:23+0000\n"
+"PO-Revision-Date: 2024-02-27 15:02+0000\n"
 "Last-Translator: vanous <petr+weblate@linuks.cz>\n"
+"Language-Team: Czech <https://hosted.weblate.org/projects/blenderdmx/main/cs/"
+">\n"
 "Language: cs_CZ\n"
-"Language-Team: Czech "
-"<https://hosted.weblate.org/projects/blenderdmx/main/cs/>\n"
-"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
+"X-Generator: Weblate 5.5-dev\n"
 "Generated-By: Babel 2.14.0\n"
 
 #: ../__init__.py:82
@@ -60,9 +61,8 @@ msgid "Unit Number"
 msgstr "Číslo jednotky"
 
 #: ../__init__.py:277
-#, fuzzy
 msgid "Custom ID"
-msgstr "Spec ID"
+msgstr "Vlastní ID"
 
 #: ../__init__.py:285 ../__init__.py:1258 ../panels/fixtures.py:177
 msgid "DMX Address"
@@ -70,40 +70,35 @@ msgstr "Adresa DMX"
 
 #: ../__init__.py:289
 msgid "Position"
-msgstr ""
+msgstr "Pozice"
 
 #: ../__init__.py:293
-#, fuzzy
 msgid "DMX Collection"
-msgstr "Přidat k výběru"
+msgstr "DMX Kolekce"
 
 #: ../__init__.py:347 ../panels/fixtures.py:169
 msgid "Universe"
 msgstr "Univers"
 
 #: ../__init__.py:389
-#, fuzzy
 msgid "Editable"
 msgstr "Editovat"
 
 #: ../__init__.py:726
-#, fuzzy
 msgid "Display Pigtails"
-msgstr "Zobrazit kužel paprsku"
+msgstr "Zobrazit panel konektorů"
 
 #: ../__init__.py:731
-#, fuzzy
 msgid "Display 2D View"
-msgstr "Zobrazit kužel paprsku"
+msgstr "Zobrazit 2D pohled"
 
 #: ../__init__.py:747
 msgid "Allow Selecting Geometries"
-msgstr ""
+msgstr "Povolit výběr geometrií"
 
 #: ../__init__.py:757
-#, fuzzy
 msgid "Logging Level"
-msgstr "Záznam logu"
+msgstr "Úroveň logování"
 
 #: ../__init__.py:761
 msgid "Critical"
@@ -439,7 +434,7 @@ msgstr "Barva gelu"
 
 #: ../panels/fixtures.py:197
 msgid "Display beams"
-msgstr "Zobrazit kužel paprsku"
+msgstr "Zobrazit Kužel paprsku"
 
 #: ../panels/fixtures.py:198
 msgid "Display beam projection and cone"
@@ -828,7 +823,7 @@ msgstr "Vytvořit/aktualizovat těleso pro Volume Scatter shader"
 
 #: ../panels/setup.py:80
 msgid "Beam Volume"
-msgstr "Prostorový Kužel Paprsku"
+msgstr "Kužely Paprsku"
 
 #: ../panels/setup.py:96
 msgid "Update Volume Box"
@@ -1282,4 +1277,3 @@ msgstr "Profily"
 
 #~ msgid "FINISHED"
 #~ msgstr ""
-
