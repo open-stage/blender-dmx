@@ -10,8 +10,9 @@ import math
 import mathutils
 import uuid
 import random
+import os
 
-from dmx.material import getEmitterMaterial, get_gobo_material, set_light_nodes
+from dmx.material import getEmitterMaterial, get_gobo_material, set_light_nodes, get_ies_node
 from dmx.model import DMX_Model
 from dmx.logging import DMX_Log
 
@@ -34,7 +35,8 @@ from bpy.types import (PropertyGroup,
                        Collection,
                        Object,
                        Image,
-                       Material)
+                       Material,
+                       Text)
 
 # Shader Nodes default labels
 # Blender API naming convention is inconsistent for internationalization
@@ -74,6 +76,13 @@ class DMX_Emitter_Material(PropertyGroup):
     material: PointerProperty(
         name = "Emitter > Material",
         type = Material)
+
+
+class DMX_IES_Data(PropertyGroup):
+    ies: PointerProperty(
+        name = "Spot > IES",
+        type = Text)
+
 
 class DMX_Fixture_Channel(PropertyGroup):
     id: StringProperty(
@@ -116,6 +125,10 @@ class DMX_Fixture(PropertyGroup):
     gobo_materials: CollectionProperty(
         name = "Fixture > Gobo Materials",
         type = DMX_Emitter_Material)
+
+    ies_data: CollectionProperty(
+        name = "Fixture > IES Files",
+        type = DMX_IES_Data)
 
     # DMX properties
 
@@ -253,6 +266,7 @@ class DMX_Fixture(PropertyGroup):
         self.virtual_channels.clear()
         self.emitter_materials.clear()
         self.gobo_materials.clear()
+        self.ies_data.clear()
 
         # Custom python data storage, outside of bpy.props. So called ID props
         self["dmx_values"] = []
@@ -340,7 +354,7 @@ class DMX_Fixture(PropertyGroup):
                 self.lights[-1].name = light_name
                 self.lights[light_name].object = links[obj.name]
                 if has_gobos:
-                    self.lights[light_name].object.data.shadow_soft_size = 0.001 # larger spot diameter causes gobos to be blurry
+                    self.lights[light_name].object.data.shadow_soft_size = 0.001 # larger spot diameter causes gobos to be blurry in Cycles
                     self.lights[light_name].object.data.shadow_buffer_clip_start = 0.002
             elif 'Target' in obj.name:
                 self.objects.add()
@@ -421,7 +435,6 @@ class DMX_Fixture(PropertyGroup):
                 obj.material_slots[0].link = 'OBJECT' # ensure that each fixture has it's own material
                 obj.material_slots[0].material = gobo_material
                 material.material = gobo_material
-
 
         # setup light for gobo in cycles
         for light in self.lights:
@@ -801,8 +814,10 @@ class DMX_Fixture(PropertyGroup):
 
             for light in self.lights:
                 light.object.data.spot_size=spot_size
+
                 if current_frame:
                     light.object.data.keyframe_insert(data_path='spot_size', frame=current_frame)
+
         except Exception as e:
             DMX_Log.log.error(f"Error updating zoom {e}")
         return zoom
@@ -1115,6 +1130,44 @@ class DMX_Fixture(PropertyGroup):
 
         return (real or virtual)
 
+    def add_ies(self, ies_file_path):
+        if os.path.isfile(ies_file_path):
+            with open(ies_file_path, "r", encoding="cp1252") as f:
+                ies_file = f.read()
+        else:
+            return
+
+        unique_name = f"{self.uuid}-255"
+        if unique_name in bpy.data.texts:
+            bpy.data.texts.remove(bpy.data.texts[unique_name])
+
+        if "255" in self.ies_data:
+            ies_data = self.ies_data["255"]
+        else:
+            ies_data = self.ies_data.add()
+            ies_data.name = "255"
+
+        ies_data.ies = bpy.data.texts.new(unique_name)
+        ies_data.ies.from_string(ies_file)
+        for light in self.lights:
+            light_obj = light.object
+            ies = light_obj.data.node_tree.nodes.get("IES Texture")
+            if ies is None:
+                ies = get_ies_node(light_obj)
+            ies.ies = ies_data.ies
+
+    def remove_ies(self):
+        self.ies_data.clear()
+        zoom_ranges = ["255"]
+        for zoom_range in zoom_ranges:
+            unique_name = f"{self.uuid}-{zoom_range}"
+            if unique_name in bpy.data.texts:
+                bpy.data.texts.remove(bpy.data.texts[unique_name])
+        for light in self.lights:
+            light_obj = light.object
+            ies = light_obj.data.node_tree.nodes.get("IES Texture")
+            if ies is not None:
+                light_obj.data.node_tree.nodes.remove(ies)
 
     def onDepsgraphUpdate(self):
         # Check if any object was deleted

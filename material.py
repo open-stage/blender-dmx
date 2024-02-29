@@ -24,7 +24,7 @@ SHADER_NODE_TEX_IMAGE = bpy.app.translations.pgettext("ShaderNodeTexImage")
 SHADER_NODE_MIX = bpy.app.translations.pgettext("ShaderNodeMix")
 SHADER_NODE_COLOR_RAMP = bpy.app.translations.pgettext("ShaderNodeValToRGB")
 SHADER_NODE_NOISE_TEXTURE = bpy.app.translations.pgettext("ShaderNodeTexNoise")
-
+SHADER_NODE_TEX_IES = bpy.app.translations.pgettext("ShaderNodeTexIES")
 
 
 # <get Emitter Material>
@@ -40,9 +40,9 @@ def getEmitterMaterial(name):
     else:
         DMX_Log.log.error("BSDF material could not be removed when adding new Emitter, this could cause issues. Set Logging level to Info to get more details.")
         if DMX_Log.log.isEnabledFor(logging.INFO):
-            print("Nodes in material tree nodes:")
+            print("INFO", "Nodes in material tree nodes:")
             for node in material.node_tree.nodes:
-                print(node)
+                print("INFO", node)
     material.node_tree.nodes.new(SHADER_NODE_EMISSION)
     material.node_tree.links.new(material.node_tree.nodes[MATERIAL_OUTPUT].inputs[0], material.node_tree.nodes[EMISSION].outputs[0])
     return material
@@ -62,9 +62,9 @@ def getVolumeScatterMaterial():
     else:
         DMX_Log.log.error("BSDF material could not be removed when adding creating Volume, this could cause issues. Set Logging level to Info to get more details")
         if DMX_Log.log.isEnabledFor(logging.INFO):
-            print("Nodes in material tree nodes:")
+            print("INFO", "Nodes in material tree nodes:")
             for node in material.node_tree.nodes:
-                print(node)
+                print("INFO", node)
 
     volume_scatter = material.node_tree.nodes.new(SHADER_NODE_VOLUMESCATTER)
     volume_scatter.name="Volume Scatter"
@@ -119,3 +119,10 @@ def set_light_nodes(light):
     mix.inputs[0].default_value = 1
     light_obj.data.node_tree.links.new(mix.outputs["Result"], emission.inputs[0])
     light_obj.data.node_tree.links.new(image.outputs[0], mix.inputs["A"])
+
+def get_ies_node(light_obj):
+    emission = light_obj.data.node_tree.nodes.get(EMISSION)
+    ies = light_obj.data.node_tree.nodes.new(SHADER_NODE_TEX_IES)
+    ies.name = "IES Texture"
+    light_obj.data.node_tree.links.new(ies.outputs[0], emission.inputs[1])
+    return ies
