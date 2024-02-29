@@ -15,6 +15,7 @@ import re
 from dmx.gdtf import *
 import dmx.panels.profiles as Profiles
 from dmx.util import pad_number
+from bpy_extras.io_utils import ImportHelper
 
 from bpy.props import (IntProperty,
                        BoolProperty,
@@ -258,6 +259,9 @@ class DMX_Fixture_AddEdit():
         col.prop(self, "fixture_id")
         if self.units == 0:                   # Edit fixtures:
             col.prop(self, "re_address_only") #     Be default, only change address, don't rebuild models (slow)
+            if self.re_address_only:
+                col.operator("dmx.import_ies_file")
+                col.operator("dmx.remove_ies_files")
         else:                                 # Adding new fixtures:
             col.prop(self, "units")           #     Allow to define how many
         col.prop(self, "increment_address")
@@ -430,6 +434,36 @@ class DMX_OT_Fixture_Remove(Operator):
             dmx.removeFixture(selected[0])
             # needed since removeFixture alters dmx.fixtures
             selected = dmx.selectedFixtures()
+        return {'FINISHED'}
+
+class DMX_OT_IES_Remove(Operator):
+    """Remove IES"""
+    bl_idname = "dmx.remove_ies_files"
+    bl_label = "Remove IES Files"
+
+    def execute(self, context):
+        selected = context.scene.dmx.selectedFixtures()
+        for fixture in selected:
+            fixture.remove_ies()
+        return {'FINISHED'}
+
+class DMX_OT_IES_Import(Operator, ImportHelper):
+    """Import IES"""
+    bl_idname = "dmx.import_ies_file"
+    bl_label = "Import IES File"
+
+    # ImportHelper mixin class uses this
+    filename_ext = ".ies"
+
+    filter_glob: StringProperty(
+        default="*.ies",
+        options={'HIDDEN'},
+        maxlen=255)
+
+    def execute(self, context):
+        selected = context.scene.dmx.selectedFixtures()
+        for fixture in selected:
+            fixture.add_ies(self.filepath)
         return {'FINISHED'}
 
 class DMX_OT_Fixture_Import_GDTF(Operator):
