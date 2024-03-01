@@ -413,6 +413,9 @@ class DMX_GDTF():
             light_data.spot_blend = calculate_spot_blend(geometry)
             light_data.spot_size = math.radians(geometry.beam_angle)
             light_data.shadow_soft_size = geometry.beam_radius
+            light_data["beam_radius"] = geometry.beam_radius # save original beam size
+            light_data["beam_radius_pin_sized_for_gobos"]  = True
+            # This allows the user to set this if wanted to prevent beam rendering differences
             light_data.shadow_buffer_clip_start=0.0001
             light_object = bpy.data.objects.new(name="Spot", object_data=light_data)
             light_object.location = obj_child.location
