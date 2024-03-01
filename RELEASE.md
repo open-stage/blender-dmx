@@ -3,7 +3,6 @@
 cd i18n/
 pybabel extract -F babel.cfg -o messages.pot ../
 pybabel update -i messages.pot -d translations
-pybabel compile -d translations
 
 * Checkout a new branch `release_v_X.Y.Z`
 * Add changes to CHANGELOG.md
