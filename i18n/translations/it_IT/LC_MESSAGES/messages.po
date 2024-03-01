@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-24 10:37+0100\n"
+"POT-Creation-Date: 2024-03-01 21:00+0100\n"
 "PO-Revision-Date: 2023-11-23 20:04+0000\n"
 "Last-Translator: Fede Pre <fede0379@live.com>\n"
 "Language: it_IT\n"
@@ -55,238 +55,260 @@ msgstr "Modalità DMX"
 msgid "Fixture"
 msgstr "Dispositivi"
 
-#: ../__init__.py:269 ../__init__.py:1257 ../panels/fixtures.py:224
+#: ../__init__.py:272 ../__init__.py:1283 ../panels/fixtures.py:225
 #, fuzzy
 msgid "Fixture ID"
 msgstr "Dispositivi"
 
-#: ../__init__.py:273 ../__init__.py:1259
+#: ../__init__.py:276 ../__init__.py:1285
 msgid "Unit Number"
 msgstr ""
 
-#: ../__init__.py:277
+#: ../__init__.py:280
 msgid "Custom ID"
 msgstr ""
 
-#: ../__init__.py:285 ../__init__.py:1258 ../panels/fixtures.py:177
+#: ../__init__.py:288 ../__init__.py:1284 ../panels/fixtures.py:178
 msgid "DMX Address"
 msgstr "Indirizzo DMX"
 
-#: ../__init__.py:289
+#: ../__init__.py:292
 msgid "Position"
 msgstr ""
 
-#: ../__init__.py:293
+#: ../__init__.py:296
 msgid "DMX Collection"
 msgstr ""
 
-#: ../__init__.py:347 ../panels/fixtures.py:169
+#: ../__init__.py:350 ../panels/fixtures.py:170
 #, fuzzy
 msgid "Universe"
 msgstr "Universi"
 
-#: ../__init__.py:389
+#: ../__init__.py:392
 msgid "Editable"
 msgstr ""
 
-#: ../__init__.py:726
+#: ../__init__.py:736
 msgid "Display Pigtails"
 msgstr ""
 
-#: ../__init__.py:731
+#: ../__init__.py:741
 msgid "Display 2D View"
 msgstr ""
 
-#: ../__init__.py:747
+#: ../__init__.py:757
 msgid "Allow Selecting Geometries"
 msgstr ""
 
-#: ../__init__.py:757
+#: ../__init__.py:767
 msgid "Logging Level"
 msgstr ""
 
-#: ../__init__.py:761
+#: ../__init__.py:771
 msgid "Critical"
 msgstr ""
 
-#: ../__init__.py:762
+#: ../__init__.py:772
 msgid "Error"
 msgstr ""
 
-#: ../__init__.py:763
+#: ../__init__.py:773
 #, fuzzy
 msgid "Warning"
 msgstr "Valutazione"
 
-#: ../__init__.py:764
+#: ../__init__.py:774
 msgid "Info"
 msgstr ""
 
-#: ../__init__.py:765
+#: ../__init__.py:775
 msgid "Debug"
 msgstr ""
 
-#: ../__init__.py:781
+#: ../__init__.py:791
 msgid "Simple beam"
 msgstr ""
 
-#: ../__init__.py:782
+#: ../__init__.py:792
 msgid "Display 'fake' beam cone"
 msgstr ""
 
-#: ../__init__.py:785
+#: ../__init__.py:795
 msgid "None"
 msgstr ""
 
-#: ../__init__.py:786
+#: ../__init__.py:796
 #, fuzzy
 msgid "Selected fixtures"
 msgstr "Elimina dispositivo"
 
-#: ../__init__.py:787
+#: ../__init__.py:797
 #, fuzzy
 msgid "All fixtures"
 msgstr "Dispositivi"
 
-#: ../__init__.py:804
+#: ../__init__.py:807
+msgid "Beam Lens Diameter in Cycles"
+msgstr ""
+
+#: ../__init__.py:808
+msgid ""
+"Beam diameter is reduced to minimum when projecting gobos to prevent blur"
+" on gobo edge"
+msgstr ""
+
+#: ../__init__.py:811
+msgid "Reduced"
+msgstr ""
+
+#: ../__init__.py:812
+msgid "Full width"
+msgstr ""
+
+#: ../__init__.py:813
+msgid "Custom per each beam"
+msgstr ""
+
+#: ../__init__.py:830
 msgid "Disable Overlays"
 msgstr ""
 
-#: ../__init__.py:815
+#: ../__init__.py:841
 msgid "Enable Volume Scatter"
 msgstr ""
 
-#: ../__init__.py:827
+#: ../__init__.py:853
 msgid "Noise Scale"
 msgstr ""
 
-#: ../__init__.py:828
+#: ../__init__.py:854
 msgid "Volume Noise Scale"
 msgstr ""
 
-#: ../__init__.py:840
+#: ../__init__.py:866
 msgid "Density"
 msgstr ""
 
-#: ../__init__.py:841
+#: ../__init__.py:867
 msgid "Volume Scatter Density"
 msgstr ""
 
-#: ../__init__.py:865
+#: ../__init__.py:891
 #, fuzzy
 msgid "Number of universes"
 msgstr "Numero di canali"
 
-#: ../__init__.py:866
+#: ../__init__.py:892
 msgid "The number of universes set on the panel"
 msgstr ""
 
-#: ../__init__.py:876
+#: ../__init__.py:902
 #, fuzzy
 msgid "Universe List Item"
 msgstr "Universi"
 
-#: ../__init__.py:877
+#: ../__init__.py:903
 msgid "The selected element on the universe list"
 msgstr ""
 
-#: ../__init__.py:884
+#: ../__init__.py:910
 msgid "IPv4 Address for ArtNet signal"
 msgstr ""
 
-#: ../__init__.py:885
+#: ../__init__.py:911
 msgid "The network card/interface to listen for ArtNet DMX data"
 msgstr ""
 
-#: ../__init__.py:958
+#: ../__init__.py:984
 msgid "Enable Art-Net Input"
 msgstr ""
 
-#: ../__init__.py:959
+#: ../__init__.py:985
 msgid ""
 "Enables the input of DMX data throught Art-Net on the selected network "
 "interface"
 msgstr ""
 
-#: ../__init__.py:965
+#: ../__init__.py:991
 msgid "Enable sACN Input"
 msgstr ""
 
-#: ../__init__.py:966
+#: ../__init__.py:992
 msgid ""
 "Enables the input of DMX data throught sACN on all detected network "
 "interfaces"
 msgstr ""
 
-#: ../__init__.py:972
+#: ../__init__.py:998
 msgid "Enable OSC Output"
 msgstr ""
 
-#: ../__init__.py:973
+#: ../__init__.py:999
 msgid "Enables Open Sound Control protocol to send fixture selection to a console"
 msgstr ""
 
-#: ../__init__.py:979
+#: ../__init__.py:1005
 #, fuzzy
 msgid "OSC Target address"
 msgstr "Indirizzo DMX"
 
-#: ../__init__.py:980
+#: ../__init__.py:1006
 msgid ""
 "Address of the host where you want to send the OSC signal. Address ending"
 " on .255 is a broadcast address to all hosts on the network"
 msgstr ""
 
-#: ../__init__.py:985
+#: ../__init__.py:1011
 msgid "OSC Target port"
 msgstr ""
 
-#: ../__init__.py:986
+#: ../__init__.py:1012
 msgid "Port number of the host where you want to send the OSC signal"
 msgstr ""
 
-#: ../__init__.py:991
+#: ../__init__.py:1017
 msgid "Enable MVR-xchange discovery"
 msgstr ""
 
-#: ../__init__.py:992
+#: ../__init__.py:1018
 msgid "Enables MVR-xchange discovery"
 msgstr ""
 
-#: ../__init__.py:998
+#: ../__init__.py:1024
 msgid "Enable MVR-xchange connection"
 msgstr ""
 
-#: ../__init__.py:999
+#: ../__init__.py:1025
 msgid "Connects to MVR-xchange client"
 msgstr ""
 
-#: ../__init__.py:1006
+#: ../__init__.py:1032
 msgid "Art-Net Status"
 msgstr ""
 
-#: ../__init__.py:1010
+#: ../__init__.py:1036
 msgid "sACN Status"
 msgstr ""
 
-#: ../__init__.py:1020
+#: ../__init__.py:1046
 msgid "Group List i"
 msgstr ""
 
-#: ../__init__.py:1021
+#: ../__init__.py:1047
 msgid "The selected element on the group list"
 msgstr ""
 
-#: ../__init__.py:1252
+#: ../__init__.py:1278
 msgid "Sort by"
 msgstr ""
 
-#: ../__init__.py:1253
+#: ../__init__.py:1279
 #, fuzzy
 msgid "Fixture sorting order"
 msgstr "Modalità GDTF"
 
-#: ../__init__.py:1256 ../panels/fixtures.py:165 ../panels/fixtures.py:641
+#: ../__init__.py:1282 ../panels/fixtures.py:166 ../panels/fixtures.py:675
 #: ../panels/groups.py:70 ../panels/profiles/data/local_profile.py:12
 #: ../panels/profiles/data/local_profile.py:21
 msgid "Name"
@@ -371,258 +393,258 @@ msgstr ""
 msgid "Protocols"
 msgstr ""
 
-#: ../panels/fixtures.py:39
+#: ../panels/fixtures.py:40
 #, fuzzy
 msgid "DMX > Fixture Menu"
 msgstr "Importa dispositivi DMX"
 
-#: ../panels/fixtures.py:49
+#: ../panels/fixtures.py:50
 #, fuzzy
 msgid "Add"
 msgstr "Indirizzo DMX"
 
-#: ../panels/fixtures.py:61
+#: ../panels/fixtures.py:62
 msgid "Edit"
 msgstr ""
 
-#: ../panels/fixtures.py:66 ../panels/groups.py:58
+#: ../panels/fixtures.py:67 ../panels/groups.py:58
 #, fuzzy
 msgid "Remove"
 msgstr "Rimuovi Dispositivo"
 
-#: ../panels/fixtures.py:71 ../panels/fixtures.py:436
+#: ../panels/fixtures.py:72 ../panels/fixtures.py:470
 #, fuzzy
 msgid "Import GDTF Profile"
 msgstr "Importa da file"
 
-#: ../panels/fixtures.py:75 ../panels/fixtures.py:476
+#: ../panels/fixtures.py:76 ../panels/fixtures.py:510
 #, fuzzy
 msgid "Import MVR scene"
 msgstr "Importa da Share"
 
-#: ../panels/fixtures.py:79
+#: ../panels/fixtures.py:80
 msgid "DMX > Fixture > Add > Manufacturers"
 msgstr ""
 
-#: ../panels/fixtures.py:93
+#: ../panels/fixtures.py:94
 msgid "DMX > Fixture > Add > Profiles"
 msgstr ""
 
-#: ../panels/fixtures.py:106 ../panels/fixtures.py:135
+#: ../panels/fixtures.py:107 ../panels/fixtures.py:136
 #, fuzzy
 msgid "DMX > Fixture > Add > Mode"
 msgstr "Importa dispositivi DMX"
 
-#: ../panels/fixtures.py:121
+#: ../panels/fixtures.py:122
 msgid "DMX > Fixture > Add > Manufacturers > Profiles"
 msgstr ""
 
-#: ../panels/fixtures.py:125 ../panels/fixtures.py:158
+#: ../panels/fixtures.py:126 ../panels/fixtures.py:159
 #, fuzzy
 msgid "Profile"
 msgstr "Profilo GDTF"
 
-#: ../panels/fixtures.py:126 ../panels/fixtures.py:159
+#: ../panels/fixtures.py:127 ../panels/fixtures.py:160
 #, fuzzy
 msgid "Fixture GDTF Profile"
 msgstr "Profilo GDTF"
 
-#: ../panels/fixtures.py:139 ../panels/fixtures.py:183
+#: ../panels/fixtures.py:140 ../panels/fixtures.py:184
 #, fuzzy
 msgid "Mode"
 msgstr "Nome della modalità"
 
-#: ../panels/fixtures.py:140
+#: ../panels/fixtures.py:141
 #, fuzzy
 msgid "Fixture GDTF Mode"
 msgstr "Modalità GDTF"
 
-#: ../panels/fixtures.py:170
+#: ../panels/fixtures.py:171
 msgid "DMX Universe"
 msgstr "Universo DMX"
 
-#: ../panels/fixtures.py:176
+#: ../panels/fixtures.py:177
 #, fuzzy
 msgid "Address"
 msgstr "Indirizzo DMX"
 
-#: ../panels/fixtures.py:184 ../panels/fixtures.py:251
+#: ../panels/fixtures.py:185 ../panels/fixtures.py:252
 #, fuzzy
 msgid "DMX Mode"
 msgstr "Modalità DMX"
 
-#: ../panels/fixtures.py:189
+#: ../panels/fixtures.py:190
 msgid "Gel Color"
 msgstr "Colore Gel"
 
-#: ../panels/fixtures.py:197
+#: ../panels/fixtures.py:198
 msgid "Display beams"
 msgstr ""
 
-#: ../panels/fixtures.py:198
+#: ../panels/fixtures.py:199
 msgid "Display beam projection and cone"
 msgstr ""
 
-#: ../panels/fixtures.py:203
+#: ../panels/fixtures.py:204
 msgid "Add Target"
 msgstr ""
 
-#: ../panels/fixtures.py:204
+#: ../panels/fixtures.py:205
 msgid "Add target for beam to follow"
 msgstr ""
 
-#: ../panels/fixtures.py:209
+#: ../panels/fixtures.py:210
 #, fuzzy
 msgid "Re-address only"
 msgstr "Indirizzo DMX"
 
-#: ../panels/fixtures.py:214 ../panels/fixtures.py:215
+#: ../panels/fixtures.py:215 ../panels/fixtures.py:216
 #, fuzzy
 msgid "Increment DMX address"
 msgstr "Indirizzo DMX"
 
-#: ../panels/fixtures.py:219
+#: ../panels/fixtures.py:220
 #, fuzzy
 msgid "Increment Fixture ID"
 msgstr "Rimuovi Dispositivo"
 
-#: ../panels/fixtures.py:220
+#: ../panels/fixtures.py:221
 msgid "Increment Fixture ID if numeric"
 msgstr ""
 
-#: ../panels/fixtures.py:225
+#: ../panels/fixtures.py:226
 msgid ""
 "The Fixture ID is an identifier of this fixture that can be used to "
 "activate / select them for programming."
 msgstr ""
 
-#: ../panels/fixtures.py:230
+#: ../panels/fixtures.py:231
 msgid "Units"
 msgstr "Unità"
 
-#: ../panels/fixtures.py:231
+#: ../panels/fixtures.py:232
 msgid "How many units of this light to add"
 msgstr ""
 
-#: ../panels/fixtures.py:242
+#: ../panels/fixtures.py:243
 msgid "GDTF Profile"
 msgstr "Profilo GDTF"
 
-#: ../panels/fixtures.py:248
+#: ../panels/fixtures.py:249
 #, fuzzy
 msgid "Unknown manufacturer"
 msgstr "Costruttore"
 
-#: ../panels/fixtures.py:271
+#: ../panels/fixtures.py:275
 #, fuzzy
 msgid "DMX: Add Fixture"
 msgstr "Dispositivi DMX locali"
 
-#: ../panels/fixtures.py:273
+#: ../panels/fixtures.py:277
 #, fuzzy
 msgid "Add fixtures to the show"
 msgstr "Aggiungi Gruppo Dispositivis"
 
-#: ../panels/fixtures.py:280 ../panels/fixtures.py:336
-#: ../panels/fixtures.py:355
+#: ../panels/fixtures.py:284 ../panels/fixtures.py:340
+#: ../panels/fixtures.py:359
 msgid "Fixture named {} already exists"
 msgstr ""
 
-#: ../panels/fixtures.py:283
+#: ../panels/fixtures.py:287
 #, fuzzy
 msgid "No GDTF Profile selected."
 msgstr "Nessun Profilo selezionato"
 
-#: ../panels/fixtures.py:286
+#: ../panels/fixtures.py:290
 #, fuzzy
 msgid "No DMX Mode selected."
 msgstr "Nessun Profilo selezionato"
 
-#: ../panels/fixtures.py:322
+#: ../panels/fixtures.py:326
 #, fuzzy
 msgid "DMX: Edit Fixture"
 msgstr "Elimina dispositivo"
 
-#: ../panels/fixtures.py:324
+#: ../panels/fixtures.py:328
 #, fuzzy
 msgid "Edit selected fixtures"
 msgstr "Elimina dispositivo"
 
-#: ../panels/fixtures.py:420
+#: ../panels/fixtures.py:424
 #, fuzzy
 msgid "DMX > Fixture > Remove"
 msgstr "Importa dispositivi DMX"
 
-#: ../panels/fixtures.py:422
+#: ../panels/fixtures.py:426
 #, fuzzy
 msgid "Remove selected fixtures from Scene"
 msgstr "Rimuovi questo Dispositivo dalla Patch."
 
-#: ../panels/fixtures.py:438
+#: ../panels/fixtures.py:472
 #, fuzzy
 msgid "Import fixture from GDTF Profile"
 msgstr "Importa dispositivo da GDTF Share"
 
-#: ../panels/fixtures.py:444 ../panels/fixtures.py:484
+#: ../panels/fixtures.py:478 ../panels/fixtures.py:518
 msgid "File Path"
 msgstr "Percorso File"
 
-#: ../panels/fixtures.py:449 ../panels/fixtures.py:489
+#: ../panels/fixtures.py:483 ../panels/fixtures.py:523
 msgid "Files"
 msgstr "Files"
 
-#: ../panels/fixtures.py:478
+#: ../panels/fixtures.py:512
 #, fuzzy
 msgid "Import data MVR scene file. This may take a long time!"
 msgstr "Importa dispositivo dal file system locale"
 
-#: ../panels/fixtures.py:578
+#: ../panels/fixtures.py:612
 #, fuzzy
 msgid "DMX > Fixture > Item"
 msgstr "Importa dispositivi DMX"
 
-#: ../panels/fixtures.py:580
+#: ../panels/fixtures.py:614
 #, fuzzy
 msgid "Select Fixture"
 msgstr "Elimina dispositivo"
 
-#: ../panels/fixtures.py:614
+#: ../panels/fixtures.py:648
 #, fuzzy
 msgid "Remove fixture"
 msgstr "Rimuovi Dispositivo"
 
-#: ../panels/fixtures.py:624 ../panels/fixtures.py:686
+#: ../panels/fixtures.py:658 ../panels/fixtures.py:720
 msgid "Fixtures"
 msgstr "Dispositivi"
 
-#: ../panels/fixtures.py:647
+#: ../panels/fixtures.py:681
 msgid "F ID"
 msgstr ""
 
-#: ../panels/fixtures.py:653
+#: ../panels/fixtures.py:687
 #, fuzzy
 msgid "Unit #"
 msgstr "Unità"
 
-#: ../panels/fixtures.py:657
+#: ../panels/fixtures.py:691
 msgid "F ID #"
 msgstr ""
 
-#: ../panels/fixtures.py:662
+#: ../panels/fixtures.py:696
 msgid "Cst ID"
 msgstr ""
 
-#: ../panels/fixtures.py:669
+#: ../panels/fixtures.py:703
 #, fuzzy
 msgid "Uni"
 msgstr "Unità"
 
-#: ../panels/fixtures.py:672
+#: ../panels/fixtures.py:706
 #, fuzzy
 msgid "Addr"
 msgstr "Indirizzo DMX"
 
-#: ../panels/fixtures.py:674
+#: ../panels/fixtures.py:708
 msgid "Uni.Addr"
 msgstr ""
 
@@ -862,95 +884,95 @@ msgstr "Elimina dispositivo"
 msgid "Delete from all fixtures"
 msgstr "Elimina dispositivo"
 
-#: ../panels/setup.py:26
+#: ../panels/setup.py:24
 msgid "DMX > Setup > New Show"
 msgstr ""
 
-#: ../panels/setup.py:27
+#: ../panels/setup.py:25
 msgid "Clear any existing DMX data and create a new show."
 msgstr ""
 
-#: ../panels/setup.py:39
+#: ../panels/setup.py:36
 msgid "DMX > Setup > Create/Update Volume Box"
 msgstr ""
 
-#: ../panels/setup.py:40
+#: ../panels/setup.py:37
 msgid "Create/Update a Box on the scene bounds with a Volume Scatter shader"
 msgstr ""
 
-#: ../panels/setup.py:80
+#: ../panels/setup.py:77
 msgid "Beam Volume"
 msgstr ""
 
-#: ../panels/setup.py:96
+#: ../panels/setup.py:95
 msgid "Update Volume Box"
 msgstr ""
 
-#: ../panels/setup.py:96
+#: ../panels/setup.py:95
 msgid "Create Volume Box"
 msgstr ""
 
-#: ../panels/setup.py:109
+#: ../panels/setup.py:111
 msgid "Viewport"
 msgstr ""
 
-#: ../panels/setup.py:122
+#: ../panels/setup.py:124
 msgid "Background Color"
 msgstr ""
 
-#: ../panels/setup.py:135
+#: ../panels/setup.py:137
 msgid "Extras"
 msgstr ""
 
-#: ../panels/setup.py:147
+#: ../panels/setup.py:149
 msgid "Check for BlenderDMX updates"
 msgstr ""
 
-#: ../panels/setup.py:149
+#: ../panels/setup.py:151
 msgid "Status: {}"
 msgstr ""
 
-#: ../panels/setup.py:152
+#: ../panels/setup.py:154
 msgid "Logging"
 msgstr ""
 
-#: ../panels/setup.py:167
+#: ../panels/setup.py:169
 msgid "Log filter"
 msgstr ""
 
-#: ../panels/setup.py:175
+#: ../panels/setup.py:177
 msgid "Setup"
 msgstr ""
 
-#: ../panels/setup.py:187
+#: ../panels/setup.py:189
 msgid "Create New Show"
 msgstr ""
 
-#: ../panels/setup.py:190
+#: ../panels/setup.py:192
 msgid "Check version"
 msgstr ""
 
-#: ../panels/setup.py:191
+#: ../panels/setup.py:193
 msgid "Check if there is new release of BlenderDMX"
 msgstr ""
 
-#: ../panels/setup.py:197
+#: ../panels/setup.py:199
 msgid "Unknown version error"
 msgstr ""
 
-#: ../panels/setup.py:209
+#: ../panels/setup.py:211
 msgid "New version {} available"
 msgstr ""
 
-#: ../panels/setup.py:211
+#: ../panels/setup.py:213
 msgid "You are using pre-release version"
 msgstr ""
 
-#: ../panels/setup.py:213
+#: ../panels/setup.py:215
 msgid "You are using latest version of BlenderDMX"
 msgstr ""
 
-#: ../panels/setup.py:220
+#: ../panels/setup.py:222
 msgid "Checking..."
 msgstr ""
 
