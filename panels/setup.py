@@ -87,20 +87,25 @@ class DMX_PT_Setup_Volume(Panel):
         layout = self.layout
         dmx = context.scene.dmx
 
-        layout.prop(context.scene.dmx, 'volume_preview')
-        layout.prop(context.scene.dmx, 'disable_overlays')
+        box = layout.column().box()
+        box.prop(context.scene.dmx, 'volume_preview')
+        box.prop(context.scene.dmx, 'disable_overlays')
 
-        layout.operator("dmx.create_volume", text = (_("Update Volume Box") if dmx.volume else _("Create Volume Box")), icon='MESH_CUBE')
+        box = layout.column().box()
+        box.operator("dmx.create_volume", text = (_("Update Volume Box") if dmx.volume else _("Create Volume Box")), icon='MESH_CUBE')
 
-        row = layout.row()
+        row = box.row()
         row.prop(context.scene.dmx, 'volume_enabled')
         row.enabled = (dmx.volume != None)
 
-        row_den = layout.row()
+        row_den = box.row()
         row_den.prop(context.scene.dmx, 'volume_density')
-        row_scale = layout.row()
+        row_scale = box.row()
         row_scale.prop(context.scene.dmx, 'volume_noise_scale')
         row_den.enabled = row_scale.enabled = (dmx.volume != None)
+
+        box = layout.column().box()
+        box.prop(context.scene.dmx, "reduced_beam_diameter_in_cycles")
 
 class DMX_PT_Setup_Viewport(Panel):
     bl_label = _("Viewport")

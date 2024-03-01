@@ -798,6 +798,22 @@ class DMX(PropertyGroup):
         ],
         update = onVolumePreview
         )
+
+    def onReducedBeam(self, context):
+        for fixture in self.fixtures:
+            fixture.render(skip_cache=True)
+
+    reduced_beam_diameter_in_cycles: EnumProperty(
+        name= _("Beam Lens Diameter in Cycles"),
+        description= _("Beam diameter is reduced to minimum when projecting gobos to prevent blur on gobo edge"),
+        default = "REDUCED",
+        items= [
+                ("REDUCED", _("Reduced"), "Reduced beam diameter, sharp gobos"),
+                ("FULL", _("Full width"), "Wide beam diameter, blurry gobos"),
+                ("CUSTOM", _("Custom per each beam"), "Based on `beam_radius_pin_sized_for_gobos` attribute on each spot light object"),
+        ],
+        update = onReducedBeam
+        )
     # # Setup > Volume > Disable Overlays
 
     def onDisableOverlays(self, context):

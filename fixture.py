@@ -498,7 +498,6 @@ class DMX_Fixture(PropertyGroup):
                 DMX_Log.log.debug("caching DMX")
                 return
         self["dmx_values"]  = s_data
-
         panTilt = [None,None, 1, 1] # pan, tilt, 1 = 8bit, 256 = 16bit
         cmy = [None,None,None]
         zoom = None
@@ -1100,8 +1099,25 @@ class DMX_Fixture(PropertyGroup):
                 texture.image_user.frame_duration = 1
                 texture.image_user.use_auto_refresh = True
             texture.image_user.frame_offset = index
+
+            self.set_spot_diameter_to_point(light_obj) # prevent gobo blurriness due to large beam diameter
             if current_frame:
+                light_obj.data.keyframe_insert(data_path="shadow_soft_size", frame=current_frame)
                 texture.image_user.keyframe_insert(data_path="frame_offset", frame=current_frame)
+
+    def set_spot_diameter_to_point(self, light_obj):
+        if bpy.context.scene.dmx.reduced_beam_diameter_in_cycles == "REDUCED":
+            light_obj.data.shadow_soft_size = 0.01
+        elif bpy.context.scene.dmx.reduced_beam_diameter_in_cycles == "CUSTOM":
+            if light_obj.data.get("beam_radius_pin_sized_for_gobos", True):
+                light_obj.data.shadow_soft_size = 0.01
+        elif bpy.context.scene.dmx.reduced_beam_diameter_in_cycles == "FULL":
+            size = light_obj.data.get("beam_radius", 0.01)
+            light_obj.data.shadow_soft_size = size
+
+    def set_spot_diameter_to_normal(self, light_obj):
+        size = light_obj.data.get("beam_radius", 0.01)
+        light_obj.data.shadow_soft_size = size
 
     def hide_gobo(self, hide = True, current_frame = None):
         for obj in self.collection.objects:
@@ -1114,7 +1130,9 @@ class DMX_Fixture(PropertyGroup):
             light_obj = light.object
             mix_factor = light_obj.data.node_tree.nodes.get("Mix").inputs["Factor"]
             mix_factor.default_value = 1 if hide else 0
+            self.set_spot_diameter_to_normal(light_obj) # make the beam large if no gobo is used
             if current_frame:
+                light_obj.data.keyframe_insert(data_path="shadow_soft_size", frame=current_frame)
                 mix_factor.keyframe_insert(data_path="default_value", frame=current_frame)
 
     def has_attribute(self, attribute, lower = False):
