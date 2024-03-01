@@ -7,17 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-02-24 10:37+0100\n"
+"POT-Creation-Date: 2024-03-01 21:00+0100\n"
 "PO-Revision-Date: 2024-02-27 15:02+0000\n"
 "Last-Translator: vanous <petr+weblate@linuks.cz>\n"
-"Language-Team: Czech <https://hosted.weblate.org/projects/blenderdmx/main/cs/"
-">\n"
 "Language: cs_CZ\n"
+"Language-Team: Czech "
+"<https://hosted.weblate.org/projects/blenderdmx/main/cs/>\n"
+"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
-"X-Generator: Weblate 5.5-dev\n"
 "Generated-By: Babel 2.14.0\n"
 
 #: ../__init__.py:82
@@ -52,177 +51,199 @@ msgstr "DMX Data"
 msgid "Fixture"
 msgstr "Svítidlo"
 
-#: ../__init__.py:269 ../__init__.py:1257 ../panels/fixtures.py:224
+#: ../__init__.py:272 ../__init__.py:1283 ../panels/fixtures.py:225
 msgid "Fixture ID"
 msgstr "ID Svítidla"
 
-#: ../__init__.py:273 ../__init__.py:1259
+#: ../__init__.py:276 ../__init__.py:1285
 msgid "Unit Number"
 msgstr "Číslo jednotky"
 
-#: ../__init__.py:277
+#: ../__init__.py:280
 msgid "Custom ID"
 msgstr "Vlastní ID"
 
-#: ../__init__.py:285 ../__init__.py:1258 ../panels/fixtures.py:177
+#: ../__init__.py:288 ../__init__.py:1284 ../panels/fixtures.py:178
 msgid "DMX Address"
 msgstr "Adresa DMX"
 
-#: ../__init__.py:289
+#: ../__init__.py:292
 msgid "Position"
 msgstr "Pozice"
 
-#: ../__init__.py:293
+#: ../__init__.py:296
 msgid "DMX Collection"
 msgstr "DMX Kolekce"
 
-#: ../__init__.py:347 ../panels/fixtures.py:169
+#: ../__init__.py:350 ../panels/fixtures.py:170
 msgid "Universe"
 msgstr "Univers"
 
-#: ../__init__.py:389
+#: ../__init__.py:392
 msgid "Editable"
 msgstr "Editovat"
 
-#: ../__init__.py:726
+#: ../__init__.py:736
 msgid "Display Pigtails"
 msgstr "Zobrazit panel konektorů"
 
-#: ../__init__.py:731
+#: ../__init__.py:741
 msgid "Display 2D View"
 msgstr "Zobrazit 2D pohled"
 
-#: ../__init__.py:747
+#: ../__init__.py:757
 msgid "Allow Selecting Geometries"
 msgstr "Povolit výběr geometrií"
 
-#: ../__init__.py:757
+#: ../__init__.py:767
 msgid "Logging Level"
 msgstr "Úroveň logování"
 
-#: ../__init__.py:761
+#: ../__init__.py:771
 msgid "Critical"
 msgstr "Kritické"
 
-#: ../__init__.py:762
+#: ../__init__.py:772
 msgid "Error"
 msgstr "Chyby"
 
-#: ../__init__.py:763
+#: ../__init__.py:773
 msgid "Warning"
 msgstr "Varování"
 
-#: ../__init__.py:764
+#: ../__init__.py:774
 msgid "Info"
 msgstr "Informace"
 
-#: ../__init__.py:765
+#: ../__init__.py:775
 msgid "Debug"
 msgstr "Ladění"
 
-#: ../__init__.py:781
+#: ../__init__.py:791
 msgid "Simple beam"
 msgstr "Náhledový kužel"
 
-#: ../__init__.py:782
+#: ../__init__.py:792
 msgid "Display 'fake' beam cone"
 msgstr "Zobrazit náhledový kužel paprsku"
 
-#: ../__init__.py:785
+#: ../__init__.py:795
 msgid "None"
 msgstr "Žádná svítidla"
 
-#: ../__init__.py:786
+#: ../__init__.py:796
 msgid "Selected fixtures"
 msgstr "Vybraná svítidla"
 
-#: ../__init__.py:787
+#: ../__init__.py:797
 msgid "All fixtures"
 msgstr "Všechna svítidla"
 
-#: ../__init__.py:804
+#: ../__init__.py:807
+msgid "Beam Lens Diameter in Cycles"
+msgstr ""
+
+#: ../__init__.py:808
+msgid ""
+"Beam diameter is reduced to minimum when projecting gobos to prevent blur"
+" on gobo edge"
+msgstr ""
+
+#: ../__init__.py:811
+msgid "Reduced"
+msgstr ""
+
+#: ../__init__.py:812
+msgid "Full width"
+msgstr ""
+
+#: ../__init__.py:813
+msgid "Custom per each beam"
+msgstr ""
+
+#: ../__init__.py:830
 msgid "Disable Overlays"
 msgstr "Skrýt čáry kužele paprsku"
 
-#: ../__init__.py:815
+#: ../__init__.py:841
 msgid "Enable Volume Scatter"
 msgstr "Povolit Prostorový Kužel Paprsku"
 
-#: ../__init__.py:827
+#: ../__init__.py:853
 msgid "Noise Scale"
 msgstr "Náhodnost"
 
-#: ../__init__.py:828
+#: ../__init__.py:854
 msgid "Volume Noise Scale"
 msgstr "Měřítko náhodnosti prostorového kužele paprsku"
 
-#: ../__init__.py:840
+#: ../__init__.py:866
 msgid "Density"
 msgstr "Hustota"
 
-#: ../__init__.py:841
+#: ../__init__.py:867
 msgid "Volume Scatter Density"
 msgstr "Hustota mlhy"
 
-#: ../__init__.py:865
+#: ../__init__.py:891
 msgid "Number of universes"
 msgstr "Počet universů"
 
-#: ../__init__.py:866
+#: ../__init__.py:892
 msgid "The number of universes set on the panel"
 msgstr "Počet universů na panelu"
 
-#: ../__init__.py:876
+#: ../__init__.py:902
 msgid "Universe List Item"
 msgstr "Vybraný universe"
 
-#: ../__init__.py:877
+#: ../__init__.py:903
 msgid "The selected element on the universe list"
 msgstr "Vybraný univers v seznamu universů"
 
-#: ../__init__.py:884
+#: ../__init__.py:910
 msgid "IPv4 Address for ArtNet signal"
 msgstr "IPv4 Adresa pro ArtNet signál"
 
-#: ../__init__.py:885
+#: ../__init__.py:911
 msgid "The network card/interface to listen for ArtNet DMX data"
 msgstr "Síťová karta/rozhraní pro příjem DMX dat po ArtNetu"
 
-#: ../__init__.py:958
+#: ../__init__.py:984
 msgid "Enable Art-Net Input"
 msgstr "Povolit Art-Net Vstup"
 
-#: ../__init__.py:959
+#: ../__init__.py:985
 msgid ""
 "Enables the input of DMX data throught Art-Net on the selected network "
 "interface"
 msgstr "Povolí vstup DMX dat z ArtNetu na zvoleném síťovém rozhraní"
 
-#: ../__init__.py:965
+#: ../__init__.py:991
 msgid "Enable sACN Input"
 msgstr "Povolit sACN Vstup"
 
-#: ../__init__.py:966
+#: ../__init__.py:992
 msgid ""
 "Enables the input of DMX data throught sACN on all detected network "
 "interfaces"
 msgstr "Příjem DMX data ze sACN"
 
-#: ../__init__.py:972
+#: ../__init__.py:998
 msgid "Enable OSC Output"
 msgstr "Povolit OSC Vstup"
 
-#: ../__init__.py:973
+#: ../__init__.py:999
 msgid "Enables Open Sound Control protocol to send fixture selection to a console"
 msgstr ""
 "Příjem OpenSoundControl protokolu pro odeslání výběru svítidel do DMX "
 "konzole"
 
-#: ../__init__.py:979
+#: ../__init__.py:1005
 msgid "OSC Target address"
 msgstr "Adresa cílového OSC zařízení"
 
-#: ../__init__.py:980
+#: ../__init__.py:1006
 msgid ""
 "Address of the host where you want to send the OSC signal. Address ending"
 " on .255 is a broadcast address to all hosts on the network"
@@ -230,55 +251,55 @@ msgstr ""
 "Adresa zařízení, kam chcete poslat OSC signál. Adresa končící na .255 je "
 "všesměrová adresa pro všechna zařízení na síti"
 
-#: ../__init__.py:985
+#: ../__init__.py:1011
 msgid "OSC Target port"
 msgstr "Port cílového OSC zařízení"
 
-#: ../__init__.py:986
+#: ../__init__.py:1012
 msgid "Port number of the host where you want to send the OSC signal"
 msgstr "Číslo portu zařízení kam chcete posílat OSC signál"
 
-#: ../__init__.py:991
+#: ../__init__.py:1017
 msgid "Enable MVR-xchange discovery"
 msgstr "Povolit vyhledávání MVR-xchange"
 
-#: ../__init__.py:992
+#: ../__init__.py:1018
 msgid "Enables MVR-xchange discovery"
 msgstr "Povolí vyhledání MVR-xchange"
 
-#: ../__init__.py:998
+#: ../__init__.py:1024
 msgid "Enable MVR-xchange connection"
 msgstr "Povolit MVR-xchange spojení"
 
-#: ../__init__.py:999
+#: ../__init__.py:1025
 msgid "Connects to MVR-xchange client"
 msgstr "Připojí se k MVR-xchange klientu"
 
-#: ../__init__.py:1006
+#: ../__init__.py:1032
 msgid "Art-Net Status"
 msgstr "Stav Art-Netu"
 
-#: ../__init__.py:1010
+#: ../__init__.py:1036
 msgid "sACN Status"
 msgstr "Stav sACN"
 
-#: ../__init__.py:1020
+#: ../__init__.py:1046
 msgid "Group List i"
 msgstr "Seznam skupiny"
 
-#: ../__init__.py:1021
+#: ../__init__.py:1047
 msgid "The selected element on the group list"
 msgstr "Zvolená skupina v seznamu"
 
-#: ../__init__.py:1252
+#: ../__init__.py:1278
 msgid "Sort by"
 msgstr "Seřadit podle"
 
-#: ../__init__.py:1253
+#: ../__init__.py:1279
 msgid "Fixture sorting order"
 msgstr "Řazení svítidel"
 
-#: ../__init__.py:1256 ../panels/fixtures.py:165 ../panels/fixtures.py:641
+#: ../__init__.py:1282 ../panels/fixtures.py:166 ../panels/fixtures.py:675
 #: ../panels/groups.py:70 ../panels/profiles/data/local_profile.py:12
 #: ../panels/profiles/data/local_profile.py:21
 msgid "Name"
@@ -360,111 +381,111 @@ msgstr "Zdroj"
 msgid "Protocols"
 msgstr "Protokoly"
 
-#: ../panels/fixtures.py:39
+#: ../panels/fixtures.py:40
 msgid "DMX > Fixture Menu"
 msgstr "Menu Svítidel"
 
-#: ../panels/fixtures.py:49
+#: ../panels/fixtures.py:50
 msgid "Add"
 msgstr "Přidat"
 
-#: ../panels/fixtures.py:61
+#: ../panels/fixtures.py:62
 msgid "Edit"
 msgstr "Editovat"
 
-#: ../panels/fixtures.py:66 ../panels/groups.py:58
+#: ../panels/fixtures.py:67 ../panels/groups.py:58
 msgid "Remove"
 msgstr "Odebrat"
 
-#: ../panels/fixtures.py:71 ../panels/fixtures.py:436
+#: ../panels/fixtures.py:72 ../panels/fixtures.py:470
 msgid "Import GDTF Profile"
 msgstr "Importovat GDTF soubor"
 
-#: ../panels/fixtures.py:75 ../panels/fixtures.py:476
+#: ../panels/fixtures.py:76 ../panels/fixtures.py:510
 msgid "Import MVR scene"
 msgstr "Importovat MVR scénu"
 
-#: ../panels/fixtures.py:79
+#: ../panels/fixtures.py:80
 msgid "DMX > Fixture > Add > Manufacturers"
 msgstr "Menu Výrobce"
 
-#: ../panels/fixtures.py:93
+#: ../panels/fixtures.py:94
 msgid "DMX > Fixture > Add > Profiles"
 msgstr "Menu profily"
 
-#: ../panels/fixtures.py:106 ../panels/fixtures.py:135
+#: ../panels/fixtures.py:107 ../panels/fixtures.py:136
 msgid "DMX > Fixture > Add > Mode"
 msgstr "Menu Mód"
 
-#: ../panels/fixtures.py:121
+#: ../panels/fixtures.py:122
 msgid "DMX > Fixture > Add > Manufacturers > Profiles"
 msgstr "Menu Profily"
 
-#: ../panels/fixtures.py:125 ../panels/fixtures.py:158
+#: ../panels/fixtures.py:126 ../panels/fixtures.py:159
 msgid "Profile"
 msgstr "Profil"
 
-#: ../panels/fixtures.py:126 ../panels/fixtures.py:159
+#: ../panels/fixtures.py:127 ../panels/fixtures.py:160
 msgid "Fixture GDTF Profile"
 msgstr "GDTF Profil Svítidla"
 
-#: ../panels/fixtures.py:139 ../panels/fixtures.py:183
+#: ../panels/fixtures.py:140 ../panels/fixtures.py:184
 msgid "Mode"
 msgstr "Mód"
 
-#: ../panels/fixtures.py:140
+#: ../panels/fixtures.py:141
 msgid "Fixture GDTF Mode"
 msgstr "GDTF Mód Svítidla"
 
-#: ../panels/fixtures.py:170
+#: ../panels/fixtures.py:171
 msgid "DMX Universe"
 msgstr "DMX Univers"
 
-#: ../panels/fixtures.py:176
+#: ../panels/fixtures.py:177
 msgid "Address"
 msgstr "Adresa"
 
-#: ../panels/fixtures.py:184 ../panels/fixtures.py:251
+#: ../panels/fixtures.py:185 ../panels/fixtures.py:252
 msgid "DMX Mode"
 msgstr "DMX Mód"
 
-#: ../panels/fixtures.py:189
+#: ../panels/fixtures.py:190
 msgid "Gel Color"
 msgstr "Barva gelu"
 
-#: ../panels/fixtures.py:197
+#: ../panels/fixtures.py:198
 msgid "Display beams"
 msgstr "Zobrazit Kužel paprsku"
 
-#: ../panels/fixtures.py:198
+#: ../panels/fixtures.py:199
 msgid "Display beam projection and cone"
 msgstr "Zobrazit projekci paprsku a kužele"
 
-#: ../panels/fixtures.py:203
+#: ../panels/fixtures.py:204
 msgid "Add Target"
 msgstr "Přidat Cíl"
 
-#: ../panels/fixtures.py:204
+#: ../panels/fixtures.py:205
 msgid "Add target for beam to follow"
 msgstr "Přidat cíl pro navádění kužele paprsku"
 
-#: ../panels/fixtures.py:209
+#: ../panels/fixtures.py:210
 msgid "Re-address only"
 msgstr "Pouze pře-adresovat"
 
-#: ../panels/fixtures.py:214 ../panels/fixtures.py:215
+#: ../panels/fixtures.py:215 ../panels/fixtures.py:216
 msgid "Increment DMX address"
 msgstr "Inkrementovat DMX adresu"
 
-#: ../panels/fixtures.py:219
+#: ../panels/fixtures.py:220
 msgid "Increment Fixture ID"
 msgstr "Inkrementovat ID Svítidla"
 
-#: ../panels/fixtures.py:220
+#: ../panels/fixtures.py:221
 msgid "Increment Fixture ID if numeric"
 msgstr "Inkrementovat ID Svítidla, je-li ID číslo"
 
-#: ../panels/fixtures.py:225
+#: ../panels/fixtures.py:226
 msgid ""
 "The Fixture ID is an identifier of this fixture that can be used to "
 "activate / select them for programming."
@@ -472,116 +493,116 @@ msgstr ""
 "ID Svítidla je identifikátor zařízení použitý k aktivaci / selekci při "
 "programování."
 
-#: ../panels/fixtures.py:230
+#: ../panels/fixtures.py:231
 msgid "Units"
 msgstr "Jednotky"
 
-#: ../panels/fixtures.py:231
+#: ../panels/fixtures.py:232
 msgid "How many units of this light to add"
 msgstr "Kolik kusů tohoto svítidla přidat"
 
-#: ../panels/fixtures.py:242
+#: ../panels/fixtures.py:243
 msgid "GDTF Profile"
 msgstr "GDTF Profil"
 
-#: ../panels/fixtures.py:248
+#: ../panels/fixtures.py:249
 msgid "Unknown manufacturer"
 msgstr "Neznámý výrobce"
 
-#: ../panels/fixtures.py:271
+#: ../panels/fixtures.py:275
 msgid "DMX: Add Fixture"
 msgstr "Menu Přidat Svítidlo"
 
-#: ../panels/fixtures.py:273
+#: ../panels/fixtures.py:277
 msgid "Add fixtures to the show"
 msgstr "Přidat svítidlo do show"
 
-#: ../panels/fixtures.py:280 ../panels/fixtures.py:336
-#: ../panels/fixtures.py:355
+#: ../panels/fixtures.py:284 ../panels/fixtures.py:340
+#: ../panels/fixtures.py:359
 msgid "Fixture named {} already exists"
 msgstr "Svítidlo s názvem {} již existuje"
 
-#: ../panels/fixtures.py:283
+#: ../panels/fixtures.py:287
 msgid "No GDTF Profile selected."
 msgstr "Není vybrán žádný GDTF profil."
 
-#: ../panels/fixtures.py:286
+#: ../panels/fixtures.py:290
 msgid "No DMX Mode selected."
 msgstr "Není vybrán žádný DMX Mód."
 
-#: ../panels/fixtures.py:322
+#: ../panels/fixtures.py:326
 msgid "DMX: Edit Fixture"
 msgstr "Menu Editovat Svítidlo"
 
-#: ../panels/fixtures.py:324
+#: ../panels/fixtures.py:328
 msgid "Edit selected fixtures"
 msgstr "Editovat vybraná svítidla"
 
-#: ../panels/fixtures.py:420
+#: ../panels/fixtures.py:424
 msgid "DMX > Fixture > Remove"
 msgstr "Menu Odebrat svítidlo"
 
-#: ../panels/fixtures.py:422
+#: ../panels/fixtures.py:426
 msgid "Remove selected fixtures from Scene"
 msgstr "Odebrat vybraná svítidla ze scény"
 
-#: ../panels/fixtures.py:438
+#: ../panels/fixtures.py:472
 msgid "Import fixture from GDTF Profile"
 msgstr "Importovat svítidlo z GDTF Share"
 
-#: ../panels/fixtures.py:444 ../panels/fixtures.py:484
+#: ../panels/fixtures.py:478 ../panels/fixtures.py:518
 msgid "File Path"
 msgstr "Cesta k souboru"
 
-#: ../panels/fixtures.py:449 ../panels/fixtures.py:489
+#: ../panels/fixtures.py:483 ../panels/fixtures.py:523
 msgid "Files"
 msgstr "Soubory"
 
-#: ../panels/fixtures.py:478
+#: ../panels/fixtures.py:512
 msgid "Import data MVR scene file. This may take a long time!"
 msgstr "Importovat data z MVR souboru. To může trvat dlouho!"
 
-#: ../panels/fixtures.py:578
+#: ../panels/fixtures.py:612
 msgid "DMX > Fixture > Item"
 msgstr "Menu Svítidlo"
 
-#: ../panels/fixtures.py:580
+#: ../panels/fixtures.py:614
 msgid "Select Fixture"
 msgstr "Vybrat Svítidlo"
 
-#: ../panels/fixtures.py:614
+#: ../panels/fixtures.py:648
 msgid "Remove fixture"
 msgstr "Odebrat svítidlo"
 
-#: ../panels/fixtures.py:624 ../panels/fixtures.py:686
+#: ../panels/fixtures.py:658 ../panels/fixtures.py:720
 msgid "Fixtures"
 msgstr "Svítidla"
 
-#: ../panels/fixtures.py:647
+#: ../panels/fixtures.py:681
 msgid "F ID"
 msgstr "ID sv."
 
-#: ../panels/fixtures.py:653
+#: ../panels/fixtures.py:687
 msgid "Unit #"
 msgstr "Číslo Jednotky"
 
-#: ../panels/fixtures.py:657
+#: ../panels/fixtures.py:691
 msgid "F ID #"
 msgstr "ID sv #"
 
-#: ../panels/fixtures.py:662
+#: ../panels/fixtures.py:696
 msgid "Cst ID"
 msgstr "Spec ID"
 
-#: ../panels/fixtures.py:669
+#: ../panels/fixtures.py:703
 msgid "Uni"
 msgstr "Jdn."
 
-#: ../panels/fixtures.py:672
+#: ../panels/fixtures.py:706
 msgid "Addr"
 msgstr "Adr"
 
-#: ../panels/fixtures.py:674
+#: ../panels/fixtures.py:708
 msgid "Uni.Addr"
 msgstr "Uni.Adr"
 
@@ -805,95 +826,95 @@ msgstr "Odstranit z vybraných svítidel"
 msgid "Delete from all fixtures"
 msgstr "Odstraní ze všech svítidel"
 
-#: ../panels/setup.py:26
+#: ../panels/setup.py:24
 msgid "DMX > Setup > New Show"
 msgstr "Menu Nová show"
 
-#: ../panels/setup.py:27
+#: ../panels/setup.py:25
 msgid "Clear any existing DMX data and create a new show."
 msgstr "Vyčistí existující DMX data a vytvoří novou show."
 
-#: ../panels/setup.py:39
+#: ../panels/setup.py:36
 msgid "DMX > Setup > Create/Update Volume Box"
 msgstr "Menu Vytvořit/aktualizovat těleso pro zobrazení kužele paprsku"
 
-#: ../panels/setup.py:40
+#: ../panels/setup.py:37
 msgid "Create/Update a Box on the scene bounds with a Volume Scatter shader"
 msgstr "Vytvořit/aktualizovat těleso pro Volume Scatter shader"
 
-#: ../panels/setup.py:80
+#: ../panels/setup.py:77
 msgid "Beam Volume"
 msgstr "Kužely Paprsku"
 
-#: ../panels/setup.py:96
+#: ../panels/setup.py:95
 msgid "Update Volume Box"
 msgstr "Aktualizovat Těleso Prostorového Paprsku"
 
-#: ../panels/setup.py:96
+#: ../panels/setup.py:95
 msgid "Create Volume Box"
 msgstr "Vytvořit Těleso Prostorového Paprsku"
 
-#: ../panels/setup.py:109
+#: ../panels/setup.py:111
 msgid "Viewport"
 msgstr "Pohled"
 
-#: ../panels/setup.py:122
+#: ../panels/setup.py:124
 msgid "Background Color"
 msgstr "Barva Pozadí"
 
-#: ../panels/setup.py:135
+#: ../panels/setup.py:137
 msgid "Extras"
 msgstr "Doplňky"
 
-#: ../panels/setup.py:147
+#: ../panels/setup.py:149
 msgid "Check for BlenderDMX updates"
 msgstr "Kontrola aktualizace BlenderDMX"
 
-#: ../panels/setup.py:149
+#: ../panels/setup.py:151
 msgid "Status: {}"
 msgstr "Stav: {}"
 
-#: ../panels/setup.py:152
+#: ../panels/setup.py:154
 msgid "Logging"
 msgstr "Záznam logu"
 
-#: ../panels/setup.py:167
+#: ../panels/setup.py:169
 msgid "Log filter"
 msgstr "Filtr logu"
 
-#: ../panels/setup.py:175
+#: ../panels/setup.py:177
 msgid "Setup"
 msgstr "Nastavení"
 
-#: ../panels/setup.py:187
+#: ../panels/setup.py:189
 msgid "Create New Show"
 msgstr "Vytvořit Novou Show"
 
-#: ../panels/setup.py:190
+#: ../panels/setup.py:192
 msgid "Check version"
 msgstr "Kontrola verze"
 
-#: ../panels/setup.py:191
+#: ../panels/setup.py:193
 msgid "Check if there is new release of BlenderDMX"
 msgstr "Zkontrolujte, zda je nová verze BlenderDMX"
 
-#: ../panels/setup.py:197
+#: ../panels/setup.py:199
 msgid "Unknown version error"
 msgstr "Neznámá chyba verze"
 
-#: ../panels/setup.py:209
+#: ../panels/setup.py:211
 msgid "New version {} available"
 msgstr "Nová verze {} k dispozici"
 
-#: ../panels/setup.py:211
+#: ../panels/setup.py:213
 msgid "You are using pre-release version"
 msgstr "Používáte pre-release verzi"
 
-#: ../panels/setup.py:213
+#: ../panels/setup.py:215
 msgid "You are using latest version of BlenderDMX"
 msgstr "Používáte nejnovější verzi BlenderDMX"
 
-#: ../panels/setup.py:220
+#: ../panels/setup.py:222
 msgid "Checking..."
 msgstr "Kontrola..."
 
@@ -1277,3 +1298,4 @@ msgstr "Profily"
 
 #~ msgid "FINISHED"
 #~ msgstr ""
+
