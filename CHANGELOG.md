@@ -1,5 +1,13 @@
 ### Changelog
 
+### 1.3.1
+
+    * Add support to import IES photometrics and apply them to beams in Cycles
+    * Allow changing beam lens diameter for Cycles, based on global or per fixture settings
+    * Set hidden objects as hidden also for renderer
+    * Make more items translatable, disable automatic translation for Fixture controls
+    * Add version checks on start for Python, Blender, and for the BlenderDMX addon
+
 ### 1.3.0
 
     * Add support for gobos in Cycles
