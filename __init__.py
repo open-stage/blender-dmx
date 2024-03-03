@@ -221,7 +221,9 @@ class DMX(PropertyGroup):
                 DMX_PT_Recorder,
                 DMX_PT_DMX_Recorder_Delete,
                 DMX_OT_Recorder_Delete_Keyframes_Selected,
-                DMX_OT_Recorder_Delete_Keyframes_All)
+                DMX_OT_Recorder_Delete_Keyframes_All,
+                DMX_OT_Fixture_Set_Cycles_Beams_Size_Small,
+                DMX_OT_Fixture_Set_Cycles_Beams_Size_Normal)
 
     linkedToFile = False
     _keymaps = []

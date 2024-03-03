@@ -32,6 +32,34 @@ class DMX_OT_Setup_NewShow(Operator):
 
         return {'FINISHED'}
 
+class DMX_OT_Fixture_Set_Cycles_Beams_Size_Small(Operator):
+    bl_label = _("Beam diameter small")
+    bl_idname = "dmx.fixture_set_cycles_beam_size_small"
+
+    def execute(self, context):
+        dmx = context.scene.dmx
+        selected = dmx.selectedFixtures()
+        for fixture in selected:
+            for light in fixture.lights:
+                light_obj = light.object
+                light_obj.data["beam_radius_pin_sized_for_gobos"] = True
+                fixture.render(skip_cache=True)
+        return {'FINISHED'}
+
+class DMX_OT_Fixture_Set_Cycles_Beams_Size_Normal(Operator):
+    bl_label = _("Beam diameter normal")
+    bl_idname = "dmx.fixture_set_cycles_beam_size_normal"
+
+    def execute(self, context):
+        dmx = context.scene.dmx
+        selected = dmx.selectedFixtures()
+        for fixture in selected:
+            for light in fixture.lights:
+                light_obj = light.object
+                light_obj.data["beam_radius_pin_sized_for_gobos"] = False
+                fixture.render(skip_cache=True)
+        return {'FINISHED'}
+
 class DMX_OT_Setup_Volume_Create(Operator):
     bl_label = _("DMX > Setup > Create/Update Volume Box")
     bl_description = _("Create/Update a Box on the scene bounds with a Volume Scatter shader")
@@ -104,8 +132,24 @@ class DMX_PT_Setup_Volume(Panel):
         row_scale.prop(context.scene.dmx, 'volume_noise_scale')
         row_den.enabled = row_scale.enabled = (dmx.volume != None)
 
+        selected = dmx.selectedFixtures()
+        enabled = len(selected) > 0
         box = layout.column().box()
-        box.prop(context.scene.dmx, "reduced_beam_diameter_in_cycles")
+        row = box.row()
+        col1 = row.column()
+        col1.prop(context.scene.dmx, "reduced_beam_diameter_in_cycles")
+        col2 = row.column()
+        col2.operator('wm.url_open', text="", icon="SHADING_WIRE").url="https://blenderdmx.eu/docs/setup/#beam-lens-diameter-in-cycles"
+
+        if bpy.context.scene.dmx.reduced_beam_diameter_in_cycles == "CUSTOM":
+            row0 = box.row()
+            row1 = box.row()
+            row2 = box.row()
+            row0.label(text = _("Set on selected fixtures"))
+            row1.operator("dmx.fixture_set_cycles_beam_size_normal", icon="CONE")
+            row2.operator("dmx.fixture_set_cycles_beam_size_small", icon="LIGHT_SPOT")
+            row0.enabled = row1.enabled = row2.enabled = enabled
+
 
 class DMX_PT_Setup_Viewport(Panel):
     bl_label = _("Viewport")
@@ -148,8 +192,10 @@ class DMX_PT_Setup_Extras(Panel):
         dmx = context.scene.dmx
         layout.operator("dmx.check_version", text=_("Check for BlenderDMX updates"), icon="SHADING_WIRE")
         row = layout.row()
-        row.label(text = _("Status: {}").format(context.window_manager.dmx.release_version_status))
-
+        col1 = row.column()
+        col1.label(text = _("Status: {}").format(context.window_manager.dmx.release_version_status))
+        col2 = row.column()
+        col2.operator('wm.url_open', text="", icon="SHADING_WIRE").url="https://github.com/open-stage/blender-dmx/releases/latest"
 class DMX_PT_Setup_Logging(Panel):
     bl_label = _("Logging")
     bl_idname = "DMX_PT_Setup_Logging"
