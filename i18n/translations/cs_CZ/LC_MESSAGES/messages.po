@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-03-01 21:00+0100\n"
+"POT-Creation-Date: 2024-03-03 11:40+0100\n"
 "PO-Revision-Date: 2024-02-27 15:02+0000\n"
 "Last-Translator: vanous <petr+weblate@linuks.cz>\n"
 "Language: cs_CZ\n"
@@ -51,199 +51,199 @@ msgstr "DMX Data"
 msgid "Fixture"
 msgstr "Svítidlo"
 
-#: ../__init__.py:272 ../__init__.py:1283 ../panels/fixtures.py:225
+#: ../__init__.py:274 ../__init__.py:1285 ../panels/fixtures.py:225
 msgid "Fixture ID"
 msgstr "ID Svítidla"
 
-#: ../__init__.py:276 ../__init__.py:1285
+#: ../__init__.py:278 ../__init__.py:1287
 msgid "Unit Number"
 msgstr "Číslo jednotky"
 
-#: ../__init__.py:280
+#: ../__init__.py:282
 msgid "Custom ID"
 msgstr "Vlastní ID"
 
-#: ../__init__.py:288 ../__init__.py:1284 ../panels/fixtures.py:178
+#: ../__init__.py:290 ../__init__.py:1286 ../panels/fixtures.py:178
 msgid "DMX Address"
 msgstr "Adresa DMX"
 
-#: ../__init__.py:292
+#: ../__init__.py:294
 msgid "Position"
 msgstr "Pozice"
 
-#: ../__init__.py:296
+#: ../__init__.py:298
 msgid "DMX Collection"
 msgstr "DMX Kolekce"
 
-#: ../__init__.py:350 ../panels/fixtures.py:170
+#: ../__init__.py:352 ../panels/fixtures.py:170
 msgid "Universe"
 msgstr "Univers"
 
-#: ../__init__.py:392
+#: ../__init__.py:394
 msgid "Editable"
 msgstr "Editovat"
 
-#: ../__init__.py:736
+#: ../__init__.py:738
 msgid "Display Pigtails"
 msgstr "Zobrazit panel konektorů"
 
-#: ../__init__.py:741
+#: ../__init__.py:743
 msgid "Display 2D View"
 msgstr "Zobrazit 2D pohled"
 
-#: ../__init__.py:757
+#: ../__init__.py:759
 msgid "Allow Selecting Geometries"
 msgstr "Povolit výběr geometrií"
 
-#: ../__init__.py:767
+#: ../__init__.py:769
 msgid "Logging Level"
 msgstr "Úroveň logování"
 
-#: ../__init__.py:771
+#: ../__init__.py:773
 msgid "Critical"
 msgstr "Kritické"
 
-#: ../__init__.py:772
+#: ../__init__.py:774
 msgid "Error"
 msgstr "Chyby"
 
-#: ../__init__.py:773
+#: ../__init__.py:775
 msgid "Warning"
 msgstr "Varování"
 
-#: ../__init__.py:774
+#: ../__init__.py:776
 msgid "Info"
 msgstr "Informace"
 
-#: ../__init__.py:775
+#: ../__init__.py:777
 msgid "Debug"
 msgstr "Ladění"
 
-#: ../__init__.py:791
+#: ../__init__.py:793
 msgid "Simple beam"
 msgstr "Náhledový kužel"
 
-#: ../__init__.py:792
+#: ../__init__.py:794
 msgid "Display 'fake' beam cone"
 msgstr "Zobrazit náhledový kužel paprsku"
 
-#: ../__init__.py:795
+#: ../__init__.py:797
 msgid "None"
 msgstr "Žádná svítidla"
 
-#: ../__init__.py:796
+#: ../__init__.py:798
 msgid "Selected fixtures"
 msgstr "Vybraná svítidla"
 
-#: ../__init__.py:797
+#: ../__init__.py:799
 msgid "All fixtures"
 msgstr "Všechna svítidla"
 
-#: ../__init__.py:807
+#: ../__init__.py:809
 msgid "Beam Lens Diameter in Cycles"
 msgstr ""
 
-#: ../__init__.py:808
+#: ../__init__.py:810
 msgid ""
 "Beam diameter is reduced to minimum when projecting gobos to prevent blur"
 " on gobo edge"
 msgstr ""
 
-#: ../__init__.py:811
+#: ../__init__.py:813
 msgid "Reduced"
 msgstr ""
 
-#: ../__init__.py:812
+#: ../__init__.py:814
 msgid "Full width"
 msgstr ""
 
-#: ../__init__.py:813
+#: ../__init__.py:815
 msgid "Custom per each beam"
 msgstr ""
 
-#: ../__init__.py:830
+#: ../__init__.py:832
 msgid "Disable Overlays"
 msgstr "Skrýt čáry kužele paprsku"
 
-#: ../__init__.py:841
+#: ../__init__.py:843
 msgid "Enable Volume Scatter"
 msgstr "Povolit Prostorový Kužel Paprsku"
 
-#: ../__init__.py:853
+#: ../__init__.py:855
 msgid "Noise Scale"
 msgstr "Náhodnost"
 
-#: ../__init__.py:854
+#: ../__init__.py:856
 msgid "Volume Noise Scale"
 msgstr "Měřítko náhodnosti prostorového kužele paprsku"
 
-#: ../__init__.py:866
+#: ../__init__.py:868
 msgid "Density"
 msgstr "Hustota"
 
-#: ../__init__.py:867
+#: ../__init__.py:869
 msgid "Volume Scatter Density"
 msgstr "Hustota mlhy"
 
-#: ../__init__.py:891
+#: ../__init__.py:893
 msgid "Number of universes"
 msgstr "Počet universů"
 
-#: ../__init__.py:892
+#: ../__init__.py:894
 msgid "The number of universes set on the panel"
 msgstr "Počet universů na panelu"
 
-#: ../__init__.py:902
+#: ../__init__.py:904
 msgid "Universe List Item"
 msgstr "Vybraný universe"
 
-#: ../__init__.py:903
+#: ../__init__.py:905
 msgid "The selected element on the universe list"
 msgstr "Vybraný univers v seznamu universů"
 
-#: ../__init__.py:910
+#: ../__init__.py:912
 msgid "IPv4 Address for ArtNet signal"
 msgstr "IPv4 Adresa pro ArtNet signál"
 
-#: ../__init__.py:911
+#: ../__init__.py:913
 msgid "The network card/interface to listen for ArtNet DMX data"
 msgstr "Síťová karta/rozhraní pro příjem DMX dat po ArtNetu"
 
-#: ../__init__.py:984
+#: ../__init__.py:986
 msgid "Enable Art-Net Input"
 msgstr "Povolit Art-Net Vstup"
 
-#: ../__init__.py:985
+#: ../__init__.py:987
 msgid ""
 "Enables the input of DMX data throught Art-Net on the selected network "
 "interface"
 msgstr "Povolí vstup DMX dat z ArtNetu na zvoleném síťovém rozhraní"
 
-#: ../__init__.py:991
+#: ../__init__.py:993
 msgid "Enable sACN Input"
 msgstr "Povolit sACN Vstup"
 
-#: ../__init__.py:992
+#: ../__init__.py:994
 msgid ""
 "Enables the input of DMX data throught sACN on all detected network "
 "interfaces"
 msgstr "Příjem DMX data ze sACN"
 
-#: ../__init__.py:998
+#: ../__init__.py:1000
 msgid "Enable OSC Output"
 msgstr "Povolit OSC Vstup"
 
-#: ../__init__.py:999
+#: ../__init__.py:1001
 msgid "Enables Open Sound Control protocol to send fixture selection to a console"
 msgstr ""
 "Příjem OpenSoundControl protokolu pro odeslání výběru svítidel do DMX "
 "konzole"
 
-#: ../__init__.py:1005
+#: ../__init__.py:1007
 msgid "OSC Target address"
 msgstr "Adresa cílového OSC zařízení"
 
-#: ../__init__.py:1006
+#: ../__init__.py:1008
 msgid ""
 "Address of the host where you want to send the OSC signal. Address ending"
 " on .255 is a broadcast address to all hosts on the network"
@@ -251,55 +251,55 @@ msgstr ""
 "Adresa zařízení, kam chcete poslat OSC signál. Adresa končící na .255 je "
 "všesměrová adresa pro všechna zařízení na síti"
 
-#: ../__init__.py:1011
+#: ../__init__.py:1013
 msgid "OSC Target port"
 msgstr "Port cílového OSC zařízení"
 
-#: ../__init__.py:1012
+#: ../__init__.py:1014
 msgid "Port number of the host where you want to send the OSC signal"
 msgstr "Číslo portu zařízení kam chcete posílat OSC signál"
 
-#: ../__init__.py:1017
+#: ../__init__.py:1019
 msgid "Enable MVR-xchange discovery"
 msgstr "Povolit vyhledávání MVR-xchange"
 
-#: ../__init__.py:1018
+#: ../__init__.py:1020
 msgid "Enables MVR-xchange discovery"
 msgstr "Povolí vyhledání MVR-xchange"
 
-#: ../__init__.py:1024
+#: ../__init__.py:1026
 msgid "Enable MVR-xchange connection"
 msgstr "Povolit MVR-xchange spojení"
 
-#: ../__init__.py:1025
+#: ../__init__.py:1027
 msgid "Connects to MVR-xchange client"
 msgstr "Připojí se k MVR-xchange klientu"
 
-#: ../__init__.py:1032
+#: ../__init__.py:1034
 msgid "Art-Net Status"
 msgstr "Stav Art-Netu"
 
-#: ../__init__.py:1036
+#: ../__init__.py:1038
 msgid "sACN Status"
 msgstr "Stav sACN"
 
-#: ../__init__.py:1046
+#: ../__init__.py:1048
 msgid "Group List i"
 msgstr "Seznam skupiny"
 
-#: ../__init__.py:1047
+#: ../__init__.py:1049
 msgid "The selected element on the group list"
 msgstr "Zvolená skupina v seznamu"
 
-#: ../__init__.py:1278
+#: ../__init__.py:1280
 msgid "Sort by"
 msgstr "Seřadit podle"
 
-#: ../__init__.py:1279
+#: ../__init__.py:1281
 msgid "Fixture sorting order"
 msgstr "Řazení svítidel"
 
-#: ../__init__.py:1282 ../panels/fixtures.py:166 ../panels/fixtures.py:675
+#: ../__init__.py:1284 ../panels/fixtures.py:166 ../panels/fixtures.py:675
 #: ../panels/groups.py:70 ../panels/profiles/data/local_profile.py:12
 #: ../panels/profiles/data/local_profile.py:21
 msgid "Name"
@@ -835,86 +835,99 @@ msgid "Clear any existing DMX data and create a new show."
 msgstr "Vyčistí existující DMX data a vytvoří novou show."
 
 #: ../panels/setup.py:36
+msgid "Beam diameter small"
+msgstr ""
+
+#: ../panels/setup.py:50
+msgid "Beam diameter normal"
+msgstr ""
+
+#: ../panels/setup.py:64
 msgid "DMX > Setup > Create/Update Volume Box"
 msgstr "Menu Vytvořit/aktualizovat těleso pro zobrazení kužele paprsku"
 
-#: ../panels/setup.py:37
+#: ../panels/setup.py:65
 msgid "Create/Update a Box on the scene bounds with a Volume Scatter shader"
 msgstr "Vytvořit/aktualizovat těleso pro Volume Scatter shader"
 
-#: ../panels/setup.py:77
+#: ../panels/setup.py:105
 msgid "Beam Volume"
 msgstr "Kužely Paprsku"
 
-#: ../panels/setup.py:95
+#: ../panels/setup.py:123
 msgid "Update Volume Box"
 msgstr "Aktualizovat Těleso Prostorového Paprsku"
 
-#: ../panels/setup.py:95
+#: ../panels/setup.py:123
 msgid "Create Volume Box"
 msgstr "Vytvořit Těleso Prostorového Paprsku"
 
-#: ../panels/setup.py:111
+#: ../panels/setup.py:148
+#, fuzzy
+msgid "Set on selected fixtures"
+msgstr "Editovat vybraná svítidla"
+
+#: ../panels/setup.py:155
 msgid "Viewport"
 msgstr "Pohled"
 
-#: ../panels/setup.py:124
+#: ../panels/setup.py:168
 msgid "Background Color"
 msgstr "Barva Pozadí"
 
-#: ../panels/setup.py:137
+#: ../panels/setup.py:181
 msgid "Extras"
 msgstr "Doplňky"
 
-#: ../panels/setup.py:149
+#: ../panels/setup.py:193
 msgid "Check for BlenderDMX updates"
 msgstr "Kontrola aktualizace BlenderDMX"
 
-#: ../panels/setup.py:151
+#: ../panels/setup.py:196
 msgid "Status: {}"
 msgstr "Stav: {}"
 
-#: ../panels/setup.py:154
+#: ../panels/setup.py:200
 msgid "Logging"
 msgstr "Záznam logu"
 
-#: ../panels/setup.py:169
+#: ../panels/setup.py:215
 msgid "Log filter"
 msgstr "Filtr logu"
 
-#: ../panels/setup.py:177
+#: ../panels/setup.py:223
 msgid "Setup"
 msgstr "Nastavení"
 
-#: ../panels/setup.py:189
+#: ../panels/setup.py:235
 msgid "Create New Show"
 msgstr "Vytvořit Novou Show"
 
-#: ../panels/setup.py:192
+#: ../panels/setup.py:238
 msgid "Check version"
 msgstr "Kontrola verze"
 
-#: ../panels/setup.py:193
+#: ../panels/setup.py:239
 msgid "Check if there is new release of BlenderDMX"
 msgstr "Zkontrolujte, zda je nová verze BlenderDMX"
 
-#: ../panels/setup.py:199
+#: ../panels/setup.py:245
 msgid "Unknown version error"
 msgstr "Neznámá chyba verze"
 
-#: ../panels/setup.py:211
+#: ../panels/setup.py:257
 msgid "New version {} available"
 msgstr "Nová verze {} k dispozici"
 
-#: ../panels/setup.py:213
+#: ../panels/setup.py:259
 msgid "You are using pre-release version"
 msgstr "Používáte pre-release verzi"
 
-#: ../panels/setup.py:215
+#: ../panels/setup.py:261
 msgid "You are using latest version of BlenderDMX"
 msgstr "Používáte nejnovější verzi BlenderDMX"
 
-#: ../panels/setup.py:222
+#: ../panels/setup.py:268
 msgid "Checking..."
 msgstr "Kontrola..."
 
