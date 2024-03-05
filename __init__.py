@@ -216,6 +216,8 @@ class DMX(PropertyGroup):
                 DMX_OT_Fixture_ForceRemove,
                 DMX_OT_Fixture_SelectNext,
                 DMX_OT_Fixture_SelectPrevious,
+                DMX_OT_Fixture_SelectNextTarget,
+                DMX_OT_Fixture_SelectPreviousTarget,
                 DMX_OT_VersionCheck,
                 DMX_PT_Programmer,
                 DMX_OT_Recorder_AddKeyframe,
@@ -246,11 +248,14 @@ class DMX(PropertyGroup):
         # register key shortcuts
         wm = bpy.context.window_manager
         km = wm.keyconfigs.addon.keymaps.new(name='3D View Generic', space_type='VIEW_3D')
-        kmi = km.keymap_items.new('dmx.fixture_next', 'RIGHT_ARROW', 'PRESS', ctrl=True)
+        kmi = km.keymap_items.new('dmx.fixture_next', 'RIGHT_ARROW', 'PRESS', ctrl=True, shift=False)
         DMX._keymaps.append((km, kmi))
-        kmi = km.keymap_items.new('dmx.fixture_previous', 'LEFT_ARROW', 'PRESS', ctrl=True)
+        kmi = km.keymap_items.new('dmx.fixture_previous', 'LEFT_ARROW', 'PRESS', ctrl=True, shift=False)
         DMX._keymaps.append((km, kmi))
-
+        kmi = km.keymap_items.new('dmx.fixture_next_target', 'RIGHT_ARROW', 'PRESS', ctrl=True, shift=True)
+        DMX._keymaps.append((km, kmi))
+        kmi = km.keymap_items.new('dmx.fixture_previous_target', 'LEFT_ARROW', 'PRESS', ctrl=True, shift=True)
+        DMX._keymaps.append((km, kmi))
 
     def unregister():
         # unregister keymaps

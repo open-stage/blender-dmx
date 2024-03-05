@@ -550,6 +550,51 @@ class DMX_OT_Fixture_Import_MVR(Operator):
 
 # Panel #
 
+
+def select_previous(context, select_target = False):
+    scene = context.scene
+    dmx = scene.dmx
+    selected_all = dmx.selectedFixtures()
+    fixtures = dmx.sortedFixtures()
+
+    for fixture in fixtures:
+        fixture.unselect()
+
+    for selected in selected_all:
+        for idx, fixture in enumerate(fixtures):
+            if fixture == selected:
+                idx -= 1
+                if idx < 0:
+                    idx = len(fixtures)-1
+                fixtures[idx].select(select_target)
+                break
+
+    if not selected_all and fixtures:
+        fixtures[-1].select(select_target)
+
+
+def select_next(context, select_target = False):
+    scene = context.scene
+    dmx = scene.dmx
+    selected_all = dmx.selectedFixtures()
+    fixtures = dmx.sortedFixtures()
+
+    for fixture in fixtures:
+        fixture.unselect()
+
+    for selected in selected_all:
+        for idx, fixture in enumerate(fixtures):
+            if fixture == selected:
+                idx += 1
+                if idx > len(fixtures)-1:
+                    idx = 0
+                fixtures[idx].select(select_target)
+                break
+
+    if not selected_all and fixtures:
+        fixtures[0].select(select_target)
+
+
 class DMX_OT_Fixture_SelectPrevious(Operator):
     bl_label = " "
     bl_idname = "dmx.fixture_previous"
@@ -557,26 +602,7 @@ class DMX_OT_Fixture_SelectPrevious(Operator):
     bl_options = {'UNDO'}
 
     def execute(self, context):
-        scene = context.scene
-        dmx = scene.dmx
-        selected_all = dmx.selectedFixtures()
-        fixtures = dmx.sortedFixtures()
-
-        for fixture in fixtures:
-            fixture.unselect()
-
-        for selected in selected_all:
-            for idx, fixture in enumerate(fixtures):
-                if fixture == selected:
-                    idx -= 1
-                    if idx < 0:
-                        idx = len(fixtures)-1
-                    fixtures[idx].select()
-                    break
-
-        if not selected_all and fixtures:
-            fixtures[-1].select()
-
+        select_previous(context)
         return {'FINISHED'}
 
 class DMX_OT_Fixture_SelectNext(Operator):
@@ -586,26 +612,27 @@ class DMX_OT_Fixture_SelectNext(Operator):
     bl_options = {'UNDO'}
 
     def execute(self, context):
-        scene = context.scene
-        dmx = scene.dmx
-        selected_all = dmx.selectedFixtures()
-        fixtures = dmx.sortedFixtures()
+        select_next(context)
+        return {'FINISHED'}
 
-        for fixture in fixtures:
-            fixture.unselect()
+class DMX_OT_Fixture_SelectPreviousTarget(Operator):
+    bl_label = " "
+    bl_idname = "dmx.fixture_previous_target"
+    bl_description = "Select Previous Fixture"
+    bl_options = {'UNDO'}
 
-        for selected in selected_all:
-            for idx, fixture in enumerate(fixtures):
-                if fixture == selected:
-                    idx += 1
-                    if idx > len(fixtures)-1:
-                        idx = 0
-                    fixtures[idx].select()
-                    break
+    def execute(self, context):
+        select_previous(context, select_target=True)
+        return {'FINISHED'}
 
-        if not selected_all and fixtures:
-            fixtures[0].select()
+class DMX_OT_Fixture_SelectNextTarget(Operator):
+    bl_label = " "
+    bl_idname = "dmx.fixture_next_target"
+    bl_description = "Select Next Fixture"
+    bl_options = {'UNDO'}
 
+    def execute(self, context):
+        select_next(context, select_target=True)
         return {'FINISHED'}
 
 class DMX_OT_Fixture_Item(Operator):

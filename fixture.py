@@ -1000,14 +1000,18 @@ class DMX_Fixture(PropertyGroup):
             params[channels[c]] = data[c]
         return params
 
-    def select(self):
+
+    def select(self, select_target = False):
         dmx = bpy.context.scene.dmx
         if dmx.display_2D:
             # in 2D view deselect the 2D symbol, unhide the fixture and select base,
             # to allow movement and rotation
             self.objects["2D Symbol"].object.select_set(False)
+            targets = []
 
             for obj in self.collection.objects:
+                if ('Target' in self.objects):
+                    targets.append(self.objects['Target'].object)
                 if "pigtail" in obj.get("geometry_type", ""):
                     obj.hide_set(not bpy.context.scene.dmx.display_pigtails)
                     obj.hide_viewport = not bpy.context.scene.dmx.display_pigtails
@@ -1018,12 +1022,28 @@ class DMX_Fixture(PropertyGroup):
                 obj.hide_viewport = False
                 obj.hide_render = False
 
-            if "Root" in self.objects:
-                self.objects["Root"].object.select_set(True)
+            if not select_target:
+                if "Root" in self.objects:
+                    self.objects["Root"].object.select_set(True)
+            else:
+                if (len(targets)):
+                    for target in targets:
+                        target.select_set(True)
 
         else:
-            if "Root" in self.objects:
-                self.objects["Root"].object.select_set(True)
+
+            if not select_target:
+                if "Root" in self.objects:
+                    self.objects["Root"].object.select_set(True)
+            else:
+                targets = []
+                for obj in self.collection.objects:
+                    if ('Target' in self.objects):
+                        targets.append(self.objects['Target'].object)
+
+                if (len(targets)):
+                    for target in targets:
+                        target.select_set(True)
 
         DMX_OSC_Handlers.fixture_selection(self)
         dmx.updatePreviewVolume()
