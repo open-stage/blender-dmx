@@ -1639,7 +1639,7 @@ def onDepsgraph(scene):
         for fixture in scene.dmx.fixtures:
             for f_obj in fixture.objects:
                 if (obj.name == f_obj.object.name):
-                    fixture.onDepsgraphUpdate()
+                    fixture.onDepsgraphUpdate(depsgraph.updates)
                     found = True
                     break
             if found: break
