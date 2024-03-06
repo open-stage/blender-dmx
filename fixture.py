@@ -911,7 +911,15 @@ class DMX_Fixture(PropertyGroup):
 
     def updatePanTilt(self, pan, tilt, pan_bits, tilt_bits, current_frame):
         if self.ignore_movement_dmx:
+            # programming by target, dmx for p/t locked
+            if "Target" in self.objects:
+                target = self.objects['Target'].object
+                if current_frame:
+                    target.keyframe_insert(data_path="location", frame=current_frame)
+                    target.keyframe_insert(data_path="rotation_euler", frame=current_frame)
             return
+
+
         DMX_Log.log.info("Updating pan tilt")
         pan = (pan/(pan_bits*127.0)-1)*540*(math.pi/360)
         tilt = (tilt/(tilt_bits*127.0)-1)*270*(math.pi/360)
