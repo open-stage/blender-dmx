@@ -52,6 +52,7 @@ class DMX_OT_Programmer_Unset_Ignore_Movement(Operator):
         for fixture in dmx.fixtures:
             if fixture in selected:
                 fixture.ignore_movement_dmx = False
+                fixture.ignore_movement_dmx = False
         return {'FINISHED'}
 
 class DMX_OT_Programmer_DeselectAll(Operator):
@@ -304,9 +305,21 @@ class DMX_PT_Programmer(Panel):
 
         if len(selected_fixtures) == 1:
             if selected_fixtures[0].has_attribute("Pan"):
-                box.prop(scene.dmx,"programmer_pan", text=_("Pan"), translate = False)
+                row = box.row()
+                col1 = row.column()
+                col1.prop(scene.dmx,"programmer_pan", text=_("Pan"), translate = False)
+                if selected_fixtures[0].ignore_movement_dmx == True:
+                    col2 = row.column()
+                    col2.operator("dmx.ignore_movement_false", text="", icon="UNLOCKED")
+                    col1.enabled = False
             if selected_fixtures[0].has_attribute("Tilt"):
-                box.prop(scene.dmx,"programmer_tilt", text=_("Tilt"), translate = False)
+                row = box.row()
+                col1 = row.column()
+                col1.prop(scene.dmx,"programmer_tilt", text=_("Tilt"), translate = False)
+                if selected_fixtures[0].ignore_movement_dmx == True:
+                    col2 = row.column()
+                    col2.operator("dmx.ignore_movement_false", text="", icon="UNLOCKED")
+                    col1.enabled = False
             if selected_fixtures[0].has_attribute("Zoom"):
                 box.prop(scene.dmx,"programmer_zoom", text=_("Zoom"), translate = False)
             if selected_fixtures[0].has_attribute("Gobo"):
