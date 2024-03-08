@@ -683,15 +683,21 @@ class DMX_Fixture(PropertyGroup):
                 light.object.data['shutter_value']=shutter
                 light.object.data['shutter_dimmer_value']=dimmer
                 light.object.data['shutter_dimmer_bits']=bits
+                flux = light.object.data["flux"]
+                # we should improve this to get more Cycles/Eevee compatibility... add a driver which would adjust the intensity
+                # depending on the IES linking or not, adding drivers: https://blender.stackexchange.com/a/314329/176407
+                # plus, we would still need to calculate correct energy, so they match between Cycles/Eevee
+                # here are some ideas: https://blender.stackexchange.com/a/180533/176407
+
                 if shutter > 0:
                     break # no need to do the expensive value settings if we do this anyway in shutter timer
 
                 if geometry is not None:
                     if f"{geometry}" in  light.object.data.name:
                         DMX_Log.log.info("matched emitter")
-                        light.object.data.energy = (dimmer/(255.0 * bits)) * light.object.data['flux']
+                        light.object.data.energy = (dimmer/(255.0 * bits)) * flux
                 else:
-                    light.object.data.energy = (dimmer/(255.0 * bits)) * light.object.data['flux']
+                    light.object.data.energy = (dimmer/(255.0 * bits)) * flux
 
                 if current_frame:
                     light.object.data.keyframe_insert(data_path='energy', frame=current_frame)
@@ -719,13 +725,14 @@ class DMX_Fixture(PropertyGroup):
                 if light.object.data['shutter_dimmer_value'] == 0:
                     exit_timer = True
                 dimmer_value = 0
+                flux = light.object.data["flux"]
                 if light.object.data['shutter_counter'] == 1:
                     dimmer_value = light.object.data['shutter_dimmer_value']
                     dimmer_bits = light.object.data['shutter_dimmer_bits']
                 if light.object.data['shutter_counter'] > light.object.data['shutter_value']:
                     light.object.data['shutter_counter'] = 0
 
-                light.object.data.energy = (dimmer_value/(255.0 * dimmer_bits)) * light.object.data['flux']
+                light.object.data.energy = (dimmer_value/(255.0 * dimmer_bits)) * flux
                 light.object.data['shutter_counter'] +=1
 
             # Here we can reuse data we got from the light object...
