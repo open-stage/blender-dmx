@@ -191,7 +191,10 @@ class DMX_GDTF():
             inside_zip_path =f"models/3ds/{model.file.name}.{model.file.extension}"
             profile._package.extract(inside_zip_path, extract_to_folder_path)
             file_name=os.path.join(extract_to_folder_path, inside_zip_path)
-            load_3ds(file_name, bpy.context)
+            try:
+                load_3ds(file_name, bpy.context)
+            except:
+                bpy.ops.mesh.primitive_cube_add(size=0.1)
         else:
             inside_zip_path = f"models/gltf/{model.file.name}.{model.file.extension}"
             profile._package.extract(inside_zip_path, extract_to_folder_path)
