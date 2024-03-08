@@ -750,8 +750,10 @@ class DMX_UL_Fixtures(UIList):
         col = row.column()
         col.prop(dmx, "column_dmx_address")
         col.prop(dmx, "fixture_properties_editable")
-        if dmx.fixture_properties_editable:
-            col.prop(dmx, "column_fixture_position")
+        col = row.column()
+        col.prop(dmx, "column_fixture_position")
+        col.prop(dmx, "column_fixture_rotation")
+        col.enabled = dmx.fixture_properties_editable
         row = layout.row()
         row.prop(dmx, "fixtures_sorting_order")
 
@@ -849,6 +851,23 @@ class DMX_UL_Fixtures(UIList):
                 col.prop(body, "location", index=1, text='')
                 col = layout.column()
                 col.prop(body, "location", index=2, text='')
+                col.ui_units_x = 3
+
+        if dmx.fixture_properties_editable and dmx.column_fixture_rotation:
+            body = None
+            for obj in item.collection.objects:
+                if obj.get("geometry_root", False):
+                    body = obj
+                    break
+            if body is not None:
+                col = layout.column()
+                col.prop(body, "rotation_euler", index=0, text='')
+                col.ui_units_x = 3
+                col = layout.column()
+                col.ui_units_x = 3
+                col.prop(body, "rotation_euler", index=1, text='')
+                col = layout.column()
+                col.prop(body, "rotation_euler", index=2, text='')
                 col.ui_units_x = 3
 
         if dmx.fixture_properties_editable:
