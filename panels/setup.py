@@ -139,7 +139,7 @@ class DMX_PT_Setup_Volume(Panel):
         col1 = row.column()
         col1.prop(context.scene.dmx, "reduced_beam_diameter_in_cycles")
         col2 = row.column()
-        col2.operator('wm.url_open', text="", icon="SHADING_WIRE").url="https://blenderdmx.eu/docs/setup/#beam-lens-diameter-in-cycles"
+        col2.operator('wm.url_open', text="", icon="HELP").url="https://blenderdmx.eu/docs/setup/#beam-lens-diameter-in-cycles"
 
         if bpy.context.scene.dmx.reduced_beam_diameter_in_cycles == "CUSTOM":
             row0 = box.row()
@@ -233,6 +233,7 @@ class DMX_PT_Setup(Panel):
         dmx = context.scene.dmx
         if (not dmx.collection):
             layout.operator("dmx.new_show", text=_("Create New Show"), icon="LIGHT")
+            layout.operator('wm.url_open', text="User Guide Online", icon="HELP").url="https://blenderdmx.eu/docs/faq/"
 
 class DMX_OT_VersionCheck(Operator):
     bl_label = _("Check version")
