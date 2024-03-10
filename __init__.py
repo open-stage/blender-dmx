@@ -170,6 +170,7 @@ class DMX(PropertyGroup):
                 DMX_PT_Setup_Volume,
                 DMX_PT_Setup_Viewport,
                 DMX_PT_Setup_Logging,
+                DMX_OT_Setup_Open_LogFile,
                 DMX_PT_Setup_Extras,
                 DMX_MT_Fixture,
                 DMX_MT_Fixture_Manufacturers,

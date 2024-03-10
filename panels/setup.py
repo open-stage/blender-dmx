@@ -10,6 +10,7 @@
 #
 
 import bpy
+import os
 from bpy.types import Operator, Panel
 from dmx.material import getVolumeScatterMaterial
 from dmx.util import getSceneRect
@@ -196,6 +197,22 @@ class DMX_PT_Setup_Extras(Panel):
         col1.label(text = _("Status: {}").format(context.window_manager.dmx.release_version_status))
         col2 = row.column()
         col2.operator('wm.url_open', text="", icon="SHADING_WIRE").url="https://github.com/open-stage/blender-dmx/releases/latest"
+
+class DMX_OT_Setup_Open_LogFile(Operator):
+    bl_label = _("Show logging directory")
+    bl_description = _("Show logging directory")
+    bl_idname = "dmx.print_logging_path"
+    bl_options = {'UNDO'}
+
+    def execute(self, context):
+        # DMX setup
+        current_path = os.path.dirname(os.path.abspath(__file__))
+        path = os.path.join(current_path, "..")
+        path = os.path.abspath(path)
+        self.report({"INFO"}, f"Path with a log file: {path}")
+
+        return {'FINISHED'}
+
 class DMX_PT_Setup_Logging(Panel):
     bl_label = _("Logging")
     bl_idname = "DMX_PT_Setup_Logging"
@@ -207,6 +224,10 @@ class DMX_PT_Setup_Logging(Panel):
     bl_options = {'DEFAULT_CLOSED'}
 
     def draw(self, context):
+        # DMX setup
+        ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
+        path = os.path.join(ADDON_PATH, "blenderDMX.log")
+
         layout = self.layout
         dmx = context.scene.dmx
         row = layout.row()
@@ -217,6 +238,9 @@ class DMX_PT_Setup_Logging(Panel):
         row.prop(context.window_manager.dmx, "logging_filter_mvr_xchange", toggle=True)
         row.prop(context.window_manager.dmx, "logging_filter_dmx_in", toggle=True)
         row.prop(context.window_manager.dmx, "logging_filter_fixture", toggle=True)
+        row = layout.row()
+        layout.operator("dmx.print_logging_path")
+
 # Panel #
 
 class DMX_PT_Setup(Panel):
