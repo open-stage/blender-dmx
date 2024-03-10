@@ -256,7 +256,7 @@ class DMX_PT_Setup(Panel):
         layout = self.layout
         dmx = context.scene.dmx
         if (not dmx.collection):
-            if not bpy.app.version >= (3, 7):
+            if not bpy.app.version >= (3, 4):
                 layout.label(text = _("Error! Blender 3.4 or higher required."), icon="ERROR")
             layout.operator("dmx.new_show", text=_("Create New Show"), icon="LIGHT")
             layout.operator('wm.url_open', text="User Guide Online", icon="HELP").url="https://blenderdmx.eu/docs/faq/"
