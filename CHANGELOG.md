@@ -1,5 +1,21 @@
 ### Changelog
 
+### 1.3.2
+
+    * Improve pan/tilt controlling and animating:
+        * Support multiple pan/tilt geometries for fixtures without Target
+        * Set Ignore pan/tilt DMX (lock target) after using Target to set
+          position, to allow programming keyframes by Target
+        * Indicate pan/tilt lock and provide quick unlock in programmer
+        * Ensure that keyframes are saved when programming position by Target
+    * Provide shortcut to select prev/next Target (Ctrl-Shift-Left/Right)
+    * Improve logging during addon initialization
+    * Fix fixture addressing procedure
+    * Add minimal required Blender version message to Setup panel
+    * Add links to documentation
+    * Add Rotation to the list of editable fixture's columns
+    * Indicate IES by an icon in fixture's name
+
 ### 1.3.1
 
     * Add support to import IES photometrics and apply them to beams in Cycles
