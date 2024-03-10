@@ -511,11 +511,13 @@ class DMX(PropertyGroup):
         #for group in self.groups:
         #    group.rebuild()
 
+        self.logging_level = "DEBUG" # setting high logging level to see initialization
         self.migrations()
         self.ensure_application_uuid()
         self.check_python_version()
         self.check_blender_version()
         Timer(1, bpy.ops.dmx.check_version, ()).start()
+        self.logging_level = "ERROR" # setting default logging level
 
     # Unlink Add-on from file
     # This is only called when the DMX collection is externally removed
@@ -540,15 +542,15 @@ class DMX(PropertyGroup):
 
     def check_python_version(self):
         if not sys.version_info >= (3, 8):
-            print("INFO",f"Python version of at least 3.8 is needed, you are using {sys.version} ❌")
+            DMX_Log.log.error(f"Python version of at least 3.8 is needed, you are using {sys.version} ❌")
             return
-        print("INFO",f"Python version: {sys.version} ✅")
+        DMX_Log.log.info(f"Python version: {sys.version} ✅")
 
     def check_blender_version(self):
         if not bpy.app.version >= (3, 4):
-            print("INFO",f"Blender version of at least 3.4 is needed, you are using {bpy.app.version} ❌")
+            DMX_Log.log.error(f"Blender version of at least 3.4 is needed, you are using {bpy.app.version} ❌")
             return
-        print("INFO",f"Blender version: {bpy.app.version} ✅")
+        DMX_Log.log.info(f"Blender version: {bpy.app.version} ✅")
 
     def ensure_application_uuid(self):
         addon_name = pathlib.Path(__file__).parent.parts[-1]
@@ -564,7 +566,6 @@ class DMX(PropertyGroup):
         if ("DMX_DataVersion" in self.collection):
             file_data_version = self.collection["DMX_DataVersion"]
 
-        self.logging_level = "INFO"
         DMX_Log.log.info(f"Data version: {file_data_version}")
 
         if file_data_version < 2: # migration for sw. version 0.5 → 1.0
@@ -679,7 +680,6 @@ class DMX(PropertyGroup):
             DMX_Log.log.info("Updating Volume material")
 
         DMX_Log.log.info("Migration done.")
-        self.logging_level = "ERROR"
         # add here another if statement for next migration condition... like:
         # if file_data_version < 6: #...
 
@@ -772,7 +772,7 @@ class DMX(PropertyGroup):
     logging_level: EnumProperty(
         name= _("Logging Level"),
         description= "logging level",
-        default = "ERROR",
+        default = "DEBUG",
         items= [
                 ('CRITICAL', _("Critical"), "", "TOOL_SETTINGS", 0),
                 ('ERROR', _("Error"), "", 'ERROR', 1),
