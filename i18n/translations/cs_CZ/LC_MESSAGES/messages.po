@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-03-03 11:40+0100\n"
-"PO-Revision-Date: 2024-02-27 15:02+0000\n"
+"PO-Revision-Date: 2024-03-10 16:13+0000\n"
 "Last-Translator: vanous <petr+weblate@linuks.cz>\n"
+"Language-Team: Czech <https://hosted.weblate.org/projects/blenderdmx/main/cs/"
+">\n"
 "Language: cs_CZ\n"
-"Language-Team: Czech "
-"<https://hosted.weblate.org/projects/blenderdmx/main/cs/>\n"
-"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
+"X-Generator: Weblate 5.5-dev\n"
 "Generated-By: Babel 2.14.0\n"
 
 #: ../__init__.py:82
@@ -141,25 +142,27 @@ msgstr "Všechna svítidla"
 
 #: ../__init__.py:809
 msgid "Beam Lens Diameter in Cycles"
-msgstr ""
+msgstr "Průměr čočky paprsku v Cycles"
 
 #: ../__init__.py:810
 msgid ""
 "Beam diameter is reduced to minimum when projecting gobos to prevent blur"
 " on gobo edge"
 msgstr ""
+"Průměr paprsku je snížen na minimum při projektování gob, aby se zabránilo "
+"rozostření na okraji goba"
 
 #: ../__init__.py:813
 msgid "Reduced"
-msgstr ""
+msgstr "Redukovaný"
 
 #: ../__init__.py:814
 msgid "Full width"
-msgstr ""
+msgstr "Plná šířka"
 
 #: ../__init__.py:815
 msgid "Custom per each beam"
-msgstr ""
+msgstr "Vlastní nastavení pro každý paprsek"
 
 #: ../__init__.py:832
 msgid "Disable Overlays"
@@ -836,11 +839,11 @@ msgstr "Vyčistí existující DMX data a vytvoří novou show."
 
 #: ../panels/setup.py:36
 msgid "Beam diameter small"
-msgstr ""
+msgstr "Malý průměr paprsku"
 
 #: ../panels/setup.py:50
 msgid "Beam diameter normal"
-msgstr ""
+msgstr "Normální průměr paprsku"
 
 #: ../panels/setup.py:64
 msgid "DMX > Setup > Create/Update Volume Box"
@@ -863,9 +866,8 @@ msgid "Create Volume Box"
 msgstr "Vytvořit Těleso Prostorového Paprsku"
 
 #: ../panels/setup.py:148
-#, fuzzy
 msgid "Set on selected fixtures"
-msgstr "Editovat vybraná svítidla"
+msgstr "Nastavit na vybraných svítidlech"
 
 #: ../panels/setup.py:155
 msgid "Viewport"
@@ -1311,4 +1313,3 @@ msgstr "Profily"
 
 #~ msgid "FINISHED"
 #~ msgstr ""
-
