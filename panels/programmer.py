@@ -328,8 +328,19 @@ class DMX_PT_Programmer(Panel):
             if selected_fixtures[0].has_attribute("shutter", lower = True):
                 box.prop(scene.dmx,"programmer_shutter", text=_("Strobe"), translate = False)
         else:
-            box.prop(scene.dmx,"programmer_pan", text=_("Pan"), translate = False)
-            box.prop(scene.dmx,"programmer_tilt", text=_("Tilt"), translate = False)
+            row = box.row()
+            col1 = row.column()
+            col1.prop(scene.dmx,"programmer_pan", text=_("Pan"), translate = False)
+            if locked:
+                col2 = row.column()
+                col2.operator("dmx.ignore_movement_false", text="", icon="UNLOCKED")
+            row = box.row()
+            col1 = row.column()
+            col1.prop(scene.dmx,"programmer_tilt", text=_("Tilt"), translate = False)
+            if locked:
+                col2 = row.column()
+                col2.operator("dmx.ignore_movement_false", text="", icon="UNLOCKED")
+
             box.prop(scene.dmx,"programmer_zoom", text=_("Zoom"), translate = False)
             box.prop(scene.dmx,"programmer_gobo", text=_("Gobo"), translate = False)
             box.prop(scene.dmx,"programmer_gobo_index", text=_("Gobo Rotation"), translate = False)
