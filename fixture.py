@@ -972,18 +972,19 @@ class DMX_Fixture(PropertyGroup):
         DMX_Log.log.info("Updating pan tilt")
 
         base = self.objects["Root"].object
+        pan = pan + base.rotation_euler[2] # take base z rotation into consideration
+        tilt = tilt + base.rotation_euler[0] # take base x rotation into consideration
 
         # calculate target position, head will follow
         try:
             head = self.objects["Head"].object
         except Exception as e:
-            self.updatePanTiltDirectly(pan, tilt, current_frame)
-            DMX_Log.log.info("Escaping pan tilt update, not enough data")
+            self.updatePTDirectly(None, "pan", pan, current_frame)
+            self.updatePTDirectly(None, "tilt", tilt, current_frame)
+            DMX_Log.log.info("Updating pan/tilt directly via geometries, not via Target due to not located Head")
             return
 
         head_location = head.matrix_world.translation
-        pan = pan + base.rotation_euler[2] # take base z rotation into consideration
-        tilt = tilt + base.rotation_euler[0] # take base x rotation into consideration
 
         target = self.objects['Target'].object
 
