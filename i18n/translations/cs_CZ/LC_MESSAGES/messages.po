@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-03-10 17:17+0100\n"
-"PO-Revision-Date: 2024-03-10 16:13+0000\n"
+"PO-Revision-Date: 2024-03-11 17:01+0000\n"
 "Last-Translator: vanous <petr+weblate@linuks.cz>\n"
+"Language-Team: Czech <https://hosted.weblate.org/projects/blenderdmx/main/cs/"
+">\n"
 "Language: cs_CZ\n"
-"Language-Team: Czech "
-"<https://hosted.weblate.org/projects/blenderdmx/main/cs/>\n"
-"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
+"X-Generator: Weblate 5.5-dev\n"
 "Generated-By: Babel 2.14.0\n"
 
 #: ../__init__.py:82
@@ -72,7 +73,6 @@ msgid "Position"
 msgstr "Pozice"
 
 #: ../__init__.py:304
-#, fuzzy
 msgid "Rotation"
 msgstr "Rotace Goba"
 
@@ -895,7 +895,7 @@ msgstr "Stav: {}"
 
 #: ../panels/setup.py:202 ../panels/setup.py:203
 msgid "Show logging directory"
-msgstr ""
+msgstr "Zobrazit adresář s logy"
 
 #: ../panels/setup.py:217
 msgid "Logging"
@@ -911,7 +911,7 @@ msgstr "Nastavení"
 
 #: ../panels/setup.py:260
 msgid "Error! Blender 3.4 or higher required."
-msgstr ""
+msgstr "Chyba! Blender 3.4 nebo vyšší je vyžadován."
 
 #: ../panels/setup.py:261
 msgid "Create New Show"
@@ -1325,4 +1325,3 @@ msgstr "Profily"
 
 #~ msgid "FINISHED"
 #~ msgstr ""
-
