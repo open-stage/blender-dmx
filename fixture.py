@@ -505,6 +505,8 @@ class DMX_Fixture(PropertyGroup):
         xyz_moving_geometries={}
         xyz_rotating_geometries={}
         shutter_dimmer_geometries={} # item: shutter, dimmer, unused, dimmer bits
+        pan_rotating_geometries={}
+        tilt_rotating_geometries={}
         gobo1 = [None, None] #gobo selection (Gobo1, Gobo2), gobo indexing/rotation (Gobo1Pos, Gobo2Pos)
 
         for attribute in virtual_channels:
@@ -517,6 +519,10 @@ class DMX_Fixture(PropertyGroup):
                 xyz_rotating_geometries[geometry]=[None, None, None]
             if geometry not in shutter_dimmer_geometries.keys():
                 shutter_dimmer_geometries[geometry]=[None, None, None, 1] # + bits
+            if geometry not in pan_rotating_geometries.keys():
+                pan_rotating_geometries[geometry]=[None, 1]
+            if geometry not in tilt_rotating_geometries.keys():
+                tilt_rotating_geometries[geometry]=[None, 1]
             if attribute in data_virtual:
                 if attribute == "Shutter1": shutter_dimmer_geometries[geometry][0] = data_virtual[attribute]
                 elif attribute == "Dimmer": shutter_dimmer_geometries[geometry][1] = data_virtual[attribute]
@@ -530,14 +536,24 @@ class DMX_Fixture(PropertyGroup):
                 elif attribute == "ColorSub_C": cmy[0] = data_virtual[attribute]
                 elif attribute == "ColorSub_M": cmy[1] = data_virtual[attribute]
                 elif attribute == "ColorSub_Y": cmy[2] = data_virtual[attribute]
-                elif attribute == "Pan": panTilt[0] = data_virtual[attribute]
+                elif attribute == "Pan":
+                    panTilt[0] = data_virtual[attribute]
+                    pan_rotating_geometries[geometry][0] = data_virtual[attribute]
                 elif attribute == "+Pan":
                     panTilt[0]  = panTilt[0] * 256 + data_virtual[attribute]
                     panTilt[2] = 256 # 16bit
-                elif attribute == "Tilt": panTilt[1] = data_virtual[attribute]
+                    pan_rotating_geometries[geometry][0] = pan_rotating_geometries[geometry][0] * 256 + data_virtual[attribute]
+                    pan_rotating_geometries[geometry][2] = 256
+
+                elif attribute == "Tilt":
+                    panTilt[1] = data_virtual[attribute]
+                    tilt_rotating_geometries[geometry][0] = data_virtual[attribute]
                 elif attribute == "+Tilt":
                     panTilt[1]  = panTilt[1] * 256 + data_virtual[attribute]
                     panTilt[3] = 256 # 16bit
+                    tilt_rotating_geometries[geometry][0] = tilt_rotating_geometries[geometry][0] * 256 + data_virtual[attribute]
+                    tilt_rotating_geometries[geometry][2] = 256
+
                 elif attribute == "Zoom": zoom = data_virtual[attribute]
                 elif attribute == "XYZ_X": xyz_moving_geometries[geometry][0] = data_virtual[attribute]
                 elif attribute == "XYZ_Y": xyz_moving_geometries[geometry][1] = data_virtual[attribute]
@@ -556,6 +572,10 @@ class DMX_Fixture(PropertyGroup):
                 xyz_rotating_geometries[geometry]=[None, None, None]
             if geometry not in shutter_dimmer_geometries.keys():
                 shutter_dimmer_geometries[geometry]=[None, None, None, 1] # + bits
+            if geometry not in pan_rotating_geometries.keys():
+                pan_rotating_geometries[geometry]=[None, 1]
+            if geometry not in tilt_rotating_geometries.keys():
+                tilt_rotating_geometries[geometry]=[None, 1]
             if (channels[c] == 'Dimmer'): shutter_dimmer_geometries[geometry][1] = data[c]
             if (channels[c] == '+Dimmer'):
                 shutter_dimmer_geometries[geometry][1] = shutter_dimmer_geometries[geometry][1] * 256 + data[c]
@@ -567,14 +587,22 @@ class DMX_Fixture(PropertyGroup):
             elif (channels[c] == 'ColorSub_C'): cmy[0] = data[c]
             elif (channels[c] == 'ColorSub_M'): cmy[1] = data[c]
             elif (channels[c] == 'ColorSub_Y'): cmy[2] = data[c]
-            elif (channels[c] == 'Pan'): panTilt[0]   = data[c]
+            elif (channels[c] == 'Pan'):
+                panTilt[0]   = data[c]
+                pan_rotating_geometries[geometry][0] = data[c]
             elif (channels[c] == '+Pan'):
                 panTilt[0]  = panTilt[0] * 256 + data[c]
                 panTilt[2] = 256 # 16bit
-            elif (channels[c] == 'Tilt'): panTilt[1]  = data[c]
+                pan_rotating_geometries[geometry][0] = pan_rotating_geometries[geometry][0] * 256 + data[c]
+                pan_rotating_geometries[geometry][1] = 256
+            elif (channels[c] == 'Tilt'):
+                panTilt[1]  = data[c]
+                tilt_rotating_geometries[geometry][0] = data[c]
             elif (channels[c] == '+Tilt'):
                 panTilt[1] = panTilt[1] * 256 + data[c]
                 panTilt[3] = 256 # 16bit
+                tilt_rotating_geometries[geometry][0] = tilt_rotating_geometries[geometry][0] * 256 + data[c]
+                tilt_rotating_geometries[geometry][1] = 256
             elif (channels[c] == 'Zoom'): zoom = data[c]
             elif (channels[c] == 'Gobo1'): gobo1[0] = data[c]
             elif (channels[c] == 'Gobo1Pos'): gobo1[1] = data[c]
@@ -591,6 +619,8 @@ class DMX_Fixture(PropertyGroup):
         self.remove_unset_geometries_from_multigeometry_attributes(xyz_moving_geometries)
         self.remove_unset_geometries_from_multigeometry_attributes(xyz_rotating_geometries)
         self.remove_unset_geometries_from_multigeometry_attributes(shutter_dimmer_geometries)
+        self.remove_unset_geometries_from_multigeometry_attributes2(pan_rotating_geometries)
+        self.remove_unset_geometries_from_multigeometry_attributes2(tilt_rotating_geometries)
 
         for geometry, rgb in rgb_mixing_geometries.items():
             if len(rgb_mixing_geometries)==1:
@@ -604,13 +634,31 @@ class DMX_Fixture(PropertyGroup):
         if (cmy[0] != None and cmy[1] != None and cmy[2] != None):
             self.updateCMY(cmy, current_frame)
 
-        if panTilt[0] != None or panTilt[1] != None:
-            if panTilt[0] is None:
-                panTilt[0] = 191 * panTilt[2] # if the device doesn't have pan, align head with base
-            if panTilt[1] is None:
-                panTilt[1] = 190 * panTilt[3]
 
-            self.updatePanTilt(panTilt[0], panTilt[1], panTilt[2], panTilt[3], current_frame)
+        if "Target" in self.objects:
+            if self.ignore_movement_dmx:
+                # programming by target, dmx for p/t locked
+                if "Target" in self.objects:
+                    target = self.objects['Target'].object
+                    if current_frame:
+                        target.keyframe_insert(data_path="location", frame=current_frame)
+                        target.keyframe_insert(data_path="rotation_euler", frame=current_frame)
+                return
+            if panTilt[0] is None:
+                panTilt[0] = 0 * panTilt[2] # if the device doesn't have pan, align head with base
+            if panTilt[1] is None:
+                panTilt[1] = 0 * panTilt[3]
+            pan = (panTilt[0]/(panTilt[2]*127.0)-1)*540*(math.pi/360)
+            tilt = (panTilt[1]/(panTilt[3]*127.0)-1)*270*(math.pi/360)
+            self.updatePanTiltViaTarget(pan, tilt, current_frame)
+
+        else:# no Target
+            for geometry, pan_vals in pan_rotating_geometries.items():
+                pan = (pan_vals[0]/(pan_vals[1]*127.0)-1)*540*(math.pi/360)
+                self.updatePTDirectly(geometry, "pan", pan, current_frame)
+            for geometry, tilt_vals in tilt_rotating_geometries.items():
+                tilt = (tilt_vals[0]/(tilt_vals[1]*127.0)-1)*270*(math.pi/360)
+                self.updatePTDirectly(geometry, "tilt", tilt, current_frame)
 
         if (zoom != None):
             self.updateZoom(zoom, current_frame)
@@ -640,6 +688,16 @@ class DMX_Fixture(PropertyGroup):
         remove_empty_items = []
         for geometry, items in dictionary.items():
             if (items[0] is None and items[1] is None and items[2] is None):
+                remove_empty_items.append(geometry)
+        for geo in remove_empty_items:
+            del(dictionary[geo])
+
+    def remove_unset_geometries_from_multigeometry_attributes2(self, dictionary):
+        """Remove items with values of all None"""
+
+        remove_empty_items = []
+        for geometry, items in dictionary.items():
+            if items[0] is None:
                 remove_empty_items.append(geometry)
         for geo in remove_empty_items:
             del(dictionary[geo])
@@ -909,66 +967,52 @@ class DMX_Fixture(PropertyGroup):
             if current_frame:
                 geometry.keyframe_insert(data_path="rotation_euler", frame=current_frame)
 
-    def updatePanTilt(self, pan, tilt, pan_bits, tilt_bits, current_frame):
-        if self.ignore_movement_dmx:
-            # programming by target, dmx for p/t locked
-            if "Target" in self.objects:
-                target = self.objects['Target'].object
-                if current_frame:
-                    target.keyframe_insert(data_path="location", frame=current_frame)
-                    target.keyframe_insert(data_path="rotation_euler", frame=current_frame)
-            return
-
+    def updatePanTiltViaTarget(self, pan, tilt, current_frame):
 
         DMX_Log.log.info("Updating pan tilt")
-        pan = (pan/(pan_bits*127.0)-1)*540*(math.pi/360)
-        tilt = (tilt/(tilt_bits*127.0)-1)*270*(math.pi/360)
 
         base = self.objects["Root"].object
 
-        if "Target" in self.objects:
-            # calculate target position, head will follow
-            try:
-                head = self.objects["Head"].object
-            except Exception as e:
-                self.updatePanTiltDirectly(pan, tilt, current_frame)
-                DMX_Log.log.info("Escaping pan tilt update, not enough data")
-                return
-
-            head_location = head.matrix_world.translation
-            pan = pan + base.rotation_euler[2] # take base z rotation into consideration
-            tilt = tilt + base.rotation_euler[0] # take base x rotation into consideration
-
-            target = self.objects['Target'].object
-
-            eul = mathutils.Euler((0.0,base.rotation_euler[1]+tilt,base.rotation_euler[0]+pan), 'XYZ')
-            vec = mathutils.Vector((0.0,0.0,-(target.location-head_location).length))
-            vec.rotate(eul)
-
-            target.location = vec + head_location
-
-            if current_frame:
-                target.keyframe_insert(data_path="location", frame=current_frame)
-                target.keyframe_insert(data_path="rotation_euler", frame=current_frame)
-        else:
-            # for fixtures where we decided not to use target
+        # calculate target position, head will follow
+        try:
+            head = self.objects["Head"].object
+        except Exception as e:
             self.updatePanTiltDirectly(pan, tilt, current_frame)
+            DMX_Log.log.info("Escaping pan tilt update, not enough data")
+            return
 
-    def updatePanTiltDirectly(self, pan, tilt, current_frame):
-        pan_geometry = self.get_mobile_type("yoke")
-        tilt_geometry = self.get_mobile_type("head")
-        if pan_geometry:
-            pan_geometry.rotation_euler[2] = pan
+        head_location = head.matrix_world.translation
+        pan = pan + base.rotation_euler[2] # take base z rotation into consideration
+        tilt = tilt + base.rotation_euler[0] # take base x rotation into consideration
+
+        target = self.objects['Target'].object
+
+        eul = mathutils.Euler((0.0,base.rotation_euler[1]+tilt,base.rotation_euler[0]+pan), 'XYZ')
+        vec = mathutils.Vector((0.0,0.0,-(target.location-head_location).length))
+        vec.rotate(eul)
+
+        target.location = vec + head_location
+
+        if current_frame:
+            target.keyframe_insert(data_path="location", frame=current_frame)
+            target.keyframe_insert(data_path="rotation_euler", frame=current_frame)
+
+    def updatePTDirectly(self, geometry, axis_type, value, current_frame):
+        if axis_type == "pan":
+            mobile_type = "yoke"
+            offset = 2
+        else: # tilt
+            mobile_type = "head"
+            offset = 0
+        if geometry is None:
+            geometry = self.get_mobile_type(mobile_type)
+        else:
+            geometry = self.get_object_by_geometry_name(geometry)
+        if geometry:
+            geometry.rotation_euler[offset] = value
             if current_frame:
-                pan_geometry.keyframe_insert(data_path="location", frame=current_frame)
-                pan_geometry.keyframe_insert(data_path="rotation_euler", frame=current_frame)
-        if tilt_geometry:
-            tilt_geometry.rotation_euler[0] = tilt
-            if current_frame:
-                tilt_geometry.keyframe_insert(data_path="location", frame=current_frame)
-                tilt_geometry.keyframe_insert(data_path="rotation_euler", frame=current_frame)
-
-
+                geometry.keyframe_insert(data_path="location", frame=current_frame)
+                geometry.keyframe_insert(data_path="rotation_euler", frame=current_frame)
 
     def get_object_by_geometry_name(self, geometry):
         for obj in self.collection.objects:
