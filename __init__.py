@@ -1101,6 +1101,9 @@ class DMX(PropertyGroup):
                         'ColorAdd_R':rgb[0],
                         'ColorAdd_G':rgb[1],
                         'ColorAdd_B':rgb[2],
+                        'ColorRGB_Red':rgb[0],
+                        'ColorRGB_Green':rgb[1],
+                        'ColorRGB_Blue':rgb[2],
                         'ColorSub_C':cmy[0],
                         'ColorSub_M':cmy[1],
                         'ColorSub_Y':cmy[2]
@@ -1280,6 +1283,8 @@ class DMX(PropertyGroup):
             self.programmer_gobo_index = int(data['Gobo2Pos'])
         if ('ColorAdd_R' in data and 'ColorAdd_G' in data and 'ColorAdd_B' in data):
             self.programmer_color = (data['ColorAdd_R'],data['ColorAdd_G'],data['ColorAdd_B'],255)
+        if ('ColorRGB_Red' in data and 'ColorRGB_Green' in data and 'ColorRGB_Blue' in data):
+            self.programmer_color = (data['ColorRGB_Red'],data['ColorRGB_Green'],data['ColorRGB_Blue'],255)
         if ('Pan' in data):
             self.programmer_pan = data['Pan']/127.0-1
         if ('Tilt' in data):

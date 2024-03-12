@@ -530,9 +530,9 @@ class DMX_Fixture(PropertyGroup):
                     shutter_dimmer_geometries[geometry][1] = shutter_dimmer_geometries[geometry][1] * 256 + data_virtual[attribute]
                     shutter_dimmer_geometries[geometry][3] = 256
 
-                elif attribute == "ColorAdd_R": rgb_mixing_geometries[geometry][0] = data_virtual[attribute]
-                elif attribute == "ColorAdd_G": rgb_mixing_geometries[geometry][1] = data_virtual[attribute]
-                elif attribute == "ColorAdd_B": rgb_mixing_geometries[geometry][2] = data_virtual[attribute]
+                elif (attribute == "ColorAdd_R" or attribute == "ColorRGB_Red"): rgb_mixing_geometries[geometry][0] = data_virtual[attribute]
+                elif (attribute == "ColorAdd_G" or attribute == "ColorRGB_Green"): rgb_mixing_geometries[geometry][1] = data_virtual[attribute]
+                elif (attribute == "ColorAdd_B" or attribute == "ColorRGB_Blue"): rgb_mixing_geometries[geometry][2] = data_virtual[attribute]
                 elif attribute == "ColorSub_C": cmy[0] = data_virtual[attribute]
                 elif attribute == "ColorSub_M": cmy[1] = data_virtual[attribute]
                 elif attribute == "ColorSub_Y": cmy[2] = data_virtual[attribute]
@@ -581,9 +581,9 @@ class DMX_Fixture(PropertyGroup):
                 shutter_dimmer_geometries[geometry][1] = shutter_dimmer_geometries[geometry][1] * 256 + data[c]
                 shutter_dimmer_geometries[geometry][3] = 256
             elif (channels[c] == 'Shutter1'): shutter_dimmer_geometries[geometry][0] = data[c]
-            elif (channels[c] == 'ColorAdd_R'): rgb_mixing_geometries[geometry][0] = data[c]
-            elif (channels[c] == 'ColorAdd_G'): rgb_mixing_geometries[geometry][1] = data[c]
-            elif (channels[c] == 'ColorAdd_B'): rgb_mixing_geometries[geometry][2] = data[c]
+            elif (channels[c] == 'ColorAdd_R' or channels[c] == 'ColorRGB_Red'): rgb_mixing_geometries[geometry][0] = data[c]
+            elif (channels[c] == 'ColorAdd_G' or channels[c] == 'ColorRGB_Green'): rgb_mixing_geometries[geometry][1] = data[c]
+            elif (channels[c] == 'ColorAdd_B' or channels[c] == 'ColorRGB_Blue'): rgb_mixing_geometries[geometry][2] = data[c]
             elif (channels[c] == 'ColorSub_C'): cmy[0] = data[c]
             elif (channels[c] == 'ColorSub_M'): cmy[1] = data[c]
             elif (channels[c] == 'ColorSub_Y'): cmy[2] = data[c]
