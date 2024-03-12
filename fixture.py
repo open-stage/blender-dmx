@@ -634,7 +634,6 @@ class DMX_Fixture(PropertyGroup):
         if (cmy[0] != None and cmy[1] != None and cmy[2] != None):
             self.updateCMY(cmy, current_frame)
 
-
         if "Target" in self.objects:
             if self.ignore_movement_dmx:
                 # programming by target, dmx for p/t locked
@@ -643,14 +642,14 @@ class DMX_Fixture(PropertyGroup):
                     if current_frame:
                         target.keyframe_insert(data_path="location", frame=current_frame)
                         target.keyframe_insert(data_path="rotation_euler", frame=current_frame)
-                return
-            if panTilt[0] is None:
-                panTilt[0] = 0 * panTilt[2] # if the device doesn't have pan, align head with base
-            if panTilt[1] is None:
-                panTilt[1] = 0 * panTilt[3]
-            pan = (panTilt[0]/(panTilt[2]*127.0)-1)*540*(math.pi/360)
-            tilt = (panTilt[1]/(panTilt[3]*127.0)-1)*270*(math.pi/360)
-            self.updatePanTiltViaTarget(pan, tilt, current_frame)
+            else:
+                if panTilt[0] is None:
+                    panTilt[0] = 0 * panTilt[2] # if the device doesn't have pan, align head with base
+                if panTilt[1] is None:
+                    panTilt[1] = 0 * panTilt[3]
+                pan = (panTilt[0]/(panTilt[2]*127.0)-1)*540*(math.pi/360)
+                tilt = (panTilt[1]/(panTilt[3]*127.0)-1)*270*(math.pi/360)
+                self.updatePanTiltViaTarget(pan, tilt, current_frame)
 
         else:# no Target
             for geometry, pan_vals in pan_rotating_geometries.items():
@@ -681,6 +680,8 @@ class DMX_Fixture(PropertyGroup):
                 if shutter_dimmer[1] is None:
                     shutter_dimmer[1] = 100 # if device doesn't have dimmer, set default value
                 self.updateShutterDimmer(shutter_dimmer[0], shutter_dimmer[1], geometry, shutter_dimmer[3], current_frame)
+
+        # end of render block
 
     def remove_unset_geometries_from_multigeometry_attributes(self, dictionary):
         """Remove items with values of all None"""
