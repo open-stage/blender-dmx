@@ -1,5 +1,10 @@
 ### Changelog
 
+### 1.3.3
+
+    * Add support for ColorRGB_Red/Green/Blue color attributes
+    * Bug fix pan/tilt lock
+
 ### 1.3.2
 
     * Improve pan/tilt controlling and animating:
