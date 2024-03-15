@@ -42,6 +42,10 @@ class DMX_MVR_Xchange_Client(PropertyGroup):
             icon = "DEFAULT_TEST"
             if any("Production Assist" in x for x in [client.provider, client.station_name]):
                 icon = "PRODUCTION_ASSIST"
+            if any("gMA3" in x for x in [client.provider, client.station_name]):
+                icon = "GMA3"
+            if any("GrandMA3" in x for x in [client.provider, client.station_name]):
+                icon = "GMA3"
             data.append((client.station_uuid, client.station_name, client.station_uuid, dmx.custom_icons[icon].icon_id, index))
         return data
 
