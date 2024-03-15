@@ -94,11 +94,11 @@ class DMX_OP_MVR_Download(Operator):
         for client in all_clients:
             if client.station_uuid == selected:
                 break
-        DMX_Log.log.info("got client", client.station_name)
+        DMX_Log.log.info(f"got client {client.station_name}")
         for commit in client.commits:
             DMX_Log.log.info(commit.commit_uuid)
             if commit.commit_uuid == self.uuid:
-                DMX_Log.log.info("downloading", commit)
+                DMX_Log.log.info(f"downloading {commit}")
                 DMX_MVR_X_Client.request_file(commit)
                 break
 
