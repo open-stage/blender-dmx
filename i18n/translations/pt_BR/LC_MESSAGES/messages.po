@@ -8,20 +8,21 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-03-10 17:17+0100\n"
-"PO-Revision-Date: 2024-01-09 22:37+0000\n"
+"PO-Revision-Date: 2024-03-18 14:01+0000\n"
 "Last-Translator: Iago Emanuel <iagoemanuel@live.com>\n"
+"Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
+"blenderdmx/main/pt_BR/>\n"
 "Language: pt_BR\n"
-"Language-Team: Portuguese (Brazil) "
-"<https://hosted.weblate.org/projects/blenderdmx/main/pt_BR/>\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.5-dev\n"
 "Generated-By: Babel 2.14.0\n"
 
 #: ../__init__.py:82
 msgid "Pause renderer"
-msgstr ""
+msgstr "Pausar renderização"
 
 #: ../__init__.py:86
 #, fuzzy
@@ -1420,4 +1421,3 @@ msgstr "Arquivos"
 
 #~ msgid "Request current version"
 #~ msgstr ""
-
