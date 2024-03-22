@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-03-10 17:17+0100\n"
-"PO-Revision-Date: 2024-03-20 21:01+0000\n"
+"PO-Revision-Date: 2024-03-23 17:01+0000\n"
 "Last-Translator: WaldiS <sto@tutanota.de>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/blenderdmx/main/"
 "pl/>\n"
@@ -47,9 +47,8 @@ msgid "Status"
 msgstr ""
 
 #: ../__init__.py:121
-#, fuzzy
 msgid "DMX Data"
-msgstr "Tryby DMX"
+msgstr "Dane DMX"
 
 #: ../__init__.py:126
 #, fuzzy
@@ -100,7 +99,7 @@ msgstr ""
 
 #: ../__init__.py:753
 msgid "Display 2D View"
-msgstr ""
+msgstr "Wyświetl widok 2D"
 
 #: ../__init__.py:769
 msgid "Allow Selecting Geometries"
@@ -116,16 +115,15 @@ msgstr ""
 
 #: ../__init__.py:784
 msgid "Error"
-msgstr ""
+msgstr "błąd"
 
 #: ../__init__.py:785
-#, fuzzy
 msgid "Warning"
-msgstr "Ocena"
+msgstr "Ostrzeżenie"
 
 #: ../__init__.py:786
 msgid "Info"
-msgstr ""
+msgstr "Informacja"
 
 #: ../__init__.py:787
 msgid "Debug"
@@ -141,7 +139,7 @@ msgstr ""
 
 #: ../__init__.py:807
 msgid "None"
-msgstr ""
+msgstr "Żaden"
 
 #: ../__init__.py:808
 #, fuzzy
@@ -556,14 +554,12 @@ msgid "Fixture named {} already exists"
 msgstr ""
 
 #: ../panels/fixtures.py:287
-#, fuzzy
 msgid "No GDTF Profile selected."
-msgstr "Nie wybrano profilu"
+msgstr "Nie wybrano profilu GDTF."
 
 #: ../panels/fixtures.py:290
-#, fuzzy
 msgid "No DMX Mode selected."
-msgstr "Nie wybrano profilu"
+msgstr "Nie wybrano trybu DMX."
 
 #: ../panels/fixtures.py:326
 #, fuzzy
@@ -581,9 +577,8 @@ msgid "DMX > Fixture > Remove"
 msgstr "Import urządzeń DMX"
 
 #: ../panels/fixtures.py:426
-#, fuzzy
 msgid "Remove selected fixtures from Scene"
-msgstr "Usuń ten element z zestawu."
+msgstr "Usuń wybrane elementy ze sceny"
 
 #: ../panels/fixtures.py:472
 #, fuzzy
@@ -599,9 +594,8 @@ msgid "Files"
 msgstr "Pliki"
 
 #: ../panels/fixtures.py:512
-#, fuzzy
 msgid "Import data MVR scene file. This may take a long time!"
-msgstr "Importuj urządzenie z lokalnego systemu plików"
+msgstr "Zaimportuj plik sceny MVR z danymi. Może to zająć dużo czasu!"
 
 #: ../panels/fixtures.py:639
 #, fuzzy
@@ -705,9 +699,8 @@ msgid "Deselect All"
 msgstr ""
 
 #: ../panels/programmer.py:61
-#, fuzzy
 msgid "Deselect every fixture in the Scene"
-msgstr "Usuń ten element z zestawu."
+msgstr "Odznacz każdą pozycję na Scenie"
 
 #: ../panels/programmer.py:72
 #, fuzzy
@@ -715,9 +708,8 @@ msgid "Select All"
 msgstr "Sekwencyjny"
 
 #: ../panels/programmer.py:74
-#, fuzzy
 msgid "Select every fixture in the Scene"
-msgstr "Usuń ten element z zestawu."
+msgstr "Wybierz każdy element na Scenie"
 
 #: ../panels/programmer.py:85
 msgid "Select Visible (only filtered)"
