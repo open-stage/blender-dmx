@@ -40,6 +40,14 @@ def clear_animation_data(fixture):
             obj.animation_data.action = None
             obj.animation_data_clear()
 
+        if "gobo" in obj.get("geometry_type", ""):
+            material = fixture.gobo_materials[obj.name].material
+            material_tree = material.node_tree
+
+            if material_tree.animation_data:
+                material_tree.animation_data.action = None
+                material_tree.animation_data_clear()
+
     for emitter_material in fixture.emitter_materials:
         etree = emitter_material.material.node_tree
 
