@@ -530,9 +530,9 @@ class DMX_Fixture(PropertyGroup):
                     shutter_dimmer_geometries[geometry][1] = shutter_dimmer_geometries[geometry][1] * 256 + data_virtual[attribute]
                     shutter_dimmer_geometries[geometry][3] = 256
 
-                elif attribute == "ColorAdd_R": rgb_mixing_geometries[geometry][0] = data_virtual[attribute]
-                elif attribute == "ColorAdd_G": rgb_mixing_geometries[geometry][1] = data_virtual[attribute]
-                elif attribute == "ColorAdd_B": rgb_mixing_geometries[geometry][2] = data_virtual[attribute]
+                elif (attribute == "ColorAdd_R" or attribute == "ColorRGB_Red"): rgb_mixing_geometries[geometry][0] = data_virtual[attribute]
+                elif (attribute == "ColorAdd_G" or attribute == "ColorRGB_Green"): rgb_mixing_geometries[geometry][1] = data_virtual[attribute]
+                elif (attribute == "ColorAdd_B" or attribute == "ColorRGB_Blue"): rgb_mixing_geometries[geometry][2] = data_virtual[attribute]
                 elif attribute == "ColorSub_C": cmy[0] = data_virtual[attribute]
                 elif attribute == "ColorSub_M": cmy[1] = data_virtual[attribute]
                 elif attribute == "ColorSub_Y": cmy[2] = data_virtual[attribute]
@@ -581,9 +581,9 @@ class DMX_Fixture(PropertyGroup):
                 shutter_dimmer_geometries[geometry][1] = shutter_dimmer_geometries[geometry][1] * 256 + data[c]
                 shutter_dimmer_geometries[geometry][3] = 256
             elif (channels[c] == 'Shutter1'): shutter_dimmer_geometries[geometry][0] = data[c]
-            elif (channels[c] == 'ColorAdd_R'): rgb_mixing_geometries[geometry][0] = data[c]
-            elif (channels[c] == 'ColorAdd_G'): rgb_mixing_geometries[geometry][1] = data[c]
-            elif (channels[c] == 'ColorAdd_B'): rgb_mixing_geometries[geometry][2] = data[c]
+            elif (channels[c] == 'ColorAdd_R' or channels[c] == 'ColorRGB_Red'): rgb_mixing_geometries[geometry][0] = data[c]
+            elif (channels[c] == 'ColorAdd_G' or channels[c] == 'ColorRGB_Green'): rgb_mixing_geometries[geometry][1] = data[c]
+            elif (channels[c] == 'ColorAdd_B' or channels[c] == 'ColorRGB_Blue'): rgb_mixing_geometries[geometry][2] = data[c]
             elif (channels[c] == 'ColorSub_C'): cmy[0] = data[c]
             elif (channels[c] == 'ColorSub_M'): cmy[1] = data[c]
             elif (channels[c] == 'ColorSub_Y'): cmy[2] = data[c]
@@ -634,7 +634,6 @@ class DMX_Fixture(PropertyGroup):
         if (cmy[0] != None and cmy[1] != None and cmy[2] != None):
             self.updateCMY(cmy, current_frame)
 
-
         if "Target" in self.objects:
             if self.ignore_movement_dmx:
                 # programming by target, dmx for p/t locked
@@ -643,14 +642,14 @@ class DMX_Fixture(PropertyGroup):
                     if current_frame:
                         target.keyframe_insert(data_path="location", frame=current_frame)
                         target.keyframe_insert(data_path="rotation_euler", frame=current_frame)
-                return
-            if panTilt[0] is None:
-                panTilt[0] = 0 * panTilt[2] # if the device doesn't have pan, align head with base
-            if panTilt[1] is None:
-                panTilt[1] = 0 * panTilt[3]
-            pan = (panTilt[0]/(panTilt[2]*127.0)-1)*540*(math.pi/360)
-            tilt = (panTilt[1]/(panTilt[3]*127.0)-1)*270*(math.pi/360)
-            self.updatePanTiltViaTarget(pan, tilt, current_frame)
+            else:
+                if panTilt[0] is None:
+                    panTilt[0] = 0 * panTilt[2] # if the device doesn't have pan, align head with base
+                if panTilt[1] is None:
+                    panTilt[1] = 0 * panTilt[3]
+                pan = (panTilt[0]/(panTilt[2]*127.0)-1)*540*(math.pi/360)
+                tilt = (panTilt[1]/(panTilt[3]*127.0)-1)*270*(math.pi/360)
+                self.updatePanTiltViaTarget(pan, tilt, current_frame)
 
         else:# no Target
             for geometry, pan_vals in pan_rotating_geometries.items():
@@ -681,6 +680,8 @@ class DMX_Fixture(PropertyGroup):
                 if shutter_dimmer[1] is None:
                     shutter_dimmer[1] = 100 # if device doesn't have dimmer, set default value
                 self.updateShutterDimmer(shutter_dimmer[0], shutter_dimmer[1], geometry, shutter_dimmer[3], current_frame)
+
+        # end of render block
 
     def remove_unset_geometries_from_multigeometry_attributes(self, dictionary):
         """Remove items with values of all None"""
@@ -972,18 +973,19 @@ class DMX_Fixture(PropertyGroup):
         DMX_Log.log.info("Updating pan tilt")
 
         base = self.objects["Root"].object
+        pan = pan + base.rotation_euler[2] # take base z rotation into consideration
+        tilt = tilt + base.rotation_euler[0] # take base x rotation into consideration
 
         # calculate target position, head will follow
         try:
             head = self.objects["Head"].object
         except Exception as e:
-            self.updatePanTiltDirectly(pan, tilt, current_frame)
-            DMX_Log.log.info("Escaping pan tilt update, not enough data")
+            self.updatePTDirectly(None, "pan", pan, current_frame)
+            self.updatePTDirectly(None, "tilt", tilt, current_frame)
+            DMX_Log.log.info("Updating pan/tilt directly via geometries, not via Target due to not located Head")
             return
 
         head_location = head.matrix_world.translation
-        pan = pan + base.rotation_euler[2] # take base z rotation into consideration
-        tilt = tilt + base.rotation_euler[0] # take base x rotation into consideration
 
         target = self.objects['Target'].object
 

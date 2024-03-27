@@ -365,17 +365,20 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                 mode = self.mode if (self.mode != '') else fixture.mode
                 if not self.re_address_only:
                     fixture.build(name, profile, mode, self.universe, address, self.gel_color, self.display_beams, self.add_target, uuid = fixture.uuid, fixture_id = fixture_id)
-                else:
-                    fixture.address = address
-                    fixture.universe = universe
-                    fixture.fixture_id = fixture_id
+                if address + len(fixture.channels) > 512:
+                    universe += 1
+                    address = 1
+                    dmx.ensureUniverseExists(universe)
+                fixture.address = address
+                fixture.universe = universe
+                fixture.fixture_id = fixture_id
 
                 if self.increment_fixture_id:
                     if fixture_id.isnumeric():
                         fixture_id = str(int(fixture_id)+1)
 
                 if self.increment_address:
-                    if (address + len(fixture.channels)) > 512:
+                    if address + len(fixture.channels) > 512:
                         universe += 1
                         address = 1
                         dmx.ensureUniverseExists(universe)
