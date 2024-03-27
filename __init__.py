@@ -241,6 +241,7 @@ class DMX(PropertyGroup):
         path = os.path.join(ADDON_PATH, "assets", "icons")
         DMX.custom_icons.load("DEFAULT_TEST", os.path.join(path, "erlenmeyer.png"), "IMAGE")
         DMX.custom_icons.load("PRODUCTION_ASSIST", os.path.join(path, "pa.png"), "IMAGE")
+        DMX.custom_icons.load("GMA3", os.path.join(path, "ma.png"), "IMAGE")
 
         for cls in DMX.classes_setup:
             bpy.utils.register_class(cls)
