@@ -126,3 +126,329 @@ def get_ies_node(light_obj):
     ies.name = "IES Texture"
     light_obj.data.node_tree.links.new(ies.outputs[0], emission.inputs[1])
     return ies
+
+def getGeometryNodes(obj):
+    name = obj.name
+    beam_diameter = obj.get("beam_diameter", 0.005) #m
+    # initialize geometry_nodes node group
+    geometry_nodes = bpy.data.node_groups.new(type="GeometryNodeTree", name=name)
+    geometry_nodes.is_modifier = True
+    #initialize geometry_nodes nodes
+    #geometry_nodes interface
+    #Socket Geometry
+    geometry_socket = geometry_nodes.interface.new_socket(name = "Geometry", in_out='OUTPUT', socket_type = 'NodeSocketGeometry')
+    geometry_socket.attribute_domain = 'POINT'
+
+    #Socket Geometry
+    geometry_socket_1 = geometry_nodes.interface.new_socket(name = "Geometry", in_out='INPUT', socket_type = 'NodeSocketGeometry')
+    geometry_socket_1.attribute_domain = 'POINT'
+
+    #Socket Material
+    #material_socket = geometry_nodes.interface.new_socket(name = "Material", in_out='INPUT', socket_type = 'NodeSocketMaterial')
+    #material_socket.attribute_domain = 'POINT'
+
+    #node Realize Instances
+    realize_instances = geometry_nodes.nodes.new("GeometryNodeRealizeInstances")
+    realize_instances.name = "Realize Instances"
+
+    #node Vector
+    vector = geometry_nodes.nodes.new("FunctionNodeInputVector")
+    vector.name = "Vector"
+    vector.vector = (0,0,-1)
+
+    #node Set Position
+    set_position = geometry_nodes.nodes.new("GeometryNodeSetPosition")
+    set_position.name = "Set Position"
+    #Offset
+    set_position.inputs[3].default_value = (0.0, 0.0, 0.0)
+
+    #node Collection Info
+    collection_info = geometry_nodes.nodes.new("GeometryNodeCollectionInfo")
+    collection_info.name = "Collection Info"
+    collection_info.transform_space = 'RELATIVE'
+    collection = bpy.context.window_manager.dmx.collections_list
+    if collection and collection.name in bpy.data.collections:
+        collection_info.inputs[0].default_value = collection
+
+    #Separate Children
+    collection_info.inputs[1].default_value = False
+    #Reset Children
+    collection_info.inputs[2].default_value = False
+
+    #node Transform Geometry
+    transform_geometry = geometry_nodes.nodes.new("GeometryNodeTransform")
+    transform_geometry.name = "Transform Geometry"
+    #Translation
+    transform_geometry.inputs[1].default_value = (0.0, 0.0, 0.0)
+    #Scale
+    transform_geometry.inputs[3].default_value = (1.0, 1.0, 1.0)
+
+    #node Group Input
+    group_input = geometry_nodes.nodes.new("NodeGroupInput")
+    group_input.name = "Group Input"
+
+    #node Curve Line
+    curve_line = geometry_nodes.nodes.new("GeometryNodeCurvePrimitiveLine")
+    curve_line.name = "Curve Line"
+    curve_line.mode = 'POINTS'
+    #Start
+    curve_line.inputs[0].default_value = (0.0, 0.0, 0)
+    #End
+    curve_line.inputs[1].default_value = (0.0, 0.0, 0)
+    #Direction
+    curve_line.inputs[2].default_value = (0.0, 0.0, 0)
+    #Length
+    curve_line.inputs[3].default_value = 0
+
+    #node Group Output
+    group_output = geometry_nodes.nodes.new("NodeGroupOutput")
+    group_output.name = "Group Output"
+    group_output.is_active_output = True
+
+    #node Transform Geometry.001
+    transform_geometry_001 = geometry_nodes.nodes.new("GeometryNodeTransform")
+    transform_geometry_001.name = "Transform Geometry.001"
+    #Translation
+    transform_geometry_001.inputs[1].default_value = (0.0, 0.0, 0.0)
+    #Scale
+    transform_geometry_001.inputs[3].default_value = (1.0, 1.0, 1.0)
+
+    #node Join Geometry
+    join_geometry = geometry_nodes.nodes.new("GeometryNodeJoinGeometry")
+    join_geometry.name = "Join Geometry"
+
+    #node Raycast
+    raycast = geometry_nodes.nodes.new("GeometryNodeRaycast")
+    raycast.name = "Raycast"
+    raycast.data_type = 'FLOAT'
+    raycast.mapping = 'INTERPOLATED'
+    #Attribute
+    #raycast.inputs[1].default_value = 0.0
+    #Source Position
+    #raycast.inputs[2].default_value = (0.0, 0.0, 0.0)
+    #Ray Length
+    #raycast.inputs[4].default_value = 100.0
+
+    #node Index
+    index = geometry_nodes.nodes.new("GeometryNodeInputIndex")
+    index.name = "Index"
+
+    #node Compare
+    compare = geometry_nodes.nodes.new("FunctionNodeCompare")
+    compare.name = "Compare"
+    compare.data_type = 'FLOAT'
+    compare.mode = 'ELEMENT'
+    compare.operation = 'EQUAL'
+    #B
+    compare.inputs[1].default_value = 0.0
+    #A_INT
+    compare.inputs[2].default_value = 0
+    #B_INT
+    compare.inputs[3].default_value = 0
+    #A_VEC3
+    compare.inputs[4].default_value = (0.0, 0.0, 0.0)
+    #B_VEC3
+    compare.inputs[5].default_value = (0.0, 0.0, 0.0)
+    #A_COL
+    compare.inputs[6].default_value = (0.0, 0.0, 0.0, 0.0)
+    #B_COL
+    compare.inputs[7].default_value = (0.0, 0.0, 0.0, 0.0)
+    #A_STR
+    compare.inputs[8].default_value = ""
+    #B_STR
+    compare.inputs[9].default_value = ""
+    #C
+    compare.inputs[10].default_value = 0.8999999761581421
+    #Angle
+    compare.inputs[11].default_value = 0.08726649731397629
+    #Epsilon
+    compare.inputs[12].default_value = 0.0010000000474974513
+
+    #node Align Euler to Vector
+    align_euler_to_vector = geometry_nodes.nodes.new("FunctionNodeAlignEulerToVector")
+    align_euler_to_vector.name = "Align Euler to Vector"
+    align_euler_to_vector.axis = 'Z'
+    align_euler_to_vector.pivot_axis = 'AUTO'
+    #Rotation
+    align_euler_to_vector.inputs[0].default_value = (0.0, 0.0, 0.0)
+    #Factor
+    align_euler_to_vector.inputs[1].default_value = 1.0
+
+    #node Curve to Mesh
+    curve_to_mesh = geometry_nodes.nodes.new("GeometryNodeCurveToMesh")
+    curve_to_mesh.name = "Curve to Mesh"
+    #Fill Caps
+    curve_to_mesh.inputs[2].default_value = False
+
+    #node Curve Circle
+    curve_circle = geometry_nodes.nodes.new("GeometryNodeCurvePrimitiveCircle")
+    curve_circle.name = "Curve Circle"
+    curve_circle.mode = 'RADIUS'
+    #Resolution
+    curve_circle.inputs[0].default_value = 32
+    #Point 1
+    curve_circle.inputs[1].default_value = (-1.0, 0.0, 0.0)
+    #Point 2
+    curve_circle.inputs[2].default_value = (0.0, 1.0, 0.0)
+    #Point 3
+    curve_circle.inputs[3].default_value = (1.0, 0.0, 0.0)
+    #Radius
+    curve_circle.inputs[4].default_value = beam_diameter
+
+    #node Resample Curve
+    resample_curve = geometry_nodes.nodes.new("GeometryNodeResampleCurve")
+    resample_curve.name = "Resample Curve"
+    resample_curve.mode = 'LENGTH'
+    #Selection
+    resample_curve.inputs[1].default_value = True
+    #Count
+    resample_curve.inputs[2].default_value = 200
+    #Length
+    resample_curve.inputs[3].default_value = 0.020000000298023224
+
+    #node Set Curve Radius
+    set_curve_radius = geometry_nodes.nodes.new("GeometryNodeSetCurveRadius")
+    set_curve_radius.name = "Set Curve Radius"
+    #Selection
+    set_curve_radius.inputs[1].default_value = True
+
+    #node Random Value
+    random_value = geometry_nodes.nodes.new("FunctionNodeRandomValue")
+    random_value.name = "Random Value"
+    random_value.data_type = 'FLOAT'
+    #Min
+    random_value.inputs[0].default_value = (0.0, 0.0, 0.0)
+    #Max
+    random_value.inputs[1].default_value = (1.0, 1.0, 1.0)
+    #Min_001
+    random_value.inputs[2].default_value = 0.75
+    #Max_001
+    random_value.inputs[3].default_value = 1.0
+    #Min_002
+    random_value.inputs[4].default_value = 0
+    #Max_002
+    random_value.inputs[5].default_value = 100
+    #Probability
+    random_value.inputs[6].default_value = 0.5
+    #ID
+    random_value.inputs[7].default_value = 0
+
+    #node Scene Time
+    scene_time = geometry_nodes.nodes.new("GeometryNodeInputSceneTime")
+    scene_time.name = "Scene Time"
+
+    #node Set Material
+    set_material = geometry_nodes.nodes.new("GeometryNodeSetMaterial")
+    set_material.name = "Set Material"
+    #Selection
+    set_material.inputs[1].default_value = True
+    #set_material.inputs[2].default_value = bpy.data.materials[name]
+    #node Set Material.001
+    set_material_001 = geometry_nodes.nodes.new("GeometryNodeSetMaterial")
+    set_material_001.name = "Set Material.001"
+    #Selection
+    set_material_001.inputs[1].default_value = True
+    set_material_001.inputs[2].default_value = bpy.data.materials[name]
+
+    #Set locations
+    realize_instances.location = (648.1306762695312, -248.14083862304688)
+    vector.location = (-344.9915771484375, -388.932373046875)
+    set_position.location = (342.9999694824219, 16.370197296142578)
+    collection_info.location = (353.42681884765625, -255.13473510742188)
+    transform_geometry.location = (123.29208374023438, -17.09014892578125)
+    group_input.location = (-340.0, 0.0)
+    curve_line.location = (-338.0681457519531, -99.52672576904297)
+    group_output.location = (1638.52880859375, 127.81448364257812)
+    transform_geometry_001.location = (114.59432983398438, 326.46453857421875)
+    join_geometry.location = (1591.364501953125, 254.31729125976562)
+    raycast.location = (1045.16796875, -45.3947868347168)
+    index.location = (380.6321105957031, 357.8047180175781)
+    compare.location = (609.8900756835938, 329.3902587890625)
+    align_euler_to_vector.location = (-176.80389404296875, -246.462646484375)
+    curve_to_mesh.location = (1025.011962890625, 78.24966430664062)
+    curve_circle.location = (772.3076171875, -106.07250213623047)
+    resample_curve.location = (584.7500610351562, 68.5484848022461)
+    set_curve_radius.location = (805.0, 90.10665893554688)
+    random_value.location = (979.1607055664062, 341.25897216796875)
+    scene_time.location = (791.7000732421875, 443.5702819824219)
+    set_material.location = (1252.5028076171875, 290.9101867675781)
+    set_material_001.location = (1300.63720703125, 151.0940704345703)
+
+    #Set dimensions
+    realize_instances.width, realize_instances.height = 140.0, 100.0
+    vector.width, vector.height = 140.0, 100.0
+    set_position.width, set_position.height = 140.0, 100.0
+    collection_info.width, collection_info.height = 140.0, 100.0
+    transform_geometry.width, transform_geometry.height = 140.0, 100.0
+    group_input.width, group_input.height = 140.0, 100.0
+    curve_line.width, curve_line.height = 140.0, 100.0
+    group_output.width, group_output.height = 140.0, 100.0
+    transform_geometry_001.width, transform_geometry_001.height = 140.0, 100.0
+    join_geometry.width, join_geometry.height = 140.0, 100.0
+    raycast.width, raycast.height = 150.0, 100.0
+    index.width, index.height = 140.0, 100.0
+    compare.width, compare.height = 140.0, 100.0
+    align_euler_to_vector.width, align_euler_to_vector.height = 140.0, 100.0
+    curve_to_mesh.width, curve_to_mesh.height = 140.0, 100.0
+    curve_circle.width, curve_circle.height = 140.0, 100.0
+    resample_curve.width, resample_curve.height = 140.0, 100.0
+    set_curve_radius.width, set_curve_radius.height = 140.0, 100.0
+    random_value.width, random_value.height = 140.0, 100.0
+    scene_time.width, scene_time.height = 140.0, 100.0
+    set_material.width, set_material.height = 140.0, 100.0
+    set_material_001.width, set_material_001.height = 140.0, 100.0
+
+    #initialize geometry_nodes links
+    #vector.Vector -> align_euler_to_vector.Vector
+    geometry_nodes.links.new(vector.outputs[0], align_euler_to_vector.inputs[2])
+    #align_euler_to_vector.Rotation -> transform_geometry.Rotation
+    geometry_nodes.links.new(align_euler_to_vector.outputs[0], transform_geometry.inputs[2])
+    #collection_info.Instances -> realize_instances.Geometry
+    geometry_nodes.links.new(collection_info.outputs[0], realize_instances.inputs[0])
+    #realize_instances.Geometry -> raycast.Target Geometry
+    geometry_nodes.links.new(realize_instances.outputs[0], raycast.inputs[0])
+    #vector.Vector -> raycast.Ray Direction
+    geometry_nodes.links.new(vector.outputs[0], raycast.inputs[3])
+    #transform_geometry.Geometry -> set_position.Geometry
+    geometry_nodes.links.new(transform_geometry.outputs[0], set_position.inputs[0])
+    #raycast.Hit Position -> set_position.Position
+    geometry_nodes.links.new(raycast.outputs[1], set_position.inputs[2])
+    #group_input.Geometry -> transform_geometry_001.Geometry
+    geometry_nodes.links.new(group_input.outputs[0], transform_geometry_001.inputs[0])
+    #curve_line.Curve -> transform_geometry.Geometry
+    geometry_nodes.links.new(curve_line.outputs[0], transform_geometry.inputs[0])
+    #set_material.Geometry -> join_geometry.Geometry
+    geometry_nodes.links.new(set_material.outputs[0], join_geometry.inputs[0])
+    #set_material_001.Geometry -> join_geometry.Geometry
+    geometry_nodes.links.new(set_material_001.outputs[0], join_geometry.inputs[0])
+    #index.Index -> compare.A
+    geometry_nodes.links.new(index.outputs[0], compare.inputs[0])
+    #compare.Result -> set_position.Selection
+    geometry_nodes.links.new(compare.outputs[0], set_position.inputs[1])
+    #align_euler_to_vector.Rotation -> transform_geometry_001.Rotation
+    geometry_nodes.links.new(align_euler_to_vector.outputs[0], transform_geometry_001.inputs[2])
+    #join_geometry.Geometry -> group_output.Geometry
+    geometry_nodes.links.new(join_geometry.outputs[0], group_output.inputs[0])
+    #set_curve_radius.Curve -> curve_to_mesh.Curve
+    geometry_nodes.links.new(set_curve_radius.outputs[0], curve_to_mesh.inputs[0])
+    #curve_circle.Curve -> curve_to_mesh.Profile Curve
+    geometry_nodes.links.new(curve_circle.outputs[0], curve_to_mesh.inputs[1])
+    #set_position.Geometry -> resample_curve.Curve
+    geometry_nodes.links.new(set_position.outputs[0], resample_curve.inputs[0])
+    #resample_curve.Curve -> set_curve_radius.Curve
+    geometry_nodes.links.new(resample_curve.outputs[0], set_curve_radius.inputs[0])
+    #random_value.Value -> set_curve_radius.Radius
+    geometry_nodes.links.new(random_value.outputs[1], set_curve_radius.inputs[2])
+    #scene_time.Frame -> random_value.Seed
+    geometry_nodes.links.new(scene_time.outputs[1], random_value.inputs[8])
+    #transform_geometry_001.Geometry -> set_material.Geometry
+    geometry_nodes.links.new(transform_geometry_001.outputs[0], set_material.inputs[0])
+    #group_input.Material -> set_material.Material
+    #geometry_nodes.links.new(group_input.outputs[1], set_material.inputs[2])
+    #curve_to_mesh.Mesh -> set_material_001.Geometry
+    geometry_nodes.links.new(curve_to_mesh.outputs[0], set_material_001.inputs[0])
+    #group_input.Material -> set_material_001.Material
+    #geometry_nodes.links.new(group_input.outputs[1], set_material_001.inputs[2])
+    return geometry_nodes
+
+

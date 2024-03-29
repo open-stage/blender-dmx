@@ -88,6 +88,9 @@ class LampType(Enum):
     permitted = ["Discharge", "Tungsten", "Halogen", "LED"]
     _default = "Discharge"
 
+class ColorType(Enum):
+    permitted = ["RGB", "SingleWaveLength"]
+    _default = "RGB"
 
 class FuseRating(Enum):
     permitted = ["B", "C", "D", "K", "Z"]

@@ -150,6 +150,9 @@ class DMX_PT_Setup_Volume(Panel):
             row1.operator("dmx.fixture_set_cycles_beam_size_normal", icon="CONE")
             row2.operator("dmx.fixture_set_cycles_beam_size_small", icon="LIGHT_SPOT")
             row0.enabled = row1.enabled = row2.enabled = enabled
+        box = layout.column().box()
+        row = box.row()
+        row.prop(context.window_manager.dmx, 'collections_list')
 
 
 class DMX_PT_Setup_Viewport(Panel):

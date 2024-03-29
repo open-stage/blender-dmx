@@ -186,6 +186,8 @@ class FixtureType:
                 self.geometries.append(GeometryWiringObject(xml_node=i))
             for i in geometry_collect.findall("GeometryReference"):
                 self.geometries.append(GeometryReference(xml_node=i))
+            for i in geometry_collect.findall("Laser"):
+                self.geometries.append(GeometryLaser(xml_node=i))
         if dmx_mode_collect := self._root.find("DMXModes"):
             self.dmx_modes = [
                 DmxMode(xml_node=i) for i in dmx_mode_collect.findall("DMXMode")
@@ -592,6 +594,8 @@ class Geometry(BaseNode):
             self.geometries.append(GeometryWiringObject(xml_node=i))
         for i in xml_node.findall("GeometryReference"):
             self.geometries.append(GeometryReference(xml_node=i))
+        for i in xml_node.findall("Laser"):
+            self.geometries.append(GeometryLaser(xml_node=i))
 
     def __str__(self):
         return f"{self.name} ({self.model})"
@@ -680,6 +684,67 @@ class GeometryBeam(Geometry):
             xml_node.attrib.get("ColorRenderingIndex", 100)
         )
 
+class GeometryLaser(Geometry):
+    def __init__(
+        self,
+        color_type: "ColorType" = ColorType(None),
+        color: float = 0,
+        output_strength: float = 0,
+        emitter: "NodeLink" = None,
+        beam_diameter: float = 0,
+        beam_divergence_min: float = 0,
+        beam_divergence_max: float = 0,
+        scan_angle_pan: float = 0,
+        scan_angle_tilt: float = 0,
+        scan_speed: float = 0,
+        protocols: List = [],
+        *args,
+        **kwargs,
+    ):
+        self.color_type = color_type
+        self.color = color
+        self.output_strength = output_strength
+        self.emitter = emitter
+        self.beam_diameter = beam_diameter
+        self.beam_divergence_min = beam_divergence_min
+        self.beam_divergence_max = beam_divergence_max
+        self.scan_angle_pan = scan_angle_pan
+        self.scan_angle_tilt = scan_angle_tilt
+        self.scan_speed = scan_speed
+        self.protocols = protocols
+        super().__init__(*args, **kwargs)
+
+    def _read_xml(self, xml_node: "Element"):
+        super()._read_xml(xml_node)
+        self.color_type = ColorType(xml_node.attrib.get("ColorType"))
+        self.color = float(xml_node.attrib.get("Color", 530)) # Green
+        self.output_strength = float(xml_node.attrib.get("OutputStrength", 1))
+        self.emitter = NodeLink("EmitterCollect", xml_node.attrib.get("Emitter"))
+        self.beam_diameter = float(xml_node.attrib.get("BeamDiameter", 5))
+        self.beam_divergence_min = float(xml_node.attrib.get("BeamDivergenceMin", 0))
+        self.beam_divergence_max = float(xml_node.attrib.get("BeamDivergenceMax", 0))
+        self.scan_angle_pan = float(xml_node.attrib.get("ScanAnglePan", 30))
+        self.scan_angle_tilt = float(xml_node.attrib.get("ScanAngleTilt", 30))
+        self.scan_speed = float(xml_node.attrib.get("ScanSpeed", 0))
+        self.protocols = [
+            Protocol(xml_node=i) for i in xml_node.findall("Protocol")
+        ]
+
+class Protocol(BaseNode):
+    def __init__(
+        self,
+        name: str = None,
+        *args,
+        **kwargs,
+    ):
+        self.name = name
+        super().__init__(*args, **kwargs)
+
+    def _read_xml(self, xml_node: "Element"):
+        self.name = xml_node.attrib.get("Name")
+
+    def __str__(self):
+        return f"{self.name}"
 
 class GeometryWiringObject(Geometry):
     def __init__(

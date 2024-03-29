@@ -12,7 +12,7 @@ import uuid
 import random
 import os
 
-from dmx.material import getEmitterMaterial, get_gobo_material, set_light_nodes, get_ies_node
+from dmx.material import getEmitterMaterial, get_gobo_material, set_light_nodes, get_ies_node, getGeometryNodes
 from dmx.model import DMX_Model
 from dmx.logging import DMX_Log
 
@@ -36,6 +36,7 @@ from bpy.types import (PropertyGroup,
                        Object,
                        Image,
                        Material,
+                       GeometryNodeTree,
                        Text)
 
 # Shader Nodes default labels
@@ -77,6 +78,10 @@ class DMX_Emitter_Material(PropertyGroup):
         name = "Emitter > Material",
         type = Material)
 
+class DMX_Geometry_Node(PropertyGroup):
+    node: PointerProperty(
+        name = "Geometry Node",
+        type = GeometryNodeTree)
 
 class DMX_IES_Data(PropertyGroup):
     ies: PointerProperty(
@@ -121,6 +126,10 @@ class DMX_Fixture(PropertyGroup):
     emitter_materials: CollectionProperty(
         name = "Fixture > Materials",
         type = DMX_Emitter_Material)
+
+    geometry_nodes: CollectionProperty(
+        name = "Fixture > Geometry Nodes",
+        type = DMX_Geometry_Node)
 
     gobo_materials: CollectionProperty(
         name = "Fixture > Gobo Materials",
@@ -265,6 +274,7 @@ class DMX_Fixture(PropertyGroup):
         self.channels.clear()
         self.virtual_channels.clear()
         self.emitter_materials.clear()
+        self.geometry_nodes.clear()
         self.gobo_materials.clear()
         self.ies_data.clear()
 
@@ -435,6 +445,25 @@ class DMX_Fixture(PropertyGroup):
                 obj.material_slots[0].link = 'OBJECT' # ensure that each fixture has it's own material
                 obj.material_slots[0].material = gobo_material
                 material.material = gobo_material
+
+            # Setup laser geometry nodes
+            if "laser" in obj.get("geometry_type", ""):
+                #emitter
+                emitter = obj
+                self.emitter_materials.add()
+                self.emitter_materials[-1].name = obj.name
+                emitter_material = getEmitterMaterial(obj.name)
+                emitter_material.shadow_method = "NONE" # laser beam should not cast shadows
+                self.emitter_materials[-1].material = emitter_material
+                #laser beam
+                geo_node = obj
+                node = self.geometry_nodes.add()
+                node.name = obj.name
+                modifier = geo_node.modifiers.new(type="NODES", name="base_object")
+                node_group = getGeometryNodes(obj)
+                modifier.node_group = node_group
+                node.node = node_group
+
 
         # setup light for gobo in cycles
         for light in self.lights:
@@ -760,6 +789,15 @@ class DMX_Fixture(PropertyGroup):
 
                 if current_frame:
                     light.object.data.keyframe_insert(data_path='energy', frame=current_frame)
+
+            for nodes in self.geometry_nodes:
+                vector = nodes.node.nodes["Vector"]
+                if dimmer > 0:
+                    vector.vector = (0,0,-1)
+                else:
+                    vector.vector = (0,0,0)
+                if current_frame:
+                    vector.keyframe_insert(data_path='vector', frame=current_frame)
 
         except Exception as e:
             DMX_Log.log.error(f"Error updating dimmer {e}")
