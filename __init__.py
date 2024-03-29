@@ -77,6 +77,16 @@ _ = DMX_Lang._
 
 class DMX_TempData(PropertyGroup):
 
+    def onUpdateCollections(self, context):
+        dmx = context.scene.dmx
+        dmx.update_laser_collision_collect()
+
+    collections_list: PointerProperty(
+            type=bpy.types.Collection,
+            name = _("Laser collistions"),
+            update = onUpdateCollections
+            )
+
     pause_render: BoolProperty(
         description="The renderer is paused during MVR import and in 2D view. This checkbox allows to re-enable it in case of some failure during import, which would leave it paused",
         name = _("Pause renderer"),
@@ -138,6 +148,7 @@ class DMX(PropertyGroup):
                     DMX_Fixture_Image,
                     DMX_Emitter_Material,
                     DMX_IES_Data,
+                    DMX_Geometry_Node,
                     DMX_Fixture_Channel,
                     DMX_Fixture,
                     DMX_MVR_Object,
@@ -1624,6 +1635,14 @@ class DMX(PropertyGroup):
 
     def set_fixtures_filter(self, fixtures_filter):
         DMX.fixtures_filter = fixtures_filter
+
+    def update_laser_collision_collect(self):
+        for fixture in self.fixtures:
+            for nodes in fixture.geometry_nodes:
+                print("nodes", nodes)
+                collection_info = nodes.node.nodes["Collection Info"]
+                collection = bpy.context.window_manager.dmx.collections_list
+                collection_info.inputs[0].default_value = collection
 
 
 # Handlers #

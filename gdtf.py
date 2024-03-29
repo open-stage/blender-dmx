@@ -374,6 +374,8 @@ class DMX_GDTF():
                 return "camera"
             if isinstance(geometry, pygdtf.GeometryBeam):
                 return "beam"
+            if isinstance(geometry, pygdtf.GeometryLaser):
+                return "laser"
             if isinstance(geometry, pygdtf.GeometryAxis):
                 return "axis"
             if isinstance(geometry, pygdtf.GeometryReference):
@@ -432,6 +434,15 @@ class DMX_GDTF():
                                            length=gobo_radius, width=gobo_radius, height = 0, primitive_type = "Plane",
                                            beam_radius = geometry.beam_radius)
             create_gobo(geometry, goboGeometry)
+
+        def create_laser(geometry):
+            if (sanitize_obj_name(geometry) not in objs):
+                return
+            obj_child = objs[sanitize_obj_name(geometry)]
+            if "laser" not in obj_child.name.lower():
+                obj_child.name=f"Laser {obj_child.name}"
+            obj_child.visible_shadow = False
+            obj_child["beam_diameter"] = geometry.beam_diameter
 
         def create_gobo(geometry, goboGeometry):
             obj = DMX_GDTF.loadBlenderPrimitive(goboGeometry)
@@ -499,6 +510,8 @@ class DMX_GDTF():
 
             if isinstance(geometry, pygdtf.GeometryBeam):
                 create_beam(geometry)
+            if isinstance(geometry, pygdtf.GeometryLaser):
+                create_laser(geometry)
             elif isinstance(geometry, (pygdtf.GeometryMediaServerCamera)):
                 create_camera(geometry)
 
@@ -511,6 +524,8 @@ class DMX_GDTF():
 
                 if isinstance(reference, pygdtf.GeometryBeam):
                     create_beam(reference)
+                if isinstance(reference, pygdtf.GeometryLaser):
+                    create_laser(reference)
                 elif isinstance(reference, (pygdtf.GeometryMediaServerCamera)):
                     create_camera(reference)
 
