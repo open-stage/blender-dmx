@@ -55,6 +55,11 @@ def clear_animation_data(fixture):
             etree.animation_data.action = None
             etree.animation_data_clear()
 
+    for nodes in fixture.geometry_nodes:
+        if nodes.node.animation_data:
+            nodes.node.animation_data.action = None
+            nodes.node.animation_data_clear()
+
     for light in fixture.lights:
         ld = light.object.data
 
