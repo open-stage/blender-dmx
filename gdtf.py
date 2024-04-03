@@ -442,7 +442,11 @@ class DMX_GDTF():
             if "laser" not in obj_child.name.lower():
                 obj_child.name=f"Laser {obj_child.name}"
             obj_child.visible_shadow = False
+            obj_child.rotation_mode = "XYZ"
             obj_child["beam_diameter"] = geometry.beam_diameter
+            obj_child["rot_x"] = obj_child.rotation_euler[0]
+            obj_child["rot_y"] = obj_child.rotation_euler[1]
+            obj_child["rot_z"] = obj_child.rotation_euler[2]
 
         def create_gobo(geometry, goboGeometry):
             obj = DMX_GDTF.loadBlenderPrimitive(goboGeometry)

@@ -915,6 +915,16 @@ class DMX_Fixture(PropertyGroup):
                     if current_frame:
                         obj.keyframe_insert(data_path='scale', frame=current_frame)
 
+                if "laser" in obj.get("geometry_type", ""):
+                    # multiplication makes this easy to only apply on used axis
+                    # but we could also re-calculate this to proper angle
+
+                    obj.rotation_euler[0] = obj.get("rot_x", 0) * zoom * 0.1
+                    obj.rotation_euler[1] = obj.get("rot_y", 0) * zoom * 0.1
+                    obj.rotation_euler[2] = obj.get("rot_z", 0) * zoom * 0.1
+                    if current_frame:
+                        obj.keyframe_insert(data_path="rotation_euler", frame=current_frame)
+
             for light in self.lights:
                 light.object.data.spot_size=spot_size
 
