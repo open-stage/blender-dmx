@@ -106,7 +106,7 @@ class DMX_PT_Fixtures_Local_Fixtures(Panel):
         )
 
         layout.operator(DMX_OP_Update_Local_Fixtures.bl_idname, icon=DMX_Icon.FILE_REFRESH)
-        layout.operator(DMX_OP_Import_Fixture_From_File.bl_idname, icon=DMX_Icon.FILE)
+        layout.operator(DMX_OP_Import_Fixture_From_File.bl_idname, icon="IMPORT")
 
 
 class DMX_PT_Fixtures_Local_Profile_Detail(Panel):

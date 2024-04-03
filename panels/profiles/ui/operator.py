@@ -40,7 +40,7 @@ class DMX_OP_Import_Fixture_Update_Share(Operator):
 
 
 class DMX_OP_Import_Fixture_From_File(Operator):
-    bl_label = _("Import from file")
+    bl_label = _("Import GDTF Profile")
     bl_description = _("Import fixture from local filesystem")
     bl_idname = "dmx.import_fixture_from_file"
     bl_options = {"UNDO"}
