@@ -4,3 +4,5 @@ Icons attribution
 - Production Assist pa.png from https://www.production-assist.com/
 - MA Lighting ma.png https://www.malighting.com/
 - BlenderDMX icon - SVG drawn by vanous, initial concept Hugo Aboud
+- mvr_file_icon_small.png - GDTF-Share.com
+- gdtf_file_icon_small.png -GDTF-Share.com
