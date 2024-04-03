@@ -73,7 +73,7 @@ class DMX_MT_Fixture(Menu):
 
         # "Import MVR scene"
         row = layout.row()
-        row.operator("dmx.import_mvr_scene", text=_("Import MVR scene"), icon="IMPORT")
+        row.operator("dmx.import_mvr_scene", text=_("Import MVR Scene"), icon="IMPORT")
 
 
 class DMX_MT_Fixture_Manufacturers(Menu):

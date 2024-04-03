@@ -16,6 +16,8 @@ from dmx.material import getVolumeScatterMaterial
 from dmx.util import getSceneRect
 import dmx.version as version
 from dmx import bl_info as application_info
+from .fixtures import DMX_OT_Fixture_Import_GDTF, DMX_OT_Fixture_Import_MVR
+
 
 from dmx.i18n import DMX_Lang
 _ = DMX_Lang._
@@ -203,6 +205,27 @@ class DMX_PT_Setup_Extras(Panel):
         col1.label(text = _("Status: {}").format(context.window_manager.dmx.release_version_status))
         col2 = row.column()
         col2.operator('wm.url_open', text="", icon="SHADING_WIRE").url="https://github.com/open-stage/blender-dmx/releases/latest"
+
+class DMX_PT_Setup_Import(Panel):
+    bl_label = _("Import")
+    bl_idname = "DMX_PT_Setup_Import"
+    bl_parent_id = "DMX_PT_Setup"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_category = "DMX"
+    bl_context = "objectmode"
+    bl_options = {'DEFAULT_CLOSED'}
+
+    def draw(self, context):
+        layout = self.layout
+        dmx = context.scene.dmx
+        # "Import GDTF Profile"
+        row = layout.row()
+        row.operator(DMX_OT_Fixture_Import_GDTF.bl_idname, text=_("Import GDTF Profile"), icon="IMPORT")
+
+        # "Import MVR scene"
+        row = layout.row()
+        row.operator(DMX_OT_Fixture_Import_MVR.bl_idname, text=_("Import MVR Scene"), icon="IMPORT")
 
 class DMX_OT_Setup_Open_LogFile(Operator):
     bl_label = _("Show logging directory")

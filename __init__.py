@@ -183,6 +183,7 @@ class DMX(PropertyGroup):
                 DMX_PT_Setup_Viewport,
                 DMX_PT_Setup_Logging,
                 DMX_OT_Setup_Open_LogFile,
+                DMX_PT_Setup_Import,
                 DMX_PT_Setup_Extras,
                 DMX_MT_Fixture,
                 DMX_MT_Fixture_Manufacturers,
@@ -1642,7 +1643,6 @@ class DMX(PropertyGroup):
     def update_laser_collision_collect(self):
         for fixture in self.fixtures:
             for nodes in fixture.geometry_nodes:
-                print("nodes", nodes)
                 collection_info = nodes.node.nodes["Collection Info"]
                 collection = bpy.context.window_manager.dmx.collections_list
                 collection_info.inputs[0].default_value = collection
