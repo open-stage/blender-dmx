@@ -254,6 +254,8 @@ class DMX(PropertyGroup):
         DMX.custom_icons.load("DEFAULT_TEST", os.path.join(path, "erlenmeyer.png"), "IMAGE")
         DMX.custom_icons.load("PRODUCTION_ASSIST", os.path.join(path, "pa.png"), "IMAGE")
         DMX.custom_icons.load("GMA3", os.path.join(path, "ma.png"), "IMAGE")
+        DMX.custom_icons.load("GDTF_FILE", os.path.join(path, "gdtf_file_icon_small.png"), "IMAGE")
+        DMX.custom_icons.load("MVR_FILE", os.path.join(path, "mvr_file_icon_small.png"), "IMAGE")
 
         for cls in DMX.classes_setup:
             bpy.utils.register_class(cls)
