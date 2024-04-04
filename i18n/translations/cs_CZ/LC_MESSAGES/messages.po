@@ -8,26 +8,29 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-04-04 19:51+0200\n"
-"PO-Revision-Date: 2024-03-11 17:01+0000\n"
+"PO-Revision-Date: 2024-04-05 19:01+0000\n"
 "Last-Translator: vanous <petr+weblate@linuks.cz>\n"
+"Language-Team: Czech <https://hosted.weblate.org/projects/blenderdmx/main/cs/"
+">\n"
 "Language: cs_CZ\n"
-"Language-Team: Czech "
-"<https://hosted.weblate.org/projects/blenderdmx/main/cs/>\n"
-"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
+"X-Generator: Weblate 5.5-dev\n"
 "Generated-By: Babel 2.14.0\n"
 
 #: ../__init__.py:86
 msgid "Laser collision collection"
-msgstr ""
+msgstr "Laserová kolekce kolizí"
 
 #: ../__init__.py:87
 msgid ""
 "Laser beams are projected onto objects in this collection. The beam stops"
 " at the first object colliding with the beam."
 msgstr ""
+"Laserové paprsky jsou promítány na objekty v této kolekci. Paprsek se "
+"zastaví na prvním objektu, na který narazí."
 
 #: ../__init__.py:93
 msgid "Pause renderer"
@@ -419,9 +422,8 @@ msgid "Import GDTF Profile"
 msgstr "Importovat GDTF soubor"
 
 #: ../panels/fixtures.py:76 ../panels/setup.py:228
-#, fuzzy
 msgid "Import MVR Scene"
-msgstr "Importovat MVR scénu"
+msgstr "Importovat MVR Scénu"
 
 #: ../panels/fixtures.py:80
 msgid "DMX > Fixture > Add > Manufacturers"
@@ -1339,4 +1341,3 @@ msgstr "Profily"
 
 #~ msgid "Import from file"
 #~ msgstr "Import ze souboru"
-
