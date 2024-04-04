@@ -83,7 +83,8 @@ class DMX_TempData(PropertyGroup):
 
     collections_list: PointerProperty(
             type=bpy.types.Collection,
-            name = _("Laser collistions"),
+            name = _("Laser collision collection"),
+            description = _("Laser beams are projected onto objects in this collection. The beam stops at the first object colliding with the beam."),
             update = onUpdateCollections
             )
 
