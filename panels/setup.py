@@ -152,7 +152,10 @@ class DMX_PT_Setup_Volume(Panel):
             row0.enabled = row1.enabled = row2.enabled = enabled
         box = layout.column().box()
         row = box.row()
-        row.prop(context.window_manager.dmx, 'collections_list')
+        col1 = row.column()
+        col1.prop(context.window_manager.dmx, 'collections_list')
+        col2 = row.column()
+        col2.operator('wm.url_open', text="", icon="HELP").url="https://blenderdmx.eu/docs/laser/"
 
 
 class DMX_PT_Setup_Viewport(Panel):
