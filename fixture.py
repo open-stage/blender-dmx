@@ -344,6 +344,11 @@ class DMX_Fixture(PropertyGroup):
         if "gobos" not in self.images:
             has_gobos = False # faulty GDTF might have channels but no images
 
+        self["slot_colors"] = []
+        slot_colors = DMX_GDTF.get_wheel_slot_colors(gdtf_profile)
+        if len(slot_colors)>1:
+            self["slot_colors"]=slot_colors
+
         links = {}
         base = self.get_root(model_collection)
         head = self.get_tilt(model_collection)
@@ -530,6 +535,7 @@ class DMX_Fixture(PropertyGroup):
         panTilt = [None,None, 1, 1] # pan, tilt, 1 = 8bit, 256 = 16bit
         cmy = [None,None,None]
         zoom = None
+        color1 = None
         rgb_mixing_geometries={}
         xyz_moving_geometries={}
         xyz_rotating_geometries={}
@@ -633,6 +639,9 @@ class DMX_Fixture(PropertyGroup):
                 tilt_rotating_geometries[geometry][0] = tilt_rotating_geometries[geometry][0] * 256 + data[c]
                 tilt_rotating_geometries[geometry][1] = 256
             elif (channels[c] == 'Zoom'): zoom = data[c]
+            elif (channels[c] == 'Color1'): color1 = data[c]
+            elif (channels[c] == 'Color2'): color1 = data[c]
+            elif (channels[c] == 'ColorMacro1'): color1 = data[c]
             elif (channels[c] == 'Gobo1'): gobo1[0] = data[c]
             elif (channels[c] == 'Gobo1Pos'): gobo1[1] = data[c]
             elif (channels[c] == 'Gobo2'): gobo1[0] = data[c]
@@ -658,10 +667,13 @@ class DMX_Fixture(PropertyGroup):
 
         if not len(rgb_mixing_geometries):# handle units without mixing
             if not all([c == 1.0 for c in self.gel_color[:3]]): #gel color is set and has priority
-                    self.updateRGB([255, 255, 255], None, current_frame)
+                self.updateRGB([255, 255, 255], None, current_frame)
 
         if (cmy[0] != None and cmy[1] != None and cmy[2] != None):
             self.updateCMY(cmy, current_frame)
+
+        if (color1 is not None):
+            self.updateColorWheel(color1, current_frame)
 
         if "Target" in self.objects:
             if self.ignore_movement_dmx:
@@ -934,6 +946,18 @@ class DMX_Fixture(PropertyGroup):
         except Exception as e:
             DMX_Log.log.error(f"Error updating zoom {e}")
         return zoom
+
+
+    def updateColorWheel(self, color1, current_frame):
+        if not len(self["slot_colors"]) or color1 == 0:
+            return
+
+        colors = self["slot_colors"]
+        index = int(color1/int(255/(len(colors)-1)))
+
+        if len(colors) > index:
+            color = colors[index]
+            self.updateRGB(color, None, current_frame=current_frame)
 
     def updateGobo(self, gobo1, current_frame):
         if "gobos" not in self.images:
