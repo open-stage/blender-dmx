@@ -390,7 +390,7 @@ class DMX(PropertyGroup):
 
     data_version: IntProperty(
             name = "BlenderDMX data version, bump when changing RNA structure and provide migration script",
-            default = 7,
+            default = 8,
             )
 
     def get_fixture_by_index(self, index):
@@ -683,7 +683,7 @@ class DMX(PropertyGroup):
             DMX_Log.log.info("To make gobos working again, edit fixtures with gobos - re-load GDTF files (Fixtures → Edit, uncheck Re-address only)")
 
         if file_data_version < 7:
-            DMX_Log.log.info("Running migration 5→6")
+            DMX_Log.log.info("Running migration 6→7")
             dmx = bpy.context.scene.dmx
             for fixture in dmx.fixtures:
                 for light in fixture.lights:
@@ -700,6 +700,14 @@ class DMX(PropertyGroup):
             objs = bpy.data.materials
             objs.remove(objs["DMX_Volume"], do_unlink=True)
             DMX_Log.log.info("Updating Volume material")
+
+        if file_data_version < 8:
+            DMX_Log.log.info("Running migration 7→8")
+            dmx = bpy.context.scene.dmx
+            for fixture in dmx.fixtures:
+                if "slot_colors" not in fixture:
+                    DMX_Log.log.info("Adding slot_colors array to fixture")
+                    fixture["slot_colors"] = []
 
         DMX_Log.log.info("Migration done.")
         # add here another if statement for next migration condition... like:
@@ -1184,6 +1192,25 @@ class DMX(PropertyGroup):
         self.render()
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
+    def onProgrammerColorWheel(self, context):
+        bpy.app.handlers.depsgraph_update_post.clear()
+        for fixture in self.fixtures:
+            if fixture.collection is None:
+                continue
+            for obj in fixture.collection.objects:
+                if (obj in bpy.context.selected_objects):
+                    fixture.setDMX({
+                        'Color1':int(self.programmer_color_wheel)
+                    })
+                    fixture.setDMX({
+                        'Color2':int(self.programmer_color_wheel)
+                    })
+                    fixture.setDMX({
+                        'ColorMacro1':int(self.programmer_color_wheel)
+                    })
+        self.render()
+        bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
+
     def onProgrammerGobo(self, context):
         bpy.app.handlers.depsgraph_update_post.clear()
         for fixture in self.fixtures:
@@ -1243,6 +1270,13 @@ class DMX(PropertyGroup):
         default = 25,
         update = onProgrammerZoom)
 
+    programmer_color_wheel: IntProperty(
+        name = "Programmer Color Wheel",
+        min = 0,
+        max = 255,
+        default = 0,
+        update = onProgrammerColorWheel)
+
     programmer_gobo: IntProperty(
         name = "Programmer Gobo",
         min = 0,
@@ -1275,6 +1309,7 @@ class DMX(PropertyGroup):
             self.programmer_tilt = 0
             self.programmer_zoom = 25
             self.programmer_shutter = 0
+            self.programmer_color_wheel = 0
             self.programmer_gobo = 0
             self.programmer_gobo_index = 63
             return
@@ -1289,6 +1324,12 @@ class DMX(PropertyGroup):
             self.programmer_shutter = int(data['Shutter1']/256.0)
         if ('Zoom' in data):
             self.programmer_zoom = int(data['Zoom'])
+        if ('Color1' in data):
+            self.programmer_color_wheel = int(data['Color1'])
+        if ('Color2' in data):
+            self.programmer_color_wheel = int(data['Color2'])
+        if ('ColorMacro1' in data):
+            self.programmer_color_wheel = int(data['ColorMacro1'])
         if ('Gobo1' in data):
             self.programmer_gobo = int(data['Gobo1'])
         if ('Gobo2' in data):

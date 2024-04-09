@@ -17,7 +17,7 @@ from mathutils import Euler, Matrix
 from dmx import pygdtf
 from dmx.logging import DMX_Log
 from dmx.io_scene_3ds.import_3ds import load_3ds
-from dmx.util import sanitize_obj_name
+from dmx.util import sanitize_obj_name, xyY2rgbaa
 
 class DMX_GDTF():
 
@@ -130,6 +130,16 @@ class DMX_GDTF():
                 gobos.append(gobo)
 
         return gobos
+
+    @staticmethod
+    def get_wheel_slot_colors(profile):
+        colors = []
+        for wheel in profile.wheels:
+            for slot in wheel.wheel_slots:
+                color = xyY2rgbaa(slot.color)
+                if color not in colors:
+                    colors.append(color)
+        return colors
 
     @staticmethod
     def extract_gobos_as_sequence(profile):

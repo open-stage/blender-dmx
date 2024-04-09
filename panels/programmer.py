@@ -155,6 +155,7 @@ class DMX_OT_Programmer_Clear(Operator):
         scene.dmx.programmer_pan = 0.0
         scene.dmx.programmer_tilt = 0.0
         scene.dmx.programmer_zoom = 25
+        scene.dmx.programmer_color_wheel = 0
         scene.dmx.programmer_gobo = 0
         scene.dmx.programmer_gobo_index = 63
         scene.dmx.programmer_shutter = 0
@@ -322,6 +323,8 @@ class DMX_PT_Programmer(Panel):
                     col1.enabled = False
             if selected_fixtures[0].has_attribute("Zoom"):
                 box.prop(scene.dmx,"programmer_zoom", text=_("Zoom"), translate = False)
+            if selected_fixtures[0].has_attribute("Color1") or selected_fixtures[0].has_attribute("Color2") or selected_fixtures[0].has_attribute("ColorMacro1"):
+                box.prop(scene.dmx,"programmer_color_wheel", text=_("Color Wheel"), translate = False)
             if selected_fixtures[0].has_attribute("Gobo"):
                 box.prop(scene.dmx,"programmer_gobo", text=_("Gobo"), translate = False)
                 box.prop(scene.dmx,"programmer_gobo_index", text=_("Gobo Rotation"), translate = False)
@@ -342,6 +345,7 @@ class DMX_PT_Programmer(Panel):
                 col2.operator("dmx.ignore_movement_false", text="", icon="UNLOCKED")
 
             box.prop(scene.dmx,"programmer_zoom", text=_("Zoom"), translate = False)
+            box.prop(scene.dmx,"programmer_color_wheel", text=_("Color Wheel"), translate = False)
             box.prop(scene.dmx,"programmer_gobo", text=_("Gobo"), translate = False)
             box.prop(scene.dmx,"programmer_gobo_index", text=_("Gobo Rotation"), translate = False)
             box.prop(scene.dmx,"programmer_shutter", text=_("Strobe"), translate = False)
