@@ -21,7 +21,7 @@ from dmx import pygdtf
 
 from dmx.gdtf import DMX_GDTF
 from dmx.data import DMX_Data
-from dmx.util import cmy_to_rgb
+from dmx.util import cmy_to_rgb, add_rgb
 from dmx.osc_utils import DMX_OSC_Handlers
 from bpy.props import (IntProperty,
                        FloatProperty,
@@ -660,20 +660,22 @@ class DMX_Fixture(PropertyGroup):
         self.remove_unset_geometries_from_multigeometry_attributes2(pan_rotating_geometries)
         self.remove_unset_geometries_from_multigeometry_attributes2(tilt_rotating_geometries)
 
+        colorwheel_color = None
+        if (color1 is not None):
+            colorwheel_color = self.get_colorwheel_color(color1)
+
         for geometry, rgb in rgb_mixing_geometries.items():
             if len(rgb_mixing_geometries)==1:
                 geometry = None
-            self.updateRGB(rgb, geometry, current_frame)
+            self.updateRGB(rgb, geometry, colorwheel_color, current_frame)
 
         if not len(rgb_mixing_geometries):# handle units without mixing
             if not all([c == 1.0 for c in self.gel_color[:3]]): #gel color is set and has priority
-                self.updateRGB([255, 255, 255], None, current_frame)
+                self.updateRGB([255, 255, 255], None, colorwheel_color, current_frame)
 
         if (cmy[0] != None and cmy[1] != None and cmy[2] != None):
-            self.updateCMY(cmy, current_frame)
+            self.updateCMY(cmy, colorwheel_color, current_frame)
 
-        if (color1 is not None):
-            self.updateColorWheel(color1, current_frame)
 
         if "Target" in self.objects:
             if self.ignore_movement_dmx:
@@ -858,10 +860,12 @@ class DMX_Fixture(PropertyGroup):
             return None # kills the timer
         return 1.0/24.0
 
-    def updateRGB(self, rgb, geometry, current_frame):
+    def updateRGB(self, rgb, geometry, colorwheel_color, current_frame):
         if geometry is not None:
             geometry = geometry.replace(" ", "_")
         DMX_Log.log.info(("color change for geometry", geometry))
+        if colorwheel_color is not None:
+            rgb = add_rgb(rgb, colorwheel_color)
         try:
             rgb = [c/255.0-(1-gel) for (c, gel) in zip(rgb, self.gel_color[:3])]
             #rgb = [c/255.0 for c in rgb]
@@ -893,9 +897,12 @@ class DMX_Fixture(PropertyGroup):
         return rgb
 
 
-    def updateCMY(self, cmy, current_frame):
+    def updateCMY(self, cmy, colorwheel_color, current_frame):
         rgb=[0,0,0]
         rgb=cmy_to_rgb(cmy)
+        if colorwheel_color is not None:
+            rgb = add_rgb(rgb, colorwheel_color)
+
         rgb = [c/255.0-(1-gel) for (c, gel) in zip(rgb, self.gel_color[:3])]
         #rgb = [c/255.0 for c in rgb]
         for emitter_material in self.emitter_materials:
@@ -948,7 +955,7 @@ class DMX_Fixture(PropertyGroup):
         return zoom
 
 
-    def updateColorWheel(self, color1, current_frame):
+    def get_colorwheel_color(self, color1):
         if not len(self["slot_colors"]) or color1 == 0:
             return
 
@@ -956,8 +963,7 @@ class DMX_Fixture(PropertyGroup):
         index = int(color1/int(255/(len(colors)-1)))
 
         if len(colors) > index:
-            color = colors[index]
-            self.updateRGB(color, None, current_frame=current_frame)
+            return colors[index]
 
     def updateGobo(self, gobo1, current_frame):
         if "gobos" not in self.images:

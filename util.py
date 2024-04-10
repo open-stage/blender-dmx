@@ -124,15 +124,30 @@ def xyY2rgba(xyz):
     blue = (rgb[2] - lowest) / alpha
     return (int(red), int(green), int(blue), int(alpha * 100))
 
+
 def ShowMessageBox(message="", title="Message Box", icon="INFO"):
     def draw(self, context):
         self.layout.label(text=message)
 
     bpy.context.window_manager.popup_menu(draw, title=title, icon=icon)
 
+
 def pad_number(number):
-    """ Pad fixture number with leading zeros,
+    """Pad fixture number with leading zeros,
     the amount of padding zeros depends on amount of fixtures."""
     dmx = bpy.context.scene.dmx
-    padding_len = len(str(len(dmx.fixtures)))+1
+    padding_len = len(str(len(dmx.fixtures))) + 1
     return f"{number:>0{padding_len}}"
+
+
+def clamp(n, small=0, large=255):
+    return max(small, min(n, large))
+
+
+def add_rgb(color1, color2):
+    if all(255 == i for i in color1):
+        return color2
+    r = clamp(int((1 - (1 - color1[0] / 255) + (1 - color2[0] / 255))) * 255)
+    g = clamp(int((1 - (1 - color1[1] / 255) + (1 - color2[1] / 255))) * 255)
+    b = clamp(int((1 - (1 - color1[2] / 255) + (1 - color2[2] / 255))) * 255)
+    return [r, g, b]
