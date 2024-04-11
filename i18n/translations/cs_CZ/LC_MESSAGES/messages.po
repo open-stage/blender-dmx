@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-04 19:51+0200\n"
+"POT-Creation-Date: 2024-04-11 19:50+0200\n"
 "PO-Revision-Date: 2024-03-11 17:01+0000\n"
 "Last-Translator: vanous <petr+weblate@linuks.cz>\n"
 "Language: cs_CZ\n"
@@ -61,11 +61,11 @@ msgstr "DMX Data"
 msgid "Fixture"
 msgstr "Svítidlo"
 
-#: ../__init__.py:296 ../__init__.py:1316 ../panels/fixtures.py:225
+#: ../__init__.py:296 ../__init__.py:1357 ../panels/fixtures.py:225
 msgid "Fixture ID"
 msgstr "ID Svítidla"
 
-#: ../__init__.py:300 ../__init__.py:1318
+#: ../__init__.py:300 ../__init__.py:1359
 msgid "Unit Number"
 msgstr "Číslo jednotky"
 
@@ -73,7 +73,7 @@ msgstr "Číslo jednotky"
 msgid "Custom ID"
 msgstr "Vlastní ID"
 
-#: ../__init__.py:312 ../__init__.py:1317 ../panels/fixtures.py:178
+#: ../__init__.py:312 ../__init__.py:1358 ../panels/fixtures.py:178
 msgid "DMX Address"
 msgstr "Adresa DMX"
 
@@ -97,67 +97,67 @@ msgstr "Univers"
 msgid "Editable"
 msgstr "Editovat"
 
-#: ../__init__.py:764
+#: ../__init__.py:772
 msgid "Display Pigtails"
 msgstr "Zobrazit panel konektorů"
 
-#: ../__init__.py:769
+#: ../__init__.py:777
 msgid "Display 2D View"
 msgstr "Zobrazit 2D pohled"
 
-#: ../__init__.py:785
+#: ../__init__.py:793
 msgid "Allow Selecting Geometries"
 msgstr "Povolit výběr geometrií"
 
-#: ../__init__.py:795
+#: ../__init__.py:803
 msgid "Logging Level"
 msgstr "Úroveň logování"
 
-#: ../__init__.py:799
+#: ../__init__.py:807
 msgid "Critical"
 msgstr "Kritické"
 
-#: ../__init__.py:800
+#: ../__init__.py:808
 msgid "Error"
 msgstr "Chyby"
 
-#: ../__init__.py:801
+#: ../__init__.py:809
 msgid "Warning"
 msgstr "Varování"
 
-#: ../__init__.py:802
+#: ../__init__.py:810
 msgid "Info"
 msgstr "Informace"
 
-#: ../__init__.py:803
+#: ../__init__.py:811
 msgid "Debug"
 msgstr "Ladění"
 
-#: ../__init__.py:819
+#: ../__init__.py:827
 msgid "Simple beam"
 msgstr "Náhledový kužel"
 
-#: ../__init__.py:820
+#: ../__init__.py:828
 msgid "Display 'fake' beam cone"
 msgstr "Zobrazit náhledový kužel paprsku"
 
-#: ../__init__.py:823
+#: ../__init__.py:831
 msgid "None"
 msgstr "Žádná svítidla"
 
-#: ../__init__.py:824
+#: ../__init__.py:832
 msgid "Selected fixtures"
 msgstr "Vybraná svítidla"
 
-#: ../__init__.py:825
+#: ../__init__.py:833
 msgid "All fixtures"
 msgstr "Všechna svítidla"
 
-#: ../__init__.py:835
+#: ../__init__.py:843
 msgid "Beam Lens Diameter in Cycles"
 msgstr "Průměr čočky paprsku v Cycles"
 
-#: ../__init__.py:836
+#: ../__init__.py:844
 msgid ""
 "Beam diameter is reduced to minimum when projecting gobos to prevent blur"
 " on gobo edge"
@@ -165,101 +165,101 @@ msgstr ""
 "Průměr paprsku je snížen na minimum při projektování gob, aby se "
 "zabránilo rozostření na okraji goba"
 
-#: ../__init__.py:839
+#: ../__init__.py:847
 msgid "Reduced"
 msgstr "Redukovaný"
 
-#: ../__init__.py:840
+#: ../__init__.py:848
 msgid "Full width"
 msgstr "Plná šířka"
 
-#: ../__init__.py:841
+#: ../__init__.py:849
 msgid "Custom per each beam"
 msgstr "Vlastní nastavení pro každý paprsek"
 
-#: ../__init__.py:858
+#: ../__init__.py:866
 msgid "Disable Overlays"
 msgstr "Skrýt čáry kužele paprsku"
 
-#: ../__init__.py:869
+#: ../__init__.py:877
 msgid "Enable Volume Scatter"
 msgstr "Povolit Prostorový Kužel Paprsku"
 
-#: ../__init__.py:881
+#: ../__init__.py:889
 msgid "Noise Scale"
 msgstr "Náhodnost"
 
-#: ../__init__.py:882
+#: ../__init__.py:890
 msgid "Volume Noise Scale"
 msgstr "Měřítko náhodnosti prostorového kužele paprsku"
 
-#: ../__init__.py:894
+#: ../__init__.py:902
 msgid "Density"
 msgstr "Hustota"
 
-#: ../__init__.py:895
+#: ../__init__.py:903
 msgid "Volume Scatter Density"
 msgstr "Hustota mlhy"
 
-#: ../__init__.py:919
+#: ../__init__.py:927
 msgid "Number of universes"
 msgstr "Počet universů"
 
-#: ../__init__.py:920
+#: ../__init__.py:928
 msgid "The number of universes set on the panel"
 msgstr "Počet universů na panelu"
 
-#: ../__init__.py:930
+#: ../__init__.py:938
 msgid "Universe List Item"
 msgstr "Vybraný universe"
 
-#: ../__init__.py:931
+#: ../__init__.py:939
 msgid "The selected element on the universe list"
 msgstr "Vybraný univers v seznamu universů"
 
-#: ../__init__.py:938
+#: ../__init__.py:946
 msgid "IPv4 Address for ArtNet signal"
 msgstr "IPv4 Adresa pro ArtNet signál"
 
-#: ../__init__.py:939
+#: ../__init__.py:947
 msgid "The network card/interface to listen for ArtNet DMX data"
 msgstr "Síťová karta/rozhraní pro příjem DMX dat po ArtNetu"
 
-#: ../__init__.py:1012
+#: ../__init__.py:1020
 msgid "Enable Art-Net Input"
 msgstr "Povolit Art-Net Vstup"
 
-#: ../__init__.py:1013
+#: ../__init__.py:1021
 msgid ""
 "Enables the input of DMX data throught Art-Net on the selected network "
 "interface"
 msgstr "Povolí vstup DMX dat z ArtNetu na zvoleném síťovém rozhraní"
 
-#: ../__init__.py:1019
+#: ../__init__.py:1027
 msgid "Enable sACN Input"
 msgstr "Povolit sACN Vstup"
 
-#: ../__init__.py:1020
+#: ../__init__.py:1028
 msgid ""
 "Enables the input of DMX data throught sACN on all detected network "
 "interfaces"
 msgstr "Příjem DMX data ze sACN"
 
-#: ../__init__.py:1026
+#: ../__init__.py:1034
 msgid "Enable OSC Output"
 msgstr "Povolit OSC Vstup"
 
-#: ../__init__.py:1027
+#: ../__init__.py:1035
 msgid "Enables Open Sound Control protocol to send fixture selection to a console"
 msgstr ""
 "Příjem OpenSoundControl protokolu pro odeslání výběru svítidel do DMX "
 "konzole"
 
-#: ../__init__.py:1033
+#: ../__init__.py:1041
 msgid "OSC Target address"
 msgstr "Adresa cílového OSC zařízení"
 
-#: ../__init__.py:1034
+#: ../__init__.py:1042
 msgid ""
 "Address of the host where you want to send the OSC signal. Address ending"
 " on .255 is a broadcast address to all hosts on the network"
@@ -267,55 +267,55 @@ msgstr ""
 "Adresa zařízení, kam chcete poslat OSC signál. Adresa končící na .255 je "
 "všesměrová adresa pro všechna zařízení na síti"
 
-#: ../__init__.py:1039
+#: ../__init__.py:1047
 msgid "OSC Target port"
 msgstr "Port cílového OSC zařízení"
 
-#: ../__init__.py:1040
+#: ../__init__.py:1048
 msgid "Port number of the host where you want to send the OSC signal"
 msgstr "Číslo portu zařízení kam chcete posílat OSC signál"
 
-#: ../__init__.py:1045
+#: ../__init__.py:1053
 msgid "Enable MVR-xchange discovery"
 msgstr "Povolit vyhledávání MVR-xchange"
 
-#: ../__init__.py:1046
+#: ../__init__.py:1054
 msgid "Enables MVR-xchange discovery"
 msgstr "Povolí vyhledání MVR-xchange"
 
-#: ../__init__.py:1052
+#: ../__init__.py:1060
 msgid "Enable MVR-xchange connection"
 msgstr "Povolit MVR-xchange spojení"
 
-#: ../__init__.py:1053
+#: ../__init__.py:1061
 msgid "Connects to MVR-xchange client"
 msgstr "Připojí se k MVR-xchange klientu"
 
-#: ../__init__.py:1060
+#: ../__init__.py:1068
 msgid "Art-Net Status"
 msgstr "Stav Art-Netu"
 
-#: ../__init__.py:1064
+#: ../__init__.py:1072
 msgid "sACN Status"
 msgstr "Stav sACN"
 
-#: ../__init__.py:1074
+#: ../__init__.py:1082
 msgid "Group List i"
 msgstr "Seznam skupiny"
 
-#: ../__init__.py:1075
+#: ../__init__.py:1083
 msgid "The selected element on the group list"
 msgstr "Zvolená skupina v seznamu"
 
-#: ../__init__.py:1311
+#: ../__init__.py:1352
 msgid "Sort by"
 msgstr "Seřadit podle"
 
-#: ../__init__.py:1312
+#: ../__init__.py:1353
 msgid "Fixture sorting order"
 msgstr "Řazení svítidel"
 
-#: ../__init__.py:1315 ../panels/fixtures.py:166 ../panels/fixtures.py:705
+#: ../__init__.py:1356 ../panels/fixtures.py:166 ../panels/fixtures.py:705
 #: ../panels/groups.py:70 ../panels/profiles/data/local_profile.py:12
 #: ../panels/profiles/data/local_profile.py:21
 msgid "Name"
@@ -708,7 +708,7 @@ msgstr "Invertuje výběr"
 msgid "Select every other light"
 msgstr "Vybrat každé druhé svítidlo"
 
-#: ../panels/programmer.py:137 ../panels/programmer.py:352
+#: ../panels/programmer.py:137 ../panels/programmer.py:356
 msgid "Clear"
 msgstr "Vyčistit"
 
@@ -716,91 +716,95 @@ msgstr "Vyčistit"
 msgid "Clear all DMX values to default and update fixtures"
 msgstr "Vyčistit DMX hodnoty do výchozích a aktualizovat svítidla"
 
-#: ../panels/programmer.py:164
+#: ../panels/programmer.py:165
 msgid "Targets to zero"
 msgstr "Cíle na nulu"
 
-#: ../panels/programmer.py:166
+#: ../panels/programmer.py:167
 msgid "Set Targets' position to 0 of the Scene"
 msgstr "Nastaví Cíle paprsků na střed scény"
 
-#: ../panels/programmer.py:182
+#: ../panels/programmer.py:183
 msgid "Select Fixtures"
 msgstr "Vybrat Svítidla"
 
-#: ../panels/programmer.py:184
+#: ../panels/programmer.py:185
 msgid "Select base/body of every selected fixture"
 msgstr "Vybere základnu/tělo zvoleného svítidla"
 
-#: ../panels/programmer.py:206
+#: ../panels/programmer.py:207
 msgid "Select Targets"
 msgstr "Vybrat Cíle"
 
-#: ../panels/programmer.py:208
+#: ../panels/programmer.py:209
 msgid "Select target from every fixture element selected"
 msgstr "Vybere cíl paprsku každého označeného svítidla"
 
-#: ../panels/programmer.py:217
+#: ../panels/programmer.py:218
 msgid "Select Camera"
 msgstr "Vybrat Kameru"
 
-#: ../panels/programmer.py:219
+#: ../panels/programmer.py:220
 msgid "Select camera of the selected fixture"
 msgstr "Vybere kameru zvoleného svítidla"
 
-#: ../panels/programmer.py:242
+#: ../panels/programmer.py:243
 msgid "Programmer"
 msgstr "Programátor"
 
-#: ../panels/programmer.py:267
+#: ../panels/programmer.py:268
 msgid "Nothing selected"
 msgstr "Není vybráno žádné svítidlo"
 
-#: ../panels/programmer.py:271
+#: ../panels/programmer.py:272
 msgid "{} selected"
 msgstr "{} vybraných"
 
-#: ../panels/programmer.py:293
+#: ../panels/programmer.py:294
 msgid "Bodies"
 msgstr "Svítidla"
 
-#: ../panels/programmer.py:294
+#: ../panels/programmer.py:295
 msgid "Targets"
 msgstr "Cíle"
 
-#: ../panels/programmer.py:298
+#: ../panels/programmer.py:299
 msgid "Camera"
 msgstr "Kamera"
 
-#: ../panels/programmer.py:304
+#: ../panels/programmer.py:305
 msgid "Dimmer"
 msgstr "Dimr"
 
-#: ../panels/programmer.py:310 ../panels/programmer.py:333
+#: ../panels/programmer.py:311 ../panels/programmer.py:336
 msgid "Pan"
 msgstr "Pan"
 
-#: ../panels/programmer.py:318 ../panels/programmer.py:339
+#: ../panels/programmer.py:319 ../panels/programmer.py:342
 msgid "Tilt"
 msgstr "Tilt"
 
-#: ../panels/programmer.py:324 ../panels/programmer.py:344
+#: ../panels/programmer.py:325 ../panels/programmer.py:347
 msgid "Zoom"
 msgstr "Zoom"
 
-#: ../panels/programmer.py:326 ../panels/programmer.py:345
+#: ../panels/programmer.py:327 ../panels/programmer.py:348
+msgid "Color Wheel"
+msgstr ""
+
+#: ../panels/programmer.py:329 ../panels/programmer.py:349
 msgid "Gobo"
 msgstr "Gobo"
 
-#: ../panels/programmer.py:327 ../panels/programmer.py:346
+#: ../panels/programmer.py:330 ../panels/programmer.py:350
 msgid "Gobo Rotation"
 msgstr "Rotace Goba"
 
-#: ../panels/programmer.py:329 ../panels/programmer.py:347
+#: ../panels/programmer.py:332 ../panels/programmer.py:351
 msgid "Strobe"
 msgstr "Strobo"
 
-#: ../panels/programmer.py:354
+#: ../panels/programmer.py:358
 msgid "Clear All"
 msgstr "Vyčistit vše"
 
