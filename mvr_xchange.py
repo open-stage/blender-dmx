@@ -2,6 +2,7 @@ import bpy
 from bpy.props import BoolProperty, CollectionProperty, EnumProperty, IntProperty, StringProperty
 from bpy.types import PropertyGroup
 
+# MVR-xchange commit and client RNA structures
 
 class DMX_MVR_Xchange_Commit(PropertyGroup):
     def onUpdate(self, context):

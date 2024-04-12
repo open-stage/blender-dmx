@@ -973,10 +973,10 @@ class DMX(PropertyGroup):
             if not selected_client:
                 return
             DMX_Log.log.debug((selected_client.ip_address, selected_client.station_name))
-            DMX_MVR_X_Server.enable()
+            DMX_MVR_X_Server.enable() # start the MVR-xchange TCP server for incoming connections
             DMX_MVR_X_Server._instance.server.get_port()
-            DMX_Zeroconf.enable_server(selected_client.service_name, DMX_MVR_X_Server.get_port())
-            DMX_MVR_X_Client.join(selected_client)
+            DMX_Zeroconf.enable_server(selected_client.service_name, DMX_MVR_X_Server.get_port()) # start mdns server and advertise the TCP MVR server
+            DMX_MVR_X_Client.join(selected_client) # start MVR-xchange client TCP connection and send MVR_JOIN message
         else:
             DMX_Log.log.info("leave client")
             DMX_MVR_X_Client.leave()

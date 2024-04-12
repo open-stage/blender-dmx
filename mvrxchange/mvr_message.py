@@ -1,6 +1,7 @@
 import json
 import struct
 
+# mvr message structures
 
 class mvr_message:
     @staticmethod
