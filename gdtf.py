@@ -163,7 +163,10 @@ class DMX_GDTF():
                 first = str(destination.resolve())
             destination.write_bytes(image.read_bytes())
             count = idx
-        sequence = bpy.data.images.load(first)
+        if first:
+            sequence = bpy.data.images.load(first)
+        else:
+            return None
 
         #TODO: add names from wheels
         #TODO: add some structure to indicate which gobo belongs to which wheel

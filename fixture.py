@@ -335,11 +335,12 @@ class DMX_Fixture(PropertyGroup):
         # Get all gobos
         if has_gobos:
             gobo_seq = DMX_GDTF.extract_gobos_as_sequence(gdtf_profile)
-            gobo = self.images.add()
-            gobo.name = "gobos"
-            gobo.image = gobo_seq
-            gobo.count = gobo_seq["count"]
-            gobo.image.pack()
+            if gobo_seq is not None:
+                gobo = self.images.add()
+                gobo.name = "gobos"
+                gobo.image = gobo_seq
+                gobo.count = gobo_seq["count"]
+                gobo.image.pack()
 
         if "gobos" not in self.images:
             has_gobos = False # faulty GDTF might have channels but no images
