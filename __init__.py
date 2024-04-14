@@ -1130,7 +1130,11 @@ class DMX(PropertyGroup):
                         'ColorRGB_Blue':rgb[2],
                         'ColorSub_C':cmy[0],
                         'ColorSub_M':cmy[1],
-                        'ColorSub_Y':cmy[2]
+                        'ColorSub_Y':cmy[2],
+                        'ColorAdd_C':cmy[0],
+                        'ColorAdd_M':cmy[1],
+                        'ColorAdd_Y':cmy[2],
+
                     })
         self.render()
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
