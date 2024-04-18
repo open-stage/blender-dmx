@@ -172,9 +172,39 @@ class DMX_OT_Programmer_TargetsToZero(Operator):
         select_targets(dmx)
         for fixture in dmx.fixtures:
             for obj in fixture.collection.objects:
+                if obj.get("geometry_root", False):
+                    body = obj
+                    break
+            for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
                     if ('Target' in fixture.objects):
                         fixture.objects['Target'].object.location = ((0,0,0))
+                    break
+
+        return {'FINISHED'}
+
+class DMX_OT_Programmer_ResetTargets(Operator):
+    bl_label = _("Reset targets")
+    bl_idname = "dmx.reset_targets"
+    bl_description = _("Set Targets' position under the fixture")
+    bl_options = {'UNDO'}
+
+    def execute(self, context):
+        dmx = context.scene.dmx
+        select_targets(dmx)
+        for fixture in dmx.fixtures:
+            for obj in fixture.collection.objects:
+                if obj.get("geometry_root", False):
+                    body = obj
+                    break
+            for obj in fixture.collection.objects:
+                if (obj in bpy.context.selected_objects):
+                    if ('Target' in fixture.objects):
+                        if body is not None:
+                            x = body.location[0]
+                            y = body.location[1]
+                            z = body.location[2]
+                            fixture.objects['Target'].object.location = ((x, y, z-2))
                     break
 
         return {'FINISHED'}
@@ -280,13 +310,15 @@ class DMX_PT_Programmer(Panel):
         c2 = row.column()
         c3 = row.column()
         c4 = row.column()
+        c5 = row.column()
         c0.operator("dmx.select_filtered", text='', icon="SELECT_DIFFERENCE")
         c1.operator("dmx.deselect_all", text='', icon='SELECT_SET')
         c2.operator("dmx.targets_to_zero", text="", icon="LIGHT_POINT")
-        c3.operator("dmx.ignore_movement_true", text="", icon="LOCKED")
-        c4.operator("dmx.ignore_movement_false", text="", icon="UNLOCKED")
-        c1.enabled = c2.enabled = c3.enabled = selected
-        c4.enabled = locked and selected
+        c3.operator("dmx.reset_targets", text="", icon="LIGHT_SPOT")
+        c4.operator("dmx.ignore_movement_true", text="", icon="LOCKED")
+        c5.operator("dmx.ignore_movement_false", text="", icon="UNLOCKED")
+        c1.enabled = c2.enabled = c3.enabled = c4.enabled = selected
+        c5.enabled = locked and selected
 
         row = layout.row()
         row.label(text=selected_fixture_label)
