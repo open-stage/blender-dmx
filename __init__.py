@@ -52,7 +52,7 @@ from dmx.osc_utils import DMX_OSC_Templates
 from dmx.osc import DMX_OSC
 from dmx.mdns import DMX_Zeroconf
 
-from dmx.util import rgb_to_cmy, xyY2rgbaa, ShowMessageBox
+from dmx.util import rgb_to_cmy, xyY2rgbaa, ShowMessageBox, cmy_to_rgb
 from dmx.mvr_objects import DMX_MVR_Object
 from dmx.mvr_xchange import *
 from dmx.mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server
@@ -1305,7 +1305,8 @@ class DMX(PropertyGroup):
     # # Programmer > Sync
 
     def syncProgrammer(self):
-        n = len(bpy.context.selected_objects)
+        selected = self.selectedFixtures()
+        n = len(selected)
         if (n < 1):
             self.programmer_dimmer = 0
             self.programmer_color = (255,255,255,255)
@@ -1318,9 +1319,7 @@ class DMX(PropertyGroup):
             self.programmer_gobo_index = 63
             return
         elif (n > 1): return
-        if (not bpy.context.active_object): return
-        active = self.findFixture(bpy.context.active_object)
-        if (not active): return
+        active = selected[0]
         data = active.getProgrammerData()
         if 'Dimmer' in data:
             self.programmer_dimmer = data['Dimmer']/256.0
@@ -1346,6 +1345,12 @@ class DMX(PropertyGroup):
             self.programmer_color = (data['ColorAdd_R'],data['ColorAdd_G'],data['ColorAdd_B'],255)
         if ('ColorRGB_Red' in data and 'ColorRGB_Green' in data and 'ColorRGB_Blue' in data):
             self.programmer_color = (data['ColorRGB_Red'],data['ColorRGB_Green'],data['ColorRGB_Blue'],255)
+        if ('ColorSub_C' in data and 'ColorSub_M' in data and 'ColorSub_Y' in data):
+            rgb = cmy_to_rgb([data['ColorSub_C'], data['ColorSub_M'], data['ColorSub_Y']])
+            self.programmer_color = (rgb[0], rgb[1], rgb[2], 255)
+        if ('ColorAdd_C' in data and 'ColorAdd_M' in data and 'ColorAdd_Y' in data):
+            rgb = cmy_to_rgb([data['ColorAdd_C'], data['ColorAdd_M'], data['ColorAdd_Y']])
+            self.programmer_color = (rgb[0], rgb[1], rgb[2], 255)
         if ('Pan' in data):
             self.programmer_pan = data['Pan']/127.0-1
         if ('Tilt' in data):
