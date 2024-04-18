@@ -38,8 +38,11 @@ class DMX_GDTF():
         for file in os.listdir(DMX_GDTF.getProfilesPath()):
             # Parse info from file name: Manufacturer@Device@Revision.gdtf
             if "@" not in file:
-                continue
-            name = file.split('@')[0]
+                file = os.path.join(DMX_GDTF.getProfilesPath(), file)
+                fixture_type = pygdtf.FixtureType(file)
+                name = f"{fixture_type.manufacturer}"
+            else:
+                name = file.split('@')[0]
             manufacturers_names.add(name)
         manufacturers  = bpy.context.window_manager.dmx.manufacturers
         manufacturers.clear()
@@ -52,10 +55,16 @@ class DMX_GDTF():
         profiles = []
         for file in os.listdir(DMX_GDTF.getProfilesPath()):
             # Parse info from file name: Company@Model.gdtf
-            info = file.split('@')
+            if "@" not in file:
+                file = os.path.join(DMX_GDTF.getProfilesPath(), file)
+                fixture_type = pygdtf.FixtureType(file)
+                info = [f"{fixture_type.manufacturer}", f"{fixture_type.long_name}",""]
+            else:
+                info = file.split('@')
             if (info[0] == manufacturer):
                 # Remove ".gdtf" from the end of the string
-                info[-1] = info[-1][:-5]
+                if info[-1][-5:].lower() == ".gdtf":
+                    info[-1] = info[-1][:-5]
                 # Add to list (identifier, short name, full name)
                 profiles.append((file, info[1], (info[2] if len(info) > 2 else '')))
 

@@ -13,6 +13,7 @@ import shutil
 import re
 
 from dmx.gdtf import *
+from dmx import pygdtf
 import dmx.panels.profiles as Profiles
 from dmx.util import pad_number
 from bpy_extras.io_utils import ImportHelper
@@ -242,7 +243,13 @@ class DMX_Fixture_AddEdit():
         col.context_pointer_set("add_edit_panel", self)
         text_profile = _("GDTF Profile")
         if (self.profile != ""):
-            text_profile = self.profile[:-5].replace('_',' ').split('@')
+            if "@" not in self.profile:
+                file = os.path.join(DMX_GDTF.getProfilesPath(), self.profile)
+                fixture_type = pygdtf.FixtureType(file)
+                text_profile = [f"{fixture_type.manufacturer}", f"{fixture_type.long_name}",""]
+            else:
+                text_profile = self.profile[:-5].replace('_',' ').split('@')
+
             if len(text_profile) > 1:
                 text_profile = text_profile[0] + " > " + text_profile[1]
             else:
