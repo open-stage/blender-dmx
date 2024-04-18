@@ -219,6 +219,7 @@ class DMX(PropertyGroup):
                 DMX_OT_Programmer_SelectCamera,
                 DMX_OT_Programmer_TargetsToZero,
                 DMX_OT_Programmer_Set_Ignore_Movement,
+                DMX_OT_Programmer_ResetTargets,
                 DMX_OT_Programmer_Unset_Ignore_Movement,
                 DMX_PT_DMX_OSC,
                 DMX_UL_Fixtures,
