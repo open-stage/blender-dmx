@@ -9,8 +9,10 @@
 #
 
 import bpy
-from bpy.types import Operator, Panel
+from bpy.types import Operator, Panel, Menu
 from dmx.osc_utils import DMX_OSC_Handlers
+
+from bpy.props import (StringProperty)
 
 from dmx.i18n import DMX_Lang
 _ = DMX_Lang._
@@ -183,15 +185,40 @@ class DMX_OT_Programmer_TargetsToZero(Operator):
 
         return {'FINISHED'}
 
+class DMX_MT_PIE_Reset(Menu):
+    bl_label = _("Reset targets")
+    bl_idname = "dmx.pie_reset"
+    bl_description = _("Reset position of target of selected fixtures")
+
+    def draw(self,context):
+        layout = self.layout
+        pie = layout.menu_pie()
+        col = pie.column(align=True)
+        col.operator("dmx.reset_targets", text='+', icon='EVENT_X').axis="x"
+        col.operator("dmx.reset_targets", text='-', icon='EVENT_X').axis="-x"
+        col = pie.column(align=True)
+        col.operator("dmx.reset_targets", text='+', icon='EVENT_Y').axis="y"
+        col.operator("dmx.reset_targets", text='-', icon='EVENT_Y').axis="-y"
+        col = pie.column(align=True)
+        col.operator("dmx.reset_targets", text='+', icon='EVENT_Z').axis="z"
+        col.operator("dmx.reset_targets", text='-', icon='EVENT_Z').axis="-z"
+
+
 class DMX_OT_Programmer_ResetTargets(Operator):
     bl_label = _("Reset targets")
     bl_idname = "dmx.reset_targets"
-    bl_description = _("Set Targets' position under the fixture")
     bl_options = {'UNDO'}
+    bl_description = _("Reset position of target of selected fixtures")
+
+    axis: StringProperty(
+        default = "-z"
+    )
 
     def execute(self, context):
         dmx = context.scene.dmx
         select_targets(dmx)
+        axis = self.axis
+
         for fixture in dmx.fixtures:
             for obj in fixture.collection.objects:
                 if obj.get("geometry_root", False):
@@ -204,7 +231,18 @@ class DMX_OT_Programmer_ResetTargets(Operator):
                             x = body.location[0]
                             y = body.location[1]
                             z = body.location[2]
-                            fixture.objects['Target'].object.location = ((x, y, z-2))
+                            if axis == "-x":
+                                fixture.objects['Target'].object.location = ((x-2, y, z))
+                            if axis == "-y":
+                                fixture.objects['Target'].object.location = ((x, y-2, z))
+                            if axis == "-z":
+                                fixture.objects['Target'].object.location = ((x, y, z-2))
+                            if axis == "x":
+                                fixture.objects['Target'].object.location = ((x+2, y, z))
+                            if axis == "y":
+                                fixture.objects['Target'].object.location = ((x, y+2, z))
+                            if axis == "z":
+                                fixture.objects['Target'].object.location = ((x, y, z+2))
                     break
 
         return {'FINISHED'}
@@ -314,7 +352,7 @@ class DMX_PT_Programmer(Panel):
         c0.operator("dmx.select_filtered", text='', icon="SELECT_DIFFERENCE")
         c1.operator("dmx.deselect_all", text='', icon='SELECT_SET')
         c2.operator("dmx.targets_to_zero", text="", icon="LIGHT_POINT")
-        c3.operator("dmx.reset_targets", text="", icon="LIGHT_SPOT")
+        c3.menu("dmx.pie_reset", text="", icon="LIGHT_SPOT")
         c4.operator("dmx.ignore_movement_true", text="", icon="LOCKED")
         c5.operator("dmx.ignore_movement_false", text="", icon="UNLOCKED")
         c1.enabled = c2.enabled = c3.enabled = c4.enabled = selected
