@@ -218,6 +218,7 @@ class DMX(PropertyGroup):
                 DMX_OT_Programmer_SelectTargets,
                 DMX_OT_Programmer_SelectCamera,
                 DMX_OT_Programmer_TargetsToZero,
+                DMX_OT_Programmer_Apply_Manually,
                 DMX_OT_Programmer_Set_Ignore_Movement,
                 DMX_OT_Programmer_ResetTargets,
                 DMX_MT_PIE_Reset,
@@ -1086,6 +1087,18 @@ class DMX(PropertyGroup):
         default = 0,
         update = onGroupList
         )
+
+
+    def onProgrammerApplyManually(self, context):
+        self.onProgrammerPan(context)
+        self.onProgrammerTilt(context)
+        self.onProgrammerColor(context)
+        self.onProgrammerDimmer(context)
+        self.onProgrammerColorWheel(context)
+        self.onProgrammerGobo(context)
+        self.onProgrammerGoboIndex(context)
+        self.onProgrammerShutter(context)
+        self.onProgrammerZoom(context)
 
     # # Programmer > Dimmer
 

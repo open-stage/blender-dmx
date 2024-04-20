@@ -163,6 +163,20 @@ class DMX_OT_Programmer_Clear(Operator):
         scene.dmx.programmer_shutter = 0
         return {'FINISHED'}
 
+class DMX_OT_Programmer_Apply_Manually(Operator):
+    bl_label = _("Apply")
+    bl_idname = "dmx.apply"
+    bl_description = _("Apply these values manually when render is paused")
+    bl_options = {'UNDO'}
+
+    def execute(self, context):
+        scene = context.scene
+        bpy.context.window_manager.dmx.pause_render = False
+        scene.dmx.onProgrammerApplyManually(context)
+        bpy.context.window_manager.dmx.pause_render = True
+
+        return {'FINISHED'}
+
 class DMX_OT_Programmer_TargetsToZero(Operator):
     bl_label = _("Targets to zero")
     bl_idname = "dmx.targets_to_zero"
@@ -422,7 +436,11 @@ class DMX_PT_Programmer(Panel):
 
         box.enabled = selected
 
+        dmx = context.scene.dmx
+
         if (selected):
+            if bpy.context.window_manager.dmx.pause_render:
+                layout.operator("dmx.apply", text=_("Apply"))
             layout.operator("dmx.clear", text=_("Clear"))
         else:
             layout.operator("dmx.clear", text=_("Clear All"))
