@@ -69,12 +69,16 @@ class DMX_Group(PropertyGroup):
         #for fixture in self.runtime[self.name]:
         dmx = bpy.context.scene.dmx
 
-        if not bpy.context.window_manager.dmx.aditive_selection:
+        if bpy.context.window_manager.dmx.aditive_selection or bpy.context.window_manager.dmx.subtractive_selection:
+            pass
+        else:
             bpy.ops.object.select_all(action='DESELECT')
-            bpy.context.scene.dmx.updatePreviewVolume()
 
         for fixture in [dmx.findFixtureByUUID(f_uuid) for f_uuid in json.loads(self.dump)]:
             if fixture is not None:
-                fixture.select()
+                if bpy.context.window_manager.dmx.subtractive_selection:
+                    fixture.unselect()
+                else:
+                    fixture.select()
         bpy.context.scene.dmx.updatePreviewVolume()
 
