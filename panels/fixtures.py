@@ -68,14 +68,6 @@ class DMX_MT_Fixture(Menu):
         row.operator("dmx.remove_fixture", text=_("Remove"), icon="REMOVE")
         row.enabled = len(dmx.fixtures) and selected
 
-        # "Import GDTF Profile"
-        row = layout.row()
-        row.operator("dmx.import_gdtf_profile", text=_("Import GDTF Profile"), icon="IMPORT")
-
-        # "Import MVR scene"
-        row = layout.row()
-        row.operator("dmx.import_mvr_scene", text=_("Import MVR Scene"), icon="IMPORT")
-
 
 class DMX_MT_Fixture_Manufacturers(Menu):
     bl_label = _("DMX > Fixture > Add > Manufacturers")
@@ -475,88 +467,6 @@ class DMX_OT_IES_Import(Operator, ImportHelper):
         for fixture in selected:
             fixture.add_ies(self.filepath)
         return {'FINISHED'}
-
-class DMX_OT_Fixture_Import_GDTF(Operator):
-    bl_label = _("Import GDTF Profile")
-    bl_idname = "dmx.import_gdtf_profile"
-    bl_description = _("Import fixture from GDTF Profile")
-    bl_options = {'UNDO'}
-
-    filter_glob: StringProperty(default="*.gdtf", options={'HIDDEN'})
-
-    directory: StringProperty(
-        name=_("File Path"),
-        maxlen= 1024,
-        default= "" )
-
-    files: CollectionProperty(
-        name=_("Files"),
-        type=bpy.types.OperatorFileListElement
-    )
-
-    def draw(self, context):
-        layout = self.layout
-        col = layout.column()
-        col.prop(self, "files")
-
-    def invoke(self, context, event):
-        wm = context.window_manager
-        wm.fileselect_add(self)
-        return {'RUNNING_MODAL'}
-
-    def execute(self, context):
-        folder_path = os.path.dirname(os.path.realpath(__file__))
-        folder_path = os.path.join(folder_path, '..', 'assets', 'profiles')
-        for file in self.files:
-            file_path = os.path.join(self.directory, file.name)
-            DMX_Log.log.info('Importing GDTF Profile: %s' % file_path)
-            shutil.copy(file_path, folder_path)
-        DMX_GDTF.getManufacturerList()
-        Profiles.DMX_Fixtures_Local_Profile.loadLocal()
-        return {'FINISHED'}
-
-
-class DMX_OT_Fixture_Import_MVR(Operator):
-    bl_label = _("Import MVR scene")
-    bl_idname = "dmx.import_mvr_scene"
-    bl_description = _("Import data MVR scene file. This may take a long time!")
-    bl_options = {'UNDO'}
-
-    filter_glob: StringProperty(default="*.mvr", options={'HIDDEN'})
-
-    directory: StringProperty(
-        name=_("File Path"),
-        maxlen= 1024,
-        default= "" )
-
-    files: CollectionProperty(
-        name=_("Files"),
-        type=bpy.types.OperatorFileListElement
-    )
-
-    def draw(self, context):
-        layout = self.layout
-        col = layout.column()
-        col.prop(self, "files")
-
-    def invoke(self, context, event):
-        wm = context.window_manager
-        wm.fileselect_add(self)
-        return {'RUNNING_MODAL'}
-
-    def execute(self, context):
-        folder_path = os.path.dirname(os.path.realpath(__file__))
-        folder_path = os.path.join(folder_path, '..', 'assets', 'profiles')
-        for file in self.files:
-            file_path = os.path.join(self.directory, file.name)
-            print("INFO", f'Processing MVR file: {file_path}')
-            dmx = context.scene.dmx
-            dmx.addMVR(file_path)
-            #shutil.copy(file_path, folder_path)
-        # https://developer.blender.org/T86803
-        #self.report({'WARNING'}, 'Restart Blender to load the profiles.')
-        return {'FINISHED'}
-
 
 # Panel #
 

@@ -11,13 +11,16 @@
 
 import bpy
 import os
+import shutil
 from bpy.types import Operator, Panel
 from dmx.material import getVolumeScatterMaterial
 from dmx.util import getSceneRect
-import dmx.version as version
+from dmx.gdtf import *
+import dmx.panels.profiles as Profiles
+import dmx.blender_utils as blender_utils
 from dmx import bl_info as application_info
-from .fixtures import DMX_OT_Fixture_Import_GDTF, DMX_OT_Fixture_Import_MVR
-
+from bpy.props import (StringProperty, CollectionProperty)
+from dmx.logging import DMX_Log
 
 from dmx.i18n import DMX_Lang
 _ = DMX_Lang._
@@ -221,11 +224,33 @@ class DMX_PT_Setup_Import(Panel):
         dmx = context.scene.dmx
         # "Import GDTF Profile"
         row = layout.row()
-        row.operator(DMX_OT_Fixture_Import_GDTF.bl_idname, text=_("Import GDTF Profile"), icon="IMPORT")
+        row.operator(DMX_OT_Setup_Import_GDTF.bl_idname, text=_("Import GDTF Profile"), icon="IMPORT")
 
         # "Import MVR scene"
         row = layout.row()
-        row.operator(DMX_OT_Fixture_Import_MVR.bl_idname, text=_("Import MVR Scene"), icon="IMPORT")
+        row.operator(DMX_OT_Setup_Import_MVR.bl_idname, text=_("Import MVR Scene"), icon="IMPORT")
+
+        # export project data
+        row = layout.row()
+        row.operator("dmx.import_custom_data", text=_("Import Project data"), icon="IMPORT")
+
+class DMX_PT_Setup_Export(Panel):
+    bl_label = _("Export")
+    bl_idname = "DMX_PT_Setup_Export"
+    bl_parent_id = "DMX_PT_Setup"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_category = "DMX"
+    bl_context = "objectmode"
+    bl_options = {'DEFAULT_CLOSED'}
+
+    def draw(self, context):
+        layout = self.layout
+        dmx = context.scene.dmx
+
+        # export project data
+        row = layout.row()
+        row.operator("dmx.export_custom_data", text=_("Export Project data"), icon="EXPORT")
 
 class DMX_OT_Setup_Open_LogFile(Operator):
     bl_label = _("Show logging directory")
@@ -305,7 +330,7 @@ class DMX_OT_VersionCheck(Operator):
             try:
                 current_version = application_info["version"]
                 new_version = data["name"]
-                res = version.version_compare(current_version, new_version)
+                res = blender_utils.version_compare(current_version, new_version)
             except Exception as e:
                 text = f"{e.__class__.__name__} {e}"
             else:
@@ -322,5 +347,178 @@ class DMX_OT_VersionCheck(Operator):
     def execute(self, context):
         temp_data = context.window_manager.dmx
         temp_data.release_version_status = _("Checking...")
-        version.get_latest_release(self.callback, context)
+        blender_utils.get_latest_release(self.callback, context)
         return {'FINISHED'}
+
+class DMX_OT_Import_Custom_Data(Operator):
+    bl_label = _("Import Custom Data")
+    bl_idname = "dmx.import_custom_data"
+    bl_description = _("Unzip previously exported custom data from a zip file. This will overwrite current data!")
+    bl_options = {'UNDO'}
+
+    filter_glob: StringProperty(default="*.zip", options={'HIDDEN'})
+
+    directory: StringProperty(
+        name=_("File Path"),
+        maxlen= 1024,
+        default= "" )
+
+    files: CollectionProperty(
+        name=_("Files"),
+        type=bpy.types.OperatorFileListElement
+    )
+
+    def draw(self, context):
+        layout = self.layout
+        col = layout.column()
+        col.prop(self, "files")
+
+    def invoke(self, context, event):
+        wm = context.window_manager
+        wm.fileselect_add(self)
+        return {'RUNNING_MODAL'}
+
+    def execute(self, context):
+        print("print", self.directory, self.files[0].name)
+        file_name = self.files[0].name
+        if file_name != "" and len(file_name)>1:
+            result = blender_utils.import_custom_data(self.directory, file_name)
+        else:
+            self.report({'ERROR'}, _("Incorrect file name!"))
+            return {'FINISHED'}
+
+        if result.ok:
+            import_filename = os.path.join(self.directory, file_name)
+            self.report({'INFO'}, _("Data imported from: {}").format(import_filename))
+        else:
+            self.report({'ERROR'}, result.error)
+
+        return {'FINISHED'}
+
+class DMX_OT_Export_Custom_Data(Operator):
+    bl_label = _("Export Custom Data")
+    bl_idname = "dmx.export_custom_data"
+    bl_description = _("Zip and Export custom data from BlenderDMX addon directory.")
+    bl_options = {'UNDO'}
+
+    filter_glob: StringProperty(default="*.zip", options={'HIDDEN'})
+
+    directory: StringProperty(
+        name=_("File Path"),
+        maxlen= 1024,
+        default= "" )
+
+    files: CollectionProperty(
+        name=_("Files"),
+        type=bpy.types.OperatorFileListElement
+    )
+
+    def draw(self, context):
+        layout = self.layout
+        col = layout.column()
+        col.prop(self, "files")
+
+    def invoke(self, context, event):
+        wm = context.window_manager
+        wm.fileselect_add(self)
+        return {'RUNNING_MODAL'}
+
+    def execute(self, context):
+        file_name = self.files[0].name
+        if file_name[-4:].lower() == ".zip":
+            file_name = file_name[:-4]
+        if file_name != "" and len(file_name)>1:
+            result = blender_utils.export_custom_data(self.directory, file_name)
+        else:
+            self.report({'ERROR'}, _("Incorrect file name!"))
+            return {'FINISHED'}
+
+        if result.ok:
+            export_filename = os.path.join(self.directory, f"{file_name}.zip")
+            self.report({'INFO'}, _("Data exported to: {}").format(export_filename))
+        else:
+            self.report({'ERROR'}, result.error)
+
+        return {'FINISHED'}
+
+class DMX_OT_Setup_Import_GDTF(Operator):
+    bl_label = _("Import GDTF Profile")
+    bl_idname = "dmx.import_gdtf_profile"
+    bl_description = _("Import fixture from GDTF Profile")
+    bl_options = {'UNDO'}
+
+    filter_glob: StringProperty(default="*.gdtf", options={'HIDDEN'})
+
+    directory: StringProperty(
+        name=_("File Path"),
+        maxlen= 1024,
+        default= "" )
+
+    files: CollectionProperty(
+        name=_("Files"),
+        type=bpy.types.OperatorFileListElement
+    )
+
+    def draw(self, context):
+        layout = self.layout
+        col = layout.column()
+        col.prop(self, "files")
+
+    def invoke(self, context, event):
+        wm = context.window_manager
+        wm.fileselect_add(self)
+        return {'RUNNING_MODAL'}
+
+    def execute(self, context):
+        folder_path = os.path.dirname(os.path.realpath(__file__))
+        folder_path = os.path.join(folder_path, '..', 'assets', 'profiles')
+        for file in self.files:
+            file_path = os.path.join(self.directory, file.name)
+            DMX_Log.log.info('Importing GDTF Profile: %s' % file_path)
+            shutil.copy(file_path, folder_path)
+        DMX_GDTF.getManufacturerList()
+        Profiles.DMX_Fixtures_Local_Profile.loadLocal()
+        return {'FINISHED'}
+
+
+class DMX_OT_Setup_Import_MVR(Operator):
+    bl_label = _("Import MVR scene")
+    bl_idname = "dmx.import_mvr_scene"
+    bl_description = _("Import data MVR scene file. This may take a long time!")
+    bl_options = {'UNDO'}
+
+    filter_glob: StringProperty(default="*.mvr", options={'HIDDEN'})
+
+    directory: StringProperty(
+        name=_("File Path"),
+        maxlen= 1024,
+        default= "" )
+
+    files: CollectionProperty(
+        name=_("Files"),
+        type=bpy.types.OperatorFileListElement
+    )
+
+    def draw(self, context):
+        layout = self.layout
+        col = layout.column()
+        col.prop(self, "files")
+
+    def invoke(self, context, event):
+        wm = context.window_manager
+        wm.fileselect_add(self)
+        return {'RUNNING_MODAL'}
+
+    def execute(self, context):
+        folder_path = os.path.dirname(os.path.realpath(__file__))
+        folder_path = os.path.join(folder_path, '..', 'assets', 'profiles')
+        for file in self.files:
+            file_path = os.path.join(self.directory, file.name)
+            print("INFO", f'Processing MVR file: {file_path}')
+            dmx = context.scene.dmx
+            dmx.addMVR(file_path)
+            #shutil.copy(file_path, folder_path)
+        # https://developer.blender.org/T86803
+        #self.report({'WARNING'}, 'Restart Blender to load the profiles.')
+        return {'FINISHED'}
+
