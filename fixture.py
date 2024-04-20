@@ -671,7 +671,7 @@ class DMX_Fixture(PropertyGroup):
             self.updateRGB(rgb, geometry, colorwheel_color, current_frame)
 
         if not len(rgb_mixing_geometries):# handle units without mixing
-            if not all([c == 1.0 for c in self.gel_color[:3]]): #gel color is set and has priority
+            if not all([c == 1.0 for c in self.gel_color[:3]]) or colorwheel_color is not None: #gel color is set and has priority or there is a color wheel
                 self.updateRGB([255, 255, 255], None, colorwheel_color, current_frame)
 
         if (cmy[0] != None and cmy[1] != None and cmy[2] != None):
