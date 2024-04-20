@@ -1206,12 +1206,8 @@ class DMX(PropertyGroup):
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
                     fixture.setDMX({
-                        'Color1':int(self.programmer_color_wheel)
-                    })
-                    fixture.setDMX({
-                        'Color2':int(self.programmer_color_wheel)
-                    })
-                    fixture.setDMX({
+                        'Color1':int(self.programmer_color_wheel),
+                        'Color2':int(self.programmer_color_wheel),
                         'ColorMacro1':int(self.programmer_color_wheel)
                     })
         self.render()
@@ -1225,9 +1221,7 @@ class DMX(PropertyGroup):
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
                     fixture.setDMX({
-                        'Gobo1':int(self.programmer_gobo)
-                    })
-                    fixture.setDMX({
+                        'Gobo1':int(self.programmer_gobo),
                         'Gobo2':int(self.programmer_gobo)
                     })
         self.render()
@@ -1241,10 +1235,10 @@ class DMX(PropertyGroup):
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
                     fixture.setDMX({
-                        'Gobo1Pos':int(self.programmer_gobo_index)
-                    })
-                    fixture.setDMX({
-                        'Gobo2Pos':int(self.programmer_gobo_index)
+                        'Gobo1Pos':int(self.programmer_gobo_index),
+                        'Gobo1PosRotate':int(self.programmer_gobo_index),
+                        'Gobo2Pos':int(self.programmer_gobo_index),
+                        'Gobo2PosRotate':int(self.programmer_gobo_index)
                     })
         self.render()
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
@@ -1341,8 +1335,12 @@ class DMX(PropertyGroup):
             self.programmer_gobo = int(data['Gobo2'])
         if ('Gobo1Pos' in data):
             self.programmer_gobo_index = int(data['Gobo1Pos'])
+        if ('Gobo1PosRotate' in data):
+            self.programmer_gobo_index = int(data['Gobo1PosRotate'])
         if ('Gobo2Pos' in data):
             self.programmer_gobo_index = int(data['Gobo2Pos'])
+        if ('Gobo2PosRotate' in data):
+            self.programmer_gobo_index = int(data['Gobo2PosRotate'])
         if ('ColorAdd_R' in data and 'ColorAdd_G' in data and 'ColorAdd_B' in data):
             self.programmer_color = (data['ColorAdd_R'],data['ColorAdd_G'],data['ColorAdd_B'],255)
         if ('ColorRGB_Red' in data and 'ColorRGB_Green' in data and 'ColorRGB_Blue' in data):
