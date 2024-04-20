@@ -81,6 +81,20 @@ class DMX_TempData(PropertyGroup):
         dmx = context.scene.dmx
         dmx.update_laser_collision_collect()
 
+    def onToggleAddSelection(self, context):
+        self.onChangingGroupSelectionBehavior("add")
+
+    def onToggleSubSelection(self, context):
+        self.onChangingGroupSelectionBehavior("sub")
+
+    def onChangingGroupSelectionBehavior(self, behavior):
+        if "add" in behavior:
+            if self.aditive_selection:
+                self.subtractive_selection = False
+        else: #sub
+            if self.subtractive_selection:
+                self.aditive_selection = False
+
     collections_list: PointerProperty(
             type=bpy.types.Collection,
             name = _("Laser collision collection"),
@@ -106,7 +120,14 @@ class DMX_TempData(PropertyGroup):
     aditive_selection: BoolProperty(
         name = _("Add to selection"),
         description="When selecting a group, add to existing selection",
+        update = onToggleAddSelection,
         default = True)
+
+    subtractive_selection: BoolProperty(
+        name = _("Remove from selection"),
+        description="When selecting a group, remove from existing selection",
+        update = onToggleSubSelection,
+        default = False)
 
 
     mvr_xchange: PointerProperty(
