@@ -8,8 +8,12 @@ import pathlib
 from dmx import bl_info as application_info
 import uuid as py_uuid
 
+# Instances and callbacks for the MVR TCP client and servers
 
 class DMX_MVR_X_Client:
+    """This is a blender specific instance of the MVR-xchange client
+    (mvrx_protocol-mvrxchange_client-client) TCP connection"""
+
     _instance = None
 
     def __init__(self):
@@ -136,6 +140,9 @@ class DMX_MVR_X_Client:
 
 
 class DMX_MVR_X_Server:
+    """This is an instance of the blender specific mvr_xchange TCP server
+    (mvrx_protocol-mvrxchange_server-server) for incoming connections"""
+
     _instance = None
 
     def __init__(self):

@@ -17,7 +17,7 @@ from mathutils import Euler, Matrix
 from dmx import pygdtf
 from dmx.logging import DMX_Log
 from dmx.io_scene_3ds.import_3ds import load_3ds
-from dmx.util import sanitize_obj_name
+from dmx.util import sanitize_obj_name, xyY2rgbaa
 
 class DMX_GDTF():
 
@@ -38,8 +38,11 @@ class DMX_GDTF():
         for file in os.listdir(DMX_GDTF.getProfilesPath()):
             # Parse info from file name: Manufacturer@Device@Revision.gdtf
             if "@" not in file:
-                continue
-            name = file.split('@')[0]
+                file = os.path.join(DMX_GDTF.getProfilesPath(), file)
+                fixture_type = pygdtf.FixtureType(file)
+                name = f"{fixture_type.manufacturer}"
+            else:
+                name = file.split('@')[0]
             manufacturers_names.add(name)
         manufacturers  = bpy.context.window_manager.dmx.manufacturers
         manufacturers.clear()
@@ -52,10 +55,16 @@ class DMX_GDTF():
         profiles = []
         for file in os.listdir(DMX_GDTF.getProfilesPath()):
             # Parse info from file name: Company@Model.gdtf
-            info = file.split('@')
+            if "@" not in file:
+                file = os.path.join(DMX_GDTF.getProfilesPath(), file)
+                fixture_type = pygdtf.FixtureType(file)
+                info = [f"{fixture_type.manufacturer}", f"{fixture_type.long_name}",""]
+            else:
+                info = file.split('@')
             if (info[0] == manufacturer):
                 # Remove ".gdtf" from the end of the string
-                info[-1] = info[-1][:-5]
+                if info[-1][-5:].lower() == ".gdtf":
+                    info[-1] = info[-1][:-5]
                 # Add to list (identifier, short name, full name)
                 profiles.append((file, info[1], (info[2] if len(info) > 2 else '')))
 
@@ -132,6 +141,16 @@ class DMX_GDTF():
         return gobos
 
     @staticmethod
+    def get_wheel_slot_colors(profile):
+        colors = []
+        for wheel in profile.wheels:
+            for slot in wheel.wheel_slots:
+                color = xyY2rgbaa(slot.color)
+                if color not in colors:
+                    colors.append(color)
+        return colors
+
+    @staticmethod
     def extract_gobos_as_sequence(profile):
         current_path = os.path.dirname(os.path.realpath(__file__))
         gdtf_path = os.path.join(current_path, 'assets', 'models', profile.fixture_type_id)
@@ -153,7 +172,10 @@ class DMX_GDTF():
                 first = str(destination.resolve())
             destination.write_bytes(image.read_bytes())
             count = idx
-        sequence = bpy.data.images.load(first)
+        if first:
+            sequence = bpy.data.images.load(first)
+        else:
+            return None
 
         #TODO: add names from wheels
         #TODO: add some structure to indicate which gobo belongs to which wheel

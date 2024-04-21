@@ -16,6 +16,8 @@ from dmx.logging import DMX_Log
 
 
 class client(Thread):
+    """MVR TCP client, it is instanced via blender specific DMX_MVR_X_Client class located in mvrx_protocol.py"""
+
     def __init__(self, ip_address, port, callback, timeout=None, application_uuid=0):
         Thread.__init__(self, name=f"client {int(datetime.now().timestamp())}")
         DMX_Log.log.debug(self.name)

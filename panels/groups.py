@@ -162,3 +162,4 @@ class DMX_PT_Groups(Panel):
 
         row = layout.row()
         row.prop(bpy.context.window_manager.dmx, 'aditive_selection')
+        row.prop(bpy.context.window_manager.dmx, 'subtractive_selection')

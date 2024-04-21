@@ -1,5 +1,17 @@
 ### Changelog
 
+### 1.4.1
+
+    * Handle XML files with null byte at the end
+    * Add support for Color Wheels (Color1, Color2, and ColorMacro1 GDTF attributes)
+
+### 1.4.0
+
+    *  Add initial support for laser projection
+    *  Add Import of GDTF and MVR to Setup panel
+    *  Set materials for models of default fixture files
+    *  Add gMA3 icon to MVR-exchange stations list
+
 ### 1.3.3
 
     * Add support for ColorRGB_Red/Green/Blue color attributes

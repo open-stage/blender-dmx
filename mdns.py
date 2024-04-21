@@ -9,6 +9,7 @@ import time
 
 import pathlib
 
+# mdns (zeroconf) instances for discover and for mdns server
 
 class DMX_Zeroconf:
     _instance = None
@@ -48,7 +49,7 @@ class DMX_Zeroconf:
                 if b"StationName" in info.properties:
                     station_name = info.properties[b"StationName"].decode("utf-8")
                 if b"StationUUID" in info.properties:
-                    station_uuid = info.properties[b"StationUUID"].decode("utf-")
+                    station_uuid = info.properties[b"StationUUID"].decode("utf-8")
         station_name = f"{station_name} ({service_name})"
         DMX_Log.log.info(info)
         if state_change is ServiceStateChange.Added:
@@ -92,7 +93,7 @@ class DMX_Zeroconf:
         addrs = [socket.inet_pton(socket.AF_INET, address) for address in get_all_addresses()]
         DMX_Zeroconf._instance.info = ServiceInfo(
             "_mvrxchange._tcp.local.",
-            f"{server_name}._mvrxchange._tcp.local.",
+            name=f"{server_name}._mvrxchange._tcp.local.",
             addresses=addrs,
             port=port,
             properties=desc,

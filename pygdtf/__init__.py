@@ -31,7 +31,9 @@ def _find_root(pkg: "zipfile.ZipFile") -> "ElementTree.Element":
     description.xml file."""
 
     with pkg.open("description.xml", "r") as f:
-        description_str = f.read()
+        description_str = f.read().decode("utf-8")
+        if description_str[-1]=="\x00": # this should not happen, but...
+            description_str = description_str[:-1]
     return ElementTree.fromstring(description_str)
 
 
@@ -720,7 +722,7 @@ class GeometryLaser(Geometry):
         self.color = float(xml_node.attrib.get("Color", 530)) # Green
         self.output_strength = float(xml_node.attrib.get("OutputStrength", 1))
         self.emitter = NodeLink("EmitterCollect", xml_node.attrib.get("Emitter"))
-        self.beam_diameter = float(xml_node.attrib.get("BeamDiameter", 5))
+        self.beam_diameter = float(xml_node.attrib.get("BeamDiameter", 0.005))
         self.beam_divergence_min = float(xml_node.attrib.get("BeamDivergenceMin", 0))
         self.beam_divergence_max = float(xml_node.attrib.get("BeamDivergenceMax", 0))
         self.scan_angle_pan = float(xml_node.attrib.get("ScanAnglePan", 30))

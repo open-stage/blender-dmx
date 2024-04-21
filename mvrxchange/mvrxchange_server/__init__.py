@@ -13,6 +13,8 @@ from dmx.logging import DMX_Log
 
 
 class server(Thread):
+    """MVR TCP server for incoming connections, it is instanced via blender specific DMX_MVR_X_Server class located in mvrx_protocol.py"""
+
     def __init__(self, callback, uuid=str(uuid4())):
         Thread.__init__(self, name=f"server {int(datetime.now().timestamp())}")
         DMX_Log.log.debug(self.name)

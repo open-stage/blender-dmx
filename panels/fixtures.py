@@ -13,6 +13,7 @@ import shutil
 import re
 
 from dmx.gdtf import *
+from dmx import pygdtf
 import dmx.panels.profiles as Profiles
 from dmx.util import pad_number
 from bpy_extras.io_utils import ImportHelper
@@ -66,14 +67,6 @@ class DMX_MT_Fixture(Menu):
         row = layout.row()
         row.operator("dmx.remove_fixture", text=_("Remove"), icon="REMOVE")
         row.enabled = len(dmx.fixtures) and selected
-
-        # "Import GDTF Profile"
-        row = layout.row()
-        row.operator("dmx.import_gdtf_profile", text=_("Import GDTF Profile"), icon="IMPORT")
-
-        # "Import MVR scene"
-        row = layout.row()
-        row.operator("dmx.import_mvr_scene", text=_("Import MVR Scene"), icon="IMPORT")
 
 
 class DMX_MT_Fixture_Manufacturers(Menu):
@@ -242,7 +235,13 @@ class DMX_Fixture_AddEdit():
         col.context_pointer_set("add_edit_panel", self)
         text_profile = _("GDTF Profile")
         if (self.profile != ""):
-            text_profile = self.profile[:-5].replace('_',' ').split('@')
+            if "@" not in self.profile:
+                file = os.path.join(DMX_GDTF.getProfilesPath(), self.profile)
+                fixture_type = pygdtf.FixtureType(file)
+                text_profile = [f"{fixture_type.manufacturer}", f"{fixture_type.long_name}",""]
+            else:
+                text_profile = self.profile[:-5].replace('_',' ').split('@')
+
             if len(text_profile) > 1:
                 text_profile = text_profile[0] + " > " + text_profile[1]
             else:
@@ -469,88 +468,6 @@ class DMX_OT_IES_Import(Operator, ImportHelper):
             fixture.add_ies(self.filepath)
         return {'FINISHED'}
 
-class DMX_OT_Fixture_Import_GDTF(Operator):
-    bl_label = _("Import GDTF Profile")
-    bl_idname = "dmx.import_gdtf_profile"
-    bl_description = _("Import fixture from GDTF Profile")
-    bl_options = {'UNDO'}
-
-    filter_glob: StringProperty(default="*.gdtf", options={'HIDDEN'})
-
-    directory: StringProperty(
-        name=_("File Path"),
-        maxlen= 1024,
-        default= "" )
-
-    files: CollectionProperty(
-        name=_("Files"),
-        type=bpy.types.OperatorFileListElement
-    )
-
-    def draw(self, context):
-        layout = self.layout
-        col = layout.column()
-        col.prop(self, "files")
-
-    def invoke(self, context, event):
-        wm = context.window_manager
-        wm.fileselect_add(self)
-        return {'RUNNING_MODAL'}
-
-    def execute(self, context):
-        folder_path = os.path.dirname(os.path.realpath(__file__))
-        folder_path = os.path.join(folder_path, '..', 'assets', 'profiles')
-        for file in self.files:
-            file_path = os.path.join(self.directory, file.name)
-            DMX_Log.log.info('Importing GDTF Profile: %s' % file_path)
-            shutil.copy(file_path, folder_path)
-        DMX_GDTF.getManufacturerList()
-        Profiles.DMX_Fixtures_Local_Profile.loadLocal()
-        return {'FINISHED'}
-
-
-class DMX_OT_Fixture_Import_MVR(Operator):
-    bl_label = _("Import MVR scene")
-    bl_idname = "dmx.import_mvr_scene"
-    bl_description = _("Import data MVR scene file. This may take a long time!")
-    bl_options = {'UNDO'}
-
-    filter_glob: StringProperty(default="*.mvr", options={'HIDDEN'})
-
-    directory: StringProperty(
-        name=_("File Path"),
-        maxlen= 1024,
-        default= "" )
-
-    files: CollectionProperty(
-        name=_("Files"),
-        type=bpy.types.OperatorFileListElement
-    )
-
-    def draw(self, context):
-        layout = self.layout
-        col = layout.column()
-        col.prop(self, "files")
-
-    def invoke(self, context, event):
-        wm = context.window_manager
-        wm.fileselect_add(self)
-        return {'RUNNING_MODAL'}
-
-    def execute(self, context):
-        folder_path = os.path.dirname(os.path.realpath(__file__))
-        folder_path = os.path.join(folder_path, '..', 'assets', 'profiles')
-        for file in self.files:
-            file_path = os.path.join(self.directory, file.name)
-            print("INFO", f'Processing MVR file: {file_path}')
-            dmx = context.scene.dmx
-            dmx.addMVR(file_path)
-            #shutil.copy(file_path, folder_path)
-        # https://developer.blender.org/T86803
-        #self.report({'WARNING'}, 'Restart Blender to load the profiles.')
-        return {'FINISHED'}
-
-
 # Panel #
 
 
@@ -700,6 +617,8 @@ class DMX_PT_Fixtures(Panel):
         scene = context.scene
         dmx = scene.dmx
 
+        # LABELS
+
         row = layout.row()
         c = row.column()
         c.label(text=_("Name"))
@@ -737,6 +656,11 @@ class DMX_PT_Fixtures(Panel):
             else:
                 c.label(text=_("Uni.Addr"))
 
+        if dmx.column_fixture_footprint and not dmx.fixture_properties_editable:
+            c = row.column()
+            c.label(text=_("Foot"))
+            c.ui_units_x = 2
+
         layout.template_list(
             "DMX_UL_Fixtures",
             "",
@@ -772,14 +696,14 @@ class DMX_UL_Fixtures(UIList):
         col = row.column()
         col.prop(dmx, "column_fixture_id")
         col.prop(dmx, "column_custom_id")
-        row = row.row()
-        col = row.column()
         col.prop(dmx, "column_fixture_id_numeric")
-        col.prop(dmx, "column_unit_number")
         row = row.row()
         col = row.column()
+        col.prop(dmx, "column_unit_number")
         col.prop(dmx, "column_dmx_address")
+        col.prop(dmx, "column_fixture_footprint")
         col.prop(dmx, "fixture_properties_editable")
+        row = row.row()
         col = row.column()
         col.prop(dmx, "column_fixture_position")
         col.prop(dmx, "column_fixture_rotation")
@@ -826,7 +750,7 @@ class DMX_UL_Fixtures(UIList):
         has_ies = len(item.ies_data) > 0
         col = layout.column()
         col.context_pointer_set("fixture", item)
-        col.operator('dmx.fixture_item', text=f"{item.name}{' 📈' if has_ies else ''}", depress=item.is_selected(), icon="LOCKED" if item.ignore_movement_dmx else 'OUTLINER_DATA_LIGHT')
+        col.operator('dmx.fixture_item', text=f"{item.name}{' 📈' if has_ies else ''} {'*' if item.dmx_cache_dirty else ''}", depress=item.is_selected(), icon="LOCKED" if item.ignore_movement_dmx else 'OUTLINER_DATA_LIGHT')
         col.ui_units_x = 6
 
 
@@ -865,6 +789,24 @@ class DMX_UL_Fixtures(UIList):
                 c.ui_units_x = 2
             else:
                 c.label(text=f"{item.universe}.{item.address}")
+
+        if dmx.column_fixture_footprint:
+            overlapping = False
+            item_channels = set(range(item.address, item.address + len(item.channels)))
+            for fixture in dmx.fixtures:
+                if overlapping:
+                    break
+                if fixture.name == item.name:
+                    continue
+                if fixture.universe == item.universe:
+                    channels = set(range(fixture.address, fixture.address + len(fixture.channels)))
+                    if not item_channels.isdisjoint(channels): #should be fastest way of checking https://stackoverflow.com/a/17735466/2949947
+                        overlapping = True
+                        break
+
+            c = layout.column()
+            c.ui_units_x = 2
+            c.label(text=f"{len(item.channels)}{'!' if overlapping else ' '}")
 
         if dmx.fixture_properties_editable and dmx.column_fixture_position:
             body = None

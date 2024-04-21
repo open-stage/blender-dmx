@@ -9,8 +9,10 @@
 #
 
 import bpy
-from bpy.types import Operator, Panel
+from bpy.types import Operator, Panel, Menu
 from dmx.osc_utils import DMX_OSC_Handlers
+
+from bpy.props import (StringProperty)
 
 from dmx.i18n import DMX_Lang
 _ = DMX_Lang._
@@ -146,18 +148,32 @@ class DMX_OT_Programmer_Clear(Operator):
                 fixture.clear()
         else:
             for fixture in scene.dmx.fixtures:
-                for obj in fixture.collection.objects:
-                    if (obj in bpy.context.selected_objects):
-                        fixture.clear()
-                        break
+                if fixture.is_selected():
+                    fixture.clear()
+
         scene.dmx.programmer_color = (1.0, 1.0, 1.0, 1.0)
         scene.dmx.programmer_dimmer = 0.0
         scene.dmx.programmer_pan = 0.0
         scene.dmx.programmer_tilt = 0.0
         scene.dmx.programmer_zoom = 25
+        scene.dmx.programmer_color_wheel = 0
         scene.dmx.programmer_gobo = 0
         scene.dmx.programmer_gobo_index = 63
         scene.dmx.programmer_shutter = 0
+        return {'FINISHED'}
+
+class DMX_OT_Programmer_Apply_Manually(Operator):
+    bl_label = _("Apply")
+    bl_idname = "dmx.apply"
+    bl_description = _("Apply these values manually when render is paused")
+    bl_options = {'UNDO'}
+
+    def execute(self, context):
+        scene = context.scene
+        bpy.context.window_manager.dmx.pause_render = False
+        scene.dmx.onProgrammerApplyManually(context)
+        bpy.context.window_manager.dmx.pause_render = True
+
         return {'FINISHED'}
 
 class DMX_OT_Programmer_TargetsToZero(Operator):
@@ -171,9 +187,75 @@ class DMX_OT_Programmer_TargetsToZero(Operator):
         select_targets(dmx)
         for fixture in dmx.fixtures:
             for obj in fixture.collection.objects:
+                if obj.get("geometry_root", False):
+                    body = obj
+                    break
+            for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
                     if ('Target' in fixture.objects):
                         fixture.objects['Target'].object.location = ((0,0,0))
+                    break
+
+        return {'FINISHED'}
+
+class DMX_MT_PIE_Reset(Menu):
+    bl_label = _("Reset targets")
+    bl_idname = "dmx.pie_reset"
+    bl_description = _("Reset position of target of selected fixtures")
+
+    def draw(self,context):
+        layout = self.layout
+        pie = layout.menu_pie()
+        col = pie.column(align=True)
+        col.operator("dmx.reset_targets", text='+', icon='EVENT_X').axis="x"
+        col.operator("dmx.reset_targets", text='-', icon='EVENT_X').axis="-x"
+        col = pie.column(align=True)
+        col.operator("dmx.reset_targets", text='+', icon='EVENT_Y').axis="y"
+        col.operator("dmx.reset_targets", text='-', icon='EVENT_Y').axis="-y"
+        col = pie.column(align=True)
+        col.operator("dmx.reset_targets", text='+', icon='EVENT_Z').axis="z"
+        col.operator("dmx.reset_targets", text='-', icon='EVENT_Z').axis="-z"
+
+
+class DMX_OT_Programmer_ResetTargets(Operator):
+    bl_label = _("Reset targets")
+    bl_idname = "dmx.reset_targets"
+    bl_options = {'UNDO'}
+    bl_description = _("Reset position of target of selected fixtures")
+
+    axis: StringProperty(
+        default = "-z"
+    )
+
+    def execute(self, context):
+        dmx = context.scene.dmx
+        select_targets(dmx)
+        axis = self.axis
+
+        for fixture in dmx.fixtures:
+            for obj in fixture.collection.objects:
+                if obj.get("geometry_root", False):
+                    body = obj
+                    break
+            for obj in fixture.collection.objects:
+                if (obj in bpy.context.selected_objects):
+                    if ('Target' in fixture.objects):
+                        if body is not None:
+                            x = body.location[0]
+                            y = body.location[1]
+                            z = body.location[2]
+                            if axis == "-x":
+                                fixture.objects['Target'].object.location = ((x-2, y, z))
+                            if axis == "-y":
+                                fixture.objects['Target'].object.location = ((x, y-2, z))
+                            if axis == "-z":
+                                fixture.objects['Target'].object.location = ((x, y, z-2))
+                            if axis == "x":
+                                fixture.objects['Target'].object.location = ((x+2, y, z))
+                            if axis == "y":
+                                fixture.objects['Target'].object.location = ((x, y+2, z))
+                            if axis == "z":
+                                fixture.objects['Target'].object.location = ((x, y, z+2))
                     break
 
         return {'FINISHED'}
@@ -279,13 +361,15 @@ class DMX_PT_Programmer(Panel):
         c2 = row.column()
         c3 = row.column()
         c4 = row.column()
+        c5 = row.column()
         c0.operator("dmx.select_filtered", text='', icon="SELECT_DIFFERENCE")
         c1.operator("dmx.deselect_all", text='', icon='SELECT_SET')
         c2.operator("dmx.targets_to_zero", text="", icon="LIGHT_POINT")
-        c3.operator("dmx.ignore_movement_true", text="", icon="LOCKED")
-        c4.operator("dmx.ignore_movement_false", text="", icon="UNLOCKED")
-        c1.enabled = c2.enabled = c3.enabled = selected
-        c4.enabled = locked and selected
+        c3.menu("dmx.pie_reset", text="", icon="LIGHT_SPOT")
+        c4.operator("dmx.ignore_movement_true", text="", icon="LOCKED")
+        c5.operator("dmx.ignore_movement_false", text="", icon="UNLOCKED")
+        c1.enabled = c2.enabled = c3.enabled = c4.enabled = selected
+        c5.enabled = locked and selected
 
         row = layout.row()
         row.label(text=selected_fixture_label)
@@ -322,6 +406,8 @@ class DMX_PT_Programmer(Panel):
                     col1.enabled = False
             if selected_fixtures[0].has_attribute("Zoom"):
                 box.prop(scene.dmx,"programmer_zoom", text=_("Zoom"), translate = False)
+            if selected_fixtures[0].has_attribute("Color1") or selected_fixtures[0].has_attribute("Color2") or selected_fixtures[0].has_attribute("ColorMacro1"):
+                box.prop(scene.dmx,"programmer_color_wheel", text=_("Color Wheel"), translate = False)
             if selected_fixtures[0].has_attribute("Gobo"):
                 box.prop(scene.dmx,"programmer_gobo", text=_("Gobo"), translate = False)
                 box.prop(scene.dmx,"programmer_gobo_index", text=_("Gobo Rotation"), translate = False)
@@ -342,13 +428,18 @@ class DMX_PT_Programmer(Panel):
                 col2.operator("dmx.ignore_movement_false", text="", icon="UNLOCKED")
 
             box.prop(scene.dmx,"programmer_zoom", text=_("Zoom"), translate = False)
+            box.prop(scene.dmx,"programmer_color_wheel", text=_("Color Wheel"), translate = False)
             box.prop(scene.dmx,"programmer_gobo", text=_("Gobo"), translate = False)
             box.prop(scene.dmx,"programmer_gobo_index", text=_("Gobo Rotation"), translate = False)
             box.prop(scene.dmx,"programmer_shutter", text=_("Strobe"), translate = False)
 
         box.enabled = selected
 
+        dmx = context.scene.dmx
+
         if (selected):
+            if bpy.context.window_manager.dmx.pause_render:
+                layout.operator("dmx.apply", text=_("Apply"))
             layout.operator("dmx.clear", text=_("Clear"))
         else:
             layout.operator("dmx.clear", text=_("Clear All"))

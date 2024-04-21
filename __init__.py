@@ -2,7 +2,7 @@ bl_info = {
     "name": "DMX",
     "description": "DMX visualization and programming, with GDTF/MVR and Network support",
     "author": "open-stage",
-    "version": (1, 3, 3),
+    "version": (1, 4, 1),
     "blender": (3, 4, 0),
     "location": "3D View > DMX",
     "doc_url": "https://blenderdmx.eu/docs/faq/",
@@ -52,7 +52,7 @@ from dmx.osc_utils import DMX_OSC_Templates
 from dmx.osc import DMX_OSC
 from dmx.mdns import DMX_Zeroconf
 
-from dmx.util import rgb_to_cmy, xyY2rgbaa, ShowMessageBox
+from dmx.util import rgb_to_cmy, xyY2rgbaa, ShowMessageBox, cmy_to_rgb
 from dmx.mvr_objects import DMX_MVR_Object
 from dmx.mvr_xchange import *
 from dmx.mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server
@@ -81,6 +81,20 @@ class DMX_TempData(PropertyGroup):
         dmx = context.scene.dmx
         dmx.update_laser_collision_collect()
 
+    def onToggleAddSelection(self, context):
+        self.onChangingGroupSelectionBehavior("add")
+
+    def onToggleSubSelection(self, context):
+        self.onChangingGroupSelectionBehavior("sub")
+
+    def onChangingGroupSelectionBehavior(self, behavior):
+        if "add" in behavior:
+            if self.aditive_selection:
+                self.subtractive_selection = False
+        else: #sub
+            if self.subtractive_selection:
+                self.aditive_selection = False
+
     collections_list: PointerProperty(
             type=bpy.types.Collection,
             name = _("Laser collision collection"),
@@ -106,8 +120,19 @@ class DMX_TempData(PropertyGroup):
     aditive_selection: BoolProperty(
         name = _("Add to selection"),
         description="When selecting a group, add to existing selection",
+        update = onToggleAddSelection,
         default = True)
 
+    subtractive_selection: BoolProperty(
+        name = _("Remove from selection"),
+        description="When selecting a group, remove from existing selection",
+        update = onToggleSubSelection,
+        default = False)
+
+    keyframe_only_selected: BoolProperty(
+        name = _("Keyframe only selected fixtures (not for autokeying)"),
+        description="Add keyframes with changes only for selected fixtures",
+        default = False)
 
     mvr_xchange: PointerProperty(
             name = _("MVR-xchange"),
@@ -184,7 +209,10 @@ class DMX(PropertyGroup):
                 DMX_PT_Setup_Logging,
                 DMX_OT_Setup_Open_LogFile,
                 DMX_PT_Setup_Import,
+                DMX_PT_Setup_Export,
                 DMX_PT_Setup_Extras,
+                DMX_OT_Setup_Import_GDTF,
+                DMX_OT_Setup_Import_MVR,
                 DMX_MT_Fixture,
                 DMX_MT_Fixture_Manufacturers,
                 DMX_MT_Fixture_Profiles,
@@ -196,10 +224,10 @@ class DMX(PropertyGroup):
                 DMX_OT_Fixture_Add,
                 DMX_OT_Fixture_Edit,
                 DMX_OT_Fixture_Remove,
-                DMX_OT_Fixture_Import_GDTF,
+                DMX_OT_Export_Custom_Data,
+                DMX_OT_Import_Custom_Data,
                 DMX_OT_IES_Import,
                 DMX_OT_IES_Remove,
-                DMX_OT_Fixture_Import_MVR,
                 DMX_PT_Fixtures,
                 DMX_UL_Group,
                 DMX_MT_Group,
@@ -218,7 +246,10 @@ class DMX(PropertyGroup):
                 DMX_OT_Programmer_SelectTargets,
                 DMX_OT_Programmer_SelectCamera,
                 DMX_OT_Programmer_TargetsToZero,
+                DMX_OT_Programmer_Apply_Manually,
                 DMX_OT_Programmer_Set_Ignore_Movement,
+                DMX_OT_Programmer_ResetTargets,
+                DMX_MT_PIE_Reset,
                 DMX_OT_Programmer_Unset_Ignore_Movement,
                 DMX_PT_DMX_OSC,
                 DMX_UL_Fixtures,
@@ -320,6 +351,10 @@ class DMX(PropertyGroup):
         name = _("Rotation"),
         default = False)
 
+    column_fixture_footprint: BoolProperty(
+        name = _("Footprint"),
+        default = False)
+
     collection: PointerProperty(
         name = _("DMX Collection"),
         type = Collection)
@@ -390,7 +425,7 @@ class DMX(PropertyGroup):
 
     data_version: IntProperty(
             name = "BlenderDMX data version, bump when changing RNA structure and provide migration script",
-            default = 7,
+            default = 8,
             )
 
     def get_fixture_by_index(self, index):
@@ -683,7 +718,7 @@ class DMX(PropertyGroup):
             DMX_Log.log.info("To make gobos working again, edit fixtures with gobos - re-load GDTF files (Fixtures → Edit, uncheck Re-address only)")
 
         if file_data_version < 7:
-            DMX_Log.log.info("Running migration 5→6")
+            DMX_Log.log.info("Running migration 6→7")
             dmx = bpy.context.scene.dmx
             for fixture in dmx.fixtures:
                 for light in fixture.lights:
@@ -700,6 +735,14 @@ class DMX(PropertyGroup):
             objs = bpy.data.materials
             objs.remove(objs["DMX_Volume"], do_unlink=True)
             DMX_Log.log.info("Updating Volume material")
+
+        if file_data_version < 8:
+            DMX_Log.log.info("Running migration 7→8")
+            dmx = bpy.context.scene.dmx
+            for fixture in dmx.fixtures:
+                if "slot_colors" not in fixture:
+                    DMX_Log.log.info("Adding slot_colors array to fixture")
+                    fixture["slot_colors"] = []
 
         DMX_Log.log.info("Migration done.")
         # add here another if statement for next migration condition... like:
@@ -965,10 +1008,10 @@ class DMX(PropertyGroup):
             if not selected_client:
                 return
             DMX_Log.log.debug((selected_client.ip_address, selected_client.station_name))
-            DMX_MVR_X_Server.enable()
+            DMX_MVR_X_Server.enable() # start the MVR-xchange TCP server for incoming connections
             DMX_MVR_X_Server._instance.server.get_port()
-            DMX_Zeroconf.enable_server(selected_client.service_name, DMX_MVR_X_Server.get_port())
-            DMX_MVR_X_Client.join(selected_client)
+            DMX_Zeroconf.enable_server(selected_client.service_name, DMX_MVR_X_Server.get_port()) # start mdns server and advertise the TCP MVR server
+            DMX_MVR_X_Client.join(selected_client) # start MVR-xchange client TCP connection and send MVR_JOIN message
         else:
             DMX_Log.log.info("leave client")
             DMX_MVR_X_Client.leave()
@@ -1077,6 +1120,18 @@ class DMX(PropertyGroup):
         update = onGroupList
         )
 
+
+    def onProgrammerApplyManually(self, context):
+        self.onProgrammerPan(context)
+        self.onProgrammerTilt(context)
+        self.onProgrammerColor(context)
+        self.onProgrammerDimmer(context)
+        self.onProgrammerColorWheel(context)
+        self.onProgrammerGobo(context)
+        self.onProgrammerGoboIndex(context)
+        self.onProgrammerShutter(context)
+        self.onProgrammerZoom(context)
+
     # # Programmer > Dimmer
 
     def onProgrammerDimmer(self, context):
@@ -1122,7 +1177,11 @@ class DMX(PropertyGroup):
                         'ColorRGB_Blue':rgb[2],
                         'ColorSub_C':cmy[0],
                         'ColorSub_M':cmy[1],
-                        'ColorSub_Y':cmy[2]
+                        'ColorSub_Y':cmy[2],
+                        'ColorAdd_C':cmy[0],
+                        'ColorAdd_M':cmy[1],
+                        'ColorAdd_Y':cmy[2],
+
                     })
         self.render()
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
@@ -1184,6 +1243,21 @@ class DMX(PropertyGroup):
         self.render()
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
+    def onProgrammerColorWheel(self, context):
+        bpy.app.handlers.depsgraph_update_post.clear()
+        for fixture in self.fixtures:
+            if fixture.collection is None:
+                continue
+            for obj in fixture.collection.objects:
+                if (obj in bpy.context.selected_objects):
+                    fixture.setDMX({
+                        'Color1':int(self.programmer_color_wheel),
+                        'Color2':int(self.programmer_color_wheel),
+                        'ColorMacro1':int(self.programmer_color_wheel)
+                    })
+        self.render()
+        bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
+
     def onProgrammerGobo(self, context):
         bpy.app.handlers.depsgraph_update_post.clear()
         for fixture in self.fixtures:
@@ -1192,9 +1266,7 @@ class DMX(PropertyGroup):
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
                     fixture.setDMX({
-                        'Gobo1':int(self.programmer_gobo)
-                    })
-                    fixture.setDMX({
+                        'Gobo1':int(self.programmer_gobo),
                         'Gobo2':int(self.programmer_gobo)
                     })
         self.render()
@@ -1208,10 +1280,10 @@ class DMX(PropertyGroup):
             for obj in fixture.collection.objects:
                 if (obj in bpy.context.selected_objects):
                     fixture.setDMX({
-                        'Gobo1Pos':int(self.programmer_gobo_index)
-                    })
-                    fixture.setDMX({
-                        'Gobo2Pos':int(self.programmer_gobo_index)
+                        'Gobo1Pos':int(self.programmer_gobo_index),
+                        'Gobo1PosRotate':int(self.programmer_gobo_index),
+                        'Gobo2Pos':int(self.programmer_gobo_index),
+                        'Gobo2PosRotate':int(self.programmer_gobo_index)
                     })
         self.render()
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
@@ -1243,6 +1315,13 @@ class DMX(PropertyGroup):
         default = 25,
         update = onProgrammerZoom)
 
+    programmer_color_wheel: IntProperty(
+        name = "Programmer Color Wheel",
+        min = 0,
+        max = 255,
+        default = 0,
+        update = onProgrammerColorWheel)
+
     programmer_gobo: IntProperty(
         name = "Programmer Gobo",
         min = 0,
@@ -1267,7 +1346,8 @@ class DMX(PropertyGroup):
     # # Programmer > Sync
 
     def syncProgrammer(self):
-        n = len(bpy.context.selected_objects)
+        selected = self.selectedFixtures()
+        n = len(selected)
         if (n < 1):
             self.programmer_dimmer = 0
             self.programmer_color = (255,255,255,255)
@@ -1275,32 +1355,47 @@ class DMX(PropertyGroup):
             self.programmer_tilt = 0
             self.programmer_zoom = 25
             self.programmer_shutter = 0
+            self.programmer_color_wheel = 0
             self.programmer_gobo = 0
             self.programmer_gobo_index = 63
             return
         elif (n > 1): return
-        if (not bpy.context.active_object): return
-        active = self.findFixture(bpy.context.active_object)
-        if (not active): return
+        active = selected[0]
         data = active.getProgrammerData()
         if 'Dimmer' in data:
-            self.programmer_dimmer = data['Dimmer']/256.0
+            self.programmer_dimmer = data['Dimmer']/255.0
         if 'Shutter1' in data:
             self.programmer_shutter = int(data['Shutter1']/256.0)
         if ('Zoom' in data):
             self.programmer_zoom = int(data['Zoom'])
+        if ('Color1' in data):
+            self.programmer_color_wheel = int(data['Color1'])
+        if ('Color2' in data):
+            self.programmer_color_wheel = int(data['Color2'])
+        if ('ColorMacro1' in data):
+            self.programmer_color_wheel = int(data['ColorMacro1'])
         if ('Gobo1' in data):
             self.programmer_gobo = int(data['Gobo1'])
         if ('Gobo2' in data):
             self.programmer_gobo = int(data['Gobo2'])
         if ('Gobo1Pos' in data):
             self.programmer_gobo_index = int(data['Gobo1Pos'])
+        if ('Gobo1PosRotate' in data):
+            self.programmer_gobo_index = int(data['Gobo1PosRotate'])
         if ('Gobo2Pos' in data):
             self.programmer_gobo_index = int(data['Gobo2Pos'])
+        if ('Gobo2PosRotate' in data):
+            self.programmer_gobo_index = int(data['Gobo2PosRotate'])
         if ('ColorAdd_R' in data and 'ColorAdd_G' in data and 'ColorAdd_B' in data):
             self.programmer_color = (data['ColorAdd_R'],data['ColorAdd_G'],data['ColorAdd_B'],255)
         if ('ColorRGB_Red' in data and 'ColorRGB_Green' in data and 'ColorRGB_Blue' in data):
             self.programmer_color = (data['ColorRGB_Red'],data['ColorRGB_Green'],data['ColorRGB_Blue'],255)
+        if ('ColorSub_C' in data and 'ColorSub_M' in data and 'ColorSub_Y' in data):
+            rgb = cmy_to_rgb([data['ColorSub_C'], data['ColorSub_M'], data['ColorSub_Y']])
+            self.programmer_color = (rgb[0], rgb[1], rgb[2], 255)
+        if ('ColorAdd_C' in data and 'ColorAdd_M' in data and 'ColorAdd_Y' in data):
+            rgb = cmy_to_rgb([data['ColorAdd_C'], data['ColorAdd_M'], data['ColorAdd_Y']])
+            self.programmer_color = (rgb[0], rgb[1], rgb[2], 255)
         if ('Pan' in data):
             self.programmer_pan = data['Pan']/127.0-1
         if ('Tilt' in data):

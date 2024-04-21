@@ -10,7 +10,9 @@ def _find_root(pkg: "zipfile.ZipFile") -> "ElementTree.Element":
     corresponding GeneralSceneDescription.xml file."""
 
     with pkg.open("GeneralSceneDescription.xml", "r") as f:
-        description_str = f.read()
+        description_str = f.read().decode("utf-8")
+        if description_str[-1]=="\x00": # this should not happen, but...
+            description_str = description_str[:-1]
     return ElementTree.fromstring(description_str)
 
 
