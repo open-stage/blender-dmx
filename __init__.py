@@ -344,6 +344,10 @@ class DMX(PropertyGroup):
         name = _("Rotation"),
         default = False)
 
+    column_fixture_footprint: BoolProperty(
+        name = _("Footprint"),
+        default = False)
+
     collection: PointerProperty(
         name = _("DMX Collection"),
         type = Collection)
