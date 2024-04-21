@@ -1359,7 +1359,7 @@ class DMX(PropertyGroup):
         active = selected[0]
         data = active.getProgrammerData()
         if 'Dimmer' in data:
-            self.programmer_dimmer = data['Dimmer']/256.0
+            self.programmer_dimmer = data['Dimmer']/255.0
         if 'Shutter1' in data:
             self.programmer_shutter = int(data['Shutter1']/256.0)
         if ('Zoom' in data):
