@@ -707,6 +707,8 @@ class DMX_PT_Fixtures(Panel):
         scene = context.scene
         dmx = scene.dmx
 
+        # LABELS
+
         row = layout.row()
         c = row.column()
         c.label(text=_("Name"))
@@ -744,6 +746,11 @@ class DMX_PT_Fixtures(Panel):
             else:
                 c.label(text=_("Uni.Addr"))
 
+        if dmx.column_fixture_footprint and not dmx.fixture_properties_editable:
+            c = row.column()
+            c.label(text=_("Foot"))
+            c.ui_units_x = 2
+
         layout.template_list(
             "DMX_UL_Fixtures",
             "",
@@ -779,14 +786,14 @@ class DMX_UL_Fixtures(UIList):
         col = row.column()
         col.prop(dmx, "column_fixture_id")
         col.prop(dmx, "column_custom_id")
-        row = row.row()
-        col = row.column()
         col.prop(dmx, "column_fixture_id_numeric")
-        col.prop(dmx, "column_unit_number")
         row = row.row()
         col = row.column()
+        col.prop(dmx, "column_unit_number")
         col.prop(dmx, "column_dmx_address")
+        col.prop(dmx, "column_fixture_footprint")
         col.prop(dmx, "fixture_properties_editable")
+        row = row.row()
         col = row.column()
         col.prop(dmx, "column_fixture_position")
         col.prop(dmx, "column_fixture_rotation")
@@ -872,6 +879,24 @@ class DMX_UL_Fixtures(UIList):
                 c.ui_units_x = 2
             else:
                 c.label(text=f"{item.universe}.{item.address}")
+
+        if dmx.column_fixture_footprint:
+            overlapping = False
+            item_channels = set(range(item.address, item.address + len(item.channels)))
+            for fixture in dmx.fixtures:
+                if overlapping:
+                    break
+                if fixture.name == item.name:
+                    continue
+                if fixture.universe == item.universe:
+                    channels = set(range(fixture.address, fixture.address + len(fixture.channels)))
+                    if not item_channels.isdisjoint(channels): #should be fastest way of checking https://stackoverflow.com/a/17735466/2949947
+                        overlapping = True
+                        break
+
+            c = layout.column()
+            c.ui_units_x = 2
+            c.label(text=f"{len(item.channels)}{'!' if overlapping else ' '}")
 
         if dmx.fixture_properties_editable and dmx.column_fixture_position:
             body = None
