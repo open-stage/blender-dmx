@@ -750,7 +750,7 @@ class DMX_UL_Fixtures(UIList):
         has_ies = len(item.ies_data) > 0
         col = layout.column()
         col.context_pointer_set("fixture", item)
-        col.operator('dmx.fixture_item', text=f"{item.name}{' 📈' if has_ies else ''}", depress=item.is_selected(), icon="LOCKED" if item.ignore_movement_dmx else 'OUTLINER_DATA_LIGHT')
+        col.operator('dmx.fixture_item', text=f"{item.name}{' 📈' if has_ies else ''} {'*' if item.dmx_cache_dirty else ''}", depress=item.is_selected(), icon="LOCKED" if item.ignore_movement_dmx else 'OUTLINER_DATA_LIGHT')
         col.ui_units_x = 6
 
 

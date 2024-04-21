@@ -49,6 +49,7 @@ class DMX_OT_Fixture_Set_Cycles_Beams_Size_Small(Operator):
             for light in fixture.lights:
                 light_obj = light.object
                 light_obj.data["beam_radius_pin_sized_for_gobos"] = True
+                fixture.dmx_cache_dirty = True
                 fixture.render(skip_cache=True)
         return {'FINISHED'}
 
@@ -63,6 +64,7 @@ class DMX_OT_Fixture_Set_Cycles_Beams_Size_Normal(Operator):
             for light in fixture.lights:
                 light_obj = light.object
                 light_obj.data["beam_radius_pin_sized_for_gobos"] = False
+                fixture.dmx_cache_dirty = True
                 fixture.render(skip_cache=True)
         return {'FINISHED'}
 
