@@ -24,12 +24,19 @@ class DMX_OT_Recorder_AddKeyframe(Operator):
         # DMX_Recorder.add_keyframe()
         dmx = bpy.context.scene.dmx
         DMX_Log.log.debug("run add frame")
+        render_paused_state = bpy.context.window_manager.dmx.pause_render
+        if render_paused_state is True:
+            bpy.context.window_manager.dmx.pause_render = False
 
         # make the frame the same for all fixtures
         current_frame = bpy.data.scenes[0].frame_current
         for fixture in dmx.fixtures:
-            fixture.render(skip_cache=True, current_frame=current_frame)
+            if bpy.context.window_manager.dmx.keyframe_only_selected:
+                if not fixture.is_selected():
+                    continue
+            fixture.render(skip_cache = True, current_frame=current_frame)
             DMX_Log.log.debug(f"keyframe fixture {fixture.name}")
+        bpy.context.window_manager.dmx.pause_render = render_paused_state
         return {"FINISHED"}
 
 
@@ -125,8 +132,18 @@ class DMX_PT_Recorder(Panel):
     def draw(self, context):
         layout = self.layout
         scene = context.scene
-        layout.operator("dmx.recorder_add_keyframe", text=_("Add Keyframe"), icon="PLUS")
+        dirty_cache = False
+        for fixture in scene.dmx.fixtures:
+            if fixture.dmx_cache_dirty:
+                dirty_cache = True
+                break
+        row = layout.row()
+        row.operator("dmx.recorder_add_keyframe", text=_("Add Keyframe"), icon="PLUS")
+        row.enabled = dirty_cache
         layout.prop(scene.tool_settings, "use_keyframe_insert_auto")
+        row = layout.row()
+        row.prop(bpy.context.window_manager.dmx, "keyframe_only_selected")
+        row.enabled = scene.tool_settings.use_keyframe_insert_auto is False
 
 
 class DMX_PT_DMX_Recorder_Delete(Panel):

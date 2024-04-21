@@ -148,10 +148,9 @@ class DMX_OT_Programmer_Clear(Operator):
                 fixture.clear()
         else:
             for fixture in scene.dmx.fixtures:
-                for obj in fixture.collection.objects:
-                    if (obj in bpy.context.selected_objects):
-                        fixture.clear()
-                        break
+                if fixture.is_selected():
+                    fixture.clear()
+
         scene.dmx.programmer_color = (1.0, 1.0, 1.0, 1.0)
         scene.dmx.programmer_dimmer = 0.0
         scene.dmx.programmer_pan = 0.0

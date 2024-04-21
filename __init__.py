@@ -129,6 +129,10 @@ class DMX_TempData(PropertyGroup):
         update = onToggleSubSelection,
         default = False)
 
+    keyframe_only_selected: BoolProperty(
+        name = _("Keyframe only selected fixtures (not for autokeying)"),
+        description="Add keyframes with changes only for selected fixtures",
+        default = False)
 
     mvr_xchange: PointerProperty(
             name = _("MVR-xchange"),

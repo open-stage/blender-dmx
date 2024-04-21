@@ -219,6 +219,11 @@ class DMX_Fixture(PropertyGroup):
         description="Add target for beam to follow",
         default = True)
 
+    dmx_cache_dirty: BoolProperty(
+        name = "DMX cache dirty",
+        description="if dmx data has changed but keyframe has not been saved yet",
+        default = False)
+
     gel_color: FloatVectorProperty(
         name = "Gel Color",
         subtype = "COLOR",
@@ -277,6 +282,7 @@ class DMX_Fixture(PropertyGroup):
         self.geometry_nodes.clear()
         self.gobo_materials.clear()
         self.ies_data.clear()
+        self.dmx_cache_dirty = False
 
         # Custom python data storage, outside of bpy.props. So called ID props
         self["dmx_values"] = []
@@ -518,7 +524,7 @@ class DMX_Fixture(PropertyGroup):
     def render(self, skip_cache = False, current_frame = None):
 
         if bpy.context.window_manager.dmx.pause_render:
-        # do not run render loop during MVR import
+        # do not run render loop when paused
             return
 
         channels = [c.id for c in self.channels]
@@ -529,9 +535,14 @@ class DMX_Fixture(PropertyGroup):
 
         s_data = [int(b) for b in data] + [int(b) for b in data_virtual.values()] # create cache
         if list(self["dmx_values"]) == s_data: # this helps to eliminate flicker with Ethernet DMX signal when the data for this particular device is not changing
-            if not skip_cache: # allow to save a keyframe when using the programmer in Blender
+            if skip_cache is False: # allow to save a keyframe when using the programmer in Blender
                 DMX_Log.log.debug("caching DMX")
                 return
+            if self.dmx_cache_dirty is False: # we care about keyframe saving only if there is data to be saved
+                DMX_Log.log.debug("caching DMX")
+                return
+        else: # we have new dmx data, mark the cache as dirty, so we know we can save a keyframe when needed
+            self.dmx_cache_dirty = True
         self["dmx_values"]  = s_data
         panTilt = [None,None, 1, 1] # pan, tilt, 1 = 8bit, 256 = 16bit
         cmy = [None,None,None]
@@ -683,7 +694,7 @@ class DMX_Fixture(PropertyGroup):
                 # programming by target, dmx for p/t locked
                 if "Target" in self.objects:
                     target = self.objects['Target'].object
-                    if current_frame:
+                    if current_frame and self.dmx_cache_dirty:
                         target.keyframe_insert(data_path="location", frame=current_frame)
                         target.keyframe_insert(data_path="rotation_euler", frame=current_frame)
             else:
@@ -725,6 +736,8 @@ class DMX_Fixture(PropertyGroup):
                     shutter_dimmer[1] = 100 # if device doesn't have dimmer, set default value
                 self.updateShutterDimmer(shutter_dimmer[0], shutter_dimmer[1], geometry, shutter_dimmer[3], current_frame)
 
+        if current_frame:
+            self.dmx_cache_dirty = False
         # end of render block
 
     def remove_unset_geometries_from_multigeometry_attributes(self, dictionary):
@@ -777,7 +790,7 @@ class DMX_Fixture(PropertyGroup):
                         emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer/(255.0 * bits))
                 else:
                     emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer/(255.0 * bits))
-                if current_frame:
+                if current_frame and self.dmx_cache_dirty:
                     emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].keyframe_insert(data_path='default_value', frame=current_frame)
 
             for light in self.lights:
@@ -802,7 +815,7 @@ class DMX_Fixture(PropertyGroup):
                 else:
                     light.object.data.energy = (dimmer/(255.0 * bits)) * flux
 
-                if current_frame:
+                if current_frame and self.dmx_cache_dirty:
                     light.object.data.keyframe_insert(data_path='energy', frame=current_frame)
 
             for nodes in self.geometry_nodes:
@@ -811,7 +824,7 @@ class DMX_Fixture(PropertyGroup):
                     vector.vector = (0,0,-1)
                 else:
                     vector.vector = (0,0,0)
-                if current_frame:
+                if current_frame and self.dmx_cache_dirty:
                     vector.keyframe_insert(data_path='vector', frame=current_frame)
 
         except Exception as e:
@@ -879,7 +892,7 @@ class DMX_Fixture(PropertyGroup):
                 else:
                     emitter_material.material.node_tree.nodes[1].inputs[COLOR].default_value = rgb + [1]
 
-                if current_frame:
+                if current_frame and self.dmx_cache_dirty:
                     emitter_material.material.node_tree.nodes[1].inputs[COLOR].keyframe_insert(data_path='default_value', frame=current_frame)
 
             for light in self.lights:
@@ -891,7 +904,7 @@ class DMX_Fixture(PropertyGroup):
                 else:
                     light.object.data.color = rgb
 
-                if current_frame:
+                if current_frame and self.dmx_cache_dirty:
                     light.object.data.keyframe_insert(data_path='color', frame=current_frame)
         except Exception as e:
             DMX_Log.log.error(f"Error updating RGB {e}")
@@ -908,11 +921,11 @@ class DMX_Fixture(PropertyGroup):
         #rgb = [c/255.0 for c in rgb]
         for emitter_material in self.emitter_materials:
             emitter_material.material.node_tree.nodes[1].inputs[COLOR].default_value = rgb + [1]
-            if current_frame:
+            if current_frame and self.dmx_cache_dirty:
                 emitter_material.material.node_tree.nodes[1].inputs[COLOR].keyframe_insert(data_path='default_value', frame=current_frame)
         for light in self.lights:
             light.object.data.color = rgb
-            if current_frame:
+            if current_frame and self.dmx_cache_dirty:
                 light.object.data.keyframe_insert(data_path='color', frame=current_frame)
         return cmy
 
@@ -932,7 +945,7 @@ class DMX_Fixture(PropertyGroup):
                         if gobo_diameter > beam_diameter:
                             gobo_diameter = beam_diameter
                     obj.dimensions = (gobo_diameter, gobo_diameter, 0)
-                    if current_frame:
+                    if current_frame and self.dmx_cache_dirty:
                         obj.keyframe_insert(data_path='scale', frame=current_frame)
 
                 if "laser" in obj.get("geometry_type", ""):
@@ -942,13 +955,13 @@ class DMX_Fixture(PropertyGroup):
                     obj.rotation_euler[0] = obj.get("rot_x", 0) * zoom * 0.1
                     obj.rotation_euler[1] = obj.get("rot_y", 0) * zoom * 0.1
                     obj.rotation_euler[2] = obj.get("rot_z", 0) * zoom * 0.1
-                    if current_frame:
+                    if current_frame and self.dmx_cache_dirty:
                         obj.keyframe_insert(data_path="rotation_euler", frame=current_frame)
 
             for light in self.lights:
                 light.object.data.spot_size=spot_size
 
-                if current_frame:
+                if current_frame and self.dmx_cache_dirty:
                     light.object.data.keyframe_insert(data_path='spot_size', frame=current_frame)
 
         except Exception as e:
@@ -998,7 +1011,7 @@ class DMX_Fixture(PropertyGroup):
                     value = gobo1[1]-128-62 # rotating in both direction, slowest in the middle
                     driver.driver.expression=f"frame*{value*0.005}"
 
-                if current_frame:
+                if current_frame and self.dmx_cache_dirty:
                     obj.keyframe_insert(data_path='rotation_euler', frame=current_frame)
 
         for light in self.lights: #CYCLES
@@ -1011,7 +1024,7 @@ class DMX_Fixture(PropertyGroup):
                 value = gobo1[1]-128-62 # rotating in both direction, slowest in the middle
                 driver.driver.expression=f"frame*{value*0.005}"
 
-            if current_frame:
+            if current_frame and self.dmx_cache_dirty:
                 light_obj.keyframe_insert(data_path='rotation_euler', frame=current_frame)
 
     def updatePosition(self, geometry = None, x=None, y=None, z=None, current_frame=None):
@@ -1027,7 +1040,7 @@ class DMX_Fixture(PropertyGroup):
         if z is not None:
             geometry.location.z = (128-z) * 0.1
         if geometry is not None:
-            if current_frame:
+            if current_frame and self.dmx_cache_dirty:
                 geometry.keyframe_insert(data_path="location", frame=current_frame)
 
     def updateRotation(self, geometry = None, x=None, y=None, z=None, current_frame=None):
@@ -1044,7 +1057,7 @@ class DMX_Fixture(PropertyGroup):
         if z is not None:
             geometry.rotation_euler[2] = (z/127.0-1)*360*(math.pi/360)
         if geometry is not None:
-            if current_frame:
+            if current_frame and self.dmx_cache_dirty:
                 geometry.keyframe_insert(data_path="rotation_euler", frame=current_frame)
 
     def updatePanTiltViaTarget(self, pan, tilt, current_frame):
@@ -1074,7 +1087,7 @@ class DMX_Fixture(PropertyGroup):
 
         target.location = vec + head_location
 
-        if current_frame:
+        if current_frame and self.dmx_cache_dirty:
             target.keyframe_insert(data_path="location", frame=current_frame)
             target.keyframe_insert(data_path="rotation_euler", frame=current_frame)
 
@@ -1091,7 +1104,7 @@ class DMX_Fixture(PropertyGroup):
             geometry = self.get_object_by_geometry_name(geometry)
         if geometry:
             geometry.rotation_euler[offset] = value
-            if current_frame:
+            if current_frame and self.dmx_cache_dirty:
                 geometry.keyframe_insert(data_path="location", frame=current_frame)
                 geometry.keyframe_insert(data_path="rotation_euler", frame=current_frame)
 
@@ -1246,7 +1259,7 @@ class DMX_Fixture(PropertyGroup):
                     texture.image_user.frame_duration = 1
                     texture.image_user.use_auto_refresh = True
                 texture.image_user.frame_offset = index
-                if current_frame:
+                if current_frame and self.dmx_cache_dirty:
                     texture.image_user.keyframe_insert(data_path="frame_offset", frame=current_frame)
                 break
 
@@ -1261,7 +1274,7 @@ class DMX_Fixture(PropertyGroup):
             texture.image_user.frame_offset = index
 
             self.set_spot_diameter_to_point(light_obj) # prevent gobo blurriness due to large beam diameter
-            if current_frame:
+            if current_frame and self.dmx_cache_dirty:
                 light_obj.data.keyframe_insert(data_path="shadow_soft_size", frame=current_frame)
                 texture.image_user.keyframe_insert(data_path="frame_offset", frame=current_frame)
 
@@ -1283,7 +1296,7 @@ class DMX_Fixture(PropertyGroup):
         for obj in self.collection.objects:
             if "gobo" in obj.get("geometry_type", ""):
                 obj.hide_viewport = hide
-                if current_frame:
+                if current_frame and self.dmx_cache_dirty:
                     obj.keyframe_insert("hide_viewport", frame = current_frame)
                 break
         for light in self.lights: # CYCLES
@@ -1291,7 +1304,7 @@ class DMX_Fixture(PropertyGroup):
             mix_factor = light_obj.data.node_tree.nodes.get("Mix").inputs["Factor"]
             mix_factor.default_value = 1 if hide else 0
             self.set_spot_diameter_to_normal(light_obj) # make the beam large if no gobo is used
-            if current_frame:
+            if current_frame and self.dmx_cache_dirty:
                 light_obj.data.keyframe_insert(data_path="shadow_soft_size", frame=current_frame)
                 mix_factor.keyframe_insert(data_path="default_value", frame=current_frame)
 
