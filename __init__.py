@@ -1157,8 +1157,6 @@ class DMX(PropertyGroup):
     # # Programmer > Color
 
     def onProgrammerColor(self, context):
-
-
         bpy.app.handlers.depsgraph_update_post.clear()
         for fixture in self.fixtures:
             if fixture.collection is None:
@@ -1387,15 +1385,17 @@ class DMX(PropertyGroup):
         if ('Gobo2PosRotate' in data):
             self.programmer_gobo_index = int(data['Gobo2PosRotate'])
         if ('ColorAdd_R' in data and 'ColorAdd_G' in data and 'ColorAdd_B' in data):
-            self.programmer_color = (data['ColorAdd_R'],data['ColorAdd_G'],data['ColorAdd_B'],255)
+            rgb = [data['ColorAdd_R'],data['ColorAdd_G'],data['ColorAdd_B']]
+            self.programmer_color = (1/256*rgb[0], 1/245*rgb[1], 1/256*rgb[2], 255)
         if ('ColorRGB_Red' in data and 'ColorRGB_Green' in data and 'ColorRGB_Blue' in data):
-            self.programmer_color = (data['ColorRGB_Red'],data['ColorRGB_Green'],data['ColorRGB_Blue'],255)
+            rgb = [data['ColorRGB_Red'],data['ColorRGB_Green'],data['ColorRGB_Blue']]
+            self.programmer_color = (1/256*rgb[0], 1/245*rgb[1], 1/256*rgb[2], 255)
         if ('ColorSub_C' in data and 'ColorSub_M' in data and 'ColorSub_Y' in data):
             rgb = cmy_to_rgb([data['ColorSub_C'], data['ColorSub_M'], data['ColorSub_Y']])
-            self.programmer_color = (rgb[0], rgb[1], rgb[2], 255)
+            self.programmer_color = (1/256*rgb[0], 1/245*rgb[1], 1/256*rgb[2], 255)
         if ('ColorAdd_C' in data and 'ColorAdd_M' in data and 'ColorAdd_Y' in data):
             rgb = cmy_to_rgb([data['ColorAdd_C'], data['ColorAdd_M'], data['ColorAdd_Y']])
-            self.programmer_color = (rgb[0], rgb[1], rgb[2], 255)
+            self.programmer_color = (1/256*rgb[0], 1/245*rgb[1], 1/256*rgb[2], 255)
         if ('Pan' in data):
             self.programmer_pan = data['Pan']/127.0-1
         if ('Tilt' in data):
