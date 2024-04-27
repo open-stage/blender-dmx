@@ -1470,10 +1470,11 @@ class DMX(PropertyGroup):
     def selectedFixtures(self):
         selected = []
         for fixture in self.fixtures:
-            for obj in fixture.collection.objects:
-                if (obj in bpy.context.selected_objects):
-                    selected.append(fixture)
-                    break
+            if fixture.collection:
+                for obj in fixture.collection.objects:
+                    if (obj in bpy.context.selected_objects):
+                        selected.append(fixture)
+                        break
         return selected
 
 
