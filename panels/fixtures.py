@@ -199,9 +199,9 @@ class DMX_Fixture_AddEdit():
         #update = onAddTarget,
         default = True)
 
-    re_address_only: BoolProperty(
-        name = _("Re-address only"),
-        description="Do not rebuild the model structure",
+    advanced_edit: BoolProperty(
+        name = _("Advanced edit"),
+        description="Re-build fixture structure during Advanced edit",
         default = False)
 
     increment_address: BoolProperty(
@@ -230,7 +230,9 @@ class DMX_Fixture_AddEdit():
     def draw(self, context):
         layout = self.layout
         col = layout.column()
-        if not self.re_address_only:
+        if self.units == 1:
+            self.advanced_edit = True
+        if self.advanced_edit:
             col.prop(self, "name")
         col.context_pointer_set("add_edit_panel", self)
         text_profile = _("GDTF Profile")
@@ -246,26 +248,27 @@ class DMX_Fixture_AddEdit():
                 text_profile = text_profile[0] + " > " + text_profile[1]
             else:
                 text_profile = _("Unknown manufacturer") + " > " + text_profile[0]
-        if not self.re_address_only:
+
+        if self.advanced_edit:
             col.menu("DMX_MT_Fixture_Manufacturers", text = text_profile)
         text_mode = _("DMX Mode")
         if (self.mode != ""):
             text_mode = self.mode
-        if not self.re_address_only:
+        if self.advanced_edit:
             col.menu("DMX_MT_Fixture_Mode", text = text_mode)
         col.prop(self, "universe")
         col.prop(self, "address")
         col.prop(self, "fixture_id")
         if self.units == 0:                   # Edit fixtures:
-            col.prop(self, "re_address_only") #     Be default, only change address, don't rebuild models (slow)
-            if self.re_address_only:
+            col.prop(self, "advanced_edit") #     Be default, only change address, don't rebuild models (slow)
+            if not self.advanced_edit:
                 col.operator("dmx.import_ies_file")
                 col.operator("dmx.remove_ies_files")
         else:                                 # Adding new fixtures:
             col.prop(self, "units")           #     Allow to define how many
         col.prop(self, "increment_address")
         col.prop(self, "increment_fixture_id")
-        if not self.re_address_only:          # When adding and editing:
+        if self.advanced_edit:          # When adding and editing:
             col.prop(self, "display_beams")   #     Allow not to create and draw Beams (faster, only for emitter views)
             col.prop(self, "add_target")      #     Should a target be added to the fixture
             col.prop(self, "gel_color")       #     This works when both adding AND when editing
@@ -338,7 +341,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             if (self.name != fixture.name and self.name in bpy.data.collections):
                 self.report({'ERROR'}, _("Fixture named {} already exists").format(self.name))
                 return {'CANCELLED'}
-            if not self.re_address_only:
+            if self.advanced_edit:
                 fixture.build(self.name, self.profile, self.mode, self.universe, self.address, self.gel_color, self.display_beams, self.add_target, uuid = fixture.uuid, fixture_id = fixture.fixture_id)
                 context.window_manager.dmx.pause_render = False
             else:
@@ -362,7 +365,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                 #fixture_id = f"{self.fixture_id}{i+1}" if (self.name != '*') else fixture.name
                 profile = self.profile if (self.profile != '') else fixture.profile
                 mode = self.mode if (self.mode != '') else fixture.mode
-                if not self.re_address_only:
+                if self.advanced_edit:
                     fixture.build(name, profile, mode, self.universe, address, self.gel_color, self.display_beams, self.add_target, uuid = fixture.uuid, fixture_id = fixture_id)
                 if address + len(fixture.channels) > 512:
                     universe += 1
@@ -400,7 +403,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             self.address = fixture.address
             self.mode = fixture.mode
             self.gel_color = fixture.gel_color
-            self.re_address_only = True
+            self.advanced_edit = False
             self.display_beams = fixture.display_beams
             self.add_target = fixture.add_target
             self.units = 0
@@ -416,7 +419,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             self.units = 0
             self.display_beams = True
             self.add_target = True
-            self.re_address_only = True
+            self.advanced_edit = False
             self.fixture_id = selected[0].fixture_id
 
         wm = context.window_manager
