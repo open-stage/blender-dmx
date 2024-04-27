@@ -210,6 +210,9 @@ class DMX_PT_Setup_Extras(Panel):
         col1.label(text = _("Status: {}").format(context.window_manager.dmx.release_version_status))
         col2 = row.column()
         col2.operator('wm.url_open', text="", icon="SHADING_WIRE").url="https://github.com/open-stage/blender-dmx/releases/latest"
+        row = layout.row()
+        row.operator_context = 'INVOKE_DEFAULT' #'INVOKE_AREA'
+        row.operator("dmx.clear_custom_data", text=_("Clear Project data"), icon="TRASH")
 
 class DMX_PT_Setup_Import(Panel):
     bl_label = _("Import")
@@ -381,7 +384,6 @@ class DMX_OT_Import_Custom_Data(Operator):
         return {'RUNNING_MODAL'}
 
     def execute(self, context):
-        print("print", self.directory, self.files[0].name)
         file_name = self.files[0].name
         if file_name != "" and len(file_name)>1:
             result = blender_utils.import_custom_data(self.directory, file_name)
@@ -442,6 +444,30 @@ class DMX_OT_Export_Custom_Data(Operator):
             self.report({'ERROR'}, result.error)
 
         return {'FINISHED'}
+
+class DMX_OT_Clear_Custom_Data(Operator):
+    bl_label = _("Clear Custom Data")
+    bl_idname = "dmx.clear_custom_data"
+    bl_description = _("Clear custom data from BlenderDMX addon directory.")
+    bl_options = {'UNDO'}
+
+    def draw(self, context):
+        layout = self.layout
+        col = layout.column()
+
+    def execute(self, context):
+        result = blender_utils.clear_custom_data()
+
+        if result.ok:
+            self.report({'INFO'}, _("Data cleared"))
+        else:
+            self.report({'ERROR'}, result.error)
+
+        return {'FINISHED'}
+
+    def invoke(self, context, event):
+        wm = context.window_manager
+        return wm.invoke_props_dialog(self)
 
 class DMX_OT_Setup_Import_GDTF(Operator):
     bl_label = _("Import GDTF Profile")

@@ -226,6 +226,7 @@ class DMX(PropertyGroup):
                 DMX_OT_Fixture_Remove,
                 DMX_OT_Export_Custom_Data,
                 DMX_OT_Import_Custom_Data,
+                DMX_OT_Clear_Custom_Data,
                 DMX_OT_IES_Import,
                 DMX_OT_IES_Remove,
                 DMX_PT_Fixtures,

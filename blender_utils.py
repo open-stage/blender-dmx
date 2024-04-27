@@ -3,6 +3,7 @@ import requests
 import shutil
 import os
 from types import SimpleNamespace
+import glob
 
 from dmx.i18n import DMX_Lang
 _ = DMX_Lang._
@@ -77,6 +78,30 @@ def import_custom_data(directory_name, file_name):
 
     try:
         shutil.unpack_archive(import_filename, import_dir)
+    except Exception as e:
+        return SimpleNamespace(ok=False, error = str(e))
+    return SimpleNamespace(ok=True, error = "")
+
+def clear_custom_data():
+    folder_path = os.path.dirname(os.path.realpath(__file__))
+
+    models_path = os.path.join(folder_path, "assets", "models", "*")
+    mvrs_path = os.path.join(folder_path, "assets", "mvrs", "*")
+    profiles_path = os.path.join(folder_path, "assets", "profiles", "*")
+
+    rm_dirs = [(models_path, "models"), (mvrs_path, "mvrs"), (profiles_path, "profiles")]
+
+    try:
+        for rm_dir, name in rm_dirs:
+            for file in glob.glob(rm_dir):
+                if name == "profiles":
+                    if "BlenderDMX" in file and file.endswith(".gdtf"):
+                        continue
+                if os.path.isdir(file):
+                    shutil.rmtree(file)
+                    continue
+                if os.path.isfile(file):
+                    os.remove(file)
     except Exception as e:
         return SimpleNamespace(ok=False, error = str(e))
     return SimpleNamespace(ok=True, error = "")
