@@ -393,6 +393,9 @@ class DMX_OT_Import_Custom_Data(Operator):
             self.report({'ERROR'}, _("Incorrect file name!"))
             return {'FINISHED'}
 
+        DMX_GDTF.getManufacturerList()
+        Profiles.DMX_Fixtures_Local_Profile.loadLocal()
+
         if result.ok:
             import_filename = os.path.join(self.directory, file_name)
             self.report({'INFO'}, _("Data imported from: {}").format(import_filename))
@@ -460,6 +463,9 @@ class DMX_OT_Clear_Custom_Data(Operator):
     def execute(self, context):
         result = blender_utils.clear_custom_data()
 
+        DMX_GDTF.getManufacturerList()
+        Profiles.DMX_Fixtures_Local_Profile.loadLocal()
+
         if result.ok:
             self.report({'INFO'}, _("Data cleared"))
         else:
@@ -494,6 +500,7 @@ class DMX_OT_Reload_Addon(Operator):
     def invoke(self, context, event):
         wm = context.window_manager
         return wm.invoke_props_dialog(self)
+
 class DMX_OT_Setup_Import_GDTF(Operator):
     bl_label = _("Import GDTF Profile")
     bl_idname = "dmx.import_gdtf_profile"
