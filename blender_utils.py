@@ -64,27 +64,29 @@ def export_custom_data(directory_name, file_name):
     ignore = shutil.ignore_patterns("BlenderDMX*")
 
     try:
-        shutil.copytree(models_path, os.path.join(export_dir,"models"))
-        shutil.copytree(mvrs_path, os.path.join(export_dir,"mvrs"))
-        shutil.copytree(profiles_path, os.path.join(export_dir,"profiles"), ignore=ignore)
+        shutil.copytree(models_path, os.path.join(export_dir, "models"))
+        shutil.copytree(mvrs_path, os.path.join(export_dir, "mvrs"))
+        shutil.copytree(profiles_path, os.path.join(export_dir, "profiles"), ignore=ignore)
         shutil.make_archive(export_filename, "zip", export_dir)
         shutil.rmtree(export_dir)
     except Exception as e:
-        return SimpleNamespace(ok=False, error = str(e))
-    return SimpleNamespace(ok=True, error = "")
+        return SimpleNamespace(ok=False, error=str(e))
+    return SimpleNamespace(ok=True, error="")
+
 
 def import_custom_data(directory_name, file_name):
     import_filename = os.path.join(directory_name, file_name)
     folder_path = os.path.dirname(os.path.realpath(__file__))
     import_dir = os.path.join(folder_path, "assets")
     if not os.path.exists(import_filename):
-        return SimpleNamespace(ok=False, error = _("File doesn't exist"))
+        return SimpleNamespace(ok=False, error=_("File doesn't exist"))
 
     try:
         shutil.unpack_archive(import_filename, import_dir)
     except Exception as e:
-        return SimpleNamespace(ok=False, error = str(e))
-    return SimpleNamespace(ok=True, error = "")
+        return SimpleNamespace(ok=False, error=str(e))
+    return SimpleNamespace(ok=True, error="")
+
 
 def clear_custom_data():
     folder_path = os.path.dirname(os.path.realpath(__file__))
@@ -107,8 +109,8 @@ def clear_custom_data():
                 if os.path.isfile(file):
                     os.remove(file)
     except Exception as e:
-        return SimpleNamespace(ok=False, error = str(e))
-    return SimpleNamespace(ok=True, error = "")
+        return SimpleNamespace(ok=False, error=str(e))
+    return SimpleNamespace(ok=True, error="")
 
 
 def reload_addon():
