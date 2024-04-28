@@ -4,9 +4,13 @@ import shutil
 import os
 from types import SimpleNamespace
 import glob
+import sys
+import importlib
 
 from dmx.i18n import DMX_Lang
+
 _ = DMX_Lang._
+
 
 def get_version_json(url, callback, context):
     try:
@@ -105,3 +109,16 @@ def clear_custom_data():
     except Exception as e:
         return SimpleNamespace(ok=False, error = str(e))
     return SimpleNamespace(ok=True, error = "")
+
+
+def reload_addon():
+    try:
+        module = sys.modules.get("dmx")
+        if not module:
+            raise Exception("DMX module could not be loaded")
+        module.unregister()
+        importlib.reload(module)
+        module.register()
+    except Exception as e:
+        return SimpleNamespace(ok=False, error=str(e))
+    return SimpleNamespace(ok=True, error="")

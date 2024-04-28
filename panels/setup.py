@@ -213,6 +213,8 @@ class DMX_PT_Setup_Extras(Panel):
         row = layout.row()
         row.operator_context = 'INVOKE_DEFAULT' #'INVOKE_AREA'
         row.operator("dmx.clear_custom_data", text=_("Clear Project data"), icon="TRASH")
+        row = layout.row()
+        row.operator("dmx.reload_addon", icon="FILE_REFRESH")
 
 class DMX_PT_Setup_Import(Panel):
     bl_label = _("Import")
@@ -469,6 +471,29 @@ class DMX_OT_Clear_Custom_Data(Operator):
         wm = context.window_manager
         return wm.invoke_props_dialog(self)
 
+class DMX_OT_Reload_Addon(Operator):
+    bl_label = _("Reload BlenderDMX addon")
+    bl_idname = "dmx.reload_addon"
+    bl_description = _("Reload the addon, useful during development")
+    bl_options = {'UNDO'}
+
+    def draw(self, context):
+        layout = self.layout
+        col = layout.column()
+
+    def execute(self, context):
+        result = blender_utils.reload_addon()
+
+        if result.ok:
+            self.report({'INFO'}, _("Addon reloaded"))
+        else:
+            self.report({'ERROR'}, result.error)
+
+        return {'FINISHED'}
+
+    def invoke(self, context, event):
+        wm = context.window_manager
+        return wm.invoke_props_dialog(self)
 class DMX_OT_Setup_Import_GDTF(Operator):
     bl_label = _("Import GDTF Profile")
     bl_idname = "dmx.import_gdtf_profile"
