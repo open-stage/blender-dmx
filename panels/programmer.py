@@ -143,11 +143,18 @@ class DMX_OT_Programmer_Clear(Operator):
 
     def execute(self, context):
         scene = context.scene
-        if (not len(bpy.context.selected_objects)):
-            for fixture in scene.dmx.fixtures:
+        dmx = context.scene.dmx
+        selected_fixtures = False
+        for fixture in dmx.fixtures:
+            if fixture.is_selected():
+                selected_fixtures = True
+                break
+
+        if not selected_fixtures:
+            for fixture in dmx.fixtures:
                 fixture.clear()
         else:
-            for fixture in scene.dmx.fixtures:
+            for fixture in dmx.fixtures:
                 if fixture.is_selected():
                     fixture.clear()
 
@@ -160,6 +167,7 @@ class DMX_OT_Programmer_Clear(Operator):
         scene.dmx.programmer_gobo = 0
         scene.dmx.programmer_gobo_index = 63
         scene.dmx.programmer_shutter = 0
+
         return {'FINISHED'}
 
 class DMX_OT_Programmer_Apply_Manually(Operator):

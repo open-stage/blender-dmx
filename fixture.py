@@ -1243,7 +1243,8 @@ class DMX_Fixture(PropertyGroup):
 
     def clear(self):
         for i, ch in enumerate(self.channels):
-            data = DMX_Data.set(self.universe, self.address+i, ch.default)
+            DMX_Data.set(self.universe, self.address+i, ch.default)
+        self.render()
 
     def set_gobo(self, index=-1, current_frame=None):
         gobos = self.images["gobos"]
