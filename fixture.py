@@ -393,12 +393,6 @@ class DMX_Fixture(PropertyGroup):
             elif obj.get("2d_symbol", None) == "all":
                 self.objects.add().name = "2D Symbol"
                 self.objects["2D Symbol"].object = links[obj.name]
-            if "gobo" in obj.get("geometry_type", ""):
-                if has_gobos:
-                    beam_diameter = obj.get("beam_radius", 0) * 2
-                    obj.dimensions = (beam_diameter, beam_diameter, 0)
-                else: # don't utilize planes made for gobos
-                    continue
 
             # Link all other object to collection
             self.collection.objects.link(links[obj.name])

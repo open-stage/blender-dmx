@@ -474,6 +474,7 @@ class DMX_GDTF():
             obj = DMX_GDTF.loadBlenderPrimitive(goboGeometry)
             obj["geometry_type"] = "gobo"
             obj["beam_radius"] = goboGeometry.beam_radius
+            obj.dimensions = (goboGeometry.length, goboGeometry.width, 0)
             obj.name = goboGeometry.name
             objs[sanitize_obj_name(goboGeometry)]= obj
             obj.location[2] += -0.01
