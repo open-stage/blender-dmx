@@ -577,7 +577,7 @@ class DMX(PropertyGroup):
         self.ensure_application_uuid()
         self.check_python_version()
         self.check_blender_version()
-        Timer(5, bpy.ops.dmx.check_version, ()).start()
+        Timer(1, bpy.ops.dmx.check_version, ()).start()
         self.logging_level = "ERROR" # setting default logging level
 
     # Unlink Add-on from file
