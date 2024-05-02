@@ -537,8 +537,6 @@ class DMX(PropertyGroup):
             if (not DMX.linkedToFile):
                 for cls in self.classes:
                     bpy.utils.register_class(cls)
-                for cls in self.classes_setup:
-                    bpy.utils.unregister_class(cls)
                 DMX.linkedToFile = True
 
         # Sync number of universes
@@ -591,8 +589,6 @@ class DMX(PropertyGroup):
 
         # Second step unregistration
         if (DMX.linkedToFile):
-            for cls in self.classes_setup:
-                bpy.utils.register_class(cls)
             for cls in self.classes:
                 bpy.utils.unregister_class(cls)
             DMX.linkedToFile = False
