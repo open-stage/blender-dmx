@@ -488,6 +488,11 @@ class DMX_OT_Reload_Addon(Operator):
         col = layout.column()
 
     def execute(self, context):
+        dmx = context.scene.dmx
+
+        for cls in dmx.classes_setup:
+            bpy.utils.unregister_class(cls)
+
         result = blender_utils.reload_addon()
 
         if result.ok:
