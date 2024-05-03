@@ -795,6 +795,20 @@ class DMX(PropertyGroup):
                     obj.hide_set(not self.display_2D)
                     obj.hide_viewport = not self.display_2D
                     obj.hide_render = not self.display_2D
+                    if self.display_device_label == "NONE":
+                        obj.show_name = False
+                    elif self.display_device_label == "NAME":
+                        obj.name = f"{fixture.name}"
+                        obj.show_name = True
+                    elif self.display_device_label == "DMX":
+                        obj.name = f"{fixture.universe}.{fixture.address}"
+                        obj.show_name = True
+                    elif self.display_device_label == "FIXTURE_ID":
+                        if fixture.fixture_id:
+                            obj.name = f"{fixture.fixture_id}"
+                            obj.show_name = True
+                        else:
+                            obj.show_name = False
                 else:
                     obj.hide_set(self.display_2D)
                     if "pigtail" in obj.get("geometry_type", ""):
@@ -811,6 +825,17 @@ class DMX(PropertyGroup):
     display_2D: BoolProperty(
         name = _("Display 2D View"),
         default = False,
+        update = onDisplay2D)
+
+    display_device_label: EnumProperty(
+        name = _("Device Label"),
+        default = "NAME",
+        items= [
+                ("NONE", _("None"), "Do not display any label"),
+                ("NAME", _("Name"), "Name"),
+                ("DMX", _("DMX"), "DMX Address"),
+                ("FIXTURE_ID", _("Fixture ID"), "Fixture ID"),
+        ],
         update = onDisplay2D)
 
     def onSelectGeometries(self, context):
