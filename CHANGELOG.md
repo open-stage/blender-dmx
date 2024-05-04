@@ -1,5 +1,21 @@
 ### Changelog
 
+### 1.4.3
+
+    * Fix Intel Mac crashing on Create New Show - remove unnecessary setup
+      class unregistration
+    * Display device label (name, id, or dmx) in 2D
+    * Rework 'Re-address only' to 'Advanced edit' for clarity
+    * Add Clear Project data button to clear the addon directory
+    * Add development related 'Reload BlenderDMX addon' button to Extras
+    * Update translations
+    * Reload profiles after data clearing or loading
+    * Fix Volume box migration - prevent always deleting volume box on file
+      load
+    * Fix gobo projection for fixtures without zoom
+    * Fix 'Clear/Clear all' in Programmer
+    * Fix ColorPicker when mixing single unit
+
 ### 1.4.2
 
     * Provide a way to export and import custom data from/to the Addon
