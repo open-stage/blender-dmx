@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-04-11 19:50+0200\n"
+"POT-Creation-Date: 2024-05-04 07:19+0200\n"
 "PO-Revision-Date: 2024-03-18 14:01+0000\n"
 "Last-Translator: Iago Emanuel <iagoemanuel@live.com>\n"
 "Language: pt_BR\n"
@@ -19,1225 +19,1025 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.14.0\n"
 
-#: ../__init__.py:86
 msgid "Laser collision collection"
 msgstr ""
 
-#: ../__init__.py:87
 msgid ""
 "Laser beams are projected onto objects in this collection. The beam stops"
 " at the first object colliding with the beam."
 msgstr ""
 
-#: ../__init__.py:93
 msgid "Pause renderer"
 msgstr "Pausar renderização"
 
-#: ../__init__.py:97
 #, fuzzy
 msgid "Manufacturers"
 msgstr "Fabricante"
 
-#: ../__init__.py:102
 #, fuzzy
 msgid "Imports"
 msgstr "Importar para Share"
 
-#: ../__init__.py:107
 msgid "Add to selection"
 msgstr ""
 
-#: ../__init__.py:113 ../__init__.py:127 ../panels/dmx.py:182
+#, fuzzy
+msgid "Remove from selection"
+msgstr "Excluir dispositivo elétrico"
+
+#, fuzzy
+msgid "Keyframe only selected fixtures (not for autokeying)"
+msgstr "Remover este dispositivo elétrico do Patch."
+
 msgid "MVR-xchange"
 msgstr ""
 
-#: ../__init__.py:118 ../panels/dmx.py:291 ../panels/dmx.py:319
 msgid "Status"
 msgstr ""
 
-#: ../__init__.py:132
 #, fuzzy
 msgid "DMX Data"
 msgstr "Modos DMX"
 
-#: ../__init__.py:137
 #, fuzzy
 msgid "Fixture"
 msgstr "Dispositivos elétricos"
 
-#: ../__init__.py:296 ../__init__.py:1357 ../panels/fixtures.py:225
 #, fuzzy
 msgid "Fixture ID"
 msgstr "Dispositivos elétricos"
 
-#: ../__init__.py:300 ../__init__.py:1359
 msgid "Unit Number"
 msgstr ""
 
-#: ../__init__.py:304
 msgid "Custom ID"
 msgstr ""
 
-#: ../__init__.py:312 ../__init__.py:1358 ../panels/fixtures.py:178
 msgid "DMX Address"
 msgstr "Endereço DMX"
 
-#: ../__init__.py:316
 msgid "Position"
 msgstr ""
 
-#: ../__init__.py:320
 #, fuzzy
 msgid "Rotation"
 msgstr "Avaliação"
 
-#: ../__init__.py:324
+msgid "Footprint"
+msgstr "Rastro"
+
 msgid "DMX Collection"
 msgstr ""
 
-#: ../__init__.py:378 ../panels/fixtures.py:170
 #, fuzzy
 msgid "Universe"
 msgstr "Universos"
 
-#: ../__init__.py:420
 msgid "Editable"
 msgstr ""
 
-#: ../__init__.py:772
 msgid "Display Pigtails"
 msgstr ""
 
-#: ../__init__.py:777
 msgid "Display 2D View"
 msgstr ""
 
-#: ../__init__.py:793
+msgid "Device Label"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Name"
+msgstr "Nome"
+
+msgid "DMX"
+msgstr ""
+
 msgid "Allow Selecting Geometries"
 msgstr ""
 
-#: ../__init__.py:803
 msgid "Logging Level"
 msgstr ""
 
-#: ../__init__.py:807
 msgid "Critical"
 msgstr ""
 
-#: ../__init__.py:808
 msgid "Error"
 msgstr ""
 
-#: ../__init__.py:809
 #, fuzzy
 msgid "Warning"
 msgstr "Avaliação"
 
-#: ../__init__.py:810
 msgid "Info"
 msgstr ""
 
-#: ../__init__.py:811
 msgid "Debug"
 msgstr ""
 
-#: ../__init__.py:827
 msgid "Simple beam"
 msgstr ""
 
-#: ../__init__.py:828
 msgid "Display 'fake' beam cone"
 msgstr ""
 
-#: ../__init__.py:831
-msgid "None"
-msgstr ""
-
-#: ../__init__.py:832
 #, fuzzy
 msgid "Selected fixtures"
 msgstr "Excluir dispositivo elétrico"
 
-#: ../__init__.py:833
 #, fuzzy
 msgid "All fixtures"
 msgstr "Dispositivos elétricos"
 
-#: ../__init__.py:843
 msgid "Beam Lens Diameter in Cycles"
 msgstr ""
 
-#: ../__init__.py:844
 msgid ""
 "Beam diameter is reduced to minimum when projecting gobos to prevent blur"
 " on gobo edge"
 msgstr ""
 
-#: ../__init__.py:847
 msgid "Reduced"
 msgstr ""
 
-#: ../__init__.py:848
 msgid "Full width"
 msgstr ""
 
-#: ../__init__.py:849
 msgid "Custom per each beam"
 msgstr ""
 
-#: ../__init__.py:866
 msgid "Disable Overlays"
 msgstr ""
 
-#: ../__init__.py:877
 msgid "Enable Volume Scatter"
 msgstr ""
 
-#: ../__init__.py:889
 msgid "Noise Scale"
 msgstr ""
 
-#: ../__init__.py:890
 msgid "Volume Noise Scale"
 msgstr ""
 
-#: ../__init__.py:902
 msgid "Density"
 msgstr ""
 
-#: ../__init__.py:903
 msgid "Volume Scatter Density"
 msgstr ""
 
-#: ../__init__.py:927
 #, fuzzy
 msgid "Number of universes"
 msgstr "Número de canais"
 
-#: ../__init__.py:928
 msgid "The number of universes set on the panel"
 msgstr ""
 
-#: ../__init__.py:938
 #, fuzzy
 msgid "Universe List Item"
 msgstr "Universos"
 
-#: ../__init__.py:939
 msgid "The selected element on the universe list"
 msgstr ""
 
-#: ../__init__.py:946
 msgid "IPv4 Address for ArtNet signal"
 msgstr ""
 
-#: ../__init__.py:947
 msgid "The network card/interface to listen for ArtNet DMX data"
 msgstr ""
 
-#: ../__init__.py:1020
 msgid "Enable Art-Net Input"
 msgstr ""
 
-#: ../__init__.py:1021
 msgid ""
 "Enables the input of DMX data throught Art-Net on the selected network "
 "interface"
 msgstr ""
 
-#: ../__init__.py:1027
 msgid "Enable sACN Input"
 msgstr ""
 
-#: ../__init__.py:1028
 msgid ""
 "Enables the input of DMX data throught sACN on all detected network "
 "interfaces"
 msgstr ""
 
-#: ../__init__.py:1034
 msgid "Enable OSC Output"
 msgstr ""
 
-#: ../__init__.py:1035
 msgid "Enables Open Sound Control protocol to send fixture selection to a console"
 msgstr ""
 
-#: ../__init__.py:1041
 #, fuzzy
 msgid "OSC Target address"
 msgstr "Endereço DMX"
 
-#: ../__init__.py:1042
 msgid ""
 "Address of the host where you want to send the OSC signal. Address ending"
 " on .255 is a broadcast address to all hosts on the network"
 msgstr ""
 
-#: ../__init__.py:1047
 msgid "OSC Target port"
 msgstr ""
 
-#: ../__init__.py:1048
 msgid "Port number of the host where you want to send the OSC signal"
 msgstr ""
 
-#: ../__init__.py:1053
 msgid "Enable MVR-xchange discovery"
 msgstr ""
 
-#: ../__init__.py:1054
 msgid "Enables MVR-xchange discovery"
 msgstr ""
 
-#: ../__init__.py:1060
 msgid "Enable MVR-xchange connection"
 msgstr ""
 
-#: ../__init__.py:1061
 msgid "Connects to MVR-xchange client"
 msgstr ""
 
-#: ../__init__.py:1068
 msgid "Art-Net Status"
 msgstr ""
 
-#: ../__init__.py:1072
 msgid "sACN Status"
 msgstr ""
 
-#: ../__init__.py:1082
 msgid "Group List i"
 msgstr ""
 
-#: ../__init__.py:1083
 msgid "The selected element on the group list"
 msgstr ""
 
-#: ../__init__.py:1352
 msgid "Sort by"
 msgstr ""
 
-#: ../__init__.py:1353
 #, fuzzy
 msgid "Fixture sorting order"
 msgstr "Modo GDTF"
 
-#: ../__init__.py:1356 ../panels/fixtures.py:166 ../panels/fixtures.py:705
-#: ../panels/groups.py:70 ../panels/profiles/data/local_profile.py:12
-#: ../panels/profiles/data/local_profile.py:21
-msgid "Name"
-msgstr "Nome"
+msgid "File doesn't exist"
+msgstr ""
 
-#: ../panels/dmx.py:24
 msgid "Refresh"
 msgstr ""
 
-#: ../panels/dmx.py:25
 #, fuzzy
 msgid "Refresh connection"
 msgstr "Atualizar a listagem de arquivos"
 
-#: ../panels/dmx.py:35
 msgid "Request latest version"
 msgstr ""
 
-#: ../panels/dmx.py:36
 msgid "Sends the Request message"
 msgstr ""
 
-#: ../panels/dmx.py:54 ../panels/setup.py:210
 msgid "Import"
 msgstr ""
 
-#: ../panels/dmx.py:55
 #, fuzzy
 msgid "Import commit"
 msgstr "Importar arquivo de"
 
-#: ../panels/dmx.py:81
 msgid "Download"
 msgstr ""
 
-#: ../panels/dmx.py:82
 msgid "Download commit"
 msgstr ""
 
-#: ../panels/dmx.py:144
 #, fuzzy
 msgid "DMX > Universe Menu"
 msgstr "Universo DMX"
 
-#: ../panels/dmx.py:159
 msgid "OSC"
 msgstr ""
 
-#: ../panels/dmx.py:239 ../panels/dmx.py:252
 msgid "Universes"
 msgstr "Universos"
 
-#: ../panels/dmx.py:264
 msgid "Art-Net"
 msgstr ""
 
-#: ../panels/dmx.py:283
 msgid "IPv4"
 msgstr ""
 
-#: ../panels/dmx.py:290
 msgid "Art-Net set for {} universe(s)"
 msgstr ""
 
-#: ../panels/dmx.py:294
 msgid "sACN"
 msgstr ""
 
-#: ../panels/dmx.py:318
 msgid "sACN set for {} universe(s)"
 msgstr ""
 
-#: ../panels/dmx.py:330
 msgid "Live DMX"
 msgstr ""
 
-#: ../panels/dmx.py:348
 msgid "Source"
 msgstr ""
 
-#: ../panels/dmx.py:362
 msgid "Protocols"
 msgstr ""
 
-#: ../panels/fixtures.py:40
 #, fuzzy
 msgid "DMX > Fixture Menu"
 msgstr "Importar dispositivos elétricos DMX"
 
-#: ../panels/fixtures.py:50
 #, fuzzy
 msgid "Add"
 msgstr "Endereço DMX"
 
-#: ../panels/fixtures.py:62
 msgid "Edit"
 msgstr ""
 
-#: ../panels/fixtures.py:67 ../panels/groups.py:58
 #, fuzzy
 msgid "Remove"
 msgstr "Remover dispositivo elétrico"
 
-#: ../panels/fixtures.py:72 ../panels/fixtures.py:473
-#: ../panels/profiles/ui/operator.py:43 ../panels/setup.py:224
-#, fuzzy
-msgid "Import GDTF Profile"
-msgstr "Importar arquivo de"
-
-#: ../panels/fixtures.py:76 ../panels/setup.py:228
-#, fuzzy
-msgid "Import MVR Scene"
-msgstr "Importar para Share"
-
-#: ../panels/fixtures.py:80
 msgid "DMX > Fixture > Add > Manufacturers"
 msgstr ""
 
-#: ../panels/fixtures.py:94
 msgid "DMX > Fixture > Add > Profiles"
 msgstr ""
 
-#: ../panels/fixtures.py:107 ../panels/fixtures.py:136
 #, fuzzy
 msgid "DMX > Fixture > Add > Mode"
 msgstr "Importar dispositivos elétricos DMX"
 
-#: ../panels/fixtures.py:122
 msgid "DMX > Fixture > Add > Manufacturers > Profiles"
 msgstr ""
 
-#: ../panels/fixtures.py:126 ../panels/fixtures.py:159
 #, fuzzy
 msgid "Profile"
 msgstr "Perfil GDTF"
 
-#: ../panels/fixtures.py:127 ../panels/fixtures.py:160
 #, fuzzy
 msgid "Fixture GDTF Profile"
 msgstr "Perfil GDTF"
 
-#: ../panels/fixtures.py:140 ../panels/fixtures.py:184
 #, fuzzy
 msgid "Mode"
 msgstr "Nome do modo"
 
-#: ../panels/fixtures.py:141
 #, fuzzy
 msgid "Fixture GDTF Mode"
 msgstr "Modo GDTF"
 
-#: ../panels/fixtures.py:171
 msgid "DMX Universe"
 msgstr "Universo DMX"
 
-#: ../panels/fixtures.py:177
 #, fuzzy
 msgid "Address"
 msgstr "Endereço DMX"
 
-#: ../panels/fixtures.py:185 ../panels/fixtures.py:252
 #, fuzzy
 msgid "DMX Mode"
 msgstr "Modos DMX"
 
-#: ../panels/fixtures.py:190
 msgid "Gel Color"
 msgstr "Cor do gel"
 
-#: ../panels/fixtures.py:198
 msgid "Display beams"
 msgstr ""
 
-#: ../panels/fixtures.py:199
 msgid "Display beam projection and cone"
 msgstr ""
 
-#: ../panels/fixtures.py:204
 msgid "Add Target"
 msgstr ""
 
-#: ../panels/fixtures.py:205
 msgid "Add target for beam to follow"
 msgstr ""
 
-#: ../panels/fixtures.py:210
-#, fuzzy
-msgid "Re-address only"
-msgstr "Endereço DMX"
+msgid "Advanced edit"
+msgstr ""
 
-#: ../panels/fixtures.py:215 ../panels/fixtures.py:216
 #, fuzzy
 msgid "Increment DMX address"
 msgstr "Endereço DMX"
 
-#: ../panels/fixtures.py:220
 #, fuzzy
 msgid "Increment Fixture ID"
 msgstr "Remover dispositivo elétrico"
 
-#: ../panels/fixtures.py:221
 msgid "Increment Fixture ID if numeric"
 msgstr ""
 
-#: ../panels/fixtures.py:226
 msgid ""
 "The Fixture ID is an identifier of this fixture that can be used to "
 "activate / select them for programming."
 msgstr ""
 
-#: ../panels/fixtures.py:231
 msgid "Units"
 msgstr "Unidades"
 
-#: ../panels/fixtures.py:232
 msgid "How many units of this light to add"
 msgstr ""
 
-#: ../panels/fixtures.py:243
 msgid "GDTF Profile"
 msgstr "Perfil GDTF"
 
-#: ../panels/fixtures.py:249
 #, fuzzy
 msgid "Unknown manufacturer"
 msgstr "Fabricante"
 
-#: ../panels/fixtures.py:275
 #, fuzzy
 msgid "DMX: Add Fixture"
 msgstr "Dispositivos elétricos DMX locais"
 
-#: ../panels/fixtures.py:277
 #, fuzzy
 msgid "Add fixtures to the show"
 msgstr "Adicionar grupo de dispositivo elétrico"
 
-#: ../panels/fixtures.py:284 ../panels/fixtures.py:340
-#: ../panels/fixtures.py:359
 msgid "Fixture named {} already exists"
 msgstr ""
 
-#: ../panels/fixtures.py:287
 #, fuzzy
 msgid "No GDTF Profile selected."
 msgstr "Nenhum perfil selecionado"
 
-#: ../panels/fixtures.py:290
 #, fuzzy
 msgid "No DMX Mode selected."
 msgstr "Nenhum perfil selecionado"
 
-#: ../panels/fixtures.py:326
 #, fuzzy
 msgid "DMX: Edit Fixture"
 msgstr "Excluir dispositivo elétrico"
 
-#: ../panels/fixtures.py:328
 #, fuzzy
 msgid "Edit selected fixtures"
 msgstr "Excluir dispositivo elétrico"
 
-#: ../panels/fixtures.py:427
 #, fuzzy
 msgid "DMX > Fixture > Remove"
 msgstr "Importar dispositivos elétricos DMX"
 
-#: ../panels/fixtures.py:429
 #, fuzzy
 msgid "Remove selected fixtures from Scene"
 msgstr "Remover este dispositivo elétrico do Patch."
 
-#: ../panels/fixtures.py:475
-#, fuzzy
-msgid "Import fixture from GDTF Profile"
-msgstr "Importar dispositivo elétrico do GDTF Share"
-
-#: ../panels/fixtures.py:481 ../panels/fixtures.py:521
-msgid "File Path"
-msgstr "Diretório do arquivo"
-
-#: ../panels/fixtures.py:486 ../panels/fixtures.py:526
-msgid "Files"
-msgstr "Arquivos"
-
-#: ../panels/fixtures.py:513
-#, fuzzy
-msgid "Import MVR scene"
-msgstr "Importar para Share"
-
-#: ../panels/fixtures.py:515
-#, fuzzy
-msgid "Import data MVR scene file. This may take a long time!"
-msgstr "Importar dispositivo elétrico do arquivo local do sistema"
-
-#: ../panels/fixtures.py:642
 #, fuzzy
 msgid "DMX > Fixture > Item"
 msgstr "Importar dispositivos elétricos DMX"
 
-#: ../panels/fixtures.py:644
 #, fuzzy
 msgid "Select Fixture"
 msgstr "Excluir dispositivo elétrico"
 
-#: ../panels/fixtures.py:678
 #, fuzzy
 msgid "Remove fixture"
 msgstr "Remover dispositivo elétrico"
 
-#: ../panels/fixtures.py:688 ../panels/fixtures.py:750
 msgid "Fixtures"
 msgstr "Dispositivos elétricos"
 
-#: ../panels/fixtures.py:711
 msgid "F ID"
 msgstr ""
 
-#: ../panels/fixtures.py:717
 #, fuzzy
 msgid "Unit #"
 msgstr "Unidades"
 
-#: ../panels/fixtures.py:721
 msgid "F ID #"
 msgstr ""
 
-#: ../panels/fixtures.py:726
 msgid "Cst ID"
 msgstr ""
 
-#: ../panels/fixtures.py:733
 #, fuzzy
 msgid "Uni"
 msgstr "Unidades"
 
-#: ../panels/fixtures.py:736
 #, fuzzy
 msgid "Addr"
 msgstr "Endereço DMX"
 
-#: ../panels/fixtures.py:738
 msgid "Uni.Addr"
 msgstr ""
 
-#: ../panels/groups.py:37
+#, fuzzy
+msgid "Foot"
+msgstr "Rastro"
+
 msgid "DMX > Group Menu"
 msgstr ""
 
-#: ../panels/groups.py:46
 #, fuzzy
 msgid "Create"
 msgstr "Criado por"
 
-#: ../panels/groups.py:50
 msgid "Update"
 msgstr ""
 
-#: ../panels/groups.py:54
 #, fuzzy
 msgid "Rename"
 msgstr "Nome"
 
-#: ../panels/groups.py:64
 msgid "DMX > Group > Create"
 msgstr ""
 
-#: ../panels/groups.py:66
 msgid "Create DMX group from selected fixtures"
 msgstr ""
 
-#: ../panels/groups.py:71
 #, fuzzy
 msgid "Group Name"
 msgstr "Nome do modo"
 
-#: ../panels/programmer.py:20
 msgid "Lock Movement"
 msgstr ""
 
-#: ../panels/programmer.py:22
 msgid "Ignore pan/tilt DMX data"
 msgstr ""
 
-#: ../panels/programmer.py:39
 msgid "Unlock Movement"
 msgstr ""
 
-#: ../panels/programmer.py:41
 msgid "Allow pan/tilt DMX data"
 msgstr ""
 
-#: ../panels/programmer.py:59
 msgid "Deselect All"
 msgstr ""
 
-#: ../panels/programmer.py:61
 #, fuzzy
 msgid "Deselect every fixture in the Scene"
 msgstr "Remover este dispositivo elétrico do Patch."
 
-#: ../panels/programmer.py:72
 #, fuzzy
 msgid "Select All"
 msgstr "Sequencial"
 
-#: ../panels/programmer.py:74
 #, fuzzy
 msgid "Select every fixture in the Scene"
 msgstr "Remover este dispositivo elétrico do Patch."
 
-#: ../panels/programmer.py:85
 msgid "Select Visible (only filtered)"
 msgstr ""
 
-#: ../panels/programmer.py:87
 msgid "Select every fixture which is visible in the fixtures list"
 msgstr ""
 
-#: ../panels/programmer.py:99
 msgid "Invert selection"
 msgstr ""
 
-#: ../panels/programmer.py:101
 msgid "Invert the selection"
 msgstr ""
 
-#: ../panels/programmer.py:121 ../panels/programmer.py:123
 msgid "Select every other light"
 msgstr ""
 
-#: ../panels/programmer.py:137 ../panels/programmer.py:356
 msgid "Clear"
 msgstr ""
 
-#: ../panels/programmer.py:139
 msgid "Clear all DMX values to default and update fixtures"
 msgstr ""
 
-#: ../panels/programmer.py:165
+msgid "Apply"
+msgstr ""
+
+msgid "Apply these values manually when render is paused"
+msgstr ""
+
 msgid "Targets to zero"
 msgstr ""
 
-#: ../panels/programmer.py:167
 msgid "Set Targets' position to 0 of the Scene"
 msgstr ""
 
-#: ../panels/programmer.py:183
+msgid "Reset targets"
+msgstr ""
+
+#, fuzzy
+msgid "Reset position of target of selected fixtures"
+msgstr "Excluir dispositivo elétrico"
+
 #, fuzzy
 msgid "Select Fixtures"
 msgstr "Excluir dispositivo elétrico"
 
-#: ../panels/programmer.py:185
 #, fuzzy
 msgid "Select base/body of every selected fixture"
 msgstr "Excluir dispositivo elétrico"
 
-#: ../panels/programmer.py:207
 msgid "Select Targets"
 msgstr ""
 
-#: ../panels/programmer.py:209
 msgid "Select target from every fixture element selected"
 msgstr ""
 
-#: ../panels/programmer.py:218
 msgid "Select Camera"
 msgstr ""
 
-#: ../panels/programmer.py:220
 msgid "Select camera of the selected fixture"
 msgstr ""
 
-#: ../panels/programmer.py:243
 msgid "Programmer"
 msgstr "Programador"
 
-#: ../panels/programmer.py:268
 #, fuzzy
 msgid "Nothing selected"
 msgstr "Nenhum perfil selecionado"
 
-#: ../panels/programmer.py:272
 #, fuzzy
 msgid "{} selected"
 msgstr "Nenhum perfil selecionado"
 
-#: ../panels/programmer.py:294
 #, fuzzy
 msgid "Bodies"
 msgstr "Nome do modo"
 
-#: ../panels/programmer.py:295
 msgid "Targets"
 msgstr ""
 
-#: ../panels/programmer.py:299
 #, fuzzy
 msgid "Camera"
 msgstr "Nome"
 
-#: ../panels/programmer.py:305
 msgid "Dimmer"
 msgstr ""
 
-#: ../panels/programmer.py:311 ../panels/programmer.py:336
 #, fuzzy
 msgid "Pan"
 msgstr "Expandir"
 
-#: ../panels/programmer.py:319 ../panels/programmer.py:342
 msgid "Tilt"
 msgstr ""
 
-#: ../panels/programmer.py:325 ../panels/programmer.py:347
 msgid "Zoom"
 msgstr ""
 
-#: ../panels/programmer.py:327 ../panels/programmer.py:348
 msgid "Color Wheel"
 msgstr ""
 
-#: ../panels/programmer.py:329 ../panels/programmer.py:349
 msgid "Gobo"
 msgstr ""
 
-#: ../panels/programmer.py:330 ../panels/programmer.py:350
 msgid "Gobo Rotation"
 msgstr ""
 
-#: ../panels/programmer.py:332 ../panels/programmer.py:351
 msgid "Strobe"
 msgstr ""
 
-#: ../panels/programmer.py:358
 msgid "Clear All"
 msgstr ""
 
-#: ../panels/recorder.py:18
 msgid "DMX > Recorder > Add Keyframe"
 msgstr ""
 
-#: ../panels/recorder.py:20
 msgid "Add a Keyframe with the current DMX data"
 msgstr ""
 
-#: ../panels/recorder.py:77
 msgid "DMX > Recorder > Delete Keyframes for all fixtures"
 msgstr ""
 
-#: ../panels/recorder.py:79
 msgid "Deletes all keyframes from all fixtures"
 msgstr ""
 
-#: ../panels/recorder.py:92
 msgid "DMX > Recorder > Delete All Keyframes from selected fixtures"
 msgstr ""
 
-#: ../panels/recorder.py:94
 msgid "Deletes all keyframes from selected fixtures"
 msgstr ""
 
-#: ../panels/recorder.py:117
 msgid "Keyframe Recorder"
 msgstr ""
 
-#: ../panels/recorder.py:128
 msgid "Add Keyframe"
 msgstr ""
 
-#: ../panels/recorder.py:133
 #, fuzzy
 msgid "Delete Keyframes"
 msgstr "Excluir dispositivo elétrico"
 
-#: ../panels/recorder.py:155
 #, fuzzy
 msgid "Delete from selected fixtures"
 msgstr "Excluir dispositivo elétrico"
 
-#: ../panels/recorder.py:159
 #, fuzzy
 msgid "Delete from all fixtures"
 msgstr "Excluir dispositivo elétrico"
 
-#: ../panels/setup.py:27
 msgid "DMX > Setup > New Show"
 msgstr ""
 
-#: ../panels/setup.py:28
 msgid "Clear any existing DMX data and create a new show."
 msgstr ""
 
-#: ../panels/setup.py:39
 msgid "Beam diameter small"
 msgstr ""
 
-#: ../panels/setup.py:53
 msgid "Beam diameter normal"
 msgstr ""
 
-#: ../panels/setup.py:67
 msgid "DMX > Setup > Create/Update Volume Box"
 msgstr ""
 
-#: ../panels/setup.py:68
 msgid "Create/Update a Box on the scene bounds with a Volume Scatter shader"
 msgstr ""
 
-#: ../panels/setup.py:108
 msgid "Beam Volume"
 msgstr ""
 
-#: ../panels/setup.py:126
 msgid "Update Volume Box"
 msgstr ""
 
-#: ../panels/setup.py:126
 msgid "Create Volume Box"
 msgstr ""
 
-#: ../panels/setup.py:151
 #, fuzzy
 msgid "Set on selected fixtures"
 msgstr "Excluir dispositivo elétrico"
 
-#: ../panels/setup.py:164
 msgid "Viewport"
 msgstr ""
 
-#: ../panels/setup.py:177
 msgid "Background Color"
 msgstr ""
 
-#: ../panels/setup.py:190
 msgid "Extras"
 msgstr ""
 
-#: ../panels/setup.py:202
 msgid "Check for BlenderDMX updates"
 msgstr ""
 
-#: ../panels/setup.py:205
 msgid "Status: {}"
 msgstr ""
 
-#: ../panels/setup.py:231 ../panels/setup.py:232
+msgid "Clear Project data"
+msgstr ""
+
+#, fuzzy
+msgid "Import GDTF Profile"
+msgstr "Importar arquivo de"
+
+#, fuzzy
+msgid "Import MVR Scene"
+msgstr "Importar para Share"
+
+#, fuzzy
+msgid "Import Project data"
+msgstr "Importar para Share"
+
+#, fuzzy
+msgid "Export"
+msgstr "Importar para Share"
+
+msgid "Export Project data"
+msgstr ""
+
 msgid "Show logging directory"
 msgstr ""
 
-#: ../panels/setup.py:246
 msgid "Logging"
 msgstr ""
 
-#: ../panels/setup.py:265
 msgid "Log filter"
 msgstr ""
 
-#: ../panels/setup.py:276
 msgid "Setup"
 msgstr ""
 
-#: ../panels/setup.py:289
 msgid "Error! Blender 3.4 or higher required."
 msgstr ""
 
-#: ../panels/setup.py:290
 msgid "Create New Show"
 msgstr ""
 
-#: ../panels/setup.py:294
 msgid "Check version"
 msgstr ""
 
-#: ../panels/setup.py:295
 msgid "Check if there is new release of BlenderDMX"
 msgstr ""
 
-#: ../panels/setup.py:301
 msgid "Unknown version error"
 msgstr ""
 
-#: ../panels/setup.py:313
 msgid "New version {} available"
 msgstr ""
 
-#: ../panels/setup.py:315
 msgid "You are using pre-release version"
 msgstr ""
 
-#: ../panels/setup.py:317
 msgid "You are using latest version of BlenderDMX"
 msgstr ""
 
-#: ../panels/setup.py:324
 msgid "Checking..."
 msgstr ""
 
-#: ../panels/profiles/controller/manager.py:43
-#: ../panels/profiles/controller/manager.py:78
+#, fuzzy
+msgid "Import Custom Data"
+msgstr "Importar arquivo de"
+
+msgid ""
+"Unzip previously exported custom data from a zip file. This will "
+"overwrite current data!"
+msgstr ""
+
+msgid "File Path"
+msgstr "Diretório do arquivo"
+
+msgid "Files"
+msgstr "Arquivos"
+
+msgid "Incorrect file name!"
+msgstr ""
+
+#, fuzzy
+msgid "Data imported from: {}"
+msgstr "Importar para Share"
+
+msgid "Export Custom Data"
+msgstr ""
+
+msgid "Zip and Export custom data from BlenderDMX addon directory."
+msgstr ""
+
+msgid "Data exported to: {}"
+msgstr ""
+
+msgid "Clear Custom Data"
+msgstr ""
+
+msgid "Clear custom data from BlenderDMX addon directory."
+msgstr ""
+
+msgid "Data cleared"
+msgstr ""
+
+msgid "Reload BlenderDMX addon"
+msgstr ""
+
+msgid "Reload the addon, useful during development"
+msgstr ""
+
+msgid "Addon reloaded"
+msgstr ""
+
+#, fuzzy
+msgid "Import fixture from GDTF Profile"
+msgstr "Importar dispositivo elétrico do GDTF Share"
+
+#, fuzzy
+msgid "Import MVR scene"
+msgstr "Importar para Share"
+
+#, fuzzy
+msgid "Import data MVR scene file. This may take a long time!"
+msgstr "Importar dispositivo elétrico do arquivo local do sistema"
+
 #, fuzzy
 msgid "Get GDTF Share account and fill it into BlenderDMX addon preferences."
 msgstr ""
 "Obtenha a chave API da conta GDTF Share e preencha-a nas preferências do "
 "add-on BlenderDMX."
 
-#: ../panels/profiles/controller/manager.py:44
-#: ../panels/profiles/controller/manager.py:79
 #, fuzzy
 msgid "GDTF Share API credentials missing"
 msgstr "Chave API GDTF Share ausente"
 
-#: ../panels/profiles/controller/manager.py:66
 msgid "Downloading {}"
 msgstr ""
 
-#: ../panels/profiles/controller/manager.py:67
 #, fuzzy
 msgid "GDTF Share Download"
 msgstr "Erro ao baixar o GDTF Share"
 
-#: ../panels/profiles/controller/manager.py:117
 msgid "Share index updated. Status code was: {}"
 msgstr "Indexação Share atualizada. Estado do código: {}"
 
-#: ../panels/profiles/controller/manager.py:118
 msgid "GDTF Share updated"
 msgstr "GDTF Share enviado"
 
-#: ../panels/profiles/controller/manager.py:123
 msgid "Error while updating Share index. Error code was: {}"
 msgstr "Erro ao atualizar a indexação Share. Código do erro: {}"
 
-#: ../panels/profiles/controller/manager.py:124
 msgid "GDTF Share update error"
 msgstr "Erro ao enviar o GDTF Share"
 
-#: ../panels/profiles/controller/manager.py:136
 msgid "File downloaded correctly. Status code was: {}"
 msgstr "Arquivo baixado corretamente. O código de estado era : {}"
 
-#: ../panels/profiles/controller/manager.py:137
 msgid "GDTF file downloaded"
 msgstr "Arquivo GDTF baixado"
 
-#: ../panels/profiles/controller/manager.py:142
 msgid "Error downloading GDTF file. Error code was: {}"
 msgstr "Erro ao baixar o arquivo GDTF. Código do erro: {}"
 
-#: ../panels/profiles/controller/manager.py:143
 msgid "GDTF Share download error"
 msgstr "Erro ao baixar o GDTF Share"
 
-#: ../panels/profiles/data/local_profile.py:12
-#: ../panels/profiles/data/local_profile.py:21
-#: ../panels/profiles/data/local_profile.py:28
 msgid "The name of the DMX profile."
 msgstr "O nome do perfil DMX."
 
-#: ../panels/profiles/data/local_profile.py:15
 msgid "Channel count"
 msgstr ""
 
-#: ../panels/profiles/data/local_profile.py:16
 #, fuzzy
 msgid "Number of channels"
 msgstr "Número de canais"
 
-#: ../panels/profiles/data/local_profile.py:24
 msgid "Short Name"
 msgstr "Nome curto"
 
-#: ../panels/profiles/data/local_profile.py:25
 msgid ""
 "The short name of the DMX profile, all caps, used as suggestion for "
 "fixture names."
 msgstr ""
 
-#: ../panels/profiles/data/local_profile.py:28
 msgid "Filename"
 msgstr "Nome do arquivo"
 
-#: ../panels/profiles/data/local_profile.py:65
 msgid "Some fixtures could not be processed"
 msgstr ""
 
-#: ../panels/profiles/data/share_profile.py:12
 msgid "Mode name"
 msgstr "Nome do modo"
 
-#: ../panels/profiles/data/share_profile.py:13
 msgid "DMX Footprint"
 msgstr "Rastro DMX"
 
-#: ../panels/profiles/data/share_profile.py:21
-#: ../panels/profiles/data/share_profile.py:22
 msgid "Fixture name"
 msgstr "Nome do dispositivo elétrico"
 
-#: ../panels/profiles/data/share_profile.py:21
 msgid "Manufacturer and fixture name"
 msgstr "Nome do fabricante e do dispositivo elétrico"
 
-#: ../panels/profiles/data/share_profile.py:23
 msgid "Manufacturer"
 msgstr "Fabricante"
 
-#: ../panels/profiles/data/share_profile.py:23
 msgid "Manufacturer name"
 msgstr "Nome do fabricante"
 
-#: ../panels/profiles/data/share_profile.py:25
 msgid "Revision"
 msgstr "Revisão"
 
-#: ../panels/profiles/data/share_profile.py:25
 msgid "Revision text"
 msgstr "Texto de revisão"
 
-#: ../panels/profiles/data/share_profile.py:27
 msgid "Uploaded by"
 msgstr "Carregado por"
 
-#: ../panels/profiles/data/share_profile.py:27
 msgid "File uploaded by"
 msgstr "Arquivo carregado por"
 
-#: ../panels/profiles/data/share_profile.py:29
 msgid "Created by"
 msgstr "Criado por"
 
-#: ../panels/profiles/data/share_profile.py:29
 msgid "File created by"
 msgstr "Arquivo criado por"
 
-#: ../panels/profiles/data/share_profile.py:31
 msgid "Rating"
 msgstr "Avaliação"
 
-#: ../panels/profiles/data/share_profile.py:34
 msgid "Revision ID"
 msgstr "ID de revisão"
 
-#: ../panels/profiles/data/share_profile.py:34
 msgid "File identifier in the GDTF Share"
 msgstr "Identificador de arquivo no GDTF Share"
 
-#: ../panels/profiles/data/share_profile.py:36
 msgid "DMX Modes"
 msgstr "Modos DMX"
 
-#: ../panels/profiles/ui/list.py:35 ../panels/profiles/ui/list.py:67
 msgid "DMX Mode Name"
 msgstr "Nome do modo DMX"
 
-#: ../panels/profiles/ui/list.py:38 ../panels/profiles/ui/list.py:70
-msgid "Footprint"
-msgstr "Rastro"
-
-#: ../panels/profiles/ui/operator.py:18
 msgid "Import from Share"
 msgstr "Importar para Share"
 
-#: ../panels/profiles/ui/operator.py:19
 msgid "Import fixture from GDTF Share"
 msgstr "Importar dispositivo elétrico do GDTF Share"
 
-#: ../panels/profiles/ui/operator.py:32
 msgid "Update GDTF Share index"
 msgstr "Atualizar indexação do GDTF Share"
 
-#: ../panels/profiles/ui/operator.py:33
 msgid "Update data index of GDTF Share"
 msgstr "Atualizar dado de indexação do GDTF Share"
 
-#: ../panels/profiles/ui/operator.py:44
 msgid "Import fixture from local filesystem"
 msgstr "Importar dispositivo elétrico do arquivo local do sistema"
 
-#: ../panels/profiles/ui/operator.py:78
 msgid "Delete fixture"
 msgstr "Excluir dispositivo elétrico"
 
-#: ../panels/profiles/ui/operator.py:79
 msgid "Delete fixture from local filesystem"
 msgstr "Excluir dispositivo elétrico do arquivo local do sistema"
 
-#: ../panels/profiles/ui/operator.py:93
 msgid "Refresh files listing"
 msgstr "Atualizar a listagem de arquivos"
 
-#: ../panels/profiles/ui/operator.py:94
 msgid "Update list of local files"
 msgstr "Atualizar a lista dos arquivos locais"
 
-#: ../panels/profiles/ui/panel.py:17
 #, fuzzy
 msgid "GDTF Share"
 msgstr "GDTF Share enviado"
 
-#: ../panels/profiles/ui/panel.py:45
 msgid "Fixture details"
 msgstr "Detalhes do dispositivo elétrico"
 
-#: ../panels/profiles/ui/panel.py:83
 #, fuzzy
 msgid "Local Fixture files"
 msgstr "Detalhes do dispositivo local"
 
-#: ../panels/profiles/ui/panel.py:113
 msgid "Local Fixture details"
 msgstr "Detalhes do dispositivo local"
 
-#: ../panels/profiles/ui/panel.py:153
 #, fuzzy
 msgid "Profiles"
 msgstr "Arquivos"
@@ -1439,4 +1239,7 @@ msgstr "Arquivos"
 
 #~ msgid "Import from file"
 #~ msgstr "Importar arquivo de"
+
+#~ msgid "Re-address only"
+#~ msgstr "Endereço DMX"
 
