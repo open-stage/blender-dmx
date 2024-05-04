@@ -1,10 +1,8 @@
 * Update translations, commit and give some time for translations to be done
+* To prevent weblate merge conflicts, in weblate:
+* Push translations, merge them fast in GitHub, then reset weblate to upstream
 
-cd i18n/
-pybabel extract -F babel.cfg -o messages.pot ../
-pybabel update -i messages.pot -d translations
-
-* Checkout a new branch `release_v_X.Y.Z`
+* Checkout a new branch `release_vX.Y.Z`
 * Add changes to CHANGELOG.md
 * Update versions (in text and in links) in README.md
 * Update __init__.py → bl_info → version
