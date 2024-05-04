@@ -187,6 +187,9 @@ class DMX_PT_Setup_Viewport(Panel):
         row = layout.row()
         row.prop(context.scene.dmx,'display_2D')
         row = layout.row()
+        row.prop(context.scene.dmx,'display_device_label')
+        row.enabled = dmx.display_2D
+        row = layout.row()
         row.prop(context.scene.dmx,'display_pigtails')
         row = layout.row()
         row.prop(context.scene.dmx,'select_geometries')
@@ -210,6 +213,11 @@ class DMX_PT_Setup_Extras(Panel):
         col1.label(text = _("Status: {}").format(context.window_manager.dmx.release_version_status))
         col2 = row.column()
         col2.operator('wm.url_open', text="", icon="SHADING_WIRE").url="https://github.com/open-stage/blender-dmx/releases/latest"
+        row = layout.row()
+        row.operator_context = 'INVOKE_DEFAULT' #'INVOKE_AREA'
+        row.operator("dmx.clear_custom_data", text=_("Clear Project data"), icon="TRASH")
+        row = layout.row()
+        row.operator("dmx.reload_addon", icon="FILE_REFRESH")
 
 class DMX_PT_Setup_Import(Panel):
     bl_label = _("Import")
@@ -381,13 +389,15 @@ class DMX_OT_Import_Custom_Data(Operator):
         return {'RUNNING_MODAL'}
 
     def execute(self, context):
-        print("print", self.directory, self.files[0].name)
         file_name = self.files[0].name
         if file_name != "" and len(file_name)>1:
             result = blender_utils.import_custom_data(self.directory, file_name)
         else:
             self.report({'ERROR'}, _("Incorrect file name!"))
             return {'FINISHED'}
+
+        DMX_GDTF.getManufacturerList()
+        Profiles.DMX_Fixtures_Local_Profile.loadLocal()
 
         if result.ok:
             import_filename = os.path.join(self.directory, file_name)
@@ -442,6 +452,62 @@ class DMX_OT_Export_Custom_Data(Operator):
             self.report({'ERROR'}, result.error)
 
         return {'FINISHED'}
+
+class DMX_OT_Clear_Custom_Data(Operator):
+    bl_label = _("Clear Custom Data")
+    bl_idname = "dmx.clear_custom_data"
+    bl_description = _("Clear custom data from BlenderDMX addon directory.")
+    bl_options = {'UNDO'}
+
+    def draw(self, context):
+        layout = self.layout
+        col = layout.column()
+
+    def execute(self, context):
+        result = blender_utils.clear_custom_data()
+
+        DMX_GDTF.getManufacturerList()
+        Profiles.DMX_Fixtures_Local_Profile.loadLocal()
+
+        if result.ok:
+            self.report({'INFO'}, _("Data cleared"))
+        else:
+            self.report({'ERROR'}, result.error)
+
+        return {'FINISHED'}
+
+    def invoke(self, context, event):
+        wm = context.window_manager
+        return wm.invoke_props_dialog(self)
+
+class DMX_OT_Reload_Addon(Operator):
+    bl_label = _("Reload BlenderDMX addon")
+    bl_idname = "dmx.reload_addon"
+    bl_description = _("Reload the addon, useful during development")
+    bl_options = {'UNDO'}
+
+    def draw(self, context):
+        layout = self.layout
+        col = layout.column()
+
+    def execute(self, context):
+        dmx = context.scene.dmx
+
+        for cls in dmx.classes_setup:
+            bpy.utils.unregister_class(cls)
+
+        result = blender_utils.reload_addon()
+
+        if result.ok:
+            self.report({'INFO'}, _("Addon reloaded"))
+        else:
+            self.report({'ERROR'}, result.error)
+
+        return {'FINISHED'}
+
+    def invoke(self, context, event):
+        wm = context.window_manager
+        return wm.invoke_props_dialog(self)
 
 class DMX_OT_Setup_Import_GDTF(Operator):
     bl_label = _("Import GDTF Profile")

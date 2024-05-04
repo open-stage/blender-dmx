@@ -1,5 +1,29 @@
 ### Changelog
 
+### 1.4.2
+
+    * Provide a way to export and import custom data from/to the Addon
+    * Remove Blender files of old models from the Addon
+    * Improve keyframing:
+        * only keyframe fixtures with changed data
+        * allow keyframing only selected fixtures
+        * indicate unsaved state in fixtures list
+    * Show DMX Footprint and indicate if address is colliding in Fixtures list
+    * Allow fixtures deselection by groups
+    * Allow the Programmer data to be Applied manually when render is paused
+      for speedup of response on large setups
+    * Add icon to re-set Targets, with a selection of axis
+    * Italian version is now fully translated
+    * Ensure programmer is populated with fixture's data also when selected by
+      shortcuts
+    * Ensure that color is applied to fixtures with color wheel but without
+      other color mixing
+    * List GDTF files without at signs @ in filename
+    * Handle gobo (not)loading for GDTFs without images
+    * Fix dimmer jumping over time
+    * Add support for ColorAdd_C,M,Y
+    * Add support for Gobo(n)PosRotate
+
 ### 1.4.1
 
     * Handle XML files with null byte at the end

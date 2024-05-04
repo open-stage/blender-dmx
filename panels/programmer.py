@@ -143,11 +143,18 @@ class DMX_OT_Programmer_Clear(Operator):
 
     def execute(self, context):
         scene = context.scene
-        if (not len(bpy.context.selected_objects)):
-            for fixture in scene.dmx.fixtures:
+        dmx = context.scene.dmx
+        selected_fixtures = False
+        for fixture in dmx.fixtures:
+            if fixture.is_selected():
+                selected_fixtures = True
+                break
+
+        if not selected_fixtures:
+            for fixture in dmx.fixtures:
                 fixture.clear()
         else:
-            for fixture in scene.dmx.fixtures:
+            for fixture in dmx.fixtures:
                 if fixture.is_selected():
                     fixture.clear()
 
@@ -160,6 +167,7 @@ class DMX_OT_Programmer_Clear(Operator):
         scene.dmx.programmer_gobo = 0
         scene.dmx.programmer_gobo_index = 63
         scene.dmx.programmer_shutter = 0
+
         return {'FINISHED'}
 
 class DMX_OT_Programmer_Apply_Manually(Operator):
@@ -200,7 +208,7 @@ class DMX_OT_Programmer_TargetsToZero(Operator):
 
 class DMX_MT_PIE_Reset(Menu):
     bl_label = _("Reset targets")
-    bl_idname = "dmx.pie_reset"
+    bl_idname = "DMX_MT_PIE_Reset"
     bl_description = _("Reset position of target of selected fixtures")
 
     def draw(self,context):
@@ -365,7 +373,7 @@ class DMX_PT_Programmer(Panel):
         c0.operator("dmx.select_filtered", text='', icon="SELECT_DIFFERENCE")
         c1.operator("dmx.deselect_all", text='', icon='SELECT_SET')
         c2.operator("dmx.targets_to_zero", text="", icon="LIGHT_POINT")
-        c3.menu("dmx.pie_reset", text="", icon="LIGHT_SPOT")
+        c3.menu("DMX_MT_PIE_Reset", text="", icon="LIGHT_SPOT")
         c4.operator("dmx.ignore_movement_true", text="", icon="LOCKED")
         c5.operator("dmx.ignore_movement_false", text="", icon="UNLOCKED")
         c1.enabled = c2.enabled = c3.enabled = c4.enabled = selected

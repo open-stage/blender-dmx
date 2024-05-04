@@ -3,9 +3,14 @@ import requests
 import shutil
 import os
 from types import SimpleNamespace
+import glob
+import sys
+import importlib
 
 from dmx.i18n import DMX_Lang
+
 _ = DMX_Lang._
+
 
 def get_version_json(url, callback, context):
     try:
@@ -59,24 +64,63 @@ def export_custom_data(directory_name, file_name):
     ignore = shutil.ignore_patterns("BlenderDMX*")
 
     try:
-        shutil.copytree(models_path, os.path.join(export_dir,"models"))
-        shutil.copytree(mvrs_path, os.path.join(export_dir,"mvrs"))
-        shutil.copytree(profiles_path, os.path.join(export_dir,"profiles"), ignore=ignore)
+        shutil.copytree(models_path, os.path.join(export_dir, "models"))
+        shutil.copytree(mvrs_path, os.path.join(export_dir, "mvrs"))
+        shutil.copytree(profiles_path, os.path.join(export_dir, "profiles"), ignore=ignore)
         shutil.make_archive(export_filename, "zip", export_dir)
         shutil.rmtree(export_dir)
     except Exception as e:
-        return SimpleNamespace(ok=False, error = str(e))
-    return SimpleNamespace(ok=True, error = "")
+        return SimpleNamespace(ok=False, error=str(e))
+    return SimpleNamespace(ok=True, error="")
+
 
 def import_custom_data(directory_name, file_name):
     import_filename = os.path.join(directory_name, file_name)
     folder_path = os.path.dirname(os.path.realpath(__file__))
     import_dir = os.path.join(folder_path, "assets")
     if not os.path.exists(import_filename):
-        return SimpleNamespace(ok=False, error = _("File doesn't exist"))
+        return SimpleNamespace(ok=False, error=_("File doesn't exist"))
 
     try:
         shutil.unpack_archive(import_filename, import_dir)
     except Exception as e:
-        return SimpleNamespace(ok=False, error = str(e))
-    return SimpleNamespace(ok=True, error = "")
+        return SimpleNamespace(ok=False, error=str(e))
+    return SimpleNamespace(ok=True, error="")
+
+
+def clear_custom_data():
+    folder_path = os.path.dirname(os.path.realpath(__file__))
+
+    models_path = os.path.join(folder_path, "assets", "models", "*")
+    mvrs_path = os.path.join(folder_path, "assets", "mvrs", "*")
+    profiles_path = os.path.join(folder_path, "assets", "profiles", "*")
+
+    rm_dirs = [(models_path, "models"), (mvrs_path, "mvrs"), (profiles_path, "profiles")]
+
+    try:
+        for rm_dir, name in rm_dirs:
+            for file in glob.glob(rm_dir):
+                if name == "profiles":
+                    if "BlenderDMX" in file and file.endswith(".gdtf"):
+                        continue
+                if os.path.isdir(file):
+                    shutil.rmtree(file)
+                    continue
+                if os.path.isfile(file):
+                    os.remove(file)
+    except Exception as e:
+        return SimpleNamespace(ok=False, error=str(e))
+    return SimpleNamespace(ok=True, error="")
+
+
+def reload_addon():
+    try:
+        module = sys.modules.get("dmx")
+        if not module:
+            raise Exception("DMX module could not be loaded")
+        module.unregister()
+        importlib.reload(module)
+        module.register()
+    except Exception as e:
+        return SimpleNamespace(ok=False, error=str(e))
+    return SimpleNamespace(ok=True, error="")
