@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-05-04 07:19+0200\n"
-"PO-Revision-Date: 2024-04-05 19:01+0000\n"
+"PO-Revision-Date: 2024-05-04 05:33+0000\n"
 "Last-Translator: vanous <petr+weblate@linuks.cz>\n"
+"Language-Team: Czech <https://hosted.weblate.org/projects/blenderdmx/main/cs/"
+">\n"
 "Language: cs_CZ\n"
-"Language-Team: Czech "
-"<https://hosted.weblate.org/projects/blenderdmx/main/cs/>\n"
-"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
+"X-Generator: Weblate 5.5.3\n"
 "Generated-By: Babel 2.14.0\n"
 
 msgid "Laser collision collection"
@@ -41,13 +42,11 @@ msgstr "Importy"
 msgid "Add to selection"
 msgstr "Přidat k výběru"
 
-#, fuzzy
 msgid "Remove from selection"
-msgstr "Invertovat výběr"
+msgstr "Odebrat z výběru"
 
-#, fuzzy
 msgid "Keyframe only selected fixtures (not for autokeying)"
-msgstr "Odebrat vybraná svítidla ze scény"
+msgstr "Keyframe pouze vybraná svítidla (ne při autokeying)"
 
 msgid "MVR-xchange"
 msgstr "MVR-xchange"
@@ -98,7 +97,7 @@ msgid "Display 2D View"
 msgstr "Zobrazit 2D pohled"
 
 msgid "Device Label"
-msgstr ""
+msgstr "Štítek zařízení"
 
 msgid "None"
 msgstr "Žádná svítidla"
@@ -107,7 +106,7 @@ msgid "Name"
 msgstr "Název"
 
 msgid "DMX"
-msgstr ""
+msgstr "ČEŠTINA"
 
 msgid "Allow Selecting Geometries"
 msgstr "Povolit výběr geometrií"
@@ -268,7 +267,7 @@ msgid "Fixture sorting order"
 msgstr "Řazení svítidel"
 
 msgid "File doesn't exist"
-msgstr ""
+msgstr "Soubor neexistuje"
 
 msgid "Refresh"
 msgstr "Obnovit"
@@ -388,7 +387,7 @@ msgid "Add target for beam to follow"
 msgstr "Přidat cíl pro navádění kužele paprsku"
 
 msgid "Advanced edit"
-msgstr ""
+msgstr "Pokročilé úpravy"
 
 msgid "Increment DMX address"
 msgstr "Inkrementovat DMX adresu"
@@ -478,7 +477,6 @@ msgstr "Adr"
 msgid "Uni.Addr"
 msgstr "Uni.Adr"
 
-#, fuzzy
 msgid "Foot"
 msgstr "Stopa"
 
@@ -549,10 +547,10 @@ msgid "Clear all DMX values to default and update fixtures"
 msgstr "Vyčistit DMX hodnoty do výchozích a aktualizovat svítidla"
 
 msgid "Apply"
-msgstr ""
+msgstr "Aplikovat"
 
 msgid "Apply these values manually when render is paused"
-msgstr ""
+msgstr "Aplikovat tyto hodnoty ručně, když je render pozastaven"
 
 msgid "Targets to zero"
 msgstr "Cíle na nulu"
@@ -560,13 +558,11 @@ msgstr "Cíle na nulu"
 msgid "Set Targets' position to 0 of the Scene"
 msgstr "Nastaví Cíle paprsků na střed scény"
 
-#, fuzzy
 msgid "Reset targets"
-msgstr "Vybrat Cíle"
+msgstr "Resetovat Cíle"
 
-#, fuzzy
 msgid "Reset position of target of selected fixtures"
-msgstr "Nastavit na vybraných svítidlech"
+msgstr "Obnovit pozici cíle vybraných svítidel"
 
 msgid "Select Fixtures"
 msgstr "Vybrat Svítidla"
@@ -617,7 +613,7 @@ msgid "Zoom"
 msgstr "Zoom"
 
 msgid "Color Wheel"
-msgstr ""
+msgstr "Kolorový Kotouč"
 
 msgid "Gobo"
 msgstr "Gobo"
@@ -710,7 +706,7 @@ msgid "Status: {}"
 msgstr "Stav: {}"
 
 msgid "Clear Project data"
-msgstr ""
+msgstr "Vyčistit Projektová data"
 
 msgid "Import GDTF Profile"
 msgstr "Importovat GDTF soubor"
@@ -718,16 +714,14 @@ msgstr "Importovat GDTF soubor"
 msgid "Import MVR Scene"
 msgstr "Importovat MVR Scénu"
 
-#, fuzzy
 msgid "Import Project data"
-msgstr "Import z Share"
+msgstr "Importovat Projektová data"
 
-#, fuzzy
 msgid "Export"
-msgstr "Pohled"
+msgstr "Export"
 
 msgid "Export Project data"
-msgstr ""
+msgstr "Exportovat Projektová data"
 
 msgid "Show logging directory"
 msgstr "Zobrazit adresář s logy"
@@ -768,14 +762,15 @@ msgstr "Používáte nejnovější verzi BlenderDMX"
 msgid "Checking..."
 msgstr "Kontrola..."
 
-#, fuzzy
 msgid "Import Custom Data"
-msgstr "Importovat"
+msgstr "Importovat vlastní data"
 
 msgid ""
 "Unzip previously exported custom data from a zip file. This will "
 "overwrite current data!"
 msgstr ""
+"Rozbalit dříve exportovaná vlastní data ze zip souboru. Přepíše aktuální "
+"data!"
 
 msgid "File Path"
 msgstr "Cesta k souboru"
@@ -784,40 +779,37 @@ msgid "Files"
 msgstr "Soubory"
 
 msgid "Incorrect file name!"
-msgstr ""
+msgstr "Nesprávné jméno souboru!"
 
-#, fuzzy
 msgid "Data imported from: {}"
-msgstr "Import z Share"
+msgstr "Data importována z: {}"
 
 msgid "Export Custom Data"
-msgstr ""
+msgstr "Exportovat vlastní data"
 
 msgid "Zip and Export custom data from BlenderDMX addon directory."
-msgstr ""
+msgstr "Zazipovat a Exportovat vlastní data z adresáře BlenderDMX rozšíření."
 
 msgid "Data exported to: {}"
-msgstr ""
+msgstr "Data exportována do: {}"
 
-#, fuzzy
 msgid "Clear Custom Data"
-msgstr "Vlastní ID"
+msgstr "Vyčistit vlastní data"
 
 msgid "Clear custom data from BlenderDMX addon directory."
-msgstr ""
+msgstr "Vyčistit vlastní data z adresáře BlenderDMX rozšíření."
 
 msgid "Data cleared"
-msgstr ""
+msgstr "Data vyčištěna"
 
 msgid "Reload BlenderDMX addon"
-msgstr ""
+msgstr "Reloadovat BlenderDMX rozšíření"
 
 msgid "Reload the addon, useful during development"
-msgstr ""
+msgstr "Reloadovat rozšíření, užitečné při vývoji"
 
-#, fuzzy
 msgid "Addon reloaded"
-msgstr "Stáhnout"
+msgstr "Rozšíření reloadováno"
 
 msgid "Import fixture from GDTF Profile"
 msgstr "Importovat svítidlo z GDTF Share"
@@ -829,7 +821,8 @@ msgid "Import data MVR scene file. This may take a long time!"
 msgstr "Importovat data z MVR souboru. To může trvat dlouho!"
 
 msgid "Get GDTF Share account and fill it into BlenderDMX addon preferences."
-msgstr "Získejte GDTF Share účet a zadejte jej do předvoleb doplňku BlenderDMX."
+msgstr ""
+"Získejte GDTF Share účet a zadejte jej do předvoleb rozšíření BlenderDMX."
 
 msgid "GDTF Share API credentials missing"
 msgstr "Chybí data účtu pro přihlášení k GDTF Share"
@@ -1151,4 +1144,3 @@ msgstr "Profily"
 
 #~ msgid "Re-address only"
 #~ msgstr "Pouze pře-adresovat"
-
