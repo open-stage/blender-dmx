@@ -1164,11 +1164,10 @@ class DMX(PropertyGroup):
         for fixture in self.fixtures:
             if fixture.collection is None:
                 continue
-            for obj in fixture.collection.objects:
-                if (obj in bpy.context.selected_objects):
-                    fixture.setDMX({
-                        'Dimmer':int(255*self.programmer_dimmer)
-                    })
+            if fixture.is_selected():
+                fixture.setDMX({
+                    'Dimmer':int(255*self.programmer_dimmer)
+                })
         self.render()
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
@@ -1186,26 +1185,25 @@ class DMX(PropertyGroup):
         for fixture in self.fixtures:
             if fixture.collection is None:
                 continue
-            for obj in fixture.collection.objects:
-                if (obj in bpy.context.selected_objects):
-                    rgb=[int(255*x) for x in self.programmer_color]
-                    cmy=rgb_to_cmy(rgb)
+            if fixture.is_selected():
+                rgb=[int(255*x) for x in self.programmer_color]
+                cmy=rgb_to_cmy(rgb)
 
-                    fixture.setDMX({
-                        'ColorAdd_R':rgb[0],
-                        'ColorAdd_G':rgb[1],
-                        'ColorAdd_B':rgb[2],
-                        'ColorRGB_Red':rgb[0],
-                        'ColorRGB_Green':rgb[1],
-                        'ColorRGB_Blue':rgb[2],
-                        'ColorSub_C':cmy[0],
-                        'ColorSub_M':cmy[1],
-                        'ColorSub_Y':cmy[2],
-                        'ColorAdd_C':cmy[0],
-                        'ColorAdd_M':cmy[1],
-                        'ColorAdd_Y':cmy[2],
+                fixture.setDMX({
+                    'ColorAdd_R':rgb[0],
+                    'ColorAdd_G':rgb[1],
+                    'ColorAdd_B':rgb[2],
+                    'ColorRGB_Red':rgb[0],
+                    'ColorRGB_Green':rgb[1],
+                    'ColorRGB_Blue':rgb[2],
+                    'ColorSub_C':cmy[0],
+                    'ColorSub_M':cmy[1],
+                    'ColorSub_Y':cmy[2],
+                    'ColorAdd_C':cmy[0],
+                    'ColorAdd_M':cmy[1],
+                    'ColorAdd_Y':cmy[2],
 
-                    })
+                })
         self.render()
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
@@ -1225,11 +1223,10 @@ class DMX(PropertyGroup):
         for fixture in self.fixtures:
             if fixture.collection is None:
                 continue
-            for obj in fixture.collection.objects:
-                if (obj in bpy.context.selected_objects):
-                    fixture.setDMX({
-                        'Pan':int(255*(self.programmer_pan+1)/2)
-                    })
+            if fixture.is_selected():
+                fixture.setDMX({
+                    'Pan':int(255*(self.programmer_pan+1)/2)
+                })
         self.render()
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
@@ -1245,11 +1242,10 @@ class DMX(PropertyGroup):
         for fixture in self.fixtures:
             if fixture.collection is None:
                 continue
-            for obj in fixture.collection.objects:
-                if (obj in bpy.context.selected_objects):
-                    fixture.setDMX({
-                        'Tilt':int(255*(self.programmer_tilt+1)/2)
-                    })
+            if fixture.is_selected():
+                fixture.setDMX({
+                    'Tilt':int(255*(self.programmer_tilt+1)/2)
+                })
         self.render()
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
@@ -1258,11 +1254,10 @@ class DMX(PropertyGroup):
         for fixture in self.fixtures:
             if fixture.collection is None:
                 continue
-            for obj in fixture.collection.objects:
-                if (obj in bpy.context.selected_objects):
-                    fixture.setDMX({
-                        'Zoom':int(self.programmer_zoom)
-                    })
+            if fixture.is_selected():
+                fixture.setDMX({
+                    'Zoom':int(self.programmer_zoom)
+                })
         self.render()
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
@@ -1271,13 +1266,12 @@ class DMX(PropertyGroup):
         for fixture in self.fixtures:
             if fixture.collection is None:
                 continue
-            for obj in fixture.collection.objects:
-                if (obj in bpy.context.selected_objects):
-                    fixture.setDMX({
-                        'Color1':int(self.programmer_color_wheel),
-                        'Color2':int(self.programmer_color_wheel),
-                        'ColorMacro1':int(self.programmer_color_wheel)
-                    })
+            if fixture.is_selected():
+                fixture.setDMX({
+                    'Color1':int(self.programmer_color_wheel),
+                    'Color2':int(self.programmer_color_wheel),
+                    'ColorMacro1':int(self.programmer_color_wheel)
+                })
         self.render()
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
@@ -1286,12 +1280,11 @@ class DMX(PropertyGroup):
         for fixture in self.fixtures:
             if fixture.collection is None:
                 continue
-            for obj in fixture.collection.objects:
-                if (obj in bpy.context.selected_objects):
-                    fixture.setDMX({
-                        'Gobo1':int(self.programmer_gobo),
-                        'Gobo2':int(self.programmer_gobo)
-                    })
+            if fixture.is_selected():
+                fixture.setDMX({
+                    'Gobo1':int(self.programmer_gobo),
+                    'Gobo2':int(self.programmer_gobo)
+                })
         self.render()
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
@@ -1300,14 +1293,13 @@ class DMX(PropertyGroup):
         for fixture in self.fixtures:
             if fixture.collection is None:
                 continue
-            for obj in fixture.collection.objects:
-                if (obj in bpy.context.selected_objects):
-                    fixture.setDMX({
-                        'Gobo1Pos':int(self.programmer_gobo_index),
-                        'Gobo1PosRotate':int(self.programmer_gobo_index),
-                        'Gobo2Pos':int(self.programmer_gobo_index),
-                        'Gobo2PosRotate':int(self.programmer_gobo_index)
-                    })
+            if fixture.is_selected():
+                fixture.setDMX({
+                    'Gobo1Pos':int(self.programmer_gobo_index),
+                    'Gobo1PosRotate':int(self.programmer_gobo_index),
+                    'Gobo2Pos':int(self.programmer_gobo_index),
+                    'Gobo2PosRotate':int(self.programmer_gobo_index)
+                })
         self.render()
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
@@ -1316,11 +1308,10 @@ class DMX(PropertyGroup):
         for fixture in self.fixtures:
             if fixture.collection is None:
                 continue
-            for obj in fixture.collection.objects:
-                if (obj in bpy.context.selected_objects):
-                    fixture.setDMX({
-                        'Shutter1':int(self.programmer_shutter)
-                    })
+            if fixture.is_selected():
+                fixture.setDMX({
+                    'Shutter1':int(self.programmer_shutter)
+                })
         self.render()
         bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
@@ -1494,11 +1485,8 @@ class DMX(PropertyGroup):
     def selectedFixtures(self):
         selected = []
         for fixture in self.fixtures:
-            if fixture.collection:
-                for obj in fixture.collection.objects:
-                    if (obj in bpy.context.selected_objects):
-                        selected.append(fixture)
-                        break
+            if fixture.is_selected():
+                selected.append(fixture)
         return selected
 
 
@@ -1721,9 +1709,8 @@ class DMX(PropertyGroup):
                     continue
                 if fixture.collection is None:
                     continue
-                for obj in fixture.collection.objects:
-                    if obj in bpy.context.selected_objects:
-                        selected = True
+                if fixture.is_selected():
+                    selected = True
                 for light in fixture.lights:
                     light.object.data.show_cone = selected
 
