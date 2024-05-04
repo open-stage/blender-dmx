@@ -726,15 +726,15 @@ class DMX(PropertyGroup):
                     set_light_nodes(light)
 
 
-        if "DMX_Volume" in bpy.data.objects:
-            objs = bpy.data.objects
-            objs.remove(objs["DMX_Volume"], do_unlink=True)
-            DMX_Log.log.info("Updating Volume box")
+            if "DMX_Volume" in bpy.data.objects:
+                objs = bpy.data.objects
+                objs.remove(objs["DMX_Volume"], do_unlink=True)
+                DMX_Log.log.info("Removing Volume box due to old structure, you need to create it new")
 
-        if "DMX_Volume" in bpy.data.materials:
-            objs = bpy.data.materials
-            objs.remove(objs["DMX_Volume"], do_unlink=True)
-            DMX_Log.log.info("Updating Volume material")
+            if "DMX_Volume" in bpy.data.materials:
+                objs = bpy.data.materials
+                objs.remove(objs["DMX_Volume"], do_unlink=True)
+                DMX_Log.log.info("Removing Volume box material due to old structure, you need to create it new")
 
         if file_data_version < 8:
             DMX_Log.log.info("Running migration 7→8")
