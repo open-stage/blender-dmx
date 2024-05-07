@@ -1,0 +1,958 @@
+# Translations template for PROJECT.
+# Copyright (C) 2024 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2024-05-04 07:19+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.14.0\n"
+
+msgid "Laser collision collection"
+msgstr ""
+
+msgid ""
+"Laser beams are projected onto objects in this collection. The beam stops"
+" at the first object colliding with the beam."
+msgstr ""
+
+msgid "Pause renderer"
+msgstr ""
+
+msgid "Manufacturers"
+msgstr ""
+
+msgid "Imports"
+msgstr ""
+
+msgid "Add to selection"
+msgstr ""
+
+msgid "Remove from selection"
+msgstr ""
+
+msgid "Keyframe only selected fixtures (not for autokeying)"
+msgstr ""
+
+msgid "MVR-xchange"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "DMX Data"
+msgstr ""
+
+msgid "Fixture"
+msgstr ""
+
+msgid "Fixture ID"
+msgstr ""
+
+msgid "Unit Number"
+msgstr ""
+
+msgid "Custom ID"
+msgstr ""
+
+msgid "DMX Address"
+msgstr ""
+
+msgid "Position"
+msgstr ""
+
+msgid "Rotation"
+msgstr ""
+
+msgid "Footprint"
+msgstr ""
+
+msgid "DMX Collection"
+msgstr ""
+
+msgid "Universe"
+msgstr ""
+
+msgid "Editable"
+msgstr ""
+
+msgid "Display Pigtails"
+msgstr ""
+
+msgid "Display 2D View"
+msgstr ""
+
+msgid "Device Label"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "DMX"
+msgstr ""
+
+msgid "Allow Selecting Geometries"
+msgstr ""
+
+msgid "Logging Level"
+msgstr ""
+
+msgid "Critical"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+msgid "Warning"
+msgstr ""
+
+msgid "Info"
+msgstr ""
+
+msgid "Debug"
+msgstr ""
+
+msgid "Simple beam"
+msgstr ""
+
+msgid "Display 'fake' beam cone"
+msgstr ""
+
+msgid "Selected fixtures"
+msgstr ""
+
+msgid "All fixtures"
+msgstr ""
+
+msgid "Beam Lens Diameter in Cycles"
+msgstr ""
+
+msgid ""
+"Beam diameter is reduced to minimum when projecting gobos to prevent blur"
+" on gobo edge"
+msgstr ""
+
+msgid "Reduced"
+msgstr ""
+
+msgid "Full width"
+msgstr ""
+
+msgid "Custom per each beam"
+msgstr ""
+
+msgid "Disable Overlays"
+msgstr ""
+
+msgid "Enable Volume Scatter"
+msgstr ""
+
+msgid "Noise Scale"
+msgstr ""
+
+msgid "Volume Noise Scale"
+msgstr ""
+
+msgid "Density"
+msgstr ""
+
+msgid "Volume Scatter Density"
+msgstr ""
+
+msgid "Number of universes"
+msgstr ""
+
+msgid "The number of universes set on the panel"
+msgstr ""
+
+msgid "Universe List Item"
+msgstr ""
+
+msgid "The selected element on the universe list"
+msgstr ""
+
+msgid "IPv4 Address for ArtNet signal"
+msgstr ""
+
+msgid "The network card/interface to listen for ArtNet DMX data"
+msgstr ""
+
+msgid "Enable Art-Net Input"
+msgstr ""
+
+msgid ""
+"Enables the input of DMX data throught Art-Net on the selected network "
+"interface"
+msgstr ""
+
+msgid "Enable sACN Input"
+msgstr ""
+
+msgid ""
+"Enables the input of DMX data throught sACN on all detected network "
+"interfaces"
+msgstr ""
+
+msgid "Enable OSC Output"
+msgstr ""
+
+msgid "Enables Open Sound Control protocol to send fixture selection to a console"
+msgstr ""
+
+msgid "OSC Target address"
+msgstr ""
+
+msgid ""
+"Address of the host where you want to send the OSC signal. Address ending"
+" on .255 is a broadcast address to all hosts on the network"
+msgstr ""
+
+msgid "OSC Target port"
+msgstr ""
+
+msgid "Port number of the host where you want to send the OSC signal"
+msgstr ""
+
+msgid "Enable MVR-xchange discovery"
+msgstr ""
+
+msgid "Enables MVR-xchange discovery"
+msgstr ""
+
+msgid "Enable MVR-xchange connection"
+msgstr ""
+
+msgid "Connects to MVR-xchange client"
+msgstr ""
+
+msgid "Art-Net Status"
+msgstr ""
+
+msgid "sACN Status"
+msgstr ""
+
+msgid "Group List i"
+msgstr ""
+
+msgid "The selected element on the group list"
+msgstr ""
+
+msgid "Sort by"
+msgstr ""
+
+msgid "Fixture sorting order"
+msgstr ""
+
+msgid "File doesn't exist"
+msgstr ""
+
+msgid "Refresh"
+msgstr ""
+
+msgid "Refresh connection"
+msgstr ""
+
+msgid "Request latest version"
+msgstr ""
+
+msgid "Sends the Request message"
+msgstr ""
+
+msgid "Import"
+msgstr ""
+
+msgid "Import commit"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "Download commit"
+msgstr ""
+
+msgid "DMX > Universe Menu"
+msgstr ""
+
+msgid "OSC"
+msgstr ""
+
+msgid "Universes"
+msgstr ""
+
+msgid "Art-Net"
+msgstr ""
+
+msgid "IPv4"
+msgstr ""
+
+msgid "Art-Net set for {} universe(s)"
+msgstr ""
+
+msgid "sACN"
+msgstr ""
+
+msgid "sACN set for {} universe(s)"
+msgstr ""
+
+msgid "Live DMX"
+msgstr ""
+
+msgid "Source"
+msgstr ""
+
+msgid "Protocols"
+msgstr ""
+
+msgid "DMX > Fixture Menu"
+msgstr ""
+
+msgid "Add"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+msgid "DMX > Fixture > Add > Manufacturers"
+msgstr ""
+
+msgid "DMX > Fixture > Add > Profiles"
+msgstr ""
+
+msgid "DMX > Fixture > Add > Mode"
+msgstr ""
+
+msgid "DMX > Fixture > Add > Manufacturers > Profiles"
+msgstr ""
+
+msgid "Profile"
+msgstr ""
+
+msgid "Fixture GDTF Profile"
+msgstr ""
+
+msgid "Mode"
+msgstr ""
+
+msgid "Fixture GDTF Mode"
+msgstr ""
+
+msgid "DMX Universe"
+msgstr ""
+
+msgid "Address"
+msgstr ""
+
+msgid "DMX Mode"
+msgstr ""
+
+msgid "Gel Color"
+msgstr ""
+
+msgid "Display beams"
+msgstr ""
+
+msgid "Display beam projection and cone"
+msgstr ""
+
+msgid "Add Target"
+msgstr ""
+
+msgid "Add target for beam to follow"
+msgstr ""
+
+msgid "Advanced edit"
+msgstr ""
+
+msgid "Increment DMX address"
+msgstr ""
+
+msgid "Increment Fixture ID"
+msgstr ""
+
+msgid "Increment Fixture ID if numeric"
+msgstr ""
+
+msgid ""
+"The Fixture ID is an identifier of this fixture that can be used to "
+"activate / select them for programming."
+msgstr ""
+
+msgid "Units"
+msgstr ""
+
+msgid "How many units of this light to add"
+msgstr ""
+
+msgid "GDTF Profile"
+msgstr ""
+
+msgid "Unknown manufacturer"
+msgstr ""
+
+msgid "DMX: Add Fixture"
+msgstr ""
+
+msgid "Add fixtures to the show"
+msgstr ""
+
+msgid "Fixture named {} already exists"
+msgstr ""
+
+msgid "No GDTF Profile selected."
+msgstr ""
+
+msgid "No DMX Mode selected."
+msgstr ""
+
+msgid "DMX: Edit Fixture"
+msgstr ""
+
+msgid "Edit selected fixtures"
+msgstr ""
+
+msgid "DMX > Fixture > Remove"
+msgstr ""
+
+msgid "Remove selected fixtures from Scene"
+msgstr ""
+
+msgid "DMX > Fixture > Item"
+msgstr ""
+
+msgid "Select Fixture"
+msgstr ""
+
+msgid "Remove fixture"
+msgstr ""
+
+msgid "Fixtures"
+msgstr ""
+
+msgid "F ID"
+msgstr ""
+
+msgid "Unit #"
+msgstr ""
+
+msgid "F ID #"
+msgstr ""
+
+msgid "Cst ID"
+msgstr ""
+
+msgid "Uni"
+msgstr ""
+
+msgid "Addr"
+msgstr ""
+
+msgid "Uni.Addr"
+msgstr ""
+
+msgid "Foot"
+msgstr ""
+
+msgid "DMX > Group Menu"
+msgstr ""
+
+msgid "Create"
+msgstr ""
+
+msgid "Update"
+msgstr ""
+
+msgid "Rename"
+msgstr ""
+
+msgid "DMX > Group > Create"
+msgstr ""
+
+msgid "Create DMX group from selected fixtures"
+msgstr ""
+
+msgid "Group Name"
+msgstr ""
+
+msgid "Lock Movement"
+msgstr ""
+
+msgid "Ignore pan/tilt DMX data"
+msgstr ""
+
+msgid "Unlock Movement"
+msgstr ""
+
+msgid "Allow pan/tilt DMX data"
+msgstr ""
+
+msgid "Deselect All"
+msgstr ""
+
+msgid "Deselect every fixture in the Scene"
+msgstr ""
+
+msgid "Select All"
+msgstr ""
+
+msgid "Select every fixture in the Scene"
+msgstr ""
+
+msgid "Select Visible (only filtered)"
+msgstr ""
+
+msgid "Select every fixture which is visible in the fixtures list"
+msgstr ""
+
+msgid "Invert selection"
+msgstr ""
+
+msgid "Invert the selection"
+msgstr ""
+
+msgid "Select every other light"
+msgstr ""
+
+msgid "Clear"
+msgstr ""
+
+msgid "Clear all DMX values to default and update fixtures"
+msgstr ""
+
+msgid "Apply"
+msgstr ""
+
+msgid "Apply these values manually when render is paused"
+msgstr ""
+
+msgid "Targets to zero"
+msgstr ""
+
+msgid "Set Targets' position to 0 of the Scene"
+msgstr ""
+
+msgid "Reset targets"
+msgstr ""
+
+msgid "Reset position of target of selected fixtures"
+msgstr ""
+
+msgid "Select Fixtures"
+msgstr ""
+
+msgid "Select base/body of every selected fixture"
+msgstr ""
+
+msgid "Select Targets"
+msgstr ""
+
+msgid "Select target from every fixture element selected"
+msgstr ""
+
+msgid "Select Camera"
+msgstr ""
+
+msgid "Select camera of the selected fixture"
+msgstr ""
+
+msgid "Programmer"
+msgstr ""
+
+msgid "Nothing selected"
+msgstr ""
+
+msgid "{} selected"
+msgstr ""
+
+msgid "Bodies"
+msgstr ""
+
+msgid "Targets"
+msgstr ""
+
+msgid "Camera"
+msgstr ""
+
+msgid "Dimmer"
+msgstr ""
+
+msgid "Pan"
+msgstr ""
+
+msgid "Tilt"
+msgstr ""
+
+msgid "Zoom"
+msgstr ""
+
+msgid "Color Wheel"
+msgstr ""
+
+msgid "Gobo"
+msgstr ""
+
+msgid "Gobo Rotation"
+msgstr ""
+
+msgid "Strobe"
+msgstr ""
+
+msgid "Clear All"
+msgstr ""
+
+msgid "DMX > Recorder > Add Keyframe"
+msgstr ""
+
+msgid "Add a Keyframe with the current DMX data"
+msgstr ""
+
+msgid "DMX > Recorder > Delete Keyframes for all fixtures"
+msgstr ""
+
+msgid "Deletes all keyframes from all fixtures"
+msgstr ""
+
+msgid "DMX > Recorder > Delete All Keyframes from selected fixtures"
+msgstr ""
+
+msgid "Deletes all keyframes from selected fixtures"
+msgstr ""
+
+msgid "Keyframe Recorder"
+msgstr ""
+
+msgid "Add Keyframe"
+msgstr ""
+
+msgid "Delete Keyframes"
+msgstr ""
+
+msgid "Delete from selected fixtures"
+msgstr ""
+
+msgid "Delete from all fixtures"
+msgstr ""
+
+msgid "DMX > Setup > New Show"
+msgstr ""
+
+msgid "Clear any existing DMX data and create a new show."
+msgstr ""
+
+msgid "Beam diameter small"
+msgstr ""
+
+msgid "Beam diameter normal"
+msgstr ""
+
+msgid "DMX > Setup > Create/Update Volume Box"
+msgstr ""
+
+msgid "Create/Update a Box on the scene bounds with a Volume Scatter shader"
+msgstr ""
+
+msgid "Beam Volume"
+msgstr ""
+
+msgid "Update Volume Box"
+msgstr ""
+
+msgid "Create Volume Box"
+msgstr ""
+
+msgid "Set on selected fixtures"
+msgstr ""
+
+msgid "Viewport"
+msgstr ""
+
+msgid "Background Color"
+msgstr ""
+
+msgid "Extras"
+msgstr ""
+
+msgid "Check for BlenderDMX updates"
+msgstr ""
+
+msgid "Status: {}"
+msgstr ""
+
+msgid "Clear Project data"
+msgstr ""
+
+msgid "Import GDTF Profile"
+msgstr ""
+
+msgid "Import MVR Scene"
+msgstr ""
+
+msgid "Import Project data"
+msgstr ""
+
+msgid "Export"
+msgstr ""
+
+msgid "Export Project data"
+msgstr ""
+
+msgid "Show logging directory"
+msgstr ""
+
+msgid "Logging"
+msgstr ""
+
+msgid "Log filter"
+msgstr ""
+
+msgid "Setup"
+msgstr ""
+
+msgid "Error! Blender 3.4 or higher required."
+msgstr ""
+
+msgid "Create New Show"
+msgstr ""
+
+msgid "Check version"
+msgstr ""
+
+msgid "Check if there is new release of BlenderDMX"
+msgstr ""
+
+msgid "Unknown version error"
+msgstr ""
+
+msgid "New version {} available"
+msgstr ""
+
+msgid "You are using pre-release version"
+msgstr ""
+
+msgid "You are using latest version of BlenderDMX"
+msgstr ""
+
+msgid "Checking..."
+msgstr ""
+
+msgid "Import Custom Data"
+msgstr ""
+
+msgid ""
+"Unzip previously exported custom data from a zip file. This will "
+"overwrite current data!"
+msgstr ""
+
+msgid "File Path"
+msgstr ""
+
+msgid "Files"
+msgstr ""
+
+msgid "Incorrect file name!"
+msgstr ""
+
+msgid "Data imported from: {}"
+msgstr ""
+
+msgid "Export Custom Data"
+msgstr ""
+
+msgid "Zip and Export custom data from BlenderDMX addon directory."
+msgstr ""
+
+msgid "Data exported to: {}"
+msgstr ""
+
+msgid "Clear Custom Data"
+msgstr ""
+
+msgid "Clear custom data from BlenderDMX addon directory."
+msgstr ""
+
+msgid "Data cleared"
+msgstr ""
+
+msgid "Reload BlenderDMX addon"
+msgstr ""
+
+msgid "Reload the addon, useful during development"
+msgstr ""
+
+msgid "Addon reloaded"
+msgstr ""
+
+msgid "Import fixture from GDTF Profile"
+msgstr ""
+
+msgid "Import MVR scene"
+msgstr ""
+
+msgid "Import data MVR scene file. This may take a long time!"
+msgstr ""
+
+msgid "Get GDTF Share account and fill it into BlenderDMX addon preferences."
+msgstr ""
+
+msgid "GDTF Share API credentials missing"
+msgstr ""
+
+msgid "Downloading {}"
+msgstr ""
+
+msgid "GDTF Share Download"
+msgstr ""
+
+msgid "Share index updated. Status code was: {}"
+msgstr ""
+
+msgid "GDTF Share updated"
+msgstr ""
+
+msgid "Error while updating Share index. Error code was: {}"
+msgstr ""
+
+msgid "GDTF Share update error"
+msgstr ""
+
+msgid "File downloaded correctly. Status code was: {}"
+msgstr ""
+
+msgid "GDTF file downloaded"
+msgstr ""
+
+msgid "Error downloading GDTF file. Error code was: {}"
+msgstr ""
+
+msgid "GDTF Share download error"
+msgstr ""
+
+msgid "The name of the DMX profile."
+msgstr ""
+
+msgid "Channel count"
+msgstr ""
+
+msgid "Number of channels"
+msgstr ""
+
+msgid "Short Name"
+msgstr ""
+
+msgid ""
+"The short name of the DMX profile, all caps, used as suggestion for "
+"fixture names."
+msgstr ""
+
+msgid "Filename"
+msgstr ""
+
+msgid "Some fixtures could not be processed"
+msgstr ""
+
+msgid "Mode name"
+msgstr ""
+
+msgid "DMX Footprint"
+msgstr ""
+
+msgid "Fixture name"
+msgstr ""
+
+msgid "Manufacturer and fixture name"
+msgstr ""
+
+msgid "Manufacturer"
+msgstr ""
+
+msgid "Manufacturer name"
+msgstr ""
+
+msgid "Revision"
+msgstr ""
+
+msgid "Revision text"
+msgstr ""
+
+msgid "Uploaded by"
+msgstr ""
+
+msgid "File uploaded by"
+msgstr ""
+
+msgid "Created by"
+msgstr ""
+
+msgid "File created by"
+msgstr ""
+
+msgid "Rating"
+msgstr ""
+
+msgid "Revision ID"
+msgstr ""
+
+msgid "File identifier in the GDTF Share"
+msgstr ""
+
+msgid "DMX Modes"
+msgstr ""
+
+msgid "DMX Mode Name"
+msgstr ""
+
+msgid "Import from Share"
+msgstr ""
+
+msgid "Import fixture from GDTF Share"
+msgstr ""
+
+msgid "Update GDTF Share index"
+msgstr ""
+
+msgid "Update data index of GDTF Share"
+msgstr ""
+
+msgid "Import fixture from local filesystem"
+msgstr ""
+
+msgid "Delete fixture"
+msgstr ""
+
+msgid "Delete fixture from local filesystem"
+msgstr ""
+
+msgid "Refresh files listing"
+msgstr ""
+
+msgid "Update list of local files"
+msgstr ""
+
+msgid "GDTF Share"
+msgstr ""
+
+msgid "Fixture details"
+msgstr ""
+
+msgid "Local Fixture files"
+msgstr ""
+
+msgid "Local Fixture details"
+msgstr ""
+
+msgid "Profiles"
+msgstr ""
