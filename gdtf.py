@@ -88,7 +88,7 @@ class DMX_GDTF():
         return profile
 
     @staticmethod
-    def loadBlenderPrimitive(model):
+    def load_blender_primitive(model):
         primitive = str(model.primitive_type)
 
         if (primitive == 'Cube'):
@@ -108,7 +108,7 @@ class DMX_GDTF():
         return obj
 
     @staticmethod
-    def loadPrimitive(model):
+    def load_gdtf_primitive(model):
         primitive = str(model.primitive_type)
         path = os.path.join(DMX_GDTF.getPrimitivesPath(), f"{primitive}.glb")
         bpy.ops.import_scene.gltf(filepath=path)
@@ -231,13 +231,21 @@ class DMX_GDTF():
         # we should not set rotation to 0, models might be pre-rotated
         #obj.rotation_euler = Euler((0, 0, 0), 'XYZ')
 
-        z=obj.dimensions.z or 1
+        if obj.dimensions.x <= 0:
+            DMX_Log.log.error(f"Model {obj.name} X size {obj.dimensions.x} <= 0. It will likely not work correctly.")
+        if obj.dimensions.y <= 0:
+            DMX_Log.log.error(f"Model {obj.name} Y size {obj.dimensions.y} <= 0. It will likely not work correctly.")
         if obj.dimensions.z <= 0:
-            DMX_Log.log.error(f"Model {obj.name} has no Z height, it will likely not work correctly.")
+            DMX_Log.log.error(f"Model {obj.name} Z size {obj.dimensions.z} <= 0. It will likely not work correctly.")
+
+        dim_x = obj.dimensions.x or 1
+        dim_y = obj.dimensions.y or 1
+        dim_z = obj.dimensions.z or 1
+
         obj.scale = (
-            obj.scale.x*model.length/obj.dimensions.x,
-            obj.scale.y*model.width/obj.dimensions.y,
-            obj.scale.z*model.height/z)
+            obj.scale.x*model.length/dim_x,
+            obj.scale.y*model.width/dim_y,
+            obj.scale.z*model.height/dim_z)
         return obj
 
     @staticmethod
@@ -346,13 +354,13 @@ class DMX_GDTF():
                     DMX_Log.log.error(f"Error importing 3D model: {e}")
                     DMX_Log.log.exception(e)
                     model.primitive_type="Cube"
-                    obj = DMX_GDTF.loadBlenderPrimitive(model)
+                    obj = DMX_GDTF.load_blender_primitive(model)
             # BlenderDMX primitives
             elif (str(model.primitive_type) in ['Base','Conventional','Head','Yoke']):
-                obj = DMX_GDTF.loadPrimitive(model)
+                obj = DMX_GDTF.load_gdtf_primitive(model)
             # Blender primitives
             else:
-                obj = DMX_GDTF.loadBlenderPrimitive(model)
+                obj = DMX_GDTF.load_blender_primitive(model)
 
             # If object was created
             if (obj != None):
@@ -410,11 +418,10 @@ class DMX_GDTF():
             obj_child = objs[sanitize_obj_name(geometry)]
             camera_data = bpy.data.cameras.new(name=f"{obj_child.name}")
             camera_object = bpy.data.objects.new('MediaCamera', camera_data)
-            camera_object.location = obj_child.location
-            #camera_object.location.z-=0.1
             camera_object.hide_select = True
-            constraint = camera_object.constraints.new('CHILD_OF')
-            constraint.target = obj_child
+            camera_object.parent = obj_child
+            camera_object.matrix_parent_inverse = obj_child.matrix_world.inverted()
+            camera_object.rotation_euler[0]+=math.radians(90) # The media server camera-view points into the positive Y-direction (and Z-up).
             collection.objects.link(camera_object)
 
         def create_beam(geometry):
@@ -445,10 +452,9 @@ class DMX_GDTF():
             # This allows the user to set this if wanted to prevent beam rendering differences
             light_data.shadow_buffer_clip_start=0.0001
             light_object = bpy.data.objects.new(name="Spot", object_data=light_data)
-            light_object.location = obj_child.location
             light_object.hide_select = True
-            constraint = light_object.constraints.new('CHILD_OF')
-            constraint.target = obj_child
+            light_object.parent = obj_child
+            obj_child.matrix_parent_inverse = light_object.matrix_world.inverted()
             collection.objects.link(light_object)
 
             gobo_radius = 2.2 * 0.01 * math.tan(math.radians(geometry.beam_angle/2))
@@ -471,7 +477,7 @@ class DMX_GDTF():
             obj_child["rot_z"] = obj_child.rotation_euler[2]
 
         def create_gobo(geometry, goboGeometry):
-            obj = DMX_GDTF.loadBlenderPrimitive(goboGeometry)
+            obj = DMX_GDTF.load_blender_primitive(goboGeometry)
             obj["geometry_type"] = "gobo"
             obj["beam_radius"] = goboGeometry.beam_radius
             obj.dimensions = (goboGeometry.length, goboGeometry.width, 0)
@@ -489,21 +495,23 @@ class DMX_GDTF():
                 return 1.0
             return 0.0
 
-        def add_child_position(geometry, invertX = False):
+        def add_child_position(geometry):
             """Add a child, create a light source and emitter material for beams"""
 
             #if (not sanitize_obj_name(geometry) in objs): return
             obj_child = objs[sanitize_obj_name(geometry)]
             position = Matrix(geometry.position.matrix).to_translation()
-            if invertX:
-                obj_child.location[0] += (position[0]*-1) # still have not found the bug
-            else:
-                obj_child.location[0] += position[0]
+
+            obj_child.location[0] += position[0]
             obj_child.location[1] += position[1]
             obj_child.location[2] += position[2]
 
             obj_child.rotation_mode = "XYZ"
             obj_child.rotation_euler = Matrix(geometry.position.matrix).to_euler('XYZ')
+            # this makes applying rotations correct
+            obj_child.rotation_euler[0] *=-1
+            obj_child.rotation_euler[1] *=-1
+            obj_child.rotation_euler[2] *=-1
 
             scale=Matrix(geometry.position.matrix).to_scale()
             obj_child.scale[0] *= scale[0]
@@ -515,16 +523,9 @@ class DMX_GDTF():
             obj_parent = objs[sanitize_obj_name(parent_geometry)]
             if (not sanitize_obj_name(child_geometry) in objs): return
             obj_child = objs[sanitize_obj_name(child_geometry)]
+            obj_child.parent = obj_parent
+            obj_child.matrix_parent_inverse = obj_parent.matrix_world.inverted()
 
-            constraint = obj_child.constraints.new('CHILD_OF')
-            constraint.target = obj_parent
-            constraint.use_scale_x = False
-            constraint.use_scale_y = False
-            constraint.use_scale_z = False
-            # Add parent position
-            obj_child.location[0] += obj_parent.location[0]
-            obj_child.location[1] += obj_parent.location[1]
-            obj_child.location[2] += obj_parent.location[2]
 
         def update_geometry(geometry):
             """Recursively update objects position, rotation and scale
@@ -547,7 +548,8 @@ class DMX_GDTF():
                 reference.name=sanitize_obj_name(geometry)
                 reference.position = geometry.position
 
-                add_child_position(reference, invertX=True)
+                #add_child_position(reference, invertX=True)
+                add_child_position(reference)
 
                 if isinstance(reference, pygdtf.GeometryBeam):
                     create_beam(reference)
@@ -623,13 +625,11 @@ class DMX_GDTF():
         if add_target:
             if yoke is not None:
                 for name, obj in objs.items():
-                    if yoke.name == obj.name and len(obj.constraints):
-                        constraint = obj.constraints[0]
-                        if constraint.target == base:
-                            if add_target:
-                                constraint = obj.constraints.new('LOCKED_TRACK')
-                                constraint.target = target
-                                constraint.lock_axis = "LOCK_Z"
+                    if yoke.name == obj.name:
+                        if add_target:
+                            constraint = obj.constraints.new('LOCKED_TRACK')
+                            constraint.target = target
+                            constraint.lock_axis = "LOCK_Z"
                         break
 
         # Track head to the target
