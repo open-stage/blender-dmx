@@ -5,6 +5,7 @@
 #   http://www.github.com/open-stage/BlenderDMX
 #
 
+import traceback
 import bpy
 import math
 import mathutils
@@ -397,12 +398,15 @@ class DMX_Fixture(PropertyGroup):
             # Link all other object to collection
             self.collection.objects.link(links[obj.name])
 
+        # Reparent children
+        for obj in model_collection.objects:
+            for child in obj.children:
+                if child.name in links:
+                    links[child.name].parent=links[obj.name]
         # Relink constraints
         for obj in self.collection.objects:
             for constraint in obj.constraints:
                 constraint.target = links[constraint.target.name]
-
-
 
         # (Edit) Reload old positions and rotations
         bpy.context.view_layer.update()
@@ -902,6 +906,7 @@ class DMX_Fixture(PropertyGroup):
                     light.object.data.keyframe_insert(data_path='color', frame=current_frame)
         except Exception as e:
             DMX_Log.log.error(f"Error updating RGB {e}")
+            traceback.print_exception(e)
         return rgb
 
 

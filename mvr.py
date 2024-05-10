@@ -310,6 +310,10 @@ def add_mvr_object(
         ob.location = Matrix(local_transform).to_translation()
         ob.rotation_mode = "XYZ"
         ob.rotation_euler = Matrix(local_transform).to_euler("XYZ")
+        # we use this for GDTF models, here it seems not to make any difference...:
+        #ob.rotation_euler[0] *=-1
+        #ob.rotation_euler[1] *=-1
+        #ob.rotation_euler[2] *=-1
         ob["file name"] = file
 
         ob.matrix_world = global_transform
@@ -331,7 +335,7 @@ def add_mvr_object(
 
     if len(object_collection.children) + len(object_collection.objects):
         group_collection.children.link(object_collection)
-        print("MVR object loaded in %.4f sec." % (time.time() - start_time))
+        print("INFO", "MVR object loaded in %.4f sec." % (time.time() - start_time))
         return object_collection
 
     return None
