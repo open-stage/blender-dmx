@@ -52,7 +52,7 @@ from dmx.osc_utils import DMX_OSC_Templates
 from dmx.osc import DMX_OSC
 from dmx.mdns import DMX_Zeroconf
 
-from dmx.util import rgb_to_cmy, xyY2rgbaa, ShowMessageBox, cmy_to_rgb
+from dmx.util import rgb_to_cmy, xyY2rgbaa, ShowMessageBox, cmy_to_rgb, flatten_color
 from dmx.mvr_objects import DMX_MVR_Object
 from dmx.mvr_xchange import *
 from dmx.mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server
@@ -1402,10 +1402,10 @@ class DMX(PropertyGroup):
             self.programmer_gobo_index = int(data['Gobo2PosRotate'])
         if ('ColorAdd_R' in data and 'ColorAdd_G' in data and 'ColorAdd_B' in data):
             rgb = [data['ColorAdd_R'],data['ColorAdd_G'],data['ColorAdd_B']]
-            self.programmer_color = (1/256*rgb[0], 1/256*rgb[1], 1/256*rgb[2], 255)
+            self.programmer_color = (*flatten_color(rgb), 255)
         if ('ColorRGB_Red' in data and 'ColorRGB_Green' in data and 'ColorRGB_Blue' in data):
             rgb = [data['ColorRGB_Red'],data['ColorRGB_Green'],data['ColorRGB_Blue']]
-            self.programmer_color = (1/256*rgb[0], 1/256*rgb[1], 1/256*rgb[2], 255)
+            self.programmer_color = (*flatten_color(rgb), 255)
         if ('ColorSub_C' in data and 'ColorSub_M' in data and 'ColorSub_Y' in data):
             rgb = cmy_to_rgb([data['ColorSub_C'], data['ColorSub_M'], data['ColorSub_Y']])
             self.programmer_color = (1/256*rgb[0], 1/256*rgb[1], 1/256*rgb[2], 255)
