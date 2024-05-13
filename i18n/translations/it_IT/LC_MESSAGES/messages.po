@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-05-04 07:19+0200\n"
-"PO-Revision-Date: 2024-04-16 19:01+0000\n"
-"Last-Translator: fedeocire <fede379@tiscali.it>\n"
+"PO-Revision-Date: 2024-05-14 13:01+0000\n"
+"Last-Translator: steve ross <yfw0e4otdo@elatter.com>\n"
+"Language-Team: Italian <https://hosted.weblate.org/projects/blenderdmx/main/"
+"it/>\n"
 "Language: it_IT\n"
-"Language-Team: Italian "
-"<https://hosted.weblate.org/projects/blenderdmx/main/it/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.6-dev\n"
 "Generated-By: Babel 2.14.0\n"
 
 msgid "Laser collision collection"
@@ -98,7 +99,7 @@ msgid "Display 2D View"
 msgstr "Visualizza Vista 2D"
 
 msgid "Device Label"
-msgstr ""
+msgstr "Etichetta device"
 
 msgid "None"
 msgstr "Niente"
@@ -107,7 +108,7 @@ msgid "Name"
 msgstr "Nome"
 
 msgid "DMX"
-msgstr ""
+msgstr "DMX"
 
 msgid "Allow Selecting Geometries"
 msgstr "Consenti la selezione delle geometrie"
@@ -273,7 +274,7 @@ msgid "Fixture sorting order"
 msgstr "Ordine di ordinamento degli apparecchi"
 
 msgid "File doesn't exist"
-msgstr ""
+msgstr "Il file non esiste"
 
 msgid "Refresh"
 msgstr "Aggiorna"
@@ -393,7 +394,7 @@ msgid "Add target for beam to follow"
 msgstr "Aggiungi bersaglio per il fascio da seguire"
 
 msgid "Advanced edit"
-msgstr ""
+msgstr "Editing avanzato"
 
 msgid "Increment DMX address"
 msgstr "Incrementa Indirizzo DMX"
@@ -556,10 +557,10 @@ msgstr ""
 "dispositivi"
 
 msgid "Apply"
-msgstr ""
+msgstr "Applica"
 
 msgid "Apply these values manually when render is paused"
-msgstr ""
+msgstr "Applica manualmente questi valori mentre il render è in pausa"
 
 msgid "Targets to zero"
 msgstr "Obiettivi a zero"
@@ -624,7 +625,7 @@ msgid "Zoom"
 msgstr "Zoom"
 
 msgid "Color Wheel"
-msgstr ""
+msgstr "Ruota colori"
 
 msgid "Gobo"
 msgstr "Gobo"
@@ -719,7 +720,7 @@ msgid "Status: {}"
 msgstr "Stato: {}"
 
 msgid "Clear Project data"
-msgstr ""
+msgstr "Azzera dati del progetto"
 
 msgid "Import GDTF Profile"
 msgstr "Importa Profilo GDTF"
@@ -736,7 +737,7 @@ msgid "Export"
 msgstr "Viewport"
 
 msgid "Export Project data"
-msgstr ""
+msgstr "Esporta i dati del progetto"
 
 msgid "Show logging directory"
 msgstr "Mostra la directory di registrazione"
@@ -785,6 +786,8 @@ msgid ""
 "Unzip previously exported custom data from a zip file. This will "
 "overwrite current data!"
 msgstr ""
+"Estrai i dati personalizzati esportati prima da un file zip. Questo "
+"sovrascriverà i dati attuali!"
 
 msgid "File Path"
 msgstr "Percorso File"
@@ -793,36 +796,37 @@ msgid "Files"
 msgstr "Files"
 
 msgid "Incorrect file name!"
-msgstr ""
+msgstr "Nome del file errato!"
 
 #, fuzzy
 msgid "Data imported from: {}"
 msgstr "Importa da Share"
 
 msgid "Export Custom Data"
-msgstr ""
+msgstr "Esporta i dati personalizzati"
 
 msgid "Zip and Export custom data from BlenderDMX addon directory."
 msgstr ""
+"Comprimi ed esporta i dati personalizzati dalla cartella addon di BlenderDMX."
 
 msgid "Data exported to: {}"
-msgstr ""
+msgstr "Dati salvati su: {}"
 
 #, fuzzy
 msgid "Clear Custom Data"
 msgstr "ID Personalizzato"
 
 msgid "Clear custom data from BlenderDMX addon directory."
-msgstr ""
+msgstr "Cancella i dati personalizzati dalla cartella addon di BlenderDMX."
 
 msgid "Data cleared"
-msgstr ""
+msgstr "Dati azzerati"
 
 msgid "Reload BlenderDMX addon"
-msgstr ""
+msgstr "Ricarica addon BlenderDMX"
 
 msgid "Reload the addon, useful during development"
-msgstr ""
+msgstr "Ricarica addon, utile durante lo sviluppo"
 
 #, fuzzy
 msgid "Addon reloaded"
@@ -1179,4 +1183,3 @@ msgstr "Profili"
 
 #~ msgid "Re-address only"
 #~ msgstr "Reindirizza solamente"
-
