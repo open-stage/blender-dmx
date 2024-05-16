@@ -1453,11 +1453,13 @@ class DMX(PropertyGroup):
 
     def removeFixture(self, fixture):
         self.remove_fixture_from_groups(fixture.uuid)
-        for obj in fixture.collection.objects:
-            bpy.data.objects.remove(obj)
-        for obj in fixture.objects:
-            if (obj.object):
-                bpy.data.objects.remove(obj.object)
+        if fixture.collection.objects is not None:
+            for obj in fixture.collection.objects:
+                bpy.data.objects.remove(obj)
+        if fixture.objects is not None:
+            for obj in fixture.objects:
+                if (obj.object):
+                    bpy.data.objects.remove(obj.object)
         bpy.data.collections.remove(fixture.collection)
         self.fixtures.remove(self.fixtures.find(fixture.name))
 
