@@ -875,7 +875,7 @@ class DMX_Fixture(PropertyGroup):
         if colorwheel_color is not None:
             rgb = add_rgb(rgb, colorwheel_color)
         try:
-            rgb = [c/255.0-(1-gel) for (c, gel) in zip(rgb, self.gel_color[:3])]
+            rgb = [(c/255.0-(1-gel) if c is not None else 0) for (c, gel) in zip(rgb, self.gel_color[:3])]
             #rgb = [c/255.0 for c in rgb]
             for emitter_material in self.emitter_materials:
                 DMX_Log.log.info(("emitter:", emitter_material.name))
