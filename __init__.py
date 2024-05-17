@@ -635,6 +635,15 @@ class DMX(PropertyGroup):
                         DMX_Log.log.info(f"updating {obj.name}")
                         obj.name = 'Root'
 
+                for light in fixture.lights:
+                    DMX_Log.log.info("Adding shutter and dimmer value fields to light object")
+                    if "shutter_value" not in light.object.data:
+                        light.object.data["shutter_value"] = 0
+                    if "shutter_dimmer_value" not in light.object.data:
+                        light.object.data["shutter_dimmer_value"] = 0
+                    if "shutter_counter" not in light.object.data:
+                        light.object.data["shutter_counter"] = 0
+
         if file_data_version < 3:
             DMX_Log.log.info("Running migration 2→3")
             dmx = bpy.context.scene.dmx
