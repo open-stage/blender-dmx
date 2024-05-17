@@ -2,7 +2,7 @@ bl_info = {
     "name": "DMX",
     "description": "DMX visualization and programming, with GDTF/MVR and Network support",
     "author": "open-stage",
-    "version": (1, 4, 2),
+    "version": (1, 4, 3),
     "blender": (3, 4, 0),
     "location": "3D View > DMX",
     "doc_url": "https://blenderdmx.eu/docs/faq/",
@@ -52,7 +52,7 @@ from dmx.osc_utils import DMX_OSC_Templates
 from dmx.osc import DMX_OSC
 from dmx.mdns import DMX_Zeroconf
 
-from dmx.util import rgb_to_cmy, xyY2rgbaa, ShowMessageBox, cmy_to_rgb
+from dmx.util import rgb_to_cmy, xyY2rgbaa, ShowMessageBox, cmy_to_rgb, flatten_color
 from dmx.mvr_objects import DMX_MVR_Object
 from dmx.mvr_xchange import *
 from dmx.mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server
@@ -634,6 +634,15 @@ class DMX(PropertyGroup):
                     if any(obj.name == name for name in ['Body', 'Base']):
                         DMX_Log.log.info(f"updating {obj.name}")
                         obj.name = 'Root'
+
+                for light in fixture.lights:
+                    DMX_Log.log.info("Adding shutter and dimmer value fields to light object")
+                    if "shutter_value" not in light.object.data:
+                        light.object.data["shutter_value"] = 0
+                    if "shutter_dimmer_value" not in light.object.data:
+                        light.object.data["shutter_dimmer_value"] = 0
+                    if "shutter_counter" not in light.object.data:
+                        light.object.data["shutter_counter"] = 0
 
         if file_data_version < 3:
             DMX_Log.log.info("Running migration 2→3")
@@ -1402,10 +1411,10 @@ class DMX(PropertyGroup):
             self.programmer_gobo_index = int(data['Gobo2PosRotate'])
         if ('ColorAdd_R' in data and 'ColorAdd_G' in data and 'ColorAdd_B' in data):
             rgb = [data['ColorAdd_R'],data['ColorAdd_G'],data['ColorAdd_B']]
-            self.programmer_color = (1/256*rgb[0], 1/256*rgb[1], 1/256*rgb[2], 255)
+            self.programmer_color = (*flatten_color(rgb), 255)
         if ('ColorRGB_Red' in data and 'ColorRGB_Green' in data and 'ColorRGB_Blue' in data):
             rgb = [data['ColorRGB_Red'],data['ColorRGB_Green'],data['ColorRGB_Blue']]
-            self.programmer_color = (1/256*rgb[0], 1/256*rgb[1], 1/256*rgb[2], 255)
+            self.programmer_color = (*flatten_color(rgb), 255)
         if ('ColorSub_C' in data and 'ColorSub_M' in data and 'ColorSub_Y' in data):
             rgb = cmy_to_rgb([data['ColorSub_C'], data['ColorSub_M'], data['ColorSub_Y']])
             self.programmer_color = (1/256*rgb[0], 1/256*rgb[1], 1/256*rgb[2], 255)
@@ -1453,11 +1462,13 @@ class DMX(PropertyGroup):
 
     def removeFixture(self, fixture):
         self.remove_fixture_from_groups(fixture.uuid)
-        for obj in fixture.collection.objects:
-            bpy.data.objects.remove(obj)
-        for obj in fixture.objects:
-            if (obj.object):
-                bpy.data.objects.remove(obj.object)
+        if fixture.collection.objects is not None:
+            for obj in fixture.collection.objects:
+                bpy.data.objects.remove(obj)
+        if fixture.objects is not None:
+            for obj in fixture.objects:
+                if (obj.object):
+                    bpy.data.objects.remove(obj.object)
         bpy.data.collections.remove(fixture.collection)
         self.fixtures.remove(self.fixtures.find(fixture.name))
 

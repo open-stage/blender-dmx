@@ -5,6 +5,7 @@
 #   http://www.github.com/open-stage/BlenderDMX
 #
 
+import traceback
 import bpy
 import math
 import mathutils
@@ -397,12 +398,15 @@ class DMX_Fixture(PropertyGroup):
             # Link all other object to collection
             self.collection.objects.link(links[obj.name])
 
+        # Reparent children
+        for obj in model_collection.objects:
+            for child in obj.children:
+                if child.name in links:
+                    links[child.name].parent=links[obj.name]
         # Relink constraints
         for obj in self.collection.objects:
             for constraint in obj.constraints:
                 constraint.target = links[constraint.target.name]
-
-
 
         # (Edit) Reload old positions and rotations
         bpy.context.view_layer.update()
@@ -875,7 +879,7 @@ class DMX_Fixture(PropertyGroup):
         if colorwheel_color is not None:
             rgb = add_rgb(rgb, colorwheel_color)
         try:
-            rgb = [c/255.0-(1-gel) for (c, gel) in zip(rgb, self.gel_color[:3])]
+            rgb = [(c/255.0-(1-gel) if c is not None else 0) for (c, gel) in zip(rgb, self.gel_color[:3])]
             #rgb = [c/255.0 for c in rgb]
             for emitter_material in self.emitter_materials:
                 DMX_Log.log.info(("emitter:", emitter_material.name))
@@ -902,6 +906,7 @@ class DMX_Fixture(PropertyGroup):
                     light.object.data.keyframe_insert(data_path='color', frame=current_frame)
         except Exception as e:
             DMX_Log.log.error(f"Error updating RGB {e}")
+            traceback.print_exception(e)
         return rgb
 
 
@@ -1293,7 +1298,6 @@ class DMX_Fixture(PropertyGroup):
                 obj.hide_viewport = hide
                 if current_frame and self.dmx_cache_dirty:
                     obj.keyframe_insert("hide_viewport", frame = current_frame)
-                break
         for light in self.lights: # CYCLES
             light_obj = light.object
             mix_factor = light_obj.data.node_tree.nodes.get("Mix").inputs["Factor"]

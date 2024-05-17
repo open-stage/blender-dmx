@@ -63,6 +63,14 @@ def cmy_to_rgb(cmy):
     return rgb
 
 
+def flatten_color(colors):
+    """Remove precision to prevent color picker drifting"""
+    color_list = []
+    for color in colors:
+        color_list.append(round(1 / 256 * color, 2))
+    return color_list
+
+
 def sanitize_obj_name(geometry):
     name = geometry.name.replace(" ", "_")
     root_name = ""
