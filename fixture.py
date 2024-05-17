@@ -1298,7 +1298,6 @@ class DMX_Fixture(PropertyGroup):
                 obj.hide_viewport = hide
                 if current_frame and self.dmx_cache_dirty:
                     obj.keyframe_insert("hide_viewport", frame = current_frame)
-                break
         for light in self.lights: # CYCLES
             light_obj = light.object
             mix_factor = light_obj.data.node_tree.nodes.get("Mix").inputs["Factor"]
