@@ -170,6 +170,9 @@ class DMX_GDTF():
             destination = pathlib.Path(sequence_path, f"image_{idx:04}{image.suffix}")
             if idx == 1:
                 first = str(destination.resolve())
+            if idx == 256: # more gobos then values on a channel, must stop
+                DMX_Log.log.info(f"Only 255 gobos are supported at the moment")
+                break
             destination.write_bytes(image.read_bytes())
             count = idx
         if first:

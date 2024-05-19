@@ -355,7 +355,7 @@ class DMX_Fixture(PropertyGroup):
         self["slot_colors"] = []
         slot_colors = DMX_GDTF.get_wheel_slot_colors(gdtf_profile)
         if len(slot_colors)>1:
-            self["slot_colors"]=slot_colors
+            self["slot_colors"]=slot_colors[:255] # limit number of colors to an 8bit control channel
 
         links = {}
         base = self.get_root(model_collection)
