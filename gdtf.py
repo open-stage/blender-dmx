@@ -512,7 +512,7 @@ class DMX_GDTF():
             return 0.0
 
         def add_child_position(geometry):
-            """Add a child, create a light source and emitter material for beams"""
+            """Add a child position"""
 
             #if (not sanitize_obj_name(geometry) in objs): return
             obj_child = objs[sanitize_obj_name(geometry)]
@@ -562,9 +562,12 @@ class DMX_GDTF():
             elif isinstance(geometry, pygdtf.GeometryReference):
                 reference = copy.deepcopy(pygdtf.utils.get_geometry_by_name(profile, geometry.geometry))
                 reference.name=sanitize_obj_name(geometry)
-                reference.position = geometry.position
 
-                #add_child_position(reference, invertX=True)
+                # apply position of the reference
+                add_child_position(reference)
+
+                # apply position of the referring geometry
+                reference.position = geometry.position
                 add_child_position(reference)
 
                 if isinstance(reference, pygdtf.GeometryBeam):
