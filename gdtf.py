@@ -145,8 +145,11 @@ class DMX_GDTF():
         colors = []
         for wheel in profile.wheels:
             for slot in wheel.wheel_slots:
-                color = xyY2rgbaa(slot.color)
-                if color not in colors:
+                try:
+                    color = xyY2rgbaa(slot.color)
+                except:
+                    color = None
+                if color is not None and color not in colors:
                     colors.append(color)
         return colors
 

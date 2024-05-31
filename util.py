@@ -88,7 +88,7 @@ def xyY2rgbaa(xyY):
     Y = xyY.Y
 
     if not x or not y or not Y:
-        return [0, 0, 0]
+        return (0, 0, 0, 0)
 
     # convert to XYZ
 
