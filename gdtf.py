@@ -312,6 +312,18 @@ class DMX_GDTF():
             mode = dmx_mode.name
 
         root_geometry = pygdtf.utils.get_geometry_by_name(profile, dmx_mode.geometry)
+        has_gobos = False
+
+        dmx_channels = pygdtf.utils.get_dmx_channels(profile, mode)
+        virtual_channels = pygdtf.utils.get_virtual_channels(profile, mode)
+        # Merge all DMX breaks together
+        dmx_channels_flattened = [channel for break_channels in dmx_channels for channel in break_channels]
+        # dmx_channels_flattened contain list of channel with id, geometry
+
+        for ch in dmx_channels_flattened:
+            if "Gobo" in ch["id"]:
+                has_gobos = True
+
         def load_geometries(geometry):
             """Load 3d models, primitives and shapes"""
             DMX_Log.log.info(f"loading geometry {geometry.name}")
@@ -464,7 +476,8 @@ class DMX_GDTF():
             goboGeometry = SimpleNamespace(name=f"gobo {sanitize_obj_name(geometry)}",
                                            length=gobo_radius, width=gobo_radius, height = 0, primitive_type = "Plane",
                                            beam_radius = geometry.beam_radius)
-            create_gobo(geometry, goboGeometry)
+            if has_gobos:
+                create_gobo(geometry, goboGeometry)
 
         def create_laser(geometry):
             if (sanitize_obj_name(geometry) not in objs):
@@ -592,11 +605,6 @@ class DMX_GDTF():
             target.empty_display_type = 'PLAIN_AXES'
             target.location = (0,0,-2)
 
-        dmx_channels = pygdtf.utils.get_dmx_channels(profile, mode)
-        virtual_channels = pygdtf.utils.get_virtual_channels(profile, mode)
-        # Merge all DMX breaks together
-        dmx_channels_flattened = [channel for break_channels in dmx_channels for channel in break_channels]
-        # dmx_channels_flattened contain list of channel with id, geometry
 
         def get_root():
             for obj in objs.values():
