@@ -1,10 +1,10 @@
 # This file is under MIT license. The license file can be obtained in the root directory of this module.
 
 import pytest
-from dmx.sacn.messages.data_packet import \
+from ...sacn.messages.data_packet import \
     calculate_multicast_addr, \
     DataPacket
-from dmx.sacn.messages.general_test import property_number_range_check
+from ...sacn.messages.general_test import property_number_range_check
 
 
 def test_calculate_multicast_addr():

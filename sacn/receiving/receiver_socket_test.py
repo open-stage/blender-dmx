@@ -1,7 +1,7 @@
 # This file is under MIT license. The license file can be obtained in the root directory of this module.
 
 
-from dmx.sacn.receiving.receiver_socket_base import ReceiverSocketBase
+from ...sacn.receiving.receiver_socket_base import ReceiverSocketBase
 
 
 class ReceiverSocketTest(ReceiverSocketBase):

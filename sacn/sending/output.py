@@ -1,6 +1,6 @@
 # This file is under MIT license. The license file can be obtained in the root directory of this module.
 
-from dmx.sacn.messages.data_packet import DataPacket
+from ...sacn.messages.data_packet import DataPacket
 
 
 class Output:

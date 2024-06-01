@@ -14,10 +14,10 @@ from types import SimpleNamespace
 import pathlib
 from mathutils import Euler, Matrix
 
-from dmx import pygdtf
-from dmx.logging import DMX_Log
-from dmx.io_scene_3ds.import_3ds import load
-from dmx.util import sanitize_obj_name, xyY2rgbaa
+from . import pygdtf
+from .logging import DMX_Log
+from .io_scene_3ds.import_3ds import load
+from .util import sanitize_obj_name, xyY2rgbaa
 
 class DMX_GDTF():
 

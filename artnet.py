@@ -4,9 +4,9 @@ from socket import socket, AF_INET, SOCK_DGRAM, SHUT_RDWR, SOL_SOCKET, SO_BROADC
 import struct
 import threading
 
-from dmx.data import DMX_Data
-from dmx.network import DMX_Network
-from dmx.logging import DMX_Log
+from .data import DMX_Data
+from .network import DMX_Network
+from .logging import DMX_Log
 
 # ArtnetPacket class taken from here:
 # https://gist.github.com/alarrosa14/07bd1ee88a19204cbf22

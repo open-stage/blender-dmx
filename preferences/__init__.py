@@ -4,7 +4,7 @@ import uuid as py_uuid
 import bpy
 from bpy.props import StringProperty
 from bpy.types import AddonPreferences, Operator
-
+from .. import __package__ as base_package
 
 class DMX_Regenrate_UUID(Operator):
     bl_label = "Regenerate UUID"
@@ -12,15 +12,14 @@ class DMX_Regenrate_UUID(Operator):
     bl_options = {"UNDO"}
 
     def execute(self, context):
-        addon_name = pathlib.Path(__file__).parent.parts[-2]
-        prefs = bpy.context.preferences.addons[addon_name].preferences
+        prefs = bpy.context.preferences.addons[base_package].preferences
         uuid = str(py_uuid.uuid4())
         prefs["application_uuid"] = uuid
         return {"FINISHED"}
 
 
 class DMX_Preferences(AddonPreferences):
-    bl_idname = pathlib.Path(__file__).parent.parts[-2]
+    bl_idname = base_package
 
     share_api_username: StringProperty(
         default="",

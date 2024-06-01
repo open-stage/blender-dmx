@@ -1,14 +1,14 @@
 import os
 import bpy
-from dmx.util import xyY2rgbaa
-from dmx.io_scene_3ds.import_3ds import load
+from .util import xyY2rgbaa
+from .io_scene_3ds.import_3ds import load
 from mathutils import Matrix
 import time
 import hashlib
 import json
-from dmx.group import FixtureGroup
-from dmx.mvr_objects import DMX_MVR_Object
-from dmx.logging import DMX_Log
+from .group import FixtureGroup
+from .mvr_objects import DMX_MVR_Object
+from .logging import DMX_Log
 
 
 # importing from dmx didn't work, had to duplicate this function

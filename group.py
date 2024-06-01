@@ -17,7 +17,7 @@ from bpy.types import (ID,
                        Property,
                        PropertyGroup)
 
-from dmx.fixture import *
+from .fixture import *
 
 class FixtureGroup():
     def __init__(self, name, uuid):

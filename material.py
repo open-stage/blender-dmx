@@ -6,7 +6,7 @@
 #
 
 import bpy
-from dmx.logging import DMX_Log
+from .logging import DMX_Log
 import logging
 
 # Shader Nodes default labels

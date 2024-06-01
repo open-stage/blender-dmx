@@ -7,8 +7,8 @@
 
 import bpy
 
-from dmx.gdtf import DMX_GDTF
-from dmx.logging import DMX_Log
+from .gdtf import DMX_GDTF
+from .logging import DMX_Log
 
 
 class DMX_Model:

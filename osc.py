@@ -1,6 +1,6 @@
 import bpy
-from dmx.oscpy.server import OSCThreadServer
-from dmx.logging import DMX_Log
+from .oscpy.server import OSCThreadServer
+from .logging import DMX_Log
 
 
 class DMX_OSC:

@@ -10,11 +10,11 @@
 
 import bpy
 from bpy.types import Operator, Panel, Menu
-from dmx.osc_utils import DMX_OSC_Handlers
+from ..osc_utils import DMX_OSC_Handlers
 
 from bpy.props import (StringProperty)
 
-from dmx.i18n import DMX_Lang
+from ..i18n import DMX_Lang
 _ = DMX_Lang._
 # Operators #
 

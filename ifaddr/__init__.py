@@ -21,12 +21,12 @@
 
 import os
 
-from dmx.ifaddr._shared import Adapter, IP
+from ..ifaddr._shared import Adapter, IP
 
 if os.name == "nt":
-    from dmx.ifaddr._win32 import get_adapters
+    from ..ifaddr._win32 import get_adapters
 elif os.name == "posix":
-    from dmx.ifaddr._posix import get_adapters
+    from ..ifaddr._posix import get_adapters
 else:
     raise RuntimeError("Unsupported Operating System: %s" % os.name)
 

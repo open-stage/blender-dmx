@@ -11,13 +11,13 @@ import os
 
 from bpy.props import StringProperty
 from bpy.types import Menu, Operator, Panel, UIList
-from dmx.mvrx_protocol import DMX_MVR_X_Client
-from dmx.data import DMX_Data
-from dmx.logging import DMX_Log
+from ..mvrx_protocol import DMX_MVR_X_Client
+from ..data import DMX_Data
+from ..logging import DMX_Log
 import uuid as py_uuid
 from datetime import datetime
 
-from dmx.i18n import DMX_Lang
+from ..i18n import DMX_Lang
 _ = DMX_Lang._
 
 class DMX_OP_MVR_Refresh(Operator):

@@ -1,5 +1,5 @@
 import bpy
-import dmx.ifaddr as ifaddr
+from . import ifaddr
 
 
 class DMX_Network:

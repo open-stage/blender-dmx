@@ -3,9 +3,9 @@ import os
 
 from bpy.types import PropertyGroup
 from bpy.props import StringProperty, CollectionProperty, IntProperty
-from dmx import pygdtf
+from .... import pygdtf
 
-from dmx.i18n import DMX_Lang
+from ....i18n import DMX_Lang
 _ = DMX_Lang._
 
 class DMX_Fixtures_Local_ProfileMode(PropertyGroup):

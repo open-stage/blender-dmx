@@ -13,17 +13,17 @@ import uuid
 import random
 import os
 
-from dmx.material import getEmitterMaterial, get_gobo_material, set_light_nodes, get_ies_node, getGeometryNodes
-from dmx.model import DMX_Model
-from dmx.logging import DMX_Log
+from .material import getEmitterMaterial, get_gobo_material, set_light_nodes, get_ies_node, getGeometryNodes
+from .model import DMX_Model
+from .logging import DMX_Log
 
-from dmx.param import DMX_Param, DMX_Model_Param
-from dmx import pygdtf
+from .param import DMX_Param, DMX_Model_Param
+from . import pygdtf
 
-from dmx.gdtf import DMX_GDTF
-from dmx.data import DMX_Data
-from dmx.util import cmy_to_rgb, add_rgb
-from dmx.osc_utils import DMX_OSC_Handlers
+from .gdtf import DMX_GDTF
+from .data import DMX_Data
+from .util import cmy_to_rgb, add_rgb
+from .osc_utils import DMX_OSC_Handlers
 from bpy.props import (IntProperty,
                        FloatProperty,
                        BoolProperty,

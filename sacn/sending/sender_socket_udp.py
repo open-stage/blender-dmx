@@ -4,8 +4,8 @@ import socket
 import time
 import threading
 
-from dmx.sacn.messages.root_layer import RootLayer
-from dmx.sacn.sending.sender_socket_base import SenderSocketBase, SenderSocketListener, DEFAULT_PORT
+from ...sacn.messages.root_layer import RootLayer
+from ...sacn.sending.sender_socket_base import SenderSocketBase, SenderSocketListener, DEFAULT_PORT
 
 THREAD_NAME = 'sACN sending/sender thread'
 

@@ -1,12 +1,12 @@
 # This file is under MIT license. The license file can be obtained in the root directory of this module.
 
 from typing import Dict
-from dmx.sacn.messages.data_packet import DataPacket, calculate_multicast_addr
-from dmx.sacn.messages.sync_packet import SyncPacket
-from dmx.sacn.messages.universe_discovery import UniverseDiscoveryPacket
-from dmx.sacn.sending.output import Output
-from dmx.sacn.sending.sender_handler import SenderHandler
-from dmx.sacn.sending.sender_socket_test import SenderSocketTest
+from ...sacn.messages.data_packet import DataPacket, calculate_multicast_addr
+from ...sacn.messages.sync_packet import SyncPacket
+from ...sacn.messages.universe_discovery import UniverseDiscoveryPacket
+from ...sacn.sending.output import Output
+from ...sacn.sending.sender_handler import SenderHandler
+from ...sacn.sending.sender_socket_test import SenderSocketTest
 
 
 def get_handler():

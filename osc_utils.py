@@ -2,8 +2,8 @@ import bpy
 import json
 import os
 
-from dmx.osc import DMX_OSC
-from dmx.logging import DMX_Log
+from .osc import DMX_OSC
+from .logging import DMX_Log
 
 
 class DMX_OSC_Templates:

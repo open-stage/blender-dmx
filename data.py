@@ -11,7 +11,7 @@
 import bpy
 import time
 
-from dmx.logging import DMX_Log
+from .logging import DMX_Log
 from bpy.types import (PropertyGroup)
 from bpy.props import (IntProperty)
 

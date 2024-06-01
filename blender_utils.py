@@ -7,7 +7,7 @@ import glob
 import sys
 import importlib
 
-from dmx.i18n import DMX_Lang
+from .i18n import DMX_Lang
 
 _ = DMX_Lang._
 
@@ -115,7 +115,7 @@ def clear_custom_data():
 
 def reload_addon():
     try:
-        module = sys.modules.get("dmx")
+        module = sys.modules.get(__package__)
         if not module:
             raise Exception("DMX module could not be loaded")
         module.unregister()

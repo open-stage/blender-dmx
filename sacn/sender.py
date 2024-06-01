@@ -9,10 +9,10 @@ import random
 import time
 from typing import Dict, List, Optional
 
-from dmx.sacn.messages.data_packet import DataPacket
-from dmx.sacn.sending.output import Output
-from dmx.sacn.sending.sender_socket_base import SenderSocketBase, DEFAULT_PORT
-from dmx.sacn.sending.sender_handler import SenderHandler
+from ..sacn.messages.data_packet import DataPacket
+from ..sacn.sending.output import Output
+from ..sacn.sending.sender_socket_base import SenderSocketBase, DEFAULT_PORT
+from ..sacn.sending.sender_handler import SenderHandler
 
 
 class sACNsender:

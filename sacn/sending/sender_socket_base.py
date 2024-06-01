@@ -1,7 +1,7 @@
 # This file is under MIT license. The license file can be obtained in the root directory of this module.
 
 import logging
-from dmx.sacn.messages.root_layer import RootLayer
+from ...sacn.messages.root_layer import RootLayer
 
 DEFAULT_PORT = 5568
 

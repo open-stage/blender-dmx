@@ -25,39 +25,39 @@ from datetime import datetime
 import pathlib
 import traceback
 
-from dmx.pymvr import GeneralSceneDescription
-from dmx.mvr import extract_mvr_textures, process_mvr_child_list
+from .pymvr import GeneralSceneDescription
+from .mvr import extract_mvr_textures, process_mvr_child_list
 
-from dmx.fixture import *
-from dmx.group import *
-from dmx.universe import *
-from dmx.data import *
-from dmx.gdtf import *
-from dmx.artnet import *
-from dmx.acn import DMX_sACN
-from dmx.network import *
-from dmx.logging import *
-from dmx.panels.recorder import *
+from .fixture import *
+from .group import *
+from .universe import *
+from .data import *
+from .gdtf import *
+from .artnet import *
+from .acn import DMX_sACN
+from .network import *
+from .logging import *
+from .panels.recorder import *
 
-from dmx.panels.setup import *
-from dmx.panels.dmx import *
-from dmx.panels.fixtures import *
-from dmx.panels.groups import *
-from dmx.panels.programmer import *
-import dmx.panels.profiles as Profiles
+from .panels.setup import *
+from .panels.dmx import *
+from .panels.fixtures import *
+from .panels.groups import *
+from .panels.programmer import *
+from .panels import profiles as Profiles
 
-from dmx.preferences import DMX_Preferences, DMX_Regenrate_UUID
-from dmx.group import FixtureGroup
-from dmx.osc_utils import DMX_OSC_Templates
-from dmx.osc import DMX_OSC
-from dmx.mdns import DMX_Zeroconf
+from .preferences import DMX_Preferences, DMX_Regenrate_UUID
+from .group import FixtureGroup
+from .osc_utils import DMX_OSC_Templates
+from .osc import DMX_OSC
+from .mdns import DMX_Zeroconf
 
-from dmx.util import rgb_to_cmy, xyY2rgbaa, ShowMessageBox, cmy_to_rgb, flatten_color
-from dmx.mvr_objects import DMX_MVR_Object
-from dmx.mvr_xchange import *
-from dmx.mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server
+from .util import rgb_to_cmy, xyY2rgbaa, ShowMessageBox, cmy_to_rgb, flatten_color
+from .mvr_objects import DMX_MVR_Object
+from .mvr_xchange import *
+from .mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server
 import bpy.utils.previews
-from dmx.material import set_light_nodes, getVolumeScatterMaterial
+from .material import set_light_nodes, getVolumeScatterMaterial
 from bpy.props import (BoolProperty,
                        StringProperty,
                        IntProperty,
@@ -72,7 +72,7 @@ from bpy.types import (PropertyGroup,
                        Collection,
                        NodeTree)
 
-from dmx.i18n import DMX_Lang
+from .i18n import DMX_Lang
 _ = DMX_Lang._
 
 class DMX_TempData(PropertyGroup):
@@ -610,8 +610,7 @@ class DMX(PropertyGroup):
         DMX_Log.log.info(f"Blender version: {bpy.app.version} ✅")
 
     def ensure_application_uuid(self):
-        addon_name = pathlib.Path(__file__).parent.parts[-1]
-        prefs = bpy.context.preferences.addons[addon_name].preferences
+        prefs = bpy.context.preferences.addons[__package__].preferences
         application_uuid = prefs.get("application_uuid", 0)
         if application_uuid == 0:
             prefs["application_uuid"] = str(py_uuid.uuid4()) # must never be 0
@@ -1580,8 +1579,7 @@ class DMX(PropertyGroup):
 
     def createMVR_Client(self, station_name = "", station_uuid = "", service_name = "", ip_address = "", port = 0, provider = ""):
 
-        addon_name = pathlib.Path(__file__).parent.parts[-1]
-        prefs = bpy.context.preferences.addons[addon_name].preferences
+        prefs = bpy.context.preferences.addons[__package__].preferences
         application_uuid = prefs.get("application_uuid", str(py_uuid.uuid4()))  # must never be 0
         if application_uuid == station_uuid:
             DMX_Log.log.info("This is myself, do not register as an MVR-xchange provider")

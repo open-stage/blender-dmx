@@ -27,7 +27,7 @@ import socket
 
 from typing import Iterable, Optional
 
-import dmx.ifaddr._shared as shared
+from .. ifaddr import _shared as shared
 
 # from ifaddr._shared import sockaddr, Interface, sockaddr_to_ip, ipv6_prefixlength
 

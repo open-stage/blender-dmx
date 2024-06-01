@@ -14,10 +14,10 @@ from functools import partial
 from select import select
 import socket
 
-from dmx.oscpy import __version__
-from dmx.oscpy.parser import read_packet, UNICODE
-from dmx.oscpy.client import send_bundle, send_message
-from dmx.oscpy.stats import Stats
+from ..oscpy import __version__
+from ..oscpy.parser import read_packet, UNICODE
+from ..oscpy.client import send_bundle, send_message
+from ..oscpy.stats import Stats
 
 
 logger = logging.getLogger(__name__)

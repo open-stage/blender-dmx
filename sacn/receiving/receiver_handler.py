@@ -2,9 +2,9 @@
 
 from typing import Dict, List
 
-from dmx.sacn.messages.data_packet import DataPacket
-from dmx.sacn.receiving.receiver_socket_base import ReceiverSocketBase, ReceiverSocketListener
-from dmx.sacn.receiving.receiver_socket_udp import ReceiverSocketUDP
+from ...sacn.messages.data_packet import DataPacket
+from ...sacn.receiving.receiver_socket_base import ReceiverSocketBase, ReceiverSocketListener
+from ...sacn.receiving.receiver_socket_udp import ReceiverSocketUDP
 
 E131_NETWORK_DATA_LOSS_TIMEOUT_ms = 2500
 

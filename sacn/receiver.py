@@ -1,8 +1,8 @@
 # This file is under MIT license. The license file can be obtained in the root directory of this module.
 
-from dmx.sacn.messages.data_packet import DataPacket, calculate_multicast_addr
-from dmx.sacn.receiving.receiver_handler import ReceiverHandler, ReceiverHandlerListener
-from dmx.sacn.receiving.receiver_socket_base import ReceiverSocketBase
+from ..sacn.messages.data_packet import DataPacket, calculate_multicast_addr
+from ..sacn.receiving.receiver_handler import ReceiverHandler, ReceiverHandlerListener
+from ..sacn.receiving.receiver_socket_base import ReceiverSocketBase
 from typing import Tuple
 
 LISTEN_ON_OPTIONS = ('availability', 'universe')

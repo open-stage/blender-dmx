@@ -5,7 +5,7 @@ import json
 from bpy.types import PropertyGroup
 from bpy.props import StringProperty, CollectionProperty, IntProperty
 
-from dmx.i18n import DMX_Lang
+from ....i18n import DMX_Lang
 _ = DMX_Lang._
 
 class DMX_Fixtures_Import_Gdtf_Profile_Dmx_Mode(PropertyGroup):

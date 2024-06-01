@@ -1,7 +1,7 @@
 import bpy
-from dmx.sacn import sACNreceiver
-from dmx.data import DMX_Data
-from dmx.logging import DMX_Log
+from .sacn import sACNreceiver
+from .data import DMX_Data
+from .logging import DMX_Log
 import os
 
 

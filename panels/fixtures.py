@@ -12,10 +12,10 @@ import os
 import shutil
 import re
 
-from dmx.gdtf import *
-from dmx import pygdtf
-import dmx.panels.profiles as Profiles
-from dmx.util import pad_number
+from ..gdtf import *
+from .. import pygdtf
+from ..panels import profiles as Profiles
+from ..util import pad_number
 from bpy_extras.io_utils import ImportHelper
 
 from bpy.props import (IntProperty,
@@ -30,9 +30,9 @@ from bpy.types import (Panel,
                        UIList,
                        )
 
-from dmx.gdtf import DMX_GDTF
+from ..gdtf import DMX_GDTF
 
-from dmx.i18n import DMX_Lang
+from ..i18n import DMX_Lang
 _ = DMX_Lang._
 
 # Menus #

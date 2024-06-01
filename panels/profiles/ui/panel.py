@@ -1,7 +1,7 @@
 import bpy
 from bpy.types import Panel
 
-from dmx.icon import DMX_Icon
+from ....icon import DMX_Icon
 
 from .operator import (
     DMX_OP_Import_Fixture_Update_Share,
@@ -9,7 +9,7 @@ from .operator import (
     DMX_OP_Update_Local_Fixtures,
 )
 
-from dmx.i18n import DMX_Lang
+from ....i18n import DMX_Lang
 
 _ = DMX_Lang._
 

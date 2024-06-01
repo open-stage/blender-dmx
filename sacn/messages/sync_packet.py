@@ -4,7 +4,7 @@
 This implements the sync packet from the E1.31 standard.
 Information about sACN: http://tsp.esta.org/tsp/documents/docs/E1-31-2016.pdf
 """
-from dmx.sacn.messages.root_layer import \
+from ...sacn.messages.root_layer import \
     VECTOR_ROOT_E131_EXTENDED, \
     VECTOR_E131_EXTENDED_SYNCHRONIZATION, \
     RootLayer, \
