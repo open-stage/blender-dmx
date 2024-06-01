@@ -16,7 +16,7 @@ from mathutils import Euler, Matrix
 
 from dmx import pygdtf
 from dmx.logging import DMX_Log
-from dmx.io_scene_3ds.import_3ds import load_3ds
+from dmx.io_scene_3ds.import_3ds import load
 from dmx.util import sanitize_obj_name, xyY2rgbaa
 
 class DMX_GDTF():
@@ -220,7 +220,7 @@ class DMX_GDTF():
             profile._package.extract(inside_zip_path, extract_to_folder_path)
             file_name=os.path.join(extract_to_folder_path, inside_zip_path)
             try:
-                load_3ds(file_name, bpy.context)
+                load(None, bpy.context, file_name)
             except:
                 bpy.ops.mesh.primitive_cube_add(size=0.1)
         else:
