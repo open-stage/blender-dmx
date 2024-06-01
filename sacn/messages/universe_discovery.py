@@ -3,7 +3,7 @@ This class represents an universe discovery packet of the E1.31 Standard.
 """
 from typing import List
 
-from dmx.sacn.messages.root_layer import \
+from ...sacn.messages.root_layer import \
     VECTOR_ROOT_E131_EXTENDED, \
     VECTOR_E131_EXTENDED_DISCOVERY, \
     VECTOR_UNIVERSE_DISCOVERY_UNIVERSE_LIST,\

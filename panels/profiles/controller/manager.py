@@ -1,15 +1,15 @@
-import dmx.share_api_client as share_api_client
-from dmx.gdtf import DMX_GDTF
+from .... import share_api_client as share_api_client
+from ....gdtf import DMX_GDTF
 import bpy
 import os
 import pathlib
 import queue
 
-import dmx.panels.profiles as Profiles
-
+from ....panels import profiles as Profiles
+from .... import __package__ as base_package
 execution_queue = queue.Queue()
 
-from dmx.i18n import DMX_Lang
+from ....i18n import DMX_Lang
 
 _ = DMX_Lang._
 
@@ -32,8 +32,7 @@ class DMX_Fixtures_Manager:
     # Fixture Import
 
     def import_from_share(self, index: int):
-        addon_name = pathlib.Path(__file__).parent.parts[-4]
-        prefs = bpy.context.preferences.addons[addon_name].preferences
+        prefs = bpy.context.preferences.addons[base_package].preferences
         api_username = prefs.get("share_api_username", None)
         api_password = prefs.get("share_api_password", None)
         imports = bpy.context.window_manager.dmx.imports
@@ -69,8 +68,7 @@ class DMX_Fixtures_Manager:
         )
 
     def update_share_index(self):
-        addon_name = pathlib.Path(__file__).parent.parts[-4]
-        prefs = bpy.context.preferences.addons[addon_name].preferences
+        prefs = bpy.context.preferences.addons[base_package].preferences
         api_username = prefs.get("share_api_username", None)
         api_password = prefs.get("share_api_password", None)
         if api_username is None or len(api_username) < 2 or api_password is None or len(api_password) < 2:

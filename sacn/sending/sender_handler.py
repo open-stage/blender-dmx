@@ -1,12 +1,12 @@
 # This file is under MIT license. The license file can be obtained in the root directory of this module.
 
 from typing import Dict
-from dmx.sacn.messages.universe_discovery import UniverseDiscoveryPacket
-from dmx.sacn.messages.sync_packet import SyncPacket
-from dmx.sacn.messages.data_packet import calculate_multicast_addr
-from dmx.sacn.sending.output import Output
-from dmx.sacn.sending.sender_socket_base import SenderSocketBase, SenderSocketListener
-from dmx.sacn.sending.sender_socket_udp import SenderSocketUDP
+from ...sacn.messages.universe_discovery import UniverseDiscoveryPacket
+from ...sacn.messages.sync_packet import SyncPacket
+from ...sacn.messages.data_packet import calculate_multicast_addr
+from ...sacn.sending.output import Output
+from ...sacn.sending.sender_socket_base import SenderSocketBase, SenderSocketListener
+from ...sacn.sending.sender_socket_udp import SenderSocketUDP
 
 SEND_OUT_INTERVAL = 1
 E131_E131_UNIVERSE_DISCOVERY_INTERVAL = 10

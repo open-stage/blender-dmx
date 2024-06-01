@@ -1,4 +1,4 @@
-from dmx import pygdtf
+from ... import pygdtf
 from typing import List, Dict, Any
 
 

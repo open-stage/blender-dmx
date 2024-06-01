@@ -5,7 +5,7 @@ This represents a framing layer and a DMP layer from the E1.31 Standard
 Information about sACN: http://tsp.esta.org/tsp/documents/docs/E1-31-2016.pdf
 """
 
-from dmx.sacn.messages.root_layer import \
+from ...sacn.messages.root_layer import \
     VECTOR_DMP_SET_PROPERTY, \
     VECTOR_E131_DATA_PACKET, \
     VECTOR_ROOT_E131_DATA, \

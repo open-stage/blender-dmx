@@ -9,9 +9,9 @@
 import bpy
 
 from bpy.types import Panel, Operator
-from dmx.logging import DMX_Log
+from ..logging import DMX_Log
 
-from dmx.i18n import DMX_Lang
+from ..i18n import DMX_Lang
 _ = DMX_Lang._
 
 class DMX_OT_Recorder_AddKeyframe(Operator):

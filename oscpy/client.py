@@ -11,8 +11,8 @@ import socket
 from time import sleep
 from sys import platform
 
-from dmx.oscpy.parser import format_message, format_bundle
-from dmx.oscpy.stats import Stats
+from ..oscpy.parser import format_message, format_bundle
+from ..oscpy.stats import Stats
 
 SOCK = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 

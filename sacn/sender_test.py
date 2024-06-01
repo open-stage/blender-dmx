@@ -2,9 +2,9 @@
 
 import pytest
 import sacn
-from dmx.sacn.sender import check_universe
-from dmx.sacn.messages.data_packet import DataPacket
-from dmx.sacn.sending.sender_socket_test import SenderSocketTest
+from ..sacn.sender import check_universe
+from ..sacn.messages.data_packet import DataPacket
+from ..sacn.sending.sender_socket_test import SenderSocketTest
 
 
 def test_constructor():

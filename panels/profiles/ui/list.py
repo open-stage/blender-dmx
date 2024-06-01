@@ -1,11 +1,11 @@
 import bpy
 from bpy.types import UIList
 
-from dmx.icon import DMX_Icon
+from ....icon import DMX_Icon
 
 from .operator import DMX_OP_Import_Fixture_From_Share, DMX_OP_Delete_Local_Fixture
 
-from dmx.i18n import DMX_Lang
+from ....i18n import DMX_Lang
 _ = DMX_Lang._
 
 class DMX_UL_Share_Fixtures(UIList):

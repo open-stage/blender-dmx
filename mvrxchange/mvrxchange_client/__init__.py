@@ -8,8 +8,8 @@ from queue import Queue
 import time
 import selectors
 from datetime import datetime
-from dmx.mvrxchange.mvr_message import mvr_message
-from dmx.logging import DMX_Log
+from ...mvrxchange.mvr_message import mvr_message
+from ...logging import DMX_Log
 
 # A very rudimentary MVR-xchange client
 # For some reason, some apps close the socket, so we must ensure to reconnect

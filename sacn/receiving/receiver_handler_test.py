@@ -1,9 +1,9 @@
 # This file is under MIT license. The license file can be obtained in the root directory of this module.
 
 import pytest
-from dmx.sacn.messages.data_packet import DataPacket
-from dmx.sacn.receiving.receiver_handler import ReceiverHandler, ReceiverHandlerListener, E131_NETWORK_DATA_LOSS_TIMEOUT_ms
-from dmx.sacn.receiving.receiver_socket_test import ReceiverSocketTest
+from ...sacn.messages.data_packet import DataPacket
+from ...sacn.receiving.receiver_handler import ReceiverHandler, ReceiverHandlerListener, E131_NETWORK_DATA_LOSS_TIMEOUT_ms
+from ...sacn.receiving.receiver_socket_test import ReceiverSocketTest
 
 
 class ReceiverHandlerListenerTest(ReceiverHandlerListener):

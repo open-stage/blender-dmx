@@ -27,7 +27,7 @@ import sys
 from typing import Any, Awaitable, Coroutine, Optional, Set
 
 if sys.version_info[:2] < (3, 11):
-    from dmx.async_timeout import timeout as asyncio_timeout
+    from ...async_timeout import timeout as asyncio_timeout
 else:
     from asyncio import timeout as asyncio_timeout
 

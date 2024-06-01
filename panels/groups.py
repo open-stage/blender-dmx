@@ -17,7 +17,7 @@ from bpy.types import (Panel,
                        Operator,
                        UIList)
 
-from dmx.i18n import DMX_Lang
+from ..i18n import DMX_Lang
 _ = DMX_Lang._
 # List #
 

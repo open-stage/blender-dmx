@@ -1,8 +1,8 @@
 # This file is under MIT license. The license file can be obtained in the root directory of this module.
 
 import pytest
-from dmx.sacn.messages.sync_packet import SyncPacket
-from dmx.sacn.messages.general_test import property_number_range_check
+from ...sacn.messages.sync_packet import SyncPacket
+from ...sacn.messages.general_test import property_number_range_check
 
 
 def test_constructor():

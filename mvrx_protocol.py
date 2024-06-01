@@ -1,11 +1,11 @@
 import bpy
-from dmx.mvrxchange import mvrxchange_client as mvrx_client
-from dmx.mvrxchange import mvrxchange_server as mvrx_server
-from dmx.logging import DMX_Log
+from .mvrxchange import mvrxchange_client as mvrx_client
+from .mvrxchange import mvrxchange_server as mvrx_server
+from .logging import DMX_Log
 import os
 import time
 import pathlib
-from dmx import bl_info as application_info
+#from dmx import bl_info as application_info
 import uuid as py_uuid
 
 # Instances and callbacks for the MVR TCP client and servers
@@ -22,8 +22,7 @@ class DMX_MVR_X_Client:
         self.client = None
         self.selected_client = None
 
-        addon_name = pathlib.Path(__file__).parent.parts[-1]
-        prefs = bpy.context.preferences.addons[addon_name].preferences
+        prefs = bpy.context.preferences.addons[__package__].preferences
         application_uuid = prefs.get("application_uuid", str(py_uuid.uuid4()))  # must never be 0
         self.application_uuid = application_uuid
         # print("bl info", application_info) # TODO: use this in the future
@@ -150,8 +149,7 @@ class DMX_MVR_X_Server:
         self._dmx = bpy.context.scene.dmx
         self.server = None
 
-        addon_name = pathlib.Path(__file__).parent.parts[-1]
-        prefs = bpy.context.preferences.addons[addon_name].preferences
+        prefs = bpy.context.preferences.addons[__package__].preferences
         application_uuid = prefs.get("application_uuid", str(py_uuid.uuid4()))  # must never be 0
         self.application_uuid = application_uuid
         # print("bl info", application_info) # TODO: use this in the future

@@ -1,7 +1,7 @@
 import bpy
-from dmx.zeroconf import IPVersion, ServiceBrowser, ServiceStateChange, Zeroconf, ServiceInfo, get_all_addresses
+from .zeroconf import IPVersion, ServiceBrowser, ServiceStateChange, Zeroconf, ServiceInfo, get_all_addresses
 
-from dmx.logging import DMX_Log
+from .logging import DMX_Log
 from typing import cast
 import uuid as pyuuid
 import socket
@@ -21,8 +21,7 @@ class DMX_Zeroconf:
         self.browser = None
         self.info = None
         self._dmx = bpy.context.scene.dmx
-        addon_name = pathlib.Path(__file__).parent.parts[-1]
-        prefs = bpy.context.preferences.addons[addon_name].preferences
+        prefs = bpy.context.preferences.addons[__package__].preferences
         application_uuid = prefs.get("application_uuid", str(pyuuid.uuid4()))  # must never be 0
         self.application_uuid = application_uuid
 

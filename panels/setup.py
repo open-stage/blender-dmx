@@ -13,16 +13,16 @@ import bpy
 import os
 import shutil
 from bpy.types import Operator, Panel
-from dmx.material import getVolumeScatterMaterial
-from dmx.util import getSceneRect
-from dmx.gdtf import *
-import dmx.panels.profiles as Profiles
-import dmx.blender_utils as blender_utils
-from dmx import bl_info as application_info
+from ..material import getVolumeScatterMaterial
+from ..util import getSceneRect
+from ..gdtf import *
+from ..panels import profiles as Profiles
+from .. import blender_utils as blender_utils
+from .. import bl_info as application_info
 from bpy.props import (StringProperty, CollectionProperty)
-from dmx.logging import DMX_Log
+from ..logging import DMX_Log
 
-from dmx.i18n import DMX_Lang
+from ..i18n import DMX_Lang
 _ = DMX_Lang._
 # Operators #
 

@@ -3,7 +3,7 @@
 import socket
 import threading
 import time
-from dmx.sacn.receiving.receiver_socket_base import ReceiverSocketBase, ReceiverSocketListener
+from ...sacn.receiving.receiver_socket_base import ReceiverSocketBase, ReceiverSocketListener
 
 THREAD_NAME = 'sACN input/receiver thread'
 

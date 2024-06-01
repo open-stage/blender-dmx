@@ -8,8 +8,8 @@ from threading import Thread
 from uuid import uuid4
 import time
 from datetime import datetime
-from dmx.mvrxchange.mvr_message import mvr_message
-from dmx.logging import DMX_Log
+from ...mvrxchange.mvr_message import mvr_message
+from ...logging import DMX_Log
 
 
 class server(Thread):

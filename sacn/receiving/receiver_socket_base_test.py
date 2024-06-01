@@ -1,7 +1,7 @@
 # This file is under MIT license. The license file can be obtained in the root directory of this module.
 
 import pytest
-from dmx.sacn.receiving.receiver_socket_base import ReceiverSocketBase, ReceiverSocketListener
+from ...sacn.receiving.receiver_socket_base import ReceiverSocketBase, ReceiverSocketListener
 
 
 def test_abstract_receiver_socket_listener():

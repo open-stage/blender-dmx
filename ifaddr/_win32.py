@@ -23,7 +23,7 @@ import ctypes
 from ctypes import wintypes
 from typing import Iterable, List
 
-import dmx.ifaddr._shared as shared
+import ..ifaddr._shared as shared
 
 NO_ERROR = 0
 ERROR_BUFFER_OVERFLOW = 111

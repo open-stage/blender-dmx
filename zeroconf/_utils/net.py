@@ -28,7 +28,7 @@ import struct
 import sys
 from typing import Any, List, Optional, Sequence, Tuple, Union, cast
 
-import dmx.ifaddr as ifaddr
+from ... import ifaddr as ifaddr
 
 from .._logger import log
 from ..const import _IPPROTO_IPV6, _MDNS_ADDR, _MDNS_ADDR6, _MDNS_PORT

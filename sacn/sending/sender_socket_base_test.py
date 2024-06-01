@@ -1,8 +1,8 @@
 # This file is under MIT license. The license file can be obtained in the root directory of this module.
 
 import pytest
-from dmx.sacn.messages.root_layer import RootLayer
-from dmx.sacn.sending.sender_socket_base import SenderSocketBase, SenderSocketListener
+from ...sacn.messages.root_layer import RootLayer
+from ...sacn.sending.sender_socket_base import SenderSocketBase, SenderSocketListener
 
 
 def test_abstract_sender_socket_listener():

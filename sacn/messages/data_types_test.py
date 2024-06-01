@@ -3,7 +3,7 @@
 
 import pytest
 from typing import Any, Callable
-from dmx.sacn.messages.data_types import CID
+from ...sacn.messages.data_types import CID
 
 
 def create_valid_cid() -> CID:

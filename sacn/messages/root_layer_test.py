@@ -1,7 +1,7 @@
 # This file is under MIT license. The license file can be obtained in the root directory of this module.
 
 import pytest
-from dmx.sacn.messages.root_layer import \
+from ...sacn.messages.root_layer import \
     byte_tuple_to_int, \
     int_to_bytes, \
     make_flagsandlength, \

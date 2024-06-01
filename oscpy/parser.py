@@ -22,7 +22,7 @@ from struct import Struct, pack, unpack_from, calcsize
 from time import time
 import sys
 from collections import Counter, namedtuple
-from dmx.oscpy.stats import Stats
+from ..oscpy.stats import Stats
 
 if sys.version_info.major > 2:  # pragma: no cover
     UNICODE = str
