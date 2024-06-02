@@ -20,7 +20,7 @@ import os
 
 from bpy.types import PropertyGroup
 from bpy.props import StringProperty, CollectionProperty, IntProperty
-from .... import pygdtf
+import pygdtf
 
 from ....i18n import DMX_Lang
 
