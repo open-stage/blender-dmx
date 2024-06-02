@@ -9,5 +9,6 @@ is a list of included libraries.
 * 3DS Importer: https://projects.blender.org/extensions/io_scene_3ds
 * ifaddr: https://github.com/pydron/ifaddr
 * oscpy: https://github.com/kivy/oscpy
-* zeroconf: https://github.com/python-zeroconf/python-zeroconf
 * async_timeout: https://github.com/aio-libs/async-timeout/
+* zeroconf: https://github.com/python-zeroconf/python-zeroconf
+    - build non-optimized, non-platform specific wheel without cython: export SKIP_CYTHON=1; pip wheel --no-binary=zeroconf zeroconf
