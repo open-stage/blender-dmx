@@ -18,7 +18,6 @@ from ..util import getSceneRect
 from ..gdtf import *
 from ..panels import profiles as Profiles
 from .. import blender_utils as blender_utils
-from .. import bl_info as application_info
 from bpy.props import (StringProperty, CollectionProperty)
 from ..logging import DMX_Log
 
@@ -338,7 +337,7 @@ class DMX_OT_VersionCheck(Operator):
             text = data["error"]
         else:
             try:
-                current_version = application_info["version"]
+                current_version = blender_utils.get_application_version()
                 new_version = data["name"]
                 res = blender_utils.version_compare(current_version, new_version)
             except Exception as e:

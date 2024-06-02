@@ -6,6 +6,7 @@ from types import SimpleNamespace
 import glob
 import sys
 import importlib
+import bpy
 
 from .i18n import DMX_Lang
 
@@ -124,3 +125,19 @@ def reload_addon():
     except Exception as e:
         return SimpleNamespace(ok=False, error=str(e))
     return SimpleNamespace(ok=True, error="")
+
+def get_extension_manifest():
+    import toml
+    folder_path = os.path.dirname(os.path.realpath(__file__))
+    toml_path = os.path.join(folder_path, "blender_manifest.toml")
+    data=toml.load(toml_path)
+    return data
+
+def get_application_version():
+    if bpy.app.version >= (4, 2):
+        data = get_extension_manifest()
+        version = data["version"]
+        return tuple(version.split("."))
+    else:
+        from . import bl_info as application_info
+        return application_info["version"]
