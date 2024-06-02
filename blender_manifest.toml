@@ -3,8 +3,8 @@ schema_version = "1.0.0"
 # Example of manifest file for a Blender extension
 # Change the values according to your extension
 id = "open_stage_blender_dmx"
-version = "1.4.4"
-name = "DMX"
+version = "1.4.5"
+name = "BlenderDMX"
 tagline = "DMX visualization and programming, with GDTF/MVR and Networking"
 maintainer = "Open Stage"
 # Supported types: "add-on", "theme"
@@ -19,7 +19,7 @@ type = "add-on"
 permissions = ["files", "network"]
 
 # Optional link to documentation, support, source files, etc
-website = "https://blenderdmx.eu/docs/faq/"
+website = "https://blenderdmx.eu/"
 
 # Optional list defined by Blender and server, see:
 # https://docs.blender.org/manual/en/dev/extensions/tags.html
@@ -32,7 +32,7 @@ blender_version_min = "4.2.0"
 # License conforming to https://spdx.org/licenses/ (use "SPDX: prefix)
 # https://docs.blender.org/manual/en/dev/extensions/licenses.html
 license = [
-  "MIT License",
+  "SPDX:MIT",
 ]
 # Optional: required by some licenses.
 # copyright = [
@@ -47,13 +47,13 @@ license = [
 # Optional: bundle 3rd party Python modules.
 # https://docs.blender.org/manual/en/dev/extensions/python_wheels.html
 wheels = [
-  "./wheels/pygdtf-1.0.3-py3-none-any.whl",
-  "./wheels/pymvr-0.1.0-py3-none-any.whl",
-  "./wheels/sacn-1.9.1-py3-none-any.whl",
-  "./wheels/oscpy-0.6.0-py2.py3-none-any.whl",
-  "./wheels/ifaddr-0.2.0-py3-none-any.whl",
-  "./wheels/async_timeout-4.0.3-py3-none-any.whl",
-  "./wheels/zeroconf-0.132.2-cp311-cp311-manylinux_2_38_x86_64.whl",
+  "wheels/pygdtf-1.0.3-py3-none-any.whl",
+  "wheels/pymvr-0.1.0-py3-none-any.whl",
+  "wheels/sacn-1.9.1-py3-none-any.whl",
+  "wheels/oscpy-0.6.0-py2.py3-none-any.whl",
+  "wheels/ifaddr-0.2.0-py3-none-any.whl",
+  "wheels/async_timeout-4.0.3-py3-none-any.whl",
+  "wheels/zeroconf-0.132.2-cp311-cp311-manylinux_2_38_x86_64.whl",
 ]
 
 # Optional: build setting.
