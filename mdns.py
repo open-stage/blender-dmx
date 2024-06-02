@@ -17,7 +17,7 @@
 
 
 import bpy
-from .zeroconf import IPVersion, ServiceBrowser, ServiceStateChange, Zeroconf, ServiceInfo, get_all_addresses
+from zeroconf import IPVersion, ServiceBrowser, ServiceStateChange, Zeroconf, ServiceInfo, get_all_addresses
 
 from .logging import DMX_Log
 from typing import cast

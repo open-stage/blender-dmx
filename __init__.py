@@ -15,17 +15,17 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
-bl_info = {
-    "name": "DMX",
-    "description": "DMX visualization and programming, with GDTF/MVR and Network support",
-    "author": "open-stage",
-    "version": (1, 7, 0),
-    "blender": (3, 4, 0),
-    "location": "3D View > DMX",
-    "doc_url": "https://blenderdmx.eu/docs/faq/",
-    "tracker_url": "https://github.com/open-stage/blender-dmx/issues",
-    "category": "Lighting",
-}
+#bl_info = {
+#    "name": "DMX",
+#    "description": "DMX visualization and programming, with GDTF/MVR and Network support",
+#    "author": "open-stage",
+#    "version": (1, 7, 0),
+#    "blender": (3, 4, 0),
+#    "location": "3D View > DMX",
+#    "doc_url": "https://blenderdmx.eu/docs/faq/",
+#    "tracker_url": "https://github.com/open-stage/blender-dmx/issues",
+#    "category": "Lighting",
+#}
 
 import sys
 import bpy

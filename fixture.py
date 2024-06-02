@@ -28,8 +28,7 @@ from .material import getEmitterMaterial, get_gobo_material, set_light_nodes, ge
 from .model import DMX_Model
 from .logging import DMX_Log
 
-from . import pygdtf
-from . import pymvr
+import pygdtf
 
 from .gdtf import DMX_GDTF
 from .data import DMX_Data
