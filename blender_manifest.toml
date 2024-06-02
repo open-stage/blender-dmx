@@ -2,7 +2,7 @@ schema_version = "1.0.0"
 
 # Example of manifest file for a Blender extension
 # Change the values according to your extension
-id = "dmx"
+id = "open_stage_blender_dmx"
 version = "1.4.4"
 name = "DMX"
 tagline = "DMX visualization and programming, with GDTF/MVR and Networking"
@@ -46,10 +46,15 @@ license = [
 
 # Optional: bundle 3rd party Python modules.
 # https://docs.blender.org/manual/en/dev/extensions/python_wheels.html
-# wheels = [
-#   "./wheels/hexdump-3.3-py3-none-any.whl",
-#   "./wheels/jsmin-3.0.1-py3-none-any.whl",
-# ]
+wheels = [
+  "./wheels/pygdtf-1.0.3-py3-none-any.whl",
+  "./wheels/pymvr-0.1.0-py3-none-any.whl",
+  "./wheels/sacn-1.9.1-py3-none-any.whl",
+  "./wheels/oscpy-0.6.0-py2.py3-none-any.whl",
+  "./wheels/ifaddr-0.2.0-py3-none-any.whl",
+  "./wheels/async_timeout-4.0.3-py3-none-any.whl",
+  "./wheels/zeroconf-0.132.2-cp311-cp311-manylinux_2_38_x86_64.whl",
+]
 
 # Optional: build setting.
 # https://docs.blender.org/manual/en/dev/extensions/command_line_arguments.html#command-line-args-extension-build
