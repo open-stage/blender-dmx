@@ -45,18 +45,25 @@ class DMX_PT_Fixtures_Import(Panel):
     def draw(self, context):
         layout = self.layout
         imports = context.window_manager.dmx.imports
+        if not bpy.app.online_access:
+            row = layout.row()
+            row.label(text = _("You must Allow Online access for this to work:"))
+            prefs = context.preferences
+            system = prefs.system
+            row = layout.row()
+            row.prop(system, "use_online_access", text="Allow Online Access")
+        else:
+            layout.template_list(
+                "DMX_UL_Share_Fixtures",
+                "",
+                imports,
+                "share_profiles",
+                imports,
+                "selected_share_fixture",
+                rows=8,
+            )
 
-        layout.template_list(
-            "DMX_UL_Share_Fixtures",
-            "",
-            imports,
-            "share_profiles",
-            imports,
-            "selected_share_fixture",
-            rows=8,
-        )
-
-        layout.operator(DMX_OP_Import_Fixture_Update_Share.bl_idname, icon=DMX_Icon.URL)
+            layout.operator(DMX_OP_Import_Fixture_Update_Share.bl_idname, icon=DMX_Icon.URL)
 
 
 class DMX_PT_Fixtures_Import_Profile_Detail(Panel):
