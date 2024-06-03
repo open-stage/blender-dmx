@@ -28,33 +28,32 @@ import traceback
 from .pymvr import GeneralSceneDescription
 from .mvr import extract_mvr_textures, process_mvr_child_list
 
-from .fixture import *
-from .group import *
-from .universe import *
-from .data import *
-from .gdtf import *
-from .artnet import *
+from . import fixture as fixture
+from .universe import DMX_Universe
+from .data import DMX_Value, DMX_Data
+from .gdtf import DMX_GDTF
+from .artnet import DMX_ArtNet
 from .acn import DMX_sACN
-from .network import *
-from .logging import *
-from .panels.recorder import *
+from .network import DMX_Network
+from .logging import DMX_Log
 
-from .panels.setup import *
-from .panels.dmx import *
-from .panels.fixtures import *
-from .panels.groups import *
-from .panels.programmer import *
+from .panels import recorder as recorder
+from .panels import setup as setup
+from .panels import dmx as dmx
+from .panels import fixtures as fixtures
+from .panels import groups as groups
+from .panels import programmer as programmer
 from .panels import profiles as Profiles
 
 from .preferences import DMX_Preferences, DMX_Regenrate_UUID
-from .group import FixtureGroup
+from .group import FixtureGroup, DMX_Group
 from .osc_utils import DMX_OSC_Templates
 from .osc import DMX_OSC
 from .mdns import DMX_Zeroconf
 
 from .util import rgb_to_cmy, xyY2rgbaa, ShowMessageBox, cmy_to_rgb, flatten_color
 from .mvr_objects import DMX_MVR_Object
-from .mvr_xchange import *
+from .mvr_xchange import DMX_MVR_Xchange_Commit, DMX_MVR_Xchange_Client, DMX_MVR_Xchange
 from .mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server
 import bpy.utils.previews
 from .material import set_light_nodes, getVolumeScatterMaterial
@@ -168,22 +167,22 @@ class DMX(PropertyGroup):
     # Base classes to be registered
     # These should be registered before the DMX class, so it can register properly
 
-    classes_base = (DMX_Param,
-                    DMX_Model_Param,
-                    DMX_Fixture_Object,
-                    DMX_Fixture_Image,
-                    DMX_Emitter_Material,
-                    DMX_IES_Data,
-                    DMX_Geometry_Node,
-                    DMX_Fixture_Channel,
-                    DMX_Fixture,
+    classes_base = (fixture.DMX_Param,
+                    fixture.DMX_Model_Param,
+                    fixture.DMX_Fixture_Object,
+                    fixture.DMX_Fixture_Image,
+                    fixture.DMX_Emitter_Material,
+                    fixture.DMX_IES_Data,
+                    fixture.DMX_Geometry_Node,
+                    fixture.DMX_Fixture_Channel,
+                    fixture.DMX_Fixture,
                     DMX_MVR_Object,
                     DMX_Group,
                     DMX_Universe,
                     DMX_Value,
-                    DMX_PT_Setup,
-                    DMX_OP_MVR_Download,
-                    DMX_OP_MVR_Import,
+                    setup.DMX_PT_Setup,
+                    dmx.DMX_OP_MVR_Download,
+                    dmx.DMX_OP_MVR_Import,
                     DMX_MVR_Xchange_Commit,
                     DMX_MVR_Xchange_Client,
                     DMX_MVR_Xchange,
@@ -194,85 +193,85 @@ class DMX(PropertyGroup):
     # The registration is done in two steps. The second only runs
     # after the user requests to setup the addon.
 
-    classes_setup = (DMX_OT_Setup_NewShow,)
+    classes_setup = (setup.DMX_OT_Setup_NewShow,)
 
-    classes = ( DMX_UL_Universe,
-                DMX_MT_Universe,
-                DMX_PT_DMX,
-                DMX_PT_DMX_Universes,
-                DMX_PT_DMX_LiveDMX,
-                DMX_PT_DMX_ArtNet,
-                DMX_PT_DMX_sACN,
-                DMX_OT_Setup_Volume_Create,
-                DMX_PT_Setup_Volume,
-                DMX_PT_Setup_Viewport,
-                DMX_PT_Setup_Logging,
-                DMX_OT_Setup_Open_LogFile,
-                DMX_PT_Setup_Import,
-                DMX_PT_Setup_Export,
-                DMX_PT_Setup_Extras,
-                DMX_OT_Setup_Import_GDTF,
-                DMX_OT_Setup_Import_MVR,
-                DMX_MT_Fixture,
-                DMX_MT_Fixture_Manufacturers,
-                DMX_MT_Fixture_Profiles,
-                DMX_MT_Fixture_Mode,
-                DMX_OT_Fixture_Item,
-                DMX_OT_Fixture_Profiles,
-                DMX_OT_Fixture_Mode,
-                DMX_UL_LiveDMX_items,
-                DMX_OT_Fixture_Add,
-                DMX_OT_Fixture_Edit,
-                DMX_OT_Fixture_Remove,
-                DMX_OT_Export_Custom_Data,
-                DMX_OT_Import_Custom_Data,
-                DMX_OT_Clear_Custom_Data,
-                DMX_OT_Reload_Addon,
-                DMX_OT_IES_Import,
-                DMX_OT_IES_Remove,
-                DMX_PT_Fixtures,
-                DMX_UL_Group,
-                DMX_MT_Group,
-                DMX_OT_Group_Create,
-                DMX_OT_Group_Update,
-                DMX_OT_Group_Rename,
-                DMX_OT_Group_Remove,
-                DMX_PT_Groups,
-                DMX_OT_Programmer_DeselectAll,
-                DMX_OT_Programmer_SelectAll,
-                DMX_OT_Programmer_SelectFiltered,
-                DMX_OT_Programmer_SelectInvert,
-                DMX_OT_Programmer_SelectEveryOther,
-                DMX_OT_Programmer_Clear,
-                DMX_OT_Programmer_SelectBodies,
-                DMX_OT_Programmer_SelectTargets,
-                DMX_OT_Programmer_SelectCamera,
-                DMX_OT_Programmer_TargetsToZero,
-                DMX_OT_Programmer_Apply_Manually,
-                DMX_OT_Programmer_Set_Ignore_Movement,
-                DMX_OT_Programmer_ResetTargets,
-                DMX_MT_PIE_Reset,
-                DMX_OT_Programmer_Unset_Ignore_Movement,
-                DMX_PT_DMX_OSC,
-                DMX_UL_Fixtures,
-                DMX_PT_DMX_MVR_X,
-                DMX_UL_MVR_Commit,
-                DMX_OP_MVR_Refresh,
-                DMX_OP_MVR_Request,
-                DMX_OT_Fixture_ForceRemove,
-                DMX_OT_Fixture_SelectNext,
-                DMX_OT_Fixture_SelectPrevious,
-                DMX_OT_Fixture_SelectNextTarget,
-                DMX_OT_Fixture_SelectPreviousTarget,
-                DMX_OT_VersionCheck,
-                DMX_PT_Programmer,
-                DMX_OT_Recorder_AddKeyframe,
-                DMX_PT_Recorder,
-                DMX_PT_DMX_Recorder_Delete,
-                DMX_OT_Recorder_Delete_Keyframes_Selected,
-                DMX_OT_Recorder_Delete_Keyframes_All,
-                DMX_OT_Fixture_Set_Cycles_Beams_Size_Small,
-                DMX_OT_Fixture_Set_Cycles_Beams_Size_Normal)
+    classes = ( dmx.DMX_UL_Universe,
+                dmx.DMX_MT_Universe,
+                dmx.DMX_PT_DMX,
+                dmx.DMX_PT_DMX_Universes,
+                dmx.DMX_PT_DMX_LiveDMX,
+                dmx.DMX_PT_DMX_ArtNet,
+                dmx.DMX_PT_DMX_sACN,
+                setup.DMX_OT_Setup_Volume_Create,
+                setup.DMX_PT_Setup_Volume,
+                setup.DMX_PT_Setup_Viewport,
+                setup.DMX_PT_Setup_Logging,
+                setup.DMX_OT_Setup_Open_LogFile,
+                setup.DMX_PT_Setup_Import,
+                setup.DMX_PT_Setup_Export,
+                setup.DMX_PT_Setup_Extras,
+                setup.DMX_OT_Setup_Import_GDTF,
+                setup.DMX_OT_Setup_Import_MVR,
+                fixtures.DMX_MT_Fixture,
+                fixtures.DMX_MT_Fixture_Manufacturers,
+                fixtures.DMX_MT_Fixture_Profiles,
+                fixtures.DMX_MT_Fixture_Mode,
+                fixtures.DMX_OT_Fixture_Item,
+                fixtures.DMX_OT_Fixture_Profiles,
+                fixtures.DMX_OT_Fixture_Mode,
+                dmx.DMX_UL_LiveDMX_items,
+                fixtures.DMX_OT_Fixture_Add,
+                fixtures.DMX_OT_Fixture_Edit,
+                fixtures.DMX_OT_Fixture_Remove,
+                setup.DMX_OT_Export_Custom_Data,
+                setup.DMX_OT_Import_Custom_Data,
+                setup.DMX_OT_Clear_Custom_Data,
+                setup.DMX_OT_Reload_Addon,
+                fixtures.DMX_OT_IES_Import,
+                fixtures.DMX_OT_IES_Remove,
+                fixtures.DMX_PT_Fixtures,
+                groups.DMX_UL_Group,
+                groups.DMX_MT_Group,
+                groups.DMX_OT_Group_Create,
+                groups.DMX_OT_Group_Update,
+                groups.DMX_OT_Group_Rename,
+                groups.DMX_OT_Group_Remove,
+                groups.DMX_PT_Groups,
+                programmer.DMX_OT_Programmer_DeselectAll,
+                programmer.DMX_OT_Programmer_SelectAll,
+                programmer.DMX_OT_Programmer_SelectFiltered,
+                programmer.DMX_OT_Programmer_SelectInvert,
+                programmer.DMX_OT_Programmer_SelectEveryOther,
+                programmer.DMX_OT_Programmer_Clear,
+                programmer.DMX_OT_Programmer_SelectBodies,
+                programmer.DMX_OT_Programmer_SelectTargets,
+                programmer.DMX_OT_Programmer_SelectCamera,
+                programmer.DMX_OT_Programmer_TargetsToZero,
+                programmer.DMX_OT_Programmer_Apply_Manually,
+                programmer.DMX_OT_Programmer_Set_Ignore_Movement,
+                programmer.DMX_OT_Programmer_ResetTargets,
+                programmer.DMX_MT_PIE_Reset,
+                programmer.DMX_OT_Programmer_Unset_Ignore_Movement,
+                dmx.DMX_PT_DMX_OSC,
+                fixtures.DMX_UL_Fixtures,
+                dmx.DMX_PT_DMX_MVR_X,
+                dmx.DMX_UL_MVR_Commit,
+                dmx.DMX_OP_MVR_Refresh,
+                dmx.DMX_OP_MVR_Request,
+                fixtures.DMX_OT_Fixture_ForceRemove,
+                fixtures.DMX_OT_Fixture_SelectNext,
+                fixtures.DMX_OT_Fixture_SelectPrevious,
+                fixtures.DMX_OT_Fixture_SelectNextTarget,
+                fixtures.DMX_OT_Fixture_SelectPreviousTarget,
+                setup.DMX_OT_VersionCheck,
+                programmer.DMX_PT_Programmer,
+                recorder.DMX_OT_Recorder_AddKeyframe,
+                recorder.DMX_PT_Recorder,
+                recorder.DMX_PT_DMX_Recorder_Delete,
+                recorder.DMX_OT_Recorder_Delete_Keyframes_Selected,
+                recorder.DMX_OT_Recorder_Delete_Keyframes_All,
+                setup.DMX_OT_Fixture_Set_Cycles_Beams_Size_Small,
+                setup.DMX_OT_Fixture_Set_Cycles_Beams_Size_Normal)
 
     linkedToFile = False
     _keymaps = []
@@ -376,7 +375,7 @@ class DMX(PropertyGroup):
 
     fixtures: CollectionProperty(
         name = "DMX Fixtures",
-        type = DMX_Fixture)
+        type = fixture.DMX_Fixture)
 
     groups: CollectionProperty(
         name = "DMX Groups",

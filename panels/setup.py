@@ -15,7 +15,7 @@ import shutil
 from bpy.types import Operator, Panel
 from ..material import getVolumeScatterMaterial
 from ..util import getSceneRect
-from ..gdtf import *
+from ..gdtf import DMX_GDTF
 from ..panels import profiles as Profiles
 from .. import blender_utils as blender_utils
 from bpy.props import (StringProperty, CollectionProperty)

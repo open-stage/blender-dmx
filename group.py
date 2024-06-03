@@ -17,7 +17,6 @@ from bpy.types import (ID,
                        Property,
                        PropertyGroup)
 
-from .fixture import *
 
 class FixtureGroup():
     def __init__(self, name, uuid):
