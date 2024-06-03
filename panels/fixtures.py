@@ -12,7 +12,7 @@ import os
 import shutil
 import re
 
-from ..gdtf import *
+from ..logging import DMX_Log
 from .. import pygdtf
 from ..panels import profiles as Profiles
 from ..util import pad_number

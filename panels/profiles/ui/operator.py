@@ -4,9 +4,9 @@ import shutil
 from bpy.types import Operator, Menu
 
 from bpy.props import IntProperty, StringProperty, CollectionProperty
-from ....gdtf import *
+from ....gdtf import DMX_GDTF
 from ....panels import profiles as Profiles
-from ....logging import *
+from ....logging import DMX_Log
 
 from ....i18n import DMX_Lang
 _ = DMX_Lang._
