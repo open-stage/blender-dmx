@@ -3,7 +3,7 @@ schema_version = "1.0.0"
 # Example of manifest file for a Blender extension
 # Change the values according to your extension
 id = "open_stage_blender_dmx"
-version = "1.4.5"
+version = "1.4.6"
 name = "BlenderDMX"
 tagline = "DMX visualization and programming, with GDTF/MVR and Networking"
 maintainer = "Open Stage"
