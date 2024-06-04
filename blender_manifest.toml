@@ -3,7 +3,7 @@ schema_version = "1.0.0"
 # Example of manifest file for a Blender extension
 # Change the values according to your extension
 id = "open_stage_blender_dmx"
-version = "1.4.6"
+version = "1.4.8"
 name = "BlenderDMX"
 tagline = "DMX visualization and programming, with GDTF/MVR and Networking"
 maintainer = "Open Stage"
@@ -53,7 +53,7 @@ wheels = [
   "wheels/oscpy-0.6.0-py2.py3-none-any.whl",
   "wheels/ifaddr-0.2.0-py3-none-any.whl",
   "wheels/async_timeout-4.0.3-py3-none-any.whl",
-  "wheels/zeroconf-0.132.2-cp311-cp311-manylinux_2_38_x86_64.whl",
+  "wheels/zeroconf-0.132.2-py3-none-any.whl",
 ]
 
 # Optional: build setting.

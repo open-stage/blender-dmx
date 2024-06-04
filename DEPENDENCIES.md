@@ -11,4 +11,6 @@ is a list of included libraries.
 * oscpy: https://github.com/kivy/oscpy
 * async_timeout: https://github.com/aio-libs/async-timeout/
 * zeroconf: https://github.com/python-zeroconf/python-zeroconf
-    - build non-optimized, non-platform specific wheel without cython: export SKIP_CYTHON=1; pip wheel --no-binary=zeroconf zeroconf
+    - get non-optimized, non-platform specific wheel without cython:
+    - export SKIP_CYTHON=1; pip wheel --no-binary=zeroconf zeroconf
+    - rename to zeroconf-0.132.2-py3-none-any.whl
