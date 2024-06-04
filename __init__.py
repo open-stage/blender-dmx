@@ -1775,18 +1775,22 @@ def onDepsgraph(scene):
         obj = update.id.evaluated_get(depsgraph)
         # Selection changed, sync programmer
         if (obj.rna_type.name == 'Scene'):
+            # TODO: this causes crash when updating Extension
             if "dmx" in scene: # dmx may not be in scene during installation
+                if "DMX" not in bpy.data.collections:
+                    #this prevents a crash on update, works only if the scene was not initialized yet
+                    continue
+                # this will still crash on extension update if addon was started
                 scene.dmx.syncProgrammer()
-            continue
-        # Fixture updated
-        found = False
-        for fixture in scene.dmx.fixtures:
-            for f_obj in fixture.objects:
-                if (obj.name == f_obj.object.name):
-                    fixture.onDepsgraphUpdate(depsgraph.updates)
-                    found = True
-                    break
-            if found: break
+                # Fixture updated
+                found = False
+                for fixture in scene.dmx.fixtures:
+                    for f_obj in fixture.objects:
+                        if (obj.name == f_obj.object.name):
+                            fixture.onDepsgraphUpdate(depsgraph.updates)
+                            found = True
+                            break
+                    if found: break
 
 
 @bpy.app.handlers.persistent
