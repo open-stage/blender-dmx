@@ -1,51 +1,18 @@
 schema_version = "1.0.0"
-
-# Example of manifest file for a Blender extension
-# Change the values according to your extension
 id = "open_stage_blender_dmx"
-version = "1.4.8"
+version = "1.4.9"
 name = "BlenderDMX"
-tagline = "DMX visualization and programming, with GDTF/MVR and Networking"
+tagline = "DMX visualization and programming with GDTF/MVR, and Networking"
 maintainer = "Open Stage"
-# Supported types: "add-on", "theme"
 type = "add-on"
-
-# Optional: add-ons can list which resources they will require:
-# * "files" (for access of any filesystem operations)
-# * "network" (for internet access)
-# * "clipboard" (to read and/or write the system clipboard)
-# * "camera" (to capture photos and videos)
-# * "microphone" (to capture audio)
-permissions = ["files", "network"]
-
-# Optional link to documentation, support, source files, etc
 website = "https://blenderdmx.eu/"
-
-# Optional list defined by Blender and server, see:
-# https://docs.blender.org/manual/en/dev/extensions/tags.html
 tags = ["Lighting", "Animation"]
-
 blender_version_min = "4.2.0"
-# Optional: maximum supported Blender version
-# blender_version_max = "5.1.0"
 
-# License conforming to https://spdx.org/licenses/ (use "SPDX: prefix)
-# https://docs.blender.org/manual/en/dev/extensions/licenses.html
 license = [
   "SPDX:MIT",
 ]
-# Optional: required by some licenses.
-# copyright = [
-#   "2002-2024 Developer Name",
-#   "1998 Company Name",
-# ]
 
-# Optional list of supported platforms. If omitted, the extension will be available in all operating systems.
-# platforms = ["windows-x64", "macos-arm64", "linux-x64"]
-# Other supported platforms: "windows-arm64", "macos-x64"
-
-# Optional: bundle 3rd party Python modules.
-# https://docs.blender.org/manual/en/dev/extensions/python_wheels.html
 wheels = [
   "wheels/pygdtf-1.0.3-py3-none-any.whl",
   "wheels/pymvr-0.1.0-py3-none-any.whl",
@@ -56,8 +23,10 @@ wheels = [
   "wheels/zeroconf-0.132.2-py3-none-any.whl",
 ]
 
-# Optional: build setting.
-# https://docs.blender.org/manual/en/dev/extensions/command_line_arguments.html#command-line-args-extension-build
+[permissions]
+files = "Import GDTF devices and MVR scenes. Export/Import project data"
+network = "For GDTF Share, sACN, Art-Net, OSC, MVR-xchange, Version check"
+
 [build]
 paths_exclude_pattern = [
   "/.git/",
@@ -78,3 +47,4 @@ paths_exclude_pattern = [
   "DEPENDENCIES.md",
   "DEVELOPMENT.md",
 ]
+
