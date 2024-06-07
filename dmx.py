@@ -28,7 +28,7 @@ from datetime import datetime
 import traceback
 from types import SimpleNamespace
 
-from . import pymvr
+from pymvr import GeneralSceneDescription
 from .mvr import extract_mvr_textures, process_mvr_child_list
 
 from . import param as param
