@@ -28,7 +28,7 @@ from datetime import datetime
 import traceback
 from types import SimpleNamespace
 
-from . import pymvr
+import pymvr
 from .mvr import load_mvr
 
 from . import param as param
@@ -1507,7 +1507,6 @@ class DMX(PropertyGroup):
         bpy.context.window_manager.dmx.pause_render = False # re-enable render loop
         DMX_GDTF.getManufacturerList()
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
-
 
     def clean_up_empty_mvr_collections(self,collections):
         for collection in collections.children:
