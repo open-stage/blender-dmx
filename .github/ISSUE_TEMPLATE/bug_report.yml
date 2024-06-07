@@ -1,12 +1,12 @@
 name: Bug report
-description: Create a report to help us improve.
+description: Create a report to help us improve. Do not ask for user support here. Do no submit feature ideas here.
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to make BlenderDMX better!
+        Thanks for taking the time to make BlenderDMX better! The GitHub issues are intended for tracking development issues in the code, not for user support or suggestion or ideas gathering.
 
-        If you just have a question, something seems not working or you have a suggestion, please ask first in the user group on [Discord](https://discord.gg/FQVVyc45T9)
+        If you just have a question, something is not working for you, or you have a suggestion, go to ask in the user group on [Discord](https://discord.gg/FQVVyc45T9)
   - type: checkboxes
     attributes:
       label: Please confirm that;
@@ -15,7 +15,7 @@ body:
           required: true
         - label: I have searched the [issues](https://github.com/open-stage/blender-dmx/issues), and I didn't find a solution to my problem / an answer to my question.
           required: true
-        - label: I have asked in the user group on [Discord](https://discord.gg/FQVVyc45T9) for ideas and solutions.
+        - label: I have asked in the user group on [Discord](https://discord.gg/FQVVyc45T9) for ideas and solutions and have waited for someone to respond.
           required: true
   - type: input
     id: version
