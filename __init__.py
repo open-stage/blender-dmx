@@ -34,34 +34,6 @@ _ = DMX_Lang._
 from .dmx import DMX
 from .dmx_temp_data import DMX_TempData
 
-# Handlers #
-
-
-def onDepsgraph(scene):
-    scene = bpy.context.scene
-    depsgraph = bpy.context.evaluated_depsgraph_get()
-
-    for update in depsgraph.updates:
-        obj = update.id.evaluated_get(depsgraph)
-        # Selection changed, sync programmer
-        if (obj.rna_type.name == 'Scene'):
-            # TODO: this causes crash when updating Extension
-            if "dmx" in scene: # dmx may not be in scene during installation
-                if "DMX" not in bpy.data.collections:
-                    #this prevents a crash on update, works only if the scene was not initialized yet
-                    continue
-                # this will still crash on extension update if addon was started
-                scene.dmx.syncProgrammer()
-                # Fixture updated
-                found = False
-                for fixture in scene.dmx.fixtures:
-                    for f_obj in fixture.objects:
-                        if (obj.name == f_obj.object.name):
-                            fixture.onDepsgraphUpdate(depsgraph.updates)
-                            found = True
-                            break
-                    if found: break
-
 
 @bpy.app.handlers.persistent
 def onLoadFile(scene):
@@ -84,8 +56,6 @@ def onLoadFile(scene):
             "PERSISTENT",
         },
     )
-
-    bpy.app.handlers.depsgraph_update_post.append(onDepsgraph)
 
     # Stop ArtNet
     DMX_ArtNet.disable()
