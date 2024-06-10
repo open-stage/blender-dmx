@@ -495,6 +495,8 @@ def select_previous(context, select_target = False):
     if not selected_all and fixtures:
         fixtures[-1].select(select_target)
 
+    scene.dmx.syncProgrammer()
+
 
 def select_next(context, select_target = False):
     scene = context.scene
@@ -516,6 +518,8 @@ def select_next(context, select_target = False):
 
     if not selected_all and fixtures:
         fixtures[0].select(select_target)
+
+    scene.dmx.syncProgrammer()
 
 
 class DMX_OT_Fixture_SelectPrevious(Operator):

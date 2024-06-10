@@ -1359,7 +1359,10 @@ class DMX_Fixture(PropertyGroup):
             if ies is not None:
                 light_obj.data.node_tree.nodes.remove(ies)
 
-    def onDepsgraphUpdate(self, updates):
+    def onDepsgraphUpdate(self):
+        # TODO: rename this and hook again somewhere.
+        # After not touching depsgraph (was causing slowdowns and crashes),
+        # we do not have this functionality
         # Check if any object was deleted
         for obj in self.objects:
             if (not len(obj.object.users_collection)):
@@ -1368,18 +1371,16 @@ class DMX_Fixture(PropertyGroup):
 
         # check if target is moving and the rest of objects is not selected
         # (programming by target)
-        for update in updates:
-            if update.is_updated_transform:
-                if "Target" in self.objects:
-                    target = self.objects['Target'].object
-                    update_by_target = False
-                    for obj in self.objects:
-                        if obj.object in bpy.context.selected_objects:
-                            if obj.object != target:
-                                # exit early if body (any part) and target were selected and moved
-                                return
-                            if obj.object == target:
-                                update_by_target = True
-                    if update_by_target:
-                        self.ignore_movement_dmx = True
+        if "Target" in self.objects:
+            target = self.objects['Target'].object
+            update_by_target = False
+            for obj in self.objects:
+                if obj.object in bpy.context.selected_objects:
+                    if obj.object != target:
+                        # exit early if body (any part) and target were selected and moved
                         return
+                    if obj.object == target:
+                        update_by_target = True
+            if update_by_target:
+                self.ignore_movement_dmx = True
+                return

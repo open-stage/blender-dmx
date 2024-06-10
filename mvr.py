@@ -10,30 +10,6 @@ from .group import FixtureGroup
 from .mvr_objects import DMX_MVR_Object
 from .logging import DMX_Log
 
-
-# importing from dmx didn't work, had to duplicate this function
-def onDepsgraph(scene):
-    scene = bpy.context.scene
-    depsgraph = bpy.context.evaluated_depsgraph_get()
-
-    for update in depsgraph.updates:
-        obj = update.id.evaluated_get(depsgraph)
-        # Selection changed, sync programmer
-        if obj.rna_type.name == "Scene":
-            scene.dmx.syncProgrammer()
-            continue
-        # Fixture updated
-        found = False
-        for fixture in scene.dmx.fixtures:
-            for f_obj in fixture.objects:
-                if obj.name == f_obj.object.name:
-                    fixture.onDepsgraphUpdate()
-                    found = True
-                    break
-            if found:
-                break
-
-
 def process_mvr_child_list(dmx, child_list, layer_index, extract_to_folder_path, mvr_scene, already_extracted_files, layer_collection, fixture_group=None):
     if "MVR Trusses" in layer_collection.children:
         truss_collection = layer_collection.children["MVR Trusses"]
@@ -283,7 +259,6 @@ def add_mvr_object(
 ):
     start_time = time.time()
     name = f"{name} {layer_index}-{mvr_object_index}"
-    # bpy.app.handlers.depsgraph_update_post.clear()
 
     cached_collection_name = getCollectionName(file)
     if cached_collection_name in bpy.data.collections:
