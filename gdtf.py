@@ -461,6 +461,9 @@ class DMX_GDTF():
             light_data['shutter_dimmer_value'] = 0
             light_data['shutter_counter'] = 0
             light_data.energy = light_data['flux'] #set by default to full brightness for devices without dimmer
+            light_data.use_custom_distance = True
+            light_data.cutoff_distance = 23
+
 
             light_data.spot_blend = calculate_spot_blend(geometry)
             light_data.spot_size = math.radians(geometry.beam_angle)
