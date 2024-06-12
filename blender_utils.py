@@ -66,7 +66,8 @@ def export_custom_data(directory_name, file_name):
 
     try:
         shutil.copytree(models_path, os.path.join(export_dir, "models"))
-        shutil.copytree(mvrs_path, os.path.join(export_dir, "mvrs"))
+        if os.path.exists(mvrs_path):
+            shutil.copytree(mvrs_path, os.path.join(export_dir, "mvrs"))
         shutil.copytree(profiles_path, os.path.join(export_dir, "profiles"), ignore=ignore)
         shutil.make_archive(export_filename, "zip", export_dir)
         shutil.rmtree(export_dir)
