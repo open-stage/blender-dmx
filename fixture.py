@@ -1171,7 +1171,10 @@ class DMX_Fixture(PropertyGroup):
 
             if not select_target:
                 if "Root" in self.objects:
-                    self.objects["Root"].object.select_set(True)
+                    try:
+                        self.objects["Root"].object.select_set(True)
+                    except Exception as e:
+                        DMX_Log.log.error(f"Fixture doesn't exist, remove it via Fixture list → Edit → X")
             else:
                 if (len(targets)):
                     for target in targets:
@@ -1181,7 +1184,10 @@ class DMX_Fixture(PropertyGroup):
 
             if not select_target:
                 if "Root" in self.objects:
-                    self.objects["Root"].object.select_set(True)
+                    try:
+                        self.objects["Root"].object.select_set(True)
+                    except Exception as e:
+                        DMX_Log.log.error(f"Fixture doesn't exist, remove it via Fixture list → Edit → X")
             else:
                 targets = []
                 for obj in self.collection.objects:
@@ -1209,11 +1215,17 @@ class DMX_Fixture(PropertyGroup):
     def unselect(self):
         dmx = bpy.context.scene.dmx
         if "Root" in self.objects:
-            self.objects["Root"].object.select_set(False)
+            try:
+                self.objects["Root"].object.select_set(False)
+            except Exception as e:
+                DMX_Log.log.error(f"Fixture doesn't exist, remove it via Fixture list → Edit → X")
         if ('Target' in self.objects):
             self.objects['Target'].object.select_set(False)
         if "2D Symbol" in self.objects:
-            self.objects["2D Symbol"].object.select_set(False)
+            try:
+                self.objects["2D Symbol"].object.select_set(False)
+            except Exception as e:
+                DMX_Log.log.error(f"Fixture doesn't exist, remove it via Fixture list → Edit → X")
         if dmx.display_2D:
             for obj in self.collection.objects:
                 if obj.get("2d_symbol", None):
