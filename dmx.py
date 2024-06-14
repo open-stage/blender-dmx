@@ -1436,6 +1436,8 @@ class DMX(PropertyGroup):
                 bpy.context.scene.collection.children.unlink(layer_collection)
 
         bpy.context.window_manager.dmx.pause_render = False # re-enable render loop
+        DMX_GDTF.getManufacturerList()
+        Profiles.DMX_Fixtures_Local_Profile.loadLocal()
         print("INFO", "MVR scene loaded in %.4f sec." % (time.time() - start_time))
 
     def clean_up_empty_mvr_collections(self,collections):
