@@ -1,5 +1,22 @@
 ### Changelog
 
+### 1.5.0
+
+    * Fix showing fixtures after disabling 2D layout view
+    * Adding RGB glowing tube BlenderDMX provided device
+    * Adding Zoom and Gobos to the BlenderDMX provided Beam GDTF file
+    * Add custom cutoff_distance to lights to make gobos work in Eevee Next
+    * Remove onDepsgraph - prevents crashes and improves performance
+    * Big changes in architecture of the python code
+    * Fix several visible and invisible issues
+    * Translated using Weblate (Polish) [WaldiS], (Spanish) [Josman Goncalves Bravo], (German) [Ettore Atalan]
+    * Loading 3DS with apply transforms enabled for better results
+    * Apply position of referring geometry to geometry reference
+    * Create gobo plane only for fixtures with gobo for better performance
+    * Open shutter at 0 also at 255
+    * Limit number of colors/gobos to 255
+
+
 ### 1.4.4
 
     * Refactor GDTF assembling to use parent child relationship
