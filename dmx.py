@@ -718,6 +718,8 @@ class DMX(PropertyGroup):
                             obj.show_name = False
                 else:
                     obj.hide_set(self.display_2D)
+                    obj.hide_viewport = self.display_2D
+                    obj.hide_render = self.display_2D
                     if "pigtail" in obj.get("geometry_type", ""):
                         obj.hide_set(not self.display_pigtails)
                         obj.hide_viewport = not self.display_pigtails
