@@ -470,7 +470,11 @@ class DMX(PropertyGroup):
         self.ensure_application_uuid()
         self.check_python_version()
         self.check_blender_version()
-        Timer(1, bpy.ops.dmx.check_version, ()).start()
+        if bpy.app.version >= (4, 2):
+            # do not do version check online in 4.2 and up
+            pass
+        else:
+            Timer(1, bpy.ops.dmx.check_version, ()).start()
         self.logging_level = "ERROR" # setting default logging level
 
     # Unlink Add-on from file

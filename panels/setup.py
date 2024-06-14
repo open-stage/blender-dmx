@@ -206,17 +206,19 @@ class DMX_PT_Setup_Extras(Panel):
     def draw(self, context):
         layout = self.layout
         dmx = context.scene.dmx
-        layout.operator("dmx.check_version", text=_("Check for BlenderDMX updates"), icon="SHADING_WIRE")
-        row = layout.row()
-        col1 = row.column()
-        col1.label(text = _("Status: {}").format(context.window_manager.dmx.release_version_status))
-        col2 = row.column()
-        col2.operator('wm.url_open', text="", icon="SHADING_WIRE").url="https://github.com/open-stage/blender-dmx/releases/latest"
+        if bpy.app.version >= (4, 2):
+            # do not do version check online in 4.2 and up
+            pass
+        else:
+            layout.operator("dmx.check_version", text=_("Check for BlenderDMX updates"), icon="SHADING_WIRE")
+            row = layout.row()
+            col1 = row.column()
+            col1.label(text = _("Status: {}").format(context.window_manager.dmx.release_version_status))
+            col2 = row.column()
+            col2.operator('wm.url_open', text="", icon="SHADING_WIRE").url="https://github.com/open-stage/blender-dmx/releases/latest"
         row = layout.row()
         row.operator_context = 'INVOKE_DEFAULT' #'INVOKE_AREA'
         row.operator("dmx.clear_custom_data", text=_("Clear Project data"), icon="TRASH")
-        row = layout.row()
-        row.operator("dmx.reload_addon", icon="FILE_REFRESH")
 
 class DMX_PT_Setup_Import(Panel):
     bl_label = _("Import")
