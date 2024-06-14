@@ -1245,7 +1245,6 @@ class DMX(PropertyGroup):
     # # Programmer > Sync
 
     def syncProgrammer(self):
-        print("sync")
         selected = self.selectedFixtures()
         n = len(selected)
         if (n < 1):
