@@ -774,13 +774,14 @@ class DMX_Fixture(PropertyGroup):
                 return channel
 
     def updateShutterDimmer(self, shutter, dimmer, geometry, bits, current_frame):
+        DMX_Log.log.info(("set shutter, dimmer", shutter, dimmer))
         if geometry is not None:
             geometry = geometry.replace(" ", "_")
         last_shutter_value = 0
         last_dimmer_value = 0
         try:
             for emitter_material in self.emitter_materials:
-                if shutter > 0:
+                if (shutter > 0 and shutter != 255):
                     break # no need to do the expensive value settings if we do this anyway in shutter timer
                 if geometry is not None:
                     if f"{geometry}" in emitter_material.name:
@@ -802,8 +803,7 @@ class DMX_Fixture(PropertyGroup):
                 # depending on the IES linking or not, adding drivers: https://blender.stackexchange.com/a/314329/176407
                 # plus, we would still need to calculate correct energy, so they match between Cycles/Eevee
                 # here are some ideas: https://blender.stackexchange.com/a/180533/176407
-
-                if shutter > 0:
+                if (shutter > 0 and shutter != 255):
                     break # no need to do the expensive value settings if we do this anyway in shutter timer
 
                 if geometry is not None:
@@ -828,9 +828,9 @@ class DMX_Fixture(PropertyGroup):
         except Exception as e:
             DMX_Log.log.error(f"Error updating dimmer {e}")
 
-        if (last_shutter_value == 0 or last_dimmer_value == 0) and shutter != 0:
-                bpy.app.timers.register(self.runStrobe)
-                DMX_Log.log.info("Register shutter timer")
+        if (last_shutter_value == 0 or last_shutter_value == 255 or last_dimmer_value == 0) and (shutter > 0 and shutter != 255):
+            bpy.app.timers.register(self.runStrobe)
+            DMX_Log.log.info("Register shutter timer")
 
         return dimmer
 
@@ -844,6 +844,8 @@ class DMX_Fixture(PropertyGroup):
 
             for light in self.lights:
                 if light.object.data['shutter_value'] == 0:
+                    exit_timer= True
+                if light.object.data['shutter_value'] == 255:
                     exit_timer= True
                 if light.object.data['shutter_dimmer_value'] == 0:
                     exit_timer = True
