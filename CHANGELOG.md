@@ -1,5 +1,9 @@
 ### Changelog
 
+### 1.5.1
+
+    * Fix python import on Win32 platform
+
 ### 1.5.0
 
     * Fix showing fixtures after disabling 2D layout view
