@@ -6,3 +6,4 @@ Icons attribution
 - BlenderDMX icon - SVG drawn by vanous, initial concept Hugo Aboud
 - mvr_file_icon_small.png - GDTF-Share.com
 - gdtf_file_icon_small.png -GDTF-Share.com
+- Blender logo - By ™/®Blender Foundation - Vectorised by Vulphere from https://www.blender.org/ (SVG code), Public Domain, https://commons.wikimedia.org/w/index.php?curid=46544944
