@@ -219,6 +219,7 @@ class DMX_PT_Setup_Extras(Panel):
         row = layout.row()
         row.operator_context = 'INVOKE_DEFAULT' #'INVOKE_AREA'
         row.operator("dmx.clear_custom_data", text=_("Clear Project data"), icon="TRASH")
+        layout.operator('wm.url_open', text="User Guide Online", icon="HELP").url="https://blenderdmx.eu/docs/faq/"
 
 class DMX_PT_Setup_Import(Panel):
     bl_label = _("Import")
@@ -323,6 +324,10 @@ class DMX_PT_Setup(Panel):
         if (not dmx.collection):
             if not bpy.app.version >= (3, 4):
                 layout.label(text = _("Error! Blender 3.4 or higher required."), icon="ERROR")
+            if bpy.app.version >= (4, 2):
+                row = layout.row()
+                row.label(text = _("For Blender 4.2 and up use the Extension"), icon="ERROR")
+                row.operator('wm.url_open', text="BlenderDMX Extension", icon="SHADING_WIRE").url="https://extensions.blender.org/add-ons/open-stage-blender-dmx/"
             layout.operator("dmx.new_show", text=_("Create New Show"), icon="LIGHT")
             layout.operator('wm.url_open', text="User Guide Online", icon="HELP").url="https://blenderdmx.eu/docs/faq/"
 
