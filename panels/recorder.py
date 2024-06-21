@@ -39,8 +39,16 @@ class DMX_OT_Recorder_AddKeyframe(Operator):
         bpy.context.window_manager.dmx.pause_render = render_paused_state
         return {"FINISHED"}
 
+def clear_tracker_animation_data(tracker):
+    DMX_Log.log.debug(f"clear animation data of a tracker: {tracker.name}")
+    for obj in tracker.collection.objects:
+        if obj.animation_data:
+            obj.animation_data.action = None
+            obj.animation_data_clear()
 
-def clear_animation_data(fixture):
+
+
+def clear_fixture_animation_data(fixture):
     DMX_Log.log.debug(f"clear animation data of a fixture: {fixture.name}")
     for obj in fixture.collection.objects:
         if obj.animation_data:
@@ -90,7 +98,10 @@ class DMX_OT_Recorder_Delete_Keyframes_All(Operator):
         dmx = context.scene.dmx
 
         for fixture in dmx.fixtures:
-            clear_animation_data(fixture)
+            clear_fixture_animation_data(fixture)
+
+        for tracker in dmx.trackers:
+            clear_tracker_animation_data(tracker)
 
         return {"FINISHED"}
 
