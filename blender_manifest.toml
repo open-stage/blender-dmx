@@ -26,7 +26,7 @@ wheels = [
 
 [permissions]
 files = "Import GDTF devices and MVR scenes. Export/Import project data"
-network = "For GDTF Share, sACN, Art-Net, OSC, MVR-xchange"
+network = "For GDTF Share, sACN, Art-Net, OSC, PSN, MVR-xchange"
 
 [build]
 paths_exclude_pattern = [
