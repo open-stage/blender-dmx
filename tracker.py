@@ -1,0 +1,177 @@
+#
+#   BlendexDMX > Fixture
+#   Base class for a lighting fixture
+#
+#   http://www.github.com/open-stage/BlenderDMX
+#
+
+import traceback
+import bpy
+import uuid
+
+from .logging import DMX_Log
+
+from .network import DMX_Network
+from bpy.props import (IntProperty,
+                       BoolProperty,
+                       EnumProperty,
+                       PointerProperty,
+                       StringProperty,
+                       CollectionProperty)
+
+from bpy.types import (PropertyGroup,
+                       Collection,
+                       Object)
+
+
+from .psn import DMX_PSN
+from .i18n import DMX_Lang
+_ = DMX_Lang._
+
+class DMX_Tracker_Object(PropertyGroup):
+    object: PointerProperty(
+        name = "Tracker > Object",
+        type = Object)
+
+class DMX_Tracker(PropertyGroup):
+
+    def onPsnEnable(self, context):
+        if self.enabled:
+            DMX_PSN.enable(self)
+        else:
+            DMX_PSN.disable(self)
+
+    enabled : BoolProperty(
+        name = _("Enable PSN Input"),
+        description=_("Enables PosiStageNet input"),
+        default = False,
+        update = onPsnEnable
+    )
+
+    ip_address : EnumProperty(
+        name = _("IPv4 Address for PSN signal"),
+        description=_("The network card/interface to listen for PSN data"),
+        items = DMX_Network.cards
+    )
+
+    ip_port : IntProperty(
+        name = _("PSN Target port"),
+        description=_(""),
+        default=56565
+    )
+
+    uuid: StringProperty(
+        name = "UUID",
+        description = "Unique ID, used for identification",
+        default = str(uuid.uuid4())
+            )
+    # Blender RNA #
+
+    collection: PointerProperty(
+        name = "Tracker > Collection",
+        type = Collection)
+
+    objects: CollectionProperty(
+        name = "Tracker > Objects",
+        type = DMX_Tracker_Object
+    )
+
+
+
+    @staticmethod
+    def add_tracker():
+        dmx = bpy.context.scene.dmx
+        new_tracker = dmx.trackers.add()
+        new_tracker["position"]=None
+        new_tracker.uuid = str(uuid.uuid4())
+        new_id = len(dmx.trackers)
+        new_tracker.name = generate_tracker_name(new_id)
+        target = bpy.data.objects.new(name=new_tracker.name, object_data=None)
+        target["uuid"]=new_tracker.uuid
+        bpy.ops.collection.create(name=new_tracker.name)
+        new_tracker.collection = bpy.data.collections[new_tracker.name]
+        for c in new_tracker.collection.objects:
+            new_tracker.collection.objects.unlink(c)
+        for c in new_tracker.collection.children:
+            new_tracker.collection.children.unlink(c)
+        tracker_object = new_tracker.objects.add()
+        new_tracker.collection.objects.link(target)
+        tracker_object.name = new_tracker.name
+        tracker_object.object = target
+        target.empty_display_size = 0.2
+        target.empty_display_type = 'ARROWS'
+        target.location = (0,0,0)
+        bpy.context.scene.dmx.collection.children.link(new_tracker.collection)
+
+
+
+    @staticmethod
+    def remove_tracker(uuid):
+        dmx = bpy.context.scene.dmx
+        tracker_idx = DMX_Tracker.get_tracker_idx(uuid)
+        tracker = DMX_Tracker.get_tracker(uuid)
+        tracker.enabled = False
+        for fixture in dmx.fixtures:
+            for obj in fixture.objects:
+                if obj.name == "Target":
+                    for constraint in obj.object.constraints:
+                        if constraint.target.get("uuid", None) == uuid:
+                            obj.object.constraints.remove(constraint)
+
+        if tracker is not None:
+            if tracker.collection is not None:
+                if tracker.collection.objects is not None:
+                    for obj in tracker.collection.objects:
+                        bpy.data.objects.remove(obj)
+            if tracker.objects is not None:
+                for obj in tracker.objects:
+                    if (obj.object):
+                        bpy.data.objects.remove(obj.object)
+            if tracker.collection is not None:
+                bpy.data.collections.remove(tracker.collection)
+        if tracker_idx is not None:
+            dmx.trackers.remove(tracker_idx)
+
+
+    @staticmethod
+    def get_tracker_idx(uuid):
+        dmx = bpy.context.scene.dmx
+        for idx, tracker in enumerate(dmx.trackers):
+            if tracker.uuid == uuid:
+                return idx
+    @staticmethod
+    def get_tracker(uuid):
+        dmx = bpy.context.scene.dmx
+        for tracker in dmx.trackers:
+            if tracker.uuid == uuid:
+                return tracker
+
+    def render(self, current_frame = None):
+        data = DMX_PSN.get_data(self.uuid)
+        if data is None:
+            return
+        if self["position"] is not None:
+            if list(self["position"]) == list(data):
+                return
+        x, y, z = data
+        self["position"] = list(data)
+        for obj in self.objects:
+            obj = obj.object
+            if x is not None:
+                obj.location.x = x
+            if y is not None:
+                obj.location.y = y
+            if z is not None:
+                obj.location.z = z
+            if current_frame:
+                obj.keyframe_insert(data_path="location", frame=current_frame)
+
+def generate_tracker_name(new_id):
+    dmx = bpy.context.scene.dmx
+    while True:
+        name = f"Tracker {new_id:>03}"
+        if name in dmx.trackers or name in dmx.collection.children:
+            new_id +=1
+        else:
+            break
+    return name

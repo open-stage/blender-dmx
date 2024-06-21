@@ -13,6 +13,7 @@ from .pymvr import GeneralSceneDescription
 from .mvr import extract_mvr_textures, process_mvr_child_list
 
 from . import fixture as fixture
+from . import tracker as tracker
 from .universe import DMX_Universe
 from .data import DMX_Value, DMX_Data
 from .gdtf import DMX_GDTF
@@ -72,6 +73,8 @@ class DMX(PropertyGroup):
                     fixture.DMX_Geometry_Node,
                     fixture.DMX_Fixture_Channel,
                     fixture.DMX_Fixture,
+                    tracker.DMX_Tracker_Object,
+                    tracker.DMX_Tracker,
                     DMX_MVR_Object,
                     DMX_Group,
                     DMX_Universe,
@@ -149,6 +152,14 @@ class DMX(PropertyGroup):
                 programmer.DMX_MT_PIE_Reset,
                 programmer.DMX_OT_Programmer_Unset_Ignore_Movement,
                 panels_dmx.DMX_PT_DMX_OSC,
+                panels_dmx.DMX_UL_Tracker,
+                panels_dmx.DMX_OP_DMX_Tracker_Add,
+                panels_dmx.DMX_OP_DMX_Tracker_Remove,
+                panels_dmx.DMX_PT_DMX_Trackers,
+                panels_dmx.DMX_OT_Tracker_Followers,
+                panels_dmx.DMX_UL_Tracker_Followers,
+                panels_dmx.DMX_OP_Unlink_Fixture_Tracker,
+                panels_dmx.DMX_OP_Link_Fixture_Tracker,
                 fixtures.DMX_UL_Fixtures,
                 panels_dmx.DMX_PT_DMX_MVR_X,
                 panels_dmx.DMX_UL_MVR_Commit,
@@ -273,11 +284,21 @@ class DMX(PropertyGroup):
         name = "DMX Fixtures",
         type = fixture.DMX_Fixture)
 
+    trackers: CollectionProperty(
+        name = "Trackers",
+        type = tracker.DMX_Tracker)
+
+    trackers_i : IntProperty(
+        name = _("Trackers Item"),
+        description=_("The selected element on the trackers list"),
+        default = 0
+        )
+
     groups: CollectionProperty(
         name = "DMX Groups",
         type = DMX_Group)
 
-    universes : CollectionProperty(
+    universes: CollectionProperty(
         name = "DMX Groups",
         type = DMX_Universe)
 
@@ -449,7 +470,7 @@ class DMX(PropertyGroup):
                 DMX_Log.log.warning("No network card detected")
                 return
 
-        # Reset ArtNet status
+        # Reset network status
         dmx = bpy.context.scene.dmx
         if (dmx.artnet_enabled and dmx.artnet_status != 'online'):
             dmx.artnet_enabled = False
@@ -459,6 +480,14 @@ class DMX(PropertyGroup):
             dmx.sacn_status = 'offline'
         if dmx.osc_enabled:
             dmx.osc_enabled = False
+
+        for tracker_item in dmx.trackers:
+            tracker_item.enabled = False
+            if not len(tracker_item.ip_address):
+                if len(DMX_Network.cards(None, None)):
+                    tracker_item.ip_address = DMX_Network.cards(None, None)[0][0]
+                else:
+                    DMX_Log.log.warning("No network card detected")
 
         # Rebuild group runtime dictionary (evaluating if this is gonna stay here)
         #DMX_Group.runtime = {}
@@ -910,12 +939,12 @@ class DMX(PropertyGroup):
         )
 
     # # DMX > ArtNet > Network Cards
-
     artnet_ipaddr : EnumProperty(
         name = _("IPv4 Address for ArtNet signal"),
         description=_("The network card/interface to listen for ArtNet DMX data"),
         items = DMX_Network.cards
     )
+
     #zeroconf - mvr-xchange
 
     def onZeroconfEnableDiscovery(self, context):
@@ -1340,6 +1369,8 @@ class DMX(PropertyGroup):
             traceback.print_exception(e)
             DMX_Log.log.exception(e)
 
+
+
     def removeFixture(self, fixture):
         self.remove_fixture_from_groups(fixture.uuid)
         if fixture.collection.objects is not None:
@@ -1634,6 +1665,8 @@ class DMX(PropertyGroup):
 
         for fixture in self.fixtures:
             fixture.render(current_frame=current_frame)
+        for tracker in self.trackers:
+            tracker.render(current_frame=current_frame)
 
     def set_fixtures_filter(self, fixtures_filter):
         DMX.fixtures_filter = fixtures_filter

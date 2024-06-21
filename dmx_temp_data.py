@@ -104,3 +104,4 @@ class DMX_TempData(PropertyGroup):
         default = False,
         update = onUpdateLoggingFilter)
 
+    selected_tracker: StringProperty() # to pass data to fixture list

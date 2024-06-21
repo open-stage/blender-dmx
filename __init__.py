@@ -168,7 +168,7 @@ def unregister():
         bpy.utils.unregister_class(DMX)
 
     except Exception as e:
-        DMX_Log.log.exception(e)
+        print("INFO", e)
 
     # Append handlers
     bpy.app.handlers.load_post.clear()
