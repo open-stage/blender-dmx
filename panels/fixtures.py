@@ -15,7 +15,6 @@ import re
 from ..logging import DMX_Log
 from .. import pygdtf
 from ..panels import profiles as Profiles
-from ..util import pad_number
 from bpy_extras.io_utils import ImportHelper
 
 from bpy.props import (IntProperty,
@@ -94,7 +93,9 @@ class DMX_MT_Fixture_Profiles(Menu):
             row = layout.row()
             row.context_pointer_set("add_edit_panel", context.add_edit_panel)
             revision = f" ({profile[2]})" if profile[2] else ""
-            row.operator(DMX_OT_Fixture_Profiles.bl_idname, text=f"{profile[1]}{revision}".replace('_',' ')).profile = profile[0]
+            op = row.operator(DMX_OT_Fixture_Profiles.bl_idname, text=f"{profile[1]}{revision}".replace('_',' '))
+            op.profile = profile[0]
+            op.short_name = profile[1]
 
 class DMX_MT_Fixture_Mode(Menu):
     bl_label = _("DMX > Fixture > Add > Mode")
@@ -120,9 +121,11 @@ class DMX_OT_Fixture_Profiles(Operator):
         description = _("Fixture GDTF Profile"),
         default = ""
     )
+    short_name: StringProperty()
 
     def execute(self, context):
         context.add_edit_panel.profile = self.profile
+        context.add_edit_panel.name = self.short_name
         return {'FINISHED'}
 
 class DMX_OT_Fixture_Mode(Operator):
@@ -296,7 +299,8 @@ class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
         fixture_id = self.fixture_id
         for i in range(self.units):
             DMX_Log.log.debug(f"Adding fixture {self.name}")
-            dmx.addFixture(f"{self.name} {pad_number(i+1)}", self.profile, universe, address, self.mode,
+            new_name = generate_fixture_name(self.name, i+1)
+            dmx.addFixture(new_name, self.profile, universe, address, self.mode,
                            self.gel_color, self.display_beams, self.add_target, fixture_id = fixture_id)
             fixture = dmx.fixtures[-1]
             DMX_Log.log.debug(f"Added fixture {fixture}")
@@ -317,8 +321,9 @@ class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
         return {'FINISHED'}
 
     def invoke(self, context, event):
-        fixtures_len = len(context.scene.dmx.fixtures)
-        self.name = f"Fixture {pad_number(fixtures_len + 1)}"
+        #fixtures_len = len(context.scene.dmx.fixtures)
+        #self.name = generate_fixture_name("Fixture", fixtures_len + 1)
+        self.name = "Fixture"
         self.units = 1
         DMX_Fixture_AddEdit.profile_list_items = []
         wm = context.window_manager
@@ -356,12 +361,12 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             fixture_id = self.fixture_id
 
             for i, fixture in enumerate(selected):
-                name = f"{self.name} {pad_number(i+1)}"
+                name = generate_fixture_name(self.name, i+1)
                 if (name != fixture.name and name in bpy.data.collections):
                     self.report({'ERROR'}, _("Fixture named {} already exists".format(self.name)))
                     return {'CANCELLED'}
             for i, fixture in enumerate(selected):
-                name = f"{self.name} {pad_number(i+1)}" if (self.name != '*') else fixture.name
+                name = generate_fixture_name(self.name, i+1) if (self.name != '*') else fixture.name
                 #fixture_id = f"{self.fixture_id}{i+1}" if (self.name != '*') else fixture.name
                 profile = self.profile if (self.profile != '') else fixture.profile
                 mode = self.mode if (self.mode != '') else fixture.mode
@@ -853,3 +858,21 @@ class DMX_UL_Fixtures(UIList):
             col = layout.column()
             col.context_pointer_set("fixture", item)
             col.operator("dmx.force_remove_fixture", text="", icon="CANCEL")
+
+def pad_number(number):
+    """Pad fixture number with leading zeros,
+    the amount of padding zeros depends on amount of fixtures."""
+    dmx = bpy.context.scene.dmx
+    padding_len = len(str(len(dmx.fixtures))) + 1
+    return f"{number:>0{padding_len}}"
+
+
+def generate_fixture_name(name, new_id):
+    dmx = bpy.context.scene.dmx
+    while True:
+        new_name = f"{name} {new_id:>04}"
+        if new_name in dmx.fixtures:
+            new_id +=1
+        else:
+            break
+    return new_name
