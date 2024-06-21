@@ -16,7 +16,7 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import bpy
-from . import pypsn as pypsn
+import pypsn
 from .logging import DMX_Log
 from functools import partial
 
