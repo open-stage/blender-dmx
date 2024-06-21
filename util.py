@@ -139,15 +139,6 @@ def ShowMessageBox(message="", title="Message Box", icon="INFO"):
 
     bpy.context.window_manager.popup_menu(draw, title=title, icon=icon)
 
-
-def pad_number(number):
-    """Pad fixture number with leading zeros,
-    the amount of padding zeros depends on amount of fixtures."""
-    dmx = bpy.context.scene.dmx
-    padding_len = len(str(len(dmx.fixtures))) + 1
-    return f"{number:>0{padding_len}}"
-
-
 def clamp(n, small=0, large=255):
     return max(small, min(n, large))
 
