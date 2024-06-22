@@ -24,7 +24,14 @@ from .logging import DMX_Log
 
 from .panels import recorder as recorder
 from .panels import setup as setup
-from .panels import dmx as panels_dmx
+from .panels.protocols import protocols as panels_protocols
+from .panels.protocols import artnet as panels_artnet
+from .panels.protocols import sacn as panels_sacn
+from .panels.protocols import osc as panels_osc
+from .panels.protocols import psn as panels_psn
+from .panels.protocols import mvr as panels_mvr
+from .panels.protocols import universes as panels_universes
+from .panels.protocols import live as panels_live
 from .panels import fixtures as fixtures
 from .panels import groups as groups
 from .panels import programmer as programmer
@@ -80,8 +87,8 @@ class DMX(PropertyGroup):
                     DMX_Universe,
                     DMX_Value,
                     setup.DMX_PT_Setup,
-                    panels_dmx.DMX_OP_MVR_Download,
-                    panels_dmx.DMX_OP_MVR_Import,
+                    panels_mvr.DMX_OP_MVR_Download,
+                    panels_mvr.DMX_OP_MVR_Import,
                     DMX_MVR_Xchange_Commit,
                     DMX_MVR_Xchange_Client,
                     DMX_MVR_Xchange,
@@ -94,13 +101,13 @@ class DMX(PropertyGroup):
 
     classes_setup = (setup.DMX_OT_Setup_NewShow,)
 
-    classes = ( panels_dmx.DMX_UL_Universe,
-                panels_dmx.DMX_MT_Universe,
-                panels_dmx.DMX_PT_DMX,
-                panels_dmx.DMX_PT_DMX_Universes,
-                panels_dmx.DMX_PT_DMX_LiveDMX,
-                panels_dmx.DMX_PT_DMX_ArtNet,
-                panels_dmx.DMX_PT_DMX_sACN,
+    classes = ( panels_protocols.DMX_PT_DMX,
+                panels_universes.DMX_UL_Universe,
+                panels_universes.DMX_MT_Universe,
+                panels_universes.DMX_PT_DMX_Universes,
+                panels_live.DMX_PT_DMX_LiveDMX,
+                panels_artnet.DMX_PT_DMX_ArtNet,
+                panels_sacn.DMX_PT_DMX_sACN,
                 setup.DMX_OT_Setup_Volume_Create,
                 setup.DMX_PT_Setup_Volume,
                 setup.DMX_PT_Setup_Viewport,
@@ -118,7 +125,7 @@ class DMX(PropertyGroup):
                 fixtures.DMX_OT_Fixture_Item,
                 fixtures.DMX_OT_Fixture_Profiles,
                 fixtures.DMX_OT_Fixture_Mode,
-                panels_dmx.DMX_UL_LiveDMX_items,
+                panels_live.DMX_UL_LiveDMX_items,
                 fixtures.DMX_OT_Fixture_Add,
                 fixtures.DMX_OT_Fixture_Edit,
                 fixtures.DMX_OT_Fixture_Remove,
@@ -151,22 +158,22 @@ class DMX(PropertyGroup):
                 programmer.DMX_OT_Programmer_ResetTargets,
                 programmer.DMX_MT_PIE_Reset,
                 programmer.DMX_OT_Programmer_Unset_Ignore_Movement,
-                panels_dmx.DMX_PT_DMX_OSC,
-                panels_dmx.DMX_UL_Tracker,
-                panels_dmx.DMX_OP_DMX_Tracker_Add,
-                panels_dmx.DMX_OP_DMX_Tracker_Remove,
-                panels_dmx.DMX_PT_DMX_Trackers,
-                panels_dmx.DMX_OT_Tracker_Followers,
-                panels_dmx.DMX_OT_Tracker_Followers_Add_Target,
-                panels_dmx.DMX_OT_Tracker_Followers_Remove_Target,
-                panels_dmx.DMX_UL_Tracker_Followers,
-                panels_dmx.DMX_OP_Unlink_Fixture_Tracker,
-                panels_dmx.DMX_OP_Link_Fixture_Tracker,
+                panels_osc.DMX_PT_DMX_OSC,
+                panels_psn.DMX_UL_Tracker,
+                panels_psn.DMX_OP_DMX_Tracker_Add,
+                panels_psn.DMX_OP_DMX_Tracker_Remove,
+                panels_psn.DMX_PT_DMX_Trackers,
+                panels_psn.DMX_OT_Tracker_Followers,
+                panels_psn.DMX_OT_Tracker_Followers_Add_Target,
+                panels_psn.DMX_OT_Tracker_Followers_Remove_Target,
+                panels_psn.DMX_UL_Tracker_Followers,
+                panels_psn.DMX_OP_Unlink_Fixture_Tracker,
+                panels_psn.DMX_OP_Link_Fixture_Tracker,
                 fixtures.DMX_UL_Fixtures,
-                panels_dmx.DMX_PT_DMX_MVR_X,
-                panels_dmx.DMX_UL_MVR_Commit,
-                panels_dmx.DMX_OP_MVR_Refresh,
-                panels_dmx.DMX_OP_MVR_Request,
+                panels_mvr.DMX_PT_DMX_MVR_X,
+                panels_mvr.DMX_UL_MVR_Commit,
+                panels_mvr.DMX_OP_MVR_Refresh,
+                panels_mvr.DMX_OP_MVR_Request,
                 fixtures.DMX_OT_Fixture_ForceRemove,
                 fixtures.DMX_OT_Fixture_SelectNext,
                 fixtures.DMX_OT_Fixture_SelectPrevious,
