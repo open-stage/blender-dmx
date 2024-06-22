@@ -8,11 +8,11 @@
 #
 
 import os
-
-from bpy.props import StringProperty
+import bpy
+from bpy.props import StringProperty, IntProperty
 from bpy.types import Menu, Operator, Panel, UIList
 from ..mvrx_protocol import DMX_MVR_X_Client
-from ..data import DMX_Data, IntProperty
+from ..data import DMX_Data
 from ..logging import DMX_Log
 import uuid as py_uuid
 from datetime import datetime
@@ -189,26 +189,27 @@ class DMX_OP_Link_Fixture_Tracker(Operator):
 
     fixture_uuid: StringProperty()
     tracker_uuid: StringProperty()
+    tracker_index: IntProperty()
 
     def execute(self, context):
         scene = context.scene
         dmx = scene.dmx
-
         dmx = scene.dmx
         layout = self.layout
         target = None
         for tracker in dmx.trackers:
             if tracker.uuid == self.tracker_uuid:
-                for obj in tracker.objects:
-                    target = obj.object
+                for idx, obj in enumerate(tracker.collection.objects):
+                    if idx == self.tracker_index:
+                        target = obj
 
-
-        for fixture in dmx.fixtures:
-            if fixture.uuid == self.fixture_uuid:
-                for obj in fixture.objects:
-                    if obj.name == "Target":
-                        constraint = obj.object.constraints.new(type='COPY_LOCATION')
-                        constraint.target = target
+        if target is not None:
+            for fixture in dmx.fixtures:
+                if fixture.uuid == self.fixture_uuid:
+                    for obj in fixture.objects:
+                        if obj.name == "Target":
+                            constraint = obj.object.constraints.new(type='COPY_LOCATION')
+                            constraint.target = target
 
         return {"FINISHED"}
 
@@ -225,19 +226,14 @@ class DMX_OP_Unlink_Fixture_Tracker(Operator):
         scene = context.scene
         dmx = scene.dmx
         layout = self.layout
-        target = None
-        for tracker in dmx.trackers:
-            if tracker.uuid == self.tracker_uuid:
-                for obj in tracker.objects:
-                    target = obj.object
-
         for fixture in dmx.fixtures:
             if fixture.uuid == self.fixture_uuid:
                 for obj in fixture.objects:
                     if obj.name == "Target":
                         for constraint in obj.object.constraints:
-                            if constraint.target.get("uuid", None) == self.tracker_uuid:
-                                obj.object.constraints.remove(constraint)
+                            if constraint.target != None:
+                                if constraint.target.get("uuid", None) == self.tracker_uuid:
+                                    obj.object.constraints.remove(constraint)
 
 
         return {"FINISHED"}
@@ -247,6 +243,7 @@ class DMX_OP_Unlink_Fixture_Tracker(Operator):
 class DMX_UL_Tracker_Followers(UIList):
 
     tracker_uuid: StringProperty()
+    tracker_index: IntProperty()
 
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname):
         fixture = item
@@ -254,6 +251,7 @@ class DMX_UL_Tracker_Followers(UIList):
         dmx = scene.dmx
         icon = "FILE_VOLUME"
         self.tracker_uuid = context.window_manager.dmx.selected_tracker
+        self.tracker_index = context.window_manager.dmx.selected_tracker_index
 
         linked = None
         for obj in fixture.objects:
@@ -280,6 +278,7 @@ class DMX_UL_Tracker_Followers(UIList):
                 op = col.operator("dmx.psn_tracker_follower_link", icon="UNLINKED", text="")
                 op.fixture_uuid = fixture.uuid
                 op.tracker_uuid = self.tracker_uuid
+                op.tracker_index = self.tracker_index
         elif self.layout_type in {'GRID'}:
             layout.alignment = 'CENTER'
             layout.label(text=item.name, icon=icon)
@@ -292,6 +291,7 @@ class DMX_OT_Tracker_Followers(Operator):
     bl_options = {'UNDO'}
 
     tracker_uuid: StringProperty()
+    tracker_index: IntProperty()
     fixture_i: IntProperty()
 
     def draw(self, context):
@@ -299,6 +299,7 @@ class DMX_OT_Tracker_Followers(Operator):
         scene = context.scene
         dmx = scene.dmx
         context.window_manager.dmx.selected_tracker = self.tracker_uuid
+        context.window_manager.dmx.selected_tracker_index = self.tracker_index
         layout.template_list("DMX_UL_Tracker_Followers", "", dmx, "fixtures", self, "fixture_i")
 
 
@@ -373,7 +374,65 @@ class DMX_PT_DMX_Trackers(Panel):
             layout.prop(tracker, "ip_address")
             layout.prop(tracker, "ip_port")
             layout.prop(tracker, "enabled")
-            layout.operator("dmx.psn_tracker_followers", text=_("Link Tracker Followers"), icon="PLUS").tracker_uuid = tracker.uuid
+            add_trackers = True
+            for idx, obj  in enumerate(tracker.collection.objects):
+                row = layout.row()
+                col = row.column()
+                op=col.operator("dmx.psn_tracker_followers", text=_(f"Link Followers to {obj.name}"), icon="LINKED")
+                op.tracker_uuid = tracker.uuid
+                op.tracker_index = idx
+                if len(tracker.collection.objects) > 1:
+                    col = row.column()
+                    op = col.operator("dmx.psn_remove_tracker_followers_target", text="", icon="TRASH")
+                    op.object_name = obj.name
+                    op.tracker_uuid = tracker.uuid
+
+                if idx >= 9: # we support max 10 trackers, edit tracker.py and psn.py if more is needed
+                    add_trackers = False
+            row = layout.row()
+            op = row.operator("dmx.psn_add_tracker_followers_target", text=_("Add Tracking Target"), icon="PLUS")
+            op.tracker_uuid = tracker.uuid
+            row.enabled = add_trackers
+
+
+
+class DMX_OT_Tracker_Followers_Remove_Target(Operator):
+    bl_label = _("Remove Followers Target")
+    bl_idname = "dmx.psn_remove_tracker_followers_target"
+    bl_description = _("Remove target")
+    bl_options = {'UNDO'}
+
+    object_name: StringProperty()
+    tracker_uuid: StringProperty()
+
+    def execute(self, context):
+        dmx = context.scene.dmx
+        for tracker in dmx.trackers:
+            if tracker.uuid == self.tracker_uuid:
+                if self.object_name in tracker.collection.objects:
+                    rem_obj = tracker.collection.objects[self.object_name]
+                    bpy.data.objects.remove(rem_obj)
+
+        return {"FINISHED"}
+
+class DMX_OT_Tracker_Followers_Add_Target(Operator):
+    bl_label = _("Add Followers Target")
+    bl_idname = "dmx.psn_add_tracker_followers_target"
+    bl_description = _("Add target")
+    bl_options = {'UNDO'}
+
+    tracker_uuid: StringProperty()
+
+    def execute(self, context):
+        dmx = context.scene.dmx
+        for tracker in dmx.trackers:
+            if tracker.uuid == self.tracker_uuid:
+                for obj in tracker.collection.objects:
+                    duplicate_obj = obj.copy()
+                    tracker.collection.objects.link(duplicate_obj)
+                    break
+
+        return {"FINISHED"}
 
 class DMX_PT_DMX_MVR_X(Panel):
     bl_label = _("MVR-xchange")

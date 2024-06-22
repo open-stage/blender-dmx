@@ -16,8 +16,9 @@ class DMX_PSN:
 
     def callback(psn_data, tracker):
         if isinstance(psn_data, pypsn.psn_data_packet):
-            position = psn_data.trackers[0].pos  # Currently, we are only using the first tracker
-            DMX_PSN.set_data(tracker.uuid, position)
+            for idx, slot in enumerate(psn_data.trackers):
+                position = slot.pos
+                DMX_PSN.set_data(tracker.uuid, idx, position)
         if isinstance(psn_data, pypsn.psn_info_packet):
             DMX_Log.log.info(f"Tracker info server: {psn_data.name}")
             for tracker_info in psn_data.trackers:
@@ -32,7 +33,7 @@ class DMX_PSN:
         DMX_PSN._instances[uuid] = DMX_PSN(None, tracker.ip_address, tracker.ip_port)
         DMX_PSN._instances[uuid].receiver.callback = partial(DMX_PSN.callback, tracker=tracker)
         DMX_PSN._instances[uuid].receiver.start()
-        DMX_PSN._data[uuid] = None
+        DMX_PSN._data[uuid] = [[],] * 10 # hardcoded to 10 slots
         if bpy.app.timers.is_registered(DMX_PSN.run_render):
             # we are already rendering
             pass
@@ -62,10 +63,11 @@ class DMX_PSN:
     def get_data(tracker_uuid):
         if tracker_uuid in DMX_PSN._data:
             return DMX_PSN._data[tracker_uuid]
+        return []
 
     @staticmethod
-    def set_data(tracker_uuid, data):
-        DMX_PSN._data[tracker_uuid] = data
+    def set_data(tracker_uuid, slot, data):
+        DMX_PSN._data[tracker_uuid][slot] = data
 
     @staticmethod
     def run_render():
