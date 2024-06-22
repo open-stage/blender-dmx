@@ -82,7 +82,7 @@ class DMX_Tracker(PropertyGroup):
     def add_tracker():
         dmx = bpy.context.scene.dmx
         new_tracker = dmx.trackers.add()
-        new_tracker["position"]=None
+        new_tracker["position"] = [[],] * 10 # hardcoded to 10 slots
         new_tracker.uuid = str(uuid.uuid4())
         new_id = len(dmx.trackers)
         new_tracker.name = generate_tracker_name(new_id)
@@ -115,8 +115,9 @@ class DMX_Tracker(PropertyGroup):
             for obj in fixture.objects:
                 if obj.name == "Target":
                     for constraint in obj.object.constraints:
-                        if constraint.target.get("uuid", None) == uuid:
-                            obj.object.constraints.remove(constraint)
+                        if constraint.target is not None:
+                            if constraint.target.get("uuid", None) == uuid:
+                                obj.object.constraints.remove(constraint)
 
         if tracker is not None:
             if tracker.collection is not None:
@@ -148,23 +149,25 @@ class DMX_Tracker(PropertyGroup):
 
     def render(self, current_frame = None):
         data = DMX_PSN.get_data(self.uuid)
-        if data is None:
-            return
-        if self["position"] is not None:
-            if list(self["position"]) == list(data):
+        for idx, slot_data in enumerate(data):
+            if idx > 10: # hardcoded number of PSN slots
                 return
-        x, y, z = data
-        self["position"] = list(data)
-        for obj in self.objects:
-            obj = obj.object
-            if x is not None:
-                obj.location.x = x
-            if y is not None:
-                obj.location.y = y
-            if z is not None:
-                obj.location.z = z
-            if current_frame:
-                obj.keyframe_insert(data_path="location", frame=current_frame)
+            if list(self["position"][idx]) == list(slot_data):
+                return
+
+            x, y, z = slot_data
+            self["position"][idx] = list(data)
+
+            for obj_idx, obj in enumerate(self.collection.objects):
+                if obj_idx == idx:
+                    if x is not None:
+                        obj.location.x = x
+                    if y is not None:
+                        obj.location.y = y
+                    if z is not None:
+                        obj.location.z = z
+                    if current_frame:
+                        obj.keyframe_insert(data_path="location", frame=current_frame)
 
 def generate_tracker_name(new_id):
     dmx = bpy.context.scene.dmx

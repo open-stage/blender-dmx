@@ -9,6 +9,7 @@ import bpy.utils.previews
 from bpy.props import (BoolProperty,
                        StringProperty,
                        PointerProperty,
+                       IntProperty,
                        CollectionProperty)
 
 from bpy.types import (PropertyGroup)
@@ -105,3 +106,4 @@ class DMX_TempData(PropertyGroup):
         update = onUpdateLoggingFilter)
 
     selected_tracker: StringProperty() # to pass data to fixture list
+    selected_tracker_index: IntProperty() # to pass data to fixture list

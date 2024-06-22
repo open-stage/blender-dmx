@@ -157,6 +157,8 @@ class DMX(PropertyGroup):
                 panels_dmx.DMX_OP_DMX_Tracker_Remove,
                 panels_dmx.DMX_PT_DMX_Trackers,
                 panels_dmx.DMX_OT_Tracker_Followers,
+                panels_dmx.DMX_OT_Tracker_Followers_Add_Target,
+                panels_dmx.DMX_OT_Tracker_Followers_Remove_Target,
                 panels_dmx.DMX_UL_Tracker_Followers,
                 panels_dmx.DMX_OP_Unlink_Fixture_Tracker,
                 panels_dmx.DMX_OP_Link_Fixture_Tracker,
@@ -312,7 +314,6 @@ class DMX(PropertyGroup):
 
 
     def get_dmx_universes(self, context):
-        #print(self, context)
         data = []
         for universe in self.universes:
             data.append((str(universe.id), universe.name, str(universe.input), "", universe.id))
