@@ -18,7 +18,9 @@
 from bpy.types import Panel
 
 from ...i18n import DMX_Lang
+
 _ = DMX_Lang._
+
 
 class DMX_PT_DMX_sACN(Panel):
     bl_label = _("sACN")
@@ -28,7 +30,7 @@ class DMX_PT_DMX_sACN(Panel):
     bl_region_type = "UI"
     bl_category = "DMX"
     bl_context = "objectmode"
-    bl_options = {'DEFAULT_CLOSED'}
+    bl_options = {"DEFAULT_CLOSED"}
 
     def draw(self, context):
         layout = self.layout
@@ -43,8 +45,7 @@ class DMX_PT_DMX_sACN(Panel):
 
         row = layout.row()
         row.prop(dmx, "sacn_enabled")
-        row.enabled = len(sacn_universes)>0
+        row.enabled = len(sacn_universes) > 0
         row = layout.row()
         row.label(text=_("sACN set for {} universe(s)").format(len(sacn_universes)))
         layout.label(text=_("Status") + ": " + dmx.sacn_status)
-

@@ -18,7 +18,9 @@
 from bpy.types import Panel
 
 from ...i18n import DMX_Lang
+
 _ = DMX_Lang._
+
 
 class DMX_PT_DMX_ArtNet(Panel):
     bl_label = _("Art-Net")
@@ -28,7 +30,7 @@ class DMX_PT_DMX_ArtNet(Panel):
     bl_region_type = "UI"
     bl_category = "DMX"
     bl_context = "objectmode"
-    bl_options = {'DEFAULT_CLOSED'}
+    bl_options = {"DEFAULT_CLOSED"}
 
     def draw(self, context):
         layout = self.layout
@@ -45,8 +47,7 @@ class DMX_PT_DMX_ArtNet(Panel):
 
         row = layout.row()
         row.prop(dmx, "artnet_enabled")
-        row.enabled = len(artnet_universes)>0
+        row.enabled = len(artnet_universes) > 0
         row = layout.row()
         row.label(text=_("Art-Net set for {} universe(s)").format(len(artnet_universes)))
-        layout.label(text=_("Status") + ": " + layout.enum_item_name(dmx, 'artnet_status', dmx.artnet_status))
-
+        layout.label(text=_("Status") + ": " + layout.enum_item_name(dmx, "artnet_status", dmx.artnet_status))

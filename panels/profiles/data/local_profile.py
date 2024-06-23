@@ -1,3 +1,20 @@
+#    Copyright vanous
+#
+#    This file is part of BlenderDMX.
+#
+#    BlenderDMX is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License as published by the Free
+#    Software Foundation, either version 3 of the License, or (at your option)
+#    any later version.
+#
+#    BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
+#    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+#    FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+#    more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program. If not, see <https://www.gnu.org/licenses/>.
+
 import bpy
 import os
 
@@ -6,15 +23,14 @@ from bpy.props import StringProperty, CollectionProperty, IntProperty
 from .... import pygdtf
 
 from ....i18n import DMX_Lang
+
 _ = DMX_Lang._
+
 
 class DMX_Fixtures_Local_ProfileMode(PropertyGroup):
     name: StringProperty(name=_("Name"), description=_("The name of the DMX profile."))
 
-    footprint: IntProperty(
-        name=_("Channel count"),
-        description=_("Number of channels")
-    )
+    footprint: IntProperty(name=_("Channel count"), description=_("Number of channels"))
 
 
 class DMX_Fixtures_Local_Profile(PropertyGroup):
@@ -37,7 +53,7 @@ class DMX_Fixtures_Local_Profile(PropertyGroup):
         return os.path.join(FILE_PATH, "..", "..", "..", "assets", "profiles")
 
     @staticmethod
-    def get_profile_list(show_errors = False):
+    def get_profile_list(show_errors=False):
         """List gdtf files in in profiles folder"""
 
         profiles_path = DMX_Fixtures_Local_Profile.get_profiles_path()
@@ -66,7 +82,7 @@ class DMX_Fixtures_Local_Profile(PropertyGroup):
         return profiles
 
     @staticmethod
-    def loadLocal(show_errors = False):
+    def loadLocal(show_errors=False):
         local_profiles = bpy.context.window_manager.dmx.imports.local_profiles
         local_profiles.clear()
         profiles = DMX_Fixtures_Local_Profile.get_profile_list(show_errors)

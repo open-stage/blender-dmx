@@ -15,19 +15,15 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
-import os
 import bpy
 from bpy.props import StringProperty, IntProperty
-from bpy.types import Menu, Operator, Panel, UIList
-from ...mvrx_protocol import DMX_MVR_X_Client
-from ...data import DMX_Data
-from ...logging import DMX_Log
-import uuid as py_uuid
-from datetime import datetime
+from bpy.types import Operator, Panel, UIList
 from ...tracker import DMX_Tracker
 
 from ...i18n import DMX_Lang
+
 _ = DMX_Lang._
+
 
 class DMX_OP_DMX_Tracker_Add(Operator):
     bl_label = _("Add Tracker")
@@ -38,6 +34,7 @@ class DMX_OP_DMX_Tracker_Add(Operator):
     def execute(self, context):
         DMX_Tracker.add_tracker()
         return {"FINISHED"}
+
 
 class DMX_OP_DMX_Tracker_Remove(Operator):
     bl_label = _("Remove Tracker")
@@ -52,12 +49,11 @@ class DMX_OP_DMX_Tracker_Remove(Operator):
         return {"FINISHED"}
 
 
-
 class DMX_UL_Tracker(UIList):
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname):
         ob = data
         icon = "FILE_VOLUME"
-        if self.layout_type in {'DEFAULT', 'COMPACT'}:
+        if self.layout_type in {"DEFAULT", "COMPACT"}:
             col = layout.column()
             col.ui_units_x = 3
             col = layout.column()
@@ -66,11 +62,9 @@ class DMX_UL_Tracker(UIList):
             col.prop(item, "enabled", text="")
             col = layout.column()
             col.operator("dmx.dmx_remove_tracker", text="", icon="TRASH").uuid = item.uuid
-        elif self.layout_type in {'GRID'}:
-            layout.alignment = 'CENTER'
+        elif self.layout_type in {"GRID"}:
+            layout.alignment = "CENTER"
             layout.label(text=str(item.id), icon=icon)
-
-
 
 
 class DMX_OP_Link_Fixture_Tracker(Operator):
@@ -100,10 +94,11 @@ class DMX_OP_Link_Fixture_Tracker(Operator):
                 if fixture.uuid == self.fixture_uuid:
                     for obj in fixture.objects:
                         if obj.name == "Target":
-                            constraint = obj.object.constraints.new(type='COPY_LOCATION')
+                            constraint = obj.object.constraints.new(type="COPY_LOCATION")
                             constraint.target = target
 
         return {"FINISHED"}
+
 
 class DMX_OP_Unlink_Fixture_Tracker(Operator):
     bl_label = _("Unlink Fixture from Tracker")
@@ -123,17 +118,14 @@ class DMX_OP_Unlink_Fixture_Tracker(Operator):
                 for obj in fixture.objects:
                     if obj.name == "Target":
                         for constraint in obj.object.constraints:
-                            if constraint.target != None:
+                            if constraint.target is not None:
                                 if constraint.target.get("uuid", None) == self.tracker_uuid:
                                     obj.object.constraints.remove(constraint)
-
 
         return {"FINISHED"}
 
 
-
 class DMX_UL_Tracker_Followers(UIList):
-
     tracker_uuid: StringProperty()
     tracker_index: IntProperty()
 
@@ -154,7 +146,7 @@ class DMX_UL_Tracker_Followers(UIList):
                         if const.target.get("uuid", None) == self.tracker_uuid:
                             linked = True
 
-        if self.layout_type in {'DEFAULT', 'COMPACT'}:
+        if self.layout_type in {"DEFAULT", "COMPACT"}:
             col = layout.column()
             col.ui_units_x = 3
             col = layout.column()
@@ -171,8 +163,8 @@ class DMX_UL_Tracker_Followers(UIList):
                 op.fixture_uuid = fixture.uuid
                 op.tracker_uuid = self.tracker_uuid
                 op.tracker_index = self.tracker_index
-        elif self.layout_type in {'GRID'}:
-            layout.alignment = 'CENTER'
+        elif self.layout_type in {"GRID"}:
+            layout.alignment = "CENTER"
             layout.label(text=item.name, icon=icon)
 
 
@@ -180,7 +172,7 @@ class DMX_OT_Tracker_Followers(Operator):
     bl_label = _("Tracker Followers")
     bl_idname = "dmx.psn_tracker_followers"
     bl_description = _("Link followers to a tracker")
-    bl_options = {'UNDO'}
+    bl_options = {"UNDO"}
 
     tracker_uuid: StringProperty()
     tracker_index: IntProperty()
@@ -194,13 +186,12 @@ class DMX_OT_Tracker_Followers(Operator):
         context.window_manager.dmx.selected_tracker_index = self.tracker_index
         layout.template_list("DMX_UL_Tracker_Followers", "", dmx, "fixtures", self, "fixture_i")
 
-
     def execute(self, context):
-        return {'FINISHED'}
-        return {'CANCELLED'}
+        return {"FINISHED"}
+        return {"CANCELLED"}
 
     def invoke(self, context, event):
-        #self.name = "Group " + str(len(context.scene.dmx.groups)+1)
+        # self.name = "Group " + str(len(context.scene.dmx.groups)+1)
         wm = context.window_manager
         return wm.invoke_props_dialog(self)
 
@@ -213,7 +204,7 @@ class DMX_PT_DMX_Trackers(Panel):
     bl_region_type = "UI"
     bl_category = "DMX"
     bl_context = "objectmode"
-    bl_options = {'DEFAULT_CLOSED'}
+    bl_options = {"DEFAULT_CLOSED"}
 
     def draw(self, context):
         layout = self.layout
@@ -221,17 +212,17 @@ class DMX_PT_DMX_Trackers(Panel):
         layout.operator("dmx.dmx_add_tracker", text="Add tracker", icon="PLUS")
         layout.template_list("DMX_UL_Tracker", "", dmx, "trackers", dmx, "trackers_i")
 
-        if (dmx.trackers_i < len(dmx.trackers)):
+        if dmx.trackers_i < len(dmx.trackers):
             tracker = dmx.trackers[dmx.trackers_i]
             layout.prop(tracker, "name")
             layout.prop(tracker, "ip_address")
             layout.prop(tracker, "ip_port")
             layout.prop(tracker, "enabled")
             add_trackers = True
-            for idx, obj  in enumerate(tracker.collection.objects):
+            for idx, obj in enumerate(tracker.collection.objects):
                 row = layout.row()
                 col = row.column()
-                op=col.operator("dmx.psn_tracker_followers", text=_(f"Link Followers to {obj.name}"), icon="LINKED")
+                op = col.operator("dmx.psn_tracker_followers", text=_(f"Link Followers to {obj.name}"), icon="LINKED")
                 op.tracker_uuid = tracker.uuid
                 op.tracker_index = idx
                 if len(tracker.collection.objects) > 1:
@@ -240,7 +231,7 @@ class DMX_PT_DMX_Trackers(Panel):
                     op.object_name = obj.name
                     op.tracker_uuid = tracker.uuid
 
-                if idx >= 9: # we support max 10 trackers, edit tracker.py and psn.py if more is needed
+                if idx >= 9:  # we support max 10 trackers, edit tracker.py and psn.py if more is needed
                     add_trackers = False
             row = layout.row()
             op = row.operator("dmx.psn_add_tracker_followers_target", text=_("Add Tracking Target"), icon="PLUS")
@@ -248,12 +239,11 @@ class DMX_PT_DMX_Trackers(Panel):
             row.enabled = add_trackers
 
 
-
 class DMX_OT_Tracker_Followers_Remove_Target(Operator):
     bl_label = _("Remove Followers Target")
     bl_idname = "dmx.psn_remove_tracker_followers_target"
     bl_description = _("Remove target")
-    bl_options = {'UNDO'}
+    bl_options = {"UNDO"}
 
     object_name: StringProperty()
     tracker_uuid: StringProperty()
@@ -268,11 +258,12 @@ class DMX_OT_Tracker_Followers_Remove_Target(Operator):
 
         return {"FINISHED"}
 
+
 class DMX_OT_Tracker_Followers_Add_Target(Operator):
     bl_label = _("Add Followers Target")
     bl_idname = "dmx.psn_add_tracker_followers_target"
     bl_description = _("Add target")
-    bl_options = {'UNDO'}
+    bl_options = {"UNDO"}
 
     tracker_uuid: StringProperty()
 
@@ -286,4 +277,3 @@ class DMX_OT_Tracker_Followers_Add_Target(Operator):
                     break
 
         return {"FINISHED"}
-

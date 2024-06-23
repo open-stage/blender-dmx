@@ -1,3 +1,20 @@
+#    Copyright vanous
+#
+#    This file is part of BlenderDMX.
+#
+#    BlenderDMX is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License as published by the Free
+#    Software Foundation, either version 3 of the License, or (at your option)
+#    any later version.
+#
+#    BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
+#    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+#    FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+#    more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program. If not, see <https://www.gnu.org/licenses/>.
+
 import bpy
 from . import pypsn as pypsn
 from .logging import DMX_Log
@@ -33,7 +50,9 @@ class DMX_PSN:
         DMX_PSN._instances[uuid] = DMX_PSN(None, tracker.ip_address, tracker.ip_port)
         DMX_PSN._instances[uuid].receiver.callback = partial(DMX_PSN.callback, tracker=tracker)
         DMX_PSN._instances[uuid].receiver.start()
-        DMX_PSN._data[uuid] = [[],] * 10 # hardcoded to 10 slots
+        DMX_PSN._data[uuid] = [
+            [],
+        ] * 10  # hardcoded to 10 slots
         if bpy.app.timers.is_registered(DMX_PSN.run_render):
             # we are already rendering
             pass

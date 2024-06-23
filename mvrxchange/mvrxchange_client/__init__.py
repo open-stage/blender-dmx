@@ -1,9 +1,23 @@
-#!/bin/env python3
+#    Copyright vanous
+#
+#    This file is part of BlenderDMX.
+#
+#    BlenderDMX is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License as published by the Free
+#    Software Foundation, either version 3 of the License, or (at your option)
+#    any later version.
+#
+#    BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
+#    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+#    FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+#    more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import socket
 import json
 from threading import Thread
-import struct
 from queue import Queue
 import time
 import selectors
@@ -65,7 +79,7 @@ class client(Thread):
     def request_file(self, commit, path):
         self.filepath = path
         self.commit = commit
-        if commit.self_requested: # we need to provide empty UUID in this case
+        if commit.self_requested:  # we need to provide empty UUID in this case
             commit_uuid = ""
         else:
             commit_uuid = commit.commit_uuid

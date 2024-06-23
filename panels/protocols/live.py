@@ -15,7 +15,7 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
-from bpy.types import Menu, Operator, Panel, UIList
+from bpy.types import Panel, UIList
 from ...data import DMX_Data
 
 from ...i18n import DMX_Lang
