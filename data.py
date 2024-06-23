@@ -97,6 +97,15 @@ class DMX_Data():
                 dmx.dmx_values[addr-1].channel=val
         DMX_Data._universes[universe][addr-1] = val
 
+        # LiveDMX view
+        if DMX_Data._dmx is not None:
+            dmx = bpy.context.scene.dmx # ...or maybe it prevents using this call before the class is ready?
+            selected_live_dmx_universe = dmx.get_selected_live_dmx_universe()
+            if selected_live_dmx_universe is None:  # this should not happen
+                raise ValueError("Missing selected universe, as if DMX base class is empty...")
+            if selected_live_dmx_universe.input == "BLENDERDMX" and selected_live_dmx_universe.id == universe:
+                DMX_Data._live_view_data = DMX_Data._universes[universe]
+
     @staticmethod
     def set_virtual(fixture, attribute, value):
         """Set value of virtual channel for given fixture"""
