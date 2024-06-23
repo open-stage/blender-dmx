@@ -130,7 +130,7 @@ def join_multicast_windows(MCAST_GRP, MCAST_PORT, if_ip):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.setsockopt(
-        socket.SOL_IP,
+        socket.IPPROTO_IP,
         socket.IP_ADD_MEMBERSHIP,
         socket.inet_aton(MCAST_GRP) + socket.inet_aton(if_ip),
     )
@@ -150,7 +150,7 @@ def join_multicast_posix(MCAST_GRP, MCAST_PORT, if_ip):
     sock.bind((MCAST_GRP, MCAST_PORT))
     sock.setsockopt(socket.SOL_IP, socket.IP_MULTICAST_IF, socket.inet_aton(if_ip))
     sock.setsockopt(
-        socket.SOL_IP,
+        socket.IPPROTO_IP,
         socket.IP_ADD_MEMBERSHIP,
         socket.inet_aton(MCAST_GRP) + socket.inet_aton(if_ip),
     )
@@ -170,7 +170,6 @@ def determine_os():
 
 class receiver(Thread):
     def __init__(self, callback, ip_addr="0.0.0.0", mcast_port=56565, timeout=2):
-
         Thread.__init__(self)
         self.callback = callback
         self.running = True
@@ -262,9 +261,7 @@ def parse_data(buffer):
 
 
 def parse_header(buffer):
-    timestamp, version_high, version_low, frame_id, packet_count = unpack(
-        "<QBBBB", buffer
-    )
+    timestamp, version_high, version_low, frame_id, packet_count = unpack("<QBBBB", buffer)
     info = psn_info(timestamp, version_high, version_low, frame_id, packet_count)
     return info
 
