@@ -1,9 +1,20 @@
+#    Copyright Hugo Aboud, vanous
 #
-#   BlendexDMX > Material
-#   Methods to create special materials (such as the default light emitter)
+#    This file is part of BlenderDMX.
 #
-#   http://www.github.com/open-stage/BlenderDMX
+#    BlenderDMX is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License as published by the Free
+#    Software Foundation, either version 3 of the License, or (at your option)
+#    any later version.
 #
+#    BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
+#    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+#    FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+#    more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program. If not, see <https://www.gnu.org/licenses/>.
+
 
 import bpy
 from .logging import DMX_Log
@@ -67,15 +78,15 @@ def getVolumeScatterMaterial():
                 print("INFO", node)
 
     volume_scatter = material.node_tree.nodes.new(SHADER_NODE_VOLUMESCATTER)
-    volume_scatter.name="Volume Scatter"
+    volume_scatter.name = "Volume Scatter"
     color_ramp = material.node_tree.nodes.new(SHADER_NODE_COLOR_RAMP)
     color_ramp.name = "Color Ramp"
     noise_texture = material.node_tree.nodes.new(SHADER_NODE_NOISE_TEXTURE)
     noise_texture.name = "Noise Texture"
     material.node_tree.links.new(material.node_tree.nodes[MATERIAL_OUTPUT].inputs[1], volume_scatter.outputs[0])
-    material.node_tree.links.new(noise_texture.outputs[0],color_ramp.inputs[0])
+    material.node_tree.links.new(noise_texture.outputs[0], color_ramp.inputs[0])
     material.node_tree.links.new(color_ramp.outputs[0], volume_scatter.inputs[0])
-    volume_scatter.inputs['Density'].default_value = 0.1
+    volume_scatter.inputs["Density"].default_value = 0.1
     material.node_tree.nodes["Color Ramp"].color_ramp.elements[0].position = 0.444
     material.node_tree.nodes["Color Ramp"].color_ramp.elements[1].position = 1
     return material
@@ -107,6 +118,7 @@ def get_gobo_material(name):
     # material.node_tree.links.new(bsdf.outputs[0], mix.inputs[1])
     return material
 
+
 def set_light_nodes(light):
     light_obj = light.object
     light_obj.data.use_nodes = True
@@ -114,11 +126,12 @@ def set_light_nodes(light):
     image = light_obj.data.node_tree.nodes.new(SHADER_NODE_TEX_IMAGE)
     image.name = "Image Texture"
     mix = light_obj.data.node_tree.nodes.new(SHADER_NODE_MIX)
-    mix.data_type="RGBA"
+    mix.data_type = "RGBA"
     mix.name = "Mix"
     mix.inputs[0].default_value = 1
     light_obj.data.node_tree.links.new(mix.outputs["Result"], emission.inputs[0])
     light_obj.data.node_tree.links.new(image.outputs[0], mix.inputs["A"])
+
 
 def get_ies_node(light_obj):
     emission = light_obj.data.node_tree.nodes.get(EMISSION)
@@ -127,230 +140,231 @@ def get_ies_node(light_obj):
     light_obj.data.node_tree.links.new(ies.outputs[0], emission.inputs[1])
     return ies
 
+
 def getGeometryNodes(obj):
     name = obj.name
-    beam_diameter = obj.get("beam_diameter", 0.005) #m
+    beam_diameter = obj.get("beam_diameter", 0.005)  # m
     # initialize geometry_nodes node group
     geometry_nodes = bpy.data.node_groups.new(type="GeometryNodeTree", name=name)
     geometry_nodes.is_modifier = True
-    #initialize geometry_nodes nodes
-    #geometry_nodes interface
-    #Socket Geometry
-    geometry_socket = geometry_nodes.interface.new_socket(name = "Geometry", in_out='OUTPUT', socket_type = 'NodeSocketGeometry')
-    geometry_socket.attribute_domain = 'POINT'
+    # initialize geometry_nodes nodes
+    # geometry_nodes interface
+    # Socket Geometry
+    geometry_socket = geometry_nodes.interface.new_socket(name="Geometry", in_out="OUTPUT", socket_type="NodeSocketGeometry")
+    geometry_socket.attribute_domain = "POINT"
 
-    #Socket Geometry
-    geometry_socket_1 = geometry_nodes.interface.new_socket(name = "Geometry", in_out='INPUT', socket_type = 'NodeSocketGeometry')
-    geometry_socket_1.attribute_domain = 'POINT'
+    # Socket Geometry
+    geometry_socket_1 = geometry_nodes.interface.new_socket(name="Geometry", in_out="INPUT", socket_type="NodeSocketGeometry")
+    geometry_socket_1.attribute_domain = "POINT"
 
-    #Socket Material
-    #material_socket = geometry_nodes.interface.new_socket(name = "Material", in_out='INPUT', socket_type = 'NodeSocketMaterial')
-    #material_socket.attribute_domain = 'POINT'
+    # Socket Material
+    # material_socket = geometry_nodes.interface.new_socket(name = "Material", in_out='INPUT', socket_type = 'NodeSocketMaterial')
+    # material_socket.attribute_domain = 'POINT'
 
-    #node Realize Instances
+    # node Realize Instances
     realize_instances = geometry_nodes.nodes.new("GeometryNodeRealizeInstances")
     realize_instances.name = "Realize Instances"
 
-    #node Vector
+    # node Vector
     vector = geometry_nodes.nodes.new("FunctionNodeInputVector")
     vector.name = "Vector"
-    vector.vector = (0,0,-1)
+    vector.vector = (0, 0, -1)
 
-    #node Set Position
+    # node Set Position
     set_position = geometry_nodes.nodes.new("GeometryNodeSetPosition")
     set_position.name = "Set Position"
-    #Offset
+    # Offset
     set_position.inputs[3].default_value = (0.0, 0.0, 0.0)
 
-    #node Collection Info
+    # node Collection Info
     collection_info = geometry_nodes.nodes.new("GeometryNodeCollectionInfo")
     collection_info.name = "Collection Info"
-    collection_info.transform_space = 'RELATIVE'
+    collection_info.transform_space = "RELATIVE"
     collection = bpy.context.window_manager.dmx.collections_list
     if collection and collection.name in bpy.data.collections:
         collection_info.inputs[0].default_value = collection
 
-    #Separate Children
+    # Separate Children
     collection_info.inputs[1].default_value = False
-    #Reset Children
+    # Reset Children
     collection_info.inputs[2].default_value = False
 
-    #node Transform Geometry
+    # node Transform Geometry
     transform_geometry = geometry_nodes.nodes.new("GeometryNodeTransform")
     transform_geometry.name = "Transform Geometry"
-    #Translation
+    # Translation
     transform_geometry.inputs[1].default_value = (0.0, 0.0, 0.0)
-    #Scale
+    # Scale
     transform_geometry.inputs[3].default_value = (1.0, 1.0, 1.0)
 
-    #node Group Input
+    # node Group Input
     group_input = geometry_nodes.nodes.new("NodeGroupInput")
     group_input.name = "Group Input"
 
-    #node Curve Line
+    # node Curve Line
     curve_line = geometry_nodes.nodes.new("GeometryNodeCurvePrimitiveLine")
     curve_line.name = "Curve Line"
-    curve_line.mode = 'POINTS'
-    #Start
+    curve_line.mode = "POINTS"
+    # Start
     curve_line.inputs[0].default_value = (0.0, 0.0, 0)
-    #End
+    # End
     curve_line.inputs[1].default_value = (0.0, 0.0, 0)
-    #Direction
+    # Direction
     curve_line.inputs[2].default_value = (0.0, 0.0, 0)
-    #Length
+    # Length
     curve_line.inputs[3].default_value = 0
 
-    #node Group Output
+    # node Group Output
     group_output = geometry_nodes.nodes.new("NodeGroupOutput")
     group_output.name = "Group Output"
     group_output.is_active_output = True
 
-    #node Transform Geometry.001
+    # node Transform Geometry.001
     transform_geometry_001 = geometry_nodes.nodes.new("GeometryNodeTransform")
     transform_geometry_001.name = "Transform Geometry.001"
-    #Translation
+    # Translation
     transform_geometry_001.inputs[1].default_value = (0.0, 0.0, 0.0)
-    #Scale
+    # Scale
     transform_geometry_001.inputs[3].default_value = (1.0, 1.0, 1.0)
 
-    #node Join Geometry
+    # node Join Geometry
     join_geometry = geometry_nodes.nodes.new("GeometryNodeJoinGeometry")
     join_geometry.name = "Join Geometry"
 
-    #node Raycast
+    # node Raycast
     raycast = geometry_nodes.nodes.new("GeometryNodeRaycast")
     raycast.name = "Raycast"
-    raycast.data_type = 'FLOAT'
-    raycast.mapping = 'INTERPOLATED'
-    #Attribute
-    #raycast.inputs[1].default_value = 0.0
-    #Source Position
-    #raycast.inputs[2].default_value = (0.0, 0.0, 0.0)
-    #Ray Length
-    #raycast.inputs[4].default_value = 100.0
+    raycast.data_type = "FLOAT"
+    raycast.mapping = "INTERPOLATED"
+    # Attribute
+    # raycast.inputs[1].default_value = 0.0
+    # Source Position
+    # raycast.inputs[2].default_value = (0.0, 0.0, 0.0)
+    # Ray Length
+    # raycast.inputs[4].default_value = 100.0
 
-    #node Index
+    # node Index
     index = geometry_nodes.nodes.new("GeometryNodeInputIndex")
     index.name = "Index"
 
-    #node Compare
+    # node Compare
     compare = geometry_nodes.nodes.new("FunctionNodeCompare")
     compare.name = "Compare"
-    compare.data_type = 'FLOAT'
-    compare.mode = 'ELEMENT'
-    compare.operation = 'EQUAL'
-    #B
+    compare.data_type = "FLOAT"
+    compare.mode = "ELEMENT"
+    compare.operation = "EQUAL"
+    # B
     compare.inputs[1].default_value = 0.0
-    #A_INT
+    # A_INT
     compare.inputs[2].default_value = 0
-    #B_INT
+    # B_INT
     compare.inputs[3].default_value = 0
-    #A_VEC3
+    # A_VEC3
     compare.inputs[4].default_value = (0.0, 0.0, 0.0)
-    #B_VEC3
+    # B_VEC3
     compare.inputs[5].default_value = (0.0, 0.0, 0.0)
-    #A_COL
+    # A_COL
     compare.inputs[6].default_value = (0.0, 0.0, 0.0, 0.0)
-    #B_COL
+    # B_COL
     compare.inputs[7].default_value = (0.0, 0.0, 0.0, 0.0)
-    #A_STR
+    # A_STR
     compare.inputs[8].default_value = ""
-    #B_STR
+    # B_STR
     compare.inputs[9].default_value = ""
-    #C
+    # C
     compare.inputs[10].default_value = 0.8999999761581421
-    #Angle
+    # Angle
     compare.inputs[11].default_value = 0.08726649731397629
-    #Epsilon
+    # Epsilon
     compare.inputs[12].default_value = 0.0010000000474974513
 
-    #node Align Euler to Vector
+    # node Align Euler to Vector
     align_euler_to_vector = geometry_nodes.nodes.new("FunctionNodeAlignEulerToVector")
     align_euler_to_vector.name = "Align Euler to Vector"
-    align_euler_to_vector.axis = 'Z'
-    align_euler_to_vector.pivot_axis = 'AUTO'
-    #Rotation
+    align_euler_to_vector.axis = "Z"
+    align_euler_to_vector.pivot_axis = "AUTO"
+    # Rotation
     align_euler_to_vector.inputs[0].default_value = (0.0, 0.0, 0.0)
-    #Factor
+    # Factor
     align_euler_to_vector.inputs[1].default_value = 1.0
 
-    #node Curve to Mesh
+    # node Curve to Mesh
     curve_to_mesh = geometry_nodes.nodes.new("GeometryNodeCurveToMesh")
     curve_to_mesh.name = "Curve to Mesh"
-    #Fill Caps
+    # Fill Caps
     curve_to_mesh.inputs[2].default_value = False
 
-    #node Curve Circle
+    # node Curve Circle
     curve_circle = geometry_nodes.nodes.new("GeometryNodeCurvePrimitiveCircle")
     curve_circle.name = "Curve Circle"
-    curve_circle.mode = 'RADIUS'
-    #Resolution
+    curve_circle.mode = "RADIUS"
+    # Resolution
     curve_circle.inputs[0].default_value = 32
-    #Point 1
+    # Point 1
     curve_circle.inputs[1].default_value = (-1.0, 0.0, 0.0)
-    #Point 2
+    # Point 2
     curve_circle.inputs[2].default_value = (0.0, 1.0, 0.0)
-    #Point 3
+    # Point 3
     curve_circle.inputs[3].default_value = (1.0, 0.0, 0.0)
-    #Radius
+    # Radius
     curve_circle.inputs[4].default_value = beam_diameter
 
-    #node Resample Curve
+    # node Resample Curve
     resample_curve = geometry_nodes.nodes.new("GeometryNodeResampleCurve")
     resample_curve.name = "Resample Curve"
-    resample_curve.mode = 'LENGTH'
-    #Selection
+    resample_curve.mode = "LENGTH"
+    # Selection
     resample_curve.inputs[1].default_value = True
-    #Count
+    # Count
     resample_curve.inputs[2].default_value = 200
-    #Length
+    # Length
     resample_curve.inputs[3].default_value = 0.020000000298023224
 
-    #node Set Curve Radius
+    # node Set Curve Radius
     set_curve_radius = geometry_nodes.nodes.new("GeometryNodeSetCurveRadius")
     set_curve_radius.name = "Set Curve Radius"
-    #Selection
+    # Selection
     set_curve_radius.inputs[1].default_value = True
 
-    #node Random Value
+    # node Random Value
     random_value = geometry_nodes.nodes.new("FunctionNodeRandomValue")
     random_value.name = "Random Value"
-    random_value.data_type = 'FLOAT'
-    #Min
+    random_value.data_type = "FLOAT"
+    # Min
     random_value.inputs[0].default_value = (0.0, 0.0, 0.0)
-    #Max
+    # Max
     random_value.inputs[1].default_value = (1.0, 1.0, 1.0)
-    #Min_001
+    # Min_001
     random_value.inputs[2].default_value = 0.75
-    #Max_001
+    # Max_001
     random_value.inputs[3].default_value = 1.0
-    #Min_002
+    # Min_002
     random_value.inputs[4].default_value = 0
-    #Max_002
+    # Max_002
     random_value.inputs[5].default_value = 100
-    #Probability
+    # Probability
     random_value.inputs[6].default_value = 0.5
-    #ID
+    # ID
     random_value.inputs[7].default_value = 0
 
-    #node Scene Time
+    # node Scene Time
     scene_time = geometry_nodes.nodes.new("GeometryNodeInputSceneTime")
     scene_time.name = "Scene Time"
 
-    #node Set Material
+    # node Set Material
     set_material = geometry_nodes.nodes.new("GeometryNodeSetMaterial")
     set_material.name = "Set Material"
-    #Selection
+    # Selection
     set_material.inputs[1].default_value = True
-    #set_material.inputs[2].default_value = bpy.data.materials[name]
-    #node Set Material.001
+    # set_material.inputs[2].default_value = bpy.data.materials[name]
+    # node Set Material.001
     set_material_001 = geometry_nodes.nodes.new("GeometryNodeSetMaterial")
     set_material_001.name = "Set Material.001"
-    #Selection
+    # Selection
     set_material_001.inputs[1].default_value = True
     set_material_001.inputs[2].default_value = bpy.data.materials[name]
 
-    #Set locations
+    # Set locations
     realize_instances.location = (648.1306762695312, -248.14083862304688)
     vector.location = (-344.9915771484375, -388.932373046875)
     set_position.location = (342.9999694824219, 16.370197296142578)
@@ -374,7 +388,7 @@ def getGeometryNodes(obj):
     set_material.location = (1252.5028076171875, 290.9101867675781)
     set_material_001.location = (1300.63720703125, 151.0940704345703)
 
-    #Set dimensions
+    # Set dimensions
     realize_instances.width, realize_instances.height = 140.0, 100.0
     vector.width, vector.height = 140.0, 100.0
     set_position.width, set_position.height = 140.0, 100.0
@@ -398,57 +412,55 @@ def getGeometryNodes(obj):
     set_material.width, set_material.height = 140.0, 100.0
     set_material_001.width, set_material_001.height = 140.0, 100.0
 
-    #initialize geometry_nodes links
-    #vector.Vector -> align_euler_to_vector.Vector
+    # initialize geometry_nodes links
+    # vector.Vector -> align_euler_to_vector.Vector
     geometry_nodes.links.new(vector.outputs[0], align_euler_to_vector.inputs[2])
-    #align_euler_to_vector.Rotation -> transform_geometry.Rotation
+    # align_euler_to_vector.Rotation -> transform_geometry.Rotation
     geometry_nodes.links.new(align_euler_to_vector.outputs[0], transform_geometry.inputs[2])
-    #collection_info.Instances -> realize_instances.Geometry
+    # collection_info.Instances -> realize_instances.Geometry
     geometry_nodes.links.new(collection_info.outputs[0], realize_instances.inputs[0])
-    #realize_instances.Geometry -> raycast.Target Geometry
+    # realize_instances.Geometry -> raycast.Target Geometry
     geometry_nodes.links.new(realize_instances.outputs[0], raycast.inputs[0])
-    #vector.Vector -> raycast.Ray Direction
+    # vector.Vector -> raycast.Ray Direction
     geometry_nodes.links.new(vector.outputs[0], raycast.inputs[3])
-    #transform_geometry.Geometry -> set_position.Geometry
+    # transform_geometry.Geometry -> set_position.Geometry
     geometry_nodes.links.new(transform_geometry.outputs[0], set_position.inputs[0])
-    #raycast.Hit Position -> set_position.Position
+    # raycast.Hit Position -> set_position.Position
     geometry_nodes.links.new(raycast.outputs[1], set_position.inputs[2])
-    #group_input.Geometry -> transform_geometry_001.Geometry
+    # group_input.Geometry -> transform_geometry_001.Geometry
     geometry_nodes.links.new(group_input.outputs[0], transform_geometry_001.inputs[0])
-    #curve_line.Curve -> transform_geometry.Geometry
+    # curve_line.Curve -> transform_geometry.Geometry
     geometry_nodes.links.new(curve_line.outputs[0], transform_geometry.inputs[0])
-    #set_material.Geometry -> join_geometry.Geometry
+    # set_material.Geometry -> join_geometry.Geometry
     geometry_nodes.links.new(set_material.outputs[0], join_geometry.inputs[0])
-    #set_material_001.Geometry -> join_geometry.Geometry
+    # set_material_001.Geometry -> join_geometry.Geometry
     geometry_nodes.links.new(set_material_001.outputs[0], join_geometry.inputs[0])
-    #index.Index -> compare.A
+    # index.Index -> compare.A
     geometry_nodes.links.new(index.outputs[0], compare.inputs[0])
-    #compare.Result -> set_position.Selection
+    # compare.Result -> set_position.Selection
     geometry_nodes.links.new(compare.outputs[0], set_position.inputs[1])
-    #align_euler_to_vector.Rotation -> transform_geometry_001.Rotation
+    # align_euler_to_vector.Rotation -> transform_geometry_001.Rotation
     geometry_nodes.links.new(align_euler_to_vector.outputs[0], transform_geometry_001.inputs[2])
-    #join_geometry.Geometry -> group_output.Geometry
+    # join_geometry.Geometry -> group_output.Geometry
     geometry_nodes.links.new(join_geometry.outputs[0], group_output.inputs[0])
-    #set_curve_radius.Curve -> curve_to_mesh.Curve
+    # set_curve_radius.Curve -> curve_to_mesh.Curve
     geometry_nodes.links.new(set_curve_radius.outputs[0], curve_to_mesh.inputs[0])
-    #curve_circle.Curve -> curve_to_mesh.Profile Curve
+    # curve_circle.Curve -> curve_to_mesh.Profile Curve
     geometry_nodes.links.new(curve_circle.outputs[0], curve_to_mesh.inputs[1])
-    #set_position.Geometry -> resample_curve.Curve
+    # set_position.Geometry -> resample_curve.Curve
     geometry_nodes.links.new(set_position.outputs[0], resample_curve.inputs[0])
-    #resample_curve.Curve -> set_curve_radius.Curve
+    # resample_curve.Curve -> set_curve_radius.Curve
     geometry_nodes.links.new(resample_curve.outputs[0], set_curve_radius.inputs[0])
-    #random_value.Value -> set_curve_radius.Radius
+    # random_value.Value -> set_curve_radius.Radius
     geometry_nodes.links.new(random_value.outputs[1], set_curve_radius.inputs[2])
-    #scene_time.Frame -> random_value.Seed
+    # scene_time.Frame -> random_value.Seed
     geometry_nodes.links.new(scene_time.outputs[1], random_value.inputs[8])
-    #transform_geometry_001.Geometry -> set_material.Geometry
+    # transform_geometry_001.Geometry -> set_material.Geometry
     geometry_nodes.links.new(transform_geometry_001.outputs[0], set_material.inputs[0])
-    #group_input.Material -> set_material.Material
-    #geometry_nodes.links.new(group_input.outputs[1], set_material.inputs[2])
-    #curve_to_mesh.Mesh -> set_material_001.Geometry
+    # group_input.Material -> set_material.Material
+    # geometry_nodes.links.new(group_input.outputs[1], set_material.inputs[2])
+    # curve_to_mesh.Mesh -> set_material_001.Geometry
     geometry_nodes.links.new(curve_to_mesh.outputs[0], set_material_001.inputs[0])
-    #group_input.Material -> set_material_001.Material
-    #geometry_nodes.links.new(group_input.outputs[1], set_material_001.inputs[2])
+    # group_input.Material -> set_material_001.Material
+    # geometry_nodes.links.new(group_input.outputs[1], set_material_001.inputs[2])
     return geometry_nodes
-
-

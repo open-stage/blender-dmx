@@ -1,12 +1,27 @@
+#    Copyright vanous
+#
+#    This file is part of BlenderDMX.
+#
+#    BlenderDMX is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License as published by the Free
+#    Software Foundation, either version 3 of the License, or (at your option)
+#    any later version.
+#
+#    BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
+#    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+#    FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+#    more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program. If not, see <https://www.gnu.org/licenses/>.
+
 import os
 import socket
 import selectors
 import types
 import json
-import struct
 from threading import Thread
 from uuid import uuid4
-import time
 from datetime import datetime
 from ...mvrxchange.mvr_message import mvr_message
 from ...logging import DMX_Log
@@ -106,7 +121,7 @@ class server(Thread):
         DMX_Log.log.debug(f"Json message {json_data} {data}")
         self.callback(json_data, data)
         if json_data["Type"] == "MVR_JOIN":
-            data.outb.append(mvr_message.create_message("MVR_JOIN_RET", ok="false", nok_reason="Not accepting connections at this point", uuid = self.uuid))
+            data.outb.append(mvr_message.create_message("MVR_JOIN_RET", ok="false", nok_reason="Not accepting connections at this point", uuid=self.uuid))
             # data.outb.append(mvr_message.create_message("MVR_JOIN_RET"))
         if json_data["Type"] == "MVR_LEAVE":
             data.outb.append(mvr_message.create_message("MVR_LEAVE_RET", uuid=self.uuid))

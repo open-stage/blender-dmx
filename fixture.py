@@ -1,23 +1,33 @@
+#    Copyright Hugo Aboud, vanous
 #
-#   BlendexDMX > Fixture
-#   Base class for a lighting fixture
+#    This file is part of BlenderDMX.
 #
-#   http://www.github.com/open-stage/BlenderDMX
+#    BlenderDMX is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License as published by the Free
+#    Software Foundation, either version 3 of the License, or (at your option)
+#    any later version.
 #
+#    BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
+#    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+#    FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+#    more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program. If not, see <https://www.gnu.org/licenses/>.
+
 
 import traceback
 import bpy
 import math
 import mathutils
-import uuid
 import random
 import os
+import uuid
 
 from .material import getEmitterMaterial, get_gobo_material, set_light_nodes, get_ies_node, getGeometryNodes
 from .model import DMX_Model
 from .logging import DMX_Log
 
-from .param import DMX_Param, DMX_Model_Param
 from . import pygdtf
 
 from .gdtf import DMX_GDTF
@@ -25,7 +35,6 @@ from .data import DMX_Data
 from .util import cmy_to_rgb, add_rgb
 from .osc_utils import DMX_OSC_Handlers
 from bpy.props import (IntProperty,
-                       FloatProperty,
                        BoolProperty,
                        FloatVectorProperty,
                        PointerProperty,
@@ -683,7 +692,7 @@ class DMX_Fixture(PropertyGroup):
             if not all([c == 1.0 for c in self.gel_color[:3]]) or colorwheel_color is not None: #gel color is set and has priority or there is a color wheel
                 self.updateRGB([255, 255, 255], None, colorwheel_color, current_frame)
 
-        if (cmy[0] != None and cmy[1] != None and cmy[2] != None):
+        if (cmy[0] is not None and cmy[1] is not None and cmy[2] is not None):
             self.updateCMY(cmy, colorwheel_color, current_frame)
 
 
@@ -712,7 +721,7 @@ class DMX_Fixture(PropertyGroup):
                 tilt = (tilt_vals[0]/(tilt_vals[1]*127.0)-1)*270*(math.pi/360)
                 self.updatePTDirectly(geometry, "tilt", tilt, current_frame)
 
-        if (zoom != None):
+        if (zoom is not None):
             self.updateZoom(zoom, current_frame)
 
         if gobo1[0] is not None:

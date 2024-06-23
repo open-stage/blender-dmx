@@ -1,3 +1,21 @@
+#    Copyright vanous
+#
+#    This file is part of BlenderDMX.
+#
+#    BlenderDMX is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License as published by the Free
+#    Software Foundation, either version 3 of the License, or (at your option)
+#    any later version.
+#
+#    BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
+#    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+#    FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+#    more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program. If not, see <https://www.gnu.org/licenses/>.
+
+
 import bpy
 from .zeroconf import IPVersion, ServiceBrowser, ServiceStateChange, Zeroconf, ServiceInfo, get_all_addresses
 
@@ -5,11 +23,9 @@ from .logging import DMX_Log
 from typing import cast
 import uuid as pyuuid
 import socket
-import time
-
-import pathlib
 
 # mdns (zeroconf) instances for discover and for mdns server
+
 
 class DMX_Zeroconf:
     _instance = None
@@ -54,7 +70,7 @@ class DMX_Zeroconf:
         if state_change is ServiceStateChange.Added:
             DMX_Zeroconf._instance._dmx.createMVR_Client(station_name, station_uuid, service_name, ip_address, int(port))
         elif state_change is ServiceStateChange.Updated:
-            DMX_Zeroconf._instance._dmx.updateMVR_Client(station_uuid, station_name, service_name,ip_address, int(port))
+            DMX_Zeroconf._instance._dmx.updateMVR_Client(station_uuid, station_name, service_name, ip_address, int(port))
         else:  # removed
             DMX_Zeroconf._instance._dmx.removeMVR_Client(station_uuid, station_name, service_name, ip_address, int(port))
 
@@ -107,4 +123,3 @@ class DMX_Zeroconf:
         if DMX_Zeroconf._instance:
             if DMX_Zeroconf._instance.info:
                 DMX_Zeroconf._instance.zeroconf.unregister_service(DMX_Zeroconf._instance.info)
-

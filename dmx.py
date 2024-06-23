@@ -1,3 +1,21 @@
+#    Copyright Hugo Aboud, vanous
+#
+#    This file is part of BlenderDMX.
+#
+#    BlenderDMX is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License as published by the Free
+#    Software Foundation, either version 3 of the License, or (at your option)
+#    any later version.
+#
+#    BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
+#    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+#    FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+#    more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program. If not, see <https://www.gnu.org/licenses/>.
+
+
 import sys
 import bpy
 import os
@@ -12,6 +30,7 @@ import traceback
 from .pymvr import GeneralSceneDescription
 from .mvr import extract_mvr_textures, process_mvr_child_list
 
+from . import param as param
 from . import fixture as fixture
 from . import tracker as tracker
 from .universe import DMX_Universe
@@ -71,8 +90,8 @@ class DMX(PropertyGroup):
     # Base classes to be registered
     # These should be registered before the DMX class, so it can register properly
 
-    classes_base = (fixture.DMX_Param,
-                    fixture.DMX_Model_Param,
+    classes_base = (param.DMX_Param,
+                    param.DMX_Model_Param,
                     fixture.DMX_Fixture_Object,
                     fixture.DMX_Fixture_Image,
                     fixture.DMX_Emitter_Material,

@@ -24,6 +24,7 @@ import uuid as py_uuid
 from datetime import datetime
 
 from ...i18n import DMX_Lang
+
 _ = DMX_Lang._
 
 
@@ -48,14 +49,14 @@ class DMX_OP_MVR_Request(Operator):
 
     def execute(self, context):
         uuid = str(py_uuid.uuid4())
-        mvr_commit = {"FileUUID": uuid, "StationUUID": self.station_uuid,
-                      "Comment": datetime.now().strftime("%H:%M:%S %B %d, %Y"), "FileSize": 0}
+        mvr_commit = {"FileUUID": uuid, "StationUUID": self.station_uuid, "Comment": datetime.now().strftime("%H:%M:%S %B %d, %Y"), "FileSize": 0}
 
         last_commit = DMX_MVR_X_Client.create_self_request_commit(mvr_commit)
         if last_commit:
             DMX_MVR_X_Client.request_file(last_commit)
 
         return {"FINISHED"}
+
 
 class DMX_OP_MVR_Import(Operator):
     bl_label = _("Import")
@@ -84,6 +85,7 @@ class DMX_OP_MVR_Import(Operator):
                 break
         return {"FINISHED"}
 
+
 class DMX_OP_MVR_Download(Operator):
     bl_label = _("Download")
     bl_description = _("Download commit")
@@ -111,21 +113,21 @@ class DMX_OP_MVR_Download(Operator):
 
         return {"FINISHED"}
 
+
 class DMX_UL_MVR_Commit(UIList):
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
         scene = context.scene
         dmx = scene.dmx
         icon = "GROUP_VERTEX"
-        #layout.context_pointer_set("mvr_xchange_clients", item)
+        # layout.context_pointer_set("mvr_xchange_clients", item)
         col = layout.column()
-        col.label(text = f"{item.comment}", icon="CHECKBOX_HLT" if item.timestamp_saved else "CHECKBOX_DEHLT")
+        col.label(text=f"{item.comment}", icon="CHECKBOX_HLT" if item.timestamp_saved else "CHECKBOX_DEHLT")
         col = layout.column()
         col.operator("dmx.mvr_download", text="", icon="IMPORT").uuid = item.commit_uuid
         col.enabled = dmx.mvrx_enabled
         col = layout.column()
         col.operator("dmx.mvr_import", text="", icon="CHECKBOX_HLT").uuid = item.commit_uuid
         col.enabled = item.timestamp_saved > 0
-
 
 
 class DMX_PT_DMX_MVR_X(Panel):
@@ -136,7 +138,7 @@ class DMX_PT_DMX_MVR_X(Panel):
     bl_region_type = "UI"
     bl_category = "DMX"
     bl_context = "objectmode"
-    bl_options = {'DEFAULT_CLOSED'}
+    bl_options = {"DEFAULT_CLOSED"}
 
     def draw(self, context):
         layout = self.layout
@@ -155,7 +157,7 @@ class DMX_PT_DMX_MVR_X(Panel):
 
         client = None
         for client in all_clients:
-            if client.station_uuid ==selected:
+            if client.station_uuid == selected:
                 break
 
         row.prop(clients, "selected_mvr_client", text="")
@@ -169,12 +171,12 @@ class DMX_PT_DMX_MVR_X(Panel):
         if client:
             col2.operator("dmx.mvr_request", text="", icon="IMPORT").station_uuid = client.station_uuid
         col1.enabled = col2.enabled = dmx.mvrx_enabled
-        #row.operator("dmx.mvr_test", text="Test", icon="CANCEL")
+        # row.operator("dmx.mvr_test", text="Test", icon="CANCEL")
         row.enabled = len(all_clients) > 0
         if not client:
             return
         row = layout.row()
-        row.label(text = f"{client.station_name}", icon = "LINKED" if dmx.mvrx_enabled else "UNLINKED")
+        row.label(text=f"{client.station_name}", icon="LINKED" if dmx.mvrx_enabled else "UNLINKED")
         layout.template_list(
             "DMX_UL_MVR_Commit",
             "",
@@ -184,4 +186,3 @@ class DMX_PT_DMX_MVR_X(Panel):
             "selected_commit",
             rows=4,
         )
-

@@ -1,10 +1,19 @@
+#    Copyright vanous
 #
-#   BlendexDMX > Panels > Recorder
+#    This file is part of BlenderDMX.
 #
-#   - Generates DMX values
+#    BlenderDMX is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License as published by the Free
+#    Software Foundation, either version 3 of the License, or (at your option)
+#    any later version.
 #
-#   http://www.github.com/open-stage/BlenderDMX
+#    BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
+#    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+#    FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+#    more details.
 #
+#    You should have received a copy of the GNU General Public License along
+#    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import bpy
 
@@ -12,7 +21,9 @@ from bpy.types import Panel, Operator
 from ..logging import DMX_Log
 
 from ..i18n import DMX_Lang
+
 _ = DMX_Lang._
+
 
 class DMX_OT_Recorder_AddKeyframe(Operator):
     bl_label = _("DMX > Recorder > Add Keyframe")
@@ -34,10 +45,11 @@ class DMX_OT_Recorder_AddKeyframe(Operator):
             if bpy.context.window_manager.dmx.keyframe_only_selected:
                 if not fixture.is_selected():
                     continue
-            fixture.render(skip_cache = True, current_frame=current_frame)
+            fixture.render(skip_cache=True, current_frame=current_frame)
             DMX_Log.log.debug(f"keyframe fixture {fixture.name}")
         bpy.context.window_manager.dmx.pause_render = render_paused_state
         return {"FINISHED"}
+
 
 def clear_tracker_animation_data(tracker):
     DMX_Log.log.debug(f"clear animation data of a tracker: {tracker.name}")
@@ -45,7 +57,6 @@ def clear_tracker_animation_data(tracker):
         if obj.animation_data:
             obj.animation_data.action = None
             obj.animation_data_clear()
-
 
 
 def clear_fixture_animation_data(fixture):

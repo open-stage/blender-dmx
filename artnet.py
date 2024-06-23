@@ -1,3 +1,21 @@
+#    Copyright Hugo Aboud, Kaspars Jaudzems, vanous
+#
+#    This file is part of BlenderDMX.
+#
+#    BlenderDMX is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License as published by the Free
+#    Software Foundation, either version 3 of the License, or (at your option)
+#    any later version.
+#
+#    BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
+#    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+#    FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+#    more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program. If not, see <https://www.gnu.org/licenses/>.
+
+
 import bpy
 
 from socket import socket, AF_INET, SOCK_DGRAM, SHUT_RDWR, SOL_SOCKET, SO_BROADCAST, SO_REUSEADDR
@@ -65,7 +83,7 @@ class DMX_ArtNet(threading.Thread):
             self._dmx.artnet_status = "socket_error"
             raise ValueError("Socket opening error")
 
-        #self._socket.settimeout(30)
+        # self._socket.settimeout(30)
         self._stopped = False
 
     def stop(self):
@@ -76,7 +94,6 @@ class DMX_ArtNet(threading.Thread):
             self._stopped = True
             raise ValueError("Socket closing error")
         self._stopped = True
-
 
     def run(self):
         while not self._stopped:
@@ -139,14 +156,14 @@ class DMX_ArtNet(threading.Thread):
         else:
             ip = "0.0.0.0"
         ip = [int(i) for i in ip.split(".")]
-        content += [struct.pack('B', i) for i in ip]
+        content += [struct.pack("B", i) for i in ip]
         # Port
         content.append(struct.pack("<H", 0x1936))
         # Firmware Version
         content.append(struct.pack("!H", 1))
         # Net and subnet of this node
-        content.append(struct.pack('B', ip[1]))
-        content.append(struct.pack('B', ip[0]))
+        content.append(struct.pack("B", ip[1]))
+        content.append(struct.pack("B", ip[0]))
 
         # BlenderDMX OEM registered code, do not reuse if copying this code.
         # Programmers: do not copy for other Art-Net implementations,
@@ -158,16 +175,16 @@ class DMX_ArtNet(threading.Thread):
         # Status1
         content.append(struct.pack("H", 0))
         # Manufacture ESTA Code
-        content.append(struct.pack("<H", 32767)) # ESTA RDM test code since we did not apply
+        content.append(struct.pack("<H", 32767))  # ESTA RDM test code since we did not apply
         # Short Name
         content.append(struct.pack("18s", b"BlenderDMX"))
         content.append(struct.pack("64s", b"BlenderDMX GDTF & MVR plugin for Blender"))
-        description=b"#0001 [0000] BlenderDMX. All your GDTFs are belong to us."
+        description = b"#0001 [0000] BlenderDMX. All your GDTFs are belong to us."
         content.append(struct.pack("64s", description))
-        #ports
-        content.append(struct.pack(">H", 8)) #0000
-        content.append(struct.pack(">L", 0)) #0000
-        content.append(struct.pack("46s", b"")) #0000
+        # ports
+        content.append(struct.pack(">H", 8))  # 0000
+        content.append(struct.pack(">L", 0))  # 0000
+        content.append(struct.pack("46s", b""))  # 0000
 
         # stitch together
         return b"".join(content)

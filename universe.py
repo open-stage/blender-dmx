@@ -1,20 +1,26 @@
+#    Copyright Hugo Aboud, vanous
 #
-#   BlendexDMX > Universe
-#   A DMX Universe, which contains a number ID, a name and an input source
+#    This file is part of BlenderDMX.
 #
-#   http://www.github.com/open-stage/BlenderDMX
+#    BlenderDMX is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License as published by the Free
+#    Software Foundation, either version 3 of the License, or (at your option)
+#    any later version.
 #
+#    BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
+#    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+#    FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+#    more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program. If not, see <https://www.gnu.org/licenses/>.
 
-import bpy
 
 from bpy.props import (IntProperty,
                        StringProperty,
                        EnumProperty)
 
-from bpy.types import (ID,
-                       Property,
-                       PropertyGroup,
-                       CollectionProperty)
+from bpy.types import PropertyGroup
 
 network_options_list = (("BLENDERDMX", "BlenderDMX", "Set DMX buffer from the Programmer"), ("ARTNET", "ArtNet", "Read DMX buffer from ArtNet"), ("sACN", "sACN", "Read DMX buffer from sACN"))
 

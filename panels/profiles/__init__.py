@@ -1,4 +1,20 @@
-import bpy
+#    Copyright vanous
+#
+#    This file is part of BlenderDMX.
+#
+#    BlenderDMX is free software: you can redistribute it and/or modify it
+#    under the terms of the GNU General Public License as published by the Free
+#    Software Foundation, either version 3 of the License, or (at your option)
+#    any later version.
+#
+#    BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
+#    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+#    FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+#    more details.
+#
+#    You should have received a copy of the GNU General Public License along
+#    with this program. If not, see <https://www.gnu.org/licenses/>.
+
 from bpy.types import PropertyGroup
 from bpy.props import CollectionProperty, IntProperty
 
@@ -25,6 +41,7 @@ class DMX_Fixtures_Imports(PropertyGroup):
     selected_local_fixture: IntProperty(default=0)
     selected_mode: IntProperty(default=0)
     local_fixture_selected_mode: IntProperty(default=0)
+
 
 classes = (
     # Data Structures

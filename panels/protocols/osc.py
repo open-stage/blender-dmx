@@ -18,7 +18,9 @@
 from bpy.types import Panel
 
 from ...i18n import DMX_Lang
+
 _ = DMX_Lang._
+
 
 class DMX_PT_DMX_OSC(Panel):
     bl_label = _("OSC")
@@ -28,7 +30,7 @@ class DMX_PT_DMX_OSC(Panel):
     bl_region_type = "UI"
     bl_category = "DMX"
     bl_context = "objectmode"
-    bl_options = {'DEFAULT_CLOSED'}
+    bl_options = {"DEFAULT_CLOSED"}
 
     def draw(self, context):
         layout = self.layout
@@ -42,4 +44,3 @@ class DMX_PT_DMX_OSC(Panel):
         row = layout.row()
         row.prop(dmx, "osc_target_port")
         row.enabled = not dmx.osc_enabled
-
