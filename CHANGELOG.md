@@ -1,5 +1,15 @@
 ### Changelog
 
+### 1.6.0
+
+    * Internal file reorganization, license headers, reformatting
+    * Make internal programmer to set values for Live DMX view
+    * Fixtures name autogeneration adjustments
+    * Add PosiStageNet (PSN) protocol with up to 10 PSN slots
+    * Add warning message for Blender 4.2. Add link to help to Extras
+    * Add Blender logo as gobo image to bundled beam
+    * Improve vectors of BlenderDMX logo gobo in bundled beam fixture
+
 ### 1.5.1
 
     * Fix python import on Win32 platform
