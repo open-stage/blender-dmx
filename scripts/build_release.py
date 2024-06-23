@@ -4,7 +4,6 @@ import shutil
 from shutil import copytree, ignore_patterns
 from pygit2 import Repository
 import sys
-import os
 
 BUILD_DIR = "build"
 
@@ -13,7 +12,10 @@ def read_version():
     line = ""
     with open("__init__.py", "r") as f:
         while True:
-            line += f.readline().rstrip()
+            data_line = f.readline().rstrip()
+            if data_line.startswith("#"):
+                continue
+            line += data_line
             if "}" in line:
                 break
     version_string = line.replace("bl_info = ", "")
@@ -23,7 +25,7 @@ def read_version():
 
 
 branch_name = Repository(".").head.shorthand
-if branch_name == None:
+if branch_name is None:
     raise Exception("Run the script from the project root.")
 
 set_version = read_version()
