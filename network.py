@@ -16,7 +16,7 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import bpy
-from . import ifaddr
+import ifaddr
 
 
 class DMX_Network:

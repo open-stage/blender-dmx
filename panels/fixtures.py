@@ -20,7 +20,7 @@ import os
 import re
 
 from ..logging import DMX_Log
-from .. import pygdtf
+import pygdtf
 from bpy_extras.io_utils import ImportHelper
 
 from bpy.props import IntProperty, BoolProperty, FloatVectorProperty, StringProperty
