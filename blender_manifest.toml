@@ -21,7 +21,7 @@ wheels = [
   "wheels/ifaddr-0.2.0-py3-none-any.whl",
   "wheels/async_timeout-4.0.3-py3-none-any.whl",
   "wheels/zeroconf-0.132.2-py3-none-any.whl",
-  "wheels/pypsn-0.2.1-py3-none-any.whl",
+  "wheels/pypsn-0.2.2-py3-none-any.whl",
 ]
 
 [permissions]
