@@ -353,10 +353,10 @@ class DMX_PT_Setup(Panel):
         if not dmx.collection:
             if not bpy.app.version >= (3, 4):
                 layout.label(text=_("Error! Blender 3.4 or higher required."), icon="ERROR")
-            if bpy.app.version >= (4, 2):
-                row = layout.row()
-                row.label(text=_("For Blender 4.2 and up use the Extension"), icon="ERROR")
-                row.operator("wm.url_open", text="BlenderDMX Extension", icon="SHADING_WIRE").url = "https://extensions.blender.org/add-ons/open-stage-blender-dmx/"
+            #if bpy.app.version >= (4, 2):
+            #    row = layout.row()
+            #    row.label(text=_("For Blender 4.2 and up use the Extension"), icon="ERROR")
+            #    row.operator("wm.url_open", text="BlenderDMX Extension", icon="SHADING_WIRE").url = "https://extensions.blender.org/add-ons/open-stage-blender-dmx/"
             layout.operator("dmx.new_show", text=_("Create New Show"), icon="LIGHT")
             layout.operator("wm.url_open", text="User Guide Online", icon="HELP").url = "https://blenderdmx.eu/docs/faq/"
 
