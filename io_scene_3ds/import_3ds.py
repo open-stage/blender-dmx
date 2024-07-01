@@ -1767,6 +1767,11 @@ def load_3ds(filepath, context, CONSTRAIN=10.0, UNITS=False, IMAGE_SEARCH=True,
         elif unit_length == 'MICROMETERS':
             MEASURE = 0.000001
 
+    if CONVERSE is None:
+        CONVERSE = mathutils.Matrix()
+    if FILTER is None:
+        FILTER = {'WORLD', 'MESH', 'LIGHT', 'CAMERA', 'EMPTY'}
+
     context.window.cursor_set('WAIT')
     imported_objects = []  # Fill this list with objects
     process_next_chunk(context, file, current_chunk, imported_objects, CONSTRAIN, FILTER,
