@@ -190,11 +190,9 @@ matrix_dictionary = {}
 
 
 class Chunk:
-    __slots__ = (
-        "ID",
-        "length",
-        "bytes_read",
-    )
+
+    __slots__ = "ID", "length", "bytes_read"
+
     # we don't read in the bytes_read, we compute that
     binary_format = '<HI'
 
