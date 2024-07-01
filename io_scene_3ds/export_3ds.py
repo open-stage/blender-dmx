@@ -1316,8 +1316,7 @@ def make_object_node(ob, position, rotation, scale, name_id, use_apply_transform
         obj_node.add_subchunk(obj_instance_name_chunk)
 
     if ob.type == 'MESH' or ob.type in EMPTYS:  # Add a pivot point at the object center
-        center_pos = position[name] if ob.type in EMPTYS else mathutils.Vector((0, 0, 0))
-        pivot_pos = center_pos if use_apply_transform else -position[name]
+        pivot_pos = mathutils.Vector((0, 0, 0)) if use_apply_transform else position[name]
         obj_pivot_chunk = _3ds_chunk(OBJECT_PIVOT)
         obj_pivot_chunk.add_variable("pivot", _3ds_point_3d(pivot_pos))
         obj_node.add_subchunk(obj_pivot_chunk)
@@ -1342,8 +1341,10 @@ def make_object_node(ob, position, rotation, scale, name_id, use_apply_transform
         ob_size = ob.scale
 
     else:  # Use parent position and rotation as object center, no scale applied
-        ob_pos = position[name] if use_apply_transform else position[parent.name]
-        ob_rot = rotation[name] if use_apply_transform else rotation[parent.name]
+        pos_invert = (position[name] - position[parent.name]) @ rotation[parent.name].to_matrix()
+        rot_invert = rotation[name].to_quaternion() @ rotation[parent.name].to_quaternion().inverted()
+        ob_pos = pos_invert if use_apply_transform else position[parent.name]
+        ob_rot = rot_invert.to_euler() if use_apply_transform else rotation[parent.name]
         ob_size = mathutils.Vector((1.0, 1.0, 1.0))
 
     obj_node.add_subchunk(make_track_chunk(POS_TRACK_TAG, ob, ob_pos, ob_rot, ob_scale))
@@ -1803,8 +1804,8 @@ def save(operator, context, filepath="", collection="", scale_factor=1.0, use_sc
     scale = {}
 
     for ob, data, matrix in mesh_objects:
-        position[ob.name] = mtx_scale @ ob.location
-        rotation[ob.name] = ob.rotation_euler
+        position[ob.name] = mtx_scale @ matrix.to_translation()
+        rotation[ob.name] = matrix.to_euler()
         scale[ob.name] = mtx_scale.copy()
         name_id[ob.name] = len(name_id)
         object_id[ob.name] = len(object_id)
