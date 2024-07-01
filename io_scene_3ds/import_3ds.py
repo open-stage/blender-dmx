@@ -694,6 +694,7 @@ def process_next_chunk(context, file, previous_chunk, imported_objects, CONSTRAI
         # If material chunk
         elif new_chunk.ID == MATERIAL:
             contextAlpha = True
+            contextReflection = 0.0
             contextTransmission = False
             contextColor = mathutils.Color((0.8, 0.8, 0.8))
             contextMaterial = bpy.data.materials.new('Material')
