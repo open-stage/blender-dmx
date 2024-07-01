@@ -189,7 +189,7 @@ parent_dictionary = {}
 matrix_dictionary = {}
 
 
-class Chunk:
+class Chunk(object):
 
     __slots__ = "ID", "length", "bytes_read"
 
