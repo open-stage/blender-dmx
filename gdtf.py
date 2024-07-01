@@ -17,6 +17,7 @@
 
 
 import os
+import traceback
 import bpy
 import copy
 import math
@@ -232,7 +233,9 @@ class DMX_GDTF:
             file_name = os.path.join(extract_to_folder_path, inside_zip_path)
             try:
                 load(None, bpy.context, file_name)
-            except:
+            except Exception as e:
+                DMX_Log.log.error(f"Error loading a 3DS file {e}")
+                traceback.print_exception(e)
                 bpy.ops.mesh.primitive_cube_add(size=0.1)
         else:
             inside_zip_path = f"models/gltf/{model.file.name}.{model.file.extension}"
