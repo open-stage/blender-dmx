@@ -250,7 +250,7 @@ def loadModelAndPrepareMvrFileCollection(file, folder):
     if file_name.split(".")[-1] == "glb":
         bpy.ops.import_scene.gltf(filepath=file_name)
     else:
-        load(None, bpy.context, file_name)
+        load(None, bpy.context, folder, file)
         file_3ds = True
     objs = list(bpy.context.view_layer.objects.selected)
 
