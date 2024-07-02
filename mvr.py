@@ -250,12 +250,13 @@ def loadModelAndPrepareMvrFileCollection(file, folder):
     if file_name.split(".")[-1] == "glb":
         bpy.ops.import_scene.gltf(filepath=file_name)
     else:
-        load_3ds(file_name, bpy.context, CONSTRAIN=0.01, KEYFRAME=False)
+        load_3ds(file_name, bpy.context, KEYFRAME=False)
         file_3ds = True
     objs = list(bpy.context.view_layer.objects.selected)
 
     for ob in objs:
         if file_3ds:
+            ob.data.transform(Matrix.Scale(0.001, 4))
             ob.users_collection[0].objects.unlink(ob)
         else:
             bpy.context.scene.collection.objects.unlink(ob)
@@ -300,16 +301,16 @@ def add_mvr_object(
 
     for obj in mvr_file_collection.objects:
         ob = obj.copy()
-        ob.location = Matrix(local_transform).to_translation()
-        ob.rotation_mode = "XYZ"
-        ob.rotation_euler = Matrix(local_transform).to_euler("XYZ")
+        ob.location = Matrix(global_transform).transposed().to_translation()
+        #ob.rotation_mode = "XYZ"
+        ob.rotation_euler = Matrix(global_transform).transposed().to_euler("XYZ")
         # we use this for GDTF models, here it seems not to make any difference...:
         # ob.rotation_euler[0] *=-1
         # ob.rotation_euler[1] *=-1
         # ob.rotation_euler[2] *=-1
         ob["file name"] = file
 
-        ob.matrix_world = global_transform
+        ob.matrix_world = Matrix(local_transform).transposed()
         # ob.location = Matrix(global_transform).to_translation()
         # ob.rotation_mode = "XYZ"
         # ob.rotation_euler = Matrix(global_transform).to_euler('XYZ')
@@ -317,12 +318,6 @@ def add_mvr_object(
         ob.scale[0] *= local_scale[0] * global_scale[0]
         ob.scale[1] *= local_scale[1] * global_scale[1]
         ob.scale[2] *= local_scale[2] * global_scale[2]
-
-        if file_3ds:
-            # ob.scale = (0.001, 0.001, 0.001)
-            ob.scale[0] *= 0.001
-            ob.scale[1] *= 0.001
-            ob.scale[2] *= 0.001
 
         object_collection.objects.link(ob)
 
