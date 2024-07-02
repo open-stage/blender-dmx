@@ -154,7 +154,8 @@ def process_mvr_object(
     if mvr_object.geometries:
         geometry3ds = mvr_object.geometries.geometry3d
         symbols = mvr_object.geometries.symbol
-    global_transform = mvr_object.matrix.matrix
+    global_transform = local_transform = Matrix.Identity(4)
+    global_transform = Matrix(mvr_object.matrix.matrix).transposed()
     file = ""
     current_path = os.path.dirname(os.path.realpath(__file__))
     folder = os.path.join(current_path, "assets", "models", "mvr")
@@ -179,33 +180,13 @@ def process_mvr_object(
         dmx_mvr_object.uuid = mvr_object.uuid
         dmx_mvr_object.collection = bpy.data.collections.new(mvr_object.uuid)
 
-    for geometry in geometry3ds:
-        if geometry.file_name:
-            file = geometry.file_name
-            local_transform = geometry.matrix.matrix
-            extract_mvr_object(file, mvr_scene, folder, already_extracted_files)
-            coll = add_mvr_object(
-                name,
-                file,
-                folder,
-                global_transform,
-                local_transform,
-                mvr_object_index,
-                layer_index,
-                group_collection,
-                mvr_object,
-            )
-            if coll:
-                dmx_mvr_object.collection.children.link(coll)
-
     for symbol in symbols:
         symdefs = [sd for sd in mvr_scene.aux_data.symdefs if sd.uuid == symbol.symdef]
         for symdef in symdefs:
             for geometry in symdef.geometry3d:
                 if geometry.file_name:
                     file = geometry.file_name
-                    local_transform = geometry.matrix.matrix
-
+                    local_transform = global_transform @ Matrix(geometry.matrix.matrix).transposed()
                     extract_mvr_object(file, mvr_scene, folder, already_extracted_files)
                     coll = add_mvr_object(
                         name,
@@ -220,6 +201,25 @@ def process_mvr_object(
                     )
                     if coll:
                         dmx_mvr_object.collection.children.link(coll)
+
+    for geometry in geometry3ds:
+        if geometry.file_name:
+            file = geometry.file_name
+            local_transform = Matrix(geometry.matrix.matrix).transposed() @ global_transform
+            extract_mvr_object(file, mvr_scene, folder, already_extracted_files)
+            coll = add_mvr_object(
+                name,
+                file,
+                folder,
+                global_transform,
+                local_transform,
+                mvr_object_index,
+                layer_index,
+                group_collection,
+                mvr_object,
+            )
+            if coll:
+                dmx_mvr_object.collection.children.link(coll)
 
 
 def extract_mvr_object(file, mvr_scene, folder, already_extracted_files):
@@ -292,33 +292,18 @@ def add_mvr_object(
     collection_name = name
     object_collection = bpy.data.collections.new(collection_name)
 
-    local_scale = Matrix(local_transform).to_scale()
-    global_scale = Matrix(global_transform).to_scale()
-
     file_3ds = False
     if file.split(".")[-1] != "glb":
         file_3ds = True
 
-    for obj in mvr_file_collection.objects:
+    for idx, obj in enumerate(mvr_file_collection.objects):
         ob = obj.copy()
-        ob.location = Matrix(global_transform).transposed().to_translation()
-        #ob.rotation_mode = "XYZ"
-        ob.rotation_euler = Matrix(global_transform).transposed().to_euler("XYZ")
-        # we use this for GDTF models, here it seems not to make any difference...:
-        # ob.rotation_euler[0] *=-1
-        # ob.rotation_euler[1] *=-1
-        # ob.rotation_euler[2] *=-1
         ob["file name"] = file
-
-        ob.matrix_world = Matrix(local_transform).transposed()
-        # ob.location = Matrix(global_transform).to_translation()
-        # ob.rotation_mode = "XYZ"
-        # ob.rotation_euler = Matrix(global_transform).to_euler('XYZ')
-
-        ob.scale[0] *= local_scale[0] * global_scale[0]
-        ob.scale[1] *= local_scale[1] * global_scale[1]
-        ob.scale[2] *= local_scale[2] * global_scale[2]
-
+        ob.name = "%s_%s" % (ob.name.split('.')[0] if ob.name[-3:].isdigit() else ob.name, idx)
+        ob_matrix = global_transform @ local_transform
+        ob.matrix_world = ob_matrix @ ob.matrix_world
+        ob.location = local_transform.to_translation()
+        ob.rotation_euler = local_transform.to_euler('XYZ')
         object_collection.objects.link(ob)
 
     if len(object_collection.children) + len(object_collection.objects):
