@@ -186,7 +186,7 @@ def process_mvr_object(
             for geometry in symdef.geometry3d:
                 if geometry.file_name:
                     file = geometry.file_name
-                    local_transform = global_transform @ Matrix(geometry.matrix.matrix).transposed()
+                    local_transform = Matrix(geometry.matrix.matrix).transposed() @ global_transform
                     extract_mvr_object(file, mvr_scene, folder, already_extracted_files)
                     coll = add_mvr_object(
                         name,
