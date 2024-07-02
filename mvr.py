@@ -180,7 +180,7 @@ def process_mvr_object(
         dmx_mvr_object.uuid = mvr_object.uuid
         dmx_mvr_object.collection = bpy.data.collections.new(mvr_object.uuid)
 
-    for symbol in symbols:
+    for idx, symbol in enumerate(symbols):
         symdefs = [sd for sd in mvr_scene.aux_data.symdefs if sd.uuid == symbol.symdef]
         for symdef in symdefs:
             for geometry in symdef.geometry3d:
@@ -202,7 +202,7 @@ def process_mvr_object(
                     if coll:
                         dmx_mvr_object.collection.children.link(coll)
 
-    for geometry in geometry3ds:
+    for idx, geometry in enumerate(geometry3ds):
         if geometry.file_name:
             file = geometry.file_name
             local_transform = Matrix(geometry.matrix.matrix).transposed() @ global_transform
