@@ -367,7 +367,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             self.universe = fixture.universe
             self.address = fixture.address
             self.mode = fixture.mode
-            self.gel_color = fixture.gel_color
+            self.gel_color = [c/255 for c in fixture.gel_color_rgb]+[1]
             self.advanced_edit = False
             self.display_beams = fixture.display_beams
             self.add_target = fixture.add_target
@@ -380,7 +380,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             self.universe = 0
             self.address = selected[0].address
             self.mode = ""
-            self.gel_color = (255, 255, 255, 255)
+            self.gel_color = (255, 255, 255)
             self.units = 0
             self.display_beams = True
             self.add_target = True

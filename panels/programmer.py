@@ -27,6 +27,17 @@ _ = DMX_Lang._
 # Operators #
 
 
+class DMX_OT_Programmer_Reset_Color(Operator):
+    bl_label = _("Reset Colors")
+    bl_idname = "dmx.reset_color"
+    bl_description = _("Reset Colors")
+    bl_options = {"UNDO"}
+
+    def execute(self, context):
+        dmx = context.scene.dmx
+        dmx.programmer_color = (1.0, 1.0, 1.0, 1.0)
+        return {"FINISHED"}
+
 class DMX_OT_Programmer_Set_Ignore_Movement(Operator):
     bl_label = _("Lock Movement")
     bl_idname = "dmx.ignore_movement_true"
@@ -413,7 +424,11 @@ class DMX_PT_Programmer(Panel):
 
         box = layout.column().box()
         box.template_color_picker(scene.dmx, "programmer_color", value_slider=True)
-        box.prop(scene.dmx, "programmer_color")
+        row = box.row()
+        col1 = row.column()
+        col2 = row.column()
+        col1.prop(scene.dmx, "programmer_color")
+        col2.operator("dmx.reset_color", icon="TRASH", text="")
         box.prop(scene.dmx, "programmer_dimmer", text=_("Dimmer"), translate=False)
 
         if len(selected_fixtures) == 1:
