@@ -32,11 +32,12 @@ from . import pygdtf
 
 from .gdtf import DMX_GDTF
 from .data import DMX_Data
-from .util import cmy_to_rgb, add_rgb
+from .util import cmy_to_rgb, add_rgb, colors_to_rgb
 from .osc_utils import DMX_OSC_Handlers
 from bpy.props import (IntProperty,
                        BoolProperty,
                        FloatVectorProperty,
+                       IntVectorProperty,
                        PointerProperty,
                        StringProperty,
                        CollectionProperty)
@@ -234,8 +235,16 @@ class DMX_Fixture(PropertyGroup):
         description="if dmx data has changed but keyframe has not been saved yet",
         default = False)
 
-    gel_color: FloatVectorProperty(
+    gel_color_rgb: IntVectorProperty(
         name = "Gel Color",
+        subtype = "COLOR",
+        size = 3,
+        min = 0,
+        max = 255,
+        default = (255,255,255))
+
+    gel_color: FloatVectorProperty(
+        name = "Unused",
         subtype = "COLOR",
         size = 4,
         min = 0.0,
@@ -278,7 +287,7 @@ class DMX_Fixture(PropertyGroup):
         # DMX Properties
         self.universe = universe
         self.address = address
-        self.gel_color = list(gel_color)
+        self.gel_color_rgb = list(int((255/1)*i) for i in gel_color[:3])
         self.display_beams = display_beams
         self.add_target = add_target
 
@@ -566,7 +575,7 @@ class DMX_Fixture(PropertyGroup):
         for attribute in virtual_channels:
             geometry = None # for now. But, no way to know, as BlenderDMX controls are universal
             if geometry not in rgb_mixing_geometries.keys():
-                rgb_mixing_geometries[geometry]=[None, None, None]
+                rgb_mixing_geometries[geometry] = [None] * 12 # R, G, B, White, WW, CW, Amber, Lime, UV, cyan, magenta, yellow
             if geometry not in xyz_moving_geometries.keys():
                 xyz_moving_geometries[geometry]=[None, None, None]
             if geometry not in xyz_rotating_geometries.keys():
@@ -587,9 +596,9 @@ class DMX_Fixture(PropertyGroup):
                 elif (attribute == "ColorAdd_R" or attribute == "ColorRGB_Red"): rgb_mixing_geometries[geometry][0] = data_virtual[attribute]
                 elif (attribute == "ColorAdd_G" or attribute == "ColorRGB_Green"): rgb_mixing_geometries[geometry][1] = data_virtual[attribute]
                 elif (attribute == "ColorAdd_B" or attribute == "ColorRGB_Blue"): rgb_mixing_geometries[geometry][2] = data_virtual[attribute]
-                elif attribute == "ColorSub_C" or attribute == "ColorAdd_C": cmy[0] = data_virtual[attribute]
-                elif attribute == "ColorSub_M" or attribute == "ColorAdd_M": cmy[1] = data_virtual[attribute]
-                elif attribute == "ColorSub_Y" or attribute == "ColorAdd_Y" : cmy[2] = data_virtual[attribute]
+                elif attribute == "ColorSub_C": cmy[0] = data_virtual[attribute]
+                elif attribute == "ColorSub_M": cmy[1] = data_virtual[attribute]
+                elif attribute == "ColorSub_Y": cmy[2] = data_virtual[attribute]
                 elif attribute == "Pan":
                     panTilt[0] = data_virtual[attribute]
                     pan_rotating_geometries[geometry][0] = data_virtual[attribute]
@@ -619,7 +628,7 @@ class DMX_Fixture(PropertyGroup):
         for c in range(len(channels)):
             geometry=self.channels[c].geometry
             if geometry not in rgb_mixing_geometries.keys():
-                rgb_mixing_geometries[geometry]=[None, None, None]
+                rgb_mixing_geometries[geometry] = [None] * 12
             if geometry not in xyz_moving_geometries.keys():
                 xyz_moving_geometries[geometry]=[None, None, None]
             if geometry not in xyz_rotating_geometries.keys():
@@ -638,9 +647,18 @@ class DMX_Fixture(PropertyGroup):
             elif (channels[c] == 'ColorAdd_R' or channels[c] == 'ColorRGB_Red'): rgb_mixing_geometries[geometry][0] = data[c]
             elif (channels[c] == 'ColorAdd_G' or channels[c] == 'ColorRGB_Green'): rgb_mixing_geometries[geometry][1] = data[c]
             elif (channels[c] == 'ColorAdd_B' or channels[c] == 'ColorRGB_Blue'): rgb_mixing_geometries[geometry][2] = data[c]
-            elif (channels[c] == 'ColorSub_C' or channels[c] == "ColorAdd_C"): cmy[0] = data[c]
-            elif (channels[c] == 'ColorSub_M' or channels[c] == "ColorAdd_M"): cmy[1] = data[c]
-            elif (channels[c] == 'ColorSub_Y' or channels[c] == "ColorAdd_Y"): cmy[2] = data[c]
+            elif channels[c] == 'ColorAdd_W': rgb_mixing_geometries[geometry][3] = data[c]
+            elif channels[c] == 'ColorAdd_WW': rgb_mixing_geometries[geometry][4] = data[c]
+            elif channels[c] == 'ColorAdd_CW': rgb_mixing_geometries[geometry][5] = data[c]
+            elif channels[c] == 'ColorAdd_RY': rgb_mixing_geometries[geometry][6] = data[c]
+            elif channels[c] == 'ColorAdd_GY': rgb_mixing_geometries[geometry][7] = data[c]
+            elif channels[c] == 'ColorAdd_UV': rgb_mixing_geometries[geometry][8] = data[c]
+            elif channels[c] == 'ColorAdd_C': rgb_mixing_geometries[geometry][9] = data[c]
+            elif channels[c] == 'ColorAdd_M': rgb_mixing_geometries[geometry][10] = data[c]
+            elif channels[c] == 'ColorAdd_Y': rgb_mixing_geometries[geometry][11] = data[c]
+            elif channels[c] == 'ColorSub_C': cmy[0] = data[c]
+            elif channels[c] == 'ColorSub_M': cmy[1] = data[c]
+            elif channels[c] == 'ColorSub_Y': cmy[2] = data[c]
             elif (channels[c] == 'Pan'):
                 panTilt[0]   = data[c]
                 pan_rotating_geometries[geometry][0] = data[c]
@@ -682,15 +700,14 @@ class DMX_Fixture(PropertyGroup):
         colorwheel_color = None
         if (color1 is not None):
             colorwheel_color = self.get_colorwheel_color(color1)
-
-        for geometry, rgb in rgb_mixing_geometries.items():
+        for geometry, colors in rgb_mixing_geometries.items():
             if len(rgb_mixing_geometries)==1:
                 geometry = None
-            self.updateRGB(rgb, geometry, colorwheel_color, current_frame)
+            self.updateRGB(colors, geometry, colorwheel_color, current_frame)
 
         if not len(rgb_mixing_geometries):# handle units without mixing
-            if not all([c == 1.0 for c in self.gel_color[:3]]) or colorwheel_color is not None: #gel color is set and has priority or there is a color wheel
-                self.updateRGB([255, 255, 255], None, colorwheel_color, current_frame)
+            if not all([c == 255 for c in self.gel_color_rgb]) or colorwheel_color is not None: #gel color is set and has priority or there is a color wheel
+                self.updateRGB([255] * 12, None, colorwheel_color, current_frame)
 
         if (cmy[0] is not None and cmy[1] is not None and cmy[2] is not None):
             self.updateCMY(cmy, colorwheel_color, current_frame)
@@ -752,7 +769,7 @@ class DMX_Fixture(PropertyGroup):
 
         remove_empty_items = []
         for geometry, items in dictionary.items():
-            if (items[0] is None and items[1] is None and items[2] is None):
+            if all([i == None for i in items]):
                 remove_empty_items.append(geometry)
         for geo in remove_empty_items:
             del(dictionary[geo])
@@ -883,15 +900,18 @@ class DMX_Fixture(PropertyGroup):
             return None # kills the timer
         return 1.0/24.0
 
-    def updateRGB(self, rgb, geometry, colorwheel_color, current_frame):
+    def updateRGB(self, colors, geometry, colorwheel_color, current_frame):
         if geometry is not None:
             geometry = geometry.replace(" ", "_")
         DMX_Log.log.info(("color change for geometry", geometry))
+        colors = [c if c is not None else 0 for c in colors] # replace None with 0, can happen if someone maps colors across geometries...
+        rgb = colors_to_rgb(colors)
         if colorwheel_color is not None:
-            rgb = add_rgb(rgb, colorwheel_color)
+            rgb = add_rgb(rgb, colorwheel_color[:3])
+        rgb = add_rgb(self.gel_color_rgb, rgb)
+        rgb = [c/255.0 for c in rgb]
+
         try:
-            rgb = [(c/255.0-(1-gel) if c is not None else 0) for (c, gel) in zip(rgb, self.gel_color[:3])]
-            #rgb = [c/255.0 for c in rgb]
             for emitter_material in self.emitter_materials:
                 DMX_Log.log.info(("emitter:", emitter_material.name))
                 if geometry is not None:
@@ -925,10 +945,11 @@ class DMX_Fixture(PropertyGroup):
         rgb=[0,0,0]
         rgb=cmy_to_rgb(cmy)
         if colorwheel_color is not None:
-            rgb = add_rgb(rgb, colorwheel_color)
+            rgb = add_rgb(rgb, colorwheel_color[:3])
 
-        rgb = [c/255.0-(1-gel) for (c, gel) in zip(rgb, self.gel_color[:3])]
-        #rgb = [c/255.0 for c in rgb]
+        rgb = add_rgb(self.gel_color_rgb, rgb)
+        rgb = [c/255.0 for c in rgb]
+
         for emitter_material in self.emitter_materials:
             emitter_material.material.node_tree.nodes[1].inputs[COLOR].default_value = rgb + [1]
             if current_frame and self.dmx_cache_dirty:

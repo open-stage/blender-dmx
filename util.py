@@ -157,7 +157,39 @@ def clamp(n, small=0, large=255):
 def add_rgb(color1, color2):
     if all(255 == i for i in color1):
         return color2
-    r = clamp(int((1 - (1 - color1[0] / 255) + (1 - color2[0] / 255))) * 255)
-    g = clamp(int((1 - (1 - color1[1] / 255) + (1 - color2[1] / 255))) * 255)
-    b = clamp(int((1 - (1 - color1[2] / 255) + (1 - color2[2] / 255))) * 255)
+    if all(255 == i for i in color2):
+        return color1
+    r = max(color1[0], color2[0])
+    g = max(color1[1], color2[1])
+    b = max(color1[2], color2[2])
     return [r, g, b]
+
+
+def color_to_rgb(base_color, colors, index):
+    if colors[index] is None:
+        return [0, 0, 0]
+    else:
+        color_float = colors[index] / 255.0
+        return [int(c * color_float) for c in base_color]
+
+
+def colors_to_rgb(colors):
+    # 0  1  2    3     4   5     6     7     8    9     10      11
+    # R, G, B, White, WW, CW, Amber, Lime, UV, Cyan, Magenta, Yellow
+    # color definitions below, these have been tuned to look OK in Blender
+
+    white_rgb = color_to_rgb([128, 128, 128], colors, 3)
+    wwhite_rgb = color_to_rgb([253, 244, 220], colors, 4)
+    cwhite_rgb = color_to_rgb([227, 228, 237], colors, 5)
+    amber_rgb = color_to_rgb([255, 68, 0], colors, 6)
+    lime_rgb = color_to_rgb([68, 255, 0], colors, 7)
+    uv_rgb = color_to_rgb([5, 0, 255], colors, 8)
+    cyan_rgb = color_to_rgb([0, 255, 255], colors, 9)
+    magenta_rgb = color_to_rgb([255, 0, 255], colors, 10)
+    yellow_rgb = color_to_rgb([255, 255, 0], colors, 11)
+
+    red = max(amber_rgb[0], lime_rgb[0], colors[0], white_rgb[0], wwhite_rgb[0], cwhite_rgb[0], uv_rgb[0], cyan_rgb[0], magenta_rgb[0], yellow_rgb[0])
+    green = max(amber_rgb[1], lime_rgb[1], colors[1], white_rgb[1], wwhite_rgb[1], cwhite_rgb[1], uv_rgb[1], cyan_rgb[1], magenta_rgb[1], yellow_rgb[1])
+    blue = max(amber_rgb[2], lime_rgb[2], colors[2], white_rgb[2], wwhite_rgb[2], cwhite_rgb[2], uv_rgb[2], cyan_rgb[2], magenta_rgb[2], yellow_rgb[2])
+
+    return [red, green, blue]

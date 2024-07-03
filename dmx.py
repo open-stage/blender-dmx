@@ -174,6 +174,7 @@ class DMX(PropertyGroup):
                 programmer.DMX_OT_Programmer_TargetsToZero,
                 programmer.DMX_OT_Programmer_Apply_Manually,
                 programmer.DMX_OT_Programmer_Set_Ignore_Movement,
+                programmer.DMX_OT_Programmer_Reset_Color,
                 programmer.DMX_OT_Programmer_ResetTargets,
                 programmer.DMX_MT_PIE_Reset,
                 programmer.DMX_OT_Programmer_Unset_Ignore_Movement,
@@ -372,7 +373,7 @@ class DMX(PropertyGroup):
 
     data_version: IntProperty(
             name = "BlenderDMX data version, bump when changing RNA structure and provide migration script",
-            default = 8,
+            default = 9,
             )
 
     def get_fixture_by_index(self, index):
@@ -706,6 +707,13 @@ class DMX(PropertyGroup):
                 if "slot_colors" not in fixture:
                     DMX_Log.log.info("Adding slot_colors array to fixture")
                     fixture["slot_colors"] = []
+
+        if file_data_version < 9:
+            DMX_Log.log.info("Running migration 8→9")
+            dmx = bpy.context.scene.dmx
+            for fixture in dmx.fixtures:
+                fixture.gel_color_rgb = list(int((255/1)*i) for i in fixture.gel_color[:3])
+                DMX_Log.log.info("Converting gel color to rgb")
 
         DMX_Log.log.info("Migration done.")
         # add here another if statement for next migration condition... like:
@@ -1161,9 +1169,6 @@ class DMX(PropertyGroup):
                     'ColorSub_C':cmy[0],
                     'ColorSub_M':cmy[1],
                     'ColorSub_Y':cmy[2],
-                    'ColorAdd_C':cmy[0],
-                    'ColorAdd_M':cmy[1],
-                    'ColorAdd_Y':cmy[2],
 
                 })
         self.render()
@@ -1356,9 +1361,9 @@ class DMX(PropertyGroup):
         if ('ColorSub_C' in data and 'ColorSub_M' in data and 'ColorSub_Y' in data):
             rgb = cmy_to_rgb([data['ColorSub_C'], data['ColorSub_M'], data['ColorSub_Y']])
             self.programmer_color = (1/256*rgb[0], 1/256*rgb[1], 1/256*rgb[2], 255)
-        if ('ColorAdd_C' in data and 'ColorAdd_M' in data and 'ColorAdd_Y' in data):
-            rgb = cmy_to_rgb([data['ColorAdd_C'], data['ColorAdd_M'], data['ColorAdd_Y']])
-            self.programmer_color = (1/256*rgb[0], 1/256*rgb[1], 1/256*rgb[2], 255)
+        #if ('ColorAdd_C' in data and 'ColorAdd_M' in data and 'ColorAdd_Y' in data):
+        #    rgb = cmy_to_rgb([data['ColorAdd_C'], data['ColorAdd_M'], data['ColorAdd_Y']])
+        #    self.programmer_color = (1/256*rgb[0], 1/256*rgb[1], 1/256*rgb[2], 255)
         if ('Pan' in data):
             self.programmer_pan = data['Pan']/127.0-1
         if ('Tilt' in data):
