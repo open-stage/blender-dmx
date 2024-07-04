@@ -19,7 +19,7 @@
 import os
 import bpy
 from .util import xyY2rgbaa
-from .io_scene_3ds.import_3ds import load
+from .io_scene_3ds.import_3ds import load_3ds
 from mathutils import Matrix
 import time
 import hashlib
@@ -250,7 +250,7 @@ def loadModelAndPrepareMvrFileCollection(file, folder):
     if file_name.split(".")[-1] == "glb":
         bpy.ops.import_scene.gltf(filepath=file_name)
     else:
-        load(None, bpy.context, file_name)
+        load_3ds(file_name, bpy.context, KEYFRAME=False, APPLY_MATRIX=False)
         file_3ds = True
     objs = list(bpy.context.view_layer.objects.selected)
 

@@ -28,7 +28,7 @@ from mathutils import Euler, Matrix
 
 from . import pygdtf
 from .logging import DMX_Log
-from .io_scene_3ds.import_3ds import load
+from .io_scene_3ds.import_3ds import load_3ds
 from .util import sanitize_obj_name, xyY2rgbaa
 
 
@@ -232,7 +232,9 @@ class DMX_GDTF:
             profile._package.extract(inside_zip_path, extract_to_folder_path)
             file_name = os.path.join(extract_to_folder_path, inside_zip_path)
             try:
-                load(None, bpy.context, file_name)
+                load_3ds(file_name, bpy.context, FILTER={'MESH'}, KEYFRAME=False, APPLY_MATRIX=False)
+                for ob in bpy.context.selected_objects:
+                    ob.data.transform(Matrix.Scale(0.001, 4))
             except Exception as e:
                 DMX_Log.log.error(f"Error loading a 3DS file {e}")
                 traceback.print_exception(e)
