@@ -235,6 +235,17 @@ class DMX_OT_Programmer_TargetsToZero(Operator):
 
         return {"FINISHED"}
 
+class DMX_OT_Programmer_CenterToSelected(bpy.types.Operator):
+    bl_idname = "dmx.center_to_selected"
+    bl_label = _("Center View to Selected")
+    bl_description = _("Set View to center on selected objects")
+
+    def execute(self, context):
+        cursor_location = context.scene.cursor.location.copy()
+        bpy.ops.view3d.snap_cursor_to_selected()
+        bpy.ops.view3d.view_center_cursor()
+        context.scene.cursor.location = cursor_location
+        return {'FINISHED'}
 
 class DMX_MT_PIE_Reset(Menu):
     bl_label = _("Reset targets")
@@ -402,12 +413,14 @@ class DMX_PT_Programmer(Panel):
         c3 = row.column()
         c4 = row.column()
         c5 = row.column()
+        c6 = row.column()
         c0.operator("dmx.select_filtered", text="", icon="SELECT_DIFFERENCE")
         c1.operator("dmx.deselect_all", text="", icon="SELECT_SET")
         c2.operator("dmx.targets_to_zero", text="", icon="LIGHT_POINT")
         c3.menu("DMX_MT_PIE_Reset", text="", icon="LIGHT_SPOT")
         c4.operator("dmx.ignore_movement_true", text="", icon="LOCKED")
         c5.operator("dmx.ignore_movement_false", text="", icon="UNLOCKED")
+        c6.operator("dmx.center_to_selected", text="", icon="ZOOM_IN")
         c1.enabled = c2.enabled = c3.enabled = c4.enabled = selected
         c5.enabled = locked and selected
 

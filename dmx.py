@@ -172,6 +172,7 @@ class DMX(PropertyGroup):
                 programmer.DMX_OT_Programmer_SelectTargets,
                 programmer.DMX_OT_Programmer_SelectCamera,
                 programmer.DMX_OT_Programmer_TargetsToZero,
+                programmer.DMX_OT_Programmer_CenterToSelected,
                 programmer.DMX_OT_Programmer_Apply_Manually,
                 programmer.DMX_OT_Programmer_Set_Ignore_Movement,
                 programmer.DMX_OT_Programmer_Reset_Color,
