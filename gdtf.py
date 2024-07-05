@@ -28,7 +28,7 @@ from mathutils import Euler, Matrix
 
 import pygdtf
 from .logging import DMX_Log
-from .io_scene_3ds.import_3ds import load_3ds
+from io_scene_3ds.import_3ds import load_3ds
 from .util import sanitize_obj_name, xyY2rgbaa
 
 
