@@ -1,4 +1,4 @@
-#    Copyright Hugo Aboud, vanous
+#    Copyright Hugo Aboud, vanous, Sebastian
 #
 #    This file is part of BlenderDMX.
 #

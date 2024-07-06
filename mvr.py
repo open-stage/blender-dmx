@@ -1,4 +1,4 @@
-#    Copyright vanous
+#    Copyright vanous, Sebastian
 #
 #    This file is part of BlenderDMX.
 #
