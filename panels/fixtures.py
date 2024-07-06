@@ -380,7 +380,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             self.universe = 0
             self.address = selected[0].address
             self.mode = ""
-            self.gel_color = (255, 255, 255)
+            self.gel_color = (1, 1, 1, 1)
             self.units = 0
             self.display_beams = True
             self.add_target = True
