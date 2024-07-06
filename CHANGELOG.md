@@ -1,5 +1,14 @@
 ### Changelog
 
+### 1.6.1
+
+    * Add icon 'Center to selected' to Programmer
+    * Add support for additive mixing: Amber, Lime, UV, White, WW, CW
+    * Update io_scene_3ds to LTS version and adjust GDTF and MVR to this LTS version
+    * Show error and a traceback on load3DS error
+    * Ensure fixtures can be removed even if their data is broken
+    * Add RGB versions of the provided source4 fixtures
+
 ### 1.6.0
 
     * Internal file reorganization, license headers, reformatting
