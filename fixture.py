@@ -690,12 +690,12 @@ class DMX_Fixture(PropertyGroup):
             elif (channels[c] == 'Rot_Y'): xyz_rotating_geometries[geometry][1] = data[c]
             elif (channels[c] == 'Rot_Z'): xyz_rotating_geometries[geometry][2] = data[c]
 
-        self.remove_unset_geometries_from_multigeometry_attributes(rgb_mixing_geometries)
-        self.remove_unset_geometries_from_multigeometry_attributes(xyz_moving_geometries)
-        self.remove_unset_geometries_from_multigeometry_attributes(xyz_rotating_geometries)
-        self.remove_unset_geometries_from_multigeometry_attributes(shutter_dimmer_geometries)
-        self.remove_unset_geometries_from_multigeometry_attributes2(pan_rotating_geometries)
-        self.remove_unset_geometries_from_multigeometry_attributes2(tilt_rotating_geometries)
+        self.remove_unset_geometries_from_multigeometry_attributes_all(rgb_mixing_geometries)
+        self.remove_unset_geometries_from_multigeometry_attributes_all(xyz_moving_geometries)
+        self.remove_unset_geometries_from_multigeometry_attributes_all(xyz_rotating_geometries)
+        self.remove_unset_geometries_from_multigeometry_attributes_3(shutter_dimmer_geometries)
+        self.remove_unset_geometries_from_multigeometry_attributes_1(pan_rotating_geometries)
+        self.remove_unset_geometries_from_multigeometry_attributes_1(tilt_rotating_geometries)
 
         colorwheel_color = None
         if (color1 is not None):
@@ -764,7 +764,7 @@ class DMX_Fixture(PropertyGroup):
             self.dmx_cache_dirty = False
         # end of render block
 
-    def remove_unset_geometries_from_multigeometry_attributes(self, dictionary):
+    def remove_unset_geometries_from_multigeometry_attributes_all(self, dictionary):
         """Remove items with values of all None"""
 
         remove_empty_items = []
@@ -774,12 +774,22 @@ class DMX_Fixture(PropertyGroup):
         for geo in remove_empty_items:
             del(dictionary[geo])
 
-    def remove_unset_geometries_from_multigeometry_attributes2(self, dictionary):
-        """Remove items with values of all None"""
+    def remove_unset_geometries_from_multigeometry_attributes_1(self, dictionary):
+        """Remove items with 3 values of None"""
 
         remove_empty_items = []
         for geometry, items in dictionary.items():
             if items[0] is None:
+                remove_empty_items.append(geometry)
+        for geo in remove_empty_items:
+            del(dictionary[geo])
+
+    def remove_unset_geometries_from_multigeometry_attributes_3(self, dictionary):
+        """Remove items with 1 value of None"""
+
+        remove_empty_items = []
+        for geometry, items in dictionary.items():
+            if (items[0] is None and items[1] is None and items[2] is None):
                 remove_empty_items.append(geometry)
         for geo in remove_empty_items:
             del(dictionary[geo])
@@ -800,7 +810,7 @@ class DMX_Fixture(PropertyGroup):
                 return channel
 
     def updateShutterDimmer(self, shutter, dimmer, geometry, bits, current_frame):
-        DMX_Log.log.info(("set shutter, dimmer", shutter, dimmer))
+        DMX_Log.log.info(("set shutter, dimmer", shutter, dimmer, geometry))
         if geometry is not None:
             geometry = geometry.replace(" ", "_")
         last_shutter_value = 0
