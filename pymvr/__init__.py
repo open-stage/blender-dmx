@@ -2,7 +2,9 @@ from typing import List, Union, Optional
 from xml.etree import ElementTree
 from xml.etree.ElementTree import Element
 import zipfile
-from .value import Matrix, ColorCIE # type: ignore
+import sys
+import uuid as py_uuid
+from .value import Matrix, Color  # type: ignore
 
 
 def _find_root(pkg: "zipfile.ZipFile") -> "ElementTree.Element":
@@ -11,7 +13,7 @@ def _find_root(pkg: "zipfile.ZipFile") -> "ElementTree.Element":
 
     with pkg.open("GeneralSceneDescription.xml", "r") as f:
         description_str = f.read().decode("utf-8")
-        if description_str[-1]=="\x00": # this should not happen, but...
+        if description_str[-1] == "\x00":  # this should not happen, but...
             description_str = description_str[:-1]
     return ElementTree.fromstring(description_str)
 
@@ -50,6 +52,49 @@ class GeneralSceneDescription:
             self.user_data: List["Data"] = [Data(xml_node=i) for i in self._user_data.findall("Data")]
 
 
+class GeneralSceneDescriptionWriter:
+    """Creates MVR zip archive with packed GeneralSceneDescription xml and other files"""
+
+    # maybe we should split/rename this into xml creator and mvr creator
+    def __init__(self):
+        self.version_major: str = "1"
+        self.version_minor: str = "6"
+        self.provider: str = "pymvr"
+        self.providerVersion: str = "0.1"
+        self.files_list: List[str] = []
+        self.xml_root = ElementTree.Element(
+            "GeneralSceneDescription", verMajor=self.version_major, verMinor=self.version_minor, provider=self.provider, providerVersion=self.providerVersion
+        )
+
+    def write_mvr(self, path=None):
+        if path is not None:
+            if sys.version_info >= (3, 9):
+                ElementTree.indent(self.xml_root, space="    ", level=0)
+            xmlstr = ElementTree.tostring(self.xml_root, encoding="unicode", xml_declaration=True)
+            with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("GeneralSceneDescription.xml", xmlstr)
+                for file_path, file_name in self.files_list:
+                    try:
+                        z.write(file_path, arcname=file_name)
+                    except Exception as e:
+                        print(f"File does not exist {file_path}")
+
+
+class SceneElement:
+    def to_xml(self, parent: Element):
+        return ElementTree.SubElement(parent, "Scene")
+
+
+class LayersElement:
+    def to_xml(self, parent: Element):
+        return ElementTree.SubElement(parent, "Layers")
+
+
+class UserData:
+    def to_xml(self, parent: Element):
+        return ElementTree.SubElement(parent, "UserData")
+
+
 class BaseNode:
     def __init__(self, xml_node: "Element" = None):
         if xml_node is not None:
@@ -69,8 +114,8 @@ class BaseChildNode(BaseNode):
         matrix: Matrix = Matrix(0),
         classing: Union[str, None] = None,
         fixture_id: Union[str, None] = None,
-        fixture_id_numeric: Union[int, None] = None,
-        unit_number: Union[int, None] = None,
+        fixture_id_numeric: int = 0,
+        unit_number: int = 0,
         fixture_type_id: int = 0,
         custom_id: int = 0,
         custom_id_type: int = 0,
@@ -85,6 +130,8 @@ class BaseChildNode(BaseNode):
         **kwargs,
     ):
         self.name = name
+        if uuid is None:
+            uuid = str(py_uuid.uuid4())
         self.uuid = uuid
         self.gdtf_spec = gdtf_spec
         self.gdtf_mode = gdtf_mode
@@ -112,7 +159,7 @@ class BaseChildNode(BaseNode):
         if _gdtf_spec is not None:
             self.gdtf_spec = _gdtf_spec.text
             if self.gdtf_spec is not None:
-                self.gdtf_spec = self.gdtf_spec.encode("utf-8").decode("cp437")
+                self.gdtf_spec = self.gdtf_spec.encode("utf-8").decode("cp437")  # IBM PC encoding
             if self.gdtf_spec is not None and len(self.gdtf_spec) > 5:
                 if self.gdtf_spec[-5:].lower() != ".gdtf":
                     self.gdtf_spec = f"{self.gdtf_spec}.gdtf"
@@ -227,6 +274,9 @@ class AUXData(BaseNode):
         self.positions = [Position(xml_node=i) for i in xml_node.findall("Position")]
         self.mapping_definitions = [MappingDefinition(xml_node=i) for i in xml_node.findall("MappingDefinition")]
 
+    def to_xml(self, parent: Element):
+        return ElementTree.SubElement(parent, type(self).__name__)
+
 
 class MappingDefinition(BaseNode):
     def __init__(
@@ -261,7 +311,7 @@ class Fixture(BaseChildNode):
         self,
         multipatch: Union[str, None] = None,
         focus: Union[str, None] = None,
-        color: Union["ColorCIE", None] = ColorCIE(),
+        color: Union["Color", str, None] = Color(),
         dmx_invert_pan: bool = False,
         dmx_invert_tilt: bool = False,
         position: Union[str, None] = None,
@@ -296,7 +346,7 @@ class Fixture(BaseChildNode):
             self.focus = xml_node.find("Focus").text
 
         if xml_node.find("Color") is not None:
-            self.color = ColorCIE(str_repr=xml_node.find("Color").text)
+            self.color = Color(str_repr=xml_node.find("Color").text)
 
         if xml_node.find("DMXInvertPan") is not None:
             self.dmx_invert_pan = bool(xml_node.find("DMXInvertPan").text)
@@ -319,6 +369,32 @@ class Fixture(BaseChildNode):
             self.mappings = [Mapping(xml_node=i) for i in xml_node.find("Mappings").findall("Mapping")]
         if xml_node.find("Gobo") is not None:
             self.gobo = Gobo(xml_node.attrib.get("Gobo"))
+
+    def to_xml(self):
+        fixture_element = ElementTree.Element(type(self).__name__, name=self.name, uuid=self.uuid)
+
+        Matrix(self.matrix.matrix).to_xml(fixture_element)
+        ElementTree.SubElement(fixture_element, "GDTFSpec").text = self.gdtf_spec
+        ElementTree.SubElement(fixture_element, "GDTFMode").text = self.gdtf_mode
+        if self.focus is not None:
+            ElementTree.SubElement(fixture_element, "Focus").text = self.focus
+
+        ElementTree.SubElement(fixture_element, "FixtureID").text = self.fixture_id or "0"
+        ElementTree.SubElement(fixture_element, "FixtureIDNumeric").text = str(self.fixture_id_numeric)
+        ElementTree.SubElement(fixture_element, "UnitNumber").text = str(self.unit_number)
+        if self.custom_id:
+            ElementTree.SubElement(fixture_element, "CustomId").text = str(self.custom_id)
+        if self.custom_id_type:
+            ElementTree.SubElement(fixture_element, "CustomIdType").text = str(self.custom_id_type)
+        if isinstance(self.color, Color):
+            self.color.to_xml(fixture_element)
+        else:
+            Color(str_repr=self.color).to_xml(fixture_element)
+
+        addresses = ElementTree.SubElement(fixture_element, "Addresses")
+        for address in self.addresses:
+            Address(address.dmx_break, address.universe, address.address).to_xml(addresses)
+        return fixture_element
 
     def __str__(self):
         return f"{self.name}"
@@ -428,6 +504,9 @@ class ChildList(BaseNode):
 
         self.projectors = [Projector(xml_node=i) for i in xml_node.findall("Projector")]
 
+    def to_xml(self, parent: Element):
+        return ElementTree.SubElement(parent, type(self).__name__)
+
 
 class Layer(BaseNode):
     def __init__(
@@ -442,6 +521,8 @@ class Layer(BaseNode):
         **kwargs,
     ):
         self.name = name
+        if uuid is None:
+            uuid = str(py_uuid.uuid4())
         self.uuid = uuid
         self.gdtf_spec = gdtf_spec
         self.gdtf_mode = gdtf_mode
@@ -467,6 +548,9 @@ class Layer(BaseNode):
         if xml_node.find("Matrix") is not None:
             self.matrix = Matrix(str_repr=xml_node.find("Matrix").text)
 
+    def to_xml(self, parent: Element):
+        return ElementTree.SubElement(parent, type(self).__name__, name=self.name, uuid=self.uuid)
+
     def __str__(self):
         return f"{self.name}"
 
@@ -476,7 +560,7 @@ class Address(BaseNode):
         self,
         dmx_break: int = 0,
         universe: int = 1,
-        address: Union[int, str] = 1,
+        address: int = 1,
         *args,
         **kwargs,
     ):
@@ -487,20 +571,33 @@ class Address(BaseNode):
 
     def _read_xml(self, xml_node: "Element"):
         self.dmx_break = int(xml_node.attrib.get("break", 0))
-        raw_address = xml_node.text or "0"
+        raw_address = xml_node.text or "1"
+        if raw_address == "0":
+            raw_address = "1"
         if "." in raw_address:
             universe, address = raw_address.split(".")
-            self.universe = int(universe)
-            self.address = int(address)
+            self.universe = int(universe) if (int(universe)) > 0 else 1
+            self.address = int(address) if int(address) > 0 else 1
             return
-        self.universe = 1 + int(raw_address) // 512
-        self.address = int(raw_address) % 512
+        self.universe = (int(raw_address) - 1) // 512 + 1
+        self.address = (int(raw_address) - 1) % 512 + 1
 
     def __repr__(self):
         return f"B: {self.dmx_break}, U: {self.universe}, A: {self.address}"
 
     def __str__(self):
         return f"B: {self.dmx_break}, U: {self.universe}, A: {self.address}"
+
+    def to_xml(self, addresses):
+        # universes are always from 1 in MVR
+        if self.universe == 0:
+            self.universe = 1
+
+        universes = 512 * (self.universe - 1)
+
+        raw_address = self.address + universes
+        address = ElementTree.SubElement(addresses, "Address", attrib={"break": str(self.dmx_break)})
+        address.text = str(raw_address)
 
 
 class Class(BaseNode):
@@ -575,6 +672,7 @@ class Symdef(BaseNode):
 
         # sometimes the list of geometry3d is full of duplicates, eliminate them here
         self.geometry3d = list(set(_geometry3d))
+
 
 class Geometry3D(BaseNode):
     def __init__(
@@ -656,6 +754,10 @@ class Geometries(BaseNode):
             self.symbol += symbols  # TODO remove this over time, children should only be in child_list
             self.geometry3d += geometry3ds
 
+    def to_xml(self, parent: Element):
+        element = ElementTree.SubElement(parent, type(self).__name__)
+        return element
+
 
 class FocusPoint(BaseNode):
     def __init__(
@@ -688,6 +790,12 @@ class FocusPoint(BaseNode):
 
     def __str__(self):
         return f"{self.name}"
+
+    def to_xml(self):
+        element = ElementTree.Element(type(self).__name__, name=self.name, uuid=self.uuid)
+        Matrix(self.matrix.matrix).to_xml(parent=element)
+        Geometries().to_xml(parent=element)
+        return element
 
 
 class SceneObject(BaseChildNodeExtended):

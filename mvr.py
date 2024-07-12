@@ -368,7 +368,7 @@ def add_mvr_fixture(
 
     if existing_fixture is not None:
         existing_fixture.build(
-            f"{fixture.name} {layer_index}-{fixture_index}",
+            f"{fixture.name}",
             fixture.gdtf_spec,
             fixture.gdtf_mode,
             fixture.addresses[0].universe,

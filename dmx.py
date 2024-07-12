@@ -26,8 +26,9 @@ import uuid as py_uuid
 import re
 from datetime import datetime
 import traceback
+from types import SimpleNamespace
 
-from .pymvr import GeneralSceneDescription
+from . import pymvr
 from .mvr import extract_mvr_textures, process_mvr_child_list
 
 from . import param as param
@@ -149,6 +150,7 @@ class DMX(PropertyGroup):
                 fixtures.DMX_OT_Fixture_Edit,
                 fixtures.DMX_OT_Fixture_Remove,
                 setup.DMX_OT_Export_Custom_Data,
+                setup.DMX_OT_Export_MVR,
                 setup.DMX_OT_Import_Custom_Data,
                 setup.DMX_OT_Clear_Custom_Data,
                 setup.DMX_OT_Reload_Addon,
@@ -374,7 +376,7 @@ class DMX(PropertyGroup):
 
     data_version: IntProperty(
             name = "BlenderDMX data version, bump when changing RNA structure and provide migration script",
-            default = 9,
+            default = 10,
             )
 
     def get_fixture_by_index(self, index):
@@ -715,6 +717,17 @@ class DMX(PropertyGroup):
             for fixture in dmx.fixtures:
                 fixture.gel_color_rgb = list(int((255/1)*i) for i in fixture.gel_color[:3])
                 DMX_Log.log.info("Converting gel color to rgb")
+
+        if file_data_version < 10:
+            DMX_Log.log.info("Running migration 9→10")
+            dmx = bpy.context.scene.dmx
+
+            for fixture in dmx.fixtures:
+                for obj in fixture.objects:
+                    if 'Target' in obj.name:
+                        if "uuid" not in obj.object:
+                            DMX_Log.log.info(f"Add uuid to {obj.name}")
+                            obj.object["uuid"] = str(py_uuid.uuid4())
 
         DMX_Log.log.info("Migration done.")
         # add here another if statement for next migration condition... like:
@@ -1472,11 +1485,10 @@ class DMX(PropertyGroup):
 
     def addMVR(self, file_name):
 
-
         start_time = time.time()
         bpy.context.window_manager.dmx.pause_render = True # this stops the render loop, to prevent slowness and crashes
         already_extracted_files = {}
-        mvr_scene = GeneralSceneDescription(file_name)
+        mvr_scene = pymvr.GeneralSceneDescription(file_name)
         current_path = os.path.dirname(os.path.realpath(__file__))
         extract_to_folder_path = os.path.join(current_path, "assets", "profiles")
         media_folder_path = os.path.join(current_path, "assets", "models", "mvr")
@@ -1518,6 +1530,46 @@ class DMX(PropertyGroup):
         for collection in collections.children:
             if len(collection.all_objects)  == 0:
                 collections.children.unlink(collection)
+
+
+    def export_mvr(self, file_name):
+
+        start_time = time.time()
+        bpy.context.window_manager.dmx.pause_render = True # this stops the render loop, to prevent slowness and crashes
+        dmx = bpy.context.scene.dmx
+
+        folder_path = os.path.dirname(os.path.realpath(__file__))
+        folder_path = os.path.join(folder_path, "assets", "profiles")
+
+        try:
+            fixtures_list = []
+            mvr = pymvr.GeneralSceneDescriptionWriter()
+            pymvr.UserData().to_xml(parent = mvr.xml_root)
+            scene = pymvr.SceneElement().to_xml(parent = mvr.xml_root)
+            layers = pymvr.LayersElement().to_xml(parent = scene)
+            layer = pymvr.Layer(name = "DMX").to_xml(parent = layers)
+            child_list = pymvr.ChildList().to_xml(parent = layer)
+            for dmx_fixture in dmx.fixtures:
+                    fixture_object = dmx_fixture.to_mvr_fixture()
+                    focus_point = dmx_fixture.focus_to_mvr_focus_point()
+                    if focus_point is not None:
+                        child_list.append(focus_point.to_xml())
+                    child_list.append(fixture_object.to_xml())
+                    file_path = os.path.join(folder_path, fixture_object.gdtf_spec)
+                    fixtures_list.append((file_path, fixture_object.gdtf_spec))
+
+            pymvr.AUXData().to_xml(parent = scene)
+            mvr.files_list = list(set(fixtures_list))
+            mvr.write_mvr(file_name)
+
+        except Exception as e:
+            traceback.print_exception(e)
+            return SimpleNamespace(ok=False, error=str(e))
+
+        bpy.context.window_manager.dmx.pause_render = False # re-enable render loop
+        print("INFO", "MVR scene exported in %.4f sec." % (time.time() - start_time))
+        return SimpleNamespace(ok=True)
+
 
     def ensureUniverseExists(self, universe):
         # Allocate universes to be able to control devices
