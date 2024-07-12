@@ -1,4 +1,6 @@
 from typing import List, Union
+from xml.etree import ElementTree
+from xml.etree.ElementTree import Element
 
 
 # Data type that only allows a specific set of values, if given a value
@@ -21,7 +23,7 @@ class Enum:
         return bool(self.value)
 
 
-class ColorCIE:
+class Color:
     def __init__(
         self,
         x: Union[float, None] = 0.3127,
@@ -46,6 +48,10 @@ class ColorCIE:
     def __str__(self):
         return f"{self.x}, {self.y}, {self.Y}"
 
+    def to_xml(self, root):
+        element = ElementTree.SubElement(root, type(self).__name__)
+        element.text = f"{self.x},{self.y},{self.Y}"
+
 
 class Rotation:
     def __init__(self, str_repr):
@@ -65,6 +71,8 @@ class Matrix:
     def __init__(self, str_repr):
         if str_repr == "0" or str_repr == 0:
             self.matrix = [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 0]]
+        elif isinstance(str_repr, list):
+            self.matrix = str_repr
         else:
             str_repr = str_repr.replace("}{", ",")
             str_repr = str_repr.replace("{", "")
@@ -77,6 +85,11 @@ class Matrix:
                 [component[6], component[7], component[8], 0],
                 [component[9] * 0.001, component[10] * 0.001, component[11] * 0.001, 0],
             ]
+            # TODO: the matrix down-scaling should not be done here but in the consumer, based on scaling settings and so on
+            # same below, where we up-scale it again as mere re-processing via pymvr will cause loss of precision
+            # another option is to have a global settings for the GeneralSceneDescription but we then must pass the GSD class
+            # down through the hierarchy all the way to the Matrix class
+
     def __eq__(self, other):
         return self.matrix == other.matrix
 
@@ -88,6 +101,13 @@ class Matrix:
 
     def __repr__(self):
         return f"{self.matrix}"
+
+    def to_xml(self, parent):
+        u, v, w, x = self.matrix
+        matrix_str = f"{{{u[0]},{u[1]},{u[2]}}}{{{v[0]},{v[1]},{v[2]}}}{{{w[0]},{w[1]},{w[2]}}}{{{x[0]/0.001},{x[1]/0.001},{x[2]/0.001}}}"
+        matrix = ElementTree.SubElement(parent, type(self).__name__)
+        matrix.text = matrix_str
+
 
 # A node link represents a link to another node in the XML tree, starting from
 # start_point and traversing the tree with a decimal-point notation in str_link.

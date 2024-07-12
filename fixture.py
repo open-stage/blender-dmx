@@ -22,17 +22,18 @@ import math
 import mathutils
 import random
 import os
-import uuid
+import uuid as py_uuid
 
 from .material import getEmitterMaterial, get_gobo_material, set_light_nodes, get_ies_node, getGeometryNodes
 from .model import DMX_Model
 from .logging import DMX_Log
 
 from . import pygdtf
+from . import pymvr
 
 from .gdtf import DMX_GDTF
 from .data import DMX_Data
-from .util import cmy_to_rgb, add_rgb, colors_to_rgb
+from .util import cmy_to_rgb, add_rgb, colors_to_rgb, rgb2xyY
 from .osc_utils import DMX_OSC_Handlers
 from bpy.props import (IntProperty,
                        BoolProperty,
@@ -193,7 +194,7 @@ class DMX_Fixture(PropertyGroup):
     uuid: StringProperty(
         name = "UUID",
         description = "Unique ID, used for MVR",
-        default = str(uuid.uuid4())
+        default = str(py_uuid.uuid4())
             )
 
     fixture_id: StringProperty(
@@ -401,6 +402,7 @@ class DMX_Fixture(PropertyGroup):
                 self.objects.add()
                 self.objects[-1].name = 'Target'
                 self.objects['Target'].object = links[obj.name]
+                self.objects['Target'].object["uuid"] = str(py_uuid.uuid4())
             elif base.name == obj.name:
                 self.objects.add()
                 self.objects[-1].name = "Root"
@@ -1412,6 +1414,37 @@ class DMX_Fixture(PropertyGroup):
             ies = light_obj.data.node_tree.nodes.get("IES Texture")
             if ies is not None:
                 light_obj.data.node_tree.nodes.remove(ies)
+
+
+    def to_mvr_fixture(self):
+        matrix = 0
+        uuid_focus_point = None
+        for obj in self.objects:
+            if obj.object.get("geometry_root", False):
+                m=obj.object.matrix_world
+                matrix = [list(col) for col in m.col]
+            if 'Target' in obj.name:
+                uuid_focus_point = obj.object.get("uuid", None)
+
+        r, g, b = list(self.gel_color_rgb)[:3]
+        x, y, z = rgb2xyY(r, g, b)
+        color = f"{x},{y},{z}"
+
+        return pymvr.Fixture(name = self.name, uuid = self.uuid, gdtf_spec = self.profile, gdtf_mode = self.mode, fixture_id = self.fixture_id, addresses = [pymvr.Address(dmx_break= 0, universe=self.universe, address=self.address)], matrix = pymvr.Matrix(matrix), focus = uuid_focus_point, color = color)
+
+    def focus_to_mvr_focus_point(self):
+        for obj in self.objects:
+            if 'Target' in obj.name:
+                matrix = None
+                uuid_ = None
+                m=obj.object.matrix_world
+                matrix = [list(col) for col in m.col]
+                uuid_ = obj.object.get("uuid", None)
+                if matrix is None or uuid_ is None:
+                    DMX_Log.log.error(f"Matrix or uuid of a Target not defined")
+                    return
+                return pymvr.FocusPoint(matrix = pymvr.Matrix(matrix), uuid=uuid_, name=f"Target for {self.name}")
+
 
     def onDepsgraphUpdate(self):
         # TODO: rename this and hook again somewhere.
