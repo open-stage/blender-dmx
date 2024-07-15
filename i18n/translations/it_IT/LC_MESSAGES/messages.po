@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-05-04 07:19+0200\n"
-"PO-Revision-Date: 2024-05-14 13:01+0000\n"
-"Last-Translator: steve ross <yfw0e4otdo@elatter.com>\n"
+"PO-Revision-Date: 2024-07-16 22:09+0000\n"
+"Last-Translator: Andrea Defendi <andrea.def.01@gmail.com>\n"
 "Language-Team: Italian <https://hosted.weblate.org/projects/blenderdmx/main/"
 "it/>\n"
 "Language: it_IT\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.6-dev\n"
+"X-Generator: Weblate 5.7-dev\n"
 "Generated-By: Babel 2.14.0\n"
 
 msgid "Laser collision collection"
@@ -36,19 +36,20 @@ msgstr "Pausa rendering"
 msgid "Manufacturers"
 msgstr "Costruttori"
 
+#, fuzzy
 msgid "Imports"
-msgstr "Importa"
+msgstr "Importazioni"
 
 msgid "Add to selection"
 msgstr "Aggiungi alla selezione"
 
 #, fuzzy
 msgid "Remove from selection"
-msgstr "Inverti selezione"
+msgstr "Rimuovi dalla selezione"
 
 #, fuzzy
 msgid "Keyframe only selected fixtures (not for autokeying)"
-msgstr "Rimuovi i dispositivi selezionati dalla Scena"
+msgstr "Aggiungi keyframe solo per le luci selezionate (non per auto keyframe)"
 
 msgid "MVR-xchange"
 msgstr "MVR-xchange"
@@ -574,7 +575,7 @@ msgstr "Seleziona Obiettivi"
 
 #, fuzzy
 msgid "Reset position of target of selected fixtures"
-msgstr "Imposta sui dispositivi selezionati"
+msgstr "Resetta posizione bersaglio dei dispositivi selezionati"
 
 msgid "Select Fixtures"
 msgstr "Seleziona Dispositivi"
@@ -704,8 +705,9 @@ msgstr "Crea Volume Box"
 msgid "Set on selected fixtures"
 msgstr "Imposta sui dispositivi selezionati"
 
+#, fuzzy
 msgid "Viewport"
-msgstr "Viewport"
+msgstr "Vista"
 
 msgid "Background Color"
 msgstr "Colore Sfondo"
@@ -730,11 +732,11 @@ msgstr "Importa Scena MVR"
 
 #, fuzzy
 msgid "Import Project data"
-msgstr "Importa da Share"
+msgstr "Importa Project data"
 
 #, fuzzy
 msgid "Export"
-msgstr "Viewport"
+msgstr "Esporta"
 
 msgid "Export Project data"
 msgstr "Esporta i dati del progetto"
