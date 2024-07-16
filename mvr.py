@@ -18,7 +18,7 @@
 
 import os
 import bpy
-from .util import xyY2rgbaa
+from .util import xyY2rgbaa, create_unique_fixture_name
 from .io_scene_3ds.import_3ds import load_3ds
 from mathutils import Matrix
 import time
@@ -367,8 +367,11 @@ def add_mvr_fixture(
     dmx.ensureUniverseExists(fixture.addresses[0].universe)
 
     if existing_fixture is not None:
+        #TODO: we should not rename the fixture on import unless if the user wants it
+        # but we must ensure that the name is unique in the collection
+        unique_name = create_unique_fixture_name(fixture.name)
         existing_fixture.build(
-            f"{fixture.name}",
+            unique_name,
             fixture.gdtf_spec,
             fixture.gdtf_mode,
             fixture.addresses[0].universe,
@@ -385,8 +388,10 @@ def add_mvr_fixture(
             unit_number=fixture.unit_number,
         )
     else:
+        unique_name = f"{fixture.name} {layer_index}-{fixture_index}"
+        unique_name = create_unique_fixture_name(unique_name)
         dmx.addFixture(
-            f"{fixture.name} {layer_index}-{fixture_index}",
+            unique_name,
             fixture.gdtf_spec,
             fixture.addresses[0].universe,
             fixture.addresses[0].address,

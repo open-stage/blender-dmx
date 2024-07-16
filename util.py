@@ -18,6 +18,7 @@
 
 import bpy
 import math
+import random
 
 # <get Scene Rect>
 # Calculate the minimum and maximum coordinate of the scene objects
@@ -131,6 +132,7 @@ def xyY2rgbaa(xyY):
 
     return (int(var_R * 100), int(var_G * 100), int(var_B * 100), 0)
 
+
 def rgb2xyY(sR, sG, sB):
     # Convert RGB values to the 0-1 range
     var_R = sR / 255
@@ -165,9 +167,10 @@ def rgb2xyY(sR, sG, sB):
 
     # convert to xyY
     Y = Y
-    x = X / ( X + Y + Z )
-    y = Y / ( X + Y + Z )
+    x = X / (X + Y + Z)
+    y = Y / (X + Y + Z)
     return x, y, Y
+
 
 def xyY2rgba(xyz):
     """Unused for now"""
@@ -230,3 +233,13 @@ def colors_to_rgb(colors):
     blue = max(amber_rgb[2], lime_rgb[2], colors[2], white_rgb[2], wwhite_rgb[2], cwhite_rgb[2], uv_rgb[2], cyan_rgb[2], magenta_rgb[2], yellow_rgb[2])
 
     return [red, green, blue]
+
+
+def create_unique_fixture_name(name):
+    dmx = bpy.context.scene.dmx
+    while True:
+        if name in dmx.fixtures:
+            rand = random.randint(1000, 9999)
+            name = f"{name}-{rand}"
+        else:
+            return name
