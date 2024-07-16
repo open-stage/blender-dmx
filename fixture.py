@@ -29,6 +29,7 @@ from .model import DMX_Model
 from .logging import DMX_Log
 
 import pygdtf
+import pymvr
 
 from .gdtf import DMX_GDTF
 from .data import DMX_Data
