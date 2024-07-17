@@ -1,5 +1,11 @@
 ### Changelog
 
+### 1.7.0
+
+    * Initial MVR export - fixtures and focus points on one layer
+    * Ensure fixture name is unique when importing from MVR
+    * Fix dimmer if only one beam geometry exists
+
 ### 1.6.1
 
     * Add icon 'Center to selected' to Programmer
