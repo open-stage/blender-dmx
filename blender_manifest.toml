@@ -1,7 +1,7 @@
 schema_version = "1.0.0"
 id = "open_stage_blender_dmx"
-version = "1.6.1"
-name = "BlenderDMX"
+version = "1.7.1"
+name = "DMX for Blender"
 tagline = "DMX visualization and programming with GDTF/MVR, and Networking"
 maintainer = "Open Stage"
 type = "add-on"
@@ -26,7 +26,7 @@ wheels = [
 ]
 
 [permissions]
-files = "Import GDTF devices and MVR scenes. Export/Import project data"
+files = "Import GDTF devices. Import/Export MVR scenes and project data"
 network = "For GDTF Share, sACN, Art-Net, OSC, PSN, MVR-xchange"
 
 [build]
