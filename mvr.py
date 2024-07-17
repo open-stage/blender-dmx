@@ -20,7 +20,7 @@ import os
 import bpy
 import time
 import json
-from . import pymvr
+import pymvr
 from pathlib import Path
 from mathutils import Matrix
 from .logging import DMX_Log
