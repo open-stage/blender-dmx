@@ -1,7 +1,7 @@
 schema_version = "1.0.0"
 id = "open_stage_blender_dmx"
-version = "1.7.1"
-name = "DMX for Blender"
+version = "1.7.2"
+name = "DMX"
 tagline = "DMX visualization and programming with GDTF/MVR, and Networking"
 maintainer = "Open Stage"
 type = "add-on"
@@ -15,13 +15,13 @@ license = [
 
 wheels = [
   "wheels/pygdtf-1.0.4-py3-none-any.whl",
-  "wheels/pymvr-0.3.0-py3-none-any.whl",
+  "wheels/pymvr-0.3.0.dev0-py3-none-any.whl",
   "wheels/sacn-1.9.1-py3-none-any.whl",
   "wheels/oscpy-0.6.0-py2.py3-none-any.whl",
   "wheels/ifaddr-0.2.0-py3-none-any.whl",
   "wheels/async_timeout-4.0.3-py3-none-any.whl",
   "wheels/zeroconf-0.132.2-py3-none-any.whl",
-  "wheels/pypsn-0.2.2-py3-none-any.whl",
+  "wheels/pypsn-0.2.3-py3-none-any.whl",
   "wheels/io_scene_3ds-2.7.0-py2.py3-none-any.whl",
 ]
 
