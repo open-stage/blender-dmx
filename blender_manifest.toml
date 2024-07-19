@@ -20,7 +20,7 @@ wheels = [
   "wheels/oscpy-0.6.0-py2.py3-none-any.whl",
   "wheels/ifaddr-0.2.0-py3-none-any.whl",
   "wheels/async_timeout-4.0.3-py3-none-any.whl",
-  "wheels/zeroconf-0.132.2-py3-none-any.whl",
+  "wheels/open_stage_zeroconf-0.132.2.dev0-py3-none-any.whl",
   "wheels/pypsn-0.2.3-py3-none-any.whl",
   "wheels/io_scene_3ds-2.7.0-py2.py3-none-any.whl",
 ]
