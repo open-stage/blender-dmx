@@ -21,7 +21,7 @@ from bpy.props import CollectionProperty, IntProperty
 from .data.share_profile import DMX_Fixtures_Import_Gdtf_Profile_Dmx_Mode, DMX_Fixtures_Import_Gdtf_Profile
 from .data.local_profile import DMX_Fixtures_Local_ProfileMode, DMX_Fixtures_Local_Profile
 from .ui.list import DMX_UL_Share_Fixtures, DMX_UL_Share_Fixtures_Dmx_Modes, DMX_UL_Local_Fixtures, DMX_UL_Local_Fixtures_Dmx_Modes
-from .ui.operator import DMX_OP_Import_Fixture_From_Share, DMX_OP_Import_Fixture_Update_Share, DMX_OP_Import_Fixture_From_File, DMX_OP_Delete_Local_Fixture, DMX_OP_Update_Local_Fixtures
+from .ui.operator import DMX_OP_Import_Fixture_From_Share, DMX_OP_Import_Fixture_Update_Share, DMX_OP_Delete_Local_Fixture, DMX_OP_Update_Local_Fixtures
 from .ui.panel import DMX_PT_Fixtures_Import, DMX_PT_Fixtures_Import_Profile_Detail, DMX_PT_Fixtures_Local_Fixtures, DMX_PT_Fixtures_Local_Profile_Detail, DMX_PT_Profiles_Holder
 from .controller import DMX_Fixtures_Manager
 
@@ -56,7 +56,6 @@ classes = (
     DMX_UL_Local_Fixtures,
     DMX_UL_Local_Fixtures_Dmx_Modes,
     # Operators
-    DMX_OP_Import_Fixture_From_File,
     DMX_OP_Import_Fixture_From_Share,
     DMX_OP_Import_Fixture_Update_Share,
     DMX_OP_Delete_Local_Fixture,

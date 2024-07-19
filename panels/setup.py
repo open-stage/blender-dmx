@@ -29,6 +29,9 @@ from ..logging import DMX_Log
 
 from ..i18n import DMX_Lang
 
+from ..in_out_mvr import DMX_OT_Export_MVR, DMX_OT_Import_MVR
+from ..in_gdtf import DMX_OT_Import_GDTF
+
 _ = DMX_Lang._
 # Operators #
 
@@ -250,11 +253,11 @@ class DMX_PT_Setup_Import(Panel):
         dmx = context.scene.dmx
         # "Import GDTF Profile"
         row = layout.row()
-        row.operator(DMX_OT_Setup_Import_GDTF.bl_idname, text=_("Import GDTF Profile"), icon="IMPORT")
+        row.operator("dmx.import_gdtf_into_scene", text=_("Import GDTF Profile"), icon="IMPORT")
 
         # "Import MVR scene"
         row = layout.row()
-        row.operator(DMX_OT_Setup_Import_MVR.bl_idname, text=_("Import MVR Scene"), icon="IMPORT")
+        row.operator("dmx.import_mvr_into_scene", text=_("Import MVR Scene"), icon="IMPORT")
 
         # export project data
         row = layout.row()
@@ -279,7 +282,7 @@ class DMX_PT_Setup_Export(Panel):
         row = layout.row()
         row.operator("dmx.export_custom_data", text=_("Export Project data"), icon="EXPORT")
         row = layout.row()
-        row.operator("dmx.export_mvr", text=_("Export MVR"), icon="EXPORT")
+        row.operator("dmx.export_mvr_from_scene", text=_("Export MVR"), icon="EXPORT")
 
 
 class DMX_OT_Setup_Open_LogFile(Operator):
@@ -471,47 +474,6 @@ class DMX_OT_Export_Custom_Data(Operator):
 
         return {"FINISHED"}
 
-class DMX_OT_Export_MVR(Operator):
-    bl_label = _("Export MVR")
-    bl_idname = "dmx.export_mvr"
-    bl_description = _("Export MVR, fixtures only at this point")
-    bl_options = {"UNDO"}
-
-    filter_glob: StringProperty(default="*.mvr", options={"HIDDEN"})
-
-    directory: StringProperty(name=_("File Path"), maxlen=1024, default="")
-
-    files: CollectionProperty(name=_("Files"), type=bpy.types.OperatorFileListElement)
-
-    def draw(self, context):
-        layout = self.layout
-        col = layout.column()
-        col.prop(self, "files")
-
-    def invoke(self, context, event):
-        wm = context.window_manager
-        wm.fileselect_add(self)
-        return {"RUNNING_MODAL"}
-
-    def execute(self, context):
-        file_name = self.files[0].name
-        if file_name[-4:].lower() == ".mvr":
-            file_name = file_name[:-4]
-        if file_name != "" and len(file_name) > 1:
-            dmx = context.scene.dmx
-            export_filename = os.path.join(self.directory, f"{file_name}.mvr")
-            result = dmx.export_mvr(export_filename)
-        else:
-            self.report({"ERROR"}, _("Incorrect file name!"))
-            return {"FINISHED"}
-
-        if result.ok:
-            export_filename = os.path.join(self.directory, f"{file_name}.mvr")
-            self.report({"INFO"}, _("Data exported to: {}").format(export_filename))
-        else:
-            self.report({"ERROR"}, result.error)
-
-        return {"FINISHED"}
 
 class DMX_OT_Clear_Custom_Data(Operator):
     bl_label = _("Clear Custom Data")
@@ -571,71 +533,3 @@ class DMX_OT_Reload_Addon(Operator):
         return wm.invoke_props_dialog(self)
 
 
-class DMX_OT_Setup_Import_GDTF(Operator):
-    bl_label = _("Import GDTF Profile")
-    bl_idname = "dmx.import_gdtf_profile"
-    bl_description = _("Import fixture from GDTF Profile")
-    bl_options = {"UNDO"}
-
-    filter_glob: StringProperty(default="*.gdtf", options={"HIDDEN"})
-
-    directory: StringProperty(name=_("File Path"), maxlen=1024, default="")
-
-    files: CollectionProperty(name=_("Files"), type=bpy.types.OperatorFileListElement)
-
-    def draw(self, context):
-        layout = self.layout
-        col = layout.column()
-        col.prop(self, "files")
-
-    def invoke(self, context, event):
-        wm = context.window_manager
-        wm.fileselect_add(self)
-        return {"RUNNING_MODAL"}
-
-    def execute(self, context):
-        folder_path = os.path.dirname(os.path.realpath(__file__))
-        folder_path = os.path.join(folder_path, "..", "assets", "profiles")
-        for file in self.files:
-            file_path = os.path.join(self.directory, file.name)
-            DMX_Log.log.info("Importing GDTF Profile: %s" % file_path)
-            shutil.copy(file_path, folder_path)
-        DMX_GDTF.getManufacturerList()
-        Profiles.DMX_Fixtures_Local_Profile.loadLocal()
-        return {"FINISHED"}
-
-
-class DMX_OT_Setup_Import_MVR(Operator):
-    bl_label = _("Import MVR scene")
-    bl_idname = "dmx.import_mvr_scene"
-    bl_description = _("Import data MVR scene file. This may take a long time!")
-    bl_options = {"UNDO"}
-
-    filter_glob: StringProperty(default="*.mvr", options={"HIDDEN"})
-
-    directory: StringProperty(name=_("File Path"), maxlen=1024, default="")
-
-    files: CollectionProperty(name=_("Files"), type=bpy.types.OperatorFileListElement)
-
-    def draw(self, context):
-        layout = self.layout
-        col = layout.column()
-        col.prop(self, "files")
-
-    def invoke(self, context, event):
-        wm = context.window_manager
-        wm.fileselect_add(self)
-        return {"RUNNING_MODAL"}
-
-    def execute(self, context):
-        folder_path = os.path.dirname(os.path.realpath(__file__))
-        folder_path = os.path.join(folder_path, "..", "assets", "profiles")
-        for file in self.files:
-            file_path = os.path.join(self.directory, file.name)
-            print("INFO", f"Processing MVR file: {file_path}")
-            dmx = context.scene.dmx
-            dmx.addMVR(file_path)
-            # shutil.copy(file_path, folder_path)
-        # https://developer.blender.org/T86803
-        # self.report({'WARNING'}, 'Restart Blender to load the profiles.')
-        return {"FINISHED"}
