@@ -49,6 +49,8 @@ from .i18n import DMX_Lang
 _ = DMX_Lang._
 from .dmx import DMX
 from .dmx_temp_data import DMX_TempData
+from . import in_out_mvr
+from . import in_gdtf
 
 
 @bpy.app.handlers.persistent
@@ -141,6 +143,10 @@ def onRegister():
 
 def register():
     # Register Base Classes
+
+    in_out_mvr.register()
+    in_gdtf.register()
+
     for cls in DMX.classes_base:
         bpy.utils.register_class(cls)
 
@@ -172,6 +178,9 @@ def unregister():
     DMX_Zeroconf.close()
 
     try:
+        in_out_mvr.unregister()
+        in_gdtf.unregister()
+
         for cls in Profiles.classes:
             bpy.utils.unregister_class(cls)
 
