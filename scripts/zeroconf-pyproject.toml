@@ -1,0 +1,136 @@
+[tool.poetry]
+name = "open-stage-zeroconf"
+version = "0.132.2-dev0"
+description = "Custom wheel for BlenderDMX Extension"
+authors = ["Paul Scott-Murphy", "William McBrine", "Jakub Stasiak", "J. Nick Koston"]
+license = "LGPL"
+readme = "README.rst"
+repository = "https://github.com/open-stage/blender-dmx"
+packages = [
+    { include = "zeroconf", from = "src" },
+]
+include = [
+    { path = "CHANGELOG.md", format = "sdist" },
+    { path = "COPYING", format = "sdist" },
+    { path = "docs", format = "sdist" },
+    { path = "tests", format = "sdist" },
+]
+
+[tool.poetry.build]
+
+[tool.semantic_release]
+branch = "master"
+version_toml = "pyproject.toml:tool.poetry.version"
+version_variable = "src/zeroconf/__init__.py:__version__"
+build_command = "pip install poetry && poetry build"
+tag_format = "{version}"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+async-timeout = {version = ">=3.0.0", python = "<3.11"}
+ifaddr = ">=0.1.7"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.2.0"
+pytest-cov = "^4.0.0"
+pytest-asyncio = "^0.20.3"
+cython = "^3.0.5"
+setuptools = "^65.6.3"
+pytest-timeout = "^2.1.0"
+
+[tool.black]
+line-length = 110
+target_version = ['py37', 'py38', 'py39', 'py310', 'py311']
+skip_string_normalization = true
+
+[tool.pylint.BASIC]
+class-const-naming-style = "any"
+good-names = [
+    "e",
+    "er",
+    "h",
+    "i",
+    "id",
+    "ip",
+    "os",
+    "n",
+    "rr",
+    "rs",
+    "s",
+    "t",
+    "wr",
+    "zc",
+    "_GLOBAL_DONE",
+]
+
+[tool.pylint."MESSAGES CONTROL"]
+disable = [
+    "duplicate-code",
+    "fixme",
+    "format",
+    "missing-class-docstring",
+    "missing-function-docstring",
+    "too-few-public-methods",
+    "too-many-arguments",
+    "too-many-instance-attributes",
+    "too-many-public-methods"
+]
+
+
+[tool.pytest.ini_options]
+addopts = "-v -Wdefault --cov=zeroconf --cov-report=term-missing:skip-covered"
+pythonpath = ["src"]
+
+[tool.coverage.run]
+branch = true
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "@overload",
+    "if TYPE_CHECKING",
+    "raise NotImplementedError",
+]
+
+
+[tool.isort]
+profile = "black"
+known_first_party = ["zeroconf", "tests"]
+
+[tool.mypy]
+check_untyped_defs = true
+disallow_any_generics = false  # turn this on when we drop 3.7/3.8 support
+disallow_incomplete_defs = true
+disallow_untyped_defs = true
+mypy_path = "src/"
+no_implicit_optional = true
+show_error_codes = true
+warn_unreachable = true
+warn_unused_ignores = false
+exclude = [
+    'docs/*',
+    'bench/*',
+]
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+allow_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = "docs.*"
+ignore_errors = true
+allow_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = "bench.*"
+ignore_errors = true
+
+[build-system]
+# 1.5.2 required for https://github.com/python-poetry/poetry/issues/7505
+requires = ['setuptools>=65.4.1', 'wheel', 'Cython>=3.0.8', "poetry-core>=1.5.2"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.codespell]
+skip = '*.po,*.ts,./tests,./bench'
+count = ''
+quiet-level = 3
