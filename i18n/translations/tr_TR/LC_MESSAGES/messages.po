@@ -8,14 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-05-04 07:19+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language: tr\n"
-"Language-Team: none\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"PO-Revision-Date: 2024-07-21 13:09+0000\n"
+"Last-Translator: blomusti <m.f.varkara@gmail.com>\n"
+"Language-Team: Turkish <https://hosted.weblate.org/projects/blenderdmx/main/"
+"tr/>\n"
+"Language: tr_TR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.7-dev\n"
 "Generated-By: Babel 2.14.0\n"
 
 msgid "Laser collision collection"
@@ -30,10 +32,10 @@ msgid "Pause renderer"
 msgstr ""
 
 msgid "Manufacturers"
-msgstr ""
+msgstr "Üreticiler"
 
 msgid "Imports"
-msgstr ""
+msgstr "İçe Aktarılanlar"
 
 msgid "Add to selection"
 msgstr ""
@@ -48,7 +50,7 @@ msgid "MVR-xchange"
 msgstr ""
 
 msgid "Status"
-msgstr ""
+msgstr "Durum"
 
 msgid "DMX Data"
 msgstr ""
@@ -60,7 +62,7 @@ msgid "Fixture ID"
 msgstr ""
 
 msgid "Unit Number"
-msgstr ""
+msgstr "Birim Numarası"
 
 msgid "Custom ID"
 msgstr ""
@@ -84,7 +86,7 @@ msgid "Universe"
 msgstr ""
 
 msgid "Editable"
-msgstr ""
+msgstr "Düzenlenebilir"
 
 msgid "Display Pigtails"
 msgstr ""
@@ -99,7 +101,7 @@ msgid "None"
 msgstr ""
 
 msgid "Name"
-msgstr ""
+msgstr "İsim"
 
 msgid "DMX"
 msgstr ""
@@ -114,13 +116,13 @@ msgid "Critical"
 msgstr ""
 
 msgid "Error"
-msgstr ""
+msgstr "Hata"
 
 msgid "Warning"
-msgstr ""
+msgstr "Uyarı"
 
 msgid "Info"
-msgstr ""
+msgstr "Bilgi"
 
 msgid "Debug"
 msgstr ""
@@ -167,7 +169,7 @@ msgid "Volume Noise Scale"
 msgstr ""
 
 msgid "Density"
-msgstr ""
+msgstr "Yoğunluk"
 
 msgid "Volume Scatter Density"
 msgstr ""
@@ -1167,4 +1169,3 @@ msgstr ""
 
 #~ msgid "Re-address only"
 #~ msgstr ""
-
