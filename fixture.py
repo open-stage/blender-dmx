@@ -813,6 +813,7 @@ class DMX_Fixture(PropertyGroup):
 
     def updateShutterDimmer(self, shutter, dimmer, geometry, bits, current_frame):
         DMX_Log.log.info(("set shutter, dimmer", shutter, dimmer, geometry))
+        dmx = bpy.context.scene.dmx
         if geometry is not None:
             geometry = geometry.replace(" ", "_")
         last_shutter_value = 0
@@ -836,7 +837,7 @@ class DMX_Fixture(PropertyGroup):
                 light.object.data['shutter_value']=shutter
                 light.object.data['shutter_dimmer_value']=dimmer
                 light.object.data['shutter_dimmer_bits']=bits
-                flux = light.object.data["flux"]
+                flux = light.object.data["flux"] * dmx.beam_intensity_multiplier
                 # we should improve this to get more Cycles/Eevee compatibility... add a driver which would adjust the intensity
                 # depending on the IES linking or not, adding drivers: https://blender.stackexchange.com/a/314329/176407
                 # plus, we would still need to calculate correct energy, so they match between Cycles/Eevee
