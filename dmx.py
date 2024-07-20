@@ -950,6 +950,18 @@ class DMX(PropertyGroup):
         max = 1,
         update = onVolumeDensity)
 
+
+    def onMultiplyIntensity(self, context):
+        for fixture in self.fixtures:
+            fixture.render(skip_cache=True)
+
+    beam_intensity_multiplier: FloatProperty(
+        name = _("Multiply beams intensity"),
+        default = 1,
+        min=0.001,
+        update = onMultiplyIntensity
+        )
+
     # # DMX > Universes > Number of Universes
 
     def onUniverseN(self, context):
