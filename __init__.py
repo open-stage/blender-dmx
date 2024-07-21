@@ -180,20 +180,29 @@ def unregister():
     try:
         in_out_mvr.unregister()
         in_gdtf.unregister()
-
-        for cls in Profiles.classes:
-            bpy.utils.unregister_class(cls)
-
-        # Unregister Base Classes
-        for cls in DMX.classes_base:
-            bpy.utils.unregister_class(cls)
-
-        # Unregister addon main class
-        bpy.utils.unregister_class(DMX_TempData)
-        bpy.utils.unregister_class(DMX)
-
     except Exception as e:
         print("INFO", e)
+
+
+    for cls in Profiles.classes:
+        try:
+            bpy.utils.unregister_class(cls)
+        except Exception as e:
+            print("INFO", e)
+
+
+    # Unregister Base Classes
+    for cls in DMX.classes_base:
+        try:
+            bpy.utils.unregister_class(cls)
+        except Exception as e:
+            print("INFO", e)
+
+
+    # Unregister addon main class
+    bpy.utils.unregister_class(DMX_TempData)
+    bpy.utils.unregister_class(DMX)
+
 
     # Append handlers
     bpy.app.handlers.load_post.clear()

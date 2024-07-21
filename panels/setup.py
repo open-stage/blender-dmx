@@ -521,8 +521,29 @@ class DMX_OT_Reload_Addon(Operator):
     def execute(self, context):
         dmx = context.scene.dmx
 
+        try:
+            bpy.utils.unregister_class(DMX_OT_Import_GDTF)
+            bpy.utils.unregister_class(DMX_OT_Import_MVR)
+            bpy.utils.unregister_class(DMX_OT_Export_MVR)
+        except:
+            ...
+
+        for cls in dmx.classes:
+            try:
+                bpy.utils.unregister_class(cls)
+            except:
+                ...
+
+        for cls in dmx.classes_base:
+            try:
+                bpy.utils.unregister_class(cls)
+            except:
+                ...
         for cls in dmx.classes_setup:
-            bpy.utils.unregister_class(cls)
+            try:
+                bpy.utils.unregister_class(cls)
+            except:
+                ...
 
         result = blender_utils.reload_addon()
 
