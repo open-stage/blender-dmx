@@ -56,6 +56,7 @@ from .panels import fixtures as fixtures
 from .panels import groups as groups
 from .panels import programmer as programmer
 from .panels import profiles as Profiles
+from .panels import distribute as distribute
 
 from .preferences import DMX_Preferences, DMX_Regenrate_UUID
 from .group import FixtureGroup, DMX_Group
@@ -178,6 +179,11 @@ class DMX(PropertyGroup):
                 programmer.DMX_OT_Programmer_ResetTargets,
                 programmer.DMX_MT_PIE_Reset,
                 programmer.DMX_OT_Programmer_Unset_Ignore_Movement,
+                distribute.DMX_PT_AlignAndDistributePanel,
+                distribute.DMX_OP_AlignLocationOperator,
+                distribute.DMX_OP_DistributeWithGapOperator,
+                distribute.DMX_OP_DistributeEvenlyOperator,
+                distribute.DMX_OP_DistributeCircle,
                 panels_osc.DMX_PT_DMX_OSC,
                 panels_psn.DMX_UL_Tracker,
                 panels_psn.DMX_OP_DMX_Tracker_Add,
@@ -1394,7 +1400,7 @@ class DMX(PropertyGroup):
 
 
     fixtures_sorting_order: EnumProperty(
-        name= _("Sort by"),
+        name= _("Order by"),
         description= _("Fixture sorting order"),
         default = "ADDRESS",
         items= [
