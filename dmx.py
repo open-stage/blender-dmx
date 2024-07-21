@@ -28,7 +28,7 @@ from datetime import datetime
 import traceback
 from types import SimpleNamespace
 
-import pymvr
+from . import pymvr
 from .mvr import load_mvr
 
 from . import param as param
