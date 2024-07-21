@@ -4,7 +4,6 @@ import os
 import traceback
 from bpy_extras.io_utils import (
     ImportHelper,
-    poll_file_object_drop,
 )
 from bpy.props import (
     StringProperty,
@@ -142,10 +141,6 @@ class DMX_IO_FH_GDTF(bpy.types.FileHandler):
     bl_label = "GDTF"
     bl_import_operator = "dmx.import_gdtf_into_scene"
     bl_file_extensions = ".gdtf"
-
-    @classmethod
-    def poll_drop(cls, context):
-        return poll_file_object_drop(context)
 
 
 def menu_func_import(self, context):

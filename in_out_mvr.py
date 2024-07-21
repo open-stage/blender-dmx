@@ -3,7 +3,6 @@ import os
 from bpy_extras.io_utils import (
     ImportHelper,
     ExportHelper,
-    poll_file_object_drop,
 )
 from bpy.props import (
     StringProperty,
@@ -77,10 +76,6 @@ class DMX_IO_FH_MVR(bpy.types.FileHandler):
     bl_import_operator = "dmx.import_mvr_into_scene"
     bl_export_operator = "dmx.export_mvr_from_scene"
     bl_file_extensions = ".mvr"
-
-    @classmethod
-    def poll_drop(cls, context):
-        return poll_file_object_drop(context)
 
 
 def menu_func_export(self, context):
