@@ -9,7 +9,6 @@ from bpy.props import (
     CollectionProperty,
 )
 
-
 class DMX_OT_Import_MVR(bpy.types.Operator, ImportHelper):
     """Import My Virtual Rig"""
 
@@ -59,7 +58,6 @@ class DMX_OT_Export_MVR(bpy.types.Operator, ExportHelper):
         if not dmx.collection:
             context.scene.dmx.new()
         dmx = context.scene.dmx
-        print(self.filepath)
         result = dmx.export_mvr(self.filepath)
 
         if result.ok:
