@@ -1719,7 +1719,7 @@ def process_next_chunk(context, file, previous_chunk, imported_objects, CONSTRAI
 def load_3ds(filepath, context, CONSTRAIN=10.0, UNITS=False, IMAGE_SEARCH=True,
              FILTER=None, KEYFRAME=True, APPLY_MATRIX=True, CONVERSE=None, CURSOR=False):
 
-    print("importing 3DS: %r..." % (filepath), end="")
+    print("importing 3DS: %r..." % (Path(filepath).name), end="")
 
     if bpy.ops.object.select_all.poll():
         bpy.ops.object.select_all(action='DESELECT')
@@ -1732,7 +1732,7 @@ def load_3ds(filepath, context, CONSTRAIN=10.0, UNITS=False, IMAGE_SEARCH=True,
     # here we go!
     read_chunk(file, current_chunk)
     if current_chunk.ID != PRIMARY:
-        print("\tFatal Error:  Not a valid 3ds file: %r" % filepath)
+        print("\tFatal Error:  Not a valid 3ds file: %r" % Path(filepath).name)
         file.close()
         return
 
