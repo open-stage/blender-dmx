@@ -27,6 +27,7 @@ from bpy.props import (BoolProperty,
                        StringProperty,
                        PointerProperty,
                        IntProperty,
+                       FloatProperty,
                        CollectionProperty)
 
 from bpy.types import (PropertyGroup)
@@ -124,3 +125,7 @@ class DMX_TempData(PropertyGroup):
 
     selected_tracker: StringProperty() # to pass data to fixture list
     selected_tracker_index: IntProperty() # to pass data to fixture list
+
+    dist_gap: FloatProperty(name="Gap", default=2)
+    dist_diameter: FloatProperty(name="Diameter", default=2)
+    dist_rotate: BoolProperty(name="Rotate", default=False)
