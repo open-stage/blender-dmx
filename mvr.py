@@ -461,7 +461,7 @@ def load_mvr(dmx, file_name):
             obj_name = obj.name.split('.')[0]
             if obj.is_instancer:
                 insta_name = '%s %d' % (obj_name, idx) if idx >= 1 else obj_name
-                obj.name = '%s_%d' % (insta_name, obid)
+                obj.name = '%s_%d' % (insta_name.split('_')[0], obid)
             elif obj.name[-3:].isdigit() and obj.name[-4] == '.':
                 obj.name = '%s %d' % (obj_name, obid)
 
