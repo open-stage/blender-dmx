@@ -20,13 +20,13 @@ import os
 import bpy
 import time
 import json
-from . import pymvr
+import pymvr
 from pathlib import Path
 from mathutils import Matrix
 from .logging import DMX_Log
 from .group import FixtureGroup
+from io_scene_3ds.import_3ds import load_3ds
 from .util import xyY2rgbaa, create_unique_fixture_name
-from .io_scene_3ds.import_3ds import load_3ds
 
 
 auxData = {}
@@ -60,7 +60,7 @@ def get_child_list(dmx, mscale, mvr_scene, child_list, layer_index, folder_path,
         viewlayer.active_layer_collection = viewport
 
     for truss_idx, truss_obj in enumerate(child_list.trusses):
-        print("creating Truss collection... %s" % truss_obj.name)
+        print("creating Truss... %s" % truss_obj.name)
 
         if fixture_group is None:
             group_name = truss_obj.name or "Truss"
@@ -110,7 +110,7 @@ def get_child_list(dmx, mscale, mvr_scene, child_list, layer_index, folder_path,
         obj.select_set(True)
 
 
-def process_mvr_object(context, mvr_scene, mvr_object, mvr_index, mscale, extracted, group_collect):
+def process_mvr_object(context, mvr_scene, mvr_object, mvr_idx, mscale, extracted, group_collect):
 
     uid = mvr_object.uuid
     name = mvr_object.name
@@ -124,27 +124,31 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_index, mscale, extrac
     symdef_id = isinstance(mvr_object, pymvr.Symdef)
     current_path = os.path.dirname(os.path.realpath(__file__))
     folder = os.path.join(current_path, "assets", "models", "mvr")
-    if not symdef_id:
-        name = '%s %d' % (name, mvr_index) if name in data_collect else name
     print("creating %s... %s" % (class_name, name))  
 
     def add_mvr_object(idx, node, mtx, collect, file=""):
-        imported_objects = []
+        node_type = node.__class__.__name__
         item_name = Path(file).name
         mesh_name = Path(file).stem
         mesh_data = bpy.data.meshes
-        node_type = node.__class__.__name__
+        imported_objects = []
+        if not symdef_id:
+            collect['Reference'] = mesh_name
+        reference = collect.get('Reference')
         scale_factor = 0.001 if file.split('.')[-1] == '3ds' else 1.0
-        mesh_exist = [msh for msh in mesh_data if msh.name == mesh_name]
+        mesh_exist = next((msh for msh in mesh_data if msh.name == mesh_name), False)
+        exist = any(ob for ob in object_data if ob.get('Reference') and reference == uid)
         world_matrix = mtx @ Matrix.Scale(scale_factor, 4)
-        
         print("adding %s... %s" % (node_type, mesh_name))
-        if len(mesh_exist):
-            for mesh in mesh_exist:
-                mesh_id = mesh.get('MVR Name')
-                new_object = object_data.new(mesh_id, mesh)
-                imported_objects.append(new_object)
-        else:
+
+        if mesh_exist:
+            if not exist:
+                new_obj = next((ob for ob in object_data if ob.get('UUID') == reference), False)
+                if not new_obj:
+                    mesh_id = mesh_exist.get('MVR Name')
+                    new_obj = object_data.new(mesh_id, mesh_exist)
+                imported_objects.append(new_obj)
+        elif not exist:
             file_name = os.path.join(folder, file)
             if os.path.isfile(file_name):
                 if file.split('.')[-1] == 'glb':
@@ -152,11 +156,10 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_index, mscale, extrac
                 else:
                     load_3ds(file_name, bpy.context, KEYFRAME=False, APPLY_MATRIX=False)
                 imported_objects.extend(list(viewlayer.objects.selected))
-
         for ob in imported_objects:
             ob.rotation_mode = 'XYZ'
             obname = ob.name.split('.')[0]
-            create_mvr_props(ob, class_name, obname, uid, mesh_name)
+            create_mvr_props(ob, class_name, obname, mesh_name, uid)
             if ob.data:
                 ob.data.name = mesh_name
                 create_mvr_props(ob.data, node_type, obname, uid, item_name) 
@@ -164,10 +167,10 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_index, mscale, extrac
                 ob.users_collection[0].objects.unlink(ob)
             elif ob.name in layer_collect.collection.objects:
                 active_layer.collection.objects.unlink(ob)
-            if ob.name not in collect.objects:
-                collect.objects.link(ob)
             if ob.parent is None:
                 ob.matrix_world = world_matrix
+            if ob.name not in collect.objects:
+                collect.objects.link(ob)
         objectData.setdefault(uid, collect)
         imported_objects.clear()
         viewlayer.update()
@@ -186,15 +189,6 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_index, mscale, extrac
     elif not symdef_id and mvr_object.geometries:
         symbols += mvr_object.geometries.symbol
         geometrys += mvr_object.geometries.geometry3d
-        if (len(geometrys) + len(symbols)) > 1:
-            if mvr_object.name is not None and len(mvr_object.name):
-                mvr_name = '%s - %s %d' % (class_name, mvr_object.name, mvr_index)
-            else:
-                mvr_name = '%s %d' % (class_name, mvr_index) if mvr_index >= 1 else class_name
-            print("creating extra collection", mvr_name)
-            active_collect = bpy.data.collections.new(mvr_name)
-            create_mvr_props(active_collect, class_name, mvr_object.name, mvr_object.uuid)
-            group_collect.children.link(active_collect)
     else:
         symbols += mvr_object.symbol
         geometrys += mvr_object.geometry3d
@@ -206,32 +200,37 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_index, mscale, extrac
             active_collect = data_collect.get(uid)
             if active_collect is None:
                 active_collect = data_collect.new(uid)
-        create_mvr_props(active_collect, class_name, uid)
+        if active_collect.get('MVR Class') is None:
+            create_mvr_props(active_collect, class_name, uid)
         active_collect.hide_render = True
+    elif (len(geometrys) + len(symbols)) > 1:
+        if mvr_object.name is not None and len(mvr_object.name):
+            obj_name = '%s - %s %d' % (class_name, mvr_object.name, mvr_idx)
+        else:
+            obj_name = '%s %d' % (class_name, mvr_idx) if mvr_idx >= 1 else class_name
+        print("creating extra collection", obj_name)
+        active_collect = bpy.data.collections.new(obj_name)
+        create_mvr_props(active_collect, class_name, name, uid)
+        group_collect.children.link(active_collect)
 
     if active_collect is None:
         active_collect = next((col for col in data_collect if col.get('UUID') == uid), False)
         if not active_collect and not len(symbols):
             active_collect = data_collect.new(name)
-            group_collect.children.link(active_collect)
             create_mvr_props(active_collect, class_name, name, uid)
 
     for idx, geometry in enumerate(geometrys):
         file = geometry.file_name
-        existing = any(ob for ob in object_data if ob.get('Reference') == Path(file).stem)
-        if not existing:
-            if not active_collect:
-                active_collect = data_collect.new(name)
-            obj_mtx = get_matrix(geometry, mscale)
-            extract_mvr_object(file, mvr_scene, folder, extracted)
-            object_collect = add_mvr_object(idx, geometry, obj_mtx, active_collect, file)
-            if object_collect and object_collect.name not in group_collect.children:
-                group_collect.children.link(object_collect)
+        obj_mtx = get_matrix(geometry, mscale)
+        extract_mvr_object(file, mvr_scene, folder, extracted)
+        object_collect = add_mvr_object(idx, geometry, obj_mtx, active_collect, file)
+        if object_collect and object_collect.name not in group_collect.children: 
+            group_collect.children.link(object_collect)
 
     for idx, symbol in enumerate(symbols):
         symbol_type = symbol.__class__.__name__
         symbol_mtx = get_matrix(symbol, context_matrix)
-        if not isinstance(mvr_object, pymvr.Symdef):
+        if not symdef_id:
             symbol_mtx = get_matrix(mvr_object, symbol_mtx)
         symbol_collect = data_collect.get(symbol.symdef)
         if symbol_collect:
@@ -240,7 +239,7 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_index, mscale, extrac
             symbol_object = object_data.new(name, None)
             group_collect.objects.link(symbol_object)
             symbol_object.matrix_world = symbol_mtx
-            symbol_object.empty_display_size = 0.01
+            symbol_object.empty_display_size = 0.1
             symbol_object.empty_display_type = 'ARROWS'
             symbol_object.instance_type = 'COLLECTION'
             symbol_object.instance_collection = symbol_collect
@@ -386,7 +385,7 @@ def load_mvr(dmx, file_name):
     classes = auxdata.classes
     symdefs = auxdata.symdefs
 
-    for def_index, symdef in enumerate(symdefs):
+    for aux_idx, symdef in enumerate(symdefs):
         if aux_dir and symdef.name in aux_dir.children:
             aux_collection = aux_dir.children.get(symdef.name)
         elif symdef.name in data_collect:
@@ -395,12 +394,12 @@ def load_mvr(dmx, file_name):
             aux_collection = data_collect.new(symdef.name)
 
         auxData.setdefault(symdef.uuid, aux_collection)
-        process_mvr_object(context, mvr_scene, symdef, def_index,
+        process_mvr_object(context, mvr_scene, symdef, aux_idx,
                            mscale, extracted, aux_collection)
 
         if hasattr(symdef, "child_list") and symdef.child_list:
             get_child_list(dmx, mscale, mvr_scene, symdef.child_list,
-                           aux_index, folder_path, extracted, aux_collection)
+                           aux_idx, folder_path, extracted, aux_collection)
 
     for layer_idx, layer in enumerate(mvr_scene.layers):
         layer_class = layer.__class__.__name__
