@@ -129,22 +129,28 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_index, mscale, extrac
     print("creating %s... %s" % (class_name, name))  
 
     def add_mvr_object(idx, node, mtx, collect, file=""):
+        new_object = False
         imported_objects = []
+        item_name = Path(file).name
         mesh_name = Path(file).stem
         mesh_data = bpy.data.meshes
         node_type = node.__class__.__name__
         scale_factor = 0.001 if file.split('.')[-1] == '3ds' else 1.0
+        ob_exist = [ob for ob in object_data if ob.get('Reference') == mesh_name]
+        mesh_exist = [msh for msh in mesh_data if msh.name == mesh_name]
         world_matrix = mtx @ Matrix.Scale(scale_factor, 4)
-        existing = [msh for msh in mesh_data if msh.name == mesh_name]
         
         print("adding %s... %s" % (node_type, mesh_name))
-        if len(existing):
-            for mesh in existing:
+        if len(ob_exist):
+            new_object = next((ob for ob in ob_exist), False)
+        elif len(mesh_exist) and not new_object:
+            for mesh in mesh_exist:
                 mesh_id = mesh.get('MVR Name')
-                new_obj = object_data.new(mesh_id, mesh)
-                collect.objects.link(new_obj)
-                imported_objects.append(new_obj)
-        else:
+                new_object = object_data.new(mesh_id, mesh)
+            if new_object:
+                objectData.setdefault(uid, []).append(new_object)
+                imported_objects.append(new_object)
+        elif not new_object:
             file_name = os.path.join(folder, file)
             if os.path.isfile(file_name):
                 if file.split('.')[-1] == 'glb':
@@ -158,7 +164,7 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_index, mscale, extrac
             create_mvr_props(ob, class_name, obname, uid, mesh_name)
             if ob.data:
                 ob.data.name = mesh_name
-                create_mvr_props(ob.data, node_type, obname, uid, Path(file).name) 
+                create_mvr_props(ob.data, node_type, obname, uid, item_name) 
             if ob.name in ob.users_collection[0].objects:
                 ob.users_collection[0].objects.unlink(ob)
             elif ob.name in layer_collect.collection.objects:
@@ -201,16 +207,17 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_index, mscale, extrac
 
     if symdef_id:
         create_mvr_props(group_collect, class_name, name, uid)
-        active_collect = data_collect.get(uid)
-        if active_collect is None:
-            active_collect = data_collect.new(uid)
-            group_collect.children.link(active_collect)
-            create_mvr_props(active_collect, class_name)
+        active_collect = next((col for col in data_collect if col.get('Reference') == uid), False)
+        if not active_collect:
+            active_collect = data_collect.get(uid)
+            if active_collect is None:
+                active_collect = data_collect.new(uid)
+        create_mvr_props(active_collect, class_name, uid)
         active_collect.hide_render = True
 
     if active_collect is None:
         active_collect = next((col for col in data_collect if col.get('UUID') == uid), False)
-        if not len(symbols) and active_collect is None:
+        if not active_collect and not len(symbols):
             active_collect = data_collect.new(name)
             group_collect.children.link(active_collect)
             create_mvr_props(active_collect, class_name, name, uid)
