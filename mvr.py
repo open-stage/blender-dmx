@@ -129,7 +129,7 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_index, mscale, extrac
     print("creating %s... %s" % (class_name, name))  
 
     def add_mvr_object(idx, node, mtx, collect, file=""):
-        new_object = False
+        existing = False
         imported_objects = []
         item_name = Path(file).name
         mesh_name = Path(file).stem
@@ -142,14 +142,14 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_index, mscale, extrac
         
         print("adding %s... %s" % (node_type, mesh_name))
         if len(ob_exist):
-            new_object = next((ob for ob in ob_exist), False)
+            existing = next((ob for ob in ob_exist), False)
         elif len(mesh_exist) and not new_object:
             for mesh in mesh_exist:
                 mesh_id = mesh.get('MVR Name')
-                new_object = object_data.new(mesh_id, mesh)
-            if new_object:
-                imported_objects.append(new_object)
-        elif not new_object:
+                existing = object_data.new(mesh_id, mesh)
+            if existing:
+                imported_objects.append(existing)
+        elif not existing:
             file_name = os.path.join(folder, file)
             if os.path.isfile(file_name):
                 if file.split('.')[-1] == 'glb':
@@ -173,7 +173,8 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_index, mscale, extrac
             ob.rotation_mode = 'XYZ'
             if ob.parent is None:
                 ob.matrix_world = world_matrix
-        objectData.setdefault(uid, collect)
+        if not existing:
+            objectData.setdefault(uid, collect)
         imported_objects.clear()
         viewlayer.update()
         return collect
