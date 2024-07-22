@@ -143,8 +143,6 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_index, mscale, extrac
         print("adding %s... %s" % (node_type, mesh_name))
         if len(ob_exist):
             new_object = next((ob for ob in ob_exist), False)
-            if new_object:
-                imported_objects.append(new_object)
         elif len(mesh_exist) and not new_object:
             for mesh in mesh_exist:
                 mesh_id = mesh.get('MVR Name')
