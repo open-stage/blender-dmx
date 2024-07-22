@@ -2,9 +2,14 @@ import bpy
 import shutil
 import os
 import traceback
-from bpy_extras.io_utils import (
-    ImportHelper,
-)
+
+from bpy_extras.io_utils import ImportHelper
+
+from threading import Timer
+
+if bpy.app.version >= (4, 2):
+    from bpy_extras.io_utils import poll_file_object_drop
+
 from bpy.props import (
     StringProperty,
     BoolProperty,
@@ -22,6 +27,12 @@ from .i18n import DMX_Lang
 _ = DMX_Lang._
 
 from .logging import DMX_Log
+
+
+def createDMXcollection():
+    dmx = bpy.context.scene.dmx
+    if not dmx.collection:
+        bpy.context.scene.dmx.new()
 
 
 class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
@@ -71,6 +82,9 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
     units: IntProperty(name=_("Units"), description=_("How many units of this light to add"), default=1, min=1, max=1024)
 
     def draw(self, context):
+        dmx = context.scene.dmx
+        if not dmx.collection:
+            Timer(0, createDMXcollection, ()).start()
         layout = self.layout
         layout.use_property_split = True
         layout.use_property_decorate = False
@@ -91,8 +105,6 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
         folder_path = os.path.dirname(os.path.realpath(__file__))
         folder_path = os.path.join(folder_path, "assets", "profiles")
         dmx = context.scene.dmx
-        if not dmx.collection:
-            context.scene.dmx.new()
 
         address = self.address
         universe = self.universe
@@ -136,11 +148,18 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
         return {"FINISHED"}
 
 
-class DMX_IO_FH_GDTF(bpy.types.FileHandler):
-    bl_idname = "IO_FH_gdtf"
-    bl_label = "GDTF"
-    bl_import_operator = "dmx.import_gdtf_into_scene"
-    bl_file_extensions = ".gdtf"
+if bpy.app.version >= (4, 1):
+
+    class DMX_IO_FH_GDTF(bpy.types.FileHandler):
+        bl_idname = "IO_FH_gdtf"
+        bl_label = "GDTF"
+        bl_import_operator = "dmx.import_gdtf_into_scene"
+        bl_file_extensions = ".gdtf"
+
+        @classmethod
+        def poll_drop(cls, context):
+            if bpy.app.version >= (4, 2):
+                return poll_file_object_drop(context)
 
 
 def menu_func_import(self, context):
@@ -149,11 +168,13 @@ def menu_func_import(self, context):
 
 def register():
     bpy.utils.register_class(DMX_OT_Import_GDTF)
-    bpy.utils.register_class(DMX_IO_FH_GDTF)
     bpy.types.TOPBAR_MT_file_import.append(menu_func_import)
+    if bpy.app.version >= (4, 1):
+        bpy.utils.register_class(DMX_IO_FH_GDTF)
 
 
 def unregister():
     bpy.types.TOPBAR_MT_file_import.remove(menu_func_import)
-    bpy.utils.unregister_class(DMX_IO_FH_GDTF)
+    if bpy.app.version >= (4, 1):
+        bpy.utils.unregister_class(DMX_IO_FH_GDTF)
     bpy.utils.unregister_class(DMX_OT_Import_GDTF)
