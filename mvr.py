@@ -126,7 +126,6 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_index, mscale, extrac
     folder = os.path.join(current_path, "assets", "models", "mvr")
     if not symdef_id:
         name = '%s %d' % (name, mvr_index) if name in data_collect else name
-    existing = any(ob for ob in object_data if ob.get('UUID') == uid)
     print("creating %s... %s" % (class_name, name))  
 
     def add_mvr_object(idx, node, mtx, collect, file=""):
@@ -180,46 +179,47 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_index, mscale, extrac
     active_collect = None
     context_matrix = mscale
 
-    if not existing:
-        if isinstance(mvr_object, pymvr.Symbol):
-            symbols.append(mvr_object)
-        elif isinstance(mvr_object, pymvr.Geometry3D):
-            geometrys.append(mvr_object)
-        elif not symdef_id and mvr_object.geometries:
-            symbols += mvr_object.geometries.symbol
-            geometrys += mvr_object.geometries.geometry3d
-            if (len(geometrys) + len(symbols)) > 1:
-                if mvr_object.name is not None and len(mvr_object.name):
-                    mvr_name = '%s - %s %d' % (class_name, mvr_object.name, mvr_index)
-                else:
-                    mvr_name = '%s %d' % (class_name, mvr_index) if mvr_index >= 1 else class_name
-                print("creating extra collection", mvr_name)
-                active_collect = bpy.data.collections.new(mvr_name)
-                create_mvr_props(active_collect, class_name, mvr_object.name, mvr_object.uuid)
-                group_collect.children.link(active_collect)
-        else:
-            symbols += mvr_object.symbol
-            geometrys += mvr_object.geometry3d
+    if isinstance(mvr_object, pymvr.Symbol):
+        symbols.append(mvr_object)
+    elif isinstance(mvr_object, pymvr.Geometry3D):
+        geometrys.append(mvr_object)
+    elif not symdef_id and mvr_object.geometries:
+        symbols += mvr_object.geometries.symbol
+        geometrys += mvr_object.geometries.geometry3d
+        if (len(geometrys) + len(symbols)) > 1:
+            if mvr_object.name is not None and len(mvr_object.name):
+                mvr_name = '%s - %s %d' % (class_name, mvr_object.name, mvr_index)
+            else:
+                mvr_name = '%s %d' % (class_name, mvr_index) if mvr_index >= 1 else class_name
+            print("creating extra collection", mvr_name)
+            active_collect = bpy.data.collections.new(mvr_name)
+            create_mvr_props(active_collect, class_name, mvr_object.name, mvr_object.uuid)
+            group_collect.children.link(active_collect)
+    else:
+        symbols += mvr_object.symbol
+        geometrys += mvr_object.geometry3d
 
-        if symdef_id:
-            create_mvr_props(group_collect, class_name, name, uid)
-            active_collect = next((col for col in data_collect if col.get('Reference') == uid), False)
-            if not active_collect:
-                active_collect = data_collect.get(uid)
-                if active_collect is None:
-                    active_collect = data_collect.new(uid)
-            create_mvr_props(active_collect, class_name, uid)
-            active_collect.hide_render = True
+    if symdef_id:
+        create_mvr_props(group_collect, class_name, name, uid)
+        active_collect = next((col for col in data_collect if col.get('Reference') == uid), False)
+        if not active_collect:
+            active_collect = data_collect.get(uid)
+            if active_collect is None:
+                active_collect = data_collect.new(uid)
+        create_mvr_props(active_collect, class_name, uid)
+        active_collect.hide_render = True
 
-        if active_collect is None:
-            active_collect = next((col for col in data_collect if col.get('UUID') == uid), False)
-            if not active_collect and not len(symbols):
-                active_collect = data_collect.new(name)
-                group_collect.children.link(active_collect)
-                create_mvr_props(active_collect, class_name, name, uid)
+    if active_collect is None:
+        active_collect = next((col for col in data_collect if col.get('UUID') == uid), False)
+        if not active_collect and not len(symbols):
+            active_collect = data_collect.new(name)
+            group_collect.children.link(active_collect)
+            create_mvr_props(active_collect, class_name, name, uid)
 
-        for idx, geometry in enumerate(geometrys):
-            file = geometry.file_name
+    for idx, geometry in enumerate(geometrys):
+        file = geometry.file_name
+        existing = any(ob for ob in object_data if ob.get('Reference') == Path(file).stem)
+        if not existing:
             if not active_collect:
                 active_collect = data_collect.new(name)
             obj_mtx = get_matrix(geometry, mscale)
@@ -228,24 +228,24 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_index, mscale, extrac
             if object_collect and object_collect.name not in group_collect.children:
                 group_collect.children.link(object_collect)
 
-        for idx, symbol in enumerate(symbols):
-            symbol_type = symbol.__class__.__name__
-            symbol_mtx = get_matrix(symbol, context_matrix)
-            if not isinstance(mvr_object, pymvr.Symdef):
-                symbol_mtx = get_matrix(mvr_object, symbol_mtx)
-            symbol_collect = data_collect.get(symbol.symdef)
-            if symbol_collect:
-                if not len(name):
-                    name = '%s %d' % (class_name, idx) if idx >= 1 else class_name
-                symbol_object = object_data.new(name, None)
-                group_collect.objects.link(symbol_object)
-                symbol_object.matrix_world = symbol_mtx
-                symbol_object.empty_display_size = 0.01
-                symbol_object.empty_display_type = 'ARROWS'
-                symbol_object.instance_type = 'COLLECTION'
-                symbol_object.instance_collection = symbol_collect
-                create_mvr_props(symbol_object, symbol_type, name, uid, symbol.uuid)
-                create_mvr_props(symbol_collect, symbol_type, name, symbol.uuid, symbol.symdef)
+    for idx, symbol in enumerate(symbols):
+        symbol_type = symbol.__class__.__name__
+        symbol_mtx = get_matrix(symbol, context_matrix)
+        if not isinstance(mvr_object, pymvr.Symdef):
+            symbol_mtx = get_matrix(mvr_object, symbol_mtx)
+        symbol_collect = data_collect.get(symbol.symdef)
+        if symbol_collect:
+            if not len(name):
+                name = '%s %d' % (class_name, idx) if idx >= 1 else class_name
+            symbol_object = object_data.new(name, None)
+            group_collect.objects.link(symbol_object)
+            symbol_object.matrix_world = symbol_mtx
+            symbol_object.empty_display_size = 0.01
+            symbol_object.empty_display_type = 'ARROWS'
+            symbol_object.instance_type = 'COLLECTION'
+            symbol_object.instance_collection = symbol_collect
+            create_mvr_props(symbol_object, symbol_type, name, uid, symbol.uuid)
+            create_mvr_props(symbol_collect, symbol_type, name, symbol.uuid, symbol.symdef)
 
 
 def transform_objects(layers, mscale):
