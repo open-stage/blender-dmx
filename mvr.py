@@ -420,7 +420,7 @@ def load_mvr(dmx, file_name):
         get_child_list(dmx, mscale, mvr_scene, layer.child_list, layer_idx,
                        folder_path, extracted, layer_collection, fixture_group)
 
-        if len(layer_collection.all_objects) == 0:
+        if len(layer_collection.all_objects) == 0 and layer_collection.name in layer_collect.children:
             layer_collect.children.unlink(layer_collection)
 
     transform_objects(mvr_scene.layers, mscale)
