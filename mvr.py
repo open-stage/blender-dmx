@@ -129,20 +129,19 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_index, mscale, extrac
     print("creating %s... %s" % (class_name, name))  
 
     def add_mvr_object(idx, node, mtx, collect, file=""):
-        existing = False
         imported_objects = []
         item_name = Path(file).name
         mesh_name = Path(file).stem
         mesh_data = bpy.data.meshes
         node_type = node.__class__.__name__
         scale_factor = 0.001 if file.split('.')[-1] == '3ds' else 1.0
-        ob_exist = [ob for ob in object_data if ob.get('Reference') == mesh_name]
+        existing = next((ob for ob in object_data if ob.get('Reference') == mesh_name), False)
         mesh_exist = [msh for msh in mesh_data if msh.name == mesh_name]
         world_matrix = mtx @ Matrix.Scale(scale_factor, 4)
         
         print("adding %s... %s" % (node_type, mesh_name))
-        if len(ob_exist):
-            existing = next((ob for ob in ob_exist), False)
+        if existing:
+            pass
         elif len(mesh_exist) and not existing:
             for mesh in mesh_exist:
                 mesh_id = mesh.get('MVR Name')
