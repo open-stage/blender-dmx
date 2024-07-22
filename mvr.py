@@ -99,11 +99,11 @@ def get_child_list(dmx, mscale, mvr_scene, child_list, layer_index, folder_path,
 
     for group_idx, group in enumerate(child_list.group_objects):
         if hasattr(group, "child_list") and group.child_list:
-            layergroup_idx = layer_index
+            layergroup_idx = f"{layer_index}-{group_idx}"
             group_name = group.name or "Group"
             group_name =  '%s %d' % (group_name, group_idx) if group_idx >= 1 else group_name
             fixture_group = FixtureGroup(group_name, group.uuid)
-            get_child_list(dmx, mscale, mvr_scene, group.child_list, layer_index,
+            get_child_list(dmx, mscale, mvr_scene, group.child_list, layergroup_idx,
                            folder_path, extracted, layer_collection, fixture_group)
 
     for obj in viewlayer.active_layer_collection.collection.all_objects:
