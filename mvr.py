@@ -25,7 +25,7 @@ from pathlib import Path
 from mathutils import Matrix
 from .logging import DMX_Log
 from .group import FixtureGroup
-from .io_scene_3ds.import_3ds import load_3ds
+from io_scene_3ds.import_3ds import load_3ds
 from .util import xyY2rgbaa, create_unique_fixture_name
 
 
