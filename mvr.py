@@ -446,6 +446,10 @@ def load_mvr(dmx, file_name):
             create_mvr_props(aux_directory, aux_type)
             layer_collect.children.link(aux_directory)
         for uid, auxcollect in auxData.items():
+            if auxcollect is None:
+                DMX_Log.log.error("auxData item (auxcollect) 'ReferenceError: StructRNA of type Collection has been removed', handling gracefully.")
+                # this seems to be related to garbage collection as this happens if many objects are created from MVR
+                continue
             aux = data_collect.get(auxcollect.name)
             if aux and aux.name not in aux_directory.children:
                 aux_directory.children.link(aux)
