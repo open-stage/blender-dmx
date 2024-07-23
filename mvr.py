@@ -137,7 +137,7 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_idx, mscale, extracte
         reference = collect.get('Reference')
         scale_factor = 0.001 if file.split('.')[-1] == '3ds' else 1.0
         mesh_exist = next((msh for msh in mesh_data if msh.name == mesh_name), False)
-        exist = any(ob.data.name == mesh_name for ob in collect.objects)
+        exist = any(ob.data and ob.data.name == mesh_name for ob in collect.objects)
         world_matrix = mtx @ Matrix.Scale(scale_factor, 4)
         print("adding %s... %s" % (node_type, mesh_name))
 
