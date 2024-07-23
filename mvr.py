@@ -137,43 +137,41 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_idx, mscale, extracte
         reference = collect.get('Reference')
         scale_factor = 0.001 if file.split('.')[-1] == '3ds' else 1.0
         mesh_exist = next((msh for msh in mesh_data if msh.name == mesh_name), False)
-        exist = any(ob for ob in object_data if ob.get('Reference') and reference == uid)
+        exist = any(ob.data.name == mesh_name for ob in collect.objects)
         world_matrix = mtx @ Matrix.Scale(scale_factor, 4)
         print("adding %s... %s" % (node_type, mesh_name))
 
-        if mesh_exist:
-            if not exist:
-                new_obj = next((ob for ob in object_data if ob.get('UUID') == reference), False)
-                if not new_obj:
-                    mesh_id = mesh_exist.get('MVR Name')
-                    new_obj = object_data.new(mesh_id, mesh_exist)
-                imported_objects.append(new_obj)
-        elif not exist:
-            file_name = os.path.join(folder, file)
-            if os.path.isfile(file_name):
-                if file.split('.')[-1] == 'glb':
-                    bpy.ops.import_scene.gltf(filepath=file_name)
-                else:
-                    load_3ds(file_name, bpy.context, KEYFRAME=False, APPLY_MATRIX=False)
-                imported_objects.extend(list(viewlayer.objects.selected))
-        for ob in imported_objects:
-            ob.rotation_mode = 'XYZ'
-            obname = ob.name.split('.')[0]
-            create_mvr_props(ob, class_name, obname, mesh_name, uid)
-            if ob.data:
-                ob.data.name = mesh_name
-                create_mvr_props(ob.data, node_type, obname, uid, item_name) 
-            if ob.name in ob.users_collection[0].objects:
-                ob.users_collection[0].objects.unlink(ob)
-            elif ob.name in layer_collect.collection.objects:
-                active_layer.collection.objects.unlink(ob)
-            if ob.parent is None:
-                ob.matrix_world = world_matrix
-            if ob.name not in collect.objects:
-                collect.objects.link(ob)
-        objectData.setdefault(uid, collect)
-        imported_objects.clear()
-        viewlayer.update()
+        if not exist:
+            if mesh_exist:
+                mesh_id = mesh_exist.get('MVR Name')
+                new_object = object_data.new(mesh_id, mesh_exist)
+                imported_objects.append(new_object)
+            else:
+                file_name = os.path.join(folder, file)
+                if os.path.isfile(file_name):
+                    if file.split('.')[-1] == 'glb':
+                        bpy.ops.import_scene.gltf(filepath=file_name)
+                    else:
+                        load_3ds(file_name, bpy.context, KEYFRAME=False, APPLY_MATRIX=False)
+                    imported_objects.extend(list(viewlayer.objects.selected))
+            for ob in imported_objects:
+                ob.rotation_mode = 'XYZ'
+                obname = ob.name.split('.')[0]
+                create_mvr_props(ob, class_name, obname, mesh_name, uid)
+                if ob.data:
+                    ob.data.name = mesh_name
+                    create_mvr_props(ob.data, node_type, obname, uid, item_name) 
+                if len(ob.users_collection) and ob.name in ob.users_collection[0].objects:
+                    ob.users_collection[0].objects.unlink(ob)
+                elif ob.name in layer_collect.collection.objects:
+                    active_layer.collection.objects.unlink(ob)
+                if ob.parent is None:
+                    ob.matrix_world = world_matrix
+                if ob.name not in collect.objects:
+                    collect.objects.link(ob)
+            objectData.setdefault(uid, collect)
+            imported_objects.clear()
+            viewlayer.update()
         return collect
 
     file = ""
