@@ -179,6 +179,24 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_idx, mscale, extracte
     geometrys = []
     active_collect = None
     context_matrix = mscale
+    dmx = bpy.context.scene.dmx
+    previous_mvr_object = None
+    for existing_mvr_object in dmx.mvr_objects:
+        if existing_mvr_object.uuid == mvr_object.uuid:
+            previous_mvr_object = existing_mvr_object
+            DMX_Log.log.info("Updating existing mvr object")
+            for child in existing_mvr_object.collection.children:
+                for obj in child.objects:
+                    bpy.data.objects.remove(obj)
+            break
+    if previous_mvr_object:
+        dmx_mvr_object = previous_mvr_object
+    else:
+        dmx_mvr_object = dmx.mvr_objects.add()
+        dmx_mvr_object.name = name
+        dmx_mvr_object.uuid = mvr_object.uuid
+        dmx_mvr_object.object_type = mvr_object.__class__.__name__
+        dmx_mvr_object.collection = bpy.data.collections.new(mvr_object.uuid)
 
     if isinstance(mvr_object, pymvr.Symbol):
         symbols.append(mvr_object)
