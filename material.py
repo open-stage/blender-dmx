@@ -54,8 +54,8 @@ def getEmitterMaterial(name):
             print("INFO", "Nodes in material tree nodes:")
             for node in material.node_tree.nodes:
                 print("INFO", node)
-    material.node_tree.nodes.new(SHADER_NODE_EMISSION)
-    material.node_tree.links.new(material.node_tree.nodes[MATERIAL_OUTPUT].inputs[0], material.node_tree.nodes[EMISSION].outputs[0])
+    node = material.node_tree.nodes.new(SHADER_NODE_EMISSION)
+    material.node_tree.links.new(material.node_tree.nodes[MATERIAL_OUTPUT].inputs[0], node.outputs[0])
     return material
 
 
