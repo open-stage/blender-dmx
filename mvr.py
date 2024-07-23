@@ -242,7 +242,7 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_idx, mscale, extracte
         obj_mtx = get_matrix(geometry, mscale)
         extract_mvr_object(file, mvr_scene, folder, extracted)
         object_collect = add_mvr_object(idx, geometry, obj_mtx, active_collect, file)
-        if object_collect and object_collect.name not in collection.children: 
+        if object_collect and object_collect.name not in collection.children and object_collect != collection:
             collection.children.link(object_collect)
 
     for idx, symbol in enumerate(symbols):
