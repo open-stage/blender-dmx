@@ -262,6 +262,8 @@ def add_texture_to_material(image, contextWrapper, pct, extend, alpha, scale, of
         img_wrap = contextWrapper.base_color_texture
         links.new(mixer.outputs[0], shader.inputs['Base Color'])
         links.new(img_wrap.node_image.outputs[0], mixer.inputs[2])
+        if not shader.inputs['Alpha'].is_linked:
+            links.new(img_wrap.node_image.outputs[1], shader.inputs['Alpha'])
     elif mapto == 'ROUGHNESS':
         img_wrap = contextWrapper.roughness_texture
     elif mapto == 'METALLIC':
