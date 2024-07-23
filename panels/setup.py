@@ -331,6 +331,7 @@ class DMX_PT_Setup_Logging(Panel):
         row.prop(context.window_manager.dmx, "logging_filter_mvr_xchange", toggle=True)
         row.prop(context.window_manager.dmx, "logging_filter_dmx_in", toggle=True)
         row.prop(context.window_manager.dmx, "logging_filter_fixture", toggle=True)
+        row.prop(context.window_manager.dmx, "logging_filter_mvr_import", toggle=True)
         row = layout.row()
         layout.operator("dmx.print_logging_path")
 

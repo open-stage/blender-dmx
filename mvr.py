@@ -60,7 +60,7 @@ def get_child_list(dmx, mscale, mvr_scene, child_list, layer_index, folder_path,
         viewlayer.active_layer_collection = viewport
 
     for truss_idx, truss_obj in enumerate(child_list.trusses):
-        print("creating Truss... %s" % truss_obj.name)
+        DMX_Log.log.info(f"Creating Truss... {truss_obj.name}")
 
         if fixture_group is None:
             group_name = truss_obj.name or "Truss"
@@ -124,7 +124,7 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_idx, mscale, extracte
     symdef_id = isinstance(mvr_object, pymvr.Symdef)
     current_path = os.path.dirname(os.path.realpath(__file__))
     folder = os.path.join(current_path, "assets", "models", "mvr")
-    print("creating %s... %s" % (class_name, name))  
+    DMX_Log.log.info(f"creating {class_name}... {name}")
 
     def add_mvr_object(idx, node, mtx, collect, file=""):
         node_type = node.__class__.__name__
@@ -139,7 +139,7 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_idx, mscale, extracte
         mesh_exist = next((msh for msh in mesh_data if msh.name == mesh_name), False)
         exist = any(ob.data and ob.data.name == mesh_name for ob in collect.objects)
         world_matrix = mtx @ Matrix.Scale(scale_factor, 4)
-        print("adding %s... %s" % (node_type, mesh_name))
+        DMX_Log.log.info(f"adding {node_type}... {mesh_name}")
 
         if not exist:
             if mesh_exist:
@@ -160,7 +160,7 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_idx, mscale, extracte
                 create_mvr_props(ob, class_name, obname, mesh_name, uid)
                 if ob.data:
                     ob.data.name = mesh_name
-                    create_mvr_props(ob.data, node_type, obname, uid, item_name) 
+                    create_mvr_props(ob.data, node_type, obname, uid, item_name)
                 if len(ob.users_collection) and ob.name in ob.users_collection[0].objects:
                     ob.users_collection[0].objects.unlink(ob)
                 elif ob.name in layer_collect.collection.objects:
@@ -225,7 +225,7 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_idx, mscale, extracte
             obj_name = '%s - %s %d' % (class_name, mvr_object.name, mvr_idx)
         else:
             obj_name = '%s %d' % (class_name, mvr_idx) if mvr_idx >= 1 else class_name
-        print("creating extra collection", obj_name)
+        DMX_Log.log.info(f"Updating existing mvr object {obj_name}")
         active_collect = bpy.data.collections.new(obj_name)
         create_mvr_props(active_collect, class_name, name, uid)
         group_collect.children.link(active_collect)
@@ -457,7 +457,7 @@ def load_mvr(dmx, file_name):
                     if sym_name in (None, 'None'):
                         sym_name = 'None Layer'
                     auxcollect.children.link(sym_collect)
-                sym_collect.name = sym_collect.get('MVR Name')  
+                sym_collect.name = sym_collect.get('MVR Name')
 
     for laycollect in layer_collect.children:
         if laycollect.get('MVR Class') is not None:

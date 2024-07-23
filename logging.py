@@ -32,6 +32,7 @@ class DMX_Log:
         self.logging_filter_dmx_in = dmx.logging_filter_dmx_in
         self.logging_filter_mvr_xchange = dmx.logging_filter_mvr_xchange
         self.logging_filter_fixture = dmx.logging_filter_fixture
+        self.logging_filter_mvr_import = dmx.logging_filter_mvr_import
 
     @staticmethod
     def enable(level):
@@ -72,6 +73,7 @@ class DMX_Log:
         DMX_Log.logging_filter_dmx_in = dmx.logging_filter_dmx_in
         DMX_Log.logging_filter_mvr_xchange = dmx.logging_filter_mvr_xchange
         DMX_Log.logging_filter_fixture = dmx.logging_filter_fixture
+        DMX_Log.logging_filter_mvr_import = dmx.logging_filter_mvr_import
         for filter in log.filters:
             log.filters.remove(filter)
 
@@ -88,7 +90,11 @@ class DMX_Log:
                 if any([x in record.filename for x in ["gdtf", "fixture"]]):
                     return True
 
-            return not (DMX_Log.logging_filter_dmx_in or DMX_Log.logging_filter_mvr_xchange or DMX_Log.logging_filter_fixture)
+            if DMX_Log.logging_filter_mvr_import:
+                if any([x in record.filename for x in ["mvr"]]):
+                    return True
+
+            return not (DMX_Log.logging_filter_dmx_in or DMX_Log.logging_filter_mvr_xchange or DMX_Log.logging_filter_fixture or DMX_Log.logging_filter_mvr_import)
 
         log.addFilter(custom_filter)
 

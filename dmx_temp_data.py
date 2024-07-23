@@ -123,6 +123,11 @@ class DMX_TempData(PropertyGroup):
         default = False,
         update = onUpdateLoggingFilter)
 
+    logging_filter_mvr_import: BoolProperty(
+        name = _("MVR Import"),
+        default = False,
+        update = onUpdateLoggingFilter)
+
     selected_tracker: StringProperty() # to pass data to fixture list
     selected_tracker_index: IntProperty() # to pass data to fixture list
 
