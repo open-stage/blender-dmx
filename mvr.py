@@ -166,7 +166,7 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_idx, mscale, extracte
                 elif ob.name in layer_collect.collection.objects:
                     active_layer.collection.objects.unlink(ob)
                 if ob.parent is None:
-                    ob.matrix_world = world_matrix
+                    ob.matrix_world = world_matrix @ ob.matrix_world.copy()
                 if ob.name not in collect.objects:
                     collect.objects.link(ob)
             objectData.setdefault(uid, collect)
