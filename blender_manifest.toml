@@ -22,7 +22,7 @@ wheels = [
   "wheels/async_timeout-4.0.3-py3-none-any.whl",
   "wheels/open_stage_zeroconf-0.132.2.dev0-py3-none-any.whl",
   "wheels/pypsn-0.2.3-py3-none-any.whl",
-  "wheels/io_scene_3ds-2.7.1-py3-none-any.whl",
+  "wheels/io_scene_3ds-2.7.3-py3-none-any.whl",
 ]
 
 [permissions]
