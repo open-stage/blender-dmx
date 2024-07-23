@@ -179,6 +179,7 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_idx, mscale, extracte
     geometrys = []
     active_collect = None
     context_matrix = mscale
+    collection = group_collect
     dmx = bpy.context.scene.dmx
     previous_mvr_object = None
     for existing_mvr_object in dmx.mvr_objects:
@@ -228,6 +229,7 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_idx, mscale, extracte
         active_collect = bpy.data.collections.new(obj_name)
         create_mvr_props(active_collect, class_name, name, uid)
         group_collect.children.link(active_collect)
+        collection = active_collect
 
     if active_collect is None:
         active_collect = next((col for col in data_collect if col.get('UUID') == uid), False)
@@ -240,8 +242,8 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_idx, mscale, extracte
         obj_mtx = get_matrix(geometry, mscale)
         extract_mvr_object(file, mvr_scene, folder, extracted)
         object_collect = add_mvr_object(idx, geometry, obj_mtx, active_collect, file)
-        if object_collect and object_collect.name not in group_collect.children: 
-            group_collect.children.link(object_collect)
+        if object_collect and object_collect.name not in collection.children: 
+            collection.children.link(object_collect)
 
     for idx, symbol in enumerate(symbols):
         symbol_type = symbol.__class__.__name__
@@ -253,7 +255,7 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_idx, mscale, extracte
             if not len(name):
                 name = '%s %d' % (class_name, idx) if idx >= 1 else class_name
             symbol_object = object_data.new(name, None)
-            group_collect.objects.link(symbol_object)
+            collection.objects.link(symbol_object)
             symbol_object.matrix_world = symbol_mtx
             symbol_object.empty_display_size = 0.01
             symbol_object.empty_display_type = 'ARROWS'
