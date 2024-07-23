@@ -29,7 +29,7 @@ import traceback
 from types import SimpleNamespace
 
 from . import pymvr
-from .mvr import extract_mvr_textures, process_mvr_child_list
+from .mvr import load_mvr
 
 from . import param as param
 from . import fixture as fixture
@@ -1494,46 +1494,14 @@ class DMX(PropertyGroup):
 
     def addMVR(self, file_name):
 
-        start_time = time.time()
         bpy.context.window_manager.dmx.pause_render = True # this stops the render loop, to prevent slowness and crashes
-        already_extracted_files = {}
-        mvr_scene = pymvr.GeneralSceneDescription(file_name)
-        current_path = os.path.dirname(os.path.realpath(__file__))
-        extract_to_folder_path = os.path.join(current_path, "assets", "profiles")
-        media_folder_path = os.path.join(current_path, "assets", "models", "mvr")
-        extract_mvr_textures(mvr_scene, media_folder_path)
 
-        for layer_index, layer in enumerate(mvr_scene.layers):
-
-            layer_collection_name = layer.name or f"Layer {layer_index}"
-            if layer_collection_name in bpy.context.scene.collection.children:
-                layer_collection = bpy.context.scene.collection.children[layer_collection_name]
-            else:
-                layer_collection = bpy.data.collections.new(layer.name or f"Layer {layer_index}")
-                bpy.context.scene.collection.children.link(layer_collection)
-
-            g_name = layer.name or "Layer"
-            g_name = f"{g_name} {layer_index}"
-            fixture_group = FixtureGroup(g_name, layer.uuid)
-
-            process_mvr_child_list(
-                self,
-                layer.child_list,
-                layer_index,
-                extract_to_folder_path,
-                mvr_scene,
-                already_extracted_files,
-                layer_collection,
-                fixture_group
-            )
-            self.clean_up_empty_mvr_collections(layer_collection)
-            if len(layer_collection.all_objects) == 0:
-                bpy.context.scene.collection.children.unlink(layer_collection)
+        load_mvr(self, file_name)
 
         bpy.context.window_manager.dmx.pause_render = False # re-enable render loop
         DMX_GDTF.getManufacturerList()
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
-        print("INFO", "MVR scene loaded in %.4f sec." % (time.time() - start_time))
+
 
     def clean_up_empty_mvr_collections(self,collections):
         for collection in collections.children:
@@ -1775,6 +1743,4 @@ class DMX(PropertyGroup):
                 collection_info = nodes.node.nodes["Collection Info"]
                 collection = bpy.context.window_manager.dmx.collections_list
                 collection_info.inputs[0].default_value = collection
-
-
 

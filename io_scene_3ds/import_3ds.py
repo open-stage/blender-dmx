@@ -262,6 +262,8 @@ def add_texture_to_material(image, contextWrapper, pct, extend, alpha, scale, of
         img_wrap = contextWrapper.base_color_texture
         links.new(mixer.outputs[0], shader.inputs['Base Color'])
         links.new(img_wrap.node_image.outputs[0], mixer.inputs[2])
+        if not shader.inputs['Alpha'].is_linked:
+            links.new(img_wrap.node_image.outputs[1], shader.inputs['Alpha'])
     elif mapto == 'ROUGHNESS':
         img_wrap = contextWrapper.roughness_texture
     elif mapto == 'METALLIC':
@@ -1719,7 +1721,7 @@ def process_next_chunk(context, file, previous_chunk, imported_objects, CONSTRAI
 def load_3ds(filepath, context, CONSTRAIN=10.0, UNITS=False, IMAGE_SEARCH=True,
              FILTER=None, KEYFRAME=True, APPLY_MATRIX=True, CONVERSE=None, CURSOR=False):
 
-    print("importing 3DS: %r..." % (filepath), end="")
+    print("importing 3DS: %r..." % (Path(filepath).name), end="")
 
     if bpy.ops.object.select_all.poll():
         bpy.ops.object.select_all(action='DESELECT')
@@ -1732,7 +1734,7 @@ def load_3ds(filepath, context, CONSTRAIN=10.0, UNITS=False, IMAGE_SEARCH=True,
     # here we go!
     read_chunk(file, current_chunk)
     if current_chunk.ID != PRIMARY:
-        print("\tFatal Error:  Not a valid 3ds file: %r" % filepath)
+        print("\tFatal Error:  Not a valid 3ds file: %r" % Path(filepath).name)
         file.close()
         return
 
