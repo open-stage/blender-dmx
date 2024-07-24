@@ -64,6 +64,19 @@ def trans_matrix(trans_mtx):
     return trans_matrix
 
 
+def check_existing(node, collection):
+    cls_name = node.__class__.__name__
+    existing = any(col.get('UUID') == node.uuid for col in collection.children)
+    if existing:
+        for collect in collection.children:
+            if collect.get('MVR Class') == cls_name:
+                for obj in collect.all_objects:
+                    transform = obj.get('Transform')
+                    if transform is not None:
+                        obj.matrix_world = trans_matrix(transform)
+    return existing
+
+
 def get_child_list(dmx, mscale, mvr_scene, child_list, layer_index, folder_path,
                    extracted, layer_collection, fixture_group=None):
 
@@ -74,22 +87,14 @@ def get_child_list(dmx, mscale, mvr_scene, child_list, layer_index, folder_path,
         viewlayer.active_layer_collection = viewport
 
     for truss_idx, truss_obj in enumerate(child_list.trusses):
-        DMX_Log.log.info(f"Creating Truss... {truss_obj.name}")
-        check_exist = any(col.get('UUID') == truss_obj.uuid for col in layer_collection.children)
+        existing = check_existing(truss_obj, layer_collection)
 
         if fixture_group is None:
             group_name = truss_obj.name or "Truss"
             group_name =  '%s %d' % (group_name, truss_idx) if scene_idx >= 1 else group_name
             fixture_group = FixtureGroup(group_name, truss_obj.uuid)
 
-        if check_exist:
-            for col in layer_collection.children:
-                if col.get('MVR Class') == "Truss":
-                    for obj in col.all_objects:
-                        transform = obj.get('Transform')
-                        if transform is not None:
-                            obj.matrix_world = trans_matrix(transform)
-        else:
+        if not existing:
             process_mvr_object(context, mvr_scene, truss_obj, truss_idx,
                                mscale, extracted, layer_collection)
 
@@ -98,16 +103,9 @@ def get_child_list(dmx, mscale, mvr_scene, child_list, layer_index, folder_path,
                            folder_path, extracted, layer_collection, fixture_group)
 
     for scene_idx, scene_obj in enumerate(child_list.scene_objects):
-        check_exist = any(col.get('UUID') == scene_obj.uuid for col in layer_collection.children)
+        existing = check_existing(scene_obj, layer_collection)
 
-        if check_exist:
-            for col in layer_collection.children:
-                if col.get('MVR Class') == "SceneObject":
-                    for obj in col.all_objects:
-                        transform = obj.get('Transform')
-                        if transform is not None:
-                            obj.matrix_world = trans_matrix(transform)
-        else:
+        if not existing:
             process_mvr_object(context, mvr_scene, scene_obj, scene_idx,
                                mscale, extracted, layer_collection)
 
@@ -195,7 +193,7 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_idx, mscale, extracte
                     ob.users_collection[0].objects.unlink(ob)
                 elif ob.name in layer_collect.collection.objects:
                     active_layer.collection.objects.unlink(ob)
-                if ob.parent is None:  # only gltf files can be pre transformed
+                if ob.data is not None:  # only gltf files can be pre transformed
                     ob.matrix_world = world_matrix @ ob.matrix_world.copy() if gltf else world_matrix
                 create_transform_property(ob)
                 if ob.name not in collect.objects:
@@ -221,6 +219,7 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_idx, mscale, extracte
                 for obj in child.objects:
                     bpy.data.objects.remove(obj)
             break
+
     if previous_mvr_object:
         dmx_mvr_object = previous_mvr_object
     else:
@@ -256,7 +255,7 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_idx, mscale, extracte
             obj_name = '%s - %s %d' % (class_name, mvr_object.name, mvr_idx)
         else:
             obj_name = '%s %d' % (class_name, mvr_idx) if mvr_idx >= 1 else class_name
-        print("creating extra collection", obj_name)
+        DMX_Log.log.info(f"creating extra collection {obj_name}")
         active_collect = bpy.data.collections.new(obj_name)
         create_mvr_props(active_collect, class_name, name, uid)
         group_collect.children.link(active_collect)
@@ -489,13 +488,14 @@ def load_mvr(dmx, file_name):
                 aux_directory.children.link(auxcollect)
             sym_collect = data_collect.get(uid)
             if sym_collect:
+                sym_name = sym_collect.get('MVR Name')
                 if sym_collect.name in layer_collect.children:
                     layer_collect.children.unlink(sym_collect)
                 elif sym_collect.name not in auxcollect.children:
+                    auxcollect.children.link(sym_collect)
                     if sym_name in (None, 'None'):
                         sym_name = 'None Layer'
-                    auxcollect.children.link(sym_collect)
-                sym_collect.name = sym_collect.get('MVR Name')  
+                sym_collect.name = sym_name 
 
     for laycollect in layer_collect.children:
         if laycollect.get('MVR Class') is not None:
