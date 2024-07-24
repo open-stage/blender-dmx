@@ -146,18 +146,14 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_idx, mscale, extracte
         mesh_name = Path(file).stem
         mesh_data = bpy.data.meshes
         node_type = node.__class__.__name__
+        gltf = file.split('.')[-1] == 'glb'
         scale_factor = 0.001 if file.split('.')[-1] == '3ds' else 1.0
         mesh_exist = next((msh for msh in mesh_data if msh.name == mesh_name), False)
         exist = any(ob.data and ob.data.name == mesh_name for ob in collect.objects)
         world_matrix = mtx @ Matrix.Scale(scale_factor, 4)
         DMX_Log.log.info(f"adding {node_type}... {mesh_name}")
 
-        if exist:
-            for ob in collect.objects:
-                transform = ob.get('Transform')
-                if transform:
-                    ob.matrix_world = trans_matrix(transform)
-        else:
+        if not exist:
             if mesh_exist:
                 mesh_id = mesh_exist.get('MVR Name', mesh_name)
                 new_object = object_data.new(mesh_id, mesh_exist)
@@ -165,7 +161,7 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_idx, mscale, extracte
             else:
                 file_name = os.path.join(folder, file)
                 if os.path.isfile(file_name):
-                    if file.split('.')[-1] == 'glb':
+                    if gltf:
                         bpy.ops.import_scene.gltf(filepath=file_name)
                     else:
                         load_3ds(file_name, context, KEYFRAME=False, APPLY_MATRIX=False)
@@ -181,8 +177,8 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_idx, mscale, extracte
                     ob.users_collection[0].objects.unlink(ob)
                 elif ob.name in layer_collect.collection.objects:
                     active_layer.collection.objects.unlink(ob)
-                if ob.parent is None:
-                    ob.matrix_world = world_matrix @ ob.matrix_world.copy()
+                if ob.parent is None:  # only gltf files can be pre transformed
+                    ob.matrix_world = world_matrix @ ob.matrix_world.copy() if gltf else world_matrix
                 create_transform_property(ob)
                 if ob.name not in collect.objects:
                     collect.objects.link(ob)
@@ -451,14 +447,19 @@ def load_mvr(dmx, file_name):
             layer_collection = data_collect.new(layer.name)
             create_mvr_props(layer_collection, layer_class, layer.name, layer.uuid)
             layer_collect.children.link(layer_collection)
+            group_name = layer.name or "Layer"
+            fixture_group = FixtureGroup(group_name, layer.uuid)
 
-        group_name = layer.name or "Layer"
-        fixture_group = FixtureGroup(group_name, layer.uuid)
-        get_child_list(dmx, mscale, mvr_scene, layer.child_list, layer_idx,
-                       folder_path, extracted, layer_collection, fixture_group)
+            get_child_list(dmx, mscale, mvr_scene, layer.child_list, layer_idx,
+                           folder_path, extracted, layer_collection, fixture_group)
 
-        if len(layer_collection.all_objects) == 0 and layer_collection.name in layer_collect.children:
-            layer_collect.children.unlink(layer_collection)
+            if len(layer_collection.all_objects) == 0 and layer_collection.name in layer_collect.children:
+                layer_collect.children.unlink(layer_collection)
+        else:
+            for obj in layer_collection.all_objects:
+                transform = obj.get('Transform')
+                if transform is not None:
+                    obj.matrix_world = trans_matrix(transform)
 
     transform_objects(mvr_scene.layers, mscale)
 
