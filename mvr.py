@@ -159,7 +159,7 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_idx, mscale, extracte
                     ob.matrix_world = trans_matrix(transform)
         else:
             if mesh_exist:
-                mesh_id = mesh_exist.get('MVR Name')
+                mesh_id = mesh_exist.get('MVR Name', mesh_name)
                 new_object = object_data.new(mesh_id, mesh_exist)
                 imported_objects.append(new_object)
             else:
@@ -168,7 +168,7 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_idx, mscale, extracte
                     if file.split('.')[-1] == 'glb':
                         bpy.ops.import_scene.gltf(filepath=file_name)
                     else:
-                        load_3ds(file_name, bpy.context, KEYFRAME=False, APPLY_MATRIX=False)
+                        load_3ds(file_name, context, KEYFRAME=False, APPLY_MATRIX=False)
                     imported_objects.extend(list(viewlayer.objects.selected))
             for ob in imported_objects:
                 ob.rotation_mode = 'XYZ'
