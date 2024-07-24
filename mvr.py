@@ -59,8 +59,8 @@ def get_matrix(obj, mtx):
 
 
 def trans_matrix(trans_mtx):
-    trans = list(trans_mtx)
-    trans_matrix = Matrix((trans[:3]+[0], trans[3:6]+[0], trans[6:9]+[0], trans[9:]+[1])).transposed()
+    mtx = list(trans_mtx)
+    trans_matrix = Matrix((mtx[:3]+[0], mtx[3:6]+[0], mtx[6:9]+[0], mtx[9:]+[1])).transposed()
     return trans_matrix
 
 
