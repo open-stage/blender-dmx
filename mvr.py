@@ -75,23 +75,41 @@ def get_child_list(dmx, mscale, mvr_scene, child_list, layer_index, folder_path,
 
     for truss_idx, truss_obj in enumerate(child_list.trusses):
         DMX_Log.log.info(f"Creating Truss... {truss_obj.name}")
+        check_exist = any(col.get('UUID') == truss_obj.uuid for col in layer_collection.children)
 
         if fixture_group is None:
             group_name = truss_obj.name or "Truss"
             group_name =  '%s %d' % (group_name, truss_idx) if scene_idx >= 1 else group_name
             fixture_group = FixtureGroup(group_name, truss_obj.uuid)
 
-        process_mvr_object(context, mvr_scene, truss_obj, truss_idx,
-                           mscale, extracted, layer_collection)
+        if check_exist:
+            for col in layer_collection.children:
+                if col.get('MVR Class') == "Truss":
+                    for obj in col.all_objects:
+                        transform = obj.get('Transform')
+                        if transform is not None:
+                            obj.matrix_world = trans_matrix(transform)
+        else:
+            process_mvr_object(context, mvr_scene, truss_obj, truss_idx,
+                               mscale, extracted, layer_collection)
 
         if hasattr(truss_obj, "child_list") and truss_obj.child_list:
             get_child_list(dmx, mscale, mvr_scene, truss_obj.child_list, layer_index,
                            folder_path, extracted, layer_collection, fixture_group)
 
     for scene_idx, scene_obj in enumerate(child_list.scene_objects):
+        check_exist = any(col.get('UUID') == scene_obj.uuid for col in layer_collection.children)
 
-        process_mvr_object(context, mvr_scene, scene_obj, scene_idx,
-                           mscale, extracted, layer_collection)
+        if check_exist:
+            for col in layer_collection.children:
+                if col.get('MVR Class') == "SceneObject":
+                    for obj in col.all_objects:
+                        transform = obj.get('Transform')
+                        if transform is not None:
+                            obj.matrix_world = trans_matrix(transform)
+        else:
+            process_mvr_object(context, mvr_scene, scene_obj, scene_idx,
+                               mscale, extracted, layer_collection)
 
         if hasattr(scene_obj, "child_list") and scene_obj.child_list:
             get_child_list(dmx, mscale, mvr_scene, scene_obj.child_list, layer_index,
@@ -447,19 +465,14 @@ def load_mvr(dmx, file_name):
             layer_collection = data_collect.new(layer.name)
             create_mvr_props(layer_collection, layer_class, layer.name, layer.uuid)
             layer_collect.children.link(layer_collection)
-            group_name = layer.name or "Layer"
-            fixture_group = FixtureGroup(group_name, layer.uuid)
 
-            get_child_list(dmx, mscale, mvr_scene, layer.child_list, layer_idx,
-                           folder_path, extracted, layer_collection, fixture_group)
+        group_name = layer.name or "Layer"
+        fixture_group = FixtureGroup(group_name, layer.uuid)
+        get_child_list(dmx, mscale, mvr_scene, layer.child_list, layer_idx,
+                       folder_path, extracted, layer_collection, fixture_group)
 
-            if len(layer_collection.all_objects) == 0 and layer_collection.name in layer_collect.children:
-                layer_collect.children.unlink(layer_collection)
-        else:
-            for obj in layer_collection.all_objects:
-                transform = obj.get('Transform')
-                if transform is not None:
-                    obj.matrix_world = trans_matrix(transform)
+        if len(layer_collection.all_objects) == 0 and layer_collection.name in layer_collect.children:
+            layer_collect.children.unlink(layer_collection)
 
     transform_objects(mvr_scene.layers, mscale)
 
