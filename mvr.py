@@ -438,8 +438,12 @@ def load_mvr(dmx, file_name):
     extract_mvr_textures(mvr_scene, media_folder_path)
     mvr_layer = mvr_scene.layers
     auxdata = mvr_scene.aux_data
-    classes = auxdata.classes
-    symdefs = auxdata.symdefs
+    if auxdata is not None:
+        classes = auxdata.classes
+        symdefs = auxdata.symdefs
+    else:
+        classes = []
+        symdefs = []
 
     for aux_idx, symdef in enumerate(symdefs):
         if aux_dir and symdef.name in aux_dir.children:
