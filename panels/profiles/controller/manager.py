@@ -110,7 +110,7 @@ def queue_up(function, arg):
 
 
 def execute_queued_functions():
-    print("check")
+    print("INFO", "check")
     while not execution_queue.empty():
         items = execution_queue.get()
         execute = items[0]
@@ -125,8 +125,6 @@ def execute_queued_functions():
 
 
 def reload_share_profiles(result):
-    print("loading profiles")
-    print(result)
     if result.status:
         ShowMessageBox(
             _("Share index updated. Status code was: {}").format(result.result.status_code),
@@ -143,7 +141,6 @@ def reload_share_profiles(result):
 
 
 def reload_local_profiles(result):
-    print(result)
     DMX_GDTF.getManufacturerList()
     Profiles.DMX_Fixtures_Local_Profile.loadLocal()
     if result.status:

@@ -58,7 +58,7 @@ class GdtfShareApi:
     def make_call(self, slug=None, url_params="", method="GET", data={}):
         url = "%s/%s?%s" % (self.base_url, slug, url_params)
         if self.verbose:
-            print(url)
+            print("INFO", url)
         if method == "GET":
             # res = self.session.get(url, verify=False)
             res = self.session.get(url)
@@ -72,7 +72,7 @@ class GdtfShareApi:
 
     def get_list(self):
         result = self.make_call(method="GET", slug="getList.php")
-        print("result status", result, result.status)
+        print("INFO", "result status", result, result.status)
         if result.status:
             self.data = result.result.json()
             self.save_json_file(self.data.get("list", []), self.data_file)
@@ -87,7 +87,7 @@ class GdtfShareApi:
     def get_gdtf_files(self, data, file_path):
         for fixture in data:
             if self.verbose:
-                print(
+                print("INFO",
                     fixture.get("fixture"),
                     fixture.get("manufacturer"),
                     fixture.get("rid"),
@@ -97,7 +97,7 @@ class GdtfShareApi:
             res = self.make_call(slug="downloadFile.php", url_params=f"rid={fixture.get('rid')}")
             with open(os.path.join(file_path, filename), "wb") as out:
                 out.write(res.result.content)
-                print(f"saved {filename}")
+                print("INFO", f"saved {filename}")
         return res
 
 
