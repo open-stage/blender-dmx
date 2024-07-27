@@ -30,11 +30,11 @@ class DMX_Lang:
         this_dir = os.path.dirname(os.path.abspath(__file__))
         localedir = os.path.join(this_dir, "translations")
         try:
-            print("Setting up language:", locale)
+            print("INFO", "Setting up language:", locale)
             lang = gettext.translation("messages", localedir=localedir, languages=[locale])
         except:
             lang = gettext.translation("messages", localedir=localedir, languages=["en_US"])  # fallback
-            print(f"Setting language did not work, locale {locale} probably not created yet")
+            print("INFO", f"Setting language did not work, locale {locale} probably not created yet")
         finally:
             DMX_Lang._ = lang.gettext
 

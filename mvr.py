@@ -188,7 +188,7 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_idx, mscale, extracte
                 create_mvr_props(ob, class_name, obname, mesh_name, uid)
                 if ob.data:
                     ob.data.name = mesh_name
-                    create_mvr_props(ob.data, node_type, obname, uid, item_name) 
+                    create_mvr_props(ob.data, node_type, obname, uid, item_name)
                 if len(ob.users_collection) and ob.name in ob.users_collection[0].objects:
                     ob.users_collection[0].objects.unlink(ob)
                 elif ob.name in layer_collect.collection.objects:
@@ -273,7 +273,7 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_idx, mscale, extracte
         obj_mtx = get_matrix(geometry, mscale)
         extract_mvr_object(file, mvr_scene, folder, extracted)
         object_collect = add_mvr_object(idx, geometry, obj_mtx, active_collect, file)
-        if object_collect and object_collect.name not in collection.children and object_collect != collection: 
+        if object_collect and object_collect.name not in collection.children and object_collect != collection:
             collection.children.link(object_collect)
 
     for idx, symbol in enumerate(symbols):
@@ -499,7 +499,7 @@ def load_mvr(dmx, file_name):
                     auxcollect.children.link(sym_collect)
                     if sym_name in (None, 'None'):
                         sym_name = 'None Layer'
-                sym_collect.name = sym_name 
+                sym_collect.name = sym_name
 
     for laycollect in layer_collect.children:
         if laycollect.get('MVR Class') is not None:

@@ -67,7 +67,7 @@ class DMX_Fixtures_Import_Gdtf_Profile(PropertyGroup):
 
     @staticmethod
     def loadShare():
-        print("loading start")
+        print("INFO", "loading start")
         imports = bpy.context.window_manager.dmx.imports
         imports.share_profiles.clear()
         profiles = DMX_Fixtures_Import_Gdtf_Profile.get_profile_list()
@@ -88,4 +88,4 @@ class DMX_Fixtures_Import_Gdtf_Profile(PropertyGroup):
                 local_mode.name = mode["name"]
                 local_mode.footprint = mode["dmxfootprint"]
 
-        print("loading done")
+        print("INFO", "loading done")

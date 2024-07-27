@@ -1,5 +1,6 @@
 import bpy
 import os
+from .logging import DMX_Log
 
 from bpy_extras.io_utils import ImportHelper, ExportHelper
 
@@ -72,7 +73,7 @@ class DMX_OT_Export_MVR(Operator, ExportHelper):
 
     def execute(self, context):
         dmx = context.scene.dmx
-        print(self.filepath)
+        DMX_Log.log.info(self.filepath)
         result = dmx.export_mvr(self.filepath)
 
         if result.ok:
