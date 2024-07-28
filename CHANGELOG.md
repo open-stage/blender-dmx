@@ -1,5 +1,25 @@
 ### Changelog
 
+### 1.7.4
+
+    * Add Fixture Align and Distribute panel
+    * Reworking MVR import
+    * Add global option to Multiply BlenderDMX Spot Lights Intensity
+    * Add GDTF/MVR Import/Export to Blender menu
+    * Other small fixes, improvements and translations
+
+### 1.7.3
+
+    * Update zeroconf and io_scene_3ds to pypi available packages (extension)
+
+### 1.7.2
+
+    * Update wheels to eliminate some scanning issues (extension)
+
+### 1.7.1
+
+    * fix imports (extension)
+
 ### 1.7.0
 
     * Initial MVR export - fixtures and focus points on one layer
