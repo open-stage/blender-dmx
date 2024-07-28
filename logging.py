@@ -51,7 +51,7 @@ class DMX_Log:
 
             console_log_handler = logging.StreamHandler()
             console_log_handler.setFormatter(log_formatter)
-            file_log_handler = RotatingFileHandler(path, backupCount=5, maxBytes=5000000, encoding="utf-8", mode="a")
+            file_log_handler = RotatingFileHandler(path, backupCount=5, maxBytes=8000000, encoding="utf-8", mode="a")
             file_log_handler.setFormatter(log_formatter)
             log.addHandler(file_log_handler)
             log.addHandler(console_log_handler)

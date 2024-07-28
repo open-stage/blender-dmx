@@ -19,7 +19,7 @@ bl_info = {
     "name": "DMX",
     "description": "DMX visualization and programming, with GDTF/MVR and Network support",
     "author": "open-stage",
-    "version": (1, 6, 1),
+    "version": (1, 7, 0),
     "blender": (3, 4, 0),
     "location": "3D View > DMX",
     "doc_url": "https://blenderdmx.eu/docs/faq/",
@@ -49,6 +49,8 @@ from .i18n import DMX_Lang
 _ = DMX_Lang._
 from .dmx import DMX
 from .dmx_temp_data import DMX_TempData
+from . import in_out_mvr
+from . import in_gdtf
 
 
 @bpy.app.handlers.persistent
@@ -141,6 +143,10 @@ def onRegister():
 
 def register():
     # Register Base Classes
+
+    in_out_mvr.register()
+    in_gdtf.register()
+
     for cls in DMX.classes_base:
         bpy.utils.register_class(cls)
 
@@ -172,19 +178,31 @@ def unregister():
     DMX_Zeroconf.close()
 
     try:
-        for cls in Profiles.classes:
-            bpy.utils.unregister_class(cls)
-
-        # Unregister Base Classes
-        for cls in DMX.classes_base:
-            bpy.utils.unregister_class(cls)
-
-        # Unregister addon main class
-        bpy.utils.unregister_class(DMX_TempData)
-        bpy.utils.unregister_class(DMX)
-
+        in_out_mvr.unregister()
+        in_gdtf.unregister()
     except Exception as e:
         print("INFO", e)
+
+
+    for cls in Profiles.classes:
+        try:
+            bpy.utils.unregister_class(cls)
+        except Exception as e:
+            print("INFO", e)
+
+
+    # Unregister Base Classes
+    for cls in DMX.classes_base:
+        try:
+            bpy.utils.unregister_class(cls)
+        except Exception as e:
+            print("INFO", e)
+
+
+    # Unregister addon main class
+    bpy.utils.unregister_class(DMX_TempData)
+    bpy.utils.unregister_class(DMX)
+
 
     # Append handlers
     bpy.app.handlers.load_post.clear()

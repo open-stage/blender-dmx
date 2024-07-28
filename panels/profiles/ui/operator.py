@@ -26,6 +26,7 @@ from ....panels import profiles as Profiles
 from ....logging import DMX_Log
 
 from ....i18n import DMX_Lang
+
 _ = DMX_Lang._
 
 # Import Fixtures
@@ -53,41 +54,6 @@ class DMX_OP_Import_Fixture_Update_Share(Operator):
 
     def execute(self, context):
         Profiles.controller.DMX_Fixtures_Manager.update_share_index(self)
-        return {"FINISHED"}
-
-
-class DMX_OP_Import_Fixture_From_File(Operator):
-    bl_label = _("Import GDTF Profile")
-    bl_description = _("Import fixture from local filesystem")
-    bl_idname = "dmx.import_fixture_from_file"
-    bl_options = {"UNDO"}
-
-    filter_glob: StringProperty(default="*.gdtf", options={"HIDDEN"})
-
-    directory: StringProperty(name="File Path", maxlen=1024, default="")
-
-    files: CollectionProperty(name="Files", type=bpy.types.OperatorFileListElement)
-
-    def draw(self, context):
-        layout = self.layout
-        col = layout.column()
-        col.prop(self, "files")
-
-    def invoke(self, context, event):
-        wm = context.window_manager
-        wm.fileselect_add(self)
-        return {"RUNNING_MODAL"}
-
-    def execute(self, context):
-        folder_path = os.path.dirname(os.path.realpath(__file__))
-        folder_path = os.path.join(folder_path, "..", "..", "..", "assets", "profiles")
-
-        for file in self.files:
-            file_path = os.path.join(self.directory, file.name)
-            DMX_Log.log.info("Importing GDTF Profile: {}".format(file_path))
-            shutil.copy(file_path, folder_path)
-        DMX_GDTF.getManufacturerList()
-        Profiles.DMX_Fixtures_Local_Profile.loadLocal()
         return {"FINISHED"}
 
 

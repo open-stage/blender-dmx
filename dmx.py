@@ -26,9 +26,10 @@ import uuid as py_uuid
 import re
 from datetime import datetime
 import traceback
+from types import SimpleNamespace
 
-from .pymvr import GeneralSceneDescription
-from .mvr import extract_mvr_textures, process_mvr_child_list
+from . import pymvr
+from .mvr import load_mvr
 
 from . import param as param
 from . import fixture as fixture
@@ -55,6 +56,7 @@ from .panels import fixtures as fixtures
 from .panels import groups as groups
 from .panels import programmer as programmer
 from .panels import profiles as Profiles
+from .panels import distribute as distribute
 
 from .preferences import DMX_Preferences, DMX_Regenrate_UUID
 from .group import FixtureGroup, DMX_Group
@@ -135,8 +137,6 @@ class DMX(PropertyGroup):
                 setup.DMX_PT_Setup_Import,
                 setup.DMX_PT_Setup_Export,
                 setup.DMX_PT_Setup_Extras,
-                setup.DMX_OT_Setup_Import_GDTF,
-                setup.DMX_OT_Setup_Import_MVR,
                 fixtures.DMX_MT_Fixture,
                 fixtures.DMX_MT_Fixture_Manufacturers,
                 fixtures.DMX_MT_Fixture_Profiles,
@@ -179,6 +179,11 @@ class DMX(PropertyGroup):
                 programmer.DMX_OT_Programmer_ResetTargets,
                 programmer.DMX_MT_PIE_Reset,
                 programmer.DMX_OT_Programmer_Unset_Ignore_Movement,
+                distribute.DMX_PT_AlignAndDistributePanel,
+                distribute.DMX_OP_AlignLocationOperator,
+                distribute.DMX_OP_DistributeWithGapOperator,
+                distribute.DMX_OP_DistributeEvenlyOperator,
+                distribute.DMX_OP_DistributeCircle,
                 panels_osc.DMX_PT_DMX_OSC,
                 panels_psn.DMX_UL_Tracker,
                 panels_psn.DMX_OP_DMX_Tracker_Add,
@@ -374,7 +379,7 @@ class DMX(PropertyGroup):
 
     data_version: IntProperty(
             name = "BlenderDMX data version, bump when changing RNA structure and provide migration script",
-            default = 9,
+            default = 10,
             )
 
     def get_fixture_by_index(self, index):
@@ -716,6 +721,17 @@ class DMX(PropertyGroup):
                 fixture.gel_color_rgb = list(int((255/1)*i) for i in fixture.gel_color[:3])
                 DMX_Log.log.info("Converting gel color to rgb")
 
+        if file_data_version < 10:
+            DMX_Log.log.info("Running migration 9→10")
+            dmx = bpy.context.scene.dmx
+
+            for fixture in dmx.fixtures:
+                for obj in fixture.objects:
+                    if 'Target' in obj.name:
+                        if "uuid" not in obj.object:
+                            DMX_Log.log.info(f"Add uuid to {obj.name}")
+                            obj.object["uuid"] = str(py_uuid.uuid4())
+
         DMX_Log.log.info("Migration done.")
         # add here another if statement for next migration condition... like:
         # if file_data_version < 6: #...
@@ -939,6 +955,18 @@ class DMX(PropertyGroup):
         min = 0,
         max = 1,
         update = onVolumeDensity)
+
+
+    def onMultiplyIntensity(self, context):
+        for fixture in self.fixtures:
+            fixture.render(skip_cache=True)
+
+    beam_intensity_multiplier: FloatProperty(
+        name = _("Multiply beams intensity"),
+        default = 1,
+        min=0.001,
+        update = onMultiplyIntensity
+        )
 
     # # DMX > Universes > Number of Universes
 
@@ -1372,7 +1400,7 @@ class DMX(PropertyGroup):
 
 
     fixtures_sorting_order: EnumProperty(
-        name= _("Sort by"),
+        name= _("Order by"),
         description= _("Fixture sorting order"),
         default = "ADDRESS",
         items= [
@@ -1472,52 +1500,59 @@ class DMX(PropertyGroup):
 
     def addMVR(self, file_name):
 
-
-        start_time = time.time()
         bpy.context.window_manager.dmx.pause_render = True # this stops the render loop, to prevent slowness and crashes
-        already_extracted_files = {}
-        mvr_scene = GeneralSceneDescription(file_name)
-        current_path = os.path.dirname(os.path.realpath(__file__))
-        extract_to_folder_path = os.path.join(current_path, "assets", "profiles")
-        media_folder_path = os.path.join(current_path, "assets", "models", "mvr")
-        extract_mvr_textures(mvr_scene, media_folder_path)
 
-        for layer_index, layer in enumerate(mvr_scene.layers):
-
-            layer_collection_name = layer.name or f"Layer {layer_index}"
-            if layer_collection_name in bpy.context.scene.collection.children:
-                layer_collection = bpy.context.scene.collection.children[layer_collection_name]
-            else:
-                layer_collection = bpy.data.collections.new(layer.name or f"Layer {layer_index}")
-                bpy.context.scene.collection.children.link(layer_collection)
-
-            g_name = layer.name or "Layer"
-            g_name = f"{g_name} {layer_index}"
-            fixture_group = FixtureGroup(g_name, layer.uuid)
-
-            process_mvr_child_list(
-                self,
-                layer.child_list,
-                layer_index,
-                extract_to_folder_path,
-                mvr_scene,
-                already_extracted_files,
-                layer_collection,
-                fixture_group
-            )
-            self.clean_up_empty_mvr_collections(layer_collection)
-            if len(layer_collection.all_objects) == 0:
-                bpy.context.scene.collection.children.unlink(layer_collection)
+        load_mvr(self, file_name)
 
         bpy.context.window_manager.dmx.pause_render = False # re-enable render loop
         DMX_GDTF.getManufacturerList()
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
-        print("INFO", "MVR scene loaded in %.4f sec." % (time.time() - start_time))
+
 
     def clean_up_empty_mvr_collections(self,collections):
         for collection in collections.children:
             if len(collection.all_objects)  == 0:
                 collections.children.unlink(collection)
+
+
+    def export_mvr(self, file_name):
+
+        start_time = time.time()
+        bpy.context.window_manager.dmx.pause_render = True # this stops the render loop, to prevent slowness and crashes
+        dmx = bpy.context.scene.dmx
+
+        folder_path = os.path.dirname(os.path.realpath(__file__))
+        folder_path = os.path.join(folder_path, "assets", "profiles")
+
+        try:
+            fixtures_list = []
+            mvr = pymvr.GeneralSceneDescriptionWriter()
+            pymvr.UserData().to_xml(parent = mvr.xml_root)
+            scene = pymvr.SceneElement().to_xml(parent = mvr.xml_root)
+            layers = pymvr.LayersElement().to_xml(parent = scene)
+            layer = pymvr.Layer(name = "DMX").to_xml(parent = layers)
+            child_list = pymvr.ChildList().to_xml(parent = layer)
+            for dmx_fixture in dmx.fixtures:
+                    fixture_object = dmx_fixture.to_mvr_fixture()
+                    focus_point = dmx_fixture.focus_to_mvr_focus_point()
+                    if focus_point is not None:
+                        child_list.append(focus_point.to_xml())
+                    child_list.append(fixture_object.to_xml())
+                    file_path = os.path.join(folder_path, fixture_object.gdtf_spec)
+                    fixtures_list.append((file_path, fixture_object.gdtf_spec))
+
+            pymvr.AUXData().to_xml(parent = scene)
+            mvr.files_list = list(set(fixtures_list))
+            mvr.write_mvr(file_name)
+
+        except Exception as e:
+            traceback.print_exception(e)
+            return SimpleNamespace(ok=False, error=str(e))
+
+        bpy.context.window_manager.dmx.pause_render = False # re-enable render loop
+        print("INFO", "MVR scene exported in %.4f sec." % (time.time() - start_time))
+        return SimpleNamespace(ok=True)
+
 
     def ensureUniverseExists(self, universe):
         # Allocate universes to be able to control devices
@@ -1714,6 +1749,4 @@ class DMX(PropertyGroup):
                 collection_info = nodes.node.nodes["Collection Info"]
                 collection = bpy.context.window_manager.dmx.collections_list
                 collection_info.inputs[0].default_value = collection
-
-
 
