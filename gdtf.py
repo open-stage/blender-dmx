@@ -238,7 +238,7 @@ class DMX_GDTF:
                     if ob.dimensions.to_tuple(3) > obj_dimension.to_tuple(3):
                         ob.data.transform(Matrix.Scale(0.001, 4))
             except Exception as e:
-                DMX_Log.log.error(f"Error loading a 3DS file {e}")
+                DMX_Log.log.error(f"Error loading a 3DS file {profile.name} {e}")
                 traceback.print_exception(e)
                 bpy.ops.mesh.primitive_cube_add(size=0.1)
         else:
@@ -382,7 +382,7 @@ class DMX_GDTF:
                 try:
                     obj = DMX_GDTF.loadModel(profile, model)
                 except Exception as e:
-                    DMX_Log.log.error(f"Error importing 3D model: {e}")
+                    DMX_Log.log.error(f"Error importing 3D model: {profile.name} {e}")
                     DMX_Log.log.exception(e)
                     model.primitive_type = "Cube"
                     obj = DMX_GDTF.load_blender_primitive(model)
