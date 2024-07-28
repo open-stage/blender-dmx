@@ -14,9 +14,9 @@ A DMX visualization tool inside <a href="https://blender.org">Blender</a>, desig
 
 First of all, make sure you have installed [Blender 3.4](https://www.blender.org/download/) or higher (Blender 4.x is supported). Then, download the `zip` file:
 
-### LATEST RELEASE (STABLE): v1.7.0
+### LATEST RELEASE (STABLE): v1.7.4
 
-   1. From the [latest release](https://github.com/open-stage/blender-dmx/releases/latest) download the [blenderDMX_v1.7.0.zip](https://github.com/open-stage/blender-dmx/releases/download/v1.7.0/blenderDMX_v1.7.0.zip) file
+   1. From the [latest release](https://github.com/open-stage/blender-dmx/releases/latest) download the [blenderDMX_v1.7.4.zip](https://github.com/open-stage/blender-dmx/releases/download/v1.7.4/blenderDMX_v1.7.4.zip) file
 
 ### ROLLING RELEASE (UNSTABLE)
 
