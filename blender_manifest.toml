@@ -1,6 +1,6 @@
 schema_version = "1.0.0"
 id = "open_stage_blender_dmx"
-version = "1.7.3"
+version = "1.7.4"
 name = "DMX"
 tagline = "DMX visualization and programming with GDTF/MVR, and Networking"
 maintainer = "Open Stage"
@@ -10,7 +10,7 @@ tags = ["Lighting", "Animation"]
 blender_version_min = "4.2.0"
 
 license = [
-  "SPDX:MIT",
+  "SPDX:GPL-3.0-or-later",
 ]
 
 wheels = [
