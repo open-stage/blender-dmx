@@ -516,7 +516,7 @@ def process_next_chunk(context, file, previous_chunk, imported_objects, CONSTRAI
         contextWrapper.use_nodes = True
         extend = 'wrap'
         alpha = False
-        pct = 70
+        pct = 100
 
         contextWrapper.base_color = contextColor[:]
         contextWrapper.metallic = contextMaterial.metallic
