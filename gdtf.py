@@ -226,6 +226,7 @@ class DMX_GDTF:
     def loadModel(profile, model):
         current_path = os.path.dirname(os.path.realpath(__file__))
         extract_to_folder_path = os.path.join(current_path, "assets", "models", profile.fixture_type_id)
+        obj_dimension = Vector((model.length, model.width, model.height))
 
         if model.file.extension.lower() == "3ds":
             inside_zip_path = f"models/3ds/{model.file.name}.{model.file.extension}"
@@ -233,9 +234,8 @@ class DMX_GDTF:
             file_name = os.path.join(extract_to_folder_path, inside_zip_path)
             try:
                 load_3ds(file_name, bpy.context, FILTER={'MESH'}, KEYFRAME=False, APPLY_MATRIX=False)
-                obj_dimension = Vector((model.length, model.width, model.height))
                 for ob in bpy.context.selected_objects:
-                    if ob.dimensions.to_tuple(3) > obj_dimension.to_tuple(3):
+                    if ob.dimensions.to_tuple(3) > tuple(vec*10 for vec in obj_dimension.to_tuple(3)):
                         ob.data.transform(Matrix.Scale(0.001, 4))
             except Exception as e:
                 DMX_Log.log.error(f"Error loading a 3DS file {profile.name} {e}")
