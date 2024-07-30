@@ -262,11 +262,10 @@ class DMX_GDTF:
         if obj.dimensions.z <= 0:
             DMX_Log.log.error(f"Model {obj.name} Z size {obj.dimensions.z} <= 0. It will likely not work correctly.")
 
-        dim_x = obj.dimensions.x or 1
-        dim_y = obj.dimensions.y or 1
-        dim_z = obj.dimensions.z or 1
-
-        obj.scale = (obj.scale.x * model.length / dim_x, obj.scale.y * model.width / dim_y, obj.scale.z * model.height / dim_z)
+        obj.rotation_mode = 'XYZ'
+        scale_vector = obj.scale * obj_dimension
+        dimensions = obj.dimensions or Vector((1, 1, 1))
+        obj.scale = Vector([scale_vector[val] / dimensions[val] for val in range(3)])
         return obj
 
     @staticmethod
