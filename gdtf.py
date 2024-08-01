@@ -260,8 +260,7 @@ class DMX_GDTF:
             DMX_Log.log.error(f"Model {obj.name} Z size {obj.dimensions.z} <= 0. It will likely not work correctly.")
 
         scale_vector = obj.scale * obj_dimension
-        dimensions = obj.dimensions or Vector((1, 1, 1))
-        factor = Vector([scale_vector[val] / max(dimensions[val], 1e-09) for val in range(3)])
+        factor = Vector([scale_vector[val] / max(obj.dimensions[val], 1e-09) for val in range(3)])
         if model.file.extension.lower() == "3ds":
             transformation = Matrix.Diagonal(factor).to_4x4()
             obj.data.transform(transformation)
