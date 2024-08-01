@@ -234,9 +234,6 @@ class DMX_GDTF:
             file_name = os.path.join(extract_to_folder_path, inside_zip_path)
             try:
                 load_3ds(file_name, bpy.context, FILTER={'MESH'}, KEYFRAME=False, APPLY_MATRIX=False)
-                for ob in bpy.context.selected_objects:
-                    if ob.dimensions.to_tuple(3) > tuple(vec*10 for vec in obj_dimension.to_tuple(3)):
-                        ob.data.transform(Matrix.Scale(0.001, 4))
             except Exception as e:
                 DMX_Log.log.error(f"Error loading a 3DS file {profile.name} {e}")
                 traceback.print_exception(e)
@@ -262,11 +259,14 @@ class DMX_GDTF:
         if obj.dimensions.z <= 0:
             DMX_Log.log.error(f"Model {obj.name} Z size {obj.dimensions.z} <= 0. It will likely not work correctly.")
 
-        dim_x = obj.dimensions.x or 1
-        dim_y = obj.dimensions.y or 1
-        dim_z = obj.dimensions.z or 1
-
-        obj.scale = (obj.scale.x * model.length / dim_x, obj.scale.y * model.width / dim_y, obj.scale.z * model.height / dim_z)
+        scale_vector = obj.scale * obj_dimension
+        dimensions = obj.dimensions or Vector((1, 1, 1))
+        factor = Vector([scale_vector[val] / dimensions[val] for val in range(3)])
+        if model.file.extension.lower() == "3ds":
+            transformation = Matrix.Diagonal(factor).to_4x4()
+            obj.data.transform(transformation)
+        else:
+            obj.scale = factor
         return obj
 
     @staticmethod
