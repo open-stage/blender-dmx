@@ -261,7 +261,7 @@ class DMX_GDTF:
 
         scale_vector = obj.scale * obj_dimension
         dimensions = obj.dimensions or Vector((1, 1, 1))
-        factor = Vector([scale_vector[val] / dimensions[val] for val in range(3)])
+        factor = Vector([scale_vector[val] / max(dimensions[val], 1e-09) for val in range(3)])
         if model.file.extension.lower() == "3ds":
             transformation = Matrix.Diagonal(factor).to_4x4()
             obj.data.transform(transformation)
