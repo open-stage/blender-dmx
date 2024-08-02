@@ -118,7 +118,7 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
             try:
                 shutil.copy(file_path, folder_path)
             except shutil.SameFileError:
-                DMX_Log.log.debug("Same file copying")
+                DMX_Log.log.debug("Importing file which already existed in the profiles folder")
 
             if self.patch:
                 try:
