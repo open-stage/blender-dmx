@@ -175,8 +175,12 @@ def get_dmx_channels(
         if channel.offset is None:  # skip virtual channels
             continue
         channel_break = channel.dmx_break
-        if channel.dmx_break == "Overwrite":
-            channel_break = geometry.breaks[0].dmx_break
+
+        if isinstance(geometry, pygdtf.GeometryReference) and channel.dmx_break == "Overwrite":
+            if len(geometry.breaks):
+                channel_break = geometry.breaks[0].dmx_break
+            else:
+                channel_break = 1
 
         if len(dmx_channels) < channel_break:
             # create sublist for each group of dmx breaks,
