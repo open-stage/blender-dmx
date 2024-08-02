@@ -115,7 +115,11 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
                 continue
             file_path = os.path.join(self.directory, file.name)
             DMX_Log.log.info(f"Importing GDTF Profile: {file_path}")
-            shutil.copy(file_path, folder_path)
+            try:
+                shutil.copy(file_path, folder_path)
+            except shutil.SameFileError:
+                DMX_Log.log.debug("Same file copying")
+
             if self.patch:
                 try:
                     file_name = os.path.join(folder_path, file.name)
