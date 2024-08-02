@@ -445,6 +445,9 @@ def load_mvr(dmx, file_name):
         classes = []
         symdefs = []
 
+    for ob in viewlayer.objects.selected:
+        ob.select_set(False)
+
     for aux_idx, symdef in enumerate(symdefs):
         if aux_dir and symdef.name in aux_dir.children:
             aux_collection = aux_dir.children.get(symdef.name)
