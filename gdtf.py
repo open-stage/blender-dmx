@@ -116,7 +116,7 @@ class DMX_GDTF:
 
         obj = bpy.context.view_layer.objects.selected[0]
         obj.users_collection[0].objects.unlink(obj)
-        obj.scale = (model.length, model.width, model.height)
+        obj.data.transform(Matrix.Diagonal((model.length, model.width, model.height)).to_4x4())
         return obj
 
     @staticmethod
@@ -126,8 +126,9 @@ class DMX_GDTF:
         bpy.ops.import_scene.gltf(filepath=path)
         obj = bpy.context.view_layer.objects.selected[0]
         obj.users_collection[0].objects.unlink(obj)
-        obj.rotation_euler = Euler((0, 0, 0), "XYZ")
-        obj.scale = (model.length / obj.dimensions.x, model.width / obj.dimensions.y, model.height / obj.dimensions.z)
+        obj.data.transform(Matrix.Diagonal((model.length / obj.dimensions.x,
+                                            model.width / obj.dimensions.y,
+                                            model.height / obj.dimensions.z)).to_4x4())
         return obj
 
     @staticmethod
@@ -531,23 +532,11 @@ class DMX_GDTF:
 
             # if (not sanitize_obj_name(geometry) in objs): return
             obj_child = objs[sanitize_obj_name(geometry)]
-            position = Matrix(geometry.position.matrix).to_translation()
-
-            obj_child.location[0] += position[0]
-            obj_child.location[1] += position[1]
-            obj_child.location[2] += position[2]
-
-            obj_child.rotation_mode = "XYZ"
-            obj_child.rotation_euler = Matrix(geometry.position.matrix).to_euler("XYZ")
-            # this makes applying rotations correct
-            obj_child.rotation_euler[0] *= -1
-            obj_child.rotation_euler[1] *= -1
-            obj_child.rotation_euler[2] *= -1
-
-            scale = Matrix(geometry.position.matrix).to_scale()
-            obj_child.scale[0] *= scale[0]
-            obj_child.scale[1] *= scale[1]
-            obj_child.scale[2] *= scale[2]
+            geometry_mtx = Matrix(geometry.position.matrix)
+            translate = geometry_mtx.to_translation()
+            rotation = geometry_mtx.to_3x3().inverted()
+            scale = geometry_mtx.to_scale()
+            obj_child.matrix_local = Matrix.LocRotScale(translate, rotation, scale)
 
         def constraint_child_to_parent(parent_geometry, child_geometry):
             if not sanitize_obj_name(parent_geometry) in objs:
@@ -616,57 +605,51 @@ class DMX_GDTF:
         load_geometries(root_geometry)
         update_geometry(root_geometry)
 
+        def get_axis(attribute):
+            axis_objects = []
+            for obj in objs.values():
+                for channel in dmx_channels_flattened:
+                    if attribute == channel["id"] and channel["geometry"] == obj.get("original_name", "None"):
+                        obj["mobile_type"] = "head" if attribute == "Tilt" else "yoke"
+                        obj["geometry_type"] = "axis"
+                        axis_objects.append(obj)
+                for channel in virtual_channels:
+                    if attribute == channel["id"] and channel["geometry"] == obj.get("original_name", "None"):
+                        obj["mobile_type"] = "head" if attribute == "Tilt" else "yoke"
+                        obj["geometry_type"] = "axis"
+                        axis_objects.append(obj)
+            return axis_objects
+
+        yokes = get_axis("Pan")
+        heads = get_axis("Tilt")
+        base = next(ob for ob in objs.values() if ob.get('geometry_root', False))
+        moving_parts = [ob for ob in objs.values() if ob.get('geometry_type') == "axis"]
+        DMX_Log.log.info(f"Heads: {heads}, Yokes: {yokes}, Base: {base}")
+
         # Add target for manipulating fixture
         if add_target:
-            target = bpy.data.objects.new(name="Target", object_data=None)
+            target = bpy.data.objects.new("Target", None)
             collection.objects.link(target)
             target.empty_display_size = 0.5
             target.empty_display_type = "PLAIN_AXES"
             target.location = (0, 0, -2)
 
-        def get_root():
-            for obj in objs.values():
-                if obj.get("geometry_root", False):
-                    return obj
-
-        def get_axis(attribute):
-            for obj in objs.values():
-                for channel in dmx_channels_flattened:
-                    if attribute == channel["id"] and channel["geometry"] == obj.get("original_name", "None"):
-                        return obj
-                for channel in virtual_channels:
-                    if attribute == channel["id"] and channel["geometry"] == obj.get("original_name", "None"):
-                        return obj
-
-        # This could be moved to the processing up higher,but for now, it's easier here
-        head = get_axis("Tilt")
-        if head:
-            head["mobile_type"] = "head"
-        yoke = get_axis("Pan")
-        if yoke:
-            yoke["mobile_type"] = "yoke"
-        base = get_root()
-        DMX_Log.log.info(f"Head: {head}, Yoke: {yoke}, Base: {base}")
-
-        # If the root has a child with Pan, create Z rotation constraint
-        if add_target:
-            if yoke is not None:
-                for name, obj in objs.items():
-                    if yoke.name == obj.name:
-                        if add_target:
-                            constraint = obj.constraints.new("LOCKED_TRACK")
-                            constraint.target = target
-                            constraint.lock_axis = "LOCK_Z"
-                        break
-
-        # Track head to the target
-        if add_target:
-            if head is not None:
-                constraint = head.constraints.new("TRACK_TO")
+            for part in moving_parts:
+                check_parent = part.parent and part.parent.get("mobile_type") == "head"
+                check_pan = part.get("mobile_type") == "yoke"
+                check_tilt = part.get("mobile_type") == "head"
+                constraint = part.constraints.new('LOCKED_TRACK')
+                if check_tilt or (check_parent and part.parent.parent and part.parent.parent.get("mobile_type") == "yoke"):
+                    constraint.track_axis = 'TRACK_NEGATIVE_Z'
+                else:
+                    constraint.track_axis = 'TRACK_NEGATIVE_Y'
+                constraint.lock_axis = 'LOCK_X' if check_tilt else 'LOCK_Z'
                 constraint.target = target
-            else:
-                # make sure simple par fixtures can be controlled via Target
-                constraint = base.constraints.new("TRACK_TO")
+                if check_pan and not len(part.children):
+                    constraint = base.constraints.new('TRACK_TO')
+                    constraint.target = target
+            if not yokes and not heads:
+                constraint = base.constraints.new('TRACK_TO')
                 constraint.target = target
 
         # 2D thumbnail planning symbol
