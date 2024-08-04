@@ -19,7 +19,7 @@ from bpy.props import (
 )
 from .gdtf import DMX_GDTF
 from .panels import profiles as Profiles
-from . import pygdtf
+import pygdtf
 from .util import create_unique_fixture_name
 
 from .i18n import DMX_Lang
