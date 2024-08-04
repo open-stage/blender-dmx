@@ -484,6 +484,9 @@ class DMX_GDTF:
             light_data["beam_radius_pin_sized_for_gobos"] = True
             # This allows the user to set this if wanted to prevent beam rendering differences
             light_data.shadow_buffer_clip_start = 0.0001
+            if hasattr(light_data, "use_soft_falloff"): # ensure that beam has full diameter at the lense in Cycles for Blender 4.1 and up
+                light_data.use_soft_falloff = False
+
             light_object = bpy.data.objects.new(name="Spot", object_data=light_data)
             light_object.hide_select = True
             light_object.parent = obj_child
