@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-04 07:19+0200\n"
+"POT-Creation-Date: 2024-08-04 21:51+0200\n"
 "PO-Revision-Date: 2023-03-31 21:37+0000\n"
 "Last-Translator: max <ombre_1@hotmail.fr>\n"
 "Language: fr_FR\n"
@@ -19,49 +19,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.14.0\n"
 
-msgid "Laser collision collection"
+msgid "File doesn't exist"
 msgstr ""
-
-msgid ""
-"Laser beams are projected onto objects in this collection. The beam stops"
-" at the first object colliding with the beam."
-msgstr ""
-
-msgid "Pause renderer"
-msgstr ""
-
-#, fuzzy
-msgid "Manufacturers"
-msgstr "Constructeur"
-
-#, fuzzy
-msgid "Imports"
-msgstr "Importer du fichier"
-
-msgid "Add to selection"
-msgstr ""
-
-#, fuzzy
-msgid "Remove from selection"
-msgstr "Supprimer projecteur"
-
-#, fuzzy
-msgid "Keyframe only selected fixtures (not for autokeying)"
-msgstr "Supprimer projecteur d'un fichier local"
-
-msgid "MVR-xchange"
-msgstr ""
-
-msgid "Status"
-msgstr ""
-
-#, fuzzy
-msgid "DMX Data"
-msgstr "Mode DMX"
-
-#, fuzzy
-msgid "Fixture"
-msgstr "Projecteurs"
 
 #, fuzzy
 msgid "Fixture ID"
@@ -87,6 +46,12 @@ msgid "Footprint"
 msgstr ""
 
 msgid "DMX Collection"
+msgstr ""
+
+msgid "Trackers Item"
+msgstr ""
+
+msgid "The selected element on the trackers list"
 msgstr ""
 
 #, fuzzy
@@ -185,6 +150,9 @@ msgstr ""
 msgid "Volume Scatter Density"
 msgstr ""
 
+msgid "Multiply beams intensity"
+msgstr ""
+
 #, fuzzy
 msgid "Number of universes"
 msgstr "Nombre de canaux"
@@ -266,75 +234,127 @@ msgstr ""
 msgid "The selected element on the group list"
 msgstr ""
 
-msgid "Sort by"
-msgstr ""
+#, fuzzy
+msgid "Order by"
+msgstr "Mise a jour par"
 
 #, fuzzy
 msgid "Fixture sorting order"
 msgstr "Mode GDTF"
 
-msgid "File doesn't exist"
+msgid "Laser collision collection"
 msgstr ""
 
-msgid "Refresh"
+msgid ""
+"Laser beams are projected onto objects in this collection. The beam stops"
+" at the first object colliding with the beam."
 msgstr ""
 
-#, fuzzy
-msgid "Refresh connection"
-msgstr "Rafraichir la liste de fichier"
-
-msgid "Request latest version"
-msgstr ""
-
-msgid "Sends the Request message"
-msgstr ""
-
-msgid "Import"
+msgid "Pause renderer"
 msgstr ""
 
 #, fuzzy
-msgid "Import commit"
+msgid "Manufacturers"
+msgstr "Constructeur"
+
+#, fuzzy
+msgid "Imports"
 msgstr "Importer du fichier"
 
-msgid "Download"
-msgstr ""
-
-msgid "Download commit"
+msgid "Add to selection"
 msgstr ""
 
 #, fuzzy
-msgid "DMX > Universe Menu"
+msgid "Remove from selection"
+msgstr "Supprimer projecteur"
+
+#, fuzzy
+msgid "Keyframe only selected fixtures (not for autokeying)"
+msgstr "Supprimer projecteur d'un fichier local"
+
+msgid "MVR-xchange"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+#, fuzzy
+msgid "DMX Data"
+msgstr "Mode DMX"
+
+#, fuzzy
+msgid "Fixture"
+msgstr "Projecteurs"
+
+msgid "DMX Universe"
 msgstr "Univers DMX"
 
-msgid "OSC"
+#, fuzzy
+msgid "Address"
+msgstr "Adresse DMX"
+
+msgid "Gel Color"
+msgstr "Couleur de Gelat"
+
+msgid "Display beams"
 msgstr ""
 
-msgid "Universes"
-msgstr "Univers"
-
-msgid "Art-Net"
+msgid "Display beam projection and cone"
 msgstr ""
 
-msgid "IPv4"
+msgid "Add Target"
 msgstr ""
 
-msgid "Art-Net set for {} universe(s)"
+msgid "Add target for beam to follow"
 msgstr ""
 
-msgid "sACN"
+#, fuzzy
+msgid "Increment DMX address"
+msgstr "Adresse DMX"
+
+#, fuzzy
+msgid "Increment Fixture ID"
+msgstr "Supprimer projecteur"
+
+msgid "Increment Fixture ID if numeric"
 msgstr ""
 
-msgid "sACN set for {} universe(s)"
+msgid ""
+"The Fixture ID is an identifier of this fixture that can be used to "
+"activate / select them for programming."
 msgstr ""
 
-msgid "Live DMX"
+msgid "Units"
+msgstr "Unité"
+
+msgid "How many units of this light to add"
 msgstr ""
 
-msgid "Source"
+msgid "Enable PSN Input"
 msgstr ""
 
-msgid "Protocols"
+msgid "Enables PosiStageNet input"
 msgstr ""
+
+msgid "IPv4 Address for PSN signal"
+msgstr ""
+
+msgid "The network card/interface to listen for PSN data"
+msgstr ""
+
+#, fuzzy
+msgid "PSN Target port"
+msgstr "Adresse DMX"
+
+msgid "Align and Distribute"
+msgstr ""
+
+msgid "Active object: {}"
+msgstr ""
+
+#, fuzzy
+msgid "Selected fixtures: {}"
+msgstr "Supprimer projecteur"
 
 #, fuzzy
 msgid "DMX > Fixture Menu"
@@ -379,55 +399,11 @@ msgstr "nom du mode"
 msgid "Fixture GDTF Mode"
 msgstr "Mode GDTF"
 
-msgid "DMX Universe"
-msgstr "Univers DMX"
-
-#, fuzzy
-msgid "Address"
-msgstr "Adresse DMX"
-
 #, fuzzy
 msgid "DMX Mode"
 msgstr "Mode DMX"
 
-msgid "Gel Color"
-msgstr "Couleur de Gelat"
-
-msgid "Display beams"
-msgstr ""
-
-msgid "Display beam projection and cone"
-msgstr ""
-
-msgid "Add Target"
-msgstr ""
-
-msgid "Add target for beam to follow"
-msgstr ""
-
 msgid "Advanced edit"
-msgstr ""
-
-#, fuzzy
-msgid "Increment DMX address"
-msgstr "Adresse DMX"
-
-#, fuzzy
-msgid "Increment Fixture ID"
-msgstr "Supprimer projecteur"
-
-msgid "Increment Fixture ID if numeric"
-msgstr ""
-
-msgid ""
-"The Fixture ID is an identifier of this fixture that can be used to "
-"activate / select them for programming."
-msgstr ""
-
-msgid "Units"
-msgstr "Unité"
-
-msgid "How many units of this light to add"
 msgstr ""
 
 msgid "GDTF Profile"
@@ -538,6 +514,10 @@ msgstr ""
 msgid "Group Name"
 msgstr "nom du mode"
 
+#, fuzzy
+msgid "Reset Colors"
+msgstr "Couleur de Gelat"
+
 msgid "Lock Movement"
 msgstr ""
 
@@ -596,6 +576,12 @@ msgid "Targets to zero"
 msgstr ""
 
 msgid "Set Targets' position to 0 of the Scene"
+msgstr ""
+
+msgid "Center View to Selected"
+msgstr ""
+
+msgid "Set View to center on selected objects"
 msgstr ""
 
 msgid "Reset targets"
@@ -758,6 +744,9 @@ msgstr ""
 msgid "Clear Project data"
 msgstr ""
 
+msgid "Import"
+msgstr ""
+
 #, fuzzy
 msgid "Import GDTF Profile"
 msgstr "Importer du fichier"
@@ -776,6 +765,10 @@ msgstr "Importer du fichier"
 msgid "Export Project data"
 msgstr ""
 
+#, fuzzy
+msgid "Export MVR"
+msgstr "Importer du fichier"
+
 msgid "Show logging directory"
 msgstr ""
 
@@ -789,6 +782,9 @@ msgid "Setup"
 msgstr ""
 
 msgid "Error! Blender 3.4 or higher required."
+msgstr ""
+
+msgid "For Blender 4.2 and up use the Extension"
 msgstr ""
 
 msgid "Create New Show"
@@ -862,18 +858,6 @@ msgstr ""
 
 msgid "Addon reloaded"
 msgstr ""
-
-#, fuzzy
-msgid "Import fixture from GDTF Profile"
-msgstr "Importer un projecteur depuis un fichier local"
-
-#, fuzzy
-msgid "Import MVR scene"
-msgstr "Importer du fichier"
-
-#, fuzzy
-msgid "Import data MVR scene file. This may take a long time!"
-msgstr "Importer un projecteur depuis un fichier local"
 
 msgid "Get GDTF Share account and fill it into BlenderDMX addon preferences."
 msgstr ""
@@ -1000,9 +984,6 @@ msgstr ""
 msgid "Update data index of GDTF Share"
 msgstr ""
 
-msgid "Import fixture from local filesystem"
-msgstr "Importer un projecteur depuis un fichier local"
-
 msgid "Delete fixture"
 msgstr "Supprimer projecteur"
 
@@ -1032,6 +1013,115 @@ msgstr ""
 #, fuzzy
 msgid "Profiles"
 msgstr "Fichier"
+
+msgid "Art-Net"
+msgstr ""
+
+msgid "IPv4"
+msgstr ""
+
+msgid "Art-Net set for {} universe(s)"
+msgstr ""
+
+msgid "Live DMX"
+msgstr ""
+
+msgid "Source"
+msgstr ""
+
+msgid "Refresh"
+msgstr ""
+
+#, fuzzy
+msgid "Refresh connection"
+msgstr "Rafraichir la liste de fichier"
+
+msgid "Request latest version"
+msgstr ""
+
+msgid "Sends the Request message"
+msgstr ""
+
+#, fuzzy
+msgid "Import commit"
+msgstr "Importer du fichier"
+
+msgid "Download"
+msgstr ""
+
+msgid "Download commit"
+msgstr ""
+
+msgid "OSC"
+msgstr ""
+
+msgid "Protocols"
+msgstr ""
+
+msgid "Add Tracker"
+msgstr ""
+
+msgid "Adding a tracker"
+msgstr ""
+
+#, fuzzy
+msgid "Remove Tracker"
+msgstr "Supprimer projecteur"
+
+msgid "Removing a tracker"
+msgstr ""
+
+msgid "Link Fixture to Tracker"
+msgstr ""
+
+msgid "Link fixture to a tracker"
+msgstr ""
+
+#, fuzzy
+msgid "Unlink Fixture from Tracker"
+msgstr "Importer un projecteur depuis un fichier local"
+
+msgid "Unlink fixture from a tracker"
+msgstr ""
+
+msgid "Tracker Followers"
+msgstr ""
+
+msgid "Link followers to a tracker"
+msgstr ""
+
+#, fuzzy
+msgid "PSN"
+msgstr "Déplier"
+
+msgid "Add Tracking Target"
+msgstr ""
+
+msgid "Remove Followers Target"
+msgstr ""
+
+#, fuzzy
+msgid "Remove target"
+msgstr "Supprimer projecteur"
+
+msgid "Add Followers Target"
+msgstr ""
+
+msgid "Add target"
+msgstr ""
+
+msgid "sACN"
+msgstr ""
+
+msgid "sACN set for {} universe(s)"
+msgstr ""
+
+#, fuzzy
+msgid "DMX > Universe Menu"
+msgstr "Univers DMX"
+
+msgid "Universes"
+msgstr "Univers"
 
 #~ msgid ""
 #~ "Get API key from GDTF Share "
@@ -1227,4 +1317,16 @@ msgstr "Fichier"
 
 #~ msgid "Re-address only"
 #~ msgstr "Adresse DMX"
+
+#~ msgid "Sort by"
+#~ msgstr ""
+
+#~ msgid "Import MVR scene"
+#~ msgstr "Importer du fichier"
+
+#~ msgid "Import data MVR scene file. This may take a long time!"
+#~ msgstr "Importer un projecteur depuis un fichier local"
+
+#~ msgid "Import fixture from local filesystem"
+#~ msgstr "Importer un projecteur depuis un fichier local"
 

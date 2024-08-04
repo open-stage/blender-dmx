@@ -7,61 +7,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-04 07:19+0200\n"
+"POT-Creation-Date: 2024-08-04 21:51+0200\n"
 "PO-Revision-Date: 2024-07-16 22:09+0000\n"
 "Last-Translator: Andrea Defendi <andrea.def.01@gmail.com>\n"
-"Language-Team: Italian <https://hosted.weblate.org/projects/blenderdmx/main/"
-"it/>\n"
 "Language: it_IT\n"
+"Language-Team: Italian "
+"<https://hosted.weblate.org/projects/blenderdmx/main/it/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.7-dev\n"
 "Generated-By: Babel 2.14.0\n"
 
-msgid "Laser collision collection"
-msgstr "Raccolta delle collisioni laser"
-
-msgid ""
-"Laser beams are projected onto objects in this collection. The beam stops"
-" at the first object colliding with the beam."
-msgstr ""
-"I fasci laser vengono proiettati sugli oggetti di questa collezione. Il "
-"fascio si ferma al primo oggetto che entra in collisione con il fascio."
-
-msgid "Pause renderer"
-msgstr "Pausa rendering"
-
-msgid "Manufacturers"
-msgstr "Costruttori"
-
-#, fuzzy
-msgid "Imports"
-msgstr "Importazioni"
-
-msgid "Add to selection"
-msgstr "Aggiungi alla selezione"
-
-#, fuzzy
-msgid "Remove from selection"
-msgstr "Rimuovi dalla selezione"
-
-#, fuzzy
-msgid "Keyframe only selected fixtures (not for autokeying)"
-msgstr "Aggiungi keyframe solo per le luci selezionate (non per auto keyframe)"
-
-msgid "MVR-xchange"
-msgstr "MVR-xchange"
-
-msgid "Status"
-msgstr "Stato"
-
-msgid "DMX Data"
-msgstr "Dati DMX"
-
-msgid "Fixture"
-msgstr "Dispositivo"
+msgid "File doesn't exist"
+msgstr "Il file non esiste"
 
 msgid "Fixture ID"
 msgstr "ID Dispositivo"
@@ -86,6 +45,13 @@ msgstr "Traccia"
 
 msgid "DMX Collection"
 msgstr "Collezione DMX"
+
+msgid "Trackers Item"
+msgstr ""
+
+#, fuzzy
+msgid "The selected element on the trackers list"
+msgstr "L'elemento selezionato nell'elenco degli universi"
 
 msgid "Universe"
 msgstr "Universo"
@@ -181,6 +147,9 @@ msgstr "Densità"
 msgid "Volume Scatter Density"
 msgstr "Densità di dispersione del volume"
 
+msgid "Multiply beams intensity"
+msgstr ""
+
 msgid "Number of universes"
 msgstr "Numero di universi"
 
@@ -268,71 +237,128 @@ msgstr "Elenco dei gruppi"
 msgid "The selected element on the group list"
 msgstr "L'elemento selezionato nell'elenco dei gruppi"
 
-msgid "Sort by"
+#, fuzzy
+msgid "Order by"
 msgstr "Ordina per"
 
 msgid "Fixture sorting order"
 msgstr "Ordine di ordinamento degli apparecchi"
 
-msgid "File doesn't exist"
-msgstr "Il file non esiste"
+msgid "Laser collision collection"
+msgstr "Raccolta delle collisioni laser"
 
-msgid "Refresh"
-msgstr "Aggiorna"
+msgid ""
+"Laser beams are projected onto objects in this collection. The beam stops"
+" at the first object colliding with the beam."
+msgstr ""
+"I fasci laser vengono proiettati sugli oggetti di questa collezione. Il "
+"fascio si ferma al primo oggetto che entra in collisione con il fascio."
 
-msgid "Refresh connection"
-msgstr "Aggiorna connessione"
+msgid "Pause renderer"
+msgstr "Pausa rendering"
 
-msgid "Request latest version"
-msgstr "Richiedi l'ultima versione"
+msgid "Manufacturers"
+msgstr "Costruttori"
 
-msgid "Sends the Request message"
-msgstr "Invia il messaggio di richiesta"
+#, fuzzy
+msgid "Imports"
+msgstr "Importazioni"
 
-msgid "Import"
-msgstr "Importa"
+msgid "Add to selection"
+msgstr "Aggiungi alla selezione"
 
-msgid "Import commit"
-msgstr "Importa commit"
+#, fuzzy
+msgid "Remove from selection"
+msgstr "Rimuovi dalla selezione"
 
-msgid "Download"
-msgstr "Scaricamento"
+#, fuzzy
+msgid "Keyframe only selected fixtures (not for autokeying)"
+msgstr "Aggiungi keyframe solo per le luci selezionate (non per auto keyframe)"
 
-msgid "Download commit"
-msgstr "Scarica commit"
+msgid "MVR-xchange"
+msgstr "MVR-xchange"
 
-msgid "DMX > Universe Menu"
-msgstr "DMX > Menu Universo"
+msgid "Status"
+msgstr "Stato"
 
-msgid "OSC"
-msgstr "OSC"
+msgid "DMX Data"
+msgstr "Dati DMX"
 
-msgid "Universes"
-msgstr "Universi"
+msgid "Fixture"
+msgstr "Dispositivo"
 
-msgid "Art-Net"
-msgstr "Art-Net"
+msgid "DMX Universe"
+msgstr "Universo DMX"
 
-msgid "IPv4"
-msgstr "IPv4"
+msgid "Address"
+msgstr "Indirizzo"
 
-msgid "Art-Net set for {} universe(s)"
-msgstr "Imposta Art-Net per {} universo(i)"
+msgid "Gel Color"
+msgstr "Colore Gel"
 
-msgid "sACN"
-msgstr "sACN"
+msgid "Display beams"
+msgstr "Visualizza fasci"
 
-msgid "sACN set for {} universe(s)"
-msgstr "Imposta sACN per {} universo(i)"
+msgid "Display beam projection and cone"
+msgstr "Visualizza la proiezione e il cono del fascio"
 
-msgid "Live DMX"
-msgstr "DMX attuale"
+msgid "Add Target"
+msgstr "Aggiungi bersaglio"
 
-msgid "Source"
-msgstr "Sorgente"
+msgid "Add target for beam to follow"
+msgstr "Aggiungi bersaglio per il fascio da seguire"
 
-msgid "Protocols"
-msgstr "Protocolli"
+msgid "Increment DMX address"
+msgstr "Incrementa Indirizzo DMX"
+
+msgid "Increment Fixture ID"
+msgstr "Incrementa ID Dispositivo"
+
+msgid "Increment Fixture ID if numeric"
+msgstr "Incrementa ID Dispositivo se numerico"
+
+msgid ""
+"The Fixture ID is an identifier of this fixture that can be used to "
+"activate / select them for programming."
+msgstr ""
+"ID Dispositivo è un identificatore che può essere utilizzato per "
+"attivarlo/selezionarlo per la programmazione."
+
+msgid "Units"
+msgstr "Unità"
+
+msgid "How many units of this light to add"
+msgstr "Quante unità di questa luce aggiungere"
+
+#, fuzzy
+msgid "Enable PSN Input"
+msgstr "Abilita Ingresso sACN"
+
+#, fuzzy
+msgid "Enables PosiStageNet input"
+msgstr "Abilita Ingresso sACN"
+
+#, fuzzy
+msgid "IPv4 Address for PSN signal"
+msgstr "Indirizzo IPv4 per il segnale ArtNet"
+
+#, fuzzy
+msgid "The network card/interface to listen for PSN data"
+msgstr "La scheda/interfaccia di rete per ascoltare i dati ArtNet DMX"
+
+#, fuzzy
+msgid "PSN Target port"
+msgstr "Porta di destinazione OSC"
+
+msgid "Align and Distribute"
+msgstr ""
+
+msgid "Active object: {}"
+msgstr ""
+
+#, fuzzy
+msgid "Selected fixtures: {}"
+msgstr "Dispositivi Selezionati"
 
 msgid "DMX > Fixture Menu"
 msgstr "DMX > Menu Dispositivo"
@@ -370,54 +396,11 @@ msgstr "Modalità"
 msgid "Fixture GDTF Mode"
 msgstr "Modalità GDTF dispositivo"
 
-msgid "DMX Universe"
-msgstr "Universo DMX"
-
-msgid "Address"
-msgstr "Indirizzo"
-
 msgid "DMX Mode"
 msgstr "Modalità DMX"
 
-msgid "Gel Color"
-msgstr "Colore Gel"
-
-msgid "Display beams"
-msgstr "Visualizza fasci"
-
-msgid "Display beam projection and cone"
-msgstr "Visualizza la proiezione e il cono del fascio"
-
-msgid "Add Target"
-msgstr "Aggiungi bersaglio"
-
-msgid "Add target for beam to follow"
-msgstr "Aggiungi bersaglio per il fascio da seguire"
-
 msgid "Advanced edit"
 msgstr "Editing avanzato"
-
-msgid "Increment DMX address"
-msgstr "Incrementa Indirizzo DMX"
-
-msgid "Increment Fixture ID"
-msgstr "Incrementa ID Dispositivo"
-
-msgid "Increment Fixture ID if numeric"
-msgstr "Incrementa ID Dispositivo se numerico"
-
-msgid ""
-"The Fixture ID is an identifier of this fixture that can be used to "
-"activate / select them for programming."
-msgstr ""
-"ID Dispositivo è un identificatore che può essere utilizzato per "
-"attivarlo/selezionarlo per la programmazione."
-
-msgid "Units"
-msgstr "Unità"
-
-msgid "How many units of this light to add"
-msgstr "Quante unità di questa luce aggiungere"
 
 msgid "GDTF Profile"
 msgstr "Profilo GDTF"
@@ -510,6 +493,10 @@ msgstr "Crea gruppo DMX dai dispositivi selezionati"
 msgid "Group Name"
 msgstr "Nome Gruppo"
 
+#, fuzzy
+msgid "Reset Colors"
+msgstr "Colore Gel"
+
 msgid "Lock Movement"
 msgstr "Blocca Movimento"
 
@@ -568,6 +555,12 @@ msgstr "Obiettivi a zero"
 
 msgid "Set Targets' position to 0 of the Scene"
 msgstr "Imposta la posizione dei target su 0 della scena"
+
+msgid "Center View to Selected"
+msgstr ""
+
+msgid "Set View to center on selected objects"
+msgstr ""
 
 #, fuzzy
 msgid "Reset targets"
@@ -724,6 +717,9 @@ msgstr "Stato: {}"
 msgid "Clear Project data"
 msgstr "Azzera dati del progetto"
 
+msgid "Import"
+msgstr "Importa"
+
 msgid "Import GDTF Profile"
 msgstr "Importa Profilo GDTF"
 
@@ -741,6 +737,10 @@ msgstr "Esporta"
 msgid "Export Project data"
 msgstr "Esporta i dati del progetto"
 
+#, fuzzy
+msgid "Export MVR"
+msgstr "Esporta"
+
 msgid "Show logging directory"
 msgstr "Mostra la directory di registrazione"
 
@@ -755,6 +755,9 @@ msgstr "Configurazione"
 
 msgid "Error! Blender 3.4 or higher required."
 msgstr "Errore! È richiesto Blender 3.4 o versione successiva."
+
+msgid "For Blender 4.2 and up use the Extension"
+msgstr ""
 
 msgid "Create New Show"
 msgstr "Crea Nuovo Spettacolo"
@@ -809,7 +812,8 @@ msgstr "Esporta i dati personalizzati"
 
 msgid "Zip and Export custom data from BlenderDMX addon directory."
 msgstr ""
-"Comprimi ed esporta i dati personalizzati dalla cartella addon di BlenderDMX."
+"Comprimi ed esporta i dati personalizzati dalla cartella addon di "
+"BlenderDMX."
 
 msgid "Data exported to: {}"
 msgstr "Dati salvati su: {}"
@@ -833,17 +837,6 @@ msgstr "Ricarica addon, utile durante lo sviluppo"
 #, fuzzy
 msgid "Addon reloaded"
 msgstr "Scaricamento"
-
-msgid "Import fixture from GDTF Profile"
-msgstr "Importa dispositivo dal profilo GDTF"
-
-msgid "Import MVR scene"
-msgstr "Importa scena MVR"
-
-msgid "Import data MVR scene file. This may take a long time!"
-msgstr ""
-"Importa dati dal file di scena MVR. L'operazione potrebbe richiedere "
-"molto tempo!"
 
 msgid "Get GDTF Share account and fill it into BlenderDMX addon preferences."
 msgstr ""
@@ -973,9 +966,6 @@ msgstr "Aggiorna l'indice GDTF Share"
 msgid "Update data index of GDTF Share"
 msgstr "Aggiorna l'indice dei dati di GDTF Share"
 
-msgid "Import fixture from local filesystem"
-msgstr "Importa dispositivo dal file system locale"
-
 msgid "Delete fixture"
 msgstr "Elimina dispositivo"
 
@@ -1002,6 +992,117 @@ msgstr "Dettagli dispositivo locale"
 
 msgid "Profiles"
 msgstr "Profili"
+
+msgid "Art-Net"
+msgstr "Art-Net"
+
+msgid "IPv4"
+msgstr "IPv4"
+
+msgid "Art-Net set for {} universe(s)"
+msgstr "Imposta Art-Net per {} universo(i)"
+
+msgid "Live DMX"
+msgstr "DMX attuale"
+
+msgid "Source"
+msgstr "Sorgente"
+
+msgid "Refresh"
+msgstr "Aggiorna"
+
+msgid "Refresh connection"
+msgstr "Aggiorna connessione"
+
+msgid "Request latest version"
+msgstr "Richiedi l'ultima versione"
+
+msgid "Sends the Request message"
+msgstr "Invia il messaggio di richiesta"
+
+msgid "Import commit"
+msgstr "Importa commit"
+
+msgid "Download"
+msgstr "Scaricamento"
+
+msgid "Download commit"
+msgstr "Scarica commit"
+
+msgid "OSC"
+msgstr "OSC"
+
+msgid "Protocols"
+msgstr "Protocolli"
+
+#, fuzzy
+msgid "Add Tracker"
+msgstr "Aggiungi bersaglio"
+
+msgid "Adding a tracker"
+msgstr ""
+
+#, fuzzy
+msgid "Remove Tracker"
+msgstr "Rimuovi Dispositivo"
+
+msgid "Removing a tracker"
+msgstr ""
+
+msgid "Link Fixture to Tracker"
+msgstr ""
+
+msgid "Link fixture to a tracker"
+msgstr ""
+
+#, fuzzy
+msgid "Unlink Fixture from Tracker"
+msgstr "Importa dispositivo da GDTF Share"
+
+#, fuzzy
+msgid "Unlink fixture from a tracker"
+msgstr "Importa dispositivo da GDTF Share"
+
+msgid "Tracker Followers"
+msgstr ""
+
+msgid "Link followers to a tracker"
+msgstr ""
+
+#, fuzzy
+msgid "PSN"
+msgstr "Pan"
+
+#, fuzzy
+msgid "Add Tracking Target"
+msgstr "Aggiungi bersaglio"
+
+msgid "Remove Followers Target"
+msgstr ""
+
+#, fuzzy
+msgid "Remove target"
+msgstr "Seleziona Obiettivi"
+
+#, fuzzy
+msgid "Add Followers Target"
+msgstr "Aggiungi bersaglio"
+
+#, fuzzy
+msgid "Add target"
+msgstr "Aggiungi bersaglio"
+
+msgid "sACN"
+msgstr "sACN"
+
+msgid "sACN set for {} universe(s)"
+msgstr "Imposta sACN per {} universo(i)"
+
+msgid "DMX > Universe Menu"
+msgstr "DMX > Menu Universo"
+
+msgid "Universes"
+msgstr "Universi"
 
 #~ msgid "Message Box"
 #~ msgstr "Casella dei messaggi"
@@ -1185,3 +1286,19 @@ msgstr "Profili"
 
 #~ msgid "Re-address only"
 #~ msgstr "Reindirizza solamente"
+
+#~ msgid "Import fixture from GDTF Profile"
+#~ msgstr "Importa dispositivo dal profilo GDTF"
+
+#~ msgid "Import MVR scene"
+#~ msgstr "Importa scena MVR"
+
+#~ msgid "Import data MVR scene file. This may take a long time!"
+#~ msgstr ""
+#~ "Importa dati dal file di scena "
+#~ "MVR. L'operazione potrebbe richiedere molto"
+#~ " tempo!"
+
+#~ msgid "Import fixture from local filesystem"
+#~ msgstr "Importa dispositivo dal file system locale"
+
