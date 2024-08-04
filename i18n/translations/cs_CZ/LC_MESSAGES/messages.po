@@ -7,58 +7,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-04 07:19+0200\n"
+"POT-Creation-Date: 2024-08-04 21:51+0200\n"
 "PO-Revision-Date: 2024-05-04 05:42+0000\n"
 "Last-Translator: vanous <petr+weblate@linuks.cz>\n"
-"Language-Team: Czech <https://hosted.weblate.org/projects/blenderdmx/main/cs/"
-">\n"
 "Language: cs_CZ\n"
+"Language-Team: Czech "
+"<https://hosted.weblate.org/projects/blenderdmx/main/cs/>\n"
+"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
-"X-Generator: Weblate 5.5.3\n"
 "Generated-By: Babel 2.14.0\n"
 
-msgid "Laser collision collection"
-msgstr "Laserová kolekce kolizí"
-
-msgid ""
-"Laser beams are projected onto objects in this collection. The beam stops"
-" at the first object colliding with the beam."
-msgstr ""
-"Laserové paprsky jsou promítány na objekty v této kolekci. Paprsek se "
-"zastaví na prvním objektu, na který narazí."
-
-msgid "Pause renderer"
-msgstr "Zapauzovat renderování"
-
-msgid "Manufacturers"
-msgstr "Výrobci"
-
-msgid "Imports"
-msgstr "Importy"
-
-msgid "Add to selection"
-msgstr "Přidat k výběru"
-
-msgid "Remove from selection"
-msgstr "Odebrat z výběru"
-
-msgid "Keyframe only selected fixtures (not for autokeying)"
-msgstr "Keyframe pouze vybraná svítidla (ne při autokeying)"
-
-msgid "MVR-xchange"
-msgstr "MVR-xchange"
-
-msgid "Status"
-msgstr "Stav"
-
-msgid "DMX Data"
-msgstr "DMX Data"
-
-msgid "Fixture"
-msgstr "Svítidlo"
+msgid "File doesn't exist"
+msgstr "Soubor neexistuje"
 
 msgid "Fixture ID"
 msgstr "ID Svítidla"
@@ -83,6 +45,13 @@ msgstr "Stopa"
 
 msgid "DMX Collection"
 msgstr "DMX Kolekce"
+
+msgid "Trackers Item"
+msgstr ""
+
+#, fuzzy
+msgid "The selected element on the trackers list"
+msgstr "Vybraný univers v seznamu universů"
 
 msgid "Universe"
 msgstr "Univers"
@@ -178,6 +147,9 @@ msgstr "Hustota"
 msgid "Volume Scatter Density"
 msgstr "Hustota mlhy"
 
+msgid "Multiply beams intensity"
+msgstr ""
+
 msgid "Number of universes"
 msgstr "Počet universů"
 
@@ -260,71 +232,125 @@ msgstr "Seznam skupiny"
 msgid "The selected element on the group list"
 msgstr "Zvolená skupina v seznamu"
 
-msgid "Sort by"
+#, fuzzy
+msgid "Order by"
 msgstr "Seřadit podle"
 
 msgid "Fixture sorting order"
 msgstr "Řazení svítidel"
 
-msgid "File doesn't exist"
-msgstr "Soubor neexistuje"
+msgid "Laser collision collection"
+msgstr "Laserová kolekce kolizí"
 
-msgid "Refresh"
-msgstr "Obnovit"
+msgid ""
+"Laser beams are projected onto objects in this collection. The beam stops"
+" at the first object colliding with the beam."
+msgstr ""
+"Laserové paprsky jsou promítány na objekty v této kolekci. Paprsek se "
+"zastaví na prvním objektu, na který narazí."
 
-msgid "Refresh connection"
-msgstr "Obnovit připojení"
+msgid "Pause renderer"
+msgstr "Zapauzovat renderování"
 
-msgid "Request latest version"
-msgstr "Žádost o nejnovější verzi"
+msgid "Manufacturers"
+msgstr "Výrobci"
 
-msgid "Sends the Request message"
-msgstr "Odeslat žádost"
+msgid "Imports"
+msgstr "Importy"
 
-msgid "Import"
-msgstr "Import"
+msgid "Add to selection"
+msgstr "Přidat k výběru"
 
-msgid "Import commit"
-msgstr "Importovat"
+msgid "Remove from selection"
+msgstr "Odebrat z výběru"
 
-msgid "Download"
-msgstr "Stáhnout"
+msgid "Keyframe only selected fixtures (not for autokeying)"
+msgstr "Keyframe pouze vybraná svítidla (ne při autokeying)"
 
-msgid "Download commit"
-msgstr "Stáhnout verzi"
+msgid "MVR-xchange"
+msgstr "MVR-xchange"
 
-msgid "DMX > Universe Menu"
-msgstr "DMX Univers Menu"
+msgid "Status"
+msgstr "Stav"
 
-msgid "OSC"
-msgstr "OSC"
+msgid "DMX Data"
+msgstr "DMX Data"
 
-msgid "Universes"
-msgstr "DMX Universe"
+msgid "Fixture"
+msgstr "Svítidlo"
 
-msgid "Art-Net"
-msgstr "Art-Net"
+msgid "DMX Universe"
+msgstr "DMX Univers"
 
-msgid "IPv4"
-msgstr "IPv4"
+msgid "Address"
+msgstr "Adresa"
 
-msgid "Art-Net set for {} universe(s)"
-msgstr "Art-Net nastaven pro {} univers(y)"
+msgid "Gel Color"
+msgstr "Barva gelu"
 
-msgid "sACN"
-msgstr "sACN"
+msgid "Display beams"
+msgstr "Zobrazit Kužel paprsku"
 
-msgid "sACN set for {} universe(s)"
-msgstr "sACN nastaveno pro {} univers(y)"
+msgid "Display beam projection and cone"
+msgstr "Zobrazit projekci paprsku a kužele"
 
-msgid "Live DMX"
-msgstr "Aktuální DMX"
+msgid "Add Target"
+msgstr "Přidat Cíl"
 
-msgid "Source"
-msgstr "Zdroj"
+msgid "Add target for beam to follow"
+msgstr "Přidat cíl pro navádění kužele paprsku"
 
-msgid "Protocols"
-msgstr "Protokoly"
+msgid "Increment DMX address"
+msgstr "Inkrementovat DMX adresu"
+
+msgid "Increment Fixture ID"
+msgstr "Inkrementovat ID Svítidla"
+
+msgid "Increment Fixture ID if numeric"
+msgstr "Inkrementovat ID Svítidla, je-li ID číslo"
+
+msgid ""
+"The Fixture ID is an identifier of this fixture that can be used to "
+"activate / select them for programming."
+msgstr ""
+"ID Svítidla je identifikátor zařízení použitý k aktivaci / selekci při "
+"programování."
+
+msgid "Units"
+msgstr "Jednotky"
+
+msgid "How many units of this light to add"
+msgstr "Kolik kusů tohoto svítidla přidat"
+
+#, fuzzy
+msgid "Enable PSN Input"
+msgstr "Povolit sACN Vstup"
+
+#, fuzzy
+msgid "Enables PosiStageNet input"
+msgstr "Povolit sACN Vstup"
+
+#, fuzzy
+msgid "IPv4 Address for PSN signal"
+msgstr "IPv4 Adresa pro ArtNet signál"
+
+#, fuzzy
+msgid "The network card/interface to listen for PSN data"
+msgstr "Síťová karta/rozhraní pro příjem DMX dat po ArtNetu"
+
+#, fuzzy
+msgid "PSN Target port"
+msgstr "Port cílového OSC zařízení"
+
+msgid "Align and Distribute"
+msgstr ""
+
+msgid "Active object: {}"
+msgstr ""
+
+#, fuzzy
+msgid "Selected fixtures: {}"
+msgstr "Vybraná svítidla"
 
 msgid "DMX > Fixture Menu"
 msgstr "Menu Svítidel"
@@ -362,54 +388,11 @@ msgstr "Mód"
 msgid "Fixture GDTF Mode"
 msgstr "GDTF Mód Svítidla"
 
-msgid "DMX Universe"
-msgstr "DMX Univers"
-
-msgid "Address"
-msgstr "Adresa"
-
 msgid "DMX Mode"
 msgstr "DMX Mód"
 
-msgid "Gel Color"
-msgstr "Barva gelu"
-
-msgid "Display beams"
-msgstr "Zobrazit Kužel paprsku"
-
-msgid "Display beam projection and cone"
-msgstr "Zobrazit projekci paprsku a kužele"
-
-msgid "Add Target"
-msgstr "Přidat Cíl"
-
-msgid "Add target for beam to follow"
-msgstr "Přidat cíl pro navádění kužele paprsku"
-
 msgid "Advanced edit"
 msgstr "Pokročilé úpravy"
-
-msgid "Increment DMX address"
-msgstr "Inkrementovat DMX adresu"
-
-msgid "Increment Fixture ID"
-msgstr "Inkrementovat ID Svítidla"
-
-msgid "Increment Fixture ID if numeric"
-msgstr "Inkrementovat ID Svítidla, je-li ID číslo"
-
-msgid ""
-"The Fixture ID is an identifier of this fixture that can be used to "
-"activate / select them for programming."
-msgstr ""
-"ID Svítidla je identifikátor zařízení použitý k aktivaci / selekci při "
-"programování."
-
-msgid "Units"
-msgstr "Jednotky"
-
-msgid "How many units of this light to add"
-msgstr "Kolik kusů tohoto svítidla přidat"
 
 msgid "GDTF Profile"
 msgstr "GDTF Profil"
@@ -501,6 +484,10 @@ msgstr "Vytvořit DMX skupinu z vybraných svítidel"
 msgid "Group Name"
 msgstr "Název Skupiny"
 
+#, fuzzy
+msgid "Reset Colors"
+msgstr "Barva gelu"
+
 msgid "Lock Movement"
 msgstr "Uzamknout Pohyb"
 
@@ -557,6 +544,12 @@ msgstr "Cíle na nulu"
 
 msgid "Set Targets' position to 0 of the Scene"
 msgstr "Nastaví Cíle paprsků na střed scény"
+
+msgid "Center View to Selected"
+msgstr ""
+
+msgid "Set View to center on selected objects"
+msgstr ""
 
 msgid "Reset targets"
 msgstr "Resetovat Cíle"
@@ -708,6 +701,9 @@ msgstr "Stav: {}"
 msgid "Clear Project data"
 msgstr "Vyčistit Projektová data"
 
+msgid "Import"
+msgstr "Import"
+
 msgid "Import GDTF Profile"
 msgstr "Importovat GDTF soubor"
 
@@ -723,6 +719,10 @@ msgstr "Export"
 msgid "Export Project data"
 msgstr "Exportovat Projektová data"
 
+#, fuzzy
+msgid "Export MVR"
+msgstr "Export"
+
 msgid "Show logging directory"
 msgstr "Zobrazit adresář s logy"
 
@@ -737,6 +737,9 @@ msgstr "Nastavení"
 
 msgid "Error! Blender 3.4 or higher required."
 msgstr "Chyba! Blender 3.4 nebo vyšší je vyžadován."
+
+msgid "For Blender 4.2 and up use the Extension"
+msgstr ""
 
 msgid "Create New Show"
 msgstr "Vytvořit Novou Show"
@@ -811,18 +814,8 @@ msgstr "Reloadovat rozšíření, užitečné při vývoji"
 msgid "Addon reloaded"
 msgstr "Rozšíření reloadováno"
 
-msgid "Import fixture from GDTF Profile"
-msgstr "Importovat svítidlo z GDTF Share"
-
-msgid "Import MVR scene"
-msgstr "Importovat MVR scénu"
-
-msgid "Import data MVR scene file. This may take a long time!"
-msgstr "Importovat data z MVR souboru. To může trvat dlouho!"
-
 msgid "Get GDTF Share account and fill it into BlenderDMX addon preferences."
-msgstr ""
-"Získejte GDTF Share účet a zadejte jej do předvoleb rozšíření BlenderDMX."
+msgstr "Získejte GDTF Share účet a zadejte jej do předvoleb rozšíření BlenderDMX."
 
 msgid "GDTF Share API credentials missing"
 msgstr "Chybí data účtu pro přihlášení k GDTF Share"
@@ -945,9 +938,6 @@ msgstr "Aktualizovat index dat GDTF Share"
 msgid "Update data index of GDTF Share"
 msgstr "Aktualizovat index dat GDTF Share"
 
-msgid "Import fixture from local filesystem"
-msgstr "Importovat světlo ze souboru"
-
 msgid "Delete fixture"
 msgstr "Smazat zařízení"
 
@@ -974,6 +964,117 @@ msgstr "Podrobnosti o svítidle"
 
 msgid "Profiles"
 msgstr "Profily"
+
+msgid "Art-Net"
+msgstr "Art-Net"
+
+msgid "IPv4"
+msgstr "IPv4"
+
+msgid "Art-Net set for {} universe(s)"
+msgstr "Art-Net nastaven pro {} univers(y)"
+
+msgid "Live DMX"
+msgstr "Aktuální DMX"
+
+msgid "Source"
+msgstr "Zdroj"
+
+msgid "Refresh"
+msgstr "Obnovit"
+
+msgid "Refresh connection"
+msgstr "Obnovit připojení"
+
+msgid "Request latest version"
+msgstr "Žádost o nejnovější verzi"
+
+msgid "Sends the Request message"
+msgstr "Odeslat žádost"
+
+msgid "Import commit"
+msgstr "Importovat"
+
+msgid "Download"
+msgstr "Stáhnout"
+
+msgid "Download commit"
+msgstr "Stáhnout verzi"
+
+msgid "OSC"
+msgstr "OSC"
+
+msgid "Protocols"
+msgstr "Protokoly"
+
+#, fuzzy
+msgid "Add Tracker"
+msgstr "Přidat Cíl"
+
+msgid "Adding a tracker"
+msgstr ""
+
+#, fuzzy
+msgid "Remove Tracker"
+msgstr "Odebrat svítidlo"
+
+msgid "Removing a tracker"
+msgstr ""
+
+msgid "Link Fixture to Tracker"
+msgstr ""
+
+msgid "Link fixture to a tracker"
+msgstr ""
+
+#, fuzzy
+msgid "Unlink Fixture from Tracker"
+msgstr "Importovat zařízení z GDTF Share"
+
+#, fuzzy
+msgid "Unlink fixture from a tracker"
+msgstr "Importovat zařízení z GDTF Share"
+
+msgid "Tracker Followers"
+msgstr ""
+
+msgid "Link followers to a tracker"
+msgstr ""
+
+#, fuzzy
+msgid "PSN"
+msgstr "Pan"
+
+#, fuzzy
+msgid "Add Tracking Target"
+msgstr "Přidat Cíl"
+
+msgid "Remove Followers Target"
+msgstr ""
+
+#, fuzzy
+msgid "Remove target"
+msgstr "Resetovat Cíle"
+
+#, fuzzy
+msgid "Add Followers Target"
+msgstr "Přidat Cíl"
+
+#, fuzzy
+msgid "Add target"
+msgstr "Přidat Cíl"
+
+msgid "sACN"
+msgstr "sACN"
+
+msgid "sACN set for {} universe(s)"
+msgstr "sACN nastaveno pro {} univers(y)"
+
+msgid "DMX > Universe Menu"
+msgstr "DMX Univers Menu"
+
+msgid "Universes"
+msgstr "DMX Universe"
 
 #~ msgid "Select DMX Universe"
 #~ msgstr "Zvolte DMX Universe"
@@ -1144,3 +1245,16 @@ msgstr "Profily"
 
 #~ msgid "Re-address only"
 #~ msgstr "Pouze pře-adresovat"
+
+#~ msgid "Import fixture from GDTF Profile"
+#~ msgstr "Importovat svítidlo z GDTF Share"
+
+#~ msgid "Import MVR scene"
+#~ msgstr "Importovat MVR scénu"
+
+#~ msgid "Import data MVR scene file. This may take a long time!"
+#~ msgstr "Importovat data z MVR souboru. To může trvat dlouho!"
+
+#~ msgid "Import fixture from local filesystem"
+#~ msgstr "Importovat světlo ze souboru"
+

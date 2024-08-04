@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-04 07:19+0200\n"
+"POT-Creation-Date: 2024-08-04 21:51+0200\n"
 "PO-Revision-Date: 2023-08-11 16:50+0000\n"
 "Last-Translator: \"YuxiangWang_0525(John Frederick Wang)\" "
 "<1n3-3z0la8jxie@dingtalk.com>\n"
@@ -20,49 +20,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.14.0\n"
 
-msgid "Laser collision collection"
+msgid "File doesn't exist"
 msgstr ""
-
-msgid ""
-"Laser beams are projected onto objects in this collection. The beam stops"
-" at the first object colliding with the beam."
-msgstr ""
-
-msgid "Pause renderer"
-msgstr ""
-
-#, fuzzy
-msgid "Manufacturers"
-msgstr "制造商"
-
-#, fuzzy
-msgid "Imports"
-msgstr "从Share导入"
-
-msgid "Add to selection"
-msgstr ""
-
-#, fuzzy
-msgid "Remove from selection"
-msgstr "删除装置"
-
-#, fuzzy
-msgid "Keyframe only selected fixtures (not for autokeying)"
-msgstr "从补丁中删除此装置。"
-
-msgid "MVR-xchange"
-msgstr ""
-
-msgid "Status"
-msgstr ""
-
-#, fuzzy
-msgid "DMX Data"
-msgstr "DMX模式"
-
-#, fuzzy
-msgid "Fixture"
-msgstr "装置"
 
 #, fuzzy
 msgid "Fixture ID"
@@ -88,6 +47,12 @@ msgid "Footprint"
 msgstr "脚注"
 
 msgid "DMX Collection"
+msgstr ""
+
+msgid "Trackers Item"
+msgstr ""
+
+msgid "The selected element on the trackers list"
 msgstr ""
 
 #, fuzzy
@@ -186,6 +151,9 @@ msgstr ""
 msgid "Volume Scatter Density"
 msgstr ""
 
+msgid "Multiply beams intensity"
+msgstr ""
+
 #, fuzzy
 msgid "Number of universes"
 msgstr "通道数量"
@@ -267,75 +235,127 @@ msgstr ""
 msgid "The selected element on the group list"
 msgstr ""
 
-msgid "Sort by"
-msgstr ""
+#, fuzzy
+msgid "Order by"
+msgstr "上传者为"
 
 #, fuzzy
 msgid "Fixture sorting order"
 msgstr "GDTF模式"
 
-msgid "File doesn't exist"
+msgid "Laser collision collection"
 msgstr ""
 
-msgid "Refresh"
+msgid ""
+"Laser beams are projected onto objects in this collection. The beam stops"
+" at the first object colliding with the beam."
 msgstr ""
 
-#, fuzzy
-msgid "Refresh connection"
-msgstr "刷新文件列表"
-
-msgid "Request latest version"
-msgstr ""
-
-msgid "Sends the Request message"
-msgstr ""
-
-msgid "Import"
+msgid "Pause renderer"
 msgstr ""
 
 #, fuzzy
-msgid "Import commit"
-msgstr "从文件导入"
+msgid "Manufacturers"
+msgstr "制造商"
 
-msgid "Download"
-msgstr ""
+#, fuzzy
+msgid "Imports"
+msgstr "从Share导入"
 
-msgid "Download commit"
+msgid "Add to selection"
 msgstr ""
 
 #, fuzzy
-msgid "DMX > Universe Menu"
+msgid "Remove from selection"
+msgstr "删除装置"
+
+#, fuzzy
+msgid "Keyframe only selected fixtures (not for autokeying)"
+msgstr "从补丁中删除此装置。"
+
+msgid "MVR-xchange"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+#, fuzzy
+msgid "DMX Data"
+msgstr "DMX模式"
+
+#, fuzzy
+msgid "Fixture"
+msgstr "装置"
+
+msgid "DMX Universe"
 msgstr "DMX 范围"
 
-msgid "OSC"
+#, fuzzy
+msgid "Address"
+msgstr "DMX地址"
+
+msgid "Gel Color"
+msgstr "胶体颜色"
+
+msgid "Display beams"
 msgstr ""
 
-msgid "Universes"
-msgstr "范围"
-
-msgid "Art-Net"
+msgid "Display beam projection and cone"
 msgstr ""
 
-msgid "IPv4"
+msgid "Add Target"
 msgstr ""
 
-msgid "Art-Net set for {} universe(s)"
+msgid "Add target for beam to follow"
 msgstr ""
 
-msgid "sACN"
+#, fuzzy
+msgid "Increment DMX address"
+msgstr "DMX地址"
+
+#, fuzzy
+msgid "Increment Fixture ID"
+msgstr "移除装置"
+
+msgid "Increment Fixture ID if numeric"
 msgstr ""
 
-msgid "sACN set for {} universe(s)"
+msgid ""
+"The Fixture ID is an identifier of this fixture that can be used to "
+"activate / select them for programming."
 msgstr ""
 
-msgid "Live DMX"
+msgid "Units"
+msgstr "单位"
+
+msgid "How many units of this light to add"
 msgstr ""
 
-msgid "Source"
+msgid "Enable PSN Input"
 msgstr ""
 
-msgid "Protocols"
+msgid "Enables PosiStageNet input"
 msgstr ""
+
+msgid "IPv4 Address for PSN signal"
+msgstr ""
+
+msgid "The network card/interface to listen for PSN data"
+msgstr ""
+
+#, fuzzy
+msgid "PSN Target port"
+msgstr "DMX地址"
+
+msgid "Align and Distribute"
+msgstr ""
+
+msgid "Active object: {}"
+msgstr ""
+
+#, fuzzy
+msgid "Selected fixtures: {}"
+msgstr "删除装置"
 
 #, fuzzy
 msgid "DMX > Fixture Menu"
@@ -381,55 +401,11 @@ msgstr "模式名称"
 msgid "Fixture GDTF Mode"
 msgstr "GDTF模式"
 
-msgid "DMX Universe"
-msgstr "DMX 范围"
-
-#, fuzzy
-msgid "Address"
-msgstr "DMX地址"
-
 #, fuzzy
 msgid "DMX Mode"
 msgstr "DMX模式"
 
-msgid "Gel Color"
-msgstr "胶体颜色"
-
-msgid "Display beams"
-msgstr ""
-
-msgid "Display beam projection and cone"
-msgstr ""
-
-msgid "Add Target"
-msgstr ""
-
-msgid "Add target for beam to follow"
-msgstr ""
-
 msgid "Advanced edit"
-msgstr ""
-
-#, fuzzy
-msgid "Increment DMX address"
-msgstr "DMX地址"
-
-#, fuzzy
-msgid "Increment Fixture ID"
-msgstr "移除装置"
-
-msgid "Increment Fixture ID if numeric"
-msgstr ""
-
-msgid ""
-"The Fixture ID is an identifier of this fixture that can be used to "
-"activate / select them for programming."
-msgstr ""
-
-msgid "Units"
-msgstr "单位"
-
-msgid "How many units of this light to add"
 msgstr ""
 
 msgid "GDTF Profile"
@@ -541,6 +517,10 @@ msgstr ""
 msgid "Group Name"
 msgstr "模式名称"
 
+#, fuzzy
+msgid "Reset Colors"
+msgstr "胶体颜色"
+
 msgid "Lock Movement"
 msgstr ""
 
@@ -599,6 +579,12 @@ msgid "Targets to zero"
 msgstr ""
 
 msgid "Set Targets' position to 0 of the Scene"
+msgstr ""
+
+msgid "Center View to Selected"
+msgstr ""
+
+msgid "Set View to center on selected objects"
 msgstr ""
 
 msgid "Reset targets"
@@ -763,6 +749,9 @@ msgstr ""
 msgid "Clear Project data"
 msgstr ""
 
+msgid "Import"
+msgstr ""
+
 #, fuzzy
 msgid "Import GDTF Profile"
 msgstr "从文件导入"
@@ -782,6 +771,10 @@ msgstr "从Share导入"
 msgid "Export Project data"
 msgstr ""
 
+#, fuzzy
+msgid "Export MVR"
+msgstr "从Share导入"
+
 msgid "Show logging directory"
 msgstr ""
 
@@ -795,6 +788,9 @@ msgid "Setup"
 msgstr ""
 
 msgid "Error! Blender 3.4 or higher required."
+msgstr ""
+
+msgid "For Blender 4.2 and up use the Extension"
 msgstr ""
 
 msgid "Create New Show"
@@ -869,18 +865,6 @@ msgstr ""
 
 msgid "Addon reloaded"
 msgstr ""
-
-#, fuzzy
-msgid "Import fixture from GDTF Profile"
-msgstr "从GDTF Share导入装置"
-
-#, fuzzy
-msgid "Import MVR scene"
-msgstr "从Share导入"
-
-#, fuzzy
-msgid "Import data MVR scene file. This may take a long time!"
-msgstr "从本地文件系统中导入装置"
 
 #, fuzzy
 msgid "Get GDTF Share account and fill it into BlenderDMX addon preferences."
@@ -1008,9 +992,6 @@ msgstr "更新GDTF Share索引"
 msgid "Update data index of GDTF Share"
 msgstr "更新GDTF Share的数据索引"
 
-msgid "Import fixture from local filesystem"
-msgstr "从本地文件系统中导入装置"
-
 msgid "Delete fixture"
 msgstr "删除装置"
 
@@ -1040,6 +1021,116 @@ msgstr "本地装置详情"
 #, fuzzy
 msgid "Profiles"
 msgstr "文件"
+
+msgid "Art-Net"
+msgstr ""
+
+msgid "IPv4"
+msgstr ""
+
+msgid "Art-Net set for {} universe(s)"
+msgstr ""
+
+msgid "Live DMX"
+msgstr ""
+
+msgid "Source"
+msgstr ""
+
+msgid "Refresh"
+msgstr ""
+
+#, fuzzy
+msgid "Refresh connection"
+msgstr "刷新文件列表"
+
+msgid "Request latest version"
+msgstr ""
+
+msgid "Sends the Request message"
+msgstr ""
+
+#, fuzzy
+msgid "Import commit"
+msgstr "从文件导入"
+
+msgid "Download"
+msgstr ""
+
+msgid "Download commit"
+msgstr ""
+
+msgid "OSC"
+msgstr ""
+
+msgid "Protocols"
+msgstr ""
+
+msgid "Add Tracker"
+msgstr ""
+
+msgid "Adding a tracker"
+msgstr ""
+
+#, fuzzy
+msgid "Remove Tracker"
+msgstr "移除装置"
+
+msgid "Removing a tracker"
+msgstr ""
+
+msgid "Link Fixture to Tracker"
+msgstr ""
+
+msgid "Link fixture to a tracker"
+msgstr ""
+
+#, fuzzy
+msgid "Unlink Fixture from Tracker"
+msgstr "从GDTF Share导入装置"
+
+#, fuzzy
+msgid "Unlink fixture from a tracker"
+msgstr "从GDTF Share导入装置"
+
+msgid "Tracker Followers"
+msgstr ""
+
+msgid "Link followers to a tracker"
+msgstr ""
+
+#, fuzzy
+msgid "PSN"
+msgstr "扩大"
+
+msgid "Add Tracking Target"
+msgstr ""
+
+msgid "Remove Followers Target"
+msgstr ""
+
+#, fuzzy
+msgid "Remove target"
+msgstr "移除装置"
+
+msgid "Add Followers Target"
+msgstr ""
+
+msgid "Add target"
+msgstr ""
+
+msgid "sACN"
+msgstr ""
+
+msgid "sACN set for {} universe(s)"
+msgstr ""
+
+#, fuzzy
+msgid "DMX > Universe Menu"
+msgstr "DMX 范围"
+
+msgid "Universes"
+msgstr "范围"
 
 #~ msgid "Message Box"
 #~ msgstr "信息框"
@@ -1208,4 +1299,19 @@ msgstr "文件"
 
 #~ msgid "Re-address only"
 #~ msgstr "DMX地址"
+
+#~ msgid "Sort by"
+#~ msgstr ""
+
+#~ msgid "Import fixture from GDTF Profile"
+#~ msgstr "从GDTF Share导入装置"
+
+#~ msgid "Import MVR scene"
+#~ msgstr "从Share导入"
+
+#~ msgid "Import data MVR scene file. This may take a long time!"
+#~ msgstr "从本地文件系统中导入装置"
+
+#~ msgid "Import fixture from local filesystem"
+#~ msgstr "从本地文件系统中导入装置"
 

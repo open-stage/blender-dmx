@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-05-04 07:19+0200\n"
+"POT-Creation-Date: 2024-08-04 21:51+0200\n"
 "PO-Revision-Date: 2023-12-02 14:06+0000\n"
 "Last-Translator: bass python <pythonbass@gmail.com>\n"
 "Language: ar_AA\n"
@@ -18,49 +18,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.14.0\n"
 
-msgid "Laser collision collection"
+msgid "File doesn't exist"
 msgstr ""
-
-msgid ""
-"Laser beams are projected onto objects in this collection. The beam stops"
-" at the first object colliding with the beam."
-msgstr ""
-
-msgid "Pause renderer"
-msgstr ""
-
-#, fuzzy
-msgid "Manufacturers"
-msgstr "مصنّع"
-
-#, fuzzy
-msgid "Imports"
-msgstr "استيراد من المشاركة"
-
-msgid "Add to selection"
-msgstr ""
-
-#, fuzzy
-msgid "Remove from selection"
-msgstr "حذف لاعبا اساسيا"
-
-#, fuzzy
-msgid "Keyframe only selected fixtures (not for autokeying)"
-msgstr "قم بإزالة هذه المباراة من التصحيح."
-
-msgid "MVR-xchange"
-msgstr ""
-
-msgid "Status"
-msgstr ""
-
-#, fuzzy
-msgid "DMX Data"
-msgstr "أوضاع دي إم إكس"
-
-#, fuzzy
-msgid "Fixture"
-msgstr "مباراة قادمة"
 
 #, fuzzy
 msgid "Fixture ID"
@@ -86,6 +45,12 @@ msgid "Footprint"
 msgstr "اثار"
 
 msgid "DMX Collection"
+msgstr ""
+
+msgid "Trackers Item"
+msgstr ""
+
+msgid "The selected element on the trackers list"
 msgstr ""
 
 #, fuzzy
@@ -184,6 +149,9 @@ msgstr ""
 msgid "Volume Scatter Density"
 msgstr ""
 
+msgid "Multiply beams intensity"
+msgstr ""
+
 #, fuzzy
 msgid "Number of universes"
 msgstr "عدد القنوات"
@@ -265,75 +233,127 @@ msgstr ""
 msgid "The selected element on the group list"
 msgstr ""
 
-msgid "Sort by"
-msgstr ""
+#, fuzzy
+msgid "Order by"
+msgstr "صاحب الموضوع"
 
 #, fuzzy
 msgid "Fixture sorting order"
 msgstr "وضع GDTF"
 
-msgid "File doesn't exist"
+msgid "Laser collision collection"
 msgstr ""
 
-msgid "Refresh"
+msgid ""
+"Laser beams are projected onto objects in this collection. The beam stops"
+" at the first object colliding with the beam."
 msgstr ""
 
-#, fuzzy
-msgid "Refresh connection"
-msgstr "تحديث قائمة الملفات"
-
-msgid "Request latest version"
-msgstr ""
-
-msgid "Sends the Request message"
-msgstr ""
-
-msgid "Import"
+msgid "Pause renderer"
 msgstr ""
 
 #, fuzzy
-msgid "Import commit"
-msgstr "استيراد من ملف"
+msgid "Manufacturers"
+msgstr "مصنّع"
 
-msgid "Download"
-msgstr ""
+#, fuzzy
+msgid "Imports"
+msgstr "استيراد من المشاركة"
 
-msgid "Download commit"
+msgid "Add to selection"
 msgstr ""
 
 #, fuzzy
-msgid "DMX > Universe Menu"
+msgid "Remove from selection"
+msgstr "حذف لاعبا اساسيا"
+
+#, fuzzy
+msgid "Keyframe only selected fixtures (not for autokeying)"
+msgstr "قم بإزالة هذه المباراة من التصحيح."
+
+msgid "MVR-xchange"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+#, fuzzy
+msgid "DMX Data"
+msgstr "أوضاع دي إم إكس"
+
+#, fuzzy
+msgid "Fixture"
+msgstr "مباراة قادمة"
+
+msgid "DMX Universe"
 msgstr "عالم دي إم إكس"
 
-msgid "OSC"
+#, fuzzy
+msgid "Address"
+msgstr "عنوان دي إم إكس"
+
+msgid "Gel Color"
+msgstr "لون جل"
+
+msgid "Display beams"
 msgstr ""
 
-msgid "Universes"
-msgstr "الأكوان"
-
-msgid "Art-Net"
+msgid "Display beam projection and cone"
 msgstr ""
 
-msgid "IPv4"
+msgid "Add Target"
 msgstr ""
 
-msgid "Art-Net set for {} universe(s)"
+msgid "Add target for beam to follow"
 msgstr ""
 
-msgid "sACN"
+#, fuzzy
+msgid "Increment DMX address"
+msgstr "عنوان دي إم إكس"
+
+#, fuzzy
+msgid "Increment Fixture ID"
+msgstr "إزالة لاعبا اساسيا"
+
+msgid "Increment Fixture ID if numeric"
 msgstr ""
 
-msgid "sACN set for {} universe(s)"
+msgid ""
+"The Fixture ID is an identifier of this fixture that can be used to "
+"activate / select them for programming."
 msgstr ""
 
-msgid "Live DMX"
+msgid "Units"
+msgstr "الوحدات"
+
+msgid "How many units of this light to add"
 msgstr ""
 
-msgid "Source"
+msgid "Enable PSN Input"
 msgstr ""
 
-msgid "Protocols"
+msgid "Enables PosiStageNet input"
 msgstr ""
+
+msgid "IPv4 Address for PSN signal"
+msgstr ""
+
+msgid "The network card/interface to listen for PSN data"
+msgstr ""
+
+#, fuzzy
+msgid "PSN Target port"
+msgstr "عنوان دي إم إكس"
+
+msgid "Align and Distribute"
+msgstr ""
+
+msgid "Active object: {}"
+msgstr ""
+
+#, fuzzy
+msgid "Selected fixtures: {}"
+msgstr "حذف لاعبا اساسيا"
 
 #, fuzzy
 msgid "DMX > Fixture Menu"
@@ -379,55 +399,11 @@ msgstr "اسم الوضع"
 msgid "Fixture GDTF Mode"
 msgstr "وضع GDTF"
 
-msgid "DMX Universe"
-msgstr "عالم دي إم إكس"
-
-#, fuzzy
-msgid "Address"
-msgstr "عنوان دي إم إكس"
-
 #, fuzzy
 msgid "DMX Mode"
 msgstr "أوضاع دي إم إكس"
 
-msgid "Gel Color"
-msgstr "لون جل"
-
-msgid "Display beams"
-msgstr ""
-
-msgid "Display beam projection and cone"
-msgstr ""
-
-msgid "Add Target"
-msgstr ""
-
-msgid "Add target for beam to follow"
-msgstr ""
-
 msgid "Advanced edit"
-msgstr ""
-
-#, fuzzy
-msgid "Increment DMX address"
-msgstr "عنوان دي إم إكس"
-
-#, fuzzy
-msgid "Increment Fixture ID"
-msgstr "إزالة لاعبا اساسيا"
-
-msgid "Increment Fixture ID if numeric"
-msgstr ""
-
-msgid ""
-"The Fixture ID is an identifier of this fixture that can be used to "
-"activate / select them for programming."
-msgstr ""
-
-msgid "Units"
-msgstr "الوحدات"
-
-msgid "How many units of this light to add"
 msgstr ""
 
 msgid "GDTF Profile"
@@ -539,6 +515,10 @@ msgstr ""
 msgid "Group Name"
 msgstr "اسم الوضع"
 
+#, fuzzy
+msgid "Reset Colors"
+msgstr "لون جل"
+
 msgid "Lock Movement"
 msgstr ""
 
@@ -597,6 +577,12 @@ msgid "Targets to zero"
 msgstr ""
 
 msgid "Set Targets' position to 0 of the Scene"
+msgstr ""
+
+msgid "Center View to Selected"
+msgstr ""
+
+msgid "Set View to center on selected objects"
 msgstr ""
 
 msgid "Reset targets"
@@ -761,6 +747,9 @@ msgstr ""
 msgid "Clear Project data"
 msgstr ""
 
+msgid "Import"
+msgstr ""
+
 #, fuzzy
 msgid "Import GDTF Profile"
 msgstr "استيراد من ملف"
@@ -780,6 +769,10 @@ msgstr "استيراد من المشاركة"
 msgid "Export Project data"
 msgstr ""
 
+#, fuzzy
+msgid "Export MVR"
+msgstr "استيراد من المشاركة"
+
 msgid "Show logging directory"
 msgstr ""
 
@@ -793,6 +786,9 @@ msgid "Setup"
 msgstr ""
 
 msgid "Error! Blender 3.4 or higher required."
+msgstr ""
+
+msgid "For Blender 4.2 and up use the Extension"
 msgstr ""
 
 msgid "Create New Show"
@@ -867,18 +863,6 @@ msgstr ""
 
 msgid "Addon reloaded"
 msgstr ""
-
-#, fuzzy
-msgid "Import fixture from GDTF Profile"
-msgstr "استيراد لاعبا أساسيا من مشاركة GDTF"
-
-#, fuzzy
-msgid "Import MVR scene"
-msgstr "استيراد من المشاركة"
-
-#, fuzzy
-msgid "Import data MVR scene file. This may take a long time!"
-msgstr "استيراد لاعبا أساسيا من نظام الملفات المحلي"
 
 #, fuzzy
 msgid "Get GDTF Share account and fill it into BlenderDMX addon preferences."
@@ -1008,9 +992,6 @@ msgstr "تحديث فهرس مشاركة GDTF"
 msgid "Update data index of GDTF Share"
 msgstr "تحديث فهرس البيانات لمشاركة GDTF"
 
-msgid "Import fixture from local filesystem"
-msgstr "استيراد لاعبا أساسيا من نظام الملفات المحلي"
-
 msgid "Delete fixture"
 msgstr "حذف لاعبا اساسيا"
 
@@ -1040,6 +1021,116 @@ msgstr "تفاصيل المباراة المحلية"
 #, fuzzy
 msgid "Profiles"
 msgstr "الوثائق"
+
+msgid "Art-Net"
+msgstr ""
+
+msgid "IPv4"
+msgstr ""
+
+msgid "Art-Net set for {} universe(s)"
+msgstr ""
+
+msgid "Live DMX"
+msgstr ""
+
+msgid "Source"
+msgstr ""
+
+msgid "Refresh"
+msgstr ""
+
+#, fuzzy
+msgid "Refresh connection"
+msgstr "تحديث قائمة الملفات"
+
+msgid "Request latest version"
+msgstr ""
+
+msgid "Sends the Request message"
+msgstr ""
+
+#, fuzzy
+msgid "Import commit"
+msgstr "استيراد من ملف"
+
+msgid "Download"
+msgstr ""
+
+msgid "Download commit"
+msgstr ""
+
+msgid "OSC"
+msgstr ""
+
+msgid "Protocols"
+msgstr ""
+
+msgid "Add Tracker"
+msgstr ""
+
+msgid "Adding a tracker"
+msgstr ""
+
+#, fuzzy
+msgid "Remove Tracker"
+msgstr "إزالة لاعبا اساسيا"
+
+msgid "Removing a tracker"
+msgstr ""
+
+msgid "Link Fixture to Tracker"
+msgstr ""
+
+msgid "Link fixture to a tracker"
+msgstr ""
+
+#, fuzzy
+msgid "Unlink Fixture from Tracker"
+msgstr "استيراد لاعبا أساسيا من مشاركة GDTF"
+
+#, fuzzy
+msgid "Unlink fixture from a tracker"
+msgstr "استيراد لاعبا أساسيا من مشاركة GDTF"
+
+msgid "Tracker Followers"
+msgstr ""
+
+msgid "Link followers to a tracker"
+msgstr ""
+
+#, fuzzy
+msgid "PSN"
+msgstr "توسيع"
+
+msgid "Add Tracking Target"
+msgstr ""
+
+msgid "Remove Followers Target"
+msgstr ""
+
+#, fuzzy
+msgid "Remove target"
+msgstr "إزالة لاعبا اساسيا"
+
+msgid "Add Followers Target"
+msgstr ""
+
+msgid "Add target"
+msgstr ""
+
+msgid "sACN"
+msgstr ""
+
+msgid "sACN set for {} universe(s)"
+msgstr ""
+
+#, fuzzy
+msgid "DMX > Universe Menu"
+msgstr "عالم دي إم إكس"
+
+msgid "Universes"
+msgstr "الأكوان"
 
 #~ msgid "Message Box"
 #~ msgstr "مربع الرسالة"
@@ -1219,4 +1310,19 @@ msgstr "الوثائق"
 
 #~ msgid "Re-address only"
 #~ msgstr "عنوان دي إم إكس"
+
+#~ msgid "Sort by"
+#~ msgstr ""
+
+#~ msgid "Import fixture from GDTF Profile"
+#~ msgstr "استيراد لاعبا أساسيا من مشاركة GDTF"
+
+#~ msgid "Import MVR scene"
+#~ msgstr "استيراد من المشاركة"
+
+#~ msgid "Import data MVR scene file. This may take a long time!"
+#~ msgstr "استيراد لاعبا أساسيا من نظام الملفات المحلي"
+
+#~ msgid "Import fixture from local filesystem"
+#~ msgstr "استيراد لاعبا أساسيا من نظام الملفات المحلي"
 
