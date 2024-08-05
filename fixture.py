@@ -257,9 +257,14 @@ class DMX_Fixture(PropertyGroup):
         description="Stay in position set by Target",
         default = False)
 
-    def build(self, name, profile, mode, universe, address, gel_color, display_beams, add_target, mvr_position = None,
-              focus_point = None, uuid = None, fixture_id="", custom_id=0, fixture_id_numeric=0, unit_number=0):
+    classing: StringProperty(
+        name = "Classing UUID",
+        description = "Classing - logical grouping across different layers",
+        default = ""
+            )
 
+    def build(self, name, profile, mode, universe, address, gel_color, display_beams, add_target, mvr_position = None,
+              focus_point = None, uuid = None, fixture_id="", custom_id=0, fixture_id_numeric=0, unit_number=0, classing=""):
         # (Edit) Store objects positions
         old_pos = {obj.name:obj.object.location.copy() for obj in self.objects}
         old_rot = {obj.name:obj.object.rotation_euler.copy() for obj in self.objects}
@@ -284,6 +289,8 @@ class DMX_Fixture(PropertyGroup):
             self.unit_number = unit_number
         if uuid is not None:
             self.uuid = uuid
+        if classing is not None:
+            self.classing = classing
 
         # DMX Properties
         self.universe = universe
@@ -1431,7 +1438,7 @@ class DMX_Fixture(PropertyGroup):
         x, y, z = rgb2xyY(r, g, b)
         color = f"{x},{y},{z}"
 
-        return pymvr.Fixture(name = self.name, uuid = self.uuid, gdtf_spec = self.profile, gdtf_mode = self.mode, fixture_id = self.fixture_id, addresses = [pymvr.Address(dmx_break= 0, universe=self.universe, address=self.address)], matrix = pymvr.Matrix(matrix), focus = uuid_focus_point, color = color)
+        return pymvr.Fixture(name = self.name, uuid = self.uuid, gdtf_spec = self.profile, gdtf_mode = self.mode, fixture_id = self.fixture_id, addresses = [pymvr.Address(dmx_break= 0, universe=self.universe, address=self.address)], matrix = pymvr.Matrix(matrix), focus = uuid_focus_point, color = color, classing = self.classing)
 
     def focus_to_mvr_focus_point(self):
         for obj in self.objects:
