@@ -6,6 +6,7 @@ import sys
 import uuid as py_uuid
 from .value import Matrix, Color  # type: ignore
 
+__version__ = "0.3.0.dev0"
 
 def _find_root(pkg: "zipfile.ZipFile") -> "ElementTree.Element":
     """Given a GDTF zip archive, find the GeneralSceneDescription of the
@@ -60,7 +61,7 @@ class GeneralSceneDescriptionWriter:
         self.version_major: str = "1"
         self.version_minor: str = "6"
         self.provider: str = "pymvr"
-        self.providerVersion: str = "0.1"
+        self.providerVersion: str = __version__
         self.files_list: List[str] = []
         self.xml_root = ElementTree.Element(
             "GeneralSceneDescription", verMajor=self.version_major, verMinor=self.version_minor, provider=self.provider, providerVersion=self.providerVersion
@@ -382,6 +383,7 @@ class Fixture(BaseChildNode):
         ElementTree.SubElement(fixture_element, "FixtureID").text = self.fixture_id or "0"
         ElementTree.SubElement(fixture_element, "FixtureIDNumeric").text = str(self.fixture_id_numeric)
         ElementTree.SubElement(fixture_element, "UnitNumber").text = str(self.unit_number)
+        ElementTree.SubElement(fixture_element, "Classing").text = str(self.classing)
         if self.custom_id:
             ElementTree.SubElement(fixture_element, "CustomId").text = str(self.custom_id)
         if self.custom_id_type:
