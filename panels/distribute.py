@@ -210,6 +210,7 @@ class DMX_PT_AlignAndDistributePanel(Panel):
             for obj in fixture.collection.objects:
                 if obj in bpy.context.selected_objects:
                     selected_fixtures.append(fixture)
+                    break
 
         active_object = bpy.context.active_object
         selected = len(selected_fixtures) > 0

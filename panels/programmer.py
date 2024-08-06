@@ -392,6 +392,8 @@ class DMX_PT_Programmer(Panel):
                     selected_fixtures.append(fixture)
                     if fixture.ignore_movement_dmx is True:
                         locked = True
+                    break
+
 
         selected = len(selected_fixtures) > 0
 

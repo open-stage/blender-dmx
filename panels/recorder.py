@@ -186,6 +186,7 @@ class DMX_PT_DMX_Recorder_Delete(Panel):
             for obj in fixture.collection.objects:
                 if obj in bpy.context.selected_objects:
                     selected_fixtures.append(fixture)
+                    break
 
         selected = len(selected_fixtures) > 0
         fixtures_exist = len(dmx.fixtures) > 0
