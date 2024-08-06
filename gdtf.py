@@ -641,7 +641,7 @@ class DMX_GDTF:
                 check_parent = part.parent and part.parent.get("mobile_type") == "head"
                 check_pan = part.get("mobile_type") == "yoke"
                 check_tilt = part.get("mobile_type") == "head"
-                if not len(base.constraints) and (check_pan and not len(obj.children) or (not check_pan and not check_tilt)):
+                if not len(base.constraints) and (check_pan and not len(part.children) or (not check_pan and not check_tilt)):
                     constraint = base.constraints.new('TRACK_TO')
                     constraint.target = main_target
                     continue
