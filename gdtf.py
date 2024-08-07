@@ -422,6 +422,9 @@ class DMX_GDTF:
 
             if hasattr(geometry, "geometries"):
                 for sub_geometry in geometry.geometries:
+                    if hasattr(geometry, "reference_root"):
+                        root_reference = getattr(geometry, "reference_root")
+                        setattr(sub_geometry, "reference_root", root_reference)
                     load_geometries(sub_geometry)
 
         def get_geometry_type_as_string(geometry):
@@ -596,6 +599,9 @@ class DMX_GDTF:
             if hasattr(geometry, "geometries"):
                 if len(geometry.geometries) > 0:
                     for child_geometry in geometry.geometries:
+                        if hasattr(geometry, "reference_root"):
+                            root_reference = getattr(geometry, "reference_root")
+                            setattr(child_geometry, "reference_root", root_reference)
                         constraint_child_to_parent(geometry, child_geometry)  # parent, child
                         update_geometry(child_geometry)
 
