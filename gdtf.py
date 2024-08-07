@@ -641,17 +641,19 @@ class DMX_GDTF:
                 check_parent = part.parent and part.parent.get("mobile_type") == "head"
                 check_pan = part.get("mobile_type") == "yoke"
                 check_tilt = part.get("mobile_type") == "head"
-                constraint = part.constraints.new('LOCKED_TRACK')
+                if not len(base.constraints) and (check_pan and not len(part.children) or (not check_pan and not check_tilt)):
+                    constraint = base.constraints.new('TRACK_TO')
+                    constraint.target = target
+                    continue
+                else:
+                    constraint = part.constraints.new('LOCKED_TRACK')
                 if check_tilt or (check_parent and part.parent.parent and part.parent.parent.get("mobile_type") == "yoke"):
                     constraint.track_axis = 'TRACK_NEGATIVE_Z'
                 else:
                     constraint.track_axis = 'TRACK_NEGATIVE_Y'
                 constraint.lock_axis = 'LOCK_X' if check_tilt else 'LOCK_Z'
                 constraint.target = target
-                if check_pan and not len(part.children):
-                    constraint = base.constraints.new('TRACK_TO')
-                    constraint.target = target
-            if not yokes and not heads:
+            if not yokes and not heads and not len(base.constraints):
                 constraint = base.constraints.new('TRACK_TO')
                 constraint.target = target
 
@@ -663,7 +665,6 @@ class DMX_GDTF:
             objs["2d_symbol"] = obj
             obj.show_in_front = True
             obj.active_material.grease_pencil.show_stroke = True
-            obj.data.pixel_factor = 2
 
             # svg.data.layers[...].frames[0].strokes[0]
             # add constraints
