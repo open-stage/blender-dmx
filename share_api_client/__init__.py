@@ -39,9 +39,11 @@ class GdtfShareApi:
     dir_path = os.path.dirname(os.path.abspath(__file__))
     data_file = os.path.join(dir_path, "data.json")
 
-    def __init__(self, api_username, api_password: str):
+    def __init__(self, api_username, api_password: str, data_file = None):
         self.api_username = api_username
         self.api_password = api_password
+        if data_file is not None:
+            self.data_file = data_file
         self.session = requests.Session()
 
     def save_json_file(self, data, fname):
@@ -101,20 +103,20 @@ class GdtfShareApi:
         return res
 
 
-def _update_data(api_username, api_password: str, update, function):
+def _update_data(api_username, api_password: str, update, function, data_file = None):
     """Updates data.json."""
-    gs = GdtfShareApi(api_username, api_password)
+    gs = GdtfShareApi(api_username, api_password, data_file)
     gs.login()
     result = gs.get_list()
     update(function, result)
 
 
-def update_data(api_username, api_password: str, update, function):
-    thread = Thread(target=_update_data, args=(api_username, api_password, update, function))
+def update_data(api_username, api_password: str, update, function, data_file):
+    thread = Thread(target=_update_data, args=(api_username, api_password, update, function, data_file))
     thread.start()
 
 
-def _download_files(api_username, api_password: str, file_path: str, files, update, function):
+def _download_files(api_username, api_password: str, file_path: str, files, update, function, data_file):
     """Download GDTF files form GDTF Share.
     @files=[] is list of GDTF files as returned by the API itself,
     it must contain revision id (rid), name (fixture), manufacturer
@@ -127,12 +129,12 @@ def _download_files(api_username, api_password: str, file_path: str, files, upda
         "revision": str
       }
     """
-    gs = GdtfShareApi(api_username, api_password)
+    gs = GdtfShareApi(api_username, api_password, data_file)
     gs.login()
     result = gs.get_gdtf_files(files, file_path)
     update(function, result)
 
 
-def download_files(api_username, api_password: str, file_path: str, files, update, function):
-    thread = Thread(target=_download_files, args=(api_username, api_password, file_path, files, update, function))
+def download_files(api_username, api_password: str, file_path: str, files, update, function, data_file):
+    thread = Thread(target=_download_files, args=(api_username, api_password, file_path, files, update, function, data_file))
     thread.start()

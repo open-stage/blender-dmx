@@ -69,7 +69,7 @@ class DMX_OP_MVR_Import(Operator):
     def execute(self, context):
         scene = context.scene
         dmx = scene.dmx
-        ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
+        ADDON_PATH = dmx.get_addon_path()
         clients = context.window_manager.dmx.mvr_xchange
         all_clients = context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
         selected = clients.selected_mvr_client
@@ -79,7 +79,7 @@ class DMX_OP_MVR_Import(Operator):
         for commit in client.commits:
             if commit.commit_uuid == self.uuid:
                 DMX_Log.log.info(f"import {commit}")
-                path = os.path.join(ADDON_PATH, "..", "..", "assets", "mvrs", f"{commit.commit_uuid}.mvr")
+                path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid}.mvr")
                 DMX_Log.log.info(path)
                 dmx.addMVR(path)
                 break

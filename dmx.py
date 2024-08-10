@@ -41,6 +41,7 @@ from .artnet import DMX_ArtNet
 from .acn import DMX_sACN
 from .network import DMX_Network
 from .logging import DMX_Log
+from .blender_utils import copy_blender_profiles
 
 from .panels import recorder as recorder
 from .panels import setup as setup
@@ -474,9 +475,6 @@ class DMX(PropertyGroup):
     def linkFile(self):
         print("INFO", "Linking to file")
 
-        DMX_GDTF.getManufacturerList()
-        Profiles.DMX_Fixtures_Local_Profile.loadLocal()
-        Profiles.DMX_Fixtures_Import_Gdtf_Profile.loadShare()
         DMX_Log.enable(self.logging_level)
         DMX_Log.log.info("BlenderDMX: Linking to file")
 
@@ -544,13 +542,21 @@ class DMX(PropertyGroup):
         self.logging_level = "DEBUG" # setting high logging level to see initialization
         self.migrations()
         self.ensure_application_uuid()
+        # enable in extension
+        #self.ensure_directories_exist()
+        #self.copy_default_profiles_to_user_folder()
         self.check_python_version()
         self.check_blender_version()
+
         if bpy.app.version >= (4, 2):
             # do not do version check online in 4.2 and up
             pass
         else:
             Timer(1, bpy.ops.dmx.check_version, ()).start()
+
+        DMX_GDTF.getManufacturerList()
+        Profiles.DMX_Fixtures_Local_Profile.loadLocal()
+        Profiles.DMX_Fixtures_Import_Gdtf_Profile.loadShare()
         self.logging_level = "ERROR" # setting default logging level
 
     # Unlink Add-on from file
@@ -583,6 +589,18 @@ class DMX(PropertyGroup):
             DMX_Log.log.error(f"Blender version of at least 3.4 is needed, you are using {bpy.app.version} ❌")
             return
         DMX_Log.log.info(f"Blender version: {bpy.app.version} ✅")
+
+    def ensure_directories_exist(self):
+        list_paths=[]
+        list_paths.append(os.path.join("assets", "profiles"))
+        list_paths.append(os.path.join("assets", "models"))
+        list_paths.append(os.path.join("assets", "models", "mvr"))
+        list_paths.append(os.path.join("assets", "mvr"))
+        for path in list_paths:
+            bpy.utils.extension_path_user(__package__, path=path, create=True)
+
+    def copy_default_profiles_to_user_folder(self):
+        copy_blender_profiles()
 
     def ensure_application_uuid(self):
         prefs = bpy.context.preferences.addons[__package__].preferences
@@ -1528,13 +1546,21 @@ class DMX(PropertyGroup):
                 collections.children.unlink(collection)
 
 
+    def get_addon_path(self):
+        if bpy.app.version >= (4, 2):
+            try:
+                return bpy.utils.extension_path_user(__package__, path="", create=True)
+            except ValueError:
+                return os.path.dirname(os.path.realpath(__file__))
+        return os.path.dirname(os.path.realpath(__file__))
+
     def export_mvr(self, file_name):
 
         start_time = time.time()
         bpy.context.window_manager.dmx.pause_render = True # this stops the render loop, to prevent slowness and crashes
         dmx = bpy.context.scene.dmx
 
-        folder_path = os.path.dirname(os.path.realpath(__file__))
+        folder_path = self.get_addon_path()
         folder_path = os.path.join(folder_path, "assets", "profiles")
 
         try:

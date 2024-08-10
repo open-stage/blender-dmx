@@ -298,10 +298,9 @@ class DMX_OT_Setup_Open_LogFile(Operator):
 
     def execute(self, context):
         # DMX setup
-        current_path = os.path.dirname(os.path.abspath(__file__))
-        path = os.path.join(current_path, "..")
-        path = os.path.abspath(path)
-        self.report({"INFO"}, f"Path with a log file: {path}")
+        dmx = context.scene.dmx
+        current_path = dmx.get_addon_path()
+        self.report({"INFO"}, f"Path with a log file: {current_path}")
 
         return {"FINISHED"}
 
@@ -318,11 +317,8 @@ class DMX_PT_Setup_Logging(Panel):
 
     def draw(self, context):
         # DMX setup
-        ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
-        path = os.path.join(ADDON_PATH, "blenderDMX.log")
-
-        layout = self.layout
         dmx = context.scene.dmx
+        layout = self.layout
         row = layout.row()
         row.prop(context.scene.dmx, "logging_level")
         row = layout.row()

@@ -72,7 +72,8 @@ class server(Thread):
             json_data = json.loads(data.inb[28:].decode("utf-8"))
             self.process_json_message(json_data, data)
         else:  # file
-            local_path = os.path.dirname(os.path.abspath(__file__))
+            dmx = bpy.context.scene.dmx
+            local_path = dmx.get_addon_path()
             path = os.path.join(local_path, "mvrs", f"{data.file_uuid}.mvr")
             DMX_Log.log.debug("writing file")
             with open(path, "bw") as f:
@@ -130,7 +131,8 @@ class server(Thread):
 
         if json_data["Type"] == "MVR_REQUEST":
             # Leaving this here for the future
-            local_path = os.path.dirname(os.path.abspath(__file__))
+            dmx = bpy.context.scene.dmx
+            local_path = dmx.get_addon_path()
             file_uuid = json_data["FileUUID"]
             file_path = os.path.join(local_path, "mvrs", f"{file_uuid}.mvr")
             DMX_Log.log.debug("sending file")

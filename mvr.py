@@ -146,7 +146,8 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_idx, mscale, extracte
     active_layer = viewlayer.active_layer_collection
     symdef_id = isinstance(mvr_object, pymvr.Symdef)
     classing = mvr_object.classing if hasattr(mvr_object, "classing") else None
-    current_path = os.path.dirname(os.path.realpath(__file__))
+    dmx = bpy.context.scene.dmx
+    current_path = dmx.get_addon_path()
     folder = os.path.join(current_path, "assets", "models", "mvr")
     DMX_Log.log.info(f"creating {class_name}... {name}")
 
@@ -426,7 +427,8 @@ def load_mvr(dmx, file_name):
     active_layer = viewlayer.active_layer_collection
     mvr_scene = pymvr.GeneralSceneDescription(file_name)
     aux_dir = scene_collect.children.get("AUXData")
-    current_path = os.path.dirname(os.path.realpath(__file__))
+    dmx = bpy.context.scene.dmx
+    current_path = dmx.get_addon_path()
     folder_path = os.path.join(current_path, "assets", "profiles")
     media_folder_path = os.path.join(current_path, "assets", "models", "mvr")
     extract_mvr_textures(mvr_scene, media_folder_path)

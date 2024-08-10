@@ -57,9 +57,10 @@ class DMX_Fixtures_Import_Gdtf_Profile(PropertyGroup):
     @staticmethod
     def get_profile_list():
         """List all GDTF files in \"Profiles\" folder"""
-        dir_path = os.path.dirname(os.path.abspath(__file__))
+        dmx = bpy.context.scene.dmx
+        dir_path = dmx.get_addon_path()
         try:
-            with open(os.path.join(dir_path, "..", "..", "..", "share_api_client", "data.json")) as f:
+            with open(os.path.join(dir_path, "share_api_client", "data.json")) as f:
                 data = json.load(f)
         except:
             data = []
