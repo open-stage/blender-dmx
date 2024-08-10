@@ -37,11 +37,12 @@ class DMX_Fixtures_Manager:
     # Fixture delete
 
     def delete_local_fixture(self, index: int):
-        dir_path = os.path.dirname(os.path.abspath(__file__))
+        dmx = bpy.context.scene.dmx
+        dir_path = dmx.get_addon_path()
         profiles = bpy.context.window_manager.dmx.imports.local_profiles
         profile = profiles[index]
         filename = profile.filename
-        file_path = os.path.join(dir_path, "..", "..", "..", "assets", "profiles", filename)
+        file_path = os.path.join(dir_path, "assets", "profiles", filename)
         os.remove(file_path)
         DMX_GDTF.getManufacturerList()
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
@@ -53,6 +54,9 @@ class DMX_Fixtures_Manager:
         api_username = prefs.get("share_api_username", None)
         api_password = prefs.get("share_api_password", None)
         imports = bpy.context.window_manager.dmx.imports
+        dmx = bpy.context.scene.dmx
+        ADDON_PATH = dmx.get_addon_path()
+        data_file = os.path.join(ADDON_PATH, "data.json")
 
         if api_username is None or len(api_username) < 2 or api_password is None or len(api_password) < 2:
             ShowMessageBox(
@@ -61,8 +65,9 @@ class DMX_Fixtures_Manager:
                 "ERROR",
             )
             return
-        dir_path = os.path.dirname(os.path.abspath(__file__))
-        file_path = os.path.join(dir_path, "..", "..", "..", "assets", "profiles")
+        dmx = bpy.context.scene.dmx
+        dir_path = dmx.get_addon_path()
+        file_path = os.path.join(dir_path, "assets", "profiles")
 
         if not bpy.app.timers.is_registered(execute_queued_functions):
             bpy.app.timers.register(execute_queued_functions)
@@ -76,6 +81,7 @@ class DMX_Fixtures_Manager:
             [imports.share_profiles[index]],
             queue_up,
             reload_local_profiles,
+            data_file,
         )
 
         ShowMessageBox(
@@ -88,6 +94,9 @@ class DMX_Fixtures_Manager:
         prefs = bpy.context.preferences.addons[base_package].preferences
         api_username = prefs.get("share_api_username", None)
         api_password = prefs.get("share_api_password", None)
+        dmx = bpy.context.scene.dmx
+        ADDON_PATH = dmx.get_addon_path()
+        data_file = os.path.join(ADDON_PATH, "data.json")
         if api_username is None or len(api_username) < 2 or api_password is None or len(api_password) < 2:
             ShowMessageBox(
                 _("Get GDTF Share account and fill it into BlenderDMX addon preferences."),
@@ -99,7 +108,7 @@ class DMX_Fixtures_Manager:
         if not bpy.app.timers.is_registered(execute_queued_functions):
             bpy.app.timers.register(execute_queued_functions)
         timer_subscribers.append("update index")
-        share_api_client.update_data(api_username, api_password, queue_up, reload_share_profiles)
+        share_api_client.update_data(api_username, api_password, queue_up, reload_share_profiles, data_file)
 
 
 timer_subscribers = []

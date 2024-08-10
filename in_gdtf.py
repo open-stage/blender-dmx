@@ -102,7 +102,8 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
         box.prop(self, "increment_fixture_id")
 
     def execute(self, context):
-        folder_path = os.path.dirname(os.path.realpath(__file__))
+        dmx = bpy.context.scene.dmx
+        folder_path = dmx.get_addon_path()
         folder_path = os.path.join(folder_path, "assets", "profiles")
         dmx = context.scene.dmx
 

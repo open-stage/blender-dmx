@@ -35,7 +35,10 @@ from .util import sanitize_obj_name, xyY2rgbaa
 class DMX_GDTF:
     @staticmethod
     def getProfilesPath():
-        ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
+        #FIX: currently breaks packaged BlenderDMX gdtf files
+        #ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
+        dmx = bpy.context.scene.dmx
+        ADDON_PATH = dmx.get_addon_path()
         return os.path.join(ADDON_PATH, "assets", "profiles")
 
     @staticmethod
@@ -47,6 +50,7 @@ class DMX_GDTF:
     def getManufacturerList():
         # List profiles in folder
         manufacturers_names = set()
+        # TODO cache this, as it can make a slow addon start
         for file in os.listdir(DMX_GDTF.getProfilesPath()):
             # Parse info from file name: Manufacturer@Device@Revision.gdtf
             if "@" not in file:
@@ -135,7 +139,8 @@ class DMX_GDTF:
     def extract_gobos(profile):
         """now unused as we need sequences for keyframe animating"""
         gobos = []
-        current_path = os.path.dirname(os.path.realpath(__file__))
+        dmx = bpy.context.scene.dmx
+        current_path = dmx.get_addon_path()
         extract_to_folder_path = os.path.join(current_path, "assets", "models", profile.fixture_type_id)
         for image_name in profile._package.namelist():
             if image_name.startswith("wheels"):
@@ -168,7 +173,8 @@ class DMX_GDTF:
 
     @staticmethod
     def extract_gobos_as_sequence(profile):
-        current_path = os.path.dirname(os.path.realpath(__file__))
+        dmx = bpy.context.scene.dmx
+        current_path = dmx.get_addon_path()
         gdtf_path = os.path.join(current_path, "assets", "models", profile.fixture_type_id)
         images_path = os.path.join(gdtf_path, "wheels")
         sequence_path = os.path.join(gdtf_path, "sequence")
@@ -203,7 +209,8 @@ class DMX_GDTF:
 
     @staticmethod
     def load2D(profile):
-        current_path = os.path.dirname(os.path.realpath(__file__))
+        dmx = bpy.context.scene.dmx
+        current_path = dmx.get_addon_path()
         extract_to_folder_path = os.path.join(current_path, "assets", "models", profile.fixture_type_id)
         filename = f"{profile.thumbnail}.svg"
         obj = None
@@ -225,7 +232,8 @@ class DMX_GDTF:
 
     @staticmethod
     def loadModel(profile, model):
-        current_path = os.path.dirname(os.path.realpath(__file__))
+        dmx = bpy.context.scene.dmx
+        current_path = dmx.get_addon_path()
         extract_to_folder_path = os.path.join(current_path, "assets", "models", profile.fixture_type_id)
         obj_dimension = Vector((model.length, model.width, model.height))
 
