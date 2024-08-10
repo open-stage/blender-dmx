@@ -158,6 +158,7 @@ class DMX(PropertyGroup):
                 setup.DMX_OT_Export_Custom_Data,
                 setup.DMX_OT_Import_Custom_Data,
                 setup.DMX_OT_Clear_Custom_Data,
+                setup.DMX_OT_Copy_Custom_Data,
                 setup.DMX_OT_Reload_Addon,
                 fixtures.DMX_OT_IES_Import,
                 fixtures.DMX_OT_IES_Remove,
@@ -573,8 +574,8 @@ class DMX(PropertyGroup):
         self.migrations()
         self.ensure_application_uuid()
         # enable in extension
-        #self.ensure_directories_exist()
-        #self.copy_default_profiles_to_user_folder()
+        self.ensure_directories_exist()
+        self.copy_default_profiles_to_user_folder()
         self.check_python_version()
         self.check_blender_version()
 

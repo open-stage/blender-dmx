@@ -229,6 +229,7 @@ class DMX_PT_Setup_Extras(Panel):
     def draw(self, context):
         layout = self.layout
         dmx = context.scene.dmx
+        old_data_exists = blender_utils.old_custom_data_exists()
         if bpy.app.version >= (4, 2):
             # do not do version check online in 4.2 and up
             pass
@@ -242,6 +243,9 @@ class DMX_PT_Setup_Extras(Panel):
         row = layout.row()
         row.operator_context = "INVOKE_DEFAULT"  #'INVOKE_AREA'
         row.operator("dmx.clear_custom_data", text=_("Clear Project data"), icon="TRASH")
+        if old_data_exists:
+            row = layout.row()
+            row.operator("dmx.copy_custom_data", text=_("Copy (import) old data from addon folder"), icon="DUPLICATE")
         layout.operator("wm.url_open", text="User Guide Online", icon="HELP").url = "https://blenderdmx.eu/docs/faq/"
 
 
@@ -516,6 +520,31 @@ class DMX_OT_Clear_Custom_Data(Operator):
         wm = context.window_manager
         return wm.invoke_props_dialog(self)
 
+class DMX_OT_Copy_Custom_Data(Operator):
+    bl_label = _("Copy data from addon to user directory")
+    bl_idname = "dmx.copy_custom_data"
+    bl_description = _("Copy custom data from BlenderDMX addon directory to BlenderDMX extension user directory.")
+    bl_options = {"UNDO"}
+
+    def draw(self, context):
+        layout = self.layout
+        col = layout.column()
+
+    def execute(self, context):
+        result = blender_utils.copy_custom_data()
+        DMX_GDTF.getManufacturerList()
+        Profiles.DMX_Fixtures_Local_Profile.loadLocal()
+
+        if result.ok:
+            self.report({"INFO"}, _("Data copied"))
+        else:
+            self.report({"ERROR"}, result.error)
+
+        return {"FINISHED"}
+
+    def invoke(self, context, event):
+        wm = context.window_manager
+        return wm.invoke_props_dialog(self)
 
 class DMX_OT_Reload_Addon(Operator):
     bl_label = _("Reload BlenderDMX addon")

@@ -136,6 +136,41 @@ def clear_custom_data():
     return SimpleNamespace(ok=True, error="")
 
 
+def copy_custom_data():
+    dmx = bpy.context.scene.dmx
+    folder_path = dmx.get_addon_path()
+    addon_path = os.path.dirname(os.path.realpath(__file__))
+
+    models_path_new = os.path.join(folder_path, "assets", "models")
+    mvrs_path_new = os.path.join(folder_path, "assets", "mvrs")
+    profiles_path_new = os.path.join(folder_path, "assets", "profiles")
+
+    models_path_old = os.path.join(addon_path, "assets", "models")
+    mvrs_path_old = os.path.join(addon_path, "assets", "mvrs")
+    profiles_path_old = os.path.join(addon_path, "assets", "profiles")
+
+    try:
+        if os.path.exists(models_path_old):
+            shutil.copytree(models_path_old, models_path_new, dirs_exist_ok=True)
+        if os.path.exists(mvrs_path_old):
+            shutil.copytree(mvrs_path_old, mvrs_path_new, dirs_exist_ok=True)
+        if os.path.exists(profiles_path_old):
+            shutil.copytree(profiles_path_old, profiles_path_new, dirs_exist_ok=True)
+    except Exception as e:
+        return SimpleNamespace(ok=False, error=str(e))
+    return SimpleNamespace(ok=True, error="")
+
+
+def old_custom_data_exists():
+    addon_path = os.path.dirname(os.path.realpath(__file__))
+
+    models_path_old = os.path.join(addon_path, "assets", "models")
+    if os.path.exists(models_path_old):
+        return len(glob.glob(os.path.join(models_path_old, "*"))) > 0
+
+    return False
+
+
 def copy_blender_profiles():
     dmx = bpy.context.scene.dmx
     folder_path = dmx.get_addon_path()
