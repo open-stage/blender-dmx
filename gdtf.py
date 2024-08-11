@@ -220,7 +220,7 @@ class DMX_GDTF:
             profile._package.extract(filename, extract_to_folder_path)
         else:
             # default 2D
-            extract_to_folder_path = os.path.join(current_path, "assets", "primitives")
+            extract_to_folder_path = DMX_GDTF.getPrimitivesPath()
             filename = "thumbnail.svg"
 
         bpy.ops.wm.gpencil_import_svg(filepath="", directory=extract_to_folder_path, files=[{"name": filename}], scale=1)
