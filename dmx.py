@@ -633,6 +633,8 @@ class DMX(PropertyGroup):
 
     def copy_default_profiles_to_user_folder(self):
         copy_blender_profiles()
+        DMX_GDTF.getManufacturerList()
+        Profiles.DMX_Fixtures_Local_Profile.loadLocal()
 
     def ensure_application_uuid(self):
         prefs = bpy.context.preferences.addons[__package__].preferences
