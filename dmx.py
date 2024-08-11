@@ -627,7 +627,7 @@ class DMX(PropertyGroup):
         list_paths.append(os.path.join("assets", "profiles"))
         list_paths.append(os.path.join("assets", "models"))
         list_paths.append(os.path.join("assets", "models", "mvr"))
-        list_paths.append(os.path.join("assets", "mvr"))
+        list_paths.append(os.path.join("assets", "mvrs"))
         for path in list_paths:
             bpy.utils.extension_path_user(__package__, path=path, create=True)
 
