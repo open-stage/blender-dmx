@@ -84,7 +84,7 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
     def draw(self, context):
         dmx = context.scene.dmx
         if not dmx.collection:
-            Timer(0, createDMXcollection, ()).start()
+            Timer(0.5, createDMXcollection, ()).start()
         layout = self.layout
         layout.use_property_split = True
         layout.use_property_decorate = False

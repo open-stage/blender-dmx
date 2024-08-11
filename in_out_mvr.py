@@ -38,7 +38,7 @@ class DMX_OT_Import_MVR(Operator, ImportHelper):
     def draw(self, context):
         dmx = context.scene.dmx
         if not dmx.collection:
-            Timer(0, createDMXcollection, ()).start()
+            Timer(0.5, createDMXcollection, ()).start()
         layout = self.layout
         layout.use_property_split = True
         layout.use_property_decorate = False
@@ -66,7 +66,7 @@ class DMX_OT_Export_MVR(Operator, ExportHelper):
     def draw(self, context):
         dmx = context.scene.dmx
         if not dmx.collection:
-            Timer(0, createDMXcollection, ()).start()
+            Timer(0.5, createDMXcollection, ()).start()
         layout = self.layout
         layout.use_property_split = True
         layout.use_property_decorate = False
