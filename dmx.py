@@ -575,7 +575,8 @@ class DMX(PropertyGroup):
         self.ensure_application_uuid()
         # enable in extension
         self.ensure_directories_exist()
-        self.copy_default_profiles_to_user_folder()
+        Timer(1, self.copy_default_profiles_to_user_folder, ()).start()
+        #self.copy_default_profiles_to_user_folder()
         self.check_python_version()
         self.check_blender_version()
 
