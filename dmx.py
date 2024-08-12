@@ -457,8 +457,30 @@ class DMX(PropertyGroup):
             new_world = bpy.data.worlds.new("New World")
             new_world.use_nodes = True
             scene.world = new_world
+        world = scene.world
+        world.use_nodes = True
 
-        scene.world.node_tree.nodes['Background'].inputs[0].default_value = (0,0,0,0)
+        SHADER_NODE_BG = bpy.app.translations.pgettext("ShaderNodeBackground")
+        SHADER_NODE_WO = bpy.app.translations.pgettext("ShaderNodeOutputWorld")
+
+        new_link = False
+        if "Background" not in world.node_tree.nodes:
+            bg=world.node_tree.nodes.new(SHADER_NODE_BG)
+            bg.name="Background"
+            new_link = True
+        else:
+            bg=world.node_tree.nodes["Background"]
+
+        if "World Output" not in world.node_tree.nodes:
+            wo = world.node_tree.nodes.new(SHADER_NODE_WO)
+            wo.name = "World Output"
+            new_link = True
+        else:
+            wo = world.node_tree.nodes["World Output"]
+        if new_link:
+            world.node_tree.links.new(bg.outputs[0], wo.inputs[0])
+
+        scene.world.node_tree.nodes['Background'].inputs[0].default_value = (0,0,0,1)
 
         # Create a DMX universe
         self.addUniverse()
