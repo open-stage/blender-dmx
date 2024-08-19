@@ -8,3 +8,4 @@ assets/models/*/*
 !assets/profiles/BlenderDMX*
 *.zip
 blenderDMX.log*
+*.json

@@ -60,7 +60,7 @@ class DMX_Fixtures_Import_Gdtf_Profile(PropertyGroup):
         dmx = bpy.context.scene.dmx
         dir_path = dmx.get_addon_path()
         try:
-            with open(os.path.join(dir_path, "share_api_client", "data.json")) as f:
+            with open(os.path.join(dir_path, "data.json")) as f:
                 data = json.load(f)
         except:
             data = []
