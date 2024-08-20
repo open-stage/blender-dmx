@@ -403,7 +403,19 @@ class DMX_PT_Programmer(Panel):
         elif len(selected_fixtures) == 1:
             selected_fixture_label = selected_fixtures[0].name
         else:
-            selected_fixture_label = _("{} selected").format(len(selected_fixtures))
+            profiles=[]
+            for sel_fixture in selected_fixtures:
+                if sel_fixture.gdtf_long_name:
+                    name = sel_fixture.gdtf_long_name
+                else:
+                    name = sel_fixture.profile.removesuffix(".gdtf")
+
+                profiles.append(f"{name}-{sel_fixture.mode}")
+            profiles = list(set(profiles))
+            if len(profiles)==1:
+                selected_fixture_label = f"{len(selected_fixtures)} {profiles[0]}"
+            else:
+                selected_fixture_label = _("{} selected").format(len(selected_fixtures))
 
         row = layout.row()
         row.operator("dmx.select_all", text="", icon="SELECT_EXTEND")

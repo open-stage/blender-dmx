@@ -171,6 +171,14 @@ class DMX_Fixture(PropertyGroup):
         type = DMX_Fixture_Channel
     )
 
+    gdtf_long_name: StringProperty(
+        name = "Fixture > Name",
+        default = "")
+
+    gdtf_manufacturer: StringProperty(
+        name = "Fixture > Manufacturer",
+        default = "")
+
     def ensure_universe_exists(self, context):
         dmx = bpy.context.scene.dmx
         dmx.ensureUniverseExists(self.universe)
@@ -326,6 +334,8 @@ class DMX_Fixture(PropertyGroup):
 
         # Import and deep copy Fixture Model Collection
         gdtf_profile = DMX_GDTF.loadProfile(profile)
+        self.gdtf_long_name = gdtf_profile.long_name
+        self.gdtf_manufacturer = gdtf_profile.manufacturer
 
         # Handle if dmx mode doesn't exist (maybe this is MVR import and GDTF files were replaced)
         # use mode[0] as default
