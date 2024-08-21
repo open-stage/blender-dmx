@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-08-04 21:51+0200\n"
-"PO-Revision-Date: 2024-07-16 22:09+0000\n"
-"Last-Translator: Andrea Defendi <andrea.def.01@gmail.com>\n"
+"PO-Revision-Date: 2024-08-22 10:09+0000\n"
+"Last-Translator: Stefano siser <stefano.siser@gmail.com>\n"
+"Language-Team: Italian <https://hosted.weblate.org/projects/blenderdmx/main/"
+"it/>\n"
 "Language: it_IT\n"
-"Language-Team: Italian "
-"<https://hosted.weblate.org/projects/blenderdmx/main/it/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.7\n"
 "Generated-By: Babel 2.14.0\n"
 
 msgid "File doesn't exist"
@@ -47,7 +48,7 @@ msgid "DMX Collection"
 msgstr "Collezione DMX"
 
 msgid "Trackers Item"
-msgstr ""
+msgstr "Oggetti da tracciare"
 
 #, fuzzy
 msgid "The selected element on the trackers list"
@@ -148,7 +149,7 @@ msgid "Volume Scatter Density"
 msgstr "Densità di dispersione del volume"
 
 msgid "Multiply beams intensity"
-msgstr ""
+msgstr "Moltiplica intensità fasci"
 
 msgid "Number of universes"
 msgstr "Numero di universi"
@@ -351,10 +352,10 @@ msgid "PSN Target port"
 msgstr "Porta di destinazione OSC"
 
 msgid "Align and Distribute"
-msgstr ""
+msgstr "Allinea e distribuisci"
 
 msgid "Active object: {}"
-msgstr ""
+msgstr "Oggetto attivo: {}"
 
 #, fuzzy
 msgid "Selected fixtures: {}"
@@ -557,10 +558,10 @@ msgid "Set Targets' position to 0 of the Scene"
 msgstr "Imposta la posizione dei target su 0 della scena"
 
 msgid "Center View to Selected"
-msgstr ""
+msgstr "Centra la vista sull'oggetto selezionato"
 
 msgid "Set View to center on selected objects"
-msgstr ""
+msgstr "Imposta la vista sugli oggetti selezionati"
 
 #, fuzzy
 msgid "Reset targets"
@@ -757,7 +758,7 @@ msgid "Error! Blender 3.4 or higher required."
 msgstr "Errore! È richiesto Blender 3.4 o versione successiva."
 
 msgid "For Blender 4.2 and up use the Extension"
-msgstr ""
+msgstr "Su Blender 4.2 e superiori utilizzate l'estensione"
 
 msgid "Create New Show"
 msgstr "Crea Nuovo Spettacolo"
@@ -1035,19 +1036,18 @@ msgstr "OSC"
 msgid "Protocols"
 msgstr "Protocolli"
 
-#, fuzzy
 msgid "Add Tracker"
-msgstr "Aggiungi bersaglio"
+msgstr "Aggiungi tracciatore"
 
 msgid "Adding a tracker"
-msgstr ""
+msgstr "Aggiungere tracciatore"
 
 #, fuzzy
 msgid "Remove Tracker"
 msgstr "Rimuovi Dispositivo"
 
 msgid "Removing a tracker"
-msgstr ""
+msgstr "Rimuovere un tracciatore"
 
 msgid "Link Fixture to Tracker"
 msgstr ""
@@ -1080,9 +1080,8 @@ msgstr "Aggiungi bersaglio"
 msgid "Remove Followers Target"
 msgstr ""
 
-#, fuzzy
 msgid "Remove target"
-msgstr "Seleziona Obiettivi"
+msgstr "Rimuovi Obiettivo"
 
 #, fuzzy
 msgid "Add Followers Target"
@@ -1301,4 +1300,3 @@ msgstr "Universi"
 
 #~ msgid "Import fixture from local filesystem"
 #~ msgstr "Importa dispositivo dal file system locale"
-
