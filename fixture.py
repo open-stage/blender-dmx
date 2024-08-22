@@ -1164,6 +1164,7 @@ class DMX_Fixture(PropertyGroup):
         else:
             geometry = self.get_object_by_geometry_name(geometry)
         if geometry:
+            geometry.rotation_mode = "XYZ"
             geometry.rotation_euler[offset] = value
             if current_frame and self.dmx_cache_dirty:
                 geometry.keyframe_insert(data_path="location", frame=current_frame)
