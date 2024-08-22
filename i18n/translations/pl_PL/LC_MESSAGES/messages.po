@@ -8,20 +8,21 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-08-04 21:51+0200\n"
-"PO-Revision-Date: 2024-05-29 19:09+0000\n"
+"PO-Revision-Date: 2024-08-23 19:09+0000\n"
 "Last-Translator: WaldiS <sto@tutanota.de>\n"
+"Language-Team: Polish <https://hosted.weblate.org/projects/blenderdmx/main/"
+"pl/>\n"
 "Language: pl_PL\n"
-"Language-Team: Polish "
-"<https://hosted.weblate.org/projects/blenderdmx/main/pl/>\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && "
-"(n%100<10 || n%100>=20) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+"X-Generator: Weblate 5.7.1-dev\n"
 "Generated-By: Babel 2.14.0\n"
 
 msgid "File doesn't exist"
-msgstr ""
+msgstr "Plik nie istnieje"
 
 #, fuzzy
 msgid "Fixture ID"
@@ -48,11 +49,13 @@ msgstr "Ślad stopy"
 msgid "DMX Collection"
 msgstr "Kolekcja DMX"
 
+#, fuzzy
 msgid "Trackers Item"
-msgstr ""
+msgstr "Element śledzący"
 
+#, fuzzy
 msgid "The selected element on the trackers list"
-msgstr ""
+msgstr "Wybrany element na liście elementów śledzonych"
 
 #, fuzzy
 msgid "Universe"
@@ -67,8 +70,9 @@ msgstr ""
 msgid "Display 2D View"
 msgstr "Wyświetl widok 2D"
 
+#, fuzzy
 msgid "Device Label"
-msgstr ""
+msgstr "Etykieta urządzenia"
 
 msgid "None"
 msgstr "Żaden"
@@ -77,16 +81,17 @@ msgid "Name"
 msgstr "Nazwa"
 
 msgid "DMX"
-msgstr ""
+msgstr "DMX"
 
+#, fuzzy
 msgid "Allow Selecting Geometries"
-msgstr ""
+msgstr "Zezwalaj na wybieranie geometrii"
 
 msgid "Logging Level"
 msgstr "Poziom rejestrowania"
 
 msgid "Critical"
-msgstr ""
+msgstr "Krytyczny"
 
 msgid "Error"
 msgstr "błąd"
@@ -100,8 +105,9 @@ msgstr "Informacja"
 msgid "Debug"
 msgstr ""
 
+#, fuzzy
 msgid "Simple beam"
-msgstr ""
+msgstr "Prosta wiązka"
 
 msgid "Display 'fake' beam cone"
 msgstr "Wyświetla \"fałszywy\" stożek wiązki"
@@ -114,16 +120,21 @@ msgstr "Usuń oprawę"
 msgid "All fixtures"
 msgstr "Oprawy"
 
+#, fuzzy
 msgid "Beam Lens Diameter in Cycles"
-msgstr ""
+msgstr "Średnica soczewki w cyklach"
 
+#, fuzzy
 msgid ""
 "Beam diameter is reduced to minimum when projecting gobos to prevent blur"
 " on gobo edge"
 msgstr ""
+"Średnica wiązki jest zredukowana do minimum podczas wyświetlania gobo, aby "
+"zapobiec rozmyciu krawędzi gobo"
 
+#, fuzzy
 msgid "Reduced"
-msgstr ""
+msgstr "Zredukowany"
 
 msgid "Full width"
 msgstr "Cała szerokość"
@@ -1318,4 +1329,3 @@ msgstr "Wszechświat"
 
 #~ msgid "Import fixture from local filesystem"
 #~ msgstr "Importuj urządzenie z lokalnego systemu plików"
-
