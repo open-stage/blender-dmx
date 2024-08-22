@@ -59,6 +59,7 @@ from .panels import programmer as programmer
 from .panels import profiles as Profiles
 from .panels import distribute as distribute
 from .panels import classing as classing
+from .panels import subfixtures as subfixtures
 
 from .preferences import DMX_Preferences, DMX_Regenrate_UUID
 from .group import FixtureGroup, DMX_Group
@@ -117,7 +118,8 @@ class DMX(PropertyGroup):
                     DMX_MVR_Xchange_Client,
                     DMX_MVR_Xchange,
                     DMX_Regenrate_UUID,
-                    DMX_Preferences)
+                    DMX_Preferences,
+                    subfixtures.DMX_Subfixture)
 
     # Classes to be registered
     # The registration is done in two steps. The second only runs
@@ -167,6 +169,9 @@ class DMX(PropertyGroup):
                 groups.DMX_PT_Groups,
                 classing.DMX_UL_Class,
                 classing.DMX_PT_Classes,
+                subfixtures.DMX_PT_Subfixtures,
+                subfixtures.DMX_UL_Subfixture,
+                subfixtures.DMX_OT_Subfixture_Clear,
                 programmer.DMX_OT_Programmer_DeselectAll,
                 programmer.DMX_OT_Programmer_SelectAll,
                 programmer.DMX_OT_Programmer_SelectFiltered,

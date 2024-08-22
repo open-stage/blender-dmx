@@ -544,17 +544,32 @@ class DMX_Fixture(PropertyGroup):
     # Interface Methods #
 
     def setDMX(self, pvalues):
-        channels = [c.id for c in self.channels]
-        virtuals = [c.id for c in self.virtual_channels]
+
+        temp_data = bpy.context.window_manager.dmx
+
+        #channels = [c.id for c in self.channels]
+        #virtuals = [c.id for c in self.virtual_channels]
+
         for attribute, value in pvalues.items():
-            for idx, channel in enumerate(channels):
-                if channel == attribute:
-                    DMX_Log.log.info(("Set DMX data", channel, value))
-                    DMX_Data.set(self.universe, self.address+idx, value)
-            for vchannel in virtuals:
-                if vchannel == attribute:
-                    DMX_Log.log.info(("Set Virtual data", attribute, value))
-                    DMX_Data.set_virtual(self.name, attribute, value)
+            for idx, channel in enumerate(self.channels):
+                if channel.id == attribute:
+                    if len(temp_data.active_subfixtures)>0:
+                        if any(channel.geometry == g.name for g in temp_data.active_subfixtures):
+                            DMX_Log.log.info(("Set DMX data", channel.id, value))
+                            DMX_Data.set(self.universe, self.address+idx, value)
+                    else:
+                        DMX_Log.log.info(("Set DMX data", channel, value))
+                        DMX_Data.set(self.universe, self.address+idx, value)
+            for vchannel in self.virtual_channels:
+                if vchannel.id == attribute:
+                    if len(temp_data.active_subfixtures)>0:
+                        if any(vchannel.geometry == g.name for g in temp_data.active_subfixtures):
+                            DMX_Log.log.info(("Set Virtual data", attribute, value))
+                            geometry = next(vchannel.geometry == g.name for g in temp_data.active_subfixtures)
+                            DMX_Data.set_virtual(self.name, attribute, geometry, value)
+                    else:
+                        DMX_Log.log.info(("Set Virtual data", attribute, value))
+                        DMX_Data.set_virtual(self.name, attribute, None, value)
 
     def render(self, skip_cache = False, current_frame = None):
 
@@ -563,12 +578,12 @@ class DMX_Fixture(PropertyGroup):
             return
 
         channels = [c.id for c in self.channels]
-        virtual_channels = [c.id for c in self.virtual_channels]
+        #virtual_channels = [c.id for c in self.virtual_channels]
 
         data = DMX_Data.get(self.universe, self.address, len(channels))
         data_virtual = DMX_Data.get_virtual(self.name)
 
-        s_data = [int(b) for b in data] + [int(b) for b in data_virtual.values()] # create cache
+        s_data = [int(b) for b in data] + [int(b["value"]) for b in data_virtual.values()] # create cache
         if list(self["dmx_values"]) == s_data: # this helps to eliminate flicker with Ethernet DMX signal when the data for this particular device is not changing
             if skip_cache is False: # allow to save a keyframe when using the programmer in Blender
                 DMX_Log.log.debug("caching DMX")
@@ -591,8 +606,8 @@ class DMX_Fixture(PropertyGroup):
         tilt_rotating_geometries={}
         gobo1 = [None, None] #gobo selection (Gobo1, Gobo2), gobo indexing/rotation (Gobo1Pos, Gobo2Pos)
 
-        for attribute in virtual_channels:
-            geometry = None # for now. But, no way to know, as BlenderDMX controls are universal
+        for vchannel in self.virtual_channels:
+            geometry = vchannel.geometry # for now. But, no way to know, as BlenderDMX controls are universal
             if geometry not in rgb_mixing_geometries.keys():
                 rgb_mixing_geometries[geometry] = [None] * 12 # R, G, B, White, WW, CW, Amber, Lime, UV, cyan, magenta, yellow
             if geometry not in xyz_moving_geometries.keys():
@@ -605,44 +620,44 @@ class DMX_Fixture(PropertyGroup):
                 pan_rotating_geometries[geometry]=[None, 1]
             if geometry not in tilt_rotating_geometries.keys():
                 tilt_rotating_geometries[geometry]=[None, 1]
-            if attribute in data_virtual:
-                if attribute == "Shutter1": shutter_dimmer_geometries[geometry][0] = data_virtual[attribute]
-                elif attribute == "Dimmer": shutter_dimmer_geometries[geometry][1] = data_virtual[attribute]
-                elif attribute == "+Dimmer":
-                    shutter_dimmer_geometries[geometry][1] = shutter_dimmer_geometries[geometry][1] * 256 + data_virtual[attribute]
+            if vchannel.id in data_virtual:
+                if vchannel.id == "Shutter1": shutter_dimmer_geometries[geometry][0] = data_virtual[vchannel.id]["value"]
+                elif vchannel.id == "Dimmer": shutter_dimmer_geometries[geometry][1] = data_virtual[vchannel.id]["value"]
+                elif vchannel.id == "+Dimmer":
+                    shutter_dimmer_geometries[geometry][1] = shutter_dimmer_geometries[geometry][1] * 256 + data_virtual[vchannel.id]["value"]
                     shutter_dimmer_geometries[geometry][3] = 256
 
-                elif (attribute == "ColorAdd_R" or attribute == "ColorRGB_Red"): rgb_mixing_geometries[geometry][0] = data_virtual[attribute]
-                elif (attribute == "ColorAdd_G" or attribute == "ColorRGB_Green"): rgb_mixing_geometries[geometry][1] = data_virtual[attribute]
-                elif (attribute == "ColorAdd_B" or attribute == "ColorRGB_Blue"): rgb_mixing_geometries[geometry][2] = data_virtual[attribute]
-                elif attribute == "ColorSub_C": cmy[0] = data_virtual[attribute]
-                elif attribute == "ColorSub_M": cmy[1] = data_virtual[attribute]
-                elif attribute == "ColorSub_Y": cmy[2] = data_virtual[attribute]
-                elif attribute == "Pan":
-                    panTilt[0] = data_virtual[attribute]
-                    pan_rotating_geometries[geometry][0] = data_virtual[attribute]
-                elif attribute == "+Pan":
-                    panTilt[0]  = panTilt[0] * 256 + data_virtual[attribute]
+                elif (vchannel.id == "ColorAdd_R" or vchannel.id == "ColorRGB_Red"): rgb_mixing_geometries[geometry][0] = data_virtual[vchannel.id]["value"]
+                elif (vchannel.id == "ColorAdd_G" or vchannel.id == "ColorRGB_Green"): rgb_mixing_geometries[geometry][1] = data_virtual[vchannel.id]["value"]
+                elif (vchannel.id == "ColorAdd_B" or vchannel.id == "ColorRGB_Blue"): rgb_mixing_geometries[geometry][2] = data_virtual[vchannel.id]["value"]
+                elif vchannel.id == "ColorSub_C": cmy[0] = data_virtual[vchannel.id]["value"]
+                elif vchannel.id == "ColorSub_M": cmy[1] = data_virtual[vchannel.id]["value"]
+                elif vchannel.id == "ColorSub_Y": cmy[2] = data_virtual[vchannel.id]["value"]
+                elif vchannel.id == "Pan":
+                    panTilt[0] = data_virtual[vchannel.id]["value"]
+                    pan_rotating_geometries[geometry][0] = data_virtual[vchannel.id]["value"]
+                elif vchannel.id == "+Pan":
+                    panTilt[0]  = panTilt[0] * 256 + data_virtual[vchannel.id]["value"]
                     panTilt[2] = 256 # 16bit
-                    pan_rotating_geometries[geometry][0] = pan_rotating_geometries[geometry][0] * 256 + data_virtual[attribute]
+                    pan_rotating_geometries[geometry][0] = pan_rotating_geometries[geometry][0] * 256 + data_virtual[vchannel.id]["value"]
                     pan_rotating_geometries[geometry][2] = 256
 
-                elif attribute == "Tilt":
-                    panTilt[1] = data_virtual[attribute]
-                    tilt_rotating_geometries[geometry][0] = data_virtual[attribute]
-                elif attribute == "+Tilt":
-                    panTilt[1]  = panTilt[1] * 256 + data_virtual[attribute]
+                elif vchannel.id == "Tilt":
+                    panTilt[1] = data_virtual[vchannel.id]["value"]
+                    tilt_rotating_geometries[geometry][0] = data_virtual[vchannel.id]["value"]
+                elif vchannel.id == "+Tilt":
+                    panTilt[1]  = panTilt[1] * 256 + data_virtual[vchannel.id]["value"]
                     panTilt[3] = 256 # 16bit
-                    tilt_rotating_geometries[geometry][0] = tilt_rotating_geometries[geometry][0] * 256 + data_virtual[attribute]
+                    tilt_rotating_geometries[geometry][0] = tilt_rotating_geometries[geometry][0] * 256 + data_virtual[vchannel.id]["value"]
                     tilt_rotating_geometries[geometry][2] = 256
 
-                elif attribute == "Zoom": zoom = data_virtual[attribute]
-                elif attribute == "XYZ_X": xyz_moving_geometries[geometry][0] = data_virtual[attribute]
-                elif attribute == "XYZ_Y": xyz_moving_geometries[geometry][1] = data_virtual[attribute]
-                elif attribute == "XYZ_Z": xyz_moving_geometries[geometry][2] = data_virtual[attribute]
-                elif attribute == "Rot_X": xyz_rotating_geometries[geometry][0] = data_virtual[attribute]
-                elif attribute == "Rot_Y": xyz_rotating_geometries[geometry][1] = data_virtual[attribute]
-                elif attribute == "Rot_Z": xyz_rotating_geometries[geometry][2] = data_virtual[attribute]
+                elif vchannel.id == "Zoom": zoom = data_virtual[vchannel.id]["value"]
+                elif vchannel.id == "XYZ_X": xyz_moving_geometries[geometry][0] = data_virtual[vchannel.id]["value"]
+                elif vchannel.id == "XYZ_Y": xyz_moving_geometries[geometry][1] = data_virtual[vchannel.id]["value"]
+                elif vchannel.id == "XYZ_Z": xyz_moving_geometries[geometry][2] = data_virtual[vchannel.id]["value"]
+                elif vchannel.id == "Rot_X": xyz_rotating_geometries[geometry][0] = data_virtual[vchannel.id]["value"]
+                elif vchannel.id == "Rot_Y": xyz_rotating_geometries[geometry][1] = data_virtual[vchannel.id]["value"]
+                elif vchannel.id == "Rot_Z": xyz_rotating_geometries[geometry][2] = data_virtual[vchannel.id]["value"]
 
         for c in range(len(channels)):
             geometry=self.channels[c].geometry
@@ -715,6 +730,8 @@ class DMX_Fixture(PropertyGroup):
         self.remove_unset_geometries_from_multigeometry_attributes_3(shutter_dimmer_geometries)
         self.remove_unset_geometries_from_multigeometry_attributes_1(pan_rotating_geometries)
         self.remove_unset_geometries_from_multigeometry_attributes_1(tilt_rotating_geometries)
+
+
 
         colorwheel_color = None
         if (color1 is not None):
@@ -1384,14 +1401,19 @@ class DMX_Fixture(PropertyGroup):
 
     def has_attribute(self, attribute, lower = False):
 
+        temp_data = bpy.context.window_manager.dmx
         def low(id):
             if lower:
                 return id.lower()
             else:
                 return id
+        if len(temp_data.active_subfixtures) > 0:
+            real = any([attribute in low(channel.id) for channel in self.channels if any(channel.geometry == g.name for g in temp_data.active_subfixtures)])
+            virtual = any([attribute in channel.id for channel in self.virtual_channels if any(channel.geometry == g.name for g in temp_data.active_subfixtures)])
+        else:
+            real = any([attribute in low(channel.id) for channel in self.channels])
+            virtual = any([attribute in channel.id for channel in self.virtual_channels])
 
-        real = any([attribute in low(channel.id) for channel in self.channels])
-        virtual = any([attribute in channel.id for channel in self.virtual_channels])
 
         return (real or virtual)
 
