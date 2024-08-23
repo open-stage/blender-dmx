@@ -41,6 +41,34 @@ class DMX_UL_Subfixture(UIList):
             layout.alignment = "CENTER"
             layout.label(text=str(item.id), icon=icon)
 
+    def filter_items(self, context, data, propname):
+        #temp_data = bpy.context.window_manager.dmx
+        vgroups = getattr(data, propname)
+        helper_funcs = bpy.types.UI_UL_list
+        temp_data = bpy.context.window_manager.dmx
+
+        # Default return values.
+        flt_flags = []
+        flt_neworder = []
+
+        flt_flags = helper_funcs.filter_items_by_name(self.filter_name, self.bitflag_filter_item, vgroups, "name")
+        if not flt_flags:
+            flt_flags = [self.bitflag_filter_item] * len(vgroups)
+        temp_data.set_filtered_subfixtures(flt_flags)
+        return flt_flags,[]
+
+class DMX_OT_Subfixture_SelectVisible(Operator):
+    bl_label = _("Select visible")
+    bl_idname = "dmx.select_visible_subfixtures"
+    bl_description = _("Select visible subfixtures")
+    bl_options = {"UNDO"}
+
+    def execute(self, context):
+        temp_data = bpy.context.window_manager.dmx
+        for fixture, enabled in zip(temp_data.subfixtures, temp_data.filtered_subfixtures):
+            if enabled:
+                fixture.enabled = True
+        return {"FINISHED"}
 
 class DMX_OT_Subfixture_Clear(Operator):
     bl_label = _("Clear selection")
@@ -78,10 +106,11 @@ class DMX_PT_Subfixtures(Panel):
         selected = ",".join([s.name for s in temp_data.active_subfixtures])
         row = layout.row()
         col1 = row.column()
-        if selected:
-            col1.label(text=f"Selected: {selected}")
+        col1.label(text=f"Selected: {len(selected)} {selected}")
         col2 = row.column()
-        col2.operator("dmx.clear_subfixtures", icon="CHECKBOX_DEHLT", text="")
+        col3 = row.column()
+        col2.operator("dmx.select_visible_subfixtures", icon="CHECKBOX_HLT", text="")
+        col3.operator("dmx.clear_subfixtures", icon="CHECKBOX_DEHLT", text="")
 
 class DMX_Subfixture(PropertyGroup):
     name: StringProperty()
