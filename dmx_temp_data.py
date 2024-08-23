@@ -38,6 +38,10 @@ from .i18n import DMX_Lang
 _ = DMX_Lang._
 
 class DMX_TempData(PropertyGroup):
+    filtered_subfixtures=[]
+
+    def set_filtered_subfixtures(self, subs):
+        DMX_TempData.filtered_subfixtures = subs
 
     def onUpdateCollections(self, context):
         dmx = context.scene.dmx
