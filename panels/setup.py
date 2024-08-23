@@ -206,8 +206,10 @@ class DMX_PT_Setup_Viewport(Panel):
         row = layout.row()
         row.prop(context.scene.dmx, "display_2D")
         row = layout.row()
+        row.prop(context.scene.dmx, "enable_device_label")
+        row = layout.row()
         row.prop(context.scene.dmx, "display_device_label")
-        row.enabled = dmx.display_2D
+        row.enabled = dmx.display_2D or dmx.enable_device_label
         row = layout.row()
         row.prop(context.scene.dmx, "display_pigtails")
         row = layout.row()

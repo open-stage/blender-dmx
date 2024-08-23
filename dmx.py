@@ -172,6 +172,7 @@ class DMX(PropertyGroup):
                 subfixtures.DMX_PT_Subfixtures,
                 subfixtures.DMX_UL_Subfixture,
                 subfixtures.DMX_OT_Subfixture_Clear,
+                subfixtures.DMX_OT_Subfixture_SelectVisible,
                 programmer.DMX_OT_Programmer_DeselectAll,
                 programmer.DMX_OT_Programmer_SelectAll,
                 programmer.DMX_OT_Programmer_SelectFiltered,
@@ -812,6 +813,26 @@ class DMX(PropertyGroup):
 
     # # Setup > Models > Display Pigtails, Select geometries
 
+    def onDisplayLabel(self, context):
+        for fixture in self.fixtures:
+            for obj in fixture.collection.objects:
+                if obj.get("geometry_root", False):
+                    if self.display_device_label == "NONE":
+                        obj.show_name = False
+                    elif self.display_device_label == "NAME":
+                        obj.name = f"{fixture.name}"
+                        obj.show_name = self.enable_device_label
+                    elif self.display_device_label == "DMX":
+                        obj.name = f"{fixture.universe}.{fixture.address}"
+                        obj.show_name = self.enable_device_label
+                    elif self.display_device_label == "FIXTURE_ID":
+                        if fixture.fixture_id:
+                            obj.name = f"{fixture.fixture_id}"
+                            obj.show_name = self.enable_device_label
+                        else:
+                            obj.show_name = False
+                    break
+
     def onDisplayPigtails(self, context):
         for fixture in self.fixtures:
             for obj in fixture.collection.objects:
@@ -865,6 +886,10 @@ class DMX(PropertyGroup):
                         obj.hide_render = not self.display_pigtails
         bpy.context.window_manager.dmx.pause_render = self.display_2D # re-enable renderer if in 3D
 
+    def update_device_label(self, context):
+        self.onDisplay2D(context)
+        self.onDisplayLabel(context)
+
     display_pigtails: BoolProperty(
         name = _("Display Pigtails"),
         default = False,
@@ -875,6 +900,11 @@ class DMX(PropertyGroup):
         default = False,
         update = onDisplay2D)
 
+    enable_device_label: BoolProperty(
+        name = _("Display Device Label"),
+        default = False,
+        update = onDisplayLabel)
+
     display_device_label: EnumProperty(
         name = _("Device Label"),
         default = "NAME",
@@ -884,7 +914,7 @@ class DMX(PropertyGroup):
                 ("DMX", _("DMX"), "DMX Address"),
                 ("FIXTURE_ID", _("Fixture ID"), "Fixture ID"),
         ],
-        update = onDisplay2D)
+        update = update_device_label)
 
     def onSelectGeometries(self, context):
         for fixture in self.fixtures:
