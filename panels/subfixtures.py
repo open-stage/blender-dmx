@@ -106,7 +106,7 @@ class DMX_PT_Subfixtures(Panel):
         selected = ",".join([s.name for s in temp_data.active_subfixtures])
         row = layout.row()
         col1 = row.column()
-        col1.label(text=f"Selected: {len(selected)} {selected}")
+        col1.label(text=f"Selected: {len(temp_data.active_subfixtures)} {selected}")
         col2 = row.column()
         col3 = row.column()
         col2.operator("dmx.select_visible_subfixtures", icon="CHECKBOX_HLT", text="")

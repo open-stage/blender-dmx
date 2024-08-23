@@ -1399,7 +1399,7 @@ class DMX_Fixture(PropertyGroup):
                 light_obj.data.keyframe_insert(data_path="shadow_soft_size", frame=current_frame)
                 mix_factor.keyframe_insert(data_path="default_value", frame=current_frame)
 
-    def has_attribute(self, attribute, lower = False):
+    def has_attributes(self, attributes, lower = False):
 
         temp_data = bpy.context.window_manager.dmx
         def low(id):
@@ -1408,12 +1408,17 @@ class DMX_Fixture(PropertyGroup):
             else:
                 return id
         if len(temp_data.active_subfixtures) > 0:
-            real = any([attribute in low(channel.id) for channel in self.channels if any(channel.geometry == g.name for g in temp_data.active_subfixtures)])
-            virtual = any([attribute in channel.id for channel in self.virtual_channels if any(channel.geometry == g.name for g in temp_data.active_subfixtures)])
-        else:
-            real = any([attribute in low(channel.id) for channel in self.channels])
-            virtual = any([attribute in channel.id for channel in self.virtual_channels])
+            in_fixture_real = [low(channel.id) for channel in self.channels if any(channel.geometry == g.name for g in temp_data.active_subfixtures)]
+            in_fixture_virtual = [low(channel.id) for channel in self.virtual_channels if any(channel.geometry == g.name for g in temp_data.active_subfixtures)]
 
+            real =    any(any(attribute in item for item in in_fixture_real) for attribute in attributes)
+            virtual = any(any(attribute in item for item in in_fixture_virtual) for attribute in attributes)
+        else:
+            in_fixture_real = [low(channel.id) for channel in self.channels]
+            in_fixture_virtual = [low(channel.id) for channel in self.virtual_channels]
+
+            real =    any(any(attribute in item for item in in_fixture_real) for attribute in attributes)
+            virtual = any(any(attribute in item for item in in_fixture_virtual) for attribute in attributes)
 
         return (real or virtual)
 

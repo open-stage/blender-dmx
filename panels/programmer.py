@@ -460,13 +460,7 @@ class DMX_PT_Programmer(Panel):
 
         row=layout.row()
         box = layout.column().box()
-        box.template_color_picker(scene.dmx, "programmer_color", value_slider=True)
-        row = box.row()
-        col1 = row.column()
-        col2 = row.column()
-        col1.prop(scene.dmx, "programmer_color")
-        col2.operator("dmx.reset_color", icon="TRASH", text="")
-        box.prop(scene.dmx, "programmer_dimmer", text=_("Dimmer"), translate=False, slider = True)
+
 
 
         if selected_fixture_class is not None:
@@ -490,8 +484,21 @@ class DMX_PT_Programmer(Panel):
                         if channel not in temp_data.active_subfixtures:
                             temp_data.active_subfixtures.add().name = channel
 
+            if selected_fixtures[0].has_attributes(["ColorAdd_R", "ColorAdd_G", "ColorAdd_B", "ColorSub_C",
+                                                    "ColorSub_M", "ColorAdd_Y", "ColorAdd_WW", "ColorAdd_CW",
+                                                    "ColorAdd_RY", "ColorAdd_GY", "ColorAdd_UV", "ColorRGB_Red",
+                                                    "ColorRGB_Blue", "ColorRGB_Green"]):
+                box.template_color_picker(scene.dmx, "programmer_color", value_slider=True)
+                row = box.row()
+                col1 = row.column()
+                col2 = row.column()
+                col1.prop(scene.dmx, "programmer_color")
+                col2.operator("dmx.reset_color", icon="TRASH", text="")
 
-            if selected_fixtures[0].has_attribute("Pan"):
+            if selected_fixtures[0].has_attributes(["Dimmer"]):
+                box.prop(scene.dmx, "programmer_dimmer", text=_("Dimmer"), translate=False, slider = True)
+
+            if selected_fixtures[0].has_attributes(["Pan"]):
                 row = box.row()
                 col1 = row.column()
                 col1.prop(scene.dmx, "programmer_pan", text=_("Pan"), translate=False, slider = True)
@@ -501,7 +508,7 @@ class DMX_PT_Programmer(Panel):
                     col2 = row.column()
                     col2.operator("dmx.ignore_movement_false", text="", icon="UNLOCKED")
                     col1.enabled = False
-            if selected_fixtures[0].has_attribute("Tilt"):
+            if selected_fixtures[0].has_attributes(["Tilt"]):
                 row = box.row()
                 col1 = row.column()
                 col1.prop(scene.dmx, "programmer_tilt", text=_("Tilt"), translate=False, slider = True)
@@ -509,16 +516,26 @@ class DMX_PT_Programmer(Panel):
                     col2 = row.column()
                     col2.operator("dmx.ignore_movement_false", text="", icon="UNLOCKED")
                     col1.enabled = False
-            if selected_fixtures[0].has_attribute("Zoom"):
+            if selected_fixtures[0].has_attributes(["Zoom"]):
                 box.prop(scene.dmx, "programmer_zoom", text=_("Zoom"), translate=False, slider = True)
-            if selected_fixtures[0].has_attribute("Color1") or selected_fixtures[0].has_attribute("Color2") or selected_fixtures[0].has_attribute("ColorMacro1"):
+            if selected_fixtures[0].has_attributes(["Color1", "Color2", "ColorMacro1"]):
                 box.prop(scene.dmx, "programmer_color_wheel", text=_("Color Wheel"), translate=False)
-            if selected_fixtures[0].has_attribute("Gobo"):
+            if selected_fixtures[0].has_attributes(["Gobo"]):
                 box.prop(scene.dmx, "programmer_gobo", text=_("Gobo"), translate=False)
                 box.prop(scene.dmx, "programmer_gobo_index", text=_("Gobo Rotation"), translate=False)
-            if selected_fixtures[0].has_attribute("shutter", lower=True):
+            if selected_fixtures[0].has_attributes(["shutter"], lower=True):
                 box.prop(scene.dmx, "programmer_shutter", text=_("Strobe"), translate=False)
         else:
+
+            box.template_color_picker(scene.dmx, "programmer_color", value_slider=True)
+            row = box.row()
+            col1 = row.column()
+            col2 = row.column()
+            col1.prop(scene.dmx, "programmer_color")
+            col2.operator("dmx.reset_color", icon="TRASH", text="")
+
+            box.prop(scene.dmx, "programmer_dimmer", text=_("Dimmer"), translate=False, slider = True)
+
             row = box.row()
             col1 = row.column()
             col1.prop(scene.dmx, "programmer_pan", text=_("Pan"), translate=False, slider = True)
