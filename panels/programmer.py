@@ -191,6 +191,7 @@ class DMX_OT_Programmer_Clear(Operator):
         scene.dmx.programmer_tilt = 0.0
         scene.dmx.programmer_zoom = 25
         scene.dmx.programmer_color_wheel = 0
+        scene.dmx.programmer_color_temperature = 0
         scene.dmx.programmer_gobo = 0
         scene.dmx.programmer_gobo_index = 63
         scene.dmx.programmer_shutter = 0
@@ -520,6 +521,8 @@ class DMX_PT_Programmer(Panel):
                 box.prop(scene.dmx, "programmer_zoom", text=_("Zoom"), translate=False, slider = True)
             if selected_fixtures[0].has_attributes(["Color1", "Color2", "ColorMacro1"]):
                 box.prop(scene.dmx, "programmer_color_wheel", text=_("Color Wheel"), translate=False)
+            if selected_fixtures[0].has_attributes(["CTO", "CTC", "CTB"]):
+                box.prop(scene.dmx, "programmer_color_temperature", text=_("Color Temperature"), translate=False)
             if selected_fixtures[0].has_attributes(["Gobo"]):
                 box.prop(scene.dmx, "programmer_gobo", text=_("Gobo"), translate=False)
                 box.prop(scene.dmx, "programmer_gobo_index", text=_("Gobo Rotation"), translate=False)
@@ -551,6 +554,7 @@ class DMX_PT_Programmer(Panel):
 
             box.prop(scene.dmx, "programmer_zoom", text=_("Zoom"), translate=False, slider = True)
             box.prop(scene.dmx, "programmer_color_wheel", text=_("Color Wheel"), translate=False)
+            box.prop(scene.dmx, "programmer_color_temperature", text=_("Color Temperature"), translate=False)
             box.prop(scene.dmx, "programmer_gobo", text=_("Gobo"), translate=False)
             box.prop(scene.dmx, "programmer_gobo_index", text=_("Gobo Rotation"), translate=False)
             box.prop(scene.dmx, "programmer_shutter", text=_("Strobe"), translate=False)
