@@ -33,7 +33,7 @@ from . import pymvr
 
 from .gdtf import DMX_GDTF
 from .data import DMX_Data
-from .util import cmy_to_rgb, add_rgb, colors_to_rgb, rgb2xyY
+from .util import cmy_to_rgb, add_rgb, colors_to_rgb, rgb2xyY, kelvin_table
 from .osc_utils import DMX_OSC_Handlers
 from bpy.props import (IntProperty,
                        BoolProperty,
@@ -598,6 +598,7 @@ class DMX_Fixture(PropertyGroup):
         cmy = [None,None,None]
         zoom = None
         color1 = None
+        ctc = None
         rgb_mixing_geometries={}
         xyz_moving_geometries={}
         xyz_rotating_geometries={}
@@ -712,6 +713,9 @@ class DMX_Fixture(PropertyGroup):
             elif (channels[c] == 'Zoom'): zoom = data[c]
             elif (channels[c] == 'Color1'): color1 = data[c]
             elif (channels[c] == 'Color2'): color1 = data[c]
+            elif (channels[c] == 'CTC'): ctc = data[c]
+            elif (channels[c] == 'CTO'): ctc = data[c]
+            elif (channels[c] == 'CTB'): ctc = data[c]
             elif (channels[c] == 'ColorMacro1'): color1 = data[c]
             elif (channels[c] == 'Gobo1'): gobo1[0] = data[c]
             elif (channels[c] == 'Gobo1Pos' or channels[c] == 'Gobo1PosRotate'): gobo1[1] = data[c]
@@ -736,17 +740,21 @@ class DMX_Fixture(PropertyGroup):
         colorwheel_color = None
         if (color1 is not None):
             colorwheel_color = self.get_colorwheel_color(color1)
+        color_temperature = None
+        if (ctc is not None):
+            color_temperature = self.get_color_temperature(ctc)
+
         for geometry, colors in rgb_mixing_geometries.items():
             if len(rgb_mixing_geometries)==1:
                 geometry = None
-            self.updateRGB(colors, geometry, colorwheel_color, current_frame)
+            self.updateRGB(colors, geometry, colorwheel_color, color_temperature, current_frame)
 
         if not len(rgb_mixing_geometries):# handle units without mixing
-            if not all([c == 255 for c in self.gel_color_rgb]) or colorwheel_color is not None: #gel color is set and has priority or there is a color wheel
-                self.updateRGB([255] * 12, None, colorwheel_color, current_frame)
+            if not all([c == 255 for c in self.gel_color_rgb]) or colorwheel_color is not None or color_temperature is not None: #gel color is set and has priority or there is a color wheel or color_temperature
+                self.updateRGB([255] * 12, None, colorwheel_color, color_temperature, current_frame)
 
         if (cmy[0] is not None and cmy[1] is not None and cmy[2] is not None):
-            self.updateCMY(cmy, colorwheel_color, current_frame)
+            self.updateCMY(cmy, colorwheel_color, color_temperature, current_frame)
 
 
         if "Target" in self.objects:
@@ -859,9 +867,9 @@ class DMX_Fixture(PropertyGroup):
                 if geometry is not None:
                     if f"{geometry}" in emitter_material.name:
                         DMX_Log.log.info("matched emitter")
-                        emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer/(255.0 * bits))
+                        emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 1*(dimmer/(255.0 * bits))
                 else:
-                    emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer/(255.0 * bits))
+                    emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 1*(dimmer/(255.0 * bits))
                 if current_frame and self.dmx_cache_dirty:
                     emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].keyframe_insert(data_path='default_value', frame=current_frame)
 
@@ -935,7 +943,7 @@ class DMX_Fixture(PropertyGroup):
 
             # Here we can reuse data we got from the light object...
             for emitter_material in self.emitter_materials:
-                emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer_value/(255.0 * dimmer_bits))
+                emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 1*(dimmer_value/(255.0 * dimmer_bits))
 
             if exit_timer:
                 DMX_Log.log.info("Killing shutter timer")
@@ -947,7 +955,7 @@ class DMX_Fixture(PropertyGroup):
             return None # kills the timer
         return 1.0/24.0
 
-    def updateRGB(self, colors, geometry, colorwheel_color, current_frame):
+    def updateRGB(self, colors, geometry, colorwheel_color, color_temperature, current_frame):
         if geometry is not None:
             geometry = geometry.replace(" ", "_")
         DMX_Log.log.info(("color change for geometry", geometry))
@@ -955,6 +963,8 @@ class DMX_Fixture(PropertyGroup):
         rgb = colors_to_rgb(colors)
         if colorwheel_color is not None:
             rgb = add_rgb(rgb, colorwheel_color[:3])
+        if color_temperature is not None:
+            rgb = add_rgb(rgb, color_temperature[:3])
         rgb = add_rgb(self.gel_color_rgb, rgb)
         rgb = [c/255.0 for c in rgb]
 
@@ -988,13 +998,20 @@ class DMX_Fixture(PropertyGroup):
         return rgb
 
 
-    def updateCMY(self, cmy, colorwheel_color, current_frame):
+    def updateCMY(self, cmy, colorwheel_color, color_temperature, current_frame):
         rgb=[0,0,0]
         rgb=cmy_to_rgb(cmy)
+
+        if all([c == 255 for c in rgb]) and (colorwheel_color is not None or color_temperature is not None):
+            rgb=[0,0,0] # without this, default white would always be overwriting ctc
+
         if colorwheel_color is not None:
             rgb = add_rgb(rgb, colorwheel_color[:3])
+        if color_temperature is not None:
+            rgb = add_rgb(rgb, color_temperature[:3])
+        if not all([c == 255 for c in self.gel_color_rgb]):
+            rgb = add_rgb(self.gel_color_rgb, rgb)
 
-        rgb = add_rgb(self.gel_color_rgb, rgb)
         rgb = [c/255.0 for c in rgb]
 
         for emitter_material in self.emitter_materials:
@@ -1056,6 +1073,16 @@ class DMX_Fixture(PropertyGroup):
 
         if len(colors) > index:
             return colors[index]
+
+    def get_color_temperature(self, ctc):
+        if ctc == 0:
+            return
+        if 1 <= ctc <= 255:
+            ctc = 1000 + (ctc - 1) * (12000 - 1000) / (255 - 1)
+            ctc -= ctc % -100 # round to full 100s
+            return kelvin_table[ctc]
+        else:
+            return
 
     def updateGobo(self, gobo1, current_frame):
         if "gobos" not in self.images:

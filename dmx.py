@@ -1338,6 +1338,18 @@ class DMX(PropertyGroup):
                 })
         self.render()
 
+    def onProgrammerColorTemperature(self, context):
+        for fixture in self.fixtures:
+            if fixture.collection is None:
+                continue
+            if fixture.is_selected():
+                fixture.setDMX({
+                    'CTO':int(self.programmer_color_temperature),
+                    'CTC':int(self.programmer_color_temperature),
+                    'CTB':int(self.programmer_color_temperature)
+                })
+        self.render()
+
     def onProgrammerColorWheel(self, context):
         for fixture in self.fixtures:
             if fixture.collection is None:
@@ -1405,6 +1417,13 @@ class DMX(PropertyGroup):
         default = 0,
         update = onProgrammerColorWheel)
 
+    programmer_color_temperature: IntProperty(
+        name = "Programmer Color Temperature",
+        min = 0,
+        max = 255,
+        default = 0,
+        update = onProgrammerColorTemperature)
+
     programmer_gobo: IntProperty(
         name = "Programmer Gobo",
         min = 0,
@@ -1439,6 +1458,7 @@ class DMX(PropertyGroup):
             self.programmer_zoom = 25
             self.programmer_shutter = 0
             self.programmer_color_wheel = 0
+            self.programmer_color_temperature = 0
             self.programmer_gobo = 0
             self.programmer_gobo_index = 63
             return
@@ -1457,6 +1477,12 @@ class DMX(PropertyGroup):
             self.programmer_color_wheel = int(data['Color2'])
         if ('ColorMacro1' in data):
             self.programmer_color_wheel = int(data['ColorMacro1'])
+        if ('CTC' in data):
+            self.programmer_color_temperature = int(data['CTC'])
+        if ('CTO' in data):
+            self.programmer_color_temperature = int(data['CTO'])
+        if ('CTB' in data):
+            self.programmer_color_temperature = int(data['CTB'])
         if ('Gobo1' in data):
             self.programmer_gobo = int(data['Gobo1'])
         if ('Gobo2' in data):
