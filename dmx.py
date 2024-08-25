@@ -1350,6 +1350,16 @@ class DMX(PropertyGroup):
                 })
         self.render()
 
+    def onProgrammerIris(self, context):
+        for fixture in self.fixtures:
+            if fixture.collection is None:
+                continue
+            if fixture.is_selected():
+                fixture.setDMX({
+                    'Iris':int(self.programmer_iris),
+                })
+        self.render()
+
     def onProgrammerColorWheel(self, context):
         for fixture in self.fixtures:
             if fixture.collection is None:
@@ -1362,27 +1372,45 @@ class DMX(PropertyGroup):
                 })
         self.render()
 
-    def onProgrammerGobo(self, context):
+    def onProgrammerGobo1(self, context):
         for fixture in self.fixtures:
             if fixture.collection is None:
                 continue
             if fixture.is_selected():
                 fixture.setDMX({
-                    'Gobo1':int(self.programmer_gobo),
-                    'Gobo2':int(self.programmer_gobo)
+                    'Gobo1':int(self.programmer_gobo1),
                 })
         self.render()
 
-    def onProgrammerGoboIndex(self, context):
+    def onProgrammerGoboIndex1(self, context):
         for fixture in self.fixtures:
             if fixture.collection is None:
                 continue
             if fixture.is_selected():
                 fixture.setDMX({
-                    'Gobo1Pos':int(self.programmer_gobo_index),
-                    'Gobo1PosRotate':int(self.programmer_gobo_index),
-                    'Gobo2Pos':int(self.programmer_gobo_index),
-                    'Gobo2PosRotate':int(self.programmer_gobo_index)
+                    'Gobo1Pos':int(self.programmer_gobo_index1),
+                    'Gobo1PosRotate':int(self.programmer_gobo_index1),
+                })
+        self.render()
+
+    def onProgrammerGobo2(self, context):
+        for fixture in self.fixtures:
+            if fixture.collection is None:
+                continue
+            if fixture.is_selected():
+                fixture.setDMX({
+                    'Gobo2':int(self.programmer_gobo2),
+                })
+        self.render()
+
+    def onProgrammerGoboIndex2(self, context):
+        for fixture in self.fixtures:
+            if fixture.collection is None:
+                continue
+            if fixture.is_selected():
+                fixture.setDMX({
+                    'Gobo2Pos':int(self.programmer_gobo_index2),
+                    'Gobo2PosRotate':int(self.programmer_gobo_index2),
                 })
         self.render()
 
@@ -1424,19 +1452,40 @@ class DMX(PropertyGroup):
         default = 0,
         update = onProgrammerColorTemperature)
 
-    programmer_gobo: IntProperty(
-        name = "Programmer Gobo",
+    programmer_iris: IntProperty(
+        name = "Programmer Iris",
         min = 0,
         max = 255,
         default = 0,
-        update = onProgrammerGobo)
+        update = onProgrammerIris)
 
-    programmer_gobo_index: IntProperty(
-        name = "Gobo Rotation",
+    programmer_gobo1: IntProperty(
+        name = "Programmer Gobo1",
+        min = 0,
+        max = 255,
+        default = 0,
+        update = onProgrammerGobo1)
+
+    programmer_gobo_index1: IntProperty(
+        name = "Gobo1 Rotation",
         min = 0,
         max = 255,
         default = 63,
-        update = onProgrammerGoboIndex)
+        update = onProgrammerGoboIndex1)
+
+    programmer_gobo2: IntProperty(
+        name = "Programmer Gobo2",
+        min = 0,
+        max = 255,
+        default = 0,
+        update = onProgrammerGobo2)
+
+    programmer_gobo_index2: IntProperty(
+        name = "Gobo2 Rotation",
+        min = 0,
+        max = 255,
+        default = 63,
+        update = onProgrammerGoboIndex2)
 
     programmer_shutter: IntProperty(
         name = "Programmer Shutter",
@@ -1459,8 +1508,11 @@ class DMX(PropertyGroup):
             self.programmer_shutter = 0
             self.programmer_color_wheel = 0
             self.programmer_color_temperature = 0
-            self.programmer_gobo = 0
-            self.programmer_gobo_index = 63
+            self.programmer_iris = 0
+            self.programmer_gobo1 = 0
+            self.programmer_gobo_index1 = 63
+            self.programmer_gobo2 = 0
+            self.programmer_gobo_index2 = 63
             return
         elif (n > 1): return
         active = selected[0]
@@ -1483,18 +1535,20 @@ class DMX(PropertyGroup):
             self.programmer_color_temperature = int(data['CTO'])
         if ('CTB' in data):
             self.programmer_color_temperature = int(data['CTB'])
+        if ('Iris' in data):
+            self.programmer_iris = int(data['Iris'])
         if ('Gobo1' in data):
-            self.programmer_gobo = int(data['Gobo1'])
+            self.programmer_gobo1 = int(data['Gobo1'])
         if ('Gobo2' in data):
-            self.programmer_gobo = int(data['Gobo2'])
+            self.programmer_gobo2 = int(data['Gobo2'])
         if ('Gobo1Pos' in data):
-            self.programmer_gobo_index = int(data['Gobo1Pos'])
+            self.programmer_gobo_index1 = int(data['Gobo1Pos'])
         if ('Gobo1PosRotate' in data):
-            self.programmer_gobo_index = int(data['Gobo1PosRotate'])
+            self.programmer_gobo_index1 = int(data['Gobo1PosRotate'])
         if ('Gobo2Pos' in data):
-            self.programmer_gobo_index = int(data['Gobo2Pos'])
+            self.programmer_gobo_index2 = int(data['Gobo2Pos'])
         if ('Gobo2PosRotate' in data):
-            self.programmer_gobo_index = int(data['Gobo2PosRotate'])
+            self.programmer_gobo_index2 = int(data['Gobo2PosRotate'])
         if ('ColorAdd_R' in data and 'ColorAdd_G' in data and 'ColorAdd_B' in data):
             rgb = [data['ColorAdd_R'],data['ColorAdd_G'],data['ColorAdd_B']]
             self.programmer_color = (*flatten_color(rgb), 255)
