@@ -50,6 +50,7 @@ from bpy.types import (PropertyGroup,
                        Material,
                        GeometryNodeTree,
                        Text)
+from .node_arranger import DMX_OT_ArrangeSelected
 
 # Shader Nodes default labels
 # Blender API naming convention is inconsistent for internationalization
@@ -539,6 +540,22 @@ class DMX_Fixture(PropertyGroup):
 
         self.clear()
         self.hide_gobo()
+        d=DMX_OT_ArrangeSelected()
+        for item in self.gobo_materials:
+                ntree = item.material.node_tree
+                print("gobo", item.name, ntree)
+                d.process_tree(ntree)
+        for item in self.geometry_nodes:
+                ntree = item.node
+                print("geometry", item.name, ntree)
+                d.process_tree(ntree)
+
+        for light in self.lights: #CYCLES
+            light_obj = light.object
+            ntree  = light_obj.data.node_tree
+            print("light", light.name, ntree)
+            d.process_tree(ntree)
+
         self.render()
 
     # Interface Methods #
@@ -750,7 +767,7 @@ class DMX_Fixture(PropertyGroup):
         if iris is not None:
             if 0 <= iris <= 255:
                 iris = iris  * 12/255
-        self.update_iris(iris, current_frame)
+                self.update_iris(iris, current_frame)
 
         for geometry, colors in rgb_mixing_geometries.items():
             if len(rgb_mixing_geometries)==1:

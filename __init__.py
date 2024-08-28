@@ -203,8 +203,8 @@ def unregister():
     bpy.utils.unregister_class(DMX_TempData)
     bpy.utils.unregister_class(DMX)
 
-
     # Append handlers
+
     bpy.app.handlers.load_post.clear()
     bpy.app.handlers.undo_post.clear()
 

@@ -243,6 +243,8 @@ class DMX_PT_Setup_Extras(Panel):
         row.operator_context = "INVOKE_DEFAULT"  #'INVOKE_AREA'
         row.operator("dmx.clear_custom_data", text=_("Clear Project data"), icon="TRASH")
         layout.operator("wm.url_open", text="User Guide Online", icon="HELP").url = "https://blenderdmx.eu/docs/faq/"
+        row = layout.row()
+        row.operator("dmx.na_arrange_nodes")
 
 
 class DMX_PT_Setup_Import(Panel):
