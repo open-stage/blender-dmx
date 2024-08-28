@@ -107,17 +107,14 @@ def get_gobo_material(name):
     material.use_nodes = True
     material.node_tree.nodes.remove(material.node_tree.nodes[PRINCIPLED_BSDF])
     matout = material.node_tree.nodes.get(MATERIAL_OUTPUT)
-    matout.location = (400, 500)
     # matout.target = "EEVEE"
     # mix = material.node_tree.nodes.new(SHADER_NODE_MIX_SHADER)
     # mix.inputs[0].default_value = 0.010
     # material.node_tree.links.new(matout.inputs[0], mix.outputs[0])
     bsdf = material.node_tree.nodes.new(SHADER_NODE_BSDF_TRANSPARENT)
-    bsdf.location = (200, 500)
     # material.node_tree.links.new(bsdf.outputs[0], mix.inputs[1])
     material.node_tree.links.new(matout.inputs[0], bsdf.outputs[0])
     image = material.node_tree.nodes.new(SHADER_NODE_TEX_IMAGE)
-    image.location = (0, 500)
     image.name = "Image Texture"
     # material.node_tree.links.new(image.outputs[1], mix.inputs[2])
     material.node_tree.links.new(image.outputs[0], bsdf.inputs[0])
@@ -151,9 +148,6 @@ def set_light_nodes(light):
     gobo1_image.name = "Gobo1Texture"
     gobo_geometry_node = light_obj.data.node_tree.nodes.new("ShaderNodeNewGeometry")
 
-    gobo_geometry_node.location = (-694.17, 457.04)
-    gobo1_image_rotate.location = (-405.22, 486.14)
-    gobo2_image_rotate.location = (-406.19, 229.93)
 
     light_obj.data.node_tree.links.new(gobo_geometry_node.outputs[5], gobo1_image_rotate.inputs[0])
     light_obj.data.node_tree.links.new(gobo1_image_rotate.outputs[0], gobo1_image.inputs[0])
@@ -194,12 +188,6 @@ def set_light_nodes(light):
     light_obj.data.node_tree.links.new(gobos_mix.outputs["Result"], mix.inputs["A"])
     light_obj.data.node_tree.links.new(mix.outputs["Result"], emission.inputs[0])
 
-    gobo1_image.location = (-221.73, 486.83)
-    gobo2_image.location = (-225.50, 280.40)
-    gobos_mix.location = (82.07, 489.56)
-    mix.location = (319.60, 489.01)
-    emission.location = (529.09, 509.87)
-    light_node.location = (733.60, 536.36)
 
     # set iris up
     iris_geometry_node = light_obj.data.node_tree.nodes.new("ShaderNodeNewGeometry")
@@ -216,11 +204,6 @@ def set_light_nodes(light):
     center_node = light_obj.data.node_tree.nodes.new("ShaderNodeVectorMath")
     center_node.inputs[1].default_value[:2] = add_node.inputs[1].default_value[:2] = [0.5] * 2
 
-    iris_geometry_node.location = (-257.48, 70.51)
-    center_node.location = (-84.09, 76.15)
-    scale_node.location = (93.27, 74.36)
-    iris_texture.location = (458.52, 84.25)
-    add_node.location = (271.07, 75.90)
 
     # inputnode.blend_type = 'DARKEN' if check_spot else 'MULTIPLY'
     scale_node.label = scale_node.name = "Iris Size"
@@ -472,29 +455,6 @@ def getGeometryNodes(obj):
     set_material_001.inputs[1].default_value = True
     set_material_001.inputs[2].default_value = bpy.data.materials[name]
 
-    # Set locations
-    realize_instances.location = (648.1306762695312, -248.14083862304688)
-    vector.location = (-344.9915771484375, -388.932373046875)
-    set_position.location = (342.9999694824219, 16.370197296142578)
-    collection_info.location = (353.42681884765625, -255.13473510742188)
-    transform_geometry.location = (123.29208374023438, -17.09014892578125)
-    group_input.location = (-340.0, 0.0)
-    curve_line.location = (-338.0681457519531, -99.52672576904297)
-    group_output.location = (1638.52880859375, 127.81448364257812)
-    transform_geometry_001.location = (114.59432983398438, 326.46453857421875)
-    join_geometry.location = (1591.364501953125, 254.31729125976562)
-    raycast.location = (1045.16796875, -45.3947868347168)
-    index.location = (380.6321105957031, 357.8047180175781)
-    compare.location = (609.8900756835938, 329.3902587890625)
-    align_euler_to_vector.location = (-176.80389404296875, -246.462646484375)
-    curve_to_mesh.location = (1025.011962890625, 78.24966430664062)
-    curve_circle.location = (772.3076171875, -106.07250213623047)
-    resample_curve.location = (584.7500610351562, 68.5484848022461)
-    set_curve_radius.location = (805.0, 90.10665893554688)
-    random_value.location = (979.1607055664062, 341.25897216796875)
-    scene_time.location = (791.7000732421875, 443.5702819824219)
-    set_material.location = (1252.5028076171875, 290.9101867675781)
-    set_material_001.location = (1300.63720703125, 151.0940704345703)
 
     # Set dimensions
     realize_instances.width, realize_instances.height = 140.0, 100.0
