@@ -380,13 +380,20 @@ class DMX_Fixture(PropertyGroup):
         if has_gobos:
             gobo_seq = DMX_GDTF.extract_gobos_as_sequence(gdtf_profile)
             if gobo_seq is not None:
-                gobo = self.images.add()
-                gobo.name = "gobos"
-                gobo.image = gobo_seq
-                gobo.count = gobo_seq["count"]
-                gobo.image.pack()
+                gobo1 = self.images.add()
+                gobo1.name = "gobos1"
+                gobo1.image = gobo_seq[0]
+                gobo1.count = gobo_seq[0]["count"]
+                gobo1.image.pack()
+                gobo2 = self.images.add()
+                gobo2.name = "gobos2"
+                gobo2.image = gobo_seq[1]
+                gobo2.count = gobo_seq[1]["count"]
+                gobo2.image.pack()
+        for i in self.images:
+            print("img", i)
 
-        if "gobos" not in self.images:
+        if "gobos1" not in self.images:
             has_gobos = False # faulty GDTF might have channels but no images
 
         self["slot_colors"] = []
@@ -764,10 +771,6 @@ class DMX_Fixture(PropertyGroup):
         if (ctc is not None):
             color_temperature = self.get_color_temperature(ctc)
 
-        if iris is not None:
-            if 0 <= iris <= 255:
-                iris = iris  * 12/255
-                self.update_iris(iris, current_frame)
 
         for geometry, colors in rgb_mixing_geometries.items():
             if len(rgb_mixing_geometries)==1:
@@ -810,11 +813,18 @@ class DMX_Fixture(PropertyGroup):
         if (zoom is not None):
             self.updateZoom(zoom, current_frame)
 
+        self.hide_gobo_geometry(gobo1, gobo2, iris)
+
         if gobo1[0] is not None:
             self.updateGobo(gobo1, 1, current_frame)
 
         if gobo2[0] is not None:
             self.updateGobo(gobo2, 2, current_frame)
+
+        if iris is not None:
+            if 0 <= iris <= 255:
+                iris = iris  * 12/255
+                self.update_iris(iris, current_frame)
 
         for geometry, xyz in xyz_moving_geometries.items():
             self.updatePosition(geometry=geometry, x=xyz[0], y=xyz[1], z=xyz[2], current_frame=current_frame)
@@ -919,6 +929,7 @@ class DMX_Fixture(PropertyGroup):
                     if f"{geometry}" in  light.object.data.name:
                         DMX_Log.log.info("matched emitter")
                         light.object.data.energy = (dimmer/(255.0 * bits)) * flux
+
                 else:
                     light.object.data.energy = (dimmer/(255.0 * bits)) * flux
 
@@ -1115,6 +1126,18 @@ class DMX_Fixture(PropertyGroup):
             return
 
     def update_iris(self, iris, current_frame):
+
+        for obj in self.collection.objects: #EEVEE
+            if "gobo" in obj.get("geometry_type", ""):
+                material = self.gobo_materials[obj.name].material
+                mix = material.node_tree.nodes.get("Iris Size")
+                iris_size = mix.inputs[3]
+                iris_size.default_value = iris
+
+                if current_frame and self.dmx_cache_dirty:
+                    #light_obj.data.keyframe_insert(data_path="shadow_soft_size", frame=current_frame)
+                    iris_size.keyframe_insert(data_path="default_value", frame=current_frame)
+
         for light in self.lights: # CYCLES
             light_obj = light.object
             mix = light_obj.data.node_tree.nodes.get("Iris Size")
@@ -1122,43 +1145,46 @@ class DMX_Fixture(PropertyGroup):
             iris_size.default_value = iris
 
             if current_frame and self.dmx_cache_dirty:
-                light_obj.data.keyframe_insert(data_path="shadow_soft_size", frame=current_frame)
+                #light_obj.data.keyframe_insert(data_path="shadow_soft_size", frame=current_frame)
                 iris_size.keyframe_insert(data_path="default_value", frame=current_frame)
 
     def updateGobo(self, gobo, n, current_frame):
-        if "gobos" not in self.images:
+        if "gobos1" not in self.images:
+            self.hide_gobo([1,2], current_frame=current_frame)
+            return
+
+        if gobo is None:
             self.hide_gobo([n], current_frame=current_frame)
             return
 
-        gobos = self.images["gobos"]
         if gobo[0] == 0:
             self.hide_gobo([n], current_frame=current_frame)
             return
 
+        gobos = self.images["gobos1"]
         if not gobos.count:
-            self.hide_gobo([n], current_frame=current_frame)
+            self.hide_gobo([1,2], current_frame=current_frame)
             return
 
         self.hide_gobo([n], False, current_frame=current_frame)
         index = int(gobo[0]/int(255/(gobos.count-1)))
         self.set_gobo(n, index, current_frame=current_frame)
 
-        if gobo[1] is None:
-            #self.hide_gobo() #?
-            return
 
         for obj in self.collection.objects: #EEVEE
             if "gobo" in obj.get("geometry_type", ""):
+                material = self.gobo_materials[obj.name].material
+                gobo_rotation = material.node_tree.nodes.get(f"Gobo{n}Rotation")
                 if gobo[1]<128: # half for indexing
-                    obj.driver_remove("rotation_euler")
-                    obj.rotation_euler[2] = (gobo[1]/62.0-1)*360*(math.pi/360)
+                    gobo_rotation.inputs[3].driver_remove("default_value")
+                    gobo_rotation.inputs[3].default_value = (gobo[1]/62.0-1)*360*(math.pi/360)
                 else: # half for rotation
-                    driver = obj.driver_add("rotation_euler", 2)
+                    driver = gobo_rotation.inputs[3].driver_add("default_value")
                     value = gobo[1]-128-62 # rotating in both direction, slowest in the middle
                     driver.driver.expression=f"frame*{value*0.005}"
 
                 if current_frame and self.dmx_cache_dirty:
-                    obj.keyframe_insert(data_path='rotation_euler', frame=current_frame)
+                    gobo_rotation.inputs[3].keyframe_insert(data_path="default_value", frame=current_frame)
 
         for light in self.lights: #CYCLES
             light_obj = light.object
@@ -1407,19 +1433,18 @@ class DMX_Fixture(PropertyGroup):
         self.render()
 
     def set_gobo(self, n, index=-1, current_frame=None):
-        gobos = self.images["gobos"]
+        gobos = self.images[f"gobos{n}"]
         for obj in self.collection.objects: #EEVEE
             if "gobo" in obj.get("geometry_type", ""):
                 material = self.gobo_materials[obj.name].material
-                if 0 > index or index >= gobos.count:
-                    index = random.randrange(0, gobos.count)
-                texture = material.node_tree.nodes.get("Image Texture")
+                texture = material.node_tree.nodes.get(f"Gobo{n}Texture")
                 if texture.image is None:
                     texture.image = gobos.image
                     texture.image.source = "SEQUENCE"
                     texture.image_user.frame_duration = 1
                     texture.image_user.use_auto_refresh = True
                 texture.image_user.frame_offset = index
+
                 if current_frame and self.dmx_cache_dirty:
                     texture.image_user.keyframe_insert(data_path="frame_offset", frame=current_frame)
                 break
@@ -1453,26 +1478,52 @@ class DMX_Fixture(PropertyGroup):
         size = light_obj.data.get("beam_radius", 0.01)
         light_obj.data.shadow_soft_size = size
 
-    def hide_gobo(self, n=[1,2], hide = True, current_frame = None):
+    def hide_gobo_geometry(self, gobo1, gobo2, iris, current_frame = None):
+
+        hide = True
+
+        if gobo1[0] is not None:
+            if gobo1[0] != 0:
+                hide = False
+
+        if gobo2[0] is not None:
+            if gobo2[0] != 0:
+                hide = False
+
+        if iris is not None:
+            if iris != 0:
+                hide = False
+
         for obj in self.collection.objects:
             if "gobo" in obj.get("geometry_type", ""):
                 obj.hide_viewport = hide
                 if current_frame and self.dmx_cache_dirty:
                     obj.keyframe_insert("hide_viewport", frame = current_frame)
+
+    def hide_gobo(self, n=[1,2], hide = True, current_frame = None):
+        for obj in self.collection.objects:
+            if "gobo" in obj.get("geometry_type", ""):
+                material = self.gobo_materials[obj.name].material
+                for i in n:
+                    mix_factor = material.node_tree.nodes.get(f"Gobo{i}Mix").inputs["Factor"]
+                    mix_factor.default_value = 1 if hide else 0
+                    if current_frame and self.dmx_cache_dirty:
+                        mix_factor.keyframe_insert(data_path="default_value", frame=current_frame)
+
         for light in self.lights: # CYCLES
             light_obj = light.object
+            hide_gobos = True
             for i in n:
-                #mix = light_obj.data.node_tree.nodes.get(f"Gobo{i}Mix")
                 mix_factor = light_obj.data.node_tree.nodes.get(f"Gobo{i}Mix").inputs["Factor"]
                 mix_factor.default_value = 1 if hide else 0
-
-            #mix_factor = light_obj.data.node_tree.nodes.get("Mix").inputs["Factor"]
-            #mix_factor.default_value = 1 if hide else 0
-            self.set_spot_diameter_to_normal(light_obj) # make the beam large if no gobo is used
+                if not hide:
+                    hide_gobos = False
+                if current_frame and self.dmx_cache_dirty:
+                    mix_factor.keyframe_insert(data_path="default_value", frame=current_frame)
+            if hide_gobos:
+                self.set_spot_diameter_to_normal(light_obj) # make the beam large if no gobo is used
             if current_frame and self.dmx_cache_dirty:
                 light_obj.data.keyframe_insert(data_path="shadow_soft_size", frame=current_frame)
-                mix_factor.keyframe_insert(data_path="default_value", frame=current_frame)
-                #mix.keyframe_insert(data_path="blend_type", frame=current_frame)
 
     def has_attributes(self, attributes, lower = False):
 

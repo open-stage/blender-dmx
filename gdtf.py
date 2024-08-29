@@ -198,14 +198,16 @@ class DMX_GDTF:
             destination.write_bytes(image.read_bytes())
             count = idx
         if first:
-            sequence = bpy.data.images.load(first)
+            sequence1 = bpy.data.images.load(first) # we need this twice as single gobos were affecting each other
+            sequence2 = bpy.data.images.load(first)
         else:
             return None
 
         # TODO: add names from wheels
         # TODO: add some structure to indicate which gobo belongs to which wheel
-        sequence["count"] = count
-        return sequence
+        sequence1["count"] = count
+        sequence2["count"] = count
+        return sequence1, sequence2
 
     @staticmethod
     def load2D(profile):
