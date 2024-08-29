@@ -107,18 +107,104 @@ def get_gobo_material(name):
     material.use_nodes = True
     material.node_tree.nodes.remove(material.node_tree.nodes[PRINCIPLED_BSDF])
     matout = material.node_tree.nodes.get(MATERIAL_OUTPUT)
-    # matout.target = "EEVEE"
-    # mix = material.node_tree.nodes.new(SHADER_NODE_MIX_SHADER)
-    # mix.inputs[0].default_value = 0.010
-    # material.node_tree.links.new(matout.inputs[0], mix.outputs[0])
     bsdf = material.node_tree.nodes.new(SHADER_NODE_BSDF_TRANSPARENT)
-    # material.node_tree.links.new(bsdf.outputs[0], mix.inputs[1])
     material.node_tree.links.new(matout.inputs[0], bsdf.outputs[0])
-    image = material.node_tree.nodes.new(SHADER_NODE_TEX_IMAGE)
-    image.name = "Image Texture"
-    # material.node_tree.links.new(image.outputs[1], mix.inputs[2])
-    material.node_tree.links.new(image.outputs[0], bsdf.inputs[0])
-    # material.node_tree.links.new(bsdf.outputs[0], mix.inputs[1])
+
+
+    # set gobo node
+    gobo_geometry_node = material.node_tree.nodes.new("ShaderNodeTexCoord")
+
+    gobo2_image_rotate = material.node_tree.nodes.new("ShaderNodeVectorRotate")
+    gobo2_image_rotate.name = "Gobo2Rotation"
+    gobo2_image_rotate.rotation_type = "Z_AXIS"
+    gobo2_image_rotate.invert = True
+    gobo2_image_rotate.inputs[1].default_value[:2] = [0.5] * 2
+    gobo2_image = material.node_tree.nodes.new(SHADER_NODE_TEX_IMAGE)
+    gobo2_image.name = "Gobo2Texture"
+
+    gobo1_image_rotate = material.node_tree.nodes.new("ShaderNodeVectorRotate")
+    gobo1_image_rotate.name = "Gobo1Rotation"
+    gobo1_image_rotate.rotation_type = "Z_AXIS"
+    gobo1_image_rotate.invert = True
+    gobo1_image_rotate.inputs[1].default_value[:2] = [0.5] * 2
+    gobo1_image = material.node_tree.nodes.new(SHADER_NODE_TEX_IMAGE)
+    gobo1_image.name = "Gobo1Texture"
+
+
+
+    material.node_tree.links.new(gobo_geometry_node.outputs[0], gobo1_image_rotate.inputs[0])
+    material.node_tree.links.new(gobo1_image_rotate.outputs[0], gobo1_image.inputs[0])
+    material.node_tree.links.new(gobo_geometry_node.outputs[0], gobo2_image_rotate.inputs[0])
+    material.node_tree.links.new(gobo2_image_rotate.outputs[0], gobo2_image.inputs[0])
+
+    gobo1_mix = material.node_tree.nodes.new(SHADER_NODE_MIX)
+    gobo1_mix.data_type = "RGBA"
+    gobo1_mix.blend_type = "MIX"
+    gobo1_mix.name = "Gobo1Mix"
+    gobo1_mix.inputs[0].default_value = 1
+
+    gobo2_mix = material.node_tree.nodes.new(SHADER_NODE_MIX)
+    gobo2_mix.data_type = "RGBA"
+    gobo2_mix.blend_type = "MIX"
+    gobo2_mix.name = "Gobo2Mix"
+    gobo2_mix.inputs[0].default_value = 1
+
+    # gobo mix
+    gobos_mix = material.node_tree.nodes.new(SHADER_NODE_MIX)
+    gobos_mix.data_type = "RGBA"
+    gobos_mix.blend_type = "DARKEN"
+    gobos_mix.name = "Mix"
+    gobos_mix.inputs[0].default_value = 1
+
+    material.node_tree.links.new(gobo1_image.outputs[0], gobo1_mix.inputs["A"])
+    material.node_tree.links.new(gobo2_image.outputs[0], gobo2_mix.inputs["A"])
+
+    material.node_tree.links.new(gobo1_mix.outputs["Result"], gobos_mix.inputs["A"])
+    material.node_tree.links.new(gobo2_mix.outputs["Result"], gobos_mix.inputs["B"])
+
+    mix = material.node_tree.nodes.new(SHADER_NODE_MIX)
+    mix.data_type = "RGBA"
+    mix.blend_type = "MULTIPLY"
+    mix.name = "IrisMix"
+    mix.inputs[0].default_value = 1
+
+    material.node_tree.links.new(gobos_mix.outputs["Result"], mix.inputs["A"])
+    material.node_tree.links.new(mix.outputs["Result"], bsdf.inputs[0])
+
+
+    # set iris up
+
+    iris_texture = material.node_tree.nodes.new("ShaderNodeTexImage")
+    add_node = material.node_tree.nodes.new("ShaderNodeVectorMath")
+    iris_gobo = bpy.data.images.get("default_iris.png", None)
+
+    if iris_gobo is None:
+        iris_image_path = os.path.join(DMX_GDTF.getPrimitivesPath(), "default_iris.png")
+        iris_gobo = bpy.data.images.load(iris_image_path)
+        iris_gobo.alpha_mode = "CHANNEL_PACKED"
+
+    scale_node = material.node_tree.nodes.new("ShaderNodeVectorMath")
+    center_node = material.node_tree.nodes.new("ShaderNodeVectorMath")
+    center_node.inputs[1].default_value[:2] = add_node.inputs[1].default_value[:2] = [0.5] * 2
+
+
+    # inputnode.blend_type = 'DARKEN' if check_spot else 'MULTIPLY'
+    scale_node.label = scale_node.name = "Iris Size"
+    center_node.label = center_node.name = "Center"
+    add_node.label = add_node.name = "Iris Vector"
+    center_node.operation = "SUBTRACT"
+    scale_node.operation = "SCALE"
+    add_node.operation = "ADD"
+
+    iris_texture.image = iris_gobo
+    iris_texture.extension = "EXTEND"
+    iris_texture.label = iris_texture.name = "Iris"
+
+    material.node_tree.links.new(gobo_geometry_node.outputs[2], center_node.inputs[0])
+    material.node_tree.links.new(center_node.outputs[0], scale_node.inputs[0])
+    material.node_tree.links.new(scale_node.outputs[0], add_node.inputs[0])
+    material.node_tree.links.new(add_node.outputs[0], iris_texture.inputs[0])
+    material.node_tree.links.new(iris_texture.outputs[0], mix.inputs["B"])
 
     return material
 
@@ -127,9 +213,9 @@ def set_light_nodes(light):
     light_obj = light.object
     light_obj.data.use_nodes = True
     emission = light_obj.data.node_tree.nodes.get(EMISSION)
-    light_node = light_obj.data.node_tree.nodes.get(LIGHT_NODE)
 
     # set gobo node
+    gobo_geometry_node = light_obj.data.node_tree.nodes.new("ShaderNodeNewGeometry")
 
     gobo2_image_rotate = light_obj.data.node_tree.nodes.new("ShaderNodeVectorRotate")
     gobo2_image_rotate.name = "Gobo2Rotation"
@@ -146,7 +232,7 @@ def set_light_nodes(light):
     gobo1_image_rotate.inputs[1].default_value[:2] = [0.5] * 2
     gobo1_image = light_obj.data.node_tree.nodes.new(SHADER_NODE_TEX_IMAGE)
     gobo1_image.name = "Gobo1Texture"
-    gobo_geometry_node = light_obj.data.node_tree.nodes.new("ShaderNodeNewGeometry")
+
 
 
     light_obj.data.node_tree.links.new(gobo_geometry_node.outputs[5], gobo1_image_rotate.inputs[0])
