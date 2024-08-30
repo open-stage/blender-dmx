@@ -67,12 +67,14 @@ from .osc_utils import DMX_OSC_Templates
 from .osc import DMX_OSC
 from .mdns import DMX_Zeroconf
 
+from .node_arranger import DMX_OT_ArrangeSelected
+
 from .util import rgb_to_cmy, ShowMessageBox, cmy_to_rgb, flatten_color
 from .mvr_objects import DMX_MVR_Object, DMX_MVR_Class
 from .mvr_xchange import DMX_MVR_Xchange_Commit, DMX_MVR_Xchange_Client, DMX_MVR_Xchange
 from .mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server
 import bpy.utils.previews
-from .material import set_light_nodes
+from .material import set_light_nodes, get_gobo_material
 from bpy.props import (BoolProperty,
                        StringProperty,
                        IntProperty,
@@ -399,7 +401,7 @@ class DMX(PropertyGroup):
 
     data_version: IntProperty(
             name = "BlenderDMX data version, bump when changing RNA structure and provide migration script",
-            default = 10,
+            default = 11,
             )
 
     def get_fixture_by_index(self, index):
@@ -639,6 +641,7 @@ class DMX(PropertyGroup):
     def migrations(self):
         """Provide migration scripts when bumping the data_version"""
         file_data_version = 1 # default data version before we started setting it up
+        hide_gobo_message = False
 
         if ("DMX_DataVersion" in self.collection):
             file_data_version = self.collection["DMX_DataVersion"]
@@ -737,6 +740,7 @@ class DMX(PropertyGroup):
         if file_data_version < 5:
             DMX_Log.log.info("Running migration 4→5")
             dmx = bpy.context.scene.dmx
+            hide_gobo_message = True
             for fixture in dmx.fixtures:
                 if "dmx_values" not in fixture:
                     DMX_Log.log.info("Adding dmx_value array to fixture")
@@ -790,6 +794,61 @@ class DMX(PropertyGroup):
                         if "uuid" not in obj.object:
                             DMX_Log.log.info(f"Add uuid to {obj.name}")
                             obj.object["uuid"] = str(py_uuid.uuid4())
+
+        if file_data_version < 11:
+            DMX_Log.log.info("Running migration 10→11")
+            dmx = bpy.context.scene.dmx
+            d=DMX_OT_ArrangeSelected()
+
+            for fixture in dmx.fixtures:
+                fixture.gobo_materials.clear()
+                for obj in fixture.collection.objects:
+                    if "gobo" in obj.get("geometry_type", ""):
+                        material = fixture.gobo_materials.add()
+                        material.name = obj.name
+                        gobo_material = get_gobo_material(obj.name)
+                        obj.active_material = gobo_material
+                        obj.active_material.shadow_method = "CLIP"
+                        obj.active_material.blend_method = "BLEND"
+                        obj.material_slots[0].link = 'OBJECT' # ensure that each fixture has it's own material
+                        obj.material_slots[0].material = gobo_material
+                        material.material = gobo_material
+                        DMX_Log.log.info(f"Recreate gobo material {fixture.name}")
+                for light in fixture.lights:
+                    set_light_nodes(light)
+
+                if len(fixture.images)>0:
+                    old_gobos = fixture.images["gobos"]
+                    if old_gobos is not None:
+
+                        gobo1 = fixture.images.add()
+                        gobo1.name = "gobos1"
+                        gobo1.image = old_gobos.image
+                        gobo1.count = old_gobos.count
+
+                        gobo2 = fixture.images.add()
+                        gobo2.name = "gobos2"
+                        gobo2.image = old_gobos.image
+                        gobo2.count = old_gobos.count
+
+                fixture.hide_gobo()
+                for item in fixture.gobo_materials:
+                        ntree = item.material.node_tree
+                        d.process_tree(ntree)
+                for item in fixture.geometry_nodes:
+                        ntree = item.node
+                        d.process_tree(ntree)
+
+                for light in fixture.lights: #CYCLES
+                    light_obj = light.object
+                    ntree  = light_obj.data.node_tree
+                    d.process_tree(ntree)
+
+            temp_data = bpy.context.window_manager.dmx
+            if not hide_gobo_message:
+                message = "This show file has been made in older version of BlenderDMX. Check gobos, most likely you need to re-patch fixtures from GDTF files to re-load gobo images."
+                temp_data.migration_message = message
+                ShowMessageBox( message=message,title="Updating info!",icon="ERROR")
 
         DMX_Log.log.info("Migration done.")
         # add here another if statement for next migration condition... like:

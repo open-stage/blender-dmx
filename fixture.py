@@ -390,8 +390,6 @@ class DMX_Fixture(PropertyGroup):
                 gobo2.image = gobo_seq[1]
                 gobo2.count = gobo_seq[1]["count"]
                 gobo2.image.pack()
-        for i in self.images:
-            print("img", i)
 
         if "gobos1" not in self.images:
             has_gobos = False # faulty GDTF might have channels but no images
@@ -550,17 +548,14 @@ class DMX_Fixture(PropertyGroup):
         d=DMX_OT_ArrangeSelected()
         for item in self.gobo_materials:
                 ntree = item.material.node_tree
-                print("gobo", item.name, ntree)
                 d.process_tree(ntree)
         for item in self.geometry_nodes:
                 ntree = item.node
-                print("geometry", item.name, ntree)
                 d.process_tree(ntree)
 
         for light in self.lights: #CYCLES
             light_obj = light.object
             ntree  = light_obj.data.node_tree
-            print("light", light.name, ntree)
             d.process_tree(ntree)
 
         self.render()
@@ -1043,12 +1038,10 @@ class DMX_Fixture(PropertyGroup):
     def updateCMY(self, cmy, colorwheel_color, color_temperature, current_frame):
         rgb=[0,0,0]
         rgb=cmy_to_rgb(cmy)
-        print("rgb", rgb)
         if all([c == 255 for c in rgb]) and (colorwheel_color is not None or color_temperature is not None):
             rgb=[0,0,0] # without this, default white would always be overwriting ctc
 
         if colorwheel_color is not None:
-            print("cw", colorwheel_color[:3])
             rgb = add_rgb(rgb, colorwheel_color)
         if color_temperature is not None:
             rgb = add_rgb(rgb, color_temperature[:3])
@@ -1062,7 +1055,6 @@ class DMX_Fixture(PropertyGroup):
             if current_frame and self.dmx_cache_dirty:
                 emitter_material.material.node_tree.nodes[1].inputs[COLOR].keyframe_insert(data_path='default_value', frame=current_frame)
         for light in self.lights:
-            print("final", rgb)
             light.object.data.color = rgb
             if current_frame and self.dmx_cache_dirty:
                 light.object.data.keyframe_insert(data_path='color', frame=current_frame)
@@ -1467,7 +1459,6 @@ class DMX_Fixture(PropertyGroup):
                 texture.image_user.keyframe_insert(data_path="frame_offset", frame=current_frame)
 
     def set_spot_diameter_to_point(self, light_obj):
-        print("set to point per settings")
         if bpy.context.scene.dmx.reduced_beam_diameter_in_cycles == "REDUCED":
             light_obj.data.shadow_soft_size = 0.01
         elif bpy.context.scene.dmx.reduced_beam_diameter_in_cycles == "CUSTOM":
@@ -1478,7 +1469,6 @@ class DMX_Fixture(PropertyGroup):
             light_obj.data.shadow_soft_size = size
 
     def set_spot_diameter_to_normal(self, light_obj):
-        print("set to normal beam")
         size = light_obj.data.get("beam_radius", 0.01)
         light_obj.data.shadow_soft_size = size
 
