@@ -1164,9 +1164,11 @@ class DMX_Fixture(PropertyGroup):
         DMX_Log.log.debug(("update gobo", gobo, n))
         self.hide_gobo([n], False, current_frame=current_frame)
         index = int(gobo[0]/int(255/(gobos.count-1)))
-        self.set_gobo(n, index, current_frame=current_frame)
+        self.set_gobo_slot(n, index, current_frame=current_frame)
+        if gobo[1] is not None:
+            self.set_gobo_rotation(gobo, n, current_frame=current_frame)
 
-
+    def set_gobo_rotation(self, gobo, n, current_frame):
         for obj in self.collection.objects: #EEVEE
             if "gobo" in obj.get("geometry_type", ""):
                 material = self.gobo_materials[obj.name].material
@@ -1428,7 +1430,7 @@ class DMX_Fixture(PropertyGroup):
             DMX_Data.set(self.universe, self.address+i, ch.default)
         self.render()
 
-    def set_gobo(self, n, index=-1, current_frame=None):
+    def set_gobo_slot(self, n, index=-1, current_frame=None):
         gobos = self.images[f"gobos{n}"]
         for obj in self.collection.objects: #EEVEE
             if "gobo" in obj.get("geometry_type", ""):

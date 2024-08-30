@@ -528,9 +528,11 @@ class DMX_PT_Programmer(Panel):
                 box.prop(scene.dmx, "programmer_iris", text=_("Iris"), translate=False)
             if selected_fixtures[0].has_attributes(["Gobo1"]):
                 box.prop(scene.dmx, "programmer_gobo1", text=_("Gobo1"), translate=False)
+            if selected_fixtures[0].has_attributes(["Gobo1Pos", "Gobo1PosRotate"]):
                 box.prop(scene.dmx, "programmer_gobo_index1", text=_("Gobo1 Rotation"), translate=False)
             if selected_fixtures[0].has_attributes(["Gobo2"]):
                 box.prop(scene.dmx, "programmer_gobo2", text=_("Gobo2"), translate=False)
+            if selected_fixtures[0].has_attributes(["Gobo2Pos", "Gobo2PosRotate"]):
                 box.prop(scene.dmx, "programmer_gobo_index2", text=_("Gobo2 Rotation"), translate=False)
             if selected_fixtures[0].has_attributes(["shutter"], lower=True):
                 box.prop(scene.dmx, "programmer_shutter", text=_("Strobe"), translate=False)
