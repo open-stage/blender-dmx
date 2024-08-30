@@ -33,8 +33,10 @@ To enable the addon, go to `Edit > Preferences > Add-ons`, search for "DMX" and 
 
 ![Install](https://i.imgur.com/Q1R0AzP.gif)
 
+### Choose Install From Disk
 ![install from disk](/blender-dmx/images/image-install-from-disk.png)
 
+### Then choose packaged .zip file
 ![install from disk zip](/blender-dmx/images/image-install-from-disk-zip.png)
 
 ## How to Use
