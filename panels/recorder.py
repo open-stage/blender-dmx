@@ -134,7 +134,7 @@ class DMX_OT_Recorder_Delete_Keyframes_Selected(Operator):
 
         for fixture in dmx.fixtures:
             if fixture in selected:
-                clear_animation_data(fixture)
+                clear_fixture_animation_data(fixture)
 
         return {"FINISHED"}
 
