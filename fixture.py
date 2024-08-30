@@ -531,7 +531,7 @@ class DMX_Fixture(PropertyGroup):
         for obj in self.collection.objects:
             if "pigtail" in obj.get("geometry_type", ""):
                 obj.hide_set(not bpy.context.scene.dmx.display_pigtails)
-                obj.hide_viewport = not bpy.context.scene.dmx.display_pigtails
+                obj.hide_viewport = not bpy.context.scene.dmx.display_pigtails # keyframing
                 obj.hide_render = not bpy.context.scene.dmx.display_pigtails
             if obj.get("geometry_root", False):
                 continue
@@ -539,7 +539,7 @@ class DMX_Fixture(PropertyGroup):
                 continue
             if obj.get("2d_symbol", None) == "all":
                 obj.hide_set(not bpy.context.scene.dmx.display_2D)
-                obj.hide_viewport = not bpy.context.scene.dmx.display_2D
+                obj.hide_viewport = not bpy.context.scene.dmx.display_2D #keyframing
                 obj.hide_render = not bpy.context.scene.dmx.display_2D
                 continue
 
@@ -617,6 +617,9 @@ class DMX_Fixture(PropertyGroup):
                 return
         else: # we have new dmx data, mark the cache as dirty, so we know we can save a keyframe when needed
             self.dmx_cache_dirty = True
+
+        DMX_Log.log.debug(f"{current_frame=}, {self.dmx_cache_dirty=}")
+
         self["dmx_values"]  = s_data
         panTilt = [None,None, 1, 1] # pan, tilt, 1 = 8bit, 256 = 16bit
         cmy = [None,None,None]
@@ -813,7 +816,7 @@ class DMX_Fixture(PropertyGroup):
         if (zoom is not None):
             self.updateZoom(zoom, current_frame)
 
-        self.hide_gobo_geometry(gobo1, gobo2, iris)
+        self.hide_gobo_geometry(gobo1, gobo2, iris, current_frame)
 
         if gobo1[0] is not None:
             self.updateGobo(gobo1, 1, current_frame)
@@ -1166,6 +1169,7 @@ class DMX_Fixture(PropertyGroup):
             self.hide_gobo([1,2], current_frame=current_frame)
             return
 
+        DMX_Log.log.debug(("update gobo", gobo, n))
         self.hide_gobo([n], False, current_frame=current_frame)
         index = int(gobo[0]/int(255/(gobos.count-1)))
         self.set_gobo(n, index, current_frame=current_frame)
@@ -1334,12 +1338,12 @@ class DMX_Fixture(PropertyGroup):
                     targets.append(self.objects['Target'].object)
                 if "pigtail" in obj.get("geometry_type", ""):
                     obj.hide_set(not bpy.context.scene.dmx.display_pigtails)
-                    obj.hide_viewport = not bpy.context.scene.dmx.display_pigtails
+                    obj.hide_viewport = not bpy.context.scene.dmx.display_pigtails # keyframing
                     obj.hide_render = not bpy.context.scene.dmx.display_pigtails
                 if obj.get("2d_symbol", None):
                     continue
                 obj.hide_set(False)
-                obj.hide_viewport = False
+                obj.hide_viewport = False #keyframing
                 obj.hide_render = False
 
             if not select_target:
@@ -1404,7 +1408,7 @@ class DMX_Fixture(PropertyGroup):
                 if obj.get("2d_symbol", None):
                     continue
                 obj.hide_set(True)
-                obj.hide_viewport = True
+                obj.hide_viewport = True #need for keyframing
                 obj.hide_render = True
         dmx.updatePreviewVolume()
         self.sync_fixture_selection()
@@ -1459,12 +1463,11 @@ class DMX_Fixture(PropertyGroup):
                 texture.image_user.use_auto_refresh = True
             texture.image_user.frame_offset = index
 
-            self.set_spot_diameter_to_point(light_obj) # prevent gobo blurriness due to large beam diameter
             if current_frame and self.dmx_cache_dirty:
-                light_obj.data.keyframe_insert(data_path="shadow_soft_size", frame=current_frame)
                 texture.image_user.keyframe_insert(data_path="frame_offset", frame=current_frame)
 
     def set_spot_diameter_to_point(self, light_obj):
+        print("set to point per settings")
         if bpy.context.scene.dmx.reduced_beam_diameter_in_cycles == "REDUCED":
             light_obj.data.shadow_soft_size = 0.01
         elif bpy.context.scene.dmx.reduced_beam_diameter_in_cycles == "CUSTOM":
@@ -1475,6 +1478,7 @@ class DMX_Fixture(PropertyGroup):
             light_obj.data.shadow_soft_size = size
 
     def set_spot_diameter_to_normal(self, light_obj):
+        print("set to normal beam")
         size = light_obj.data.get("beam_radius", 0.01)
         light_obj.data.shadow_soft_size = size
 
@@ -1493,12 +1497,23 @@ class DMX_Fixture(PropertyGroup):
         if iris is not None:
             if iris != 0:
                 hide = False
-
         for obj in self.collection.objects:
             if "gobo" in obj.get("geometry_type", ""):
                 obj.hide_viewport = hide
+                obj.hide_render = hide
                 if current_frame and self.dmx_cache_dirty:
                     obj.keyframe_insert("hide_viewport", frame = current_frame)
+                    obj.keyframe_insert("hide_render", frame = current_frame)
+
+        for light in self.lights: # CYCLES
+            light_obj = light.object
+            if hide:
+                self.set_spot_diameter_to_normal(light_obj) # make the beam large if no gobo is used
+            else:
+                self.set_spot_diameter_to_point(light_obj)
+            if current_frame and self.dmx_cache_dirty:
+                light_obj.data.keyframe_insert(data_path="shadow_soft_size", frame=current_frame)
+
 
     def hide_gobo(self, n=[1,2], hide = True, current_frame = None):
         for obj in self.collection.objects:
@@ -1508,22 +1523,16 @@ class DMX_Fixture(PropertyGroup):
                     mix_factor = material.node_tree.nodes.get(f"Gobo{i}Mix").inputs["Factor"]
                     mix_factor.default_value = 1 if hide else 0
                     if current_frame and self.dmx_cache_dirty:
+                        DMX_Log.log.debug(("hide gobo", hide, i))
                         mix_factor.keyframe_insert(data_path="default_value", frame=current_frame)
 
         for light in self.lights: # CYCLES
             light_obj = light.object
-            hide_gobos = True
             for i in n:
                 mix_factor = light_obj.data.node_tree.nodes.get(f"Gobo{i}Mix").inputs["Factor"]
                 mix_factor.default_value = 1 if hide else 0
-                if not hide:
-                    hide_gobos = False
                 if current_frame and self.dmx_cache_dirty:
                     mix_factor.keyframe_insert(data_path="default_value", frame=current_frame)
-            if hide_gobos:
-                self.set_spot_diameter_to_normal(light_obj) # make the beam large if no gobo is used
-            if current_frame and self.dmx_cache_dirty:
-                light_obj.data.keyframe_insert(data_path="shadow_soft_size", frame=current_frame)
 
     def has_attributes(self, attributes, lower = False):
 
