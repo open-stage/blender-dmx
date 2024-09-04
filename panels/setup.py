@@ -20,7 +20,7 @@ import os
 import shutil
 from bpy.types import Operator, Panel
 from ..material import getVolumeScatterMaterial
-from ..util import getSceneRect
+from ..util import getSceneRect, split_text_on_spaces
 from ..gdtf import DMX_GDTF
 from ..panels import profiles as Profiles
 from .. import blender_utils as blender_utils
@@ -353,7 +353,11 @@ class DMX_PT_Setup(Panel):
 
         if len(message)>0:
             row = layout.row()
-            row.label(text=message, icon="ERROR")
+            lines = split_text_on_spaces(message, 30)
+            row.label(text="Important!", icon="ERROR")
+            for line in lines:
+                row = layout.row()
+                row.label(text=line)
 
         if not dmx.collection:
             if not bpy.app.version >= (3, 4):
