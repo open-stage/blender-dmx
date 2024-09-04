@@ -331,7 +331,7 @@ class DMX(PropertyGroup):
         type = fixture.DMX_Fixture)
 
     trackers: CollectionProperty(
-        name = "Trackers",
+        name = "PSN Servers",
         type = tracker.DMX_Tracker)
 
     trackers_i : IntProperty(
@@ -1001,7 +1001,7 @@ class DMX(PropertyGroup):
 
 
     disable_overlays: BoolProperty(
-        name = _("Disable Overlays"),
+        name = _("Disable Beam Outlines"),
         default = False,
         update = onDisableOverlays)
 

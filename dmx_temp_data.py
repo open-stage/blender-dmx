@@ -37,6 +37,7 @@ from .fixture import DMX_Fixture_Channel
 from .i18n import DMX_Lang
 _ = DMX_Lang._
 
+
 class DMX_TempData(PropertyGroup):
     filtered_subfixtures=[]
 
@@ -137,9 +138,10 @@ class DMX_TempData(PropertyGroup):
     dist_rotate: BoolProperty(name="Rotate", default=False)
     programmer_source: StringProperty(name="Source")
 
+
     subfixtures: CollectionProperty(
             name = _("Subfixtures"),
-            type=subfixtures.DMX_Subfixture
+            type=subfixtures.DMX_Subfixture,
             )
 
     active_subfixtures: CollectionProperty(
