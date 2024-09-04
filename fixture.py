@@ -1126,6 +1126,7 @@ class DMX_Fixture(PropertyGroup):
             if "gobo" in obj.get("geometry_type", ""):
                 material = self.gobo_materials[obj.name].material
                 mix = material.node_tree.nodes.get("Iris Size")
+                DMX_Log.log.debug(("found iris", material, mix))
                 iris_size = mix.inputs[3]
                 iris_size.default_value = iris
 
@@ -1436,6 +1437,7 @@ class DMX_Fixture(PropertyGroup):
             if "gobo" in obj.get("geometry_type", ""):
                 material = self.gobo_materials[obj.name].material
                 texture = material.node_tree.nodes.get(f"Gobo{n}Texture")
+                DMX_Log.log.debug(("Found gobo nodes:", n, material, texture))
                 if texture.image is None:
                     texture.image = gobos.image
                     texture.image.source = "SEQUENCE"

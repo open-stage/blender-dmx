@@ -846,7 +846,7 @@ class DMX(PropertyGroup):
 
             temp_data = bpy.context.window_manager.dmx
             if not hide_gobo_message:
-                message = "This show file has been made in older version of BlenderDMX. Check gobos, most likely you need to re-patch fixtures from GDTF files to re-load gobo images."
+                message = "This show file has been made in older version of BlenderDMX. Check gobos, most likely you need to re-edit fixtures: Fixtures → Edit, uncheck Re-address only"
                 temp_data.migration_message = message
                 ShowMessageBox( message=message,title="Updating info!",icon="ERROR")
 
