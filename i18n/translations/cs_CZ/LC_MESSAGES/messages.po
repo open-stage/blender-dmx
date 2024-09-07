@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-08-04 21:51+0200\n"
-"PO-Revision-Date: 2024-05-04 05:42+0000\n"
+"PO-Revision-Date: 2024-09-07 14:55+0000\n"
 "Last-Translator: vanous <petr+weblate@linuks.cz>\n"
+"Language-Team: Czech <https://hosted.weblate.org/projects/blenderdmx/main/cs/"
+">\n"
 "Language: cs_CZ\n"
-"Language-Team: Czech "
-"<https://hosted.weblate.org/projects/blenderdmx/main/cs/>\n"
-"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
+"X-Generator: Weblate 5.8-dev\n"
 "Generated-By: Babel 2.14.0\n"
 
 msgid "File doesn't exist"
@@ -47,11 +48,10 @@ msgid "DMX Collection"
 msgstr "DMX Kolekce"
 
 msgid "Trackers Item"
-msgstr ""
+msgstr "Vybraný PSN Server"
 
-#, fuzzy
 msgid "The selected element on the trackers list"
-msgstr "Vybraný univers v seznamu universů"
+msgstr "Vybraný PSN Server v seznamu"
 
 msgid "Universe"
 msgstr "Univers"
@@ -148,7 +148,7 @@ msgid "Volume Scatter Density"
 msgstr "Hustota mlhy"
 
 msgid "Multiply beams intensity"
-msgstr ""
+msgstr "Násobit intenzitu beamů"
 
 msgid "Number of universes"
 msgstr "Počet universů"
@@ -232,7 +232,6 @@ msgstr "Seznam skupiny"
 msgid "The selected element on the group list"
 msgstr "Zvolená skupina v seznamu"
 
-#, fuzzy
 msgid "Order by"
 msgstr "Seřadit podle"
 
@@ -322,35 +321,29 @@ msgstr "Jednotky"
 msgid "How many units of this light to add"
 msgstr "Kolik kusů tohoto svítidla přidat"
 
-#, fuzzy
 msgid "Enable PSN Input"
-msgstr "Povolit sACN Vstup"
+msgstr "Povolit PSN Vstup"
 
-#, fuzzy
 msgid "Enables PosiStageNet input"
-msgstr "Povolit sACN Vstup"
+msgstr "Povolí PosiStageNet signál"
 
-#, fuzzy
 msgid "IPv4 Address for PSN signal"
-msgstr "IPv4 Adresa pro ArtNet signál"
+msgstr "IPv4 Adresa pro PSN signál"
 
-#, fuzzy
 msgid "The network card/interface to listen for PSN data"
-msgstr "Síťová karta/rozhraní pro příjem DMX dat po ArtNetu"
+msgstr "Síťová karta/rozhraní pro příjem PSN dat"
 
-#, fuzzy
 msgid "PSN Target port"
-msgstr "Port cílového OSC zařízení"
+msgstr "Port PSN serveru"
 
 msgid "Align and Distribute"
-msgstr ""
+msgstr "Rozdělit a Seřadit"
 
 msgid "Active object: {}"
-msgstr ""
+msgstr "Aktivní objekt: {}"
 
-#, fuzzy
 msgid "Selected fixtures: {}"
-msgstr "Vybraná svítidla"
+msgstr "Vybraná svítidla: {}"
 
 msgid "DMX > Fixture Menu"
 msgstr "Menu Svítidel"
@@ -484,9 +477,8 @@ msgstr "Vytvořit DMX skupinu z vybraných svítidel"
 msgid "Group Name"
 msgstr "Název Skupiny"
 
-#, fuzzy
 msgid "Reset Colors"
-msgstr "Barva gelu"
+msgstr "Resetovat Barvy"
 
 msgid "Lock Movement"
 msgstr "Uzamknout Pohyb"
@@ -546,10 +538,10 @@ msgid "Set Targets' position to 0 of the Scene"
 msgstr "Nastaví Cíle paprsků na střed scény"
 
 msgid "Center View to Selected"
-msgstr ""
+msgstr "Zarovnat Pohled na Výběr"
 
 msgid "Set View to center on selected objects"
-msgstr ""
+msgstr "Nastav Pohled na vybrané objekty"
 
 msgid "Reset targets"
 msgstr "Resetovat Cíle"
@@ -719,9 +711,8 @@ msgstr "Export"
 msgid "Export Project data"
 msgstr "Exportovat Projektová data"
 
-#, fuzzy
 msgid "Export MVR"
-msgstr "Export"
+msgstr "Export MVR"
 
 msgid "Show logging directory"
 msgstr "Zobrazit adresář s logy"
@@ -739,7 +730,7 @@ msgid "Error! Blender 3.4 or higher required."
 msgstr "Chyba! Blender 3.4 nebo vyšší je vyžadován."
 
 msgid "For Blender 4.2 and up use the Extension"
-msgstr ""
+msgstr "Pro Blender 4.2 a výše použíjte Extension"
 
 msgid "Create New Show"
 msgstr "Vytvořit Novou Show"
@@ -1007,62 +998,53 @@ msgstr "OSC"
 msgid "Protocols"
 msgstr "Protokoly"
 
-#, fuzzy
 msgid "Add Tracker"
-msgstr "Přidat Cíl"
+msgstr "Přidat Tracker"
 
 msgid "Adding a tracker"
-msgstr ""
+msgstr "Přídádí Trackeru"
 
-#, fuzzy
 msgid "Remove Tracker"
-msgstr "Odebrat svítidlo"
+msgstr "Odebrat Tracker"
 
 msgid "Removing a tracker"
-msgstr ""
+msgstr "Odebrání trackeru"
 
 msgid "Link Fixture to Tracker"
-msgstr ""
+msgstr "Linkovat Svítidlo na Tracker"
 
 msgid "Link fixture to a tracker"
-msgstr ""
+msgstr "Linkovat svítidlo na tracker"
 
-#, fuzzy
 msgid "Unlink Fixture from Tracker"
-msgstr "Importovat zařízení z GDTF Share"
+msgstr "Odlinkovat Svítidlo od Trackeru"
 
-#, fuzzy
 msgid "Unlink fixture from a tracker"
-msgstr "Importovat zařízení z GDTF Share"
+msgstr "Odlinkovat svítidlo od trackeru"
 
 msgid "Tracker Followers"
-msgstr ""
+msgstr "Následovníci Trackeru"
 
 msgid "Link followers to a tracker"
-msgstr ""
+msgstr "Link následovníky k trackeru"
 
-#, fuzzy
 msgid "PSN"
-msgstr "Pan"
+msgstr "PSN"
 
-#, fuzzy
 msgid "Add Tracking Target"
-msgstr "Přidat Cíl"
+msgstr "Přidat Cíl Trackování"
 
 msgid "Remove Followers Target"
-msgstr ""
+msgstr "Odebrat Cíl Trackování"
 
-#, fuzzy
 msgid "Remove target"
-msgstr "Resetovat Cíle"
+msgstr "Resetovat Cíl"
 
-#, fuzzy
 msgid "Add Followers Target"
-msgstr "Přidat Cíl"
+msgstr "Přidat Cíl Následovníků"
 
-#, fuzzy
 msgid "Add target"
-msgstr "Přidat Cíl"
+msgstr "Přidat cíl"
 
 msgid "sACN"
 msgstr "sACN"
@@ -1257,4 +1239,3 @@ msgstr "DMX Universe"
 
 #~ msgid "Import fixture from local filesystem"
 #~ msgstr "Importovat světlo ze souboru"
-
