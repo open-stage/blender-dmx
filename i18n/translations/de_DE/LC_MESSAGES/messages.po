@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-08-04 21:51+0200\n"
+"POT-Creation-Date: 2024-09-07 16:58+0200\n"
 "PO-Revision-Date: 2024-05-20 20:01+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language: de_DE\n"
@@ -46,11 +46,19 @@ msgstr "Footprint"
 msgid "DMX Collection"
 msgstr "DMX-Sammlung"
 
-msgid "Trackers Item"
+#, fuzzy
+msgid "Selected PSN Server"
+msgstr "Ausgewählte Fixtures"
+
+#, fuzzy
+msgid "The selected element on the PSN server list"
+msgstr "Das ausgewählte Element in der Universumsliste"
+
+msgid "Class List i"
 msgstr ""
 
 #, fuzzy
-msgid "The selected element on the trackers list"
+msgid "The selected element on the class list"
 msgstr "Das ausgewählte Element in der Universumsliste"
 
 msgid "Universe"
@@ -64,6 +72,10 @@ msgstr "Zöpfe anzeigen"
 
 msgid "Display 2D View"
 msgstr "2D-Ansicht anzeigen"
+
+#, fuzzy
+msgid "Display Device Label"
+msgstr "Gerätebezeichnung"
 
 msgid "Device Label"
 msgstr "Gerätebezeichnung"
@@ -129,8 +141,9 @@ msgstr "Volle Breite"
 msgid "Custom per each beam"
 msgstr "Individuell für jeden Strahl"
 
-msgid "Disable Overlays"
-msgstr "Overlays deaktivieren"
+#, fuzzy
+msgid "Disable Beam Outlines"
+msgstr "‚Falsche‘ Strahlenkegel anzeigen"
 
 msgid "Enable Volume Scatter"
 msgstr "Volumenstreuung aktivieren"
@@ -281,6 +294,14 @@ msgstr "DMX-Daten"
 
 msgid "Fixture"
 msgstr "Fixture"
+
+#, fuzzy
+msgid "Subfixtures"
+msgstr "Fixtures"
+
+#, fuzzy
+msgid "Active Subfixtures"
+msgstr "Ausgewählte Fixtures"
 
 msgid "DMX Universe"
 msgstr "DMX-Universum"
@@ -501,6 +522,10 @@ msgstr "Bewegung entsperren"
 msgid "Allow pan/tilt DMX data"
 msgstr "Schwenk/Neige-DMX-Daten erlauben"
 
+#, fuzzy
+msgid "Lock/Unlock Movement Rotation"
+msgstr "Bewegung entsperren"
+
 msgid "Deselect All"
 msgstr "Alles abwählen"
 
@@ -606,16 +631,40 @@ msgstr "Pan"
 msgid "Tilt"
 msgstr "Tilt"
 
+#, fuzzy
+msgid "Pan Rotation"
+msgstr "Drehung"
+
+#, fuzzy
+msgid "Tilt Rotation"
+msgstr "Drehung"
+
 msgid "Zoom"
 msgstr "Zoom"
 
 msgid "Color Wheel"
 msgstr "Farbrad"
 
-msgid "Gobo"
+msgid "Color Temperature"
+msgstr ""
+
+msgid "Iris"
+msgstr ""
+
+#, fuzzy
+msgid "Gobo1"
 msgstr "Gobo"
 
-msgid "Gobo Rotation"
+#, fuzzy
+msgid "Gobo1 Rotation"
+msgstr "Gobo-Drehung"
+
+#, fuzzy
+msgid "Gobo2"
+msgstr "Gobo"
+
+#, fuzzy
+msgid "Gobo2 Rotation"
 msgstr "Gobo-Drehung"
 
 msgid "Strobe"
@@ -707,6 +756,9 @@ msgstr "Status: {}"
 msgid "Clear Project data"
 msgstr "Projektdaten leeren"
 
+msgid "Copy (import) old data from addon folder"
+msgstr ""
+
 msgid "Import"
 msgstr "Importieren"
 
@@ -745,9 +797,6 @@ msgid "Error! Blender 3.4 or higher required."
 msgstr ""
 "Ein Fehler ist aufgetreten!\n"
 "Es wird mindestens Blender 3.4 oder höher benötigt."
-
-msgid "For Blender 4.2 and up use the Extension"
-msgstr ""
 
 msgid "Create New Show"
 msgstr "Neue Show erstellen"
@@ -814,6 +863,18 @@ msgstr ""
 msgid "Data cleared"
 msgstr "Daten geleert"
 
+msgid "Copy data from addon to user directory"
+msgstr ""
+
+msgid ""
+"Copy custom data from BlenderDMX addon directory to BlenderDMX extension "
+"user directory."
+msgstr ""
+
+#, fuzzy
+msgid "Data copied"
+msgstr "Daten geleert"
+
 msgid "Reload BlenderDMX addon"
 msgstr "BlenderDMX-Addon neu laden"
 
@@ -822,6 +883,22 @@ msgstr "Addon neu laden, nützlich während der Entwicklung"
 
 msgid "Addon reloaded"
 msgstr "Addon neu geladen"
+
+#, fuzzy
+msgid "Select visible"
+msgstr "Alles auswählen"
+
+#, fuzzy
+msgid "Select visible subfixtures"
+msgstr "Ausgewählte Fixtures"
+
+#, fuzzy
+msgid "Clear selection"
+msgstr "Auswahl umkehren"
+
+#, fuzzy
+msgid "Clear subfixture selection"
+msgstr "Zur Auswahl hinzufügen"
 
 msgid "Get GDTF Share account and fill it into BlenderDMX addon preferences."
 msgstr ""
@@ -965,6 +1042,9 @@ msgstr "Liste der lokalen Dateien aktualisieren"
 
 msgid "GDTF Share"
 msgstr "GDTF-Share"
+
+msgid "You must Allow Online access for this to work:"
+msgstr ""
 
 msgid "Fixture details"
 msgstr "Fixture-Details"
@@ -1274,4 +1354,13 @@ msgstr "Universen"
 
 #~ msgid "Import fixture from local filesystem"
 #~ msgstr "Fixture aus lokalen Dateien importieren"
+
+#~ msgid "Trackers Item"
+#~ msgstr ""
+
+#~ msgid "Disable Overlays"
+#~ msgstr "Overlays deaktivieren"
+
+#~ msgid "For Blender 4.2 and up use the Extension"
+#~ msgstr ""
 

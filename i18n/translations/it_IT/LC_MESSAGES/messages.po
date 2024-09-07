@@ -7,17 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-08-04 21:51+0200\n"
+"POT-Creation-Date: 2024-09-07 16:58+0200\n"
 "PO-Revision-Date: 2024-08-22 10:09+0000\n"
 "Last-Translator: Stefano siser <stefano.siser@gmail.com>\n"
-"Language-Team: Italian <https://hosted.weblate.org/projects/blenderdmx/main/"
-"it/>\n"
 "Language: it_IT\n"
+"Language-Team: Italian "
+"<https://hosted.weblate.org/projects/blenderdmx/main/it/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.7\n"
 "Generated-By: Babel 2.14.0\n"
 
 msgid "File doesn't exist"
@@ -47,11 +46,19 @@ msgstr "Traccia"
 msgid "DMX Collection"
 msgstr "Collezione DMX"
 
-msgid "Trackers Item"
-msgstr "Oggetti da tracciare"
+#, fuzzy
+msgid "Selected PSN Server"
+msgstr "Dispositivi Selezionati"
 
 #, fuzzy
-msgid "The selected element on the trackers list"
+msgid "The selected element on the PSN server list"
+msgstr "L'elemento selezionato nell'elenco degli universi"
+
+msgid "Class List i"
+msgstr ""
+
+#, fuzzy
+msgid "The selected element on the class list"
 msgstr "L'elemento selezionato nell'elenco degli universi"
 
 msgid "Universe"
@@ -65,6 +72,10 @@ msgstr "Visualizza Trecce"
 
 msgid "Display 2D View"
 msgstr "Visualizza Vista 2D"
+
+#, fuzzy
+msgid "Display Device Label"
+msgstr "Etichetta device"
 
 msgid "Device Label"
 msgstr "Etichetta device"
@@ -130,8 +141,9 @@ msgstr "Larghezza intera"
 msgid "Custom per each beam"
 msgstr "Personalizzato per ogni fascio"
 
-msgid "Disable Overlays"
-msgstr "Disabilita sovrapposizioni"
+#, fuzzy
+msgid "Disable Beam Outlines"
+msgstr "Visualizza il cono \"falso\" del fascio"
 
 msgid "Enable Volume Scatter"
 msgstr "Abilita la dispersione del volume"
@@ -287,6 +299,14 @@ msgstr "Dati DMX"
 
 msgid "Fixture"
 msgstr "Dispositivo"
+
+#, fuzzy
+msgid "Subfixtures"
+msgstr "Dispositivi"
+
+#, fuzzy
+msgid "Active Subfixtures"
+msgstr "Dispositivi Selezionati"
 
 msgid "DMX Universe"
 msgstr "Universo DMX"
@@ -510,6 +530,10 @@ msgstr "Sblocca Movimento"
 msgid "Allow pan/tilt DMX data"
 msgstr "Consenti dati DMX pan/tilt"
 
+#, fuzzy
+msgid "Lock/Unlock Movement Rotation"
+msgstr "Sblocca Movimento"
+
 msgid "Deselect All"
 msgstr "Deseleziona Tutti"
 
@@ -616,16 +640,40 @@ msgstr "Pan"
 msgid "Tilt"
 msgstr "Tilt"
 
+#, fuzzy
+msgid "Pan Rotation"
+msgstr "Rotazione"
+
+#, fuzzy
+msgid "Tilt Rotation"
+msgstr "Rotazione"
+
 msgid "Zoom"
 msgstr "Zoom"
 
 msgid "Color Wheel"
 msgstr "Ruota colori"
 
-msgid "Gobo"
+msgid "Color Temperature"
+msgstr ""
+
+msgid "Iris"
+msgstr ""
+
+#, fuzzy
+msgid "Gobo1"
 msgstr "Gobo"
 
-msgid "Gobo Rotation"
+#, fuzzy
+msgid "Gobo1 Rotation"
+msgstr "Rotazione Gobo"
+
+#, fuzzy
+msgid "Gobo2"
+msgstr "Gobo"
+
+#, fuzzy
+msgid "Gobo2 Rotation"
 msgstr "Rotazione Gobo"
 
 msgid "Strobe"
@@ -718,6 +766,9 @@ msgstr "Stato: {}"
 msgid "Clear Project data"
 msgstr "Azzera dati del progetto"
 
+msgid "Copy (import) old data from addon folder"
+msgstr ""
+
 msgid "Import"
 msgstr "Importa"
 
@@ -756,9 +807,6 @@ msgstr "Configurazione"
 
 msgid "Error! Blender 3.4 or higher required."
 msgstr "Errore! È richiesto Blender 3.4 o versione successiva."
-
-msgid "For Blender 4.2 and up use the Extension"
-msgstr "Su Blender 4.2 e superiori utilizzate l'estensione"
 
 msgid "Create New Show"
 msgstr "Crea Nuovo Spettacolo"
@@ -829,6 +877,20 @@ msgstr "Cancella i dati personalizzati dalla cartella addon di BlenderDMX."
 msgid "Data cleared"
 msgstr "Dati azzerati"
 
+#, fuzzy
+msgid "Copy data from addon to user directory"
+msgstr "Cancella i dati personalizzati dalla cartella addon di BlenderDMX."
+
+#, fuzzy
+msgid ""
+"Copy custom data from BlenderDMX addon directory to BlenderDMX extension "
+"user directory."
+msgstr "Cancella i dati personalizzati dalla cartella addon di BlenderDMX."
+
+#, fuzzy
+msgid "Data copied"
+msgstr "Dati azzerati"
+
 msgid "Reload BlenderDMX addon"
 msgstr "Ricarica addon BlenderDMX"
 
@@ -838,6 +900,22 @@ msgstr "Ricarica addon, utile durante lo sviluppo"
 #, fuzzy
 msgid "Addon reloaded"
 msgstr "Scaricamento"
+
+#, fuzzy
+msgid "Select visible"
+msgstr "Seleziona Tutti"
+
+#, fuzzy
+msgid "Select visible subfixtures"
+msgstr "Dispositivi Selezionati"
+
+#, fuzzy
+msgid "Clear selection"
+msgstr "Inverti selezione"
+
+#, fuzzy
+msgid "Clear subfixture selection"
+msgstr "Aggiungi alla selezione"
 
 msgid "Get GDTF Share account and fill it into BlenderDMX addon preferences."
 msgstr ""
@@ -981,6 +1059,9 @@ msgstr "Aggiorna l'elenco dei file locali"
 
 msgid "GDTF Share"
 msgstr "GDTF Share"
+
+msgid "You must Allow Online access for this to work:"
+msgstr ""
 
 msgid "Fixture details"
 msgstr "Dettagli dispositivo"
@@ -1300,3 +1381,13 @@ msgstr "Universi"
 
 #~ msgid "Import fixture from local filesystem"
 #~ msgstr "Importa dispositivo dal file system locale"
+
+#~ msgid "Trackers Item"
+#~ msgstr "Oggetti da tracciare"
+
+#~ msgid "Disable Overlays"
+#~ msgstr "Disabilita sovrapposizioni"
+
+#~ msgid "For Blender 4.2 and up use the Extension"
+#~ msgstr "Su Blender 4.2 e superiori utilizzate l'estensione"
+

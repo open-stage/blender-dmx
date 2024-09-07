@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-08-04 21:51+0200\n"
+"POT-Creation-Date: 2024-09-07 16:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language: kk\n"
@@ -45,10 +45,16 @@ msgstr ""
 msgid "DMX Collection"
 msgstr ""
 
-msgid "Trackers Item"
+msgid "Selected PSN Server"
 msgstr ""
 
-msgid "The selected element on the trackers list"
+msgid "The selected element on the PSN server list"
+msgstr ""
+
+msgid "Class List i"
+msgstr ""
+
+msgid "The selected element on the class list"
 msgstr ""
 
 msgid "Universe"
@@ -61,6 +67,9 @@ msgid "Display Pigtails"
 msgstr ""
 
 msgid "Display 2D View"
+msgstr ""
+
+msgid "Display Device Label"
 msgstr ""
 
 msgid "Device Label"
@@ -125,7 +134,7 @@ msgstr ""
 msgid "Custom per each beam"
 msgstr ""
 
-msgid "Disable Overlays"
+msgid "Disable Beam Outlines"
 msgstr ""
 
 msgid "Enable Volume Scatter"
@@ -266,6 +275,12 @@ msgid "DMX Data"
 msgstr ""
 
 msgid "Fixture"
+msgstr ""
+
+msgid "Subfixtures"
+msgstr ""
+
+msgid "Active Subfixtures"
 msgstr ""
 
 msgid "DMX Universe"
@@ -480,6 +495,9 @@ msgstr ""
 msgid "Allow pan/tilt DMX data"
 msgstr ""
 
+msgid "Lock/Unlock Movement Rotation"
+msgstr ""
+
 msgid "Deselect All"
 msgstr ""
 
@@ -582,16 +600,34 @@ msgstr ""
 msgid "Tilt"
 msgstr ""
 
+msgid "Pan Rotation"
+msgstr ""
+
+msgid "Tilt Rotation"
+msgstr ""
+
 msgid "Zoom"
 msgstr ""
 
 msgid "Color Wheel"
 msgstr ""
 
-msgid "Gobo"
+msgid "Color Temperature"
 msgstr ""
 
-msgid "Gobo Rotation"
+msgid "Iris"
+msgstr ""
+
+msgid "Gobo1"
+msgstr ""
+
+msgid "Gobo1 Rotation"
+msgstr ""
+
+msgid "Gobo2"
+msgstr ""
+
+msgid "Gobo2 Rotation"
 msgstr ""
 
 msgid "Strobe"
@@ -681,6 +717,9 @@ msgstr ""
 msgid "Clear Project data"
 msgstr ""
 
+msgid "Copy (import) old data from addon folder"
+msgstr ""
+
 msgid "Import"
 msgstr ""
 
@@ -715,9 +754,6 @@ msgid "Setup"
 msgstr ""
 
 msgid "Error! Blender 3.4 or higher required."
-msgstr ""
-
-msgid "For Blender 4.2 and up use the Extension"
 msgstr ""
 
 msgid "Create New Show"
@@ -782,6 +818,17 @@ msgstr ""
 msgid "Data cleared"
 msgstr ""
 
+msgid "Copy data from addon to user directory"
+msgstr ""
+
+msgid ""
+"Copy custom data from BlenderDMX addon directory to BlenderDMX extension "
+"user directory."
+msgstr ""
+
+msgid "Data copied"
+msgstr ""
+
 msgid "Reload BlenderDMX addon"
 msgstr ""
 
@@ -789,6 +836,18 @@ msgid "Reload the addon, useful during development"
 msgstr ""
 
 msgid "Addon reloaded"
+msgstr ""
+
+msgid "Select visible"
+msgstr ""
+
+msgid "Select visible subfixtures"
+msgstr ""
+
+msgid "Clear selection"
+msgstr ""
+
+msgid "Clear subfixture selection"
 msgstr ""
 
 msgid "Get GDTF Share account and fill it into BlenderDMX addon preferences."
@@ -926,6 +985,9 @@ msgid "Update list of local files"
 msgstr ""
 
 msgid "GDTF Share"
+msgstr ""
+
+msgid "You must Allow Online access for this to work:"
 msgstr ""
 
 msgid "Fixture details"
@@ -1265,5 +1327,23 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid "Import fixture from local filesystem"
+#~ msgstr ""
+
+#~ msgid "Trackers Item"
+#~ msgstr ""
+
+#~ msgid "The selected element on the trackers list"
+#~ msgstr ""
+
+#~ msgid "Disable Overlays"
+#~ msgstr ""
+
+#~ msgid "Gobo"
+#~ msgstr ""
+
+#~ msgid "Gobo Rotation"
+#~ msgstr ""
+
+#~ msgid "For Blender 4.2 and up use the Extension"
 #~ msgstr ""
 

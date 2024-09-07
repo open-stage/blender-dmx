@@ -7,17 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-08-04 21:51+0200\n"
+"POT-Creation-Date: 2024-09-07 16:58+0200\n"
 "PO-Revision-Date: 2024-09-07 14:55+0000\n"
 "Last-Translator: vanous <petr+weblate@linuks.cz>\n"
-"Language-Team: Czech <https://hosted.weblate.org/projects/blenderdmx/main/cs/"
-">\n"
 "Language: cs_CZ\n"
+"Language-Team: Czech "
+"<https://hosted.weblate.org/projects/blenderdmx/main/cs/>\n"
+"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
-"X-Generator: Weblate 5.8-dev\n"
 "Generated-By: Babel 2.14.0\n"
 
 msgid "File doesn't exist"
@@ -47,10 +46,19 @@ msgstr "Stopa"
 msgid "DMX Collection"
 msgstr "DMX Kolekce"
 
-msgid "Trackers Item"
-msgstr "Vybraný PSN Server"
+#, fuzzy
+msgid "Selected PSN Server"
+msgstr "Vybraná svítidla"
 
-msgid "The selected element on the trackers list"
+#, fuzzy
+msgid "The selected element on the PSN server list"
+msgstr "Vybraný univers v seznamu universů"
+
+msgid "Class List i"
+msgstr ""
+
+#, fuzzy
+msgid "The selected element on the class list"
 msgstr "Vybraný PSN Server v seznamu"
 
 msgid "Universe"
@@ -64,6 +72,10 @@ msgstr "Zobrazit panel konektorů"
 
 msgid "Display 2D View"
 msgstr "Zobrazit 2D pohled"
+
+#, fuzzy
+msgid "Display Device Label"
+msgstr "Štítek zařízení"
 
 msgid "Device Label"
 msgstr "Štítek zařízení"
@@ -129,8 +141,9 @@ msgstr "Plná šířka"
 msgid "Custom per each beam"
 msgstr "Vlastní nastavení pro každý paprsek"
 
-msgid "Disable Overlays"
-msgstr "Skrýt čáry kužele paprsku"
+#, fuzzy
+msgid "Disable Beam Outlines"
+msgstr "Zobrazit náhledový kužel paprsku"
 
 msgid "Enable Volume Scatter"
 msgstr "Povolit Prostorový Kužel Paprsku"
@@ -277,6 +290,14 @@ msgstr "DMX Data"
 
 msgid "Fixture"
 msgstr "Svítidlo"
+
+#, fuzzy
+msgid "Subfixtures"
+msgstr "Svítidla"
+
+#, fuzzy
+msgid "Active Subfixtures"
+msgstr "Vybraná svítidla"
 
 msgid "DMX Universe"
 msgstr "DMX Univers"
@@ -492,6 +513,10 @@ msgstr "Odemknout Pohyb"
 msgid "Allow pan/tilt DMX data"
 msgstr "Povolit pan/tilt data z DMX"
 
+#, fuzzy
+msgid "Lock/Unlock Movement Rotation"
+msgstr "Odemknout Pohyb"
+
 msgid "Deselect All"
 msgstr "Odznačit Vše"
 
@@ -594,16 +619,40 @@ msgstr "Pan"
 msgid "Tilt"
 msgstr "Tilt"
 
+#, fuzzy
+msgid "Pan Rotation"
+msgstr "Rotace"
+
+#, fuzzy
+msgid "Tilt Rotation"
+msgstr "Rotace"
+
 msgid "Zoom"
 msgstr "Zoom"
 
 msgid "Color Wheel"
 msgstr "Kolorový Kotouč"
 
-msgid "Gobo"
+msgid "Color Temperature"
+msgstr ""
+
+msgid "Iris"
+msgstr ""
+
+#, fuzzy
+msgid "Gobo1"
 msgstr "Gobo"
 
-msgid "Gobo Rotation"
+#, fuzzy
+msgid "Gobo1 Rotation"
+msgstr "Rotace Goba"
+
+#, fuzzy
+msgid "Gobo2"
+msgstr "Gobo"
+
+#, fuzzy
+msgid "Gobo2 Rotation"
 msgstr "Rotace Goba"
 
 msgid "Strobe"
@@ -693,6 +742,9 @@ msgstr "Stav: {}"
 msgid "Clear Project data"
 msgstr "Vyčistit Projektová data"
 
+msgid "Copy (import) old data from addon folder"
+msgstr ""
+
 msgid "Import"
 msgstr "Import"
 
@@ -728,9 +780,6 @@ msgstr "Nastavení"
 
 msgid "Error! Blender 3.4 or higher required."
 msgstr "Chyba! Blender 3.4 nebo vyšší je vyžadován."
-
-msgid "For Blender 4.2 and up use the Extension"
-msgstr "Pro Blender 4.2 a výše použíjte Extension"
 
 msgid "Create New Show"
 msgstr "Vytvořit Novou Show"
@@ -796,6 +845,20 @@ msgstr "Vyčistit vlastní data z adresáře BlenderDMX rozšíření."
 msgid "Data cleared"
 msgstr "Data vyčištěna"
 
+#, fuzzy
+msgid "Copy data from addon to user directory"
+msgstr "Vyčistit vlastní data z adresáře BlenderDMX rozšíření."
+
+#, fuzzy
+msgid ""
+"Copy custom data from BlenderDMX addon directory to BlenderDMX extension "
+"user directory."
+msgstr "Vyčistit vlastní data z adresáře BlenderDMX rozšíření."
+
+#, fuzzy
+msgid "Data copied"
+msgstr "Data vyčištěna"
+
 msgid "Reload BlenderDMX addon"
 msgstr "Reloadovat BlenderDMX rozšíření"
 
@@ -804,6 +867,22 @@ msgstr "Reloadovat rozšíření, užitečné při vývoji"
 
 msgid "Addon reloaded"
 msgstr "Rozšíření reloadováno"
+
+#, fuzzy
+msgid "Select visible"
+msgstr "Vybrat Vše"
+
+#, fuzzy
+msgid "Select visible subfixtures"
+msgstr "Vybraná svítidla"
+
+#, fuzzy
+msgid "Clear selection"
+msgstr "Invertovat výběr"
+
+#, fuzzy
+msgid "Clear subfixture selection"
+msgstr "Přidat k výběru"
 
 msgid "Get GDTF Share account and fill it into BlenderDMX addon preferences."
 msgstr "Získejte GDTF Share účet a zadejte jej do předvoleb rozšíření BlenderDMX."
@@ -943,6 +1022,9 @@ msgstr "Aktualizace seznamu místních souborů"
 
 msgid "GDTF Share"
 msgstr "GDTF Share"
+
+msgid "You must Allow Online access for this to work:"
+msgstr ""
 
 msgid "Fixture details"
 msgstr "Podrobnosti o svítidle"
@@ -1239,3 +1321,13 @@ msgstr "DMX Universe"
 
 #~ msgid "Import fixture from local filesystem"
 #~ msgstr "Importovat světlo ze souboru"
+
+#~ msgid "Trackers Item"
+#~ msgstr "Vybraný PSN Server"
+
+#~ msgid "Disable Overlays"
+#~ msgstr "Skrýt čáry kužele paprsku"
+
+#~ msgid "For Blender 4.2 and up use the Extension"
+#~ msgstr "Pro Blender 4.2 a výše použíjte Extension"
+
