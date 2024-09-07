@@ -8,1101 +8,1129 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-09-07 16:58+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language: ta\n"
-"Language-Team: none\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"PO-Revision-Date: 2024-11-25 06:00+0000\n"
+"Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>\n"
+"Language-Team: Tamil <https://hosted.weblate.org/projects/blenderdmx/main/ta/"
+">\n"
+"Language: ta_IN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.9-dev\n"
 "Generated-By: Babel 2.14.0\n"
 
 msgid "File doesn't exist"
-msgstr ""
+msgstr "கோப்பு இல்லை"
 
 msgid "Fixture ID"
-msgstr ""
+msgstr "பொருத்தப்பட்ட ஐடி"
 
 msgid "Unit Number"
-msgstr ""
+msgstr "அலகு எண்"
 
 msgid "Custom ID"
-msgstr ""
+msgstr "தனிப்பயன் ஐடி"
 
 msgid "DMX Address"
-msgstr ""
+msgstr "டி.எம்.எக்ச் முகவரி"
 
 msgid "Position"
-msgstr ""
+msgstr "நிலை"
 
 msgid "Rotation"
-msgstr ""
+msgstr "சுழற்சி"
 
 msgid "Footprint"
-msgstr ""
+msgstr "அமர்வகுதி"
 
 msgid "DMX Collection"
-msgstr ""
+msgstr "டி.எம்.எக்ச் சேகரிப்பு"
 
 msgid "Selected PSN Server"
-msgstr ""
+msgstr "தேர்ந்தெடுக்கப்பட்ட பிஎச்என் சேவையகம்"
 
 msgid "The selected element on the PSN server list"
-msgstr ""
+msgstr "பிஎச்என் சேவையக பட்டியலில் தேர்ந்தெடுக்கப்பட்ட உறுப்பு"
 
 msgid "Class List i"
-msgstr ""
+msgstr "வகுப்பு பட்டியல் i"
 
 msgid "The selected element on the class list"
-msgstr ""
+msgstr "வகுப்பு பட்டியலில் தேர்ந்தெடுக்கப்பட்ட உறுப்பு"
 
 msgid "Universe"
-msgstr ""
+msgstr "அண்டம்"
 
 msgid "Editable"
-msgstr ""
+msgstr "திருத்தக்கூடிய"
 
 msgid "Display Pigtails"
-msgstr ""
+msgstr "பிக்டெயில்களைக் காண்பி"
 
 msgid "Display 2D View"
-msgstr ""
+msgstr "2 டி பார்வையைக் காண்பி"
 
 msgid "Display Device Label"
-msgstr ""
+msgstr "சாதன லேபிளைக் காண்பி"
 
 msgid "Device Label"
-msgstr ""
+msgstr "சாதன சிட்டை"
 
 msgid "None"
-msgstr ""
+msgstr "எதுவுமில்லை"
 
 msgid "Name"
-msgstr ""
+msgstr "பெயர்"
 
 msgid "DMX"
-msgstr ""
+msgstr "டி.எம்.எக்ச்"
 
 msgid "Allow Selecting Geometries"
-msgstr ""
+msgstr "வடிவவியலைத் தேர்ந்தெடுப்பதை அனுமதிக்கவும்"
 
 msgid "Logging Level"
-msgstr ""
+msgstr "பதிவு நிலை"
 
 msgid "Critical"
-msgstr ""
+msgstr "விமர்சன"
 
 msgid "Error"
-msgstr ""
+msgstr "பிழை"
 
 msgid "Warning"
-msgstr ""
+msgstr "எச்சரிக்கை"
 
 msgid "Info"
-msgstr ""
+msgstr "தகவல்"
 
 msgid "Debug"
-msgstr ""
+msgstr "பிழைத்திருத்தம்"
 
 msgid "Simple beam"
-msgstr ""
+msgstr "எளிய கற்றை"
 
 msgid "Display 'fake' beam cone"
-msgstr ""
+msgstr "'போலி' பீம் கூம்பைக் காண்பி"
 
 msgid "Selected fixtures"
-msgstr ""
+msgstr "தேர்ந்தெடுக்கப்பட்ட சாதனங்கள்"
 
 msgid "All fixtures"
-msgstr ""
+msgstr "அனைத்து சாதனங்களும்"
 
 msgid "Beam Lens Diameter in Cycles"
-msgstr ""
+msgstr "சுழற்சிகளில் பீம் லென்ச் விட்டம்"
 
 msgid ""
 "Beam diameter is reduced to minimum when projecting gobos to prevent blur"
 " on gobo edge"
 msgstr ""
+"கோபோ விளிம்பில் மங்கலைத் தடுக்க GOBOS ஐக் காண்பிக்கும் போது பீம் விட்டம் குறைந்தபட்சமாகக் குறைக்கப்படுகிறது"
 
 msgid "Reduced"
-msgstr ""
+msgstr "குறைக்கப்பட்டது"
 
 msgid "Full width"
-msgstr ""
+msgstr "முழு அகலம்"
 
 msgid "Custom per each beam"
-msgstr ""
+msgstr "ஒவ்வொரு கற்றைக்கு தனிப்பயன்"
 
 msgid "Disable Beam Outlines"
-msgstr ""
+msgstr "பீம் கோடிட்டுகளை முடக்கு"
 
 msgid "Enable Volume Scatter"
-msgstr ""
+msgstr "தொகுதி சிதறலை இயக்கவும்"
 
 msgid "Noise Scale"
-msgstr ""
+msgstr "இரைச்சல் அளவு"
 
 msgid "Volume Noise Scale"
-msgstr ""
+msgstr "தொகுதி இரைச்சல் அளவு"
 
 msgid "Density"
-msgstr ""
+msgstr "அடர்த்தி"
 
 msgid "Volume Scatter Density"
-msgstr ""
+msgstr "தொகுதி சிதறல் அடர்த்தி"
 
 msgid "Multiply beams intensity"
-msgstr ""
+msgstr "விட்டங்களின் தீவிரத்தை பெருக்கவும்"
 
 msgid "Number of universes"
-msgstr ""
+msgstr "பிரபஞ்சங்களின் எண்ணிக்கை"
 
 msgid "The number of universes set on the panel"
-msgstr ""
+msgstr "பேனலில் அமைக்கப்பட்ட பிரபஞ்சங்களின் எண்ணிக்கை"
 
 msgid "Universe List Item"
-msgstr ""
+msgstr "யுனிவர்ச் பட்டியல் உருப்படி"
 
 msgid "The selected element on the universe list"
-msgstr ""
+msgstr "பிரபஞ்ச பட்டியலில் தேர்ந்தெடுக்கப்பட்ட உறுப்பு"
 
 msgid "IPv4 Address for ArtNet signal"
-msgstr ""
+msgstr "ஆர்ட்நெட் சிக்னலுக்கான ஐபிவி 4 முகவரி"
 
 msgid "The network card/interface to listen for ArtNet DMX data"
-msgstr ""
+msgstr "ஆர்ட்நெட் டிஎம்எக்ச் தரவைக் கேட்க பிணைய அட்டை/இடைமுகம்"
 
 msgid "Enable Art-Net Input"
-msgstr ""
+msgstr "கலை-நிகர உள்ளீட்டை இயக்கவும்"
 
 msgid ""
 "Enables the input of DMX data throught Art-Net on the selected network "
 "interface"
 msgstr ""
+"தேர்ந்தெடுக்கப்பட்ட பிணைய இடைமுகத்தில் கலை-நெட் மூலம் டிஎம்எக்ச் தரவின் உள்ளீட்டை இயக்குகிறது"
 
 msgid "Enable sACN Input"
-msgstr ""
+msgstr "SACN உள்ளீட்டை இயக்கவும்"
 
 msgid ""
 "Enables the input of DMX data throught sACN on all detected network "
 "interfaces"
 msgstr ""
+"கண்டறியப்பட்ட அனைத்து பிணைய இடைமுகங்களிலும் டிஎம்எக்ச் தரவின் உள்ளீட்டை செயல்படுத்துகிறது"
 
 msgid "Enable OSC Output"
-msgstr ""
+msgstr "OSC வெளியீட்டை இயக்கவும்"
 
 msgid "Enables Open Sound Control protocol to send fixture selection to a console"
 msgstr ""
+"ஒரு கன்சோலுக்கு பொருத்தப்பட்ட தேர்வை அனுப்ப திறந்த ஒலி கட்டுப்பாட்டு நெறிமுறையை இயக்குகிறது"
 
 msgid "OSC Target address"
-msgstr ""
+msgstr "OSC இலக்கு முகவரி"
 
 msgid ""
 "Address of the host where you want to send the OSC signal. Address ending"
 " on .255 is a broadcast address to all hosts on the network"
 msgstr ""
+"நீங்கள் OSC சமிக்ஞையை அனுப்ப விரும்பும் ஓச்டின் முகவரி. .255 இல் முடிவடையும் முகவரி நெட்வொர்க்கில் உள்ள அனைத்து "
+"ஓச்ட்களுக்கும் ஒளிபரப்பு முகவரி"
 
 msgid "OSC Target port"
-msgstr ""
+msgstr "OSC இலக்கு துறைமுகம்"
 
 msgid "Port number of the host where you want to send the OSC signal"
-msgstr ""
+msgstr "நீங்கள் OSC சமிக்ஞையை அனுப்ப விரும்பும் ஓச்டின் துறைமுகம் எண்"
 
 msgid "Enable MVR-xchange discovery"
-msgstr ""
+msgstr "MVR-Xchange கண்டுபிடிப்பை இயக்கவும்"
 
 msgid "Enables MVR-xchange discovery"
-msgstr ""
+msgstr "MVR-Xchange கண்டுபிடிப்பை செயல்படுத்துகிறது"
 
 msgid "Enable MVR-xchange connection"
-msgstr ""
+msgstr "MVR-Xchange இணைப்பை இயக்கவும்"
 
 msgid "Connects to MVR-xchange client"
-msgstr ""
+msgstr "MVR-Xchange கிளையனுடன் இணைகிறது"
 
 msgid "Art-Net Status"
-msgstr ""
+msgstr "கலை-நிகர நிலை"
 
 msgid "sACN Status"
-msgstr ""
+msgstr "SACN நிலை"
 
 msgid "Group List i"
-msgstr ""
+msgstr "குழு பட்டியல் i"
 
 msgid "The selected element on the group list"
-msgstr ""
+msgstr "குழு பட்டியலில் தேர்ந்தெடுக்கப்பட்ட உறுப்பு"
 
 msgid "Order by"
-msgstr ""
+msgstr "வழங்கியவர்"
 
 msgid "Fixture sorting order"
-msgstr ""
+msgstr "பொருத்தப்பட்ட வரிசையாக்க வரிசை"
 
 msgid "Laser collision collection"
-msgstr ""
+msgstr "லேசர் மோதல் சேகரிப்பு"
 
 msgid ""
 "Laser beams are projected onto objects in this collection. The beam stops"
 " at the first object colliding with the beam."
 msgstr ""
+"இந்த சேகரிப்பில் உள்ள பொருள்களில் லேசர் கற்றைகள் திட்டமிடப்பட்டுள்ளன. பீம் உடன் மோதுகின்ற முதல் பொருளில் கற்றை "
+"நின்றுவிடும்."
 
 msgid "Pause renderer"
-msgstr ""
+msgstr "இடைநிறுத்தம் வழங்குதல்"
 
 msgid "Manufacturers"
-msgstr ""
+msgstr "உற்பத்தியாளர்கள்"
 
 msgid "Imports"
-msgstr ""
+msgstr "இறக்குமதிகள்"
 
 msgid "Add to selection"
-msgstr ""
+msgstr "தேர்வில் சேர்க்கவும்"
 
 msgid "Remove from selection"
-msgstr ""
+msgstr "தேர்விலிருந்து அகற்று"
 
 msgid "Keyframe only selected fixtures (not for autokeying)"
-msgstr ""
+msgstr "கீஃப்ரேம் மட்டுமே தேர்ந்தெடுக்கப்பட்ட சாதனங்கள் (ஆட்டோக்கிங் அல்ல)"
 
 msgid "MVR-xchange"
-msgstr ""
+msgstr "எம்.வி.ஆர்-xchange"
 
 msgid "Status"
-msgstr ""
+msgstr "நிலை"
 
 msgid "DMX Data"
-msgstr ""
+msgstr "டி.எம்.எக்ச் தரவு"
 
 msgid "Fixture"
-msgstr ""
+msgstr "பொருத்துதல்"
 
 msgid "Subfixtures"
-msgstr ""
+msgstr "துணை வடிவங்கள்"
 
 msgid "Active Subfixtures"
-msgstr ""
+msgstr "செயலில் உள்ள துணை வடிவங்கள்"
 
 msgid "DMX Universe"
-msgstr ""
+msgstr "டி.எம்.எக்ச் யுனிவர்ச்"
 
 msgid "Address"
-msgstr ""
+msgstr "முகவரி"
 
 msgid "Gel Color"
-msgstr ""
+msgstr "செல் நிறம்"
 
 msgid "Display beams"
-msgstr ""
+msgstr "காட்சி விட்டங்கள்"
 
 msgid "Display beam projection and cone"
-msgstr ""
+msgstr "பீம் ப்ரொசெக்சன் மற்றும் கூம்பு காட்சி"
 
 msgid "Add Target"
-msgstr ""
+msgstr "இலக்கைச் சேர்"
 
 msgid "Add target for beam to follow"
-msgstr ""
+msgstr "பீம் பின்பற்ற இலக்கைச் சேர்க்கவும்"
 
 msgid "Increment DMX address"
-msgstr ""
+msgstr "அதிகரிப்பு டி.எம்.எக்ச் முகவரி"
 
 msgid "Increment Fixture ID"
-msgstr ""
+msgstr "அதிகரிக்கும் பொருத்தம் ஐடி"
 
 msgid "Increment Fixture ID if numeric"
-msgstr ""
+msgstr "எண் என்றால் அதிகரிப்பு பொருத்தம் ஐடி"
 
 msgid ""
 "The Fixture ID is an identifier of this fixture that can be used to "
 "activate / select them for programming."
 msgstr ""
+"பொருத்துதல் ஐடி என்பது இந்த அங்கத்தின் அடையாளங்காட்டியாகும், இது நிரலாக்கத்திற்காக அவற்றை செயல்படுத்த / தேர்ந்தெடுக்க "
+"பயன்படுத்தலாம்."
 
 msgid "Units"
-msgstr ""
+msgstr "அலகுகள்"
 
 msgid "How many units of this light to add"
-msgstr ""
+msgstr "இந்த ஒளியின் எத்தனை அலகுகளைச் சேர்க்க வேண்டும்"
 
 msgid "Enable PSN Input"
-msgstr ""
+msgstr "PSN உள்ளீட்டை இயக்கவும்"
 
 msgid "Enables PosiStageNet input"
-msgstr ""
+msgstr "Posistagenet உள்ளீட்டை இயக்குகிறது"
 
 msgid "IPv4 Address for PSN signal"
-msgstr ""
+msgstr "பிஎச்என் சமிக்ஞைக்கான ஐபிவி 4 முகவரி"
 
 msgid "The network card/interface to listen for PSN data"
-msgstr ""
+msgstr "பிஎச்என் தரவைக் கேட்க பிணைய அட்டை/இடைமுகம்"
 
 msgid "PSN Target port"
-msgstr ""
+msgstr "பி.எச்.என் இலக்கு துறைமுகம்"
 
 msgid "Align and Distribute"
-msgstr ""
+msgstr "சீரமைத்து விநியோகிக்கவும்"
 
 msgid "Active object: {}"
-msgstr ""
+msgstr "செயலில் உள்ள பொருள்: {}"
 
 msgid "Selected fixtures: {}"
-msgstr ""
+msgstr "தேர்ந்தெடுக்கப்பட்ட சாதனங்கள்: {}"
 
 msgid "DMX > Fixture Menu"
-msgstr ""
+msgstr "டி.எம்.எக்ச்> பொருத்தப்பட்ட பட்டியல்"
 
 msgid "Add"
-msgstr ""
+msgstr "கூட்டு"
 
 msgid "Edit"
-msgstr ""
+msgstr "தொகு"
 
 msgid "Remove"
-msgstr ""
+msgstr "அகற்று"
 
 msgid "DMX > Fixture > Add > Manufacturers"
-msgstr ""
+msgstr "Dmx> பொருத்துதல்> சேர்> உற்பத்தியாளர்கள்"
 
 msgid "DMX > Fixture > Add > Profiles"
-msgstr ""
+msgstr "Dmx> fighture> சேர்> சுயவிவரங்கள்"
 
 msgid "DMX > Fixture > Add > Mode"
-msgstr ""
+msgstr "Dmx> fighture> சேர்> பயன்முறை"
 
 msgid "DMX > Fixture > Add > Manufacturers > Profiles"
-msgstr ""
+msgstr "DMX> பொருத்துதல்> சேர்> உற்பத்தியாளர்கள்> சுயவிவரங்கள்"
 
 msgid "Profile"
-msgstr ""
+msgstr "சுயவிவரம்"
 
 msgid "Fixture GDTF Profile"
-msgstr ""
+msgstr "Gdtf சுயவிவரம்"
 
 msgid "Mode"
-msgstr ""
+msgstr "பயன்முறை"
 
 msgid "Fixture GDTF Mode"
-msgstr ""
+msgstr "Gdtf பயன்முறை"
 
 msgid "DMX Mode"
-msgstr ""
+msgstr "டி.எம்.எக்ச் பயன்முறை"
 
 msgid "Advanced edit"
-msgstr ""
+msgstr "மேம்பட்ட திருத்து"
 
 msgid "GDTF Profile"
-msgstr ""
+msgstr "GDTF சுயவிவரம்"
 
 msgid "Unknown manufacturer"
-msgstr ""
+msgstr "தெரியாத உற்பத்தியாளர்"
 
 msgid "DMX: Add Fixture"
-msgstr ""
+msgstr "டி.எம்.எக்ச்: பொருத்துதலைச் சேர்க்கவும்"
 
 msgid "Add fixtures to the show"
-msgstr ""
+msgstr "நிகழ்ச்சியில் சாதனங்களைச் சேர்க்கவும்"
 
 msgid "Fixture named {} already exists"
-msgstr ""
+msgstr "{} ஏற்கனவே உள்ளது"
 
 msgid "No GDTF Profile selected."
-msgstr ""
+msgstr "சி.டி.டி.எஃப் சுயவிவரம் எதுவும் தேர்ந்தெடுக்கப்படவில்லை."
 
 msgid "No DMX Mode selected."
-msgstr ""
+msgstr "டிஎம்எக்ச் பயன்முறை எதுவும் தேர்ந்தெடுக்கப்படவில்லை."
 
 msgid "DMX: Edit Fixture"
-msgstr ""
+msgstr "டி.எம்.எக்ச்: பொருத்துதலைத் திருத்து"
 
 msgid "Edit selected fixtures"
-msgstr ""
+msgstr "தேர்ந்தெடுக்கப்பட்ட சாதனங்களைத் திருத்தவும்"
 
 msgid "DMX > Fixture > Remove"
-msgstr ""
+msgstr "Dmx> figuter> அகற்று"
 
 msgid "Remove selected fixtures from Scene"
-msgstr ""
+msgstr "தேர்ந்தெடுக்கப்பட்ட சாதனங்களை காட்சியில் இருந்து அகற்று"
 
 msgid "DMX > Fixture > Item"
-msgstr ""
+msgstr "டி.எம்.எக்ச்> பொருத்துதல்> உருப்படி"
 
 msgid "Select Fixture"
-msgstr ""
+msgstr "பொருத்துதலைத் தேர்ந்தெடுக்கவும்"
 
 msgid "Remove fixture"
-msgstr ""
+msgstr "பொருத்துதலை அகற்று"
 
 msgid "Fixtures"
-msgstr ""
+msgstr "சாதனங்கள்"
 
 msgid "F ID"
-msgstr ""
+msgstr "F"
 
 msgid "Unit #"
-msgstr ""
+msgstr "பிரிவு #"
 
 msgid "F ID #"
-msgstr ""
+msgstr "F ஐடி #"
 
 msgid "Cst ID"
-msgstr ""
+msgstr "சிஎச்டி ஐடி"
 
 msgid "Uni"
-msgstr ""
+msgstr "உனி"
 
 msgid "Addr"
-msgstr ""
+msgstr "முகவரி"
 
 msgid "Uni.Addr"
-msgstr ""
+msgstr "Uni.addr"
 
 msgid "Foot"
-msgstr ""
+msgstr "கால்"
 
 msgid "DMX > Group Menu"
-msgstr ""
+msgstr "டி.எம்.எக்ச்> குழு பட்டியல்"
 
 msgid "Create"
-msgstr ""
+msgstr "உருவாக்கு"
 
 msgid "Update"
-msgstr ""
+msgstr "புதுப்பிப்பு"
 
 msgid "Rename"
-msgstr ""
+msgstr "மறுபெயரிடுங்கள்"
 
 msgid "DMX > Group > Create"
-msgstr ""
+msgstr "Dmx> குழு> உருவாக்கு"
 
 msgid "Create DMX group from selected fixtures"
-msgstr ""
+msgstr "தேர்ந்தெடுக்கப்பட்ட சாதனங்களிலிருந்து டி.எம்.எக்ச் குழுவை உருவாக்கவும்"
 
 msgid "Group Name"
-msgstr ""
+msgstr "குழு பெயர்"
 
 msgid "Reset Colors"
-msgstr ""
+msgstr "வண்ணங்களை மீட்டமைக்கவும்"
 
 msgid "Lock Movement"
-msgstr ""
+msgstr "பூட்டு இயக்கம்"
 
 msgid "Ignore pan/tilt DMX data"
-msgstr ""
+msgstr "பான்/டில்ட் டிஎம்எக்ச் தரவைப் புறக்கணிக்கவும்"
 
 msgid "Unlock Movement"
-msgstr ""
+msgstr "இயக்கத்தைத் திறக்கவும்"
 
 msgid "Allow pan/tilt DMX data"
-msgstr ""
+msgstr "பான்/டில்ட் டிஎம்எக்ச் தரவை அனுமதிக்கவும்"
 
 msgid "Lock/Unlock Movement Rotation"
-msgstr ""
+msgstr "இயக்க சுழற்சியை பூட்டு/திறத்தல்"
 
 msgid "Deselect All"
-msgstr ""
+msgstr "அனைத்தையும் தேர்வு செய்யுங்கள்"
 
 msgid "Deselect every fixture in the Scene"
-msgstr ""
+msgstr "காட்சியில் உள்ள ஒவ்வொரு அங்கத்தினரையும் தேர்வுநீக்கு"
 
 msgid "Select All"
-msgstr ""
+msgstr "அனைத்தையும் தெரிவுசெய்"
 
 msgid "Select every fixture in the Scene"
-msgstr ""
+msgstr "காட்சியில் உள்ள ஒவ்வொரு பொருத்துதலையும் தேர்ந்தெடுக்கவும்"
 
 msgid "Select Visible (only filtered)"
-msgstr ""
+msgstr "புலப்படுவதைத் தேர்ந்தெடுக்கவும் (வடிகட்டப்பட்டது மட்டுமே)"
 
 msgid "Select every fixture which is visible in the fixtures list"
 msgstr ""
+"சாதனங்கள் பட்டியலில் காணக்கூடிய ஒவ்வொரு பொருத்துதலையும் தேர்ந்தெடுக்கவும்"
 
 msgid "Invert selection"
-msgstr ""
+msgstr "தலைகீழ் தேர்வு"
 
 msgid "Invert the selection"
-msgstr ""
+msgstr "தேர்வை தலைகீழாக மாற்றவும்"
 
 msgid "Select every other light"
-msgstr ""
+msgstr "மற்ற எல்லா ஒளியையும் தேர்ந்தெடுக்கவும்"
 
 msgid "Clear"
-msgstr ""
+msgstr "தெளிவான"
 
 msgid "Clear all DMX values to default and update fixtures"
 msgstr ""
+"அனைத்து டிஎம்எக்ச் மதிப்புகளையும் இயல்புநிலைக்கு அழித்து பொருத்துதல்களைப் புதுப்பிக்கவும்"
 
 msgid "Apply"
-msgstr ""
+msgstr "இடு"
 
 msgid "Apply these values manually when render is paused"
 msgstr ""
+"வழங்குதல் இடைநிறுத்தப்படும்போது இந்த மதிப்புகளை கைமுறையாகப் பயன்படுத்துங்கள்"
 
 msgid "Targets to zero"
-msgstr ""
+msgstr "பூச்சியத்திற்கான இலக்குகள்"
 
 msgid "Set Targets' position to 0 of the Scene"
-msgstr ""
+msgstr "இலக்குகளின் நிலையை காட்சியின் 0 ஆக அமைக்கவும்"
 
 msgid "Center View to Selected"
-msgstr ""
+msgstr "தேர்ந்தெடுக்கப்பட்ட மையக் காட்சி"
 
 msgid "Set View to center on selected objects"
-msgstr ""
+msgstr "தேர்ந்தெடுக்கப்பட்ட பொருள்களை மையமாகக் கொண்டு பார்வையை அமைக்கவும்"
 
 msgid "Reset targets"
-msgstr ""
+msgstr "இலக்குகளை மீட்டமைக்கவும்"
 
 msgid "Reset position of target of selected fixtures"
-msgstr ""
+msgstr "தேர்ந்தெடுக்கப்பட்ட சாதனங்களின் இலக்கின் நிலையை மீட்டமை"
 
 msgid "Select Fixtures"
-msgstr ""
+msgstr "சாதனங்களைத் தேர்ந்தெடுக்கவும்"
 
 msgid "Select base/body of every selected fixture"
 msgstr ""
+"தேர்ந்தெடுக்கப்பட்ட ஒவ்வொரு பொருத்தத்தின் அடிப்படை/உடலைத் தேர்ந்தெடுக்கவும்"
 
 msgid "Select Targets"
-msgstr ""
+msgstr "இலக்குகளைத் தேர்ந்தெடுக்கவும்"
 
 msgid "Select target from every fixture element selected"
 msgstr ""
+"தேர்ந்தெடுக்கப்பட்ட ஒவ்வொரு பொருத்துதல் உறுப்பிலிருந்தும் இலக்கைத் தேர்ந்தெடுக்கவும்"
 
 msgid "Select Camera"
-msgstr ""
+msgstr "கேமராவைத் தேர்ந்தெடுக்கவும்"
 
 msgid "Select camera of the selected fixture"
-msgstr ""
+msgstr "தேர்ந்தெடுக்கப்பட்ட அங்கத்தின் கேமராவைத் தேர்ந்தெடுக்கவும்"
 
 msgid "Programmer"
-msgstr ""
+msgstr "நிரலி (device), நிரலர் (person)"
 
 msgid "Nothing selected"
-msgstr ""
+msgstr "எதுவும் தேர்ந்தெடுக்கப்படவில்லை"
 
 msgid "{} selected"
-msgstr ""
+msgstr "}} தேர்ந்தெடுக்கப்பட்டது"
 
 msgid "Bodies"
-msgstr ""
+msgstr "உடல்கள்"
 
 msgid "Targets"
-msgstr ""
+msgstr "இலக்குகள்"
 
 msgid "Camera"
-msgstr ""
+msgstr "கேமரா"
 
 msgid "Dimmer"
-msgstr ""
+msgstr "மங்கலான"
 
 msgid "Pan"
-msgstr ""
+msgstr "பான்"
 
 msgid "Tilt"
-msgstr ""
+msgstr "சாய்"
 
 msgid "Pan Rotation"
-msgstr ""
+msgstr "பான் சுழற்சி"
 
 msgid "Tilt Rotation"
-msgstr ""
+msgstr "சாய்வு சுழற்சி"
 
 msgid "Zoom"
-msgstr ""
+msgstr "பெரிதாக்கு"
 
 msgid "Color Wheel"
-msgstr ""
+msgstr "வண்ண சக்கரம்"
 
 msgid "Color Temperature"
-msgstr ""
+msgstr "வண்ண வெப்பநிலை"
 
 msgid "Iris"
-msgstr ""
+msgstr "கருவிழி"
 
 msgid "Gobo1"
-msgstr ""
+msgstr "கோபோ 1"
 
 msgid "Gobo1 Rotation"
-msgstr ""
+msgstr "GOBO1 சுழற்சி"
 
 msgid "Gobo2"
-msgstr ""
+msgstr "கோபோ 2"
 
 msgid "Gobo2 Rotation"
-msgstr ""
+msgstr "GOBO2 சுழற்சி"
 
 msgid "Strobe"
-msgstr ""
+msgstr "ச்ட்ரோப்"
 
 msgid "Clear All"
-msgstr ""
+msgstr "அனைத்தையும் அழிக்கவும்"
 
 msgid "DMX > Recorder > Add Keyframe"
-msgstr ""
+msgstr "டி.எம்.எக்ச்> ரெக்கார்டர்> கீஃப்ரேமைச் சேர்க்கவும்"
 
 msgid "Add a Keyframe with the current DMX data"
-msgstr ""
+msgstr "தற்போதைய டிஎம்எக்ச் தரவுடன் ஒரு கீஃப்ரேமைச் சேர்க்கவும்"
 
 msgid "DMX > Recorder > Delete Keyframes for all fixtures"
-msgstr ""
+msgstr "டி.எம்.எக்ச்> ரெக்கார்டர்> அனைத்து சாதனங்களுக்கும் கீஃப்ரேம்களை நீக்கு"
 
 msgid "Deletes all keyframes from all fixtures"
-msgstr ""
+msgstr "அனைத்து சாதனங்களிலிருந்தும் அனைத்து கீஃப்ரேம்களையும் நீக்குகிறது"
 
 msgid "DMX > Recorder > Delete All Keyframes from selected fixtures"
 msgstr ""
+"டி.எம்.எக்ச்> ரெக்கார்டர்> தேர்ந்தெடுக்கப்பட்ட சாதனங்களிலிருந்து அனைத்து கீஃப்ரேம்களையும் நீக்கு"
 
 msgid "Deletes all keyframes from selected fixtures"
 msgstr ""
+"தேர்ந்தெடுக்கப்பட்ட சாதனங்களிலிருந்து அனைத்து கீஃப்ரேம்களையும் நீக்குகிறது"
 
 msgid "Keyframe Recorder"
-msgstr ""
+msgstr "கீஃப்ரேம் ரெக்கார்டர்"
 
 msgid "Add Keyframe"
-msgstr ""
+msgstr "கீஃப்ரேமைச் சேர்க்கவும்"
 
 msgid "Delete Keyframes"
-msgstr ""
+msgstr "கீஃப்ரேம்களை நீக்கு"
 
 msgid "Delete from selected fixtures"
-msgstr ""
+msgstr "தேர்ந்தெடுக்கப்பட்ட சாதனங்களிலிருந்து நீக்கு"
 
 msgid "Delete from all fixtures"
-msgstr ""
+msgstr "எல்லா சாதனங்களிலிருந்தும் நீக்கு"
 
 msgid "DMX > Setup > New Show"
-msgstr ""
+msgstr "டி.எம்.எக்ச்> அமைவு> புதிய நிகழ்ச்சி"
 
 msgid "Clear any existing DMX data and create a new show."
 msgstr ""
+"தற்போதுள்ள எந்த டி.எம்.எக்ச் தரவையும் அழித்து புதிய நிகழ்ச்சியை உருவாக்கவும்."
 
 msgid "Beam diameter small"
-msgstr ""
+msgstr "பீம் விட்டம் சிறியது"
 
 msgid "Beam diameter normal"
-msgstr ""
+msgstr "பீம் விட்டம் இயல்பானது"
 
 msgid "DMX > Setup > Create/Update Volume Box"
-msgstr ""
+msgstr "டி.எம்.எக்ச்> அமைவு> தொகுதி பெட்டியை உருவாக்கு/புதுப்பித்தல்"
 
 msgid "Create/Update a Box on the scene bounds with a Volume Scatter shader"
 msgstr ""
+"தொகுதி சிதறல் சேடருடன் காட்சியில் ஒரு பெட்டியை உருவாக்கவும்/புதுப்பிக்கவும்"
 
 msgid "Beam Volume"
-msgstr ""
+msgstr "பீம் தொகுதி"
 
 msgid "Update Volume Box"
-msgstr ""
+msgstr "தொகுதி பெட்டியைப் புதுப்பிக்கவும்"
 
 msgid "Create Volume Box"
-msgstr ""
+msgstr "தொகுதி பெட்டியை உருவாக்கவும்"
 
 msgid "Set on selected fixtures"
-msgstr ""
+msgstr "தேர்ந்தெடுக்கப்பட்ட சாதனங்களில் அமைக்கவும்"
 
 msgid "Viewport"
-msgstr ""
+msgstr "வியூபோர்ட்"
 
 msgid "Background Color"
-msgstr ""
+msgstr "பின்னணி நிறம்"
 
 msgid "Extras"
-msgstr ""
+msgstr "கூடுதல்"
 
 msgid "Check for BlenderDMX updates"
-msgstr ""
+msgstr "BlenderDMX புதுப்பிப்புகளை சரிபார்க்கவும்"
 
 msgid "Status: {}"
-msgstr ""
+msgstr "நிலை: {}"
 
 msgid "Clear Project data"
-msgstr ""
+msgstr "திட்ட தரவை அழிக்கவும்"
 
 msgid "Copy (import) old data from addon folder"
-msgstr ""
+msgstr "Addon கோப்புறையிலிருந்து பழைய தரவை நகலெடுக்கவும் (இறக்குமதி)"
 
 msgid "Import"
-msgstr ""
+msgstr "இறக்குமதி"
 
 msgid "Import GDTF Profile"
-msgstr ""
+msgstr "GDTF சுயவிவரத்தை இறக்குமதி செய்க"
 
 msgid "Import MVR Scene"
-msgstr ""
+msgstr "எம்.வி.ஆர் காட்சியை இறக்குமதி செய்யுங்கள்"
 
 msgid "Import Project data"
-msgstr ""
+msgstr "திட்ட தரவை இறக்குமதி செய்யுங்கள்"
 
 msgid "Export"
-msgstr ""
+msgstr "ஏற்றுமதி"
 
 msgid "Export Project data"
-msgstr ""
+msgstr "திட்டத் தரவை ஏற்றுமதி செய்யுங்கள்"
 
 msgid "Export MVR"
-msgstr ""
+msgstr "ஏற்றுமதி எம்.வி.ஆர்"
 
 msgid "Show logging directory"
-msgstr ""
+msgstr "பதிவு கோப்பகத்தைக் காட்டு"
 
 msgid "Logging"
-msgstr ""
+msgstr "பதிவு"
 
 msgid "Log filter"
-msgstr ""
+msgstr "பதிவு வடிகட்டி"
 
 msgid "Setup"
-msgstr ""
+msgstr "அமைவு"
 
 msgid "Error! Blender 3.4 or higher required."
-msgstr ""
+msgstr "பிழை! பிளெண்டர் 3.4 அல்லது அதற்கு மேற்பட்ட தேவை."
 
 msgid "Create New Show"
-msgstr ""
+msgstr "புதிய நிகழ்ச்சியை உருவாக்கவும்"
 
 msgid "Check version"
-msgstr ""
+msgstr "காசோலை பதிப்பு"
 
 msgid "Check if there is new release of BlenderDMX"
-msgstr ""
+msgstr "BlenderDMX இன் புதிய வெளியீடு இருக்கிறதா என்று சரிபார்க்கவும்"
 
 msgid "Unknown version error"
-msgstr ""
+msgstr "அறியப்படாத பதிப்பு பிழை"
 
 msgid "New version {} available"
-msgstr ""
+msgstr "புதிய பதிப்பு}} கிடைக்கிறது"
 
 msgid "You are using pre-release version"
-msgstr ""
+msgstr "நீங்கள் முன் வெளியீட்டு பதிப்பைப் பயன்படுத்துகிறீர்கள்"
 
 msgid "You are using latest version of BlenderDMX"
-msgstr ""
+msgstr "நீங்கள் BlenderDMX இன் அண்மைக் கால பதிப்பைப் பயன்படுத்துகிறீர்கள்"
 
 msgid "Checking..."
-msgstr ""
+msgstr "சோதனை ..."
 
 msgid "Import Custom Data"
-msgstr ""
+msgstr "தனிப்பயன் தரவை இறக்குமதி செய்யுங்கள்"
 
 msgid ""
 "Unzip previously exported custom data from a zip file. This will "
 "overwrite current data!"
 msgstr ""
+"UNZIP முன்னர் ஒரு சிப் கோப்பிலிருந்து தனிப்பயன் தரவை ஏற்றுமதி செய்தது. இது தற்போதைய தரவை மேலெழுதும்!"
 
 msgid "File Path"
-msgstr ""
+msgstr "கோப்பு பாதை"
 
 msgid "Files"
-msgstr ""
+msgstr "கோப்புகள்"
 
 msgid "Incorrect file name!"
-msgstr ""
+msgstr "தவறான கோப்பு பெயர்!"
 
 msgid "Data imported from: {}"
-msgstr ""
+msgstr "இறக்குமதி செய்யப்பட்ட தரவு: {}"
 
 msgid "Export Custom Data"
-msgstr ""
+msgstr "தனிப்பயன் தரவை ஏற்றுமதி செய்யுங்கள்"
 
 msgid "Zip and Export custom data from BlenderDMX addon directory."
 msgstr ""
+"பிளெண்டர் டிஎம்எக்ச் அடோன் கோப்பகத்திலிருந்து தனிப்பயன் தரவை சிப் மற்றும் ஏற்றுமதி செய்யுங்கள்."
 
 msgid "Data exported to: {}"
-msgstr ""
+msgstr "தரவு ஏற்றுமதி: {}"
 
 msgid "Clear Custom Data"
-msgstr ""
+msgstr "தனிப்பயன் தரவை அழிக்கவும்"
 
 msgid "Clear custom data from BlenderDMX addon directory."
-msgstr ""
+msgstr "BlenderDMX ADDON கோப்பகத்திலிருந்து தனிப்பயன் தரவை அழிக்கவும்."
 
 msgid "Data cleared"
-msgstr ""
+msgstr "தரவு அழிக்கப்பட்டது"
 
 msgid "Copy data from addon to user directory"
-msgstr ""
+msgstr "Addon இலிருந்து பயனர் கோப்பகத்திற்கு தரவை நகலெடுக்கவும்"
 
 msgid ""
 "Copy custom data from BlenderDMX addon directory to BlenderDMX extension "
 "user directory."
 msgstr ""
+"பிளெண்டர் டிஎம்எக்ச் அடோன் கோப்பகத்திலிருந்து பிளெண்டர் டிஎம்எக்ச் நீட்டிப்பு பயனர் கோப்பகத்திற்கு தனிப்பயன் தரவை "
+"நகலெடுக்கவும்."
 
 msgid "Data copied"
-msgstr ""
+msgstr "தரவு நகலெடுக்கப்பட்டது"
 
 msgid "Reload BlenderDMX addon"
-msgstr ""
+msgstr "Repoad lolenderdmx addon"
 
 msgid "Reload the addon, useful during development"
-msgstr ""
+msgstr "வளர்ச்சியின் போது பயனுள்ள துணை நிரலை மீண்டும் ஏற்றவும்"
 
 msgid "Addon reloaded"
-msgstr ""
+msgstr "Addon மீண்டும் ஏற்றப்பட்டது"
 
 msgid "Select visible"
-msgstr ""
+msgstr "தெரியும் என்பதைத் தேர்ந்தெடுக்கவும்"
 
 msgid "Select visible subfixtures"
-msgstr ""
+msgstr "புலப்படும் துணை வடிவங்களைத் தேர்ந்தெடுக்கவும்"
 
 msgid "Clear selection"
-msgstr ""
+msgstr "தெளிவான தேர்வு"
 
 msgid "Clear subfixture selection"
-msgstr ""
+msgstr "தெளிவான துணை முறிவு தேர்வு"
 
 msgid "Get GDTF Share account and fill it into BlenderDMX addon preferences."
 msgstr ""
+"GDTF பகிர்வு கணக்கைப் பெற்று அதை blenderdmx addon விருப்பங்களில் நிரப்பவும்."
 
 msgid "GDTF Share API credentials missing"
-msgstr ""
+msgstr "GDTF பகிர்வு பநிஇ நற்சான்றிதழ்கள் இல்லை"
 
 msgid "Downloading {}"
-msgstr ""
+msgstr "பதிவிறக்கம் {}"
 
 msgid "GDTF Share Download"
-msgstr ""
+msgstr "Gdtf பங்கு பதிவிறக்கம்"
 
 msgid "Share index updated. Status code was: {}"
-msgstr ""
+msgstr "பகிர்வு அட்டவணை புதுப்பிக்கப்பட்டது. நிலை குறியீடு: {}"
 
 msgid "GDTF Share updated"
-msgstr ""
+msgstr "GDTF பகிர்வு புதுப்பிக்கப்பட்டது"
 
 msgid "Error while updating Share index. Error code was: {}"
-msgstr ""
+msgstr "பகிர்வு குறியீட்டைப் புதுப்பிக்கும்போது பிழை. பிழைக் குறியீடு: {}"
 
 msgid "GDTF Share update error"
-msgstr ""
+msgstr "GDTF பகிர்வு புதுப்பிப்பு பிழை"
 
 msgid "File downloaded correctly. Status code was: {}"
-msgstr ""
+msgstr "கோப்பு சரியாக பதிவிறக்கம் செய்யப்பட்டது. நிலை குறியீடு: {}"
 
 msgid "GDTF file downloaded"
-msgstr ""
+msgstr "GDTF கோப்பு பதிவிறக்கம் செய்யப்பட்டது"
 
 msgid "Error downloading GDTF file. Error code was: {}"
-msgstr ""
+msgstr "GDTF கோப்பைப் பதிவிறக்குவதில் பிழை. பிழைக் குறியீடு: {}"
 
 msgid "GDTF Share download error"
-msgstr ""
+msgstr "GDTF பகிர்வு பதிவிறக்க பிழை"
 
 msgid "The name of the DMX profile."
-msgstr ""
+msgstr "டி.எம்.எக்ச் சுயவிவரத்தின் பெயர்."
 
 msgid "Channel count"
-msgstr ""
+msgstr "சேனல் எண்ணிக்கை"
 
 msgid "Number of channels"
-msgstr ""
+msgstr "சேனல்களின் எண்ணிக்கை"
 
 msgid "Short Name"
-msgstr ""
+msgstr "குறுகிய பெயர்"
 
 msgid ""
 "The short name of the DMX profile, all caps, used as suggestion for "
 "fixture names."
 msgstr ""
+"டி.எம்.எக்ச் சுயவிவரத்தின் குறுகிய பெயர், அனைத்து தொப்பிகளும், பொருத்தப்பட்ட பெயர்களுக்கான ஆலோசனையாகப் "
+"பயன்படுத்தப்படுகின்றன."
 
 msgid "Filename"
-msgstr ""
+msgstr "கோப்புப்பெயர்"
 
 msgid "Some fixtures could not be processed"
-msgstr ""
+msgstr "சில சாதனங்களை செயலாக்க முடியவில்லை"
 
 msgid "Mode name"
-msgstr ""
+msgstr "பயன்முறை பெயர்"
 
 msgid "DMX Footprint"
-msgstr ""
+msgstr "டி.எம்.எக்ச் தடம்"
 
 msgid "Fixture name"
-msgstr ""
+msgstr "பொருத்தப்பட்ட பெயர்"
 
 msgid "Manufacturer and fixture name"
-msgstr ""
+msgstr "உற்பத்தியாளர் மற்றும் பொருத்தப்பட்ட பெயர்"
 
 msgid "Manufacturer"
-msgstr ""
+msgstr "உற்பத்தியாளர்"
 
 msgid "Manufacturer name"
-msgstr ""
+msgstr "உற்பத்தியாளர் பெயர்"
 
 msgid "Revision"
-msgstr ""
+msgstr "திருத்தம்"
 
 msgid "Revision text"
-msgstr ""
+msgstr "திருத்த உரை"
 
 msgid "Uploaded by"
-msgstr ""
+msgstr "பதிவேற்றியது"
 
 msgid "File uploaded by"
-msgstr ""
+msgstr "கோப்பு பதிவேற்றியது"
 
 msgid "Created by"
-msgstr ""
+msgstr "உருவாக்கியது"
 
 msgid "File created by"
-msgstr ""
+msgstr "கோப்பு உருவாக்கப்பட்டது"
 
 msgid "Rating"
-msgstr ""
+msgstr "செயல்வரம்பு"
 
 msgid "Revision ID"
-msgstr ""
+msgstr "திருத்த ஐடி"
 
 msgid "File identifier in the GDTF Share"
-msgstr ""
+msgstr "GDTF பங்கில் கோப்பு அடையாளங்காட்டி"
 
 msgid "DMX Modes"
-msgstr ""
+msgstr "டி.எம்.எக்ச் முறைகள்"
 
 msgid "DMX Mode Name"
-msgstr ""
+msgstr "டி.எம்.எக்ச் பயன்முறை பெயர்"
 
 msgid "Import from Share"
-msgstr ""
+msgstr "பங்கிலிருந்து இறக்குமதி"
 
 msgid "Import fixture from GDTF Share"
-msgstr ""
+msgstr "GDTF பங்கிலிருந்து இறக்குமதி"
 
 msgid "Update GDTF Share index"
-msgstr ""
+msgstr "GDTF பகிர்வு குறியீட்டைப் புதுப்பிக்கவும்"
 
 msgid "Update data index of GDTF Share"
-msgstr ""
+msgstr "GDTF பங்கின் தரவு குறியீட்டைப் புதுப்பிக்கவும்"
 
 msgid "Delete fixture"
-msgstr ""
+msgstr "பொருத்துதலை நீக்கு"
 
 msgid "Delete fixture from local filesystem"
-msgstr ""
+msgstr "உள்ளக கோப்பு முறைமையிலிருந்து பொருத்துதலை நீக்கு"
 
 msgid "Refresh files listing"
-msgstr ""
+msgstr "கோப்புகளை புதுப்பிக்கவும்"
 
 msgid "Update list of local files"
-msgstr ""
+msgstr "உள்ளக கோப்புகளின் பட்டியலைப் புதுப்பிக்கவும்"
 
 msgid "GDTF Share"
-msgstr ""
+msgstr "GDTF பங்கு"
 
 msgid "You must Allow Online access for this to work:"
-msgstr ""
+msgstr "இது வேலை செய்ய நிகழ்நிலை அணுகலை நீங்கள் அனுமதிக்க வேண்டும்:"
 
 msgid "Fixture details"
-msgstr ""
+msgstr "பொருத்தப்பட்ட விவரங்கள்"
 
 msgid "Local Fixture files"
-msgstr ""
+msgstr "உள்ளக பொருத்தம் கோப்புகள்"
 
 msgid "Local Fixture details"
-msgstr ""
+msgstr "உள்ளக பொருத்த விவரங்கள்"
 
 msgid "Profiles"
-msgstr ""
+msgstr "சுயவிவரங்கள்"
 
 msgid "Art-Net"
-msgstr ""
+msgstr "கலை-நெட்"
 
 msgid "IPv4"
-msgstr ""
+msgstr "Iprsh"
 
 msgid "Art-Net set for {} universe(s)"
-msgstr ""
+msgstr "{} பிரபஞ்சத்திற்கு (கள்) கலை-நெட் தொகுப்பு"
 
 msgid "Live DMX"
-msgstr ""
+msgstr "நேரடி டி.எம்.எக்ச்"
 
 msgid "Source"
-msgstr ""
+msgstr "மூலம்"
 
 msgid "Refresh"
-msgstr ""
+msgstr "புதுப்பிப்பு"
 
 msgid "Refresh connection"
-msgstr ""
+msgstr "இணைப்பைப் புதுப்பிக்கவும்"
 
 msgid "Request latest version"
-msgstr ""
+msgstr "அண்மைக் கால பதிப்பைக் கோருங்கள்"
 
 msgid "Sends the Request message"
-msgstr ""
+msgstr "கோரிக்கை செய்தியை அனுப்புகிறது"
 
 msgid "Import commit"
-msgstr ""
+msgstr "இறக்குமதி"
 
 msgid "Download"
-msgstr ""
+msgstr "பதிவிறக்கம்"
 
 msgid "Download commit"
-msgstr ""
+msgstr "பதிவிறக்கவும்"
 
 msgid "OSC"
-msgstr ""
+msgstr "Osc"
 
 msgid "Protocols"
-msgstr ""
+msgstr "நெறிமுறைகள்"
 
 msgid "Add Tracker"
-msgstr ""
+msgstr "டிராக்கரைச் சேர்க்கவும்"
 
 msgid "Adding a tracker"
-msgstr ""
+msgstr "டிராக்கரைச் சேர்ப்பது"
 
 msgid "Remove Tracker"
-msgstr ""
+msgstr "டிராக்கரை அகற்று"
 
 msgid "Removing a tracker"
-msgstr ""
+msgstr "ஒரு டிராக்கரை நீக்குதல்"
 
 msgid "Link Fixture to Tracker"
-msgstr ""
+msgstr "டிராக்கருக்கு இணைப்பு பொருத்துதல்"
 
 msgid "Link fixture to a tracker"
-msgstr ""
+msgstr "ஒரு டிராக்கருக்கு இணைப்பு பொருத்துதல்"
 
 msgid "Unlink Fixture from Tracker"
-msgstr ""
+msgstr "டிராக்கரிடமிருந்து பொருத்தத்தை அவிழ்த்து விடுங்கள்"
 
 msgid "Unlink fixture from a tracker"
-msgstr ""
+msgstr "ஒரு டிராக்கரிலிருந்து பொருத்துதலை இணைக்கவும்"
 
 msgid "Tracker Followers"
-msgstr ""
+msgstr "டிராக்கர் பின்தொடர்பவர்கள்"
 
 msgid "Link followers to a tracker"
-msgstr ""
+msgstr "பின்தொடர்பவர்களை ஒரு டிராக்கருடன் இணைக்கவும்"
 
 msgid "PSN"
-msgstr ""
+msgstr "Psn"
 
 msgid "Add Tracking Target"
-msgstr ""
+msgstr "கண்காணிப்பு இலக்கைச் சேர்க்கவும்"
 
 msgid "Remove Followers Target"
-msgstr ""
+msgstr "பின்தொடர்பவர்களின் இலக்கை அகற்று"
 
 msgid "Remove target"
-msgstr ""
+msgstr "இலக்கை அகற்று"
 
 msgid "Add Followers Target"
-msgstr ""
+msgstr "பின்தொடர்பவர்களின் இலக்கைச் சேர்க்கவும்"
 
 msgid "Add target"
-msgstr ""
+msgstr "இலக்கைச் சேர்"
 
 msgid "sACN"
-msgstr ""
+msgstr "சாக்ன்"
 
 msgid "sACN set for {} universe(s)"
-msgstr ""
+msgstr "}} யுனிவர்ச் (கள்) க்கான SACN தொகுப்பு"
 
 msgid "DMX > Universe Menu"
-msgstr ""
+msgstr "டி.எம்.எக்ச்> யுனிவர்ச் பட்டியல்"
 
 msgid "Universes"
-msgstr ""
+msgstr "பிரபஞ்சங்கள்"
 
 #~ msgid "Trackers Item"
 #~ msgstr ""
@@ -1121,4 +1149,3 @@ msgstr ""
 
 #~ msgid "For Blender 4.2 and up use the Extension"
 #~ msgstr ""
-
