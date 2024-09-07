@@ -1,5 +1,18 @@
 ### Changelog
 
+### 1.8.0
+
+* Updated translations
+* Add support for pan/tilt rotation, add GDTF fixture with continuous rotation
+* Add support for CTC
+* Add display device label also in 3D
+* Add subfixture based controlling
+* Programmer: show fixture type name if multiple selection is one gdtf type
+* Fix: Ensure working Pan/tilt control for fixtures without target
+* Fix: Fix keyframe cleaning after addition of PSN
+* Fix: Adjust share profile path after changes for custom user data path
+* Fix: Ensure that World - Scene - Background exists
+
 ### 1.7.5
 
     * Allow using user writable directory associated with an extension (extension only)
