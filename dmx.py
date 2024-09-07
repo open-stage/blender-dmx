@@ -69,7 +69,7 @@ from .mdns import DMX_Zeroconf
 
 from .node_arranger import DMX_OT_ArrangeSelected
 
-from .util import rgb_to_cmy, ShowMessageBox, cmy_to_rgb, flatten_color
+from .util import rgb_to_cmy, ShowMessageBox, cmy_to_rgb, flatten_color, draw_top_message
 from .mvr_objects import DMX_MVR_Object, DMX_MVR_Class
 from .mvr_xchange import DMX_MVR_Xchange_Commit, DMX_MVR_Xchange_Client, DMX_MVR_Xchange
 from .mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server
@@ -673,6 +673,7 @@ class DMX(PropertyGroup):
                         light.object.data["shutter_counter"] = 0
 
         if file_data_version < 3:
+            hide_gobo_message = True
             DMX_Log.log.info("Running migration 2→3")
             dmx = bpy.context.scene.dmx
             DMX_Log.log.info("Add UUID to fixtures")
@@ -745,7 +746,6 @@ class DMX(PropertyGroup):
         if file_data_version < 5:
             DMX_Log.log.info("Running migration 4→5")
             dmx = bpy.context.scene.dmx
-            hide_gobo_message = True
             for fixture in dmx.fixtures:
                 if "dmx_values" not in fixture:
                     DMX_Log.log.info("Adding dmx_value array to fixture")
@@ -848,12 +848,12 @@ class DMX(PropertyGroup):
                     light_obj = light.object
                     ntree  = light_obj.data.node_tree
                     d.process_tree(ntree)
-
-            temp_data = bpy.context.window_manager.dmx
             if not hide_gobo_message:
-                message = "This show file has been made in older version of BlenderDMX. Check gobos, most likely you need to re-edit fixtures: Fixtures → Edit, uncheck Re-address only"
+                temp_data = bpy.context.window_manager.dmx
+                message = "This show file has been made in older version of BlenderDMX. Most likely you need to re-edit fixtures: Fixtures → Edit, uncheck Re-address only, this will re-build the fixtures from their GDTF files. Sorry for the inconvenience."
                 temp_data.migration_message = message
-                ShowMessageBox( message=message,title="Updating info!",icon="ERROR")
+                ShowMessageBox(message=message,title="Updating info!",icon="ERROR")
+                bpy.types.VIEW3D_HT_tool_header.prepend(draw_top_message)
 
         DMX_Log.log.info("Migration done.")
         # add here another if statement for next migration condition... like:
