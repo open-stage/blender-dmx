@@ -8,91 +8,92 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-09-07 16:58+0200\n"
-"PO-Revision-Date: 2024-07-21 13:09+0000\n"
-"Last-Translator: blomusti <m.f.varkara@gmail.com>\n"
+"PO-Revision-Date: 2024-09-15 23:09+0000\n"
+"Last-Translator: Ugur Saglam <saglamugur556@gmail.com>\n"
+"Language-Team: Turkish <https://hosted.weblate.org/projects/blenderdmx/main/"
+"tr/>\n"
 "Language: tr_TR\n"
-"Language-Team: Turkish "
-"<https://hosted.weblate.org/projects/blenderdmx/main/tr/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.8-dev\n"
 "Generated-By: Babel 2.14.0\n"
 
 msgid "File doesn't exist"
-msgstr ""
+msgstr "Dosya mevcut değil"
 
 msgid "Fixture ID"
-msgstr ""
+msgstr "Fikstür Kimliği"
 
 msgid "Unit Number"
 msgstr "Birim Numarası"
 
 msgid "Custom ID"
-msgstr ""
+msgstr "Özel Kimlik"
 
 msgid "DMX Address"
-msgstr ""
+msgstr "DMX Adresi"
 
 msgid "Position"
-msgstr ""
+msgstr "Konum"
 
 msgid "Rotation"
-msgstr ""
+msgstr "Döndürme"
 
 msgid "Footprint"
-msgstr ""
+msgstr "Ayak izi"
 
 msgid "DMX Collection"
-msgstr ""
+msgstr "DMX Koleksiyonu"
 
 msgid "Selected PSN Server"
-msgstr ""
+msgstr "Seçili PSN Sunucusu"
 
 msgid "The selected element on the PSN server list"
-msgstr ""
+msgstr "PSN sunucu listesinde seçili öğe"
 
 msgid "Class List i"
-msgstr ""
+msgstr "Sınıf Listesi i"
 
 msgid "The selected element on the class list"
-msgstr ""
+msgstr "Sınıf listesinde seçili öğe"
 
 msgid "Universe"
-msgstr ""
+msgstr "Evren"
 
 msgid "Editable"
 msgstr "Düzenlenebilir"
 
 msgid "Display Pigtails"
-msgstr ""
+msgstr "Pigtailleri Göster"
 
 msgid "Display 2D View"
-msgstr ""
+msgstr "2D Görünümü Görüntüle"
 
 msgid "Display Device Label"
-msgstr ""
+msgstr "Görüntü Aygıtı Etiketi"
 
 msgid "Device Label"
-msgstr ""
+msgstr "Cihaz Etiketi"
 
 msgid "None"
-msgstr ""
+msgstr "Yok"
 
 msgid "Name"
 msgstr "İsim"
 
 msgid "DMX"
-msgstr ""
+msgstr "DMX"
 
 msgid "Allow Selecting Geometries"
-msgstr ""
+msgstr "Geometrilerin Seçilmesine İzin Ver"
 
 msgid "Logging Level"
-msgstr ""
+msgstr "Günlük Kaydı Seviyesi"
 
 msgid "Critical"
-msgstr ""
+msgstr "Kritik"
 
 msgid "Error"
 msgstr "Hata"
@@ -104,152 +105,164 @@ msgid "Info"
 msgstr "Bilgi"
 
 msgid "Debug"
-msgstr ""
+msgstr "Hata ayıklama"
 
 msgid "Simple beam"
-msgstr ""
+msgstr "Basit kiriş"
 
 msgid "Display 'fake' beam cone"
-msgstr ""
+msgstr "'Sahte' ışın konisini göster"
 
 msgid "Selected fixtures"
-msgstr ""
+msgstr "Seçilmiş fikstürler"
 
 msgid "All fixtures"
-msgstr ""
+msgstr "Tüm fikstürler"
 
 msgid "Beam Lens Diameter in Cycles"
-msgstr ""
+msgstr "Döngülerde Işın Merceği Çapı"
 
 msgid ""
 "Beam diameter is reduced to minimum when projecting gobos to prevent blur"
 " on gobo edge"
 msgstr ""
+"Gobo kenarlarında bulanıklığı önlemek için gobolar yansıtılırken ışın çapı "
+"en aza indirilir"
 
 msgid "Reduced"
-msgstr ""
+msgstr "Azaltılmış"
 
 msgid "Full width"
-msgstr ""
+msgstr "Tam genişlik"
 
 msgid "Custom per each beam"
-msgstr ""
+msgstr "Her kiriş için özel"
 
 msgid "Disable Beam Outlines"
-msgstr ""
+msgstr "Işın Anahatlarını Devre Dışı Bırak"
 
 msgid "Enable Volume Scatter"
-msgstr ""
+msgstr "Birim Dağılımını Etkinleştir"
 
 msgid "Noise Scale"
-msgstr ""
+msgstr "Gürültü Ölçeği"
 
 msgid "Volume Noise Scale"
-msgstr ""
+msgstr "Hacim Gürültü Ölçeği"
 
 msgid "Density"
 msgstr "Yoğunluk"
 
 msgid "Volume Scatter Density"
-msgstr ""
+msgstr "Hacim Dağılım Yoğunluğu"
 
 msgid "Multiply beams intensity"
-msgstr ""
+msgstr "Işın yoğunluğunu çoğaltın"
 
 msgid "Number of universes"
-msgstr ""
+msgstr "Evren sayısı"
 
 msgid "The number of universes set on the panel"
-msgstr ""
+msgstr "Panelde ayarlanan evren sayısı"
 
 msgid "Universe List Item"
-msgstr ""
+msgstr "Evren Liste Öğesi"
 
 msgid "The selected element on the universe list"
-msgstr ""
+msgstr "Evren listesinde seçili eleman"
 
 msgid "IPv4 Address for ArtNet signal"
-msgstr ""
+msgstr "ArtNet sinyali için IPv4 Adresi"
 
 msgid "The network card/interface to listen for ArtNet DMX data"
-msgstr ""
+msgstr "ArtNet DMX verilerini dinlemek için ağ kartı/arayüz"
 
 msgid "Enable Art-Net Input"
-msgstr ""
+msgstr "Art-Net Girişini Etkinleştir"
 
 msgid ""
 "Enables the input of DMX data throught Art-Net on the selected network "
 "interface"
 msgstr ""
+"Seçili ağ arayüzünde Artnet aracılığıyla DMX verilerinin girişini "
+"etkinleştirir"
 
 msgid "Enable sACN Input"
-msgstr ""
+msgstr "sACN Girişini Etkinleştir"
 
 msgid ""
 "Enables the input of DMX data throught sACN on all detected network "
 "interfaces"
 msgstr ""
+"Algılanan tüm ağ arayüzlerinde sACN aracılığıyla DMX verilerinin girişini "
+"etkinleştirir"
 
 msgid "Enable OSC Output"
-msgstr ""
+msgstr "OSC Çıkışını Etkinleştir"
 
 msgid "Enables Open Sound Control protocol to send fixture selection to a console"
 msgstr ""
+"Açık Ses Kontrol protokolünü etkinleştirerek fikstür seçimini bir konsola "
+"gönderir"
 
 msgid "OSC Target address"
-msgstr ""
+msgstr "OSC Hedef adresi"
 
 msgid ""
 "Address of the host where you want to send the OSC signal. Address ending"
 " on .255 is a broadcast address to all hosts on the network"
 msgstr ""
+"OSC sinyalini göndermek istediğiniz ana bilgisayarın adresi. .255 ile biten "
+"adres, ağdaki tüm ana bilgisayarlara bir yayın adresidir"
 
 msgid "OSC Target port"
-msgstr ""
+msgstr "OSC Hedef bağlantı noktası"
 
 msgid "Port number of the host where you want to send the OSC signal"
-msgstr ""
+msgstr "OSC sinyalini göndermek istediğiniz ana bilgisayarın port numarası"
 
 msgid "Enable MVR-xchange discovery"
-msgstr ""
+msgstr "MVR-xchange keşfini etkinleştir"
 
 msgid "Enables MVR-xchange discovery"
-msgstr ""
+msgstr "MVR-xchange keşfini etkinleştirir"
 
 msgid "Enable MVR-xchange connection"
-msgstr ""
+msgstr "MVR-xchange bağlantısını etkinleştir"
 
 msgid "Connects to MVR-xchange client"
-msgstr ""
+msgstr "MVR-xchange istemcisine bağlanır"
 
 msgid "Art-Net Status"
-msgstr ""
+msgstr "Art-Net Durumu"
 
 msgid "sACN Status"
-msgstr ""
+msgstr "sACN Durumu"
 
 msgid "Group List i"
-msgstr ""
+msgstr "Grup Listesi i"
 
 msgid "The selected element on the group list"
-msgstr ""
+msgstr "Grup listesinde seçili öğe"
 
 msgid "Order by"
-msgstr ""
+msgstr "Sıralama"
 
 msgid "Fixture sorting order"
-msgstr ""
+msgstr "Fikstür sıralama düzeni"
 
 msgid "Laser collision collection"
-msgstr ""
+msgstr "Lazer çarpışma koleksiyonu"
 
 msgid ""
 "Laser beams are projected onto objects in this collection. The beam stops"
 " at the first object colliding with the beam."
 msgstr ""
+"Bu koleksiyondaki nesnelere lazer ışınları yansıtılır. Işın, ışınla çarpışan "
+"ilk nesnede durur."
 
 msgid "Pause renderer"
-msgstr ""
+msgstr "İşleyiciyi duraklat"
 
 msgid "Manufacturers"
 msgstr "Üreticiler"
@@ -258,354 +271,358 @@ msgid "Imports"
 msgstr "İçe Aktarılanlar"
 
 msgid "Add to selection"
-msgstr ""
+msgstr "Seçime ekle"
 
 msgid "Remove from selection"
-msgstr ""
+msgstr "Seçimden kaldır"
 
 msgid "Keyframe only selected fixtures (not for autokeying)"
 msgstr ""
+"Yalnızca seçili armatürlerin anahtar karesi (otomatik anahtarlama için değil)"
 
 msgid "MVR-xchange"
-msgstr ""
+msgstr "MVR-xchange"
 
 msgid "Status"
 msgstr "Durum"
 
 msgid "DMX Data"
-msgstr ""
+msgstr "DMX Verileri"
 
 msgid "Fixture"
-msgstr ""
+msgstr "Fikstür"
 
 msgid "Subfixtures"
-msgstr ""
+msgstr "Alt fikstürler"
 
 msgid "Active Subfixtures"
-msgstr ""
+msgstr "Aktif Alt Fikstürler"
 
 msgid "DMX Universe"
-msgstr ""
+msgstr "DMX Evreni"
 
 msgid "Address"
-msgstr ""
+msgstr "Adres"
 
 msgid "Gel Color"
-msgstr ""
+msgstr "Jel Rengi"
 
 msgid "Display beams"
-msgstr ""
+msgstr "Ekran ışınları"
 
 msgid "Display beam projection and cone"
-msgstr ""
+msgstr "Görüntü ışın projeksiyonu ve koni"
 
 msgid "Add Target"
-msgstr ""
+msgstr "Hedef Ekle"
 
 msgid "Add target for beam to follow"
-msgstr ""
+msgstr "Işının takip edeceği hedefi ekleyin"
 
 msgid "Increment DMX address"
-msgstr ""
+msgstr "DMX adresini artırın"
 
 msgid "Increment Fixture ID"
-msgstr ""
+msgstr "Artırma Fikstür Kimliği"
 
 msgid "Increment Fixture ID if numeric"
-msgstr ""
+msgstr "Sayısal ise Artırma Fikstür Kimliği"
 
 msgid ""
 "The Fixture ID is an identifier of this fixture that can be used to "
 "activate / select them for programming."
 msgstr ""
+"Fikstür Kimliği, bu fikstürün programlama için etkinleştirilmesi/seçilmesi "
+"için kullanılabilen bir tanımlayıcıdır."
 
 msgid "Units"
-msgstr ""
+msgstr "Birimler"
 
 msgid "How many units of this light to add"
-msgstr ""
+msgstr "Bu ışıktan kaç adet eklenmeli"
 
 msgid "Enable PSN Input"
-msgstr ""
+msgstr "PSN Girişini Etkinleştir"
 
 msgid "Enables PosiStageNet input"
-msgstr ""
+msgstr "PosiStageNet girişini etkinleştirir"
 
 msgid "IPv4 Address for PSN signal"
-msgstr ""
+msgstr "PSN sinyali için IPv4 Adresi"
 
 msgid "The network card/interface to listen for PSN data"
-msgstr ""
+msgstr "PSN verilerini dinlemek için ağ kartı/arayüz"
 
 msgid "PSN Target port"
-msgstr ""
+msgstr "PSN Hedef portu"
 
 msgid "Align and Distribute"
-msgstr ""
+msgstr "Hizala ve Dağıt"
 
 msgid "Active object: {}"
-msgstr ""
+msgstr "Etkin nesne: {}"
 
 msgid "Selected fixtures: {}"
-msgstr ""
+msgstr "Seçili fikstürler: {}"
 
 msgid "DMX > Fixture Menu"
-msgstr ""
+msgstr "DMX > Fikstür Menüsü"
 
 msgid "Add"
-msgstr ""
+msgstr "Ekle"
 
 msgid "Edit"
-msgstr ""
+msgstr "Düzenle"
 
 msgid "Remove"
-msgstr ""
+msgstr "Kaldır"
 
 msgid "DMX > Fixture > Add > Manufacturers"
-msgstr ""
+msgstr "DMX > Fikstür > Ekle > Üreticiler"
 
 msgid "DMX > Fixture > Add > Profiles"
-msgstr ""
+msgstr "DMX > Fikstür > Ekle > Profiller"
 
 msgid "DMX > Fixture > Add > Mode"
-msgstr ""
+msgstr "DMX > Fikstür > Ekle > Mod"
 
 msgid "DMX > Fixture > Add > Manufacturers > Profiles"
-msgstr ""
+msgstr "DMX > Fikstür > Ekle > Üreticiler > Profiller"
 
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 msgid "Fixture GDTF Profile"
-msgstr ""
+msgstr "Fikstür GDTF Profili"
 
 msgid "Mode"
-msgstr ""
+msgstr "Mod"
 
 msgid "Fixture GDTF Mode"
-msgstr ""
+msgstr "Fikstür GDTF Modu"
 
 msgid "DMX Mode"
-msgstr ""
+msgstr "DMX Modu"
 
 msgid "Advanced edit"
-msgstr ""
+msgstr "Gelişmiş düzenleme"
 
 msgid "GDTF Profile"
-msgstr ""
+msgstr "GDTF Profili"
 
 msgid "Unknown manufacturer"
-msgstr ""
+msgstr "Bilinmeyen üretici"
 
 msgid "DMX: Add Fixture"
-msgstr ""
+msgstr "DMX: Fikstür Ekle"
 
 msgid "Add fixtures to the show"
-msgstr ""
+msgstr "Gösteriye fikstürler ekleyin"
 
 msgid "Fixture named {} already exists"
-msgstr ""
+msgstr "{} adlı fikstür zaten mevcut"
 
 msgid "No GDTF Profile selected."
-msgstr ""
+msgstr "Hiçbir GDTF Profili seçilmedi."
 
 msgid "No DMX Mode selected."
-msgstr ""
+msgstr "Hiçbir DMX Modu seçilmedi."
 
 msgid "DMX: Edit Fixture"
-msgstr ""
+msgstr "DMX: Fikstür Düzenle"
 
 msgid "Edit selected fixtures"
-msgstr ""
+msgstr "Seçili fikstürleri düzenle"
 
 msgid "DMX > Fixture > Remove"
-msgstr ""
+msgstr "DMX > Fikstür > Kaldır"
 
 msgid "Remove selected fixtures from Scene"
-msgstr ""
+msgstr "Seçilen armatürleri Sahne'den kaldır"
 
 msgid "DMX > Fixture > Item"
-msgstr ""
+msgstr "DMX > Fikstür > Ürün"
 
 msgid "Select Fixture"
-msgstr ""
+msgstr "Fikstür Seçin"
 
 msgid "Remove fixture"
-msgstr ""
+msgstr "Fikstürü kaldır"
 
 msgid "Fixtures"
-msgstr ""
+msgstr "Fikstürler"
 
 msgid "F ID"
-msgstr ""
+msgstr "F Kimliği"
 
 msgid "Unit #"
-msgstr ""
+msgstr "Birim #"
 
 msgid "F ID #"
-msgstr ""
+msgstr "F Kimlik No"
 
 msgid "Cst ID"
-msgstr ""
+msgstr "Mss Kimliği"
 
 msgid "Uni"
-msgstr ""
+msgstr "Üniversite"
 
 msgid "Addr"
-msgstr ""
+msgstr "Adres"
 
 msgid "Uni.Addr"
-msgstr ""
+msgstr "Üni.Adresi"
 
 msgid "Foot"
-msgstr ""
+msgstr "Ayak"
 
 msgid "DMX > Group Menu"
-msgstr ""
+msgstr "DMX > Grup Menüsü"
 
 msgid "Create"
-msgstr ""
+msgstr "Yaratmak"
 
 msgid "Update"
-msgstr ""
+msgstr "Güncelleme"
 
 msgid "Rename"
-msgstr ""
+msgstr "Yeniden isimlendirmek"
 
 msgid "DMX > Group > Create"
-msgstr ""
+msgstr "DMX > Grup > Oluştur"
 
 msgid "Create DMX group from selected fixtures"
-msgstr ""
+msgstr "Seçili fikstürlerden DMX grubu oluştur"
 
 msgid "Group Name"
-msgstr ""
+msgstr "Grup Adı"
 
 msgid "Reset Colors"
-msgstr ""
+msgstr "Renkleri Sıfırla"
 
 msgid "Lock Movement"
-msgstr ""
+msgstr "Kilit Hareketi"
 
 msgid "Ignore pan/tilt DMX data"
-msgstr ""
+msgstr "Pan/tilt DMX verilerini yok say"
 
 msgid "Unlock Movement"
-msgstr ""
+msgstr "Hareketi Açın"
 
 msgid "Allow pan/tilt DMX data"
-msgstr ""
+msgstr "Pan/tilt DMX verilerine izin ver"
 
 msgid "Lock/Unlock Movement Rotation"
-msgstr ""
+msgstr "Kilit/Kilidi Açma Hareketi Dönme"
 
 msgid "Deselect All"
-msgstr ""
+msgstr "Tümünü Seçimden Çıkar"
 
 msgid "Deselect every fixture in the Scene"
-msgstr ""
+msgstr "Sahnedeki her armatürü seçimini kaldırın"
 
 msgid "Select All"
-msgstr ""
+msgstr "Tümünü Seç"
 
 msgid "Select every fixture in the Scene"
-msgstr ""
+msgstr "Sahnedeki her fikstürü seçin"
 
 msgid "Select Visible (only filtered)"
-msgstr ""
+msgstr "Görünür'ü seçin (sadece filtrelenmiş)"
 
 msgid "Select every fixture which is visible in the fixtures list"
-msgstr ""
+msgstr "Fikstürler listesinde görünen her fikstürü seçin"
 
 msgid "Invert selection"
-msgstr ""
+msgstr "Seçimi ters çevir"
 
 msgid "Invert the selection"
-msgstr ""
+msgstr "Seçimi ters çevir"
 
 msgid "Select every other light"
-msgstr ""
+msgstr "Diğer tüm ışıkları seçin"
 
 msgid "Clear"
-msgstr ""
+msgstr "Temizlemek"
 
 msgid "Clear all DMX values to default and update fixtures"
 msgstr ""
+"Tüm DMX değerlerini varsayılanlara temizleyin ve armatürleri güncelleyin"
 
 msgid "Apply"
-msgstr ""
+msgstr "Uygula"
 
 msgid "Apply these values manually when render is paused"
-msgstr ""
+msgstr "Render duraklatıldığında bu değerleri manuel olarak uygulayın"
 
 msgid "Targets to zero"
-msgstr ""
+msgstr "Sıfıra hedefler"
 
 msgid "Set Targets' position to 0 of the Scene"
-msgstr ""
+msgstr "Hedeflerin konumunu Sahnenin 0'ına ayarlayın"
 
 msgid "Center View to Selected"
-msgstr ""
+msgstr "Orta Görünüm Seçili Olanlara"
 
 msgid "Set View to center on selected objects"
-msgstr ""
+msgstr "Görünümü seçili nesnelere odaklanacak şekilde ayarla"
 
 msgid "Reset targets"
-msgstr ""
+msgstr "Hedefleri sıfırla"
 
 msgid "Reset position of target of selected fixtures"
-msgstr ""
+msgstr "Seçilen fikstürlerin hedef konumunu sıfırla"
 
 msgid "Select Fixtures"
-msgstr ""
+msgstr "Fikstürleri Seçin"
 
 msgid "Select base/body of every selected fixture"
-msgstr ""
+msgstr "Seçilen her armatürün tabanını/gövdesini seçin"
 
 msgid "Select Targets"
-msgstr ""
+msgstr "Hedefleri Seçin"
 
 msgid "Select target from every fixture element selected"
-msgstr ""
+msgstr "Seçilen her fikstür elemanından hedefi seçin"
 
 msgid "Select Camera"
-msgstr ""
+msgstr "Kamera Seç"
 
 msgid "Select camera of the selected fixture"
-msgstr ""
+msgstr "Seçili fikstürün kamerasını seçin"
 
 msgid "Programmer"
-msgstr ""
+msgstr "Programcı"
 
 msgid "Nothing selected"
-msgstr ""
+msgstr "Hiçbir şey seçilmedi"
 
 msgid "{} selected"
-msgstr ""
+msgstr "{} seçildi"
 
 msgid "Bodies"
-msgstr ""
+msgstr "Bedenler"
 
 msgid "Targets"
-msgstr ""
+msgstr "Hedefler"
 
 msgid "Camera"
-msgstr ""
+msgstr "Kamera"
 
 msgid "Dimmer"
-msgstr ""
+msgstr "Kısık"
 
 msgid "Pan"
-msgstr ""
+msgstr "Pan"
 
 msgid "Tilt"
-msgstr ""
+msgstr "Eğim"
 
 msgid "Pan Rotation"
-msgstr ""
+msgstr "Pan Dönüşü"
 
 msgid "Tilt Rotation"
-msgstr ""
+msgstr "Tilt Rotation"
 
 msgid "Zoom"
 msgstr ""
@@ -1347,4 +1364,3 @@ msgstr ""
 
 #~ msgid "For Blender 4.2 and up use the Extension"
 #~ msgstr ""
-
