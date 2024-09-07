@@ -154,3 +154,8 @@ class DMX_TempData(PropertyGroup):
         )
 
     selected_fixture_label: StringProperty()
+
+    migration_message: StringProperty() # to pass data to fixture list
+
+    pan_rotate_enabled: BoolProperty(name="Pan Rotate", default=False)
+    tilt_rotate_enabled: BoolProperty(name="Tilt Rotate", default=False)

@@ -271,6 +271,16 @@ class DMX_Fixture(PropertyGroup):
         default = ""
             )
 
+    lock_pan_rotation: BoolProperty(
+        name = "Lock Pan Rotation",
+        description="Lock Pan Rotation",
+        default = False)
+
+    lock_tilt_rotation: BoolProperty(
+        name = "Lock Tilt Rotation",
+        description="Lock Tilt Rotation",
+        default = False)
+
     def build(self, name, profile, mode, universe, address, gel_color, display_beams, add_target, mvr_position = None,
               focus_point = None, uuid = None, fixture_id="", custom_id=0, fixture_id_numeric=0, unit_number=0, classing=""):
         # (Edit) Store objects positions
@@ -523,7 +533,7 @@ class DMX_Fixture(PropertyGroup):
         for obj in self.collection.objects:
             if "pigtail" in obj.get("geometry_type", ""):
                 obj.hide_set(not bpy.context.scene.dmx.display_pigtails)
-                obj.hide_viewport = not bpy.context.scene.dmx.display_pigtails
+                obj.hide_viewport = not bpy.context.scene.dmx.display_pigtails # keyframing
                 obj.hide_render = not bpy.context.scene.dmx.display_pigtails
             if obj.get("geometry_root", False):
                 continue
@@ -531,7 +541,7 @@ class DMX_Fixture(PropertyGroup):
                 continue
             if obj.get("2d_symbol", None) == "all":
                 obj.hide_set(not bpy.context.scene.dmx.display_2D)
-                obj.hide_viewport = not bpy.context.scene.dmx.display_2D
+                obj.hide_viewport = not bpy.context.scene.dmx.display_2D #keyframing
                 obj.hide_render = not bpy.context.scene.dmx.display_2D
                 continue
 
@@ -593,6 +603,9 @@ class DMX_Fixture(PropertyGroup):
                 return
         else: # we have new dmx data, mark the cache as dirty, so we know we can save a keyframe when needed
             self.dmx_cache_dirty = True
+
+        DMX_Log.log.debug(f"{current_frame=}, {self.dmx_cache_dirty=}")
+
         self["dmx_values"]  = s_data
         panTilt = [None,None, 1, 1] # pan, tilt, 1 = 8bit, 256 = 16bit
         cmy = [None,None,None]
@@ -606,6 +619,8 @@ class DMX_Fixture(PropertyGroup):
         pan_rotating_geometries={}
         tilt_rotating_geometries={}
         gobo1 = [None, None] #gobo selection (Gobo1, Gobo2), gobo indexing/rotation (Gobo1Pos, Gobo2Pos)
+        pan_cont_rotating_geometries={}
+        tilt_cont_rotating_geometries={}
 
         for vchannel in self.virtual_channels:
             geometry = vchannel.geometry # for now. But, no way to know, as BlenderDMX controls are universal
@@ -621,6 +636,10 @@ class DMX_Fixture(PropertyGroup):
                 pan_rotating_geometries[geometry]=[None, 1]
             if geometry not in tilt_rotating_geometries.keys():
                 tilt_rotating_geometries[geometry]=[None, 1]
+            if geometry not in pan_cont_rotating_geometries.keys():
+                pan_cont_rotating_geometries[geometry]=[None, 1]
+            if geometry not in tilt_cont_rotating_geometries.keys():
+                tilt_cont_rotating_geometries[geometry]=[None, 1]
             if vchannel.id in data_virtual:
                 if vchannel.id == "Shutter1": shutter_dimmer_geometries[geometry][0] = data_virtual[vchannel.id]["value"]
                 elif vchannel.id == "Dimmer": shutter_dimmer_geometries[geometry][1] = data_virtual[vchannel.id]["value"]
@@ -652,6 +671,12 @@ class DMX_Fixture(PropertyGroup):
                     tilt_rotating_geometries[geometry][0] = tilt_rotating_geometries[geometry][0] * 256 + data_virtual[vchannel.id]["value"]
                     tilt_rotating_geometries[geometry][2] = 256
 
+                elif vchannel.id == "PanRotate":
+                    pan_cont_rotating_geometries[geometry][0] = data_virtual[vchannel.id]["value"]
+
+                elif vchannel.id == "TiltRotate":
+                    tilt_cont_rotating_geometries[geometry][0] = data_virtual[vchannel.id]["value"]
+
                 elif vchannel.id == "Zoom": zoom = data_virtual[vchannel.id]["value"]
                 elif vchannel.id == "XYZ_X": xyz_moving_geometries[geometry][0] = data_virtual[vchannel.id]["value"]
                 elif vchannel.id == "XYZ_Y": xyz_moving_geometries[geometry][1] = data_virtual[vchannel.id]["value"]
@@ -674,6 +699,11 @@ class DMX_Fixture(PropertyGroup):
                 pan_rotating_geometries[geometry]=[None, 1]
             if geometry not in tilt_rotating_geometries.keys():
                 tilt_rotating_geometries[geometry]=[None, 1]
+            if geometry not in pan_cont_rotating_geometries.keys():
+                pan_cont_rotating_geometries[geometry]=[None, 1]
+            if geometry not in tilt_cont_rotating_geometries.keys():
+                tilt_cont_rotating_geometries[geometry]=[None, 1]
+
             if (channels[c] == 'Dimmer'): shutter_dimmer_geometries[geometry][1] = data[c]
             if (channels[c] == '+Dimmer'):
                 shutter_dimmer_geometries[geometry][1] = shutter_dimmer_geometries[geometry][1] * 256 + data[c]
@@ -710,6 +740,11 @@ class DMX_Fixture(PropertyGroup):
                 panTilt[3] = 256 # 16bit
                 tilt_rotating_geometries[geometry][0] = tilt_rotating_geometries[geometry][0] * 256 + data[c]
                 tilt_rotating_geometries[geometry][1] = 256
+
+            elif (channels[c] == 'PanRotate'):
+                pan_cont_rotating_geometries[geometry][0] = data[c]
+            elif (channels[c] == 'TiltRotate'):
+                tilt_cont_rotating_geometries[geometry][0] = data[c]
             elif (channels[c] == 'Zoom'): zoom = data[c]
             elif (channels[c] == 'Color1'): color1 = data[c]
             elif (channels[c] == 'Color2'): color1 = data[c]
@@ -734,6 +769,8 @@ class DMX_Fixture(PropertyGroup):
         self.remove_unset_geometries_from_multigeometry_attributes_3(shutter_dimmer_geometries)
         self.remove_unset_geometries_from_multigeometry_attributes_1(pan_rotating_geometries)
         self.remove_unset_geometries_from_multigeometry_attributes_1(tilt_rotating_geometries)
+        self.remove_unset_geometries_from_multigeometry_attributes_1(pan_cont_rotating_geometries)
+        self.remove_unset_geometries_from_multigeometry_attributes_1(tilt_cont_rotating_geometries)
 
 
 
@@ -743,6 +780,7 @@ class DMX_Fixture(PropertyGroup):
         color_temperature = None
         if (ctc is not None):
             color_temperature = self.get_color_temperature(ctc)
+
 
         for geometry, colors in rgb_mixing_geometries.items():
             if len(rgb_mixing_geometries)==1:
@@ -782,6 +820,14 @@ class DMX_Fixture(PropertyGroup):
                 tilt = (tilt_vals[0]/(tilt_vals[1]*127.0)-1)*270*(math.pi/360)
                 self.updatePTDirectly(geometry, "tilt", tilt, current_frame)
 
+
+        for geometry, pan_rotate in pan_cont_rotating_geometries.items():
+            self.set_pan_tilt_rotation(geometry=geometry, axis = "pan", rotation = pan_rotate[0], current_frame=current_frame)
+
+        for geometry, tilt_rotate in tilt_cont_rotating_geometries.items():
+            self.set_pan_tilt_rotation(geometry=geometry, axis = "tilt", rotation = tilt_rotate[0], current_frame=current_frame)
+
+
         if (zoom is not None):
             self.updateZoom(zoom, current_frame)
 
@@ -807,6 +853,40 @@ class DMX_Fixture(PropertyGroup):
         if current_frame:
             self.dmx_cache_dirty = False
         # end of render block
+
+
+    def set_pan_tilt_rotation(self, geometry, axis, rotation, current_frame):
+        if axis == "pan":
+            mobile_type = "yoke"
+            offset = 2
+            lock_rotation = self.lock_pan_rotation
+
+        else: # tilt
+            mobile_type = "head"
+            offset = 0
+            lock_rotation = self.lock_tilt_rotation
+
+        if geometry is None:
+            geometry = self.get_mobile_type(mobile_type)
+        else:
+            geometry = self.get_object_by_geometry_name(geometry)
+        if geometry:
+            geometry.rotation_mode = "XYZ"
+            geometry.driver_remove("rotation_euler", offset)
+
+            if lock_rotation:
+                rotation = rotation/128 * 360 *(math.pi/360)
+                geometry.rotation_euler[offset] = rotation # just some value, not very precise
+            else:
+                if rotation != 0:
+                    driver = geometry.driver_add("rotation_euler", offset)
+                    value = rotation-128 # rotating in both direction, slowest in the middle
+                    driver.driver.expression=f"frame*{value*0.005}"
+
+            if current_frame and self.dmx_cache_dirty:
+                geometry.keyframe_insert(data_path="location", frame=current_frame)
+                geometry.keyframe_insert(data_path="rotation_euler", frame=current_frame)
+
 
     def remove_unset_geometries_from_multigeometry_attributes_all(self, dictionary):
         """Remove items with values of all None"""
@@ -891,6 +971,7 @@ class DMX_Fixture(PropertyGroup):
                     if f"{geometry}" in  light.object.data.name:
                         DMX_Log.log.info("matched emitter")
                         light.object.data.energy = (dimmer/(255.0 * bits)) * flux
+
                 else:
                     light.object.data.energy = (dimmer/(255.0 * bits)) * flux
 
@@ -1006,7 +1087,7 @@ class DMX_Fixture(PropertyGroup):
             rgb=[0,0,0] # without this, default white would always be overwriting ctc
 
         if colorwheel_color is not None:
-            rgb = add_rgb(rgb, colorwheel_color[:3])
+            rgb = add_rgb(rgb, colorwheel_color)
         if color_temperature is not None:
             rgb = add_rgb(rgb, color_temperature[:3])
         if not all([c == 255 for c in self.gel_color_rgb]):
@@ -1072,7 +1153,7 @@ class DMX_Fixture(PropertyGroup):
         index = int(color1/int(255/(len(colors)-1)))
 
         if len(colors) > index:
-            return colors[index]
+            return list(colors[index])
 
     def get_color_temperature(self, ctc):
         if ctc == 0:
@@ -1266,12 +1347,12 @@ class DMX_Fixture(PropertyGroup):
                     targets.append(self.objects['Target'].object)
                 if "pigtail" in obj.get("geometry_type", ""):
                     obj.hide_set(not bpy.context.scene.dmx.display_pigtails)
-                    obj.hide_viewport = not bpy.context.scene.dmx.display_pigtails
+                    obj.hide_viewport = not bpy.context.scene.dmx.display_pigtails # keyframing
                     obj.hide_render = not bpy.context.scene.dmx.display_pigtails
                 if obj.get("2d_symbol", None):
                     continue
                 obj.hide_set(False)
-                obj.hide_viewport = False
+                obj.hide_viewport = False #keyframing
                 obj.hide_render = False
 
             if not select_target:
@@ -1336,7 +1417,7 @@ class DMX_Fixture(PropertyGroup):
                 if obj.get("2d_symbol", None):
                     continue
                 obj.hide_set(True)
-                obj.hide_viewport = True
+                obj.hide_viewport = True #need for keyframing
                 obj.hide_render = True
         dmx.updatePreviewVolume()
         self.sync_fixture_selection()
@@ -1378,6 +1459,7 @@ class DMX_Fixture(PropertyGroup):
                     texture.image_user.frame_duration = 1
                     texture.image_user.use_auto_refresh = True
                 texture.image_user.frame_offset = index
+
                 if current_frame and self.dmx_cache_dirty:
                     texture.image_user.keyframe_insert(data_path="frame_offset", frame=current_frame)
                 break
@@ -1415,8 +1497,11 @@ class DMX_Fixture(PropertyGroup):
         for obj in self.collection.objects:
             if "gobo" in obj.get("geometry_type", ""):
                 obj.hide_viewport = hide
+                obj.hide_render = hide
                 if current_frame and self.dmx_cache_dirty:
                     obj.keyframe_insert("hide_viewport", frame = current_frame)
+                    obj.keyframe_insert("hide_render", frame = current_frame)
+
         for light in self.lights: # CYCLES
             light_obj = light.object
             mix_factor = light_obj.data.node_tree.nodes.get("Mix").inputs["Factor"]
@@ -1438,14 +1523,14 @@ class DMX_Fixture(PropertyGroup):
             in_fixture_real = [low(channel.id) for channel in self.channels if any(channel.geometry == g.name for g in temp_data.active_subfixtures)]
             in_fixture_virtual = [low(channel.id) for channel in self.virtual_channels if any(channel.geometry == g.name for g in temp_data.active_subfixtures)]
 
-            real =    any(any(attribute in item for item in in_fixture_real) for attribute in attributes)
-            virtual = any(any(attribute in item for item in in_fixture_virtual) for attribute in attributes)
+            real =    any(any(attribute == item for item in in_fixture_real) for attribute in attributes)
+            virtual = any(any(attribute == item for item in in_fixture_virtual) for attribute in attributes)
         else:
             in_fixture_real = [low(channel.id) for channel in self.channels]
             in_fixture_virtual = [low(channel.id) for channel in self.virtual_channels]
 
-            real =    any(any(attribute in item for item in in_fixture_real) for attribute in attributes)
-            virtual = any(any(attribute in item for item in in_fixture_virtual) for attribute in attributes)
+            real =    any(any(attribute == item for item in in_fixture_real) for attribute in attributes)
+            virtual = any(any(attribute == item for item in in_fixture_virtual) for attribute in attributes)
 
         return (real or virtual)
 
