@@ -193,6 +193,7 @@ class DMX(PropertyGroup):
                 programmer.DMX_OT_Programmer_ResetTargets,
                 programmer.DMX_MT_PIE_Reset,
                 programmer.DMX_OT_Programmer_Unset_Ignore_Movement,
+                programmer.DMX_OT_Programmer_Set_Lock_Movement_Rotation,
                 distribute.DMX_PT_AlignAndDistributePanel,
                 distribute.DMX_OP_AlignLocationOperator,
                 distribute.DMX_OP_DistributeWithGapOperator,
@@ -1353,16 +1354,26 @@ class DMX(PropertyGroup):
                 })
         self.render()
 
-    programmer_color: FloatVectorProperty(
-        name = "",
-        subtype = "COLOR",
-        size = 4,
-        min = 0.0,
-        max = 1.0,
-        default = (1.0,1.0,1.0,1.0),
-        update = onProgrammerColor)
 
-    # # Programmer > Pan/Tilt
+    def onProgrammerTilt(self, context):
+        for fixture in self.fixtures:
+            if fixture.collection is None:
+                continue
+            if fixture.is_selected():
+                fixture.setDMX({
+                    'Tilt':int(255*(self.programmer_tilt+1)/2)
+                })
+        self.render()
+
+    def onProgrammerTiltRotate(self, context):
+        for fixture in self.fixtures:
+            if fixture.collection is None:
+                continue
+            if fixture.is_selected():
+                fixture.setDMX({
+                    'TiltRotate': int(self.programmer_tilt_rotate)
+                })
+        self.render()
 
     def onProgrammerPan(self, context):
         for fixture in self.fixtures:
@@ -1374,20 +1385,13 @@ class DMX(PropertyGroup):
                 })
         self.render()
 
-    programmer_pan: FloatProperty(
-        name = "Programmer Pan",
-        min = -1.0,
-        max = 1.0,
-        default = 0.0,
-        update = onProgrammerPan)
-
-    def onProgrammerTilt(self, context):
+    def onProgrammerPanRotate(self, context):
         for fixture in self.fixtures:
             if fixture.collection is None:
                 continue
             if fixture.is_selected():
                 fixture.setDMX({
-                    'Tilt':int(255*(self.programmer_tilt+1)/2)
+                    'PanRotate': int(self.programmer_pan_rotate)
                 })
         self.render()
 
@@ -1487,12 +1491,43 @@ class DMX(PropertyGroup):
                 })
         self.render()
 
+
+    programmer_color: FloatVectorProperty(
+        name = "",
+        subtype = "COLOR",
+        size = 4,
+        min = 0.0,
+        max = 1.0,
+        default = (1.0,1.0,1.0,1.0),
+        update = onProgrammerColor)
+
+    programmer_pan: FloatProperty(
+        name = "Programmer Pan",
+        min = -1.0,
+        max = 1.0,
+        default = 0.0,
+        update = onProgrammerPan)
+
+    programmer_pan_rotate: IntProperty(
+        name = "Programmer Pan Rotate",
+        min = 0,
+        max = 255,
+        default = 128,
+        update = onProgrammerPanRotate)
+
     programmer_tilt: FloatProperty(
         name = "Programmer Tilt",
         min = -1.0,
         max = 1.0,
         default = 0.0,
         update = onProgrammerTilt)
+
+    programmer_tilt_rotate: IntProperty(
+        name = "Programmer Tilt Rotate",
+        min = 0,
+        max = 255,
+        default = 128,
+        update = onProgrammerTiltRotate)
 
     programmer_zoom: IntProperty(
         name = "Programmer Zoom",
@@ -1566,7 +1601,9 @@ class DMX(PropertyGroup):
             self.programmer_dimmer = 0
             self.programmer_color = (255,255,255,255)
             self.programmer_pan = 0
+            self.programmer_pan_rotate = 128
             self.programmer_tilt = 0
+            self.programmer_tilt_rotate = 128
             self.programmer_zoom = 25
             self.programmer_shutter = 0
             self.programmer_color_wheel = 0
@@ -1628,7 +1665,10 @@ class DMX(PropertyGroup):
             self.programmer_pan = data['Pan']/127.0-1
         if ('Tilt' in data):
             self.programmer_tilt = data['Tilt']/127.0-1
-
+        if ('PanRotate' in data):
+            self.programmer_pan_rotate = int(data['PanRotate'])
+        if ('TiltRotate' in data):
+            self.programmer_tilt_rotate = int(data['TiltRotate'])
 
     fixtures_sorting_order: EnumProperty(
         name= _("Order by"),
