@@ -62,7 +62,8 @@ class DMX_Fixtures_Import_Gdtf_Profile(PropertyGroup):
         try:
             with open(os.path.join(dir_path, "data.json")) as f:
                 data = json.load(f)
-        except:
+        except Exception as e:
+            print("INFO", e)
             data = []
         return data
 
