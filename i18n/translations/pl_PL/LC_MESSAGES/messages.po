@@ -7,18 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-08-04 21:51+0200\n"
+"POT-Creation-Date: 2024-09-07 16:58+0200\n"
 "PO-Revision-Date: 2024-08-23 19:09+0000\n"
 "Last-Translator: WaldiS <sto@tutanota.de>\n"
-"Language-Team: Polish <https://hosted.weblate.org/projects/blenderdmx/main/"
-"pl/>\n"
 "Language: pl_PL\n"
+"Language-Team: Polish "
+"<https://hosted.weblate.org/projects/blenderdmx/main/pl/>\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && "
+"(n%100<10 || n%100>=20) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.7.1-dev\n"
 "Generated-By: Babel 2.14.0\n"
 
 msgid "File doesn't exist"
@@ -50,11 +49,18 @@ msgid "DMX Collection"
 msgstr "Kolekcja DMX"
 
 #, fuzzy
-msgid "Trackers Item"
-msgstr "Element śledzący"
+msgid "Selected PSN Server"
+msgstr "Usuń oprawę"
 
 #, fuzzy
-msgid "The selected element on the trackers list"
+msgid "The selected element on the PSN server list"
+msgstr "Wybrany element na liście elementów śledzonych"
+
+msgid "Class List i"
+msgstr ""
+
+#, fuzzy
+msgid "The selected element on the class list"
 msgstr "Wybrany element na liście elementów śledzonych"
 
 #, fuzzy
@@ -69,6 +75,10 @@ msgstr ""
 
 msgid "Display 2D View"
 msgstr "Wyświetl widok 2D"
+
+#, fuzzy
+msgid "Display Device Label"
+msgstr "Etykieta urządzenia"
 
 #, fuzzy
 msgid "Device Label"
@@ -129,8 +139,8 @@ msgid ""
 "Beam diameter is reduced to minimum when projecting gobos to prevent blur"
 " on gobo edge"
 msgstr ""
-"Średnica wiązki jest zredukowana do minimum podczas wyświetlania gobo, aby "
-"zapobiec rozmyciu krawędzi gobo"
+"Średnica wiązki jest zredukowana do minimum podczas wyświetlania gobo, "
+"aby zapobiec rozmyciu krawędzi gobo"
 
 #, fuzzy
 msgid "Reduced"
@@ -142,8 +152,9 @@ msgstr "Cała szerokość"
 msgid "Custom per each beam"
 msgstr ""
 
-msgid "Disable Overlays"
-msgstr ""
+#, fuzzy
+msgid "Disable Beam Outlines"
+msgstr "Wyświetla \"fałszywy\" stożek wiązki"
 
 msgid "Enable Volume Scatter"
 msgstr ""
@@ -294,6 +305,14 @@ msgstr "Dane DMX"
 #, fuzzy
 msgid "Fixture"
 msgstr "Oprawy"
+
+#, fuzzy
+msgid "Subfixtures"
+msgstr "Oprawy"
+
+#, fuzzy
+msgid "Active Subfixtures"
+msgstr "Usuń oprawę"
 
 msgid "DMX Universe"
 msgstr "Wszechświat DMX"
@@ -538,6 +557,9 @@ msgstr ""
 msgid "Allow pan/tilt DMX data"
 msgstr ""
 
+msgid "Lock/Unlock Movement Rotation"
+msgstr ""
+
 msgid "Deselect All"
 msgstr ""
 
@@ -649,17 +671,39 @@ msgstr "Zwiększ"
 msgid "Tilt"
 msgstr ""
 
+#, fuzzy
+msgid "Pan Rotation"
+msgstr "Obrót"
+
+#, fuzzy
+msgid "Tilt Rotation"
+msgstr "Obrót"
+
 msgid "Zoom"
 msgstr ""
 
 msgid "Color Wheel"
 msgstr ""
 
-msgid "Gobo"
+msgid "Color Temperature"
 msgstr ""
 
-msgid "Gobo Rotation"
+msgid "Iris"
 msgstr ""
+
+msgid "Gobo1"
+msgstr ""
+
+#, fuzzy
+msgid "Gobo1 Rotation"
+msgstr "Obrót"
+
+msgid "Gobo2"
+msgstr ""
+
+#, fuzzy
+msgid "Gobo2 Rotation"
+msgstr "Obrót"
 
 msgid "Strobe"
 msgstr ""
@@ -752,6 +796,9 @@ msgstr ""
 msgid "Clear Project data"
 msgstr ""
 
+msgid "Copy (import) old data from addon folder"
+msgstr ""
+
 msgid "Import"
 msgstr ""
 
@@ -791,9 +838,6 @@ msgid "Setup"
 msgstr ""
 
 msgid "Error! Blender 3.4 or higher required."
-msgstr ""
-
-msgid "For Blender 4.2 and up use the Extension"
 msgstr ""
 
 msgid "Create New Show"
@@ -860,6 +904,17 @@ msgstr ""
 msgid "Data cleared"
 msgstr ""
 
+msgid "Copy data from addon to user directory"
+msgstr ""
+
+msgid ""
+"Copy custom data from BlenderDMX addon directory to BlenderDMX extension "
+"user directory."
+msgstr ""
+
+msgid "Data copied"
+msgstr ""
+
 msgid "Reload BlenderDMX addon"
 msgstr ""
 
@@ -868,6 +923,22 @@ msgstr ""
 
 msgid "Addon reloaded"
 msgstr ""
+
+#, fuzzy
+msgid "Select visible"
+msgstr "Sekwencyjny"
+
+#, fuzzy
+msgid "Select visible subfixtures"
+msgstr "Usuń oprawę"
+
+#, fuzzy
+msgid "Clear selection"
+msgstr "Dodaj do wyboru"
+
+#, fuzzy
+msgid "Clear subfixture selection"
+msgstr "Dodaj do wyboru"
 
 #, fuzzy
 msgid "Get GDTF Share account and fill it into BlenderDMX addon preferences."
@@ -1013,6 +1084,9 @@ msgstr "Zaktualizuj listę plików lokalnych"
 #, fuzzy
 msgid "GDTF Share"
 msgstr "Zaktualizowano udział GDTF"
+
+msgid "You must Allow Online access for this to work:"
+msgstr ""
 
 msgid "Fixture details"
 msgstr "Szczegóły oprawy"
@@ -1329,3 +1403,19 @@ msgstr "Wszechświat"
 
 #~ msgid "Import fixture from local filesystem"
 #~ msgstr "Importuj urządzenie z lokalnego systemu plików"
+
+#~ msgid "Trackers Item"
+#~ msgstr "Element śledzący"
+
+#~ msgid "Disable Overlays"
+#~ msgstr ""
+
+#~ msgid "Gobo"
+#~ msgstr ""
+
+#~ msgid "Gobo Rotation"
+#~ msgstr ""
+
+#~ msgid "For Blender 4.2 and up use the Extension"
+#~ msgstr ""
+

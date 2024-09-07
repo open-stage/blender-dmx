@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-08-04 21:51+0200\n"
+"POT-Creation-Date: 2024-09-07 16:58+0200\n"
 "PO-Revision-Date: 2023-12-02 14:06+0000\n"
 "Last-Translator: bass python <pythonbass@gmail.com>\n"
 "Language: ar_AA\n"
@@ -47,10 +47,17 @@ msgstr "اثار"
 msgid "DMX Collection"
 msgstr ""
 
-msgid "Trackers Item"
+#, fuzzy
+msgid "Selected PSN Server"
+msgstr "حذف لاعبا اساسيا"
+
+msgid "The selected element on the PSN server list"
 msgstr ""
 
-msgid "The selected element on the trackers list"
+msgid "Class List i"
+msgstr ""
+
+msgid "The selected element on the class list"
 msgstr ""
 
 #, fuzzy
@@ -64,6 +71,9 @@ msgid "Display Pigtails"
 msgstr ""
 
 msgid "Display 2D View"
+msgstr ""
+
+msgid "Display Device Label"
 msgstr ""
 
 msgid "Device Label"
@@ -131,7 +141,7 @@ msgstr ""
 msgid "Custom per each beam"
 msgstr ""
 
-msgid "Disable Overlays"
+msgid "Disable Beam Outlines"
 msgstr ""
 
 msgid "Enable Volume Scatter"
@@ -284,6 +294,14 @@ msgstr "أوضاع دي إم إكس"
 #, fuzzy
 msgid "Fixture"
 msgstr "مباراة قادمة"
+
+#, fuzzy
+msgid "Subfixtures"
+msgstr "مباراة قادمة"
+
+#, fuzzy
+msgid "Active Subfixtures"
+msgstr "حذف لاعبا اساسيا"
 
 msgid "DMX Universe"
 msgstr "عالم دي إم إكس"
@@ -531,6 +549,9 @@ msgstr ""
 msgid "Allow pan/tilt DMX data"
 msgstr ""
 
+msgid "Lock/Unlock Movement Rotation"
+msgstr ""
+
 msgid "Deselect All"
 msgstr ""
 
@@ -644,17 +665,39 @@ msgstr "توسيع"
 msgid "Tilt"
 msgstr ""
 
+#, fuzzy
+msgid "Pan Rotation"
+msgstr "التقييم"
+
+#, fuzzy
+msgid "Tilt Rotation"
+msgstr "التقييم"
+
 msgid "Zoom"
 msgstr ""
 
 msgid "Color Wheel"
 msgstr ""
 
-msgid "Gobo"
+msgid "Color Temperature"
 msgstr ""
 
-msgid "Gobo Rotation"
+msgid "Iris"
 msgstr ""
+
+msgid "Gobo1"
+msgstr ""
+
+#, fuzzy
+msgid "Gobo1 Rotation"
+msgstr "التقييم"
+
+msgid "Gobo2"
+msgstr ""
+
+#, fuzzy
+msgid "Gobo2 Rotation"
+msgstr "التقييم"
 
 msgid "Strobe"
 msgstr ""
@@ -747,6 +790,9 @@ msgstr ""
 msgid "Clear Project data"
 msgstr ""
 
+msgid "Copy (import) old data from addon folder"
+msgstr ""
+
 msgid "Import"
 msgstr ""
 
@@ -786,9 +832,6 @@ msgid "Setup"
 msgstr ""
 
 msgid "Error! Blender 3.4 or higher required."
-msgstr ""
-
-msgid "For Blender 4.2 and up use the Extension"
 msgstr ""
 
 msgid "Create New Show"
@@ -855,6 +898,17 @@ msgstr ""
 msgid "Data cleared"
 msgstr ""
 
+msgid "Copy data from addon to user directory"
+msgstr ""
+
+msgid ""
+"Copy custom data from BlenderDMX addon directory to BlenderDMX extension "
+"user directory."
+msgstr ""
+
+msgid "Data copied"
+msgstr ""
+
 msgid "Reload BlenderDMX addon"
 msgstr ""
 
@@ -862,6 +916,21 @@ msgid "Reload the addon, useful during development"
 msgstr ""
 
 msgid "Addon reloaded"
+msgstr ""
+
+#, fuzzy
+msgid "Select visible"
+msgstr "‏Sequential"
+
+#, fuzzy
+msgid "Select visible subfixtures"
+msgstr "حذف لاعبا اساسيا"
+
+#, fuzzy
+msgid "Clear selection"
+msgstr "حذف لاعبا اساسيا"
+
+msgid "Clear subfixture selection"
 msgstr ""
 
 #, fuzzy
@@ -1007,6 +1076,9 @@ msgstr "تحديث قائمة الملفات المحلية"
 #, fuzzy
 msgid "GDTF Share"
 msgstr "تم تحديث مشاركة GDTF"
+
+msgid "You must Allow Online access for this to work:"
+msgstr ""
 
 msgid "Fixture details"
 msgstr "تفاصيل المباراة"
@@ -1325,4 +1397,22 @@ msgstr "الأكوان"
 
 #~ msgid "Import fixture from local filesystem"
 #~ msgstr "استيراد لاعبا أساسيا من نظام الملفات المحلي"
+
+#~ msgid "Trackers Item"
+#~ msgstr ""
+
+#~ msgid "The selected element on the trackers list"
+#~ msgstr ""
+
+#~ msgid "Disable Overlays"
+#~ msgstr ""
+
+#~ msgid "Gobo"
+#~ msgstr ""
+
+#~ msgid "Gobo Rotation"
+#~ msgstr ""
+
+#~ msgid "For Blender 4.2 and up use the Extension"
+#~ msgstr ""
 

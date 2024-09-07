@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-08-04 21:51+0200\n"
+"POT-Creation-Date: 2024-09-07 16:58+0200\n"
 "PO-Revision-Date: 2024-05-05 19:08+0000\n"
 "Last-Translator: Iago Emanuel <iagoemanuel@live.com>\n"
 "Language: pt_BR\n"
@@ -47,10 +47,17 @@ msgstr "Rastro"
 msgid "DMX Collection"
 msgstr "Coleção DMX"
 
-msgid "Trackers Item"
+#, fuzzy
+msgid "Selected PSN Server"
+msgstr "Excluir dispositivo elétrico"
+
+msgid "The selected element on the PSN server list"
 msgstr ""
 
-msgid "The selected element on the trackers list"
+msgid "Class List i"
+msgstr ""
+
+msgid "The selected element on the class list"
 msgstr ""
 
 msgid "Universe"
@@ -63,6 +70,9 @@ msgid "Display Pigtails"
 msgstr ""
 
 msgid "Display 2D View"
+msgstr ""
+
+msgid "Display Device Label"
 msgstr ""
 
 msgid "Device Label"
@@ -130,7 +140,7 @@ msgstr ""
 msgid "Custom per each beam"
 msgstr ""
 
-msgid "Disable Overlays"
+msgid "Disable Beam Outlines"
 msgstr ""
 
 msgid "Enable Volume Scatter"
@@ -283,6 +293,14 @@ msgstr "Modos DMX"
 #, fuzzy
 msgid "Fixture"
 msgstr "Dispositivos elétricos"
+
+#, fuzzy
+msgid "Subfixtures"
+msgstr "Dispositivos elétricos"
+
+#, fuzzy
+msgid "Active Subfixtures"
+msgstr "Excluir dispositivo elétrico"
 
 msgid "DMX Universe"
 msgstr "Universo DMX"
@@ -530,6 +548,9 @@ msgstr ""
 msgid "Allow pan/tilt DMX data"
 msgstr ""
 
+msgid "Lock/Unlock Movement Rotation"
+msgstr ""
+
 msgid "Deselect All"
 msgstr ""
 
@@ -643,17 +664,39 @@ msgstr "Expandir"
 msgid "Tilt"
 msgstr ""
 
+#, fuzzy
+msgid "Pan Rotation"
+msgstr "Rotação"
+
+#, fuzzy
+msgid "Tilt Rotation"
+msgstr "Rotação"
+
 msgid "Zoom"
 msgstr ""
 
 msgid "Color Wheel"
 msgstr ""
 
-msgid "Gobo"
+msgid "Color Temperature"
 msgstr ""
 
-msgid "Gobo Rotation"
+msgid "Iris"
 msgstr ""
+
+msgid "Gobo1"
+msgstr ""
+
+#, fuzzy
+msgid "Gobo1 Rotation"
+msgstr "Rotação"
+
+msgid "Gobo2"
+msgstr ""
+
+#, fuzzy
+msgid "Gobo2 Rotation"
+msgstr "Rotação"
 
 msgid "Strobe"
 msgstr ""
@@ -746,6 +789,9 @@ msgstr ""
 msgid "Clear Project data"
 msgstr ""
 
+msgid "Copy (import) old data from addon folder"
+msgstr ""
+
 msgid "Import"
 msgstr ""
 
@@ -785,9 +831,6 @@ msgid "Setup"
 msgstr ""
 
 msgid "Error! Blender 3.4 or higher required."
-msgstr ""
-
-msgid "For Blender 4.2 and up use the Extension"
 msgstr ""
 
 msgid "Create New Show"
@@ -854,6 +897,17 @@ msgstr ""
 msgid "Data cleared"
 msgstr ""
 
+msgid "Copy data from addon to user directory"
+msgstr ""
+
+msgid ""
+"Copy custom data from BlenderDMX addon directory to BlenderDMX extension "
+"user directory."
+msgstr ""
+
+msgid "Data copied"
+msgstr ""
+
 msgid "Reload BlenderDMX addon"
 msgstr ""
 
@@ -862,6 +916,22 @@ msgstr ""
 
 msgid "Addon reloaded"
 msgstr ""
+
+#, fuzzy
+msgid "Select visible"
+msgstr "Sequencial"
+
+#, fuzzy
+msgid "Select visible subfixtures"
+msgstr "Excluir dispositivo elétrico"
+
+#, fuzzy
+msgid "Clear selection"
+msgstr "Adicionar para seleção"
+
+#, fuzzy
+msgid "Clear subfixture selection"
+msgstr "Adicionar para seleção"
 
 #, fuzzy
 msgid "Get GDTF Share account and fill it into BlenderDMX addon preferences."
@@ -1006,6 +1076,9 @@ msgstr "Atualizar a lista dos arquivos locais"
 #, fuzzy
 msgid "GDTF Share"
 msgstr "GDTF Share enviado"
+
+msgid "You must Allow Online access for this to work:"
+msgstr ""
 
 msgid "Fixture details"
 msgstr "Detalhes do dispositivo elétrico"
@@ -1346,4 +1419,22 @@ msgstr "Universos"
 
 #~ msgid "Import fixture from local filesystem"
 #~ msgstr "Importar dispositivo elétrico do arquivo local do sistema"
+
+#~ msgid "Trackers Item"
+#~ msgstr ""
+
+#~ msgid "The selected element on the trackers list"
+#~ msgstr ""
+
+#~ msgid "Disable Overlays"
+#~ msgstr ""
+
+#~ msgid "Gobo"
+#~ msgstr ""
+
+#~ msgid "Gobo Rotation"
+#~ msgstr ""
+
+#~ msgid "For Blender 4.2 and up use the Extension"
+#~ msgstr ""
 
