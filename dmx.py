@@ -336,8 +336,8 @@ class DMX(PropertyGroup):
         type = tracker.DMX_Tracker)
 
     trackers_i : IntProperty(
-        name = _("Trackers Item"),
-        description=_("The selected element on the trackers list"),
+        name = _("Selected PSN Server"),
+        description=_("The selected element on the PSN server list"),
         default = 0
         )
 
