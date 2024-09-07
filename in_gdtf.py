@@ -19,7 +19,7 @@ from bpy.props import (
 )
 from .gdtf import DMX_GDTF
 from .panels import profiles as Profiles
-from . import pygdtf
+import pygdtf
 from .util import create_unique_fixture_name
 
 from .i18n import DMX_Lang
@@ -84,7 +84,7 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
     def draw(self, context):
         dmx = context.scene.dmx
         if not dmx.collection:
-            Timer(0, createDMXcollection, ()).start()
+            Timer(0.5, createDMXcollection, ()).start()
         layout = self.layout
         layout.use_property_split = True
         layout.use_property_decorate = False
@@ -102,7 +102,8 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
         box.prop(self, "increment_fixture_id")
 
     def execute(self, context):
-        folder_path = os.path.dirname(os.path.realpath(__file__))
+        dmx = bpy.context.scene.dmx
+        folder_path = dmx.get_addon_path()
         folder_path = os.path.join(folder_path, "assets", "profiles")
         dmx = context.scene.dmx
 

@@ -20,7 +20,7 @@ import os
 import shutil
 from bpy.types import Operator, Panel
 from ..material import getVolumeScatterMaterial
-from ..util import getSceneRect
+from ..util import getSceneRect, split_text_on_spaces
 from ..gdtf import DMX_GDTF
 from ..panels import profiles as Profiles
 from .. import blender_utils as blender_utils
@@ -206,8 +206,10 @@ class DMX_PT_Setup_Viewport(Panel):
         row = layout.row()
         row.prop(context.scene.dmx, "display_2D")
         row = layout.row()
+        row.prop(context.scene.dmx, "enable_device_label")
+        row = layout.row()
         row.prop(context.scene.dmx, "display_device_label")
-        row.enabled = dmx.display_2D
+        row.enabled = dmx.display_2D or dmx.enable_device_label
         row = layout.row()
         row.prop(context.scene.dmx, "display_pigtails")
         row = layout.row()
@@ -227,6 +229,7 @@ class DMX_PT_Setup_Extras(Panel):
     def draw(self, context):
         layout = self.layout
         dmx = context.scene.dmx
+        old_data_exists = blender_utils.old_custom_data_exists()
         if bpy.app.version >= (4, 2):
             # do not do version check online in 4.2 and up
             pass
@@ -240,6 +243,9 @@ class DMX_PT_Setup_Extras(Panel):
         row = layout.row()
         row.operator_context = "INVOKE_DEFAULT"  #'INVOKE_AREA'
         row.operator("dmx.clear_custom_data", text=_("Clear Project data"), icon="TRASH")
+        if old_data_exists:
+            row = layout.row()
+            row.operator("dmx.copy_custom_data", text=_("Copy (import) old data from addon folder"), icon="DUPLICATE")
         layout.operator("wm.url_open", text="User Guide Online", icon="HELP").url = "https://blenderdmx.eu/docs/faq/"
 
 
@@ -298,10 +304,9 @@ class DMX_OT_Setup_Open_LogFile(Operator):
 
     def execute(self, context):
         # DMX setup
-        current_path = os.path.dirname(os.path.abspath(__file__))
-        path = os.path.join(current_path, "..")
-        path = os.path.abspath(path)
-        self.report({"INFO"}, f"Path with a log file: {path}")
+        dmx = context.scene.dmx
+        current_path = dmx.get_addon_path()
+        self.report({"INFO"}, f"Path with a log file: {current_path}")
 
         return {"FINISHED"}
 
@@ -318,11 +323,8 @@ class DMX_PT_Setup_Logging(Panel):
 
     def draw(self, context):
         # DMX setup
-        ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
-        path = os.path.join(ADDON_PATH, "blenderDMX.log")
-
-        layout = self.layout
         dmx = context.scene.dmx
+        layout = self.layout
         row = layout.row()
         row.prop(context.scene.dmx, "logging_level")
         row = layout.row()
@@ -350,13 +352,24 @@ class DMX_PT_Setup(Panel):
     def draw(self, context):
         layout = self.layout
         dmx = context.scene.dmx
+        temp_data = bpy.context.window_manager.dmx
+        message = temp_data.migration_message
+
+        if len(message)>0:
+            row = layout.row()
+            lines = split_text_on_spaces(message, 30)
+            row.label(text="Important!", icon="ERROR")
+            for line in lines:
+                row = layout.row()
+                row.label(text=line)
+
         if not dmx.collection:
             if not bpy.app.version >= (3, 4):
                 layout.label(text=_("Error! Blender 3.4 or higher required."), icon="ERROR")
-            if bpy.app.version >= (4, 2):
-                row = layout.row()
-                row.label(text=_("For Blender 4.2 and up use the Extension"), icon="ERROR")
-                row.operator("wm.url_open", text="BlenderDMX Extension", icon="SHADING_WIRE").url = "https://extensions.blender.org/add-ons/open-stage-blender-dmx/"
+            #if bpy.app.version >= (4, 2):
+            #    row = layout.row()
+            #    row.label(text=_("For Blender 4.2 and up use the Extension"), icon="ERROR")
+            #    row.operator("wm.url_open", text="BlenderDMX Extension", icon="SHADING_WIRE").url = "https://extensions.blender.org/add-ons/open-stage-blender-dmx/"
             layout.operator("dmx.new_show", text=_("Create New Show"), icon="LIGHT")
             layout.operator("wm.url_open", text="User Guide Online", icon="HELP").url = "https://blenderdmx.eu/docs/faq/"
 
@@ -507,6 +520,31 @@ class DMX_OT_Clear_Custom_Data(Operator):
         wm = context.window_manager
         return wm.invoke_props_dialog(self)
 
+class DMX_OT_Copy_Custom_Data(Operator):
+    bl_label = _("Copy data from addon to user directory")
+    bl_idname = "dmx.copy_custom_data"
+    bl_description = _("Copy custom data from BlenderDMX addon directory to BlenderDMX extension user directory.")
+    bl_options = {"UNDO"}
+
+    def draw(self, context):
+        layout = self.layout
+        col = layout.column()
+
+    def execute(self, context):
+        result = blender_utils.copy_custom_data()
+        DMX_GDTF.getManufacturerList()
+        Profiles.DMX_Fixtures_Local_Profile.loadLocal()
+
+        if result.ok:
+            self.report({"INFO"}, _("Data copied"))
+        else:
+            self.report({"ERROR"}, result.error)
+
+        return {"FINISHED"}
+
+    def invoke(self, context, event):
+        wm = context.window_manager
+        return wm.invoke_props_dialog(self)
 
 class DMX_OT_Reload_Addon(Operator):
     bl_label = _("Reload BlenderDMX addon")

@@ -118,7 +118,7 @@ class DMX_OP_Unlink_Fixture_Tracker(Operator):
                 for obj in fixture.objects:
                     if obj.name == "Target":
                         for constraint in obj.object.constraints:
-                            if constraint.target is not None:
+                            if constraint.target != None:
                                 if constraint.target.get("uuid", None) == self.tracker_uuid:
                                     obj.object.constraints.remove(constraint)
 
@@ -209,7 +209,7 @@ class DMX_PT_DMX_Trackers(Panel):
     def draw(self, context):
         layout = self.layout
         dmx = context.scene.dmx
-        layout.operator("dmx.dmx_add_tracker", text="Add tracker", icon="PLUS")
+        layout.operator("dmx.dmx_add_tracker", text="Add PSN server", icon="PLUS")
         layout.template_list("DMX_UL_Tracker", "", dmx, "trackers", dmx, "trackers_i")
 
         if dmx.trackers_i < len(dmx.trackers):
@@ -273,6 +273,8 @@ class DMX_OT_Tracker_Followers_Add_Target(Operator):
             if tracker.uuid == self.tracker_uuid:
                 for obj in tracker.collection.objects:
                     duplicate_obj = obj.copy()
+                    target_name = f"{tracker.name} Tracker"
+                    duplicate_obj.name = target_name
                     tracker.collection.objects.link(duplicate_obj)
                     break
 

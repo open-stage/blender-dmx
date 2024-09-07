@@ -134,7 +134,7 @@ class DMX_OT_Recorder_Delete_Keyframes_Selected(Operator):
 
         for fixture in dmx.fixtures:
             if fixture in selected:
-                clear_animation_data(fixture)
+                clear_fixture_animation_data(fixture)
 
         return {"FINISHED"}
 
@@ -186,6 +186,7 @@ class DMX_PT_DMX_Recorder_Delete(Panel):
             for obj in fixture.collection.objects:
                 if obj in bpy.context.selected_objects:
                     selected_fixtures.append(fixture)
+                    break
 
         selected = len(selected_fixtures) > 0
         fixtures_exist = len(dmx.fixtures) > 0

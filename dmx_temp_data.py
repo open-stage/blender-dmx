@@ -19,6 +19,7 @@ import bpy
 
 from . import fixture as fixture
 from .logging import DMX_Log
+from .panels import subfixtures
 
 from .mvr_xchange import DMX_MVR_Xchange
 from .panels import profiles as Profiles
@@ -31,11 +32,17 @@ from bpy.props import (BoolProperty,
                        CollectionProperty)
 
 from bpy.types import (PropertyGroup)
+from .fixture import DMX_Fixture_Channel
 
 from .i18n import DMX_Lang
 _ = DMX_Lang._
 
+
 class DMX_TempData(PropertyGroup):
+    filtered_subfixtures=[]
+
+    def set_filtered_subfixtures(self, subs):
+        DMX_TempData.filtered_subfixtures = subs
 
     def onUpdateCollections(self, context):
         dmx = context.scene.dmx
@@ -129,3 +136,26 @@ class DMX_TempData(PropertyGroup):
     dist_gap: FloatProperty(name="Gap", default=2)
     dist_diameter: FloatProperty(name="Diameter", default=2)
     dist_rotate: BoolProperty(name="Rotate", default=False)
+    programmer_source: StringProperty(name="Source")
+
+
+    subfixtures: CollectionProperty(
+            name = _("Subfixtures"),
+            type=subfixtures.DMX_Subfixture,
+            )
+
+    active_subfixtures: CollectionProperty(
+            name = _("Active Subfixtures"),
+            type=PropertyGroup
+            )
+
+    active_subfixture_i : IntProperty(
+        default = -1
+        )
+
+    selected_fixture_label: StringProperty()
+
+    migration_message: StringProperty() # to pass data to fixture list
+
+    pan_rotate_enabled: BoolProperty(name="Pan Rotate", default=False)
+    tilt_rotate_enabled: BoolProperty(name="Tilt Rotate", default=False)

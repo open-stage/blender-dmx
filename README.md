@@ -10,27 +10,11 @@ A DMX visualization tool inside <a href="https://blender.org">Blender</a>, desig
 
 ![](https://i.ibb.co/rvpKYxB/render-eevee-7.png)
 
-## Download & Install
+## Installation
 
-First of all, make sure you have installed [Blender 3.4](https://www.blender.org/download/) or higher (Blender 4.x is supported). Then, download the `zip` file:
+Make sure you have [Blender](https://www.blender.org/download/), latest version 4.2 is recommended, minimal version is 3.4.
 
-### LATEST RELEASE (STABLE): v1.7.4
-
-   1. From the [latest release](https://github.com/open-stage/blender-dmx/releases/latest) download the [blenderDMX_v1.7.4.zip](https://github.com/open-stage/blender-dmx/releases/download/v1.7.4/blenderDMX_v1.7.4.zip) file
-
-### ROLLING RELEASE (UNSTABLE)
-
-   1. Download the [repository ZIP](https://codeload.github.com/open-stage/blender-dmx/zip/refs/heads/main) `blender-dmx-main.zip` file
-   2. Inside the zip file is a folder called `blender-dmx-main`, rename this folder to `dmx`, keep the file zipped
-
-Finally:
-   1. Open Blender
-   2. `Edit > Preferences > Add-ons > Install`
-   3. Pick the downloaded `zip` file
-
-To enable the addon, go to `Edit > Preferences > Add-ons`, search for "DMX" and toggle the checkbox on.
-
-![Install](https://i.imgur.com/Q1R0AzP.gif)
+Go to [DOWNLOAD PAGE](https://blenderdmx.eu/download).
 
 ## How to Use
 

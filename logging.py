@@ -46,7 +46,9 @@ class DMX_Log:
             datefmt="%Y-%m-%d %H:%M:%S",
         )
         if not log.handlers:  # logger is global, prevent duplicate registrations
-            ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
+
+            dmx = bpy.context.scene.dmx
+            ADDON_PATH = dmx.get_addon_path()
             path = os.path.join(ADDON_PATH, "blenderDMX.log")
 
             console_log_handler = logging.StreamHandler()

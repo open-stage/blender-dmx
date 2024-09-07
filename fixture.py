@@ -28,12 +28,12 @@ from .material import getEmitterMaterial, get_gobo_material, set_light_nodes, ge
 from .model import DMX_Model
 from .logging import DMX_Log
 
-from . import pygdtf
-from . import pymvr
+import pygdtf
+import pymvr
 
 from .gdtf import DMX_GDTF
 from .data import DMX_Data
-from .util import cmy_to_rgb, add_rgb, colors_to_rgb, rgb2xyY
+from .util import cmy_to_rgb, add_rgb, colors_to_rgb, rgb2xyY, kelvin_table
 from .osc_utils import DMX_OSC_Handlers
 from bpy.props import (IntProperty,
                        BoolProperty,
@@ -50,6 +50,7 @@ from bpy.types import (PropertyGroup,
                        Material,
                        GeometryNodeTree,
                        Text)
+from .node_arranger import DMX_OT_ArrangeSelected
 
 # Shader Nodes default labels
 # Blender API naming convention is inconsistent for internationalization
@@ -171,6 +172,14 @@ class DMX_Fixture(PropertyGroup):
         type = DMX_Fixture_Channel
     )
 
+    gdtf_long_name: StringProperty(
+        name = "Fixture > Name",
+        default = "")
+
+    gdtf_manufacturer: StringProperty(
+        name = "Fixture > Manufacturer",
+        default = "")
+
     def ensure_universe_exists(self, context):
         dmx = bpy.context.scene.dmx
         dmx.ensureUniverseExists(self.universe)
@@ -257,9 +266,24 @@ class DMX_Fixture(PropertyGroup):
         description="Stay in position set by Target",
         default = False)
 
-    def build(self, name, profile, mode, universe, address, gel_color, display_beams, add_target, mvr_position = None,
-              focus_point = None, uuid = None, fixture_id="", custom_id=0, fixture_id_numeric=0, unit_number=0):
+    classing: StringProperty(
+        name = "Classing UUID",
+        description = "Classing - logical grouping across different layers",
+        default = ""
+            )
 
+    lock_pan_rotation: BoolProperty(
+        name = "Lock Pan Rotation",
+        description="Lock Pan Rotation",
+        default = False)
+
+    lock_tilt_rotation: BoolProperty(
+        name = "Lock Tilt Rotation",
+        description="Lock Tilt Rotation",
+        default = False)
+
+    def build(self, name, profile, mode, universe, address, gel_color, display_beams, add_target, mvr_position = None,
+              focus_point = None, uuid = None, fixture_id="", custom_id=0, fixture_id_numeric=0, unit_number=0, classing=""):
         # (Edit) Store objects positions
         old_pos = {obj.name:obj.object.location.copy() for obj in self.objects}
         old_rot = {obj.name:obj.object.rotation_euler.copy() for obj in self.objects}
@@ -284,6 +308,8 @@ class DMX_Fixture(PropertyGroup):
             self.unit_number = unit_number
         if uuid is not None:
             self.uuid = uuid
+        if classing is not None:
+            self.classing = classing
 
         # DMX Properties
         self.universe = universe
@@ -319,6 +345,8 @@ class DMX_Fixture(PropertyGroup):
 
         # Import and deep copy Fixture Model Collection
         gdtf_profile = DMX_GDTF.loadProfile(profile)
+        self.gdtf_long_name = gdtf_profile.long_name
+        self.gdtf_manufacturer = gdtf_profile.manufacturer
 
         # Handle if dmx mode doesn't exist (maybe this is MVR import and GDTF files were replaced)
         # use mode[0] as default
@@ -362,13 +390,18 @@ class DMX_Fixture(PropertyGroup):
         if has_gobos:
             gobo_seq = DMX_GDTF.extract_gobos_as_sequence(gdtf_profile)
             if gobo_seq is not None:
-                gobo = self.images.add()
-                gobo.name = "gobos"
-                gobo.image = gobo_seq
-                gobo.count = gobo_seq["count"]
-                gobo.image.pack()
+                gobo1 = self.images.add()
+                gobo1.name = "gobos1"
+                gobo1.image = gobo_seq[0]
+                gobo1.count = gobo_seq[0]["count"]
+                gobo1.image.pack()
+                gobo2 = self.images.add()
+                gobo2.name = "gobos2"
+                gobo2.image = gobo_seq[1]
+                gobo2.count = gobo_seq[1]["count"]
+                gobo2.image.pack()
 
-        if "gobos" not in self.images:
+        if "gobos1" not in self.images:
             has_gobos = False # faulty GDTF might have channels but no images
 
         self["slot_colors"] = []
@@ -506,7 +539,7 @@ class DMX_Fixture(PropertyGroup):
         for obj in self.collection.objects:
             if "pigtail" in obj.get("geometry_type", ""):
                 obj.hide_set(not bpy.context.scene.dmx.display_pigtails)
-                obj.hide_viewport = not bpy.context.scene.dmx.display_pigtails
+                obj.hide_viewport = not bpy.context.scene.dmx.display_pigtails # keyframing
                 obj.hide_render = not bpy.context.scene.dmx.display_pigtails
             if obj.get("geometry_root", False):
                 continue
@@ -514,7 +547,7 @@ class DMX_Fixture(PropertyGroup):
                 continue
             if obj.get("2d_symbol", None) == "all":
                 obj.hide_set(not bpy.context.scene.dmx.display_2D)
-                obj.hide_viewport = not bpy.context.scene.dmx.display_2D
+                obj.hide_viewport = not bpy.context.scene.dmx.display_2D #keyframing
                 obj.hide_render = not bpy.context.scene.dmx.display_2D
                 continue
 
@@ -522,22 +555,50 @@ class DMX_Fixture(PropertyGroup):
 
         self.clear()
         self.hide_gobo()
+        d=DMX_OT_ArrangeSelected()
+        for item in self.gobo_materials:
+                ntree = item.material.node_tree
+                d.process_tree(ntree)
+        for item in self.geometry_nodes:
+                ntree = item.node
+                d.process_tree(ntree)
+
+        for light in self.lights: #CYCLES
+            light_obj = light.object
+            ntree  = light_obj.data.node_tree
+            d.process_tree(ntree)
+
         self.render()
 
     # Interface Methods #
 
     def setDMX(self, pvalues):
-        channels = [c.id for c in self.channels]
-        virtuals = [c.id for c in self.virtual_channels]
+
+        temp_data = bpy.context.window_manager.dmx
+
+        #channels = [c.id for c in self.channels]
+        #virtuals = [c.id for c in self.virtual_channels]
+
         for attribute, value in pvalues.items():
-            for idx, channel in enumerate(channels):
-                if channel == attribute:
-                    DMX_Log.log.info(("Set DMX data", channel, value))
-                    DMX_Data.set(self.universe, self.address+idx, value)
-            for vchannel in virtuals:
-                if vchannel == attribute:
-                    DMX_Log.log.info(("Set Virtual data", attribute, value))
-                    DMX_Data.set_virtual(self.name, attribute, value)
+            for idx, channel in enumerate(self.channels):
+                if channel.id == attribute:
+                    if len(temp_data.active_subfixtures)>0:
+                        if any(channel.geometry == g.name for g in temp_data.active_subfixtures):
+                            DMX_Log.log.info(("Set DMX data", channel.id, value))
+                            DMX_Data.set(self.universe, self.address+idx, value)
+                    else:
+                        DMX_Log.log.info(("Set DMX data", channel, value))
+                        DMX_Data.set(self.universe, self.address+idx, value)
+            for vchannel in self.virtual_channels:
+                if vchannel.id == attribute:
+                    if len(temp_data.active_subfixtures)>0:
+                        if any(vchannel.geometry == g.name for g in temp_data.active_subfixtures):
+                            DMX_Log.log.info(("Set Virtual data", attribute, value))
+                            geometry = next(vchannel.geometry == g.name for g in temp_data.active_subfixtures)
+                            DMX_Data.set_virtual(self.name, attribute, geometry, value)
+                    else:
+                        DMX_Log.log.info(("Set Virtual data", attribute, value))
+                        DMX_Data.set_virtual(self.name, attribute, None, value)
 
     def render(self, skip_cache = False, current_frame = None):
 
@@ -546,12 +607,12 @@ class DMX_Fixture(PropertyGroup):
             return
 
         channels = [c.id for c in self.channels]
-        virtual_channels = [c.id for c in self.virtual_channels]
+        #virtual_channels = [c.id for c in self.virtual_channels]
 
         data = DMX_Data.get(self.universe, self.address, len(channels))
         data_virtual = DMX_Data.get_virtual(self.name)
 
-        s_data = [int(b) for b in data] + [int(b) for b in data_virtual.values()] # create cache
+        s_data = [int(b) for b in data] + [int(b["value"]) for b in data_virtual.values()] # create cache
         if list(self["dmx_values"]) == s_data: # this helps to eliminate flicker with Ethernet DMX signal when the data for this particular device is not changing
             if skip_cache is False: # allow to save a keyframe when using the programmer in Blender
                 DMX_Log.log.debug("caching DMX")
@@ -561,21 +622,31 @@ class DMX_Fixture(PropertyGroup):
                 return
         else: # we have new dmx data, mark the cache as dirty, so we know we can save a keyframe when needed
             self.dmx_cache_dirty = True
+
+        DMX_Log.log.debug(f"{current_frame=}, {self.dmx_cache_dirty=}")
+
         self["dmx_values"]  = s_data
         panTilt = [None,None, 1, 1] # pan, tilt, 1 = 8bit, 256 = 16bit
         cmy = [None,None,None]
         zoom = None
         color1 = None
+        ctc = None
+        iris = None
         rgb_mixing_geometries={}
         xyz_moving_geometries={}
         xyz_rotating_geometries={}
         shutter_dimmer_geometries={} # item: shutter, dimmer, unused, dimmer bits
         pan_rotating_geometries={}
         tilt_rotating_geometries={}
-        gobo1 = [None, None] #gobo selection (Gobo1, Gobo2), gobo indexing/rotation (Gobo1Pos, Gobo2Pos)
 
-        for attribute in virtual_channels:
-            geometry = None # for now. But, no way to know, as BlenderDMX controls are universal
+        pan_cont_rotating_geometries={}
+        tilt_cont_rotating_geometries={}
+
+        gobo1 = [None, None] #gobo selection (Gobo1), gobo indexing/rotation (Gobo1Pos)
+        gobo2 = [None, None] #gobo selection (Gobo2), gobo indexing/rotation (Gobo2Pos)
+
+        for vchannel in self.virtual_channels:
+            geometry = vchannel.geometry # for now. But, no way to know, as BlenderDMX controls are universal
             if geometry not in rgb_mixing_geometries.keys():
                 rgb_mixing_geometries[geometry] = [None] * 12 # R, G, B, White, WW, CW, Amber, Lime, UV, cyan, magenta, yellow
             if geometry not in xyz_moving_geometries.keys():
@@ -588,44 +659,54 @@ class DMX_Fixture(PropertyGroup):
                 pan_rotating_geometries[geometry]=[None, 1]
             if geometry not in tilt_rotating_geometries.keys():
                 tilt_rotating_geometries[geometry]=[None, 1]
-            if attribute in data_virtual:
-                if attribute == "Shutter1": shutter_dimmer_geometries[geometry][0] = data_virtual[attribute]
-                elif attribute == "Dimmer": shutter_dimmer_geometries[geometry][1] = data_virtual[attribute]
-                elif attribute == "+Dimmer":
-                    shutter_dimmer_geometries[geometry][1] = shutter_dimmer_geometries[geometry][1] * 256 + data_virtual[attribute]
+            if geometry not in pan_cont_rotating_geometries.keys():
+                pan_cont_rotating_geometries[geometry]=[None, 1]
+            if geometry not in tilt_cont_rotating_geometries.keys():
+                tilt_cont_rotating_geometries[geometry]=[None, 1]
+            if vchannel.id in data_virtual:
+                if vchannel.id == "Shutter1": shutter_dimmer_geometries[geometry][0] = data_virtual[vchannel.id]["value"]
+                elif vchannel.id == "Dimmer": shutter_dimmer_geometries[geometry][1] = data_virtual[vchannel.id]["value"]
+                elif vchannel.id == "+Dimmer":
+                    shutter_dimmer_geometries[geometry][1] = shutter_dimmer_geometries[geometry][1] * 256 + data_virtual[vchannel.id]["value"]
                     shutter_dimmer_geometries[geometry][3] = 256
 
-                elif (attribute == "ColorAdd_R" or attribute == "ColorRGB_Red"): rgb_mixing_geometries[geometry][0] = data_virtual[attribute]
-                elif (attribute == "ColorAdd_G" or attribute == "ColorRGB_Green"): rgb_mixing_geometries[geometry][1] = data_virtual[attribute]
-                elif (attribute == "ColorAdd_B" or attribute == "ColorRGB_Blue"): rgb_mixing_geometries[geometry][2] = data_virtual[attribute]
-                elif attribute == "ColorSub_C": cmy[0] = data_virtual[attribute]
-                elif attribute == "ColorSub_M": cmy[1] = data_virtual[attribute]
-                elif attribute == "ColorSub_Y": cmy[2] = data_virtual[attribute]
-                elif attribute == "Pan":
-                    panTilt[0] = data_virtual[attribute]
-                    pan_rotating_geometries[geometry][0] = data_virtual[attribute]
-                elif attribute == "+Pan":
-                    panTilt[0]  = panTilt[0] * 256 + data_virtual[attribute]
+                elif (vchannel.id == "ColorAdd_R" or vchannel.id == "ColorRGB_Red"): rgb_mixing_geometries[geometry][0] = data_virtual[vchannel.id]["value"]
+                elif (vchannel.id == "ColorAdd_G" or vchannel.id == "ColorRGB_Green"): rgb_mixing_geometries[geometry][1] = data_virtual[vchannel.id]["value"]
+                elif (vchannel.id == "ColorAdd_B" or vchannel.id == "ColorRGB_Blue"): rgb_mixing_geometries[geometry][2] = data_virtual[vchannel.id]["value"]
+                elif vchannel.id == "ColorSub_C": cmy[0] = data_virtual[vchannel.id]["value"]
+                elif vchannel.id == "ColorSub_M": cmy[1] = data_virtual[vchannel.id]["value"]
+                elif vchannel.id == "ColorSub_Y": cmy[2] = data_virtual[vchannel.id]["value"]
+                elif vchannel.id == "Pan":
+                    panTilt[0] = data_virtual[vchannel.id]["value"]
+                    pan_rotating_geometries[geometry][0] = data_virtual[vchannel.id]["value"]
+                elif vchannel.id == "+Pan":
+                    panTilt[0]  = panTilt[0] * 256 + data_virtual[vchannel.id]["value"]
                     panTilt[2] = 256 # 16bit
-                    pan_rotating_geometries[geometry][0] = pan_rotating_geometries[geometry][0] * 256 + data_virtual[attribute]
+                    pan_rotating_geometries[geometry][0] = pan_rotating_geometries[geometry][0] * 256 + data_virtual[vchannel.id]["value"]
                     pan_rotating_geometries[geometry][2] = 256
 
-                elif attribute == "Tilt":
-                    panTilt[1] = data_virtual[attribute]
-                    tilt_rotating_geometries[geometry][0] = data_virtual[attribute]
-                elif attribute == "+Tilt":
-                    panTilt[1]  = panTilt[1] * 256 + data_virtual[attribute]
+                elif vchannel.id == "Tilt":
+                    panTilt[1] = data_virtual[vchannel.id]["value"]
+                    tilt_rotating_geometries[geometry][0] = data_virtual[vchannel.id]["value"]
+                elif vchannel.id == "+Tilt":
+                    panTilt[1]  = panTilt[1] * 256 + data_virtual[vchannel.id]["value"]
                     panTilt[3] = 256 # 16bit
-                    tilt_rotating_geometries[geometry][0] = tilt_rotating_geometries[geometry][0] * 256 + data_virtual[attribute]
+                    tilt_rotating_geometries[geometry][0] = tilt_rotating_geometries[geometry][0] * 256 + data_virtual[vchannel.id]["value"]
                     tilt_rotating_geometries[geometry][2] = 256
 
-                elif attribute == "Zoom": zoom = data_virtual[attribute]
-                elif attribute == "XYZ_X": xyz_moving_geometries[geometry][0] = data_virtual[attribute]
-                elif attribute == "XYZ_Y": xyz_moving_geometries[geometry][1] = data_virtual[attribute]
-                elif attribute == "XYZ_Z": xyz_moving_geometries[geometry][2] = data_virtual[attribute]
-                elif attribute == "Rot_X": xyz_rotating_geometries[geometry][0] = data_virtual[attribute]
-                elif attribute == "Rot_Y": xyz_rotating_geometries[geometry][1] = data_virtual[attribute]
-                elif attribute == "Rot_Z": xyz_rotating_geometries[geometry][2] = data_virtual[attribute]
+                elif vchannel.id == "PanRotate":
+                    pan_cont_rotating_geometries[geometry][0] = data_virtual[vchannel.id]["value"]
+
+                elif vchannel.id == "TiltRotate":
+                    tilt_cont_rotating_geometries[geometry][0] = data_virtual[vchannel.id]["value"]
+
+                elif vchannel.id == "Zoom": zoom = data_virtual[vchannel.id]["value"]
+                elif vchannel.id == "XYZ_X": xyz_moving_geometries[geometry][0] = data_virtual[vchannel.id]["value"]
+                elif vchannel.id == "XYZ_Y": xyz_moving_geometries[geometry][1] = data_virtual[vchannel.id]["value"]
+                elif vchannel.id == "XYZ_Z": xyz_moving_geometries[geometry][2] = data_virtual[vchannel.id]["value"]
+                elif vchannel.id == "Rot_X": xyz_rotating_geometries[geometry][0] = data_virtual[vchannel.id]["value"]
+                elif vchannel.id == "Rot_Y": xyz_rotating_geometries[geometry][1] = data_virtual[vchannel.id]["value"]
+                elif vchannel.id == "Rot_Z": xyz_rotating_geometries[geometry][2] = data_virtual[vchannel.id]["value"]
 
         for c in range(len(channels)):
             geometry=self.channels[c].geometry
@@ -641,6 +722,11 @@ class DMX_Fixture(PropertyGroup):
                 pan_rotating_geometries[geometry]=[None, 1]
             if geometry not in tilt_rotating_geometries.keys():
                 tilt_rotating_geometries[geometry]=[None, 1]
+            if geometry not in pan_cont_rotating_geometries.keys():
+                pan_cont_rotating_geometries[geometry]=[None, 1]
+            if geometry not in tilt_cont_rotating_geometries.keys():
+                tilt_cont_rotating_geometries[geometry]=[None, 1]
+
             if (channels[c] == 'Dimmer'): shutter_dimmer_geometries[geometry][1] = data[c]
             if (channels[c] == '+Dimmer'):
                 shutter_dimmer_geometries[geometry][1] = shutter_dimmer_geometries[geometry][1] * 256 + data[c]
@@ -677,14 +763,23 @@ class DMX_Fixture(PropertyGroup):
                 panTilt[3] = 256 # 16bit
                 tilt_rotating_geometries[geometry][0] = tilt_rotating_geometries[geometry][0] * 256 + data[c]
                 tilt_rotating_geometries[geometry][1] = 256
+
+            elif (channels[c] == 'PanRotate'):
+                pan_cont_rotating_geometries[geometry][0] = data[c]
+            elif (channels[c] == 'TiltRotate'):
+                tilt_cont_rotating_geometries[geometry][0] = data[c]
             elif (channels[c] == 'Zoom'): zoom = data[c]
             elif (channels[c] == 'Color1'): color1 = data[c]
             elif (channels[c] == 'Color2'): color1 = data[c]
+            elif (channels[c] == 'CTC'): ctc = data[c]
+            elif (channels[c] == 'CTO'): ctc = data[c]
+            elif (channels[c] == 'CTB'): ctc = data[c]
+            elif (channels[c] == 'Iris'): iris = data[c]
             elif (channels[c] == 'ColorMacro1'): color1 = data[c]
             elif (channels[c] == 'Gobo1'): gobo1[0] = data[c]
             elif (channels[c] == 'Gobo1Pos' or channels[c] == 'Gobo1PosRotate'): gobo1[1] = data[c]
-            elif (channels[c] == 'Gobo2'): gobo1[0] = data[c]
-            elif (channels[c] == 'Gobo2Pos' or channels[c] == 'Gobo2PosRotate'): gobo1[1] = data[c]
+            elif (channels[c] == 'Gobo2'): gobo2[0] = data[c]
+            elif (channels[c] == 'Gobo2Pos' or channels[c] == 'Gobo2PosRotate'): gobo2[1] = data[c]
             elif (channels[c] == 'XYZ_X'): xyz_moving_geometries[geometry][0] = data[c]
             elif (channels[c] == 'XYZ_Y'): xyz_moving_geometries[geometry][1] = data[c]
             elif (channels[c] == 'XYZ_Z'): xyz_moving_geometries[geometry][2] = data[c]
@@ -698,21 +793,30 @@ class DMX_Fixture(PropertyGroup):
         self.remove_unset_geometries_from_multigeometry_attributes_3(shutter_dimmer_geometries)
         self.remove_unset_geometries_from_multigeometry_attributes_1(pan_rotating_geometries)
         self.remove_unset_geometries_from_multigeometry_attributes_1(tilt_rotating_geometries)
+        self.remove_unset_geometries_from_multigeometry_attributes_1(pan_cont_rotating_geometries)
+        self.remove_unset_geometries_from_multigeometry_attributes_1(tilt_cont_rotating_geometries)
+
+
 
         colorwheel_color = None
         if (color1 is not None):
             colorwheel_color = self.get_colorwheel_color(color1)
+        color_temperature = None
+        if (ctc is not None):
+            color_temperature = self.get_color_temperature(ctc)
+
+
         for geometry, colors in rgb_mixing_geometries.items():
             if len(rgb_mixing_geometries)==1:
                 geometry = None
-            self.updateRGB(colors, geometry, colorwheel_color, current_frame)
+            self.updateRGB(colors, geometry, colorwheel_color, color_temperature, current_frame)
 
         if not len(rgb_mixing_geometries):# handle units without mixing
-            if not all([c == 255 for c in self.gel_color_rgb]) or colorwheel_color is not None: #gel color is set and has priority or there is a color wheel
-                self.updateRGB([255] * 12, None, colorwheel_color, current_frame)
+            if not all([c == 255 for c in self.gel_color_rgb]) or colorwheel_color is not None or color_temperature is not None: #gel color is set and has priority or there is a color wheel or color_temperature
+                self.updateRGB([255] * 12, None, colorwheel_color, color_temperature, current_frame)
 
         if (cmy[0] is not None and cmy[1] is not None and cmy[2] is not None):
-            self.updateCMY(cmy, colorwheel_color, current_frame)
+            self.updateCMY(cmy, colorwheel_color, color_temperature, current_frame)
 
 
         if "Target" in self.objects:
@@ -740,11 +844,29 @@ class DMX_Fixture(PropertyGroup):
                 tilt = (tilt_vals[0]/(tilt_vals[1]*127.0)-1)*270*(math.pi/360)
                 self.updatePTDirectly(geometry, "tilt", tilt, current_frame)
 
+
+        for geometry, pan_rotate in pan_cont_rotating_geometries.items():
+            self.set_pan_tilt_rotation(geometry=geometry, axis = "pan", rotation = pan_rotate[0], current_frame=current_frame)
+
+        for geometry, tilt_rotate in tilt_cont_rotating_geometries.items():
+            self.set_pan_tilt_rotation(geometry=geometry, axis = "tilt", rotation = tilt_rotate[0], current_frame=current_frame)
+
+
         if (zoom is not None):
             self.updateZoom(zoom, current_frame)
 
+        self.hide_gobo_geometry(gobo1, gobo2, iris, current_frame)
+
         if gobo1[0] is not None:
-            self.updateGobo(gobo1, current_frame)
+            self.updateGobo(gobo1, 1, current_frame)
+
+        if gobo2[0] is not None:
+            self.updateGobo(gobo2, 2, current_frame)
+
+        if iris is not None:
+            if 0 <= iris <= 255:
+                iris = iris  * 12/255
+                self.update_iris(iris, current_frame)
 
         for geometry, xyz in xyz_moving_geometries.items():
             self.updatePosition(geometry=geometry, x=xyz[0], y=xyz[1], z=xyz[2], current_frame=current_frame)
@@ -765,6 +887,40 @@ class DMX_Fixture(PropertyGroup):
         if current_frame:
             self.dmx_cache_dirty = False
         # end of render block
+
+
+    def set_pan_tilt_rotation(self, geometry, axis, rotation, current_frame):
+        if axis == "pan":
+            mobile_type = "yoke"
+            offset = 2
+            lock_rotation = self.lock_pan_rotation
+
+        else: # tilt
+            mobile_type = "head"
+            offset = 0
+            lock_rotation = self.lock_tilt_rotation
+
+        if geometry is None:
+            geometry = self.get_mobile_type(mobile_type)
+        else:
+            geometry = self.get_object_by_geometry_name(geometry)
+        if geometry:
+            geometry.rotation_mode = "XYZ"
+            geometry.driver_remove("rotation_euler", offset)
+
+            if lock_rotation:
+                rotation = rotation/128 * 360 *(math.pi/360)
+                geometry.rotation_euler[offset] = rotation # just some value, not very precise
+            else:
+                if rotation != 0:
+                    driver = geometry.driver_add("rotation_euler", offset)
+                    value = rotation-128 # rotating in both direction, slowest in the middle
+                    driver.driver.expression=f"frame*{value*0.005}"
+
+            if current_frame and self.dmx_cache_dirty:
+                geometry.keyframe_insert(data_path="location", frame=current_frame)
+                geometry.keyframe_insert(data_path="rotation_euler", frame=current_frame)
+
 
     def remove_unset_geometries_from_multigeometry_attributes_all(self, dictionary):
         """Remove items with values of all None"""
@@ -825,9 +981,9 @@ class DMX_Fixture(PropertyGroup):
                 if geometry is not None:
                     if f"{geometry}" in emitter_material.name:
                         DMX_Log.log.info("matched emitter")
-                        emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer/(255.0 * bits))
+                        emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 1*(dimmer/(255.0 * bits))
                 else:
-                    emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer/(255.0 * bits))
+                    emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 1*(dimmer/(255.0 * bits))
                 if current_frame and self.dmx_cache_dirty:
                     emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].keyframe_insert(data_path='default_value', frame=current_frame)
 
@@ -849,6 +1005,7 @@ class DMX_Fixture(PropertyGroup):
                     if f"{geometry}" in  light.object.data.name:
                         DMX_Log.log.info("matched emitter")
                         light.object.data.energy = (dimmer/(255.0 * bits)) * flux
+
                 else:
                     light.object.data.energy = (dimmer/(255.0 * bits)) * flux
 
@@ -901,7 +1058,7 @@ class DMX_Fixture(PropertyGroup):
 
             # Here we can reuse data we got from the light object...
             for emitter_material in self.emitter_materials:
-                emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 10*(dimmer_value/(255.0 * dimmer_bits))
+                emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 1*(dimmer_value/(255.0 * dimmer_bits))
 
             if exit_timer:
                 DMX_Log.log.info("Killing shutter timer")
@@ -913,7 +1070,7 @@ class DMX_Fixture(PropertyGroup):
             return None # kills the timer
         return 1.0/24.0
 
-    def updateRGB(self, colors, geometry, colorwheel_color, current_frame):
+    def updateRGB(self, colors, geometry, colorwheel_color, color_temperature, current_frame):
         if geometry is not None:
             geometry = geometry.replace(" ", "_")
         DMX_Log.log.info(("color change for geometry", geometry))
@@ -921,6 +1078,8 @@ class DMX_Fixture(PropertyGroup):
         rgb = colors_to_rgb(colors)
         if colorwheel_color is not None:
             rgb = add_rgb(rgb, colorwheel_color[:3])
+        if color_temperature is not None:
+            rgb = add_rgb(rgb, color_temperature[:3])
         rgb = add_rgb(self.gel_color_rgb, rgb)
         rgb = [c/255.0 for c in rgb]
 
@@ -954,13 +1113,19 @@ class DMX_Fixture(PropertyGroup):
         return rgb
 
 
-    def updateCMY(self, cmy, colorwheel_color, current_frame):
+    def updateCMY(self, cmy, colorwheel_color, color_temperature, current_frame):
         rgb=[0,0,0]
         rgb=cmy_to_rgb(cmy)
-        if colorwheel_color is not None:
-            rgb = add_rgb(rgb, colorwheel_color[:3])
+        if all([c == 255 for c in rgb]) and (colorwheel_color is not None or color_temperature is not None):
+            rgb=[0,0,0] # without this, default white would always be overwriting ctc
 
-        rgb = add_rgb(self.gel_color_rgb, rgb)
+        if colorwheel_color is not None:
+            rgb = add_rgb(rgb, colorwheel_color)
+        if color_temperature is not None:
+            rgb = add_rgb(rgb, color_temperature[:3])
+        if not all([c == 255 for c in self.gel_color_rgb]):
+            rgb = add_rgb(self.gel_color_rgb, rgb)
+
         rgb = [c/255.0 for c in rgb]
 
         for emitter_material in self.emitter_materials:
@@ -1021,55 +1186,96 @@ class DMX_Fixture(PropertyGroup):
         index = int(color1/int(255/(len(colors)-1)))
 
         if len(colors) > index:
-            return colors[index]
+            return list(colors[index])
 
-    def updateGobo(self, gobo1, current_frame):
-        if "gobos" not in self.images:
-            self.hide_gobo(current_frame=current_frame)
+    def get_color_temperature(self, ctc):
+        if ctc == 0:
+            return
+        if 1 <= ctc <= 255:
+            ctc = 1000 + (ctc - 1) * (12000 - 1000) / (255 - 1)
+            ctc -= ctc % -100 # round to full 100s
+            return kelvin_table[ctc]
+        else:
             return
 
-        gobos = self.images["gobos"]
-        if gobo1[0] == 0:
-            self.hide_gobo(current_frame=current_frame)
-            return
-
-        if not gobos.count:
-            self.hide_gobo(current_frame=current_frame)
-            return
-
-        self.hide_gobo(False, current_frame=current_frame)
-        index = int(gobo1[0]/int(255/(gobos.count-1)))
-        self.set_gobo(index, current_frame=current_frame)
-
-        if gobo1[1] is None:
-            #self.hide_gobo() #?
-            return
+    def update_iris(self, iris, current_frame):
 
         for obj in self.collection.objects: #EEVEE
             if "gobo" in obj.get("geometry_type", ""):
-                if gobo1[1]<128: # half for indexing
-                    obj.driver_remove("rotation_euler")
-                    obj.rotation_euler[2] = (gobo1[1]/62.0-1)*360*(math.pi/360)
+                material = self.gobo_materials[obj.name].material
+                mix = material.node_tree.nodes.get("Iris Size")
+                DMX_Log.log.debug(("found iris", material, mix))
+                iris_size = mix.inputs[3]
+                iris_size.default_value = iris
+
+                if current_frame and self.dmx_cache_dirty:
+                    #light_obj.data.keyframe_insert(data_path="shadow_soft_size", frame=current_frame)
+                    iris_size.keyframe_insert(data_path="default_value", frame=current_frame)
+
+        for light in self.lights: # CYCLES
+            light_obj = light.object
+            mix = light_obj.data.node_tree.nodes.get("Iris Size")
+            iris_size = mix.inputs[3]
+            iris_size.default_value = iris
+
+            if current_frame and self.dmx_cache_dirty:
+                #light_obj.data.keyframe_insert(data_path="shadow_soft_size", frame=current_frame)
+                iris_size.keyframe_insert(data_path="default_value", frame=current_frame)
+
+    def updateGobo(self, gobo, n, current_frame):
+        if "gobos1" not in self.images:
+            self.hide_gobo([1,2], current_frame=current_frame)
+            return
+
+        if gobo is None:
+            self.hide_gobo([n], current_frame=current_frame)
+            return
+
+        if gobo[0] == 0:
+            self.hide_gobo([n], current_frame=current_frame)
+            return
+
+        gobos = self.images["gobos1"]
+        if not gobos.count:
+            self.hide_gobo([1,2], current_frame=current_frame)
+            return
+
+        DMX_Log.log.debug(("update gobo", gobo, n))
+        self.hide_gobo([n], False, current_frame=current_frame)
+        index = int(gobo[0]/int(255/(gobos.count-1)))
+        self.set_gobo_slot(n, index, current_frame=current_frame)
+        if gobo[1] is not None:
+            self.set_gobo_rotation(gobo, n, current_frame=current_frame)
+
+    def set_gobo_rotation(self, gobo, n, current_frame):
+        for obj in self.collection.objects: #EEVEE
+            if "gobo" in obj.get("geometry_type", ""):
+                material = self.gobo_materials[obj.name].material
+                gobo_rotation = material.node_tree.nodes.get(f"Gobo{n}Rotation")
+                if gobo[1]<128: # half for indexing
+                    gobo_rotation.inputs[3].driver_remove("default_value")
+                    gobo_rotation.inputs[3].default_value = (gobo[1]/62.0-1)*360*(math.pi/360)
                 else: # half for rotation
-                    driver = obj.driver_add("rotation_euler", 2)
-                    value = gobo1[1]-128-62 # rotating in both direction, slowest in the middle
+                    driver = gobo_rotation.inputs[3].driver_add("default_value")
+                    value = gobo[1]-128-62 # rotating in both direction, slowest in the middle
                     driver.driver.expression=f"frame*{value*0.005}"
 
                 if current_frame and self.dmx_cache_dirty:
-                    obj.keyframe_insert(data_path='rotation_euler', frame=current_frame)
+                    gobo_rotation.inputs[3].keyframe_insert(data_path="default_value", frame=current_frame)
 
         for light in self.lights: #CYCLES
             light_obj = light.object
-            if gobo1[1]<128: # half for indexing
-                light_obj.driver_remove("rotation_euler")
-                light_obj.rotation_euler[2] = (gobo1[1]/62.0-1)*360*(math.pi/360)
+            gobo_rotation = light_obj.data.node_tree.nodes.get(f"Gobo{n}Rotation")
+            if gobo[1]<128: # half for indexing
+                gobo_rotation.inputs[3].driver_remove("default_value")
+                gobo_rotation.inputs[3].default_value = (gobo[1]/62.0-1)*360*(math.pi/360)
             else: # half for rotation
-                driver = light_obj.driver_add("rotation_euler", 2)
-                value = gobo1[1]-128-62 # rotating in both direction, slowest in the middle
+                driver = gobo_rotation.inputs[3].driver_add("default_value")
+                value = gobo[1]-128-62 # rotating in both direction, slowest in the middle
                 driver.driver.expression=f"frame*{value*0.005}"
 
             if current_frame and self.dmx_cache_dirty:
-                light_obj.keyframe_insert(data_path='rotation_euler', frame=current_frame)
+                gobo_rotation.inputs[3].keyframe_insert(data_path="default_value", frame=current_frame)
 
     def updatePosition(self, geometry = None, x=None, y=None, z=None, current_frame=None):
         if geometry is None:
@@ -1147,6 +1353,7 @@ class DMX_Fixture(PropertyGroup):
         else:
             geometry = self.get_object_by_geometry_name(geometry)
         if geometry:
+            geometry.rotation_mode = "XYZ"
             geometry.rotation_euler[offset] = value
             if current_frame and self.dmx_cache_dirty:
                 geometry.keyframe_insert(data_path="location", frame=current_frame)
@@ -1204,12 +1411,12 @@ class DMX_Fixture(PropertyGroup):
                     targets.append(self.objects['Target'].object)
                 if "pigtail" in obj.get("geometry_type", ""):
                     obj.hide_set(not bpy.context.scene.dmx.display_pigtails)
-                    obj.hide_viewport = not bpy.context.scene.dmx.display_pigtails
+                    obj.hide_viewport = not bpy.context.scene.dmx.display_pigtails # keyframing
                     obj.hide_render = not bpy.context.scene.dmx.display_pigtails
                 if obj.get("2d_symbol", None):
                     continue
                 obj.hide_set(False)
-                obj.hide_viewport = False
+                obj.hide_viewport = False #keyframing
                 obj.hide_render = False
 
             if not select_target:
@@ -1274,7 +1481,7 @@ class DMX_Fixture(PropertyGroup):
                 if obj.get("2d_symbol", None):
                     continue
                 obj.hide_set(True)
-                obj.hide_viewport = True
+                obj.hide_viewport = True #need for keyframing
                 obj.hide_render = True
         dmx.updatePreviewVolume()
         self.sync_fixture_selection()
@@ -1302,27 +1509,27 @@ class DMX_Fixture(PropertyGroup):
             DMX_Data.set(self.universe, self.address+i, ch.default)
         self.render()
 
-    def set_gobo(self, index=-1, current_frame=None):
-        gobos = self.images["gobos"]
+    def set_gobo_slot(self, n, index=-1, current_frame=None):
+        gobos = self.images[f"gobos{n}"]
         for obj in self.collection.objects: #EEVEE
             if "gobo" in obj.get("geometry_type", ""):
                 material = self.gobo_materials[obj.name].material
-                if 0 > index or index >= gobos.count:
-                    index = random.randrange(0, gobos.count)
-                texture = material.node_tree.nodes.get("Image Texture")
+                texture = material.node_tree.nodes.get(f"Gobo{n}Texture")
+                DMX_Log.log.debug(("Found gobo nodes:", n, material, texture))
                 if texture.image is None:
                     texture.image = gobos.image
                     texture.image.source = "SEQUENCE"
                     texture.image_user.frame_duration = 1
                     texture.image_user.use_auto_refresh = True
                 texture.image_user.frame_offset = index
+
                 if current_frame and self.dmx_cache_dirty:
                     texture.image_user.keyframe_insert(data_path="frame_offset", frame=current_frame)
                 break
 
         for light in self.lights: # CYCLES
             light_obj = light.object
-            texture = light_obj.data.node_tree.nodes.get("Image Texture")
+            texture = light_obj.data.node_tree.nodes.get(f"Gobo{n}Texture")
             if texture.image is None:
                 texture.image = gobos.image
                 texture.image.source = "SEQUENCE"
@@ -1330,9 +1537,7 @@ class DMX_Fixture(PropertyGroup):
                 texture.image_user.use_auto_refresh = True
             texture.image_user.frame_offset = index
 
-            self.set_spot_diameter_to_point(light_obj) # prevent gobo blurriness due to large beam diameter
             if current_frame and self.dmx_cache_dirty:
-                light_obj.data.keyframe_insert(data_path="shadow_soft_size", frame=current_frame)
                 texture.image_user.keyframe_insert(data_path="frame_offset", frame=current_frame)
 
     def set_spot_diameter_to_point(self, light_obj):
@@ -1349,31 +1554,78 @@ class DMX_Fixture(PropertyGroup):
         size = light_obj.data.get("beam_radius", 0.01)
         light_obj.data.shadow_soft_size = size
 
-    def hide_gobo(self, hide = True, current_frame = None):
+    def hide_gobo_geometry(self, gobo1, gobo2, iris, current_frame = None):
+
+        hide = True
+
+        if gobo1[0] is not None:
+            if gobo1[0] != 0:
+                hide = False
+
+        if gobo2[0] is not None:
+            if gobo2[0] != 0:
+                hide = False
+
+        if iris is not None:
+            if iris != 0:
+                hide = False
         for obj in self.collection.objects:
             if "gobo" in obj.get("geometry_type", ""):
                 obj.hide_viewport = hide
+                obj.hide_render = hide
                 if current_frame and self.dmx_cache_dirty:
                     obj.keyframe_insert("hide_viewport", frame = current_frame)
+                    obj.keyframe_insert("hide_render", frame = current_frame)
+
         for light in self.lights: # CYCLES
             light_obj = light.object
-            mix_factor = light_obj.data.node_tree.nodes.get("Mix").inputs["Factor"]
-            mix_factor.default_value = 1 if hide else 0
-            self.set_spot_diameter_to_normal(light_obj) # make the beam large if no gobo is used
+            if hide:
+                self.set_spot_diameter_to_normal(light_obj) # make the beam large if no gobo is used
+            else:
+                self.set_spot_diameter_to_point(light_obj)
             if current_frame and self.dmx_cache_dirty:
                 light_obj.data.keyframe_insert(data_path="shadow_soft_size", frame=current_frame)
-                mix_factor.keyframe_insert(data_path="default_value", frame=current_frame)
 
-    def has_attribute(self, attribute, lower = False):
 
+    def hide_gobo(self, n=[1,2], hide = True, current_frame = None):
+        for obj in self.collection.objects:
+            if "gobo" in obj.get("geometry_type", ""):
+                material = self.gobo_materials[obj.name].material
+                for i in n:
+                    mix_factor = material.node_tree.nodes.get(f"Gobo{i}Mix").inputs["Factor"]
+                    mix_factor.default_value = 1 if hide else 0
+                    if current_frame and self.dmx_cache_dirty:
+                        DMX_Log.log.debug(("hide gobo", hide, i))
+                        mix_factor.keyframe_insert(data_path="default_value", frame=current_frame)
+
+        for light in self.lights: # CYCLES
+            light_obj = light.object
+            for i in n:
+                mix_factor = light_obj.data.node_tree.nodes.get(f"Gobo{i}Mix").inputs["Factor"]
+                mix_factor.default_value = 1 if hide else 0
+                if current_frame and self.dmx_cache_dirty:
+                    mix_factor.keyframe_insert(data_path="default_value", frame=current_frame)
+
+    def has_attributes(self, attributes, lower = False):
+
+        temp_data = bpy.context.window_manager.dmx
         def low(id):
             if lower:
                 return id.lower()
             else:
                 return id
+        if len(temp_data.active_subfixtures) > 0:
+            in_fixture_real = [low(channel.id) for channel in self.channels if any(channel.geometry == g.name for g in temp_data.active_subfixtures)]
+            in_fixture_virtual = [low(channel.id) for channel in self.virtual_channels if any(channel.geometry == g.name for g in temp_data.active_subfixtures)]
 
-        real = any([attribute in low(channel.id) for channel in self.channels])
-        virtual = any([attribute in channel.id for channel in self.virtual_channels])
+            real =    any(any(attribute == item for item in in_fixture_real) for attribute in attributes)
+            virtual = any(any(attribute == item for item in in_fixture_virtual) for attribute in attributes)
+        else:
+            in_fixture_real = [low(channel.id) for channel in self.channels]
+            in_fixture_virtual = [low(channel.id) for channel in self.virtual_channels]
+
+            real =    any(any(attribute == item for item in in_fixture_real) for attribute in attributes)
+            virtual = any(any(attribute == item for item in in_fixture_virtual) for attribute in attributes)
 
         return (real or virtual)
 
@@ -1431,7 +1683,7 @@ class DMX_Fixture(PropertyGroup):
         x, y, z = rgb2xyY(r, g, b)
         color = f"{x},{y},{z}"
 
-        return pymvr.Fixture(name = self.name, uuid = self.uuid, gdtf_spec = self.profile, gdtf_mode = self.mode, fixture_id = self.fixture_id, addresses = [pymvr.Address(dmx_break= 0, universe=self.universe, address=self.address)], matrix = pymvr.Matrix(matrix), focus = uuid_focus_point, color = color)
+        return pymvr.Fixture(name = self.name, uuid = self.uuid, gdtf_spec = self.profile, gdtf_mode = self.mode, fixture_id = self.fixture_id, addresses = [pymvr.Address(dmx_break= 0, universe=self.universe, address=self.address)], matrix = pymvr.Matrix(matrix), focus = uuid_focus_point, color = color, classing = self.classing)
 
     def focus_to_mvr_focus_point(self):
         for obj in self.objects:

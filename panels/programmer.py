@@ -19,7 +19,7 @@ import bpy
 from bpy.types import Operator, Panel, Menu
 from ..osc_utils import DMX_OSC_Handlers
 
-from bpy.props import StringProperty
+from bpy.props import StringProperty, BoolProperty
 
 from ..i18n import DMX_Lang
 
@@ -78,6 +78,32 @@ class DMX_OT_Programmer_Unset_Ignore_Movement(Operator):
                 fixture.ignore_movement_dmx = False
         return {"FINISHED"}
 
+
+class DMX_OT_Programmer_Set_Lock_Movement_Rotation(Operator):
+    bl_label = _("Lock/Unlock Movement Rotation")
+    bl_idname = "dmx.set_movement_rotation"
+    bl_description = _("Lock/Unlock Movement Rotation")
+    bl_options = {"UNDO"}
+
+    axis: StringProperty(name="axis")
+    enable: BoolProperty(name="enable")
+
+    def execute(self, context):
+        dmx = context.scene.dmx
+        selected = []
+        for fixture in dmx.fixtures:
+            for obj in fixture.collection.objects:
+                if obj in bpy.context.selected_objects:
+                    selected.append(fixture)
+
+        for fixture in dmx.fixtures:
+            if fixture in selected:
+                if "pan" in self.axis:
+                    fixture.lock_pan_rotation = self.enable
+                elif "tilt" in self.axis:
+                    fixture.lock_tilt_rotation = self.enable
+
+        return {"FINISHED"}
 
 class DMX_OT_Programmer_DeselectAll(Operator):
     bl_label = _("Deselect All")
@@ -188,11 +214,15 @@ class DMX_OT_Programmer_Clear(Operator):
         scene.dmx.programmer_color = (1.0, 1.0, 1.0, 1.0)
         scene.dmx.programmer_dimmer = 0.0
         scene.dmx.programmer_pan = 0.0
+        scene.dmx.programmer_pan_rotate = 128
         scene.dmx.programmer_tilt = 0.0
+        scene.dmx.programmer_tilt_rotate = 128
         scene.dmx.programmer_zoom = 25
         scene.dmx.programmer_color_wheel = 0
-        scene.dmx.programmer_gobo = 0
-        scene.dmx.programmer_gobo_index = 63
+        scene.dmx.programmer_color_temperature = 0
+        scene.dmx.programmer_iris = 0
+        scene.dmx.programmer_gobo1 = 0
+        scene.dmx.programmer_gobo_index1 = 63
         scene.dmx.programmer_shutter = 0
 
         return {"FINISHED"}
@@ -379,10 +409,12 @@ class DMX_PT_Programmer(Panel):
     bl_category = "DMX"
     bl_context = "objectmode"
 
+
     def draw(self, context):
         layout = self.layout
         scene = context.scene
         dmx = scene.dmx
+        temp_data = bpy.context.window_manager.dmx
 
         locked = False
         selected_fixtures = []
@@ -392,16 +424,37 @@ class DMX_PT_Programmer(Panel):
                     selected_fixtures.append(fixture)
                     if fixture.ignore_movement_dmx is True:
                         locked = True
+                    break
+
 
         selected = len(selected_fixtures) > 0
 
         selected_fixture_label = ""
+        selected_fixture_class = None
         if len(selected_fixtures) == 0:
             selected_fixture_label = _("Nothing selected")
         elif len(selected_fixtures) == 1:
             selected_fixture_label = selected_fixtures[0].name
+            selected_fixture_class = selected_fixtures[0]
         else:
-            selected_fixture_label = _("{} selected").format(len(selected_fixtures))
+            profiles=[]
+            for sel_fixture in selected_fixtures:
+                if sel_fixture.gdtf_long_name:
+                    name = sel_fixture.gdtf_long_name
+                else:
+                    name = sel_fixture.profile.removesuffix(".gdtf")
+
+                profiles.append(f"{name}-{sel_fixture.mode}")
+            profiles = list(set(profiles))
+            if len(profiles)==1:
+                selected_fixture_label = f"{len(selected_fixtures)} {profiles[0]}"
+                selected_fixture_class = selected_fixtures[0]
+            else:
+                selected_fixture_label = _("{} selected").format(len(selected_fixtures))
+
+        if temp_data.selected_fixture_label != selected_fixture_label:
+            temp_data.subfixtures.clear()
+        temp_data.selected_fixture_label = selected_fixture_label
 
         row = layout.row()
         row.operator("dmx.select_all", text="", icon="SELECT_EXTEND")
@@ -435,59 +488,165 @@ class DMX_PT_Programmer(Panel):
                     row.operator("dmx.toggle_camera", text=_("Camera"))
         row.enabled = selected
 
+        row=layout.row()
         box = layout.column().box()
-        box.template_color_picker(scene.dmx, "programmer_color", value_slider=True)
-        row = box.row()
-        col1 = row.column()
-        col2 = row.column()
-        col1.prop(scene.dmx, "programmer_color")
-        col2.operator("dmx.reset_color", icon="TRASH", text="")
-        box.prop(scene.dmx, "programmer_dimmer", text=_("Dimmer"), translate=False)
 
-        if len(selected_fixtures) == 1:
-            if selected_fixtures[0].has_attribute("Pan"):
+
+
+        if selected_fixture_class is not None:
+            all_channels=[]
+            for channel in selected_fixture_class.channels:
+                if channel.geometry not in all_channels:
+                    all_channels.append(channel.geometry)
+
+            for channel in selected_fixture_class.virtual_channels:
+                if channel.geometry not in all_channels:
+                    all_channels.append(channel.geometry)
+
+            if len(temp_data.subfixtures) < 1:
+                tmp_active = [x.name for x in temp_data.active_subfixtures]
+                temp_data.active_subfixtures.clear()
+                for channel in all_channels:
+                    sub = temp_data.subfixtures.add()
+                    sub.name = channel
+                    if channel in tmp_active:
+                        sub.enabled = True
+                        if channel not in temp_data.active_subfixtures:
+                            temp_data.active_subfixtures.add().name = channel
+
+            if selected_fixtures[0].has_attributes(["ColorAdd_R", "ColorAdd_G", "ColorAdd_B", "ColorSub_C",
+                                                    "ColorSub_M", "ColorAdd_Y", "ColorAdd_WW", "ColorAdd_CW",
+                                                    "ColorAdd_RY", "ColorAdd_GY", "ColorAdd_UV", "ColorRGB_Red",
+                                                    "ColorRGB_Blue", "ColorRGB_Green"]):
+                box.template_color_picker(scene.dmx, "programmer_color", value_slider=True)
                 row = box.row()
                 col1 = row.column()
-                col1.prop(scene.dmx, "programmer_pan", text=_("Pan"), translate=False)
-                if selected_fixtures[0].ignore_movement_dmx == True:
+                col2 = row.column()
+                col1.prop(scene.dmx, "programmer_color")
+                col2.operator("dmx.reset_color", icon="TRASH", text="")
+
+            if selected_fixtures[0].has_attributes(["Dimmer"]):
+                box.prop(scene.dmx, "programmer_dimmer", text=_("Dimmer"), translate=False, slider = True)
+
+            if selected_fixtures[0].has_attributes(["Pan"]):
+                row = box.row()
+                col1 = row.column()
+                col1.prop(scene.dmx, "programmer_pan", text=_("Pan"), translate=False, slider = True)
+                if selected_fixtures[0].ignore_movement_dmx is True:
                     col2 = row.column()
                     col2.operator("dmx.ignore_movement_false", text="", icon="UNLOCKED")
                     col1.enabled = False
-            if selected_fixtures[0].has_attribute("Tilt"):
+
+            if selected_fixtures[0].has_attributes(["Tilt"]):
                 row = box.row()
                 col1 = row.column()
-                col1.prop(scene.dmx, "programmer_tilt", text=_("Tilt"), translate=False)
-                if selected_fixtures[0].ignore_movement_dmx == True:
+                col1.prop(scene.dmx, "programmer_tilt", text=_("Tilt"), translate=False, slider = True)
+                if selected_fixtures[0].ignore_movement_dmx is True:
                     col2 = row.column()
                     col2.operator("dmx.ignore_movement_false", text="", icon="UNLOCKED")
                     col1.enabled = False
-            if selected_fixtures[0].has_attribute("Zoom"):
-                box.prop(scene.dmx, "programmer_zoom", text=_("Zoom"), translate=False)
-            if selected_fixtures[0].has_attribute("Color1") or selected_fixtures[0].has_attribute("Color2") or selected_fixtures[0].has_attribute("ColorMacro1"):
+
+            if selected_fixtures[0].has_attributes(["PanRotate"]):
+                row = box.row()
+                col1 = row.column()
+                col1.prop(scene.dmx, "programmer_pan_rotate", text=_("Pan Rotation"), translate=False, slider = True)
+                col2 = row.column()
+                col3 = row.column()
+                lock_movement=col2.operator("dmx.set_movement_rotation", text="", icon="UNLOCKED")
+                lock_movement.axis = "pan"
+                lock_movement.enable = False
+                lock_movement = col3.operator("dmx.set_movement_rotation", text="", icon="LOCKED")
+                lock_movement.axis = "pan"
+                lock_movement.enable = True
+
+            if selected_fixtures[0].has_attributes(["TiltRotate"]):
+                row = box.row()
+                col1 = row.column()
+                col1.prop(scene.dmx, "programmer_tilt_rotate", text=_("Tilt Rotation"), translate=False, slider = True)
+                col2 = row.column()
+                col3 = row.column()
+                lock_movement=col2.operator("dmx.set_movement_rotation", text="", icon="UNLOCKED")
+                lock_movement.axis = "tilt"
+                lock_movement.enable = False
+                lock_movement = col3.operator("dmx.set_movement_rotation", text="", icon="LOCKED")
+                lock_movement.axis = "tilt"
+                lock_movement.enable = True
+
+            if selected_fixtures[0].has_attributes(["Zoom"]):
+                box.prop(scene.dmx, "programmer_zoom", text=_("Zoom"), translate=False, slider = True)
+
+            if selected_fixtures[0].has_attributes(["Color1", "Color2", "ColorMacro1"]):
                 box.prop(scene.dmx, "programmer_color_wheel", text=_("Color Wheel"), translate=False)
-            if selected_fixtures[0].has_attribute("Gobo"):
-                box.prop(scene.dmx, "programmer_gobo", text=_("Gobo"), translate=False)
-                box.prop(scene.dmx, "programmer_gobo_index", text=_("Gobo Rotation"), translate=False)
-            if selected_fixtures[0].has_attribute("shutter", lower=True):
+            if selected_fixtures[0].has_attributes(["CTO", "CTC", "CTB"]):
+                box.prop(scene.dmx, "programmer_color_temperature", text=_("Color Temperature"), translate=False)
+            if selected_fixtures[0].has_attributes(["Iris"]):
+                box.prop(scene.dmx, "programmer_iris", text=_("Iris"), translate=False)
+            if selected_fixtures[0].has_attributes(["Gobo1"]):
+                box.prop(scene.dmx, "programmer_gobo1", text=_("Gobo1"), translate=False)
+            if selected_fixtures[0].has_attributes(["Gobo1Pos", "Gobo1PosRotate"]):
+                box.prop(scene.dmx, "programmer_gobo_index1", text=_("Gobo1 Rotation"), translate=False)
+            if selected_fixtures[0].has_attributes(["Gobo2"]):
+                box.prop(scene.dmx, "programmer_gobo2", text=_("Gobo2"), translate=False)
+            if selected_fixtures[0].has_attributes(["Gobo2Pos", "Gobo2PosRotate"]):
+                box.prop(scene.dmx, "programmer_gobo_index2", text=_("Gobo2 Rotation"), translate=False)
+            if selected_fixtures[0].has_attributes(["shutter"], lower=True):
                 box.prop(scene.dmx, "programmer_shutter", text=_("Strobe"), translate=False)
         else:
+
+            box.template_color_picker(scene.dmx, "programmer_color", value_slider=True)
             row = box.row()
             col1 = row.column()
-            col1.prop(scene.dmx, "programmer_pan", text=_("Pan"), translate=False)
+            col2 = row.column()
+            col1.prop(scene.dmx, "programmer_color")
+            col2.operator("dmx.reset_color", icon="TRASH", text="")
+
+            box.prop(scene.dmx, "programmer_dimmer", text=_("Dimmer"), translate=False, slider = True)
+
+            row = box.row()
+            col1 = row.column()
+            col1.prop(scene.dmx, "programmer_pan", text=_("Pan"), translate=False, slider = True)
             if locked:
                 col2 = row.column()
                 col2.operator("dmx.ignore_movement_false", text="", icon="UNLOCKED")
             row = box.row()
             col1 = row.column()
-            col1.prop(scene.dmx, "programmer_tilt", text=_("Tilt"), translate=False)
+            col1.prop(scene.dmx, "programmer_tilt", text=_("Tilt"), translate=False, slider = True)
             if locked:
                 col2 = row.column()
                 col2.operator("dmx.ignore_movement_false", text="", icon="UNLOCKED")
 
-            box.prop(scene.dmx, "programmer_zoom", text=_("Zoom"), translate=False)
+            row = box.row()
+            col1 = row.column()
+            col1.prop(scene.dmx, "programmer_pan_rotate", text=_("Pan Rotation"), translate=False, slider = True)
+            col2 = row.column()
+            col3 = row.column()
+            lock_movement=col2.operator("dmx.set_movement_rotation", text="", icon="UNLOCKED")
+            lock_movement.axis = "pan"
+            lock_movement.enable = False
+            lock_movement = col3.operator("dmx.set_movement_rotation", text="", icon="LOCKED")
+            lock_movement.axis = "pan"
+            lock_movement.enable = True
+
+            row = box.row()
+            col1 = row.column()
+            col1.prop(scene.dmx, "programmer_tilt_rotate", text=_("Tilt Rotation"), translate=False, slider = True)
+            col2 = row.column()
+            col3 = row.column()
+            lock_movement=col2.operator("dmx.set_movement_rotation", text="", icon="UNLOCKED")
+            lock_movement.axis = "tilt"
+            lock_movement.enable = False
+            lock_movement = col3.operator("dmx.set_movement_rotation", text="", icon="LOCKED")
+            lock_movement.axis = "tilt"
+            lock_movement.enable = True
+
+            box.prop(scene.dmx, "programmer_zoom", text=_("Zoom"), translate=False, slider = True)
             box.prop(scene.dmx, "programmer_color_wheel", text=_("Color Wheel"), translate=False)
-            box.prop(scene.dmx, "programmer_gobo", text=_("Gobo"), translate=False)
-            box.prop(scene.dmx, "programmer_gobo_index", text=_("Gobo Rotation"), translate=False)
+            box.prop(scene.dmx, "programmer_color_temperature", text=_("Color Temperature"), translate=False)
+            box.prop(scene.dmx, "programmer_iris", text=_("Iris"), translate=False)
+            box.prop(scene.dmx, "programmer_gobo1", text=_("Gobo1"), translate=False)
+            box.prop(scene.dmx, "programmer_gobo_index1", text=_("Gobo1 Rotation"), translate=False)
+            box.prop(scene.dmx, "programmer_gobo2", text=_("Gobo2"), translate=False)
+            box.prop(scene.dmx, "programmer_gobo_index2", text=_("Gobo2 Rotation"), translate=False)
             box.prop(scene.dmx, "programmer_shutter", text=_("Strobe"), translate=False)
 
         box.enabled = selected

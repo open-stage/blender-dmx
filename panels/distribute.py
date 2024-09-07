@@ -210,6 +210,7 @@ class DMX_PT_AlignAndDistributePanel(Panel):
             for obj in fixture.collection.objects:
                 if obj in bpy.context.selected_objects:
                     selected_fixtures.append(fixture)
+                    break
 
         active_object = bpy.context.active_object
         selected = len(selected_fixtures) > 0
@@ -217,6 +218,15 @@ class DMX_PT_AlignAndDistributePanel(Panel):
         active_name = "None"
         if active_object is not None:
             active_name = active_object.name
+
+        stop = False
+        for fixture in dmx.fixtures:
+            if not stop:
+                for obj in fixture.collection.objects:
+                    if obj == active_object:
+                        active_name = fixture.name
+                        stop = True
+                        break
 
         enable_this = (selected is True) and (active_object is not None)
         # align operators

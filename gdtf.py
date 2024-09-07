@@ -26,16 +26,19 @@ from types import SimpleNamespace
 import pathlib
 from mathutils import Euler, Matrix, Vector
 
-from . import pygdtf
+import pygdtf
 from .logging import DMX_Log
-from .io_scene_3ds.import_3ds import load_3ds
+from io_scene_3ds.import_3ds import load_3ds
 from .util import sanitize_obj_name, xyY2rgbaa
 
 
 class DMX_GDTF:
     @staticmethod
     def getProfilesPath():
-        ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
+        #FIX: currently breaks packaged BlenderDMX gdtf files
+        #ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
+        dmx = bpy.context.scene.dmx
+        ADDON_PATH = dmx.get_addon_path()
         return os.path.join(ADDON_PATH, "assets", "profiles")
 
     @staticmethod
@@ -47,6 +50,7 @@ class DMX_GDTF:
     def getManufacturerList():
         # List profiles in folder
         manufacturers_names = set()
+        # TODO cache this, as it can make a slow addon start
         for file in os.listdir(DMX_GDTF.getProfilesPath()):
             # Parse info from file name: Manufacturer@Device@Revision.gdtf
             if "@" not in file:
@@ -135,7 +139,8 @@ class DMX_GDTF:
     def extract_gobos(profile):
         """now unused as we need sequences for keyframe animating"""
         gobos = []
-        current_path = os.path.dirname(os.path.realpath(__file__))
+        dmx = bpy.context.scene.dmx
+        current_path = dmx.get_addon_path()
         extract_to_folder_path = os.path.join(current_path, "assets", "models", profile.fixture_type_id)
         for image_name in profile._package.namelist():
             if image_name.startswith("wheels"):
@@ -168,7 +173,8 @@ class DMX_GDTF:
 
     @staticmethod
     def extract_gobos_as_sequence(profile):
-        current_path = os.path.dirname(os.path.realpath(__file__))
+        dmx = bpy.context.scene.dmx
+        current_path = dmx.get_addon_path()
         gdtf_path = os.path.join(current_path, "assets", "models", profile.fixture_type_id)
         images_path = os.path.join(gdtf_path, "wheels")
         sequence_path = os.path.join(gdtf_path, "sequence")
@@ -192,18 +198,21 @@ class DMX_GDTF:
             destination.write_bytes(image.read_bytes())
             count = idx
         if first:
-            sequence = bpy.data.images.load(first)
+            sequence1 = bpy.data.images.load(first) # we need this twice as single gobos were affecting each other
+            sequence2 = bpy.data.images.load(first)
         else:
             return None
 
         # TODO: add names from wheels
         # TODO: add some structure to indicate which gobo belongs to which wheel
-        sequence["count"] = count
-        return sequence
+        sequence1["count"] = count
+        sequence2["count"] = count
+        return sequence1, sequence2
 
     @staticmethod
     def load2D(profile):
-        current_path = os.path.dirname(os.path.realpath(__file__))
+        dmx = bpy.context.scene.dmx
+        current_path = dmx.get_addon_path()
         extract_to_folder_path = os.path.join(current_path, "assets", "models", profile.fixture_type_id)
         filename = f"{profile.thumbnail}.svg"
         obj = None
@@ -211,7 +220,7 @@ class DMX_GDTF:
             profile._package.extract(filename, extract_to_folder_path)
         else:
             # default 2D
-            extract_to_folder_path = os.path.join(current_path, "assets", "primitives")
+            extract_to_folder_path = DMX_GDTF.getPrimitivesPath()
             filename = "thumbnail.svg"
 
         bpy.ops.wm.gpencil_import_svg(filepath="", directory=extract_to_folder_path, files=[{"name": filename}], scale=1)
@@ -225,7 +234,8 @@ class DMX_GDTF:
 
     @staticmethod
     def loadModel(profile, model):
-        current_path = os.path.dirname(os.path.realpath(__file__))
+        dmx = bpy.context.scene.dmx
+        current_path = dmx.get_addon_path()
         extract_to_folder_path = os.path.join(current_path, "assets", "models", profile.fixture_type_id)
         obj_dimension = Vector((model.length, model.width, model.height))
 
@@ -422,6 +432,9 @@ class DMX_GDTF:
 
             if hasattr(geometry, "geometries"):
                 for sub_geometry in geometry.geometries:
+                    if hasattr(geometry, "reference_root"):
+                        root_reference = getattr(geometry, "reference_root")
+                        setattr(sub_geometry, "reference_root", root_reference)
                     load_geometries(sub_geometry)
 
         def get_geometry_type_as_string(geometry):
@@ -596,6 +609,9 @@ class DMX_GDTF:
             if hasattr(geometry, "geometries"):
                 if len(geometry.geometries) > 0:
                     for child_geometry in geometry.geometries:
+                        if hasattr(geometry, "reference_root"):
+                            root_reference = getattr(geometry, "reference_root")
+                            setattr(child_geometry, "reference_root", root_reference)
                         constraint_child_to_parent(geometry, child_geometry)  # parent, child
                         update_geometry(child_geometry)
 
@@ -641,17 +657,19 @@ class DMX_GDTF:
                 check_parent = part.parent and part.parent.get("mobile_type") == "head"
                 check_pan = part.get("mobile_type") == "yoke"
                 check_tilt = part.get("mobile_type") == "head"
-                constraint = part.constraints.new('LOCKED_TRACK')
+                if not len(base.constraints) and (check_pan and not len(part.children) or (not check_pan and not check_tilt)):
+                    constraint = base.constraints.new('TRACK_TO')
+                    constraint.target = target
+                    continue
+                else:
+                    constraint = part.constraints.new('LOCKED_TRACK')
                 if check_tilt or (check_parent and part.parent.parent and part.parent.parent.get("mobile_type") == "yoke"):
                     constraint.track_axis = 'TRACK_NEGATIVE_Z'
                 else:
                     constraint.track_axis = 'TRACK_NEGATIVE_Y'
                 constraint.lock_axis = 'LOCK_X' if check_tilt else 'LOCK_Z'
                 constraint.target = target
-                if check_pan and not len(part.children):
-                    constraint = base.constraints.new('TRACK_TO')
-                    constraint.target = target
-            if not yokes and not heads:
+            if not yokes and not heads and not len(base.constraints):
                 constraint = base.constraints.new('TRACK_TO')
                 constraint.target = target
 
@@ -663,7 +681,6 @@ class DMX_GDTF:
             objs["2d_symbol"] = obj
             obj.show_in_front = True
             obj.active_material.grease_pencil.show_stroke = True
-            obj.data.pixel_factor = 2
 
             # svg.data.layers[...].frames[0].strokes[0]
             # add constraints

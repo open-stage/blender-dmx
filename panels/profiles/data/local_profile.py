@@ -20,7 +20,7 @@ import os
 
 from bpy.types import PropertyGroup
 from bpy.props import StringProperty, CollectionProperty, IntProperty
-from .... import pygdtf
+import pygdtf
 
 from ....i18n import DMX_Lang
 
@@ -48,9 +48,9 @@ class DMX_Fixtures_Local_Profile(PropertyGroup):
     @staticmethod
     def get_profiles_path() -> str:
         """Return the path to the "profiles" folder."""
-
-        FILE_PATH = os.path.dirname(os.path.abspath(__file__))
-        return os.path.join(FILE_PATH, "..", "..", "..", "assets", "profiles")
+        dmx = bpy.context.scene.dmx
+        FILE_PATH = dmx.get_addon_path()
+        return os.path.join(FILE_PATH, "assets", "profiles")
 
     @staticmethod
     def get_profile_list(show_errors=False):

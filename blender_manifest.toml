@@ -1,0 +1,52 @@
+schema_version = "1.0.0"
+id = "open_stage_blender_dmx"
+version = "1.7.7"
+name = "DMX"
+tagline = "DMX visualization and programming with GDTF/MVR, and Networking"
+maintainer = "Open Stage"
+type = "add-on"
+website = "https://blenderdmx.eu/"
+tags = ["Lighting", "Animation"]
+blender_version_min = "4.2.0"
+
+license = [
+  "SPDX:GPL-3.0-or-later",
+]
+
+wheels = [
+  "wheels/pygdtf-1.0.5.dev0-py3-none-any.whl",
+  "wheels/pymvr-0.3.0.dev0-py3-none-any.whl",
+  "wheels/sacn-1.9.1-py3-none-any.whl",
+  "wheels/oscpy-0.6.0-py2.py3-none-any.whl",
+  "wheels/ifaddr-0.2.0-py3-none-any.whl",
+  "wheels/async_timeout-4.0.3-py3-none-any.whl",
+  "wheels/open_stage_zeroconf-0.132.2.dev0-py3-none-any.whl",
+  "wheels/pypsn-0.2.3-py3-none-any.whl",
+  "wheels/io_scene_3ds-2.7.4-py3-none-any.whl",
+]
+
+[permissions]
+files = "Import GDTF devices. Import/Export MVR scenes and project data"
+network = "For GDTF Share, sACN, Art-Net, OSC, PSN, MVR-xchange"
+
+[build]
+paths_exclude_pattern = [
+  "/.git/",
+  "__pycache__/",
+  "/__pycache__/",
+  "*.log",
+  "ruff.toml",
+  "scripts/",
+  ".*",
+  "*.pyc",
+  "__pycache__",
+  "*.zip",
+  ".mypy_cache",
+  ".pytest_cache",
+  "data.json",
+  "ASSETS_ATTRIBUTION.md",
+  "RELEASE.md",
+  "DEPENDENCIES.md",
+  "DEVELOPMENT.md",
+]
+

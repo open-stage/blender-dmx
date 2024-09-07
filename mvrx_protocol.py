@@ -89,7 +89,8 @@ class DMX_MVR_X_Client:
         if not DMX_MVR_X_Client._instance:
             return
         if DMX_MVR_X_Client._instance.client:
-            ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
+            dmx = bpy.context.scene.dmx
+            ADDON_PATH = dmx.get_addon_path()
             path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid}.mvr")
             DMX_Log.log.debug(f"path {path}")
             try:
@@ -199,7 +200,8 @@ class DMX_MVR_X_Server:
     def request_file(commit):
         if DMX_MVR_X_Server._instance:
             if DMX_MVR_X_Server._instance.DMX_MVR_X_Server:
-                ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
+                dmx = bpy.context.scene.dmx
+                ADDON_PATH = dmx.get_addon_path()
                 path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid}.mvr")
                 try:
                     DMX_MVR_X_Server._instance.server.request_file(commit, path)

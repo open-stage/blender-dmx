@@ -94,7 +94,7 @@ class DMX_Tracker(PropertyGroup):
         new_tracker.uuid = str(uuid.uuid4())
         new_id = len(dmx.trackers)
         new_tracker.name = generate_tracker_name(new_id)
-        target = bpy.data.objects.new(name=new_tracker.name, object_data=None)
+        target = bpy.data.objects.new(name=f"{new_tracker.name} Tracker", object_data=None)
         target["uuid"]=new_tracker.uuid
         bpy.ops.collection.create(name=new_tracker.name)
         new_tracker.collection = bpy.data.collections[new_tracker.name]
@@ -180,7 +180,7 @@ class DMX_Tracker(PropertyGroup):
 def generate_tracker_name(new_id):
     dmx = bpy.context.scene.dmx
     while True:
-        name = f"Tracker {new_id:>03}"
+        name = f"PSN Server {new_id:>03}"
         if name in dmx.trackers or name in dmx.collection.children:
             new_id +=1
         else:
