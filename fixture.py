@@ -272,6 +272,16 @@ class DMX_Fixture(PropertyGroup):
         default = ""
             )
 
+    lock_pan_rotation: BoolProperty(
+        name = "Lock Pan Rotation",
+        description="Lock Pan Rotation",
+        default = False)
+
+    lock_tilt_rotation: BoolProperty(
+        name = "Lock Tilt Rotation",
+        description="Lock Tilt Rotation",
+        default = False)
+
     def build(self, name, profile, mode, universe, address, gel_color, display_beams, add_target, mvr_position = None,
               focus_point = None, uuid = None, fixture_id="", custom_id=0, fixture_id_numeric=0, unit_number=0, classing=""):
         # (Edit) Store objects positions
@@ -628,6 +638,10 @@ class DMX_Fixture(PropertyGroup):
         shutter_dimmer_geometries={} # item: shutter, dimmer, unused, dimmer bits
         pan_rotating_geometries={}
         tilt_rotating_geometries={}
+
+        pan_cont_rotating_geometries={}
+        tilt_cont_rotating_geometries={}
+
         gobo1 = [None, None] #gobo selection (Gobo1), gobo indexing/rotation (Gobo1Pos)
         gobo2 = [None, None] #gobo selection (Gobo2), gobo indexing/rotation (Gobo2Pos)
 
@@ -645,6 +659,10 @@ class DMX_Fixture(PropertyGroup):
                 pan_rotating_geometries[geometry]=[None, 1]
             if geometry not in tilt_rotating_geometries.keys():
                 tilt_rotating_geometries[geometry]=[None, 1]
+            if geometry not in pan_cont_rotating_geometries.keys():
+                pan_cont_rotating_geometries[geometry]=[None, 1]
+            if geometry not in tilt_cont_rotating_geometries.keys():
+                tilt_cont_rotating_geometries[geometry]=[None, 1]
             if vchannel.id in data_virtual:
                 if vchannel.id == "Shutter1": shutter_dimmer_geometries[geometry][0] = data_virtual[vchannel.id]["value"]
                 elif vchannel.id == "Dimmer": shutter_dimmer_geometries[geometry][1] = data_virtual[vchannel.id]["value"]
@@ -676,6 +694,12 @@ class DMX_Fixture(PropertyGroup):
                     tilt_rotating_geometries[geometry][0] = tilt_rotating_geometries[geometry][0] * 256 + data_virtual[vchannel.id]["value"]
                     tilt_rotating_geometries[geometry][2] = 256
 
+                elif vchannel.id == "PanRotate":
+                    pan_cont_rotating_geometries[geometry][0] = data_virtual[vchannel.id]["value"]
+
+                elif vchannel.id == "TiltRotate":
+                    tilt_cont_rotating_geometries[geometry][0] = data_virtual[vchannel.id]["value"]
+
                 elif vchannel.id == "Zoom": zoom = data_virtual[vchannel.id]["value"]
                 elif vchannel.id == "XYZ_X": xyz_moving_geometries[geometry][0] = data_virtual[vchannel.id]["value"]
                 elif vchannel.id == "XYZ_Y": xyz_moving_geometries[geometry][1] = data_virtual[vchannel.id]["value"]
@@ -698,6 +722,11 @@ class DMX_Fixture(PropertyGroup):
                 pan_rotating_geometries[geometry]=[None, 1]
             if geometry not in tilt_rotating_geometries.keys():
                 tilt_rotating_geometries[geometry]=[None, 1]
+            if geometry not in pan_cont_rotating_geometries.keys():
+                pan_cont_rotating_geometries[geometry]=[None, 1]
+            if geometry not in tilt_cont_rotating_geometries.keys():
+                tilt_cont_rotating_geometries[geometry]=[None, 1]
+
             if (channels[c] == 'Dimmer'): shutter_dimmer_geometries[geometry][1] = data[c]
             if (channels[c] == '+Dimmer'):
                 shutter_dimmer_geometries[geometry][1] = shutter_dimmer_geometries[geometry][1] * 256 + data[c]
@@ -734,6 +763,11 @@ class DMX_Fixture(PropertyGroup):
                 panTilt[3] = 256 # 16bit
                 tilt_rotating_geometries[geometry][0] = tilt_rotating_geometries[geometry][0] * 256 + data[c]
                 tilt_rotating_geometries[geometry][1] = 256
+
+            elif (channels[c] == 'PanRotate'):
+                pan_cont_rotating_geometries[geometry][0] = data[c]
+            elif (channels[c] == 'TiltRotate'):
+                tilt_cont_rotating_geometries[geometry][0] = data[c]
             elif (channels[c] == 'Zoom'): zoom = data[c]
             elif (channels[c] == 'Color1'): color1 = data[c]
             elif (channels[c] == 'Color2'): color1 = data[c]
@@ -759,6 +793,8 @@ class DMX_Fixture(PropertyGroup):
         self.remove_unset_geometries_from_multigeometry_attributes_3(shutter_dimmer_geometries)
         self.remove_unset_geometries_from_multigeometry_attributes_1(pan_rotating_geometries)
         self.remove_unset_geometries_from_multigeometry_attributes_1(tilt_rotating_geometries)
+        self.remove_unset_geometries_from_multigeometry_attributes_1(pan_cont_rotating_geometries)
+        self.remove_unset_geometries_from_multigeometry_attributes_1(tilt_cont_rotating_geometries)
 
 
 
@@ -808,6 +844,14 @@ class DMX_Fixture(PropertyGroup):
                 tilt = (tilt_vals[0]/(tilt_vals[1]*127.0)-1)*270*(math.pi/360)
                 self.updatePTDirectly(geometry, "tilt", tilt, current_frame)
 
+
+        for geometry, pan_rotate in pan_cont_rotating_geometries.items():
+            self.set_pan_tilt_rotation(geometry=geometry, axis = "pan", rotation = pan_rotate[0], current_frame=current_frame)
+
+        for geometry, tilt_rotate in tilt_cont_rotating_geometries.items():
+            self.set_pan_tilt_rotation(geometry=geometry, axis = "tilt", rotation = tilt_rotate[0], current_frame=current_frame)
+
+
         if (zoom is not None):
             self.updateZoom(zoom, current_frame)
 
@@ -843,6 +887,40 @@ class DMX_Fixture(PropertyGroup):
         if current_frame:
             self.dmx_cache_dirty = False
         # end of render block
+
+
+    def set_pan_tilt_rotation(self, geometry, axis, rotation, current_frame):
+        if axis == "pan":
+            mobile_type = "yoke"
+            offset = 2
+            lock_rotation = self.lock_pan_rotation
+
+        else: # tilt
+            mobile_type = "head"
+            offset = 0
+            lock_rotation = self.lock_tilt_rotation
+
+        if geometry is None:
+            geometry = self.get_mobile_type(mobile_type)
+        else:
+            geometry = self.get_object_by_geometry_name(geometry)
+        if geometry:
+            geometry.rotation_mode = "XYZ"
+            geometry.driver_remove("rotation_euler", offset)
+
+            if lock_rotation:
+                rotation = rotation/128 * 360 *(math.pi/360)
+                geometry.rotation_euler[offset] = rotation # just some value, not very precise
+            else:
+                if rotation != 0:
+                    driver = geometry.driver_add("rotation_euler", offset)
+                    value = rotation-128 # rotating in both direction, slowest in the middle
+                    driver.driver.expression=f"frame*{value*0.005}"
+
+            if current_frame and self.dmx_cache_dirty:
+                geometry.keyframe_insert(data_path="location", frame=current_frame)
+                geometry.keyframe_insert(data_path="rotation_euler", frame=current_frame)
+
 
     def remove_unset_geometries_from_multigeometry_attributes_all(self, dictionary):
         """Remove items with values of all None"""
@@ -1540,14 +1618,14 @@ class DMX_Fixture(PropertyGroup):
             in_fixture_real = [low(channel.id) for channel in self.channels if any(channel.geometry == g.name for g in temp_data.active_subfixtures)]
             in_fixture_virtual = [low(channel.id) for channel in self.virtual_channels if any(channel.geometry == g.name for g in temp_data.active_subfixtures)]
 
-            real =    any(any(attribute in item for item in in_fixture_real) for attribute in attributes)
-            virtual = any(any(attribute in item for item in in_fixture_virtual) for attribute in attributes)
+            real =    any(any(attribute == item for item in in_fixture_real) for attribute in attributes)
+            virtual = any(any(attribute == item for item in in_fixture_virtual) for attribute in attributes)
         else:
             in_fixture_real = [low(channel.id) for channel in self.channels]
             in_fixture_virtual = [low(channel.id) for channel in self.virtual_channels]
 
-            real =    any(any(attribute in item for item in in_fixture_real) for attribute in attributes)
-            virtual = any(any(attribute in item for item in in_fixture_virtual) for attribute in attributes)
+            real =    any(any(attribute == item for item in in_fixture_real) for attribute in attributes)
+            virtual = any(any(attribute == item for item in in_fixture_virtual) for attribute in attributes)
 
         return (real or virtual)
 
