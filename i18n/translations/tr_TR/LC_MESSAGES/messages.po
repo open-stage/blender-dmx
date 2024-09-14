@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-09-07 16:58+0200\n"
-"PO-Revision-Date: 2024-09-14 19:09+0000\n"
+"PO-Revision-Date: 2024-09-15 23:09+0000\n"
 "Last-Translator: Ugur Saglam <saglamugur556@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/blenderdmx/main/"
 "tr/>\n"
@@ -601,28 +601,28 @@ msgid "{} selected"
 msgstr "{} seçildi"
 
 msgid "Bodies"
-msgstr ""
+msgstr "Bedenler"
 
 msgid "Targets"
-msgstr ""
+msgstr "Hedefler"
 
 msgid "Camera"
-msgstr ""
+msgstr "Kamera"
 
 msgid "Dimmer"
-msgstr ""
+msgstr "Kısık"
 
 msgid "Pan"
-msgstr ""
+msgstr "Pan"
 
 msgid "Tilt"
-msgstr ""
+msgstr "Eğim"
 
 msgid "Pan Rotation"
-msgstr ""
+msgstr "Pan Dönüşü"
 
 msgid "Tilt Rotation"
-msgstr ""
+msgstr "Tilt Rotation"
 
 msgid "Zoom"
 msgstr ""
