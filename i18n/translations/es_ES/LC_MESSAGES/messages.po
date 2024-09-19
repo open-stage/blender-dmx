@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-09-07 16:58+0200\n"
-"PO-Revision-Date: 2024-09-15 23:09+0000\n"
+"PO-Revision-Date: 2024-09-20 15:40+0000\n"
 "Last-Translator: gallegonovato <fran-carro@hotmail.es>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/blenderdmx/main/"
 "es/>\n"
@@ -54,7 +54,7 @@ msgid "The selected element on the PSN server list"
 msgstr "El elemento seleccionado en la lista de servidores PSN"
 
 msgid "Class List i"
-msgstr ""
+msgstr "Lista de clases i"
 
 msgid "The selected element on the class list"
 msgstr "El elemento seleccionado en la lista de clases"
@@ -69,43 +69,43 @@ msgid "Display Pigtails"
 msgstr ""
 
 msgid "Display 2D View"
-msgstr ""
+msgstr "Mostrar vista en 2D"
 
 msgid "Display Device Label"
-msgstr ""
+msgstr "Ver etiqueta del dispositivo"
 
 msgid "Device Label"
-msgstr ""
+msgstr "Etiqueta del dispositivo"
 
 msgid "None"
-msgstr ""
+msgstr "Ninguna"
 
 msgid "Name"
-msgstr ""
+msgstr "Nombre"
 
 msgid "DMX"
-msgstr ""
+msgstr "DMX"
 
 msgid "Allow Selecting Geometries"
-msgstr ""
+msgstr "Permitir selección de geometrías"
 
 msgid "Logging Level"
-msgstr ""
+msgstr "Nivel de registro"
 
 msgid "Critical"
-msgstr ""
+msgstr "Crítico"
 
 msgid "Error"
-msgstr ""
+msgstr "Error"
 
 msgid "Warning"
-msgstr ""
+msgstr "Advertencia"
 
 msgid "Info"
-msgstr ""
+msgstr "Información"
 
 msgid "Debug"
-msgstr ""
+msgstr "Depurar"
 
 msgid "Simple beam"
 msgstr ""
