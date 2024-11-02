@@ -569,7 +569,10 @@ class DMX(PropertyGroup):
         #    group.rebuild()
 
         self.logging_level = "DEBUG" # setting high logging level to see initialization
-        self.migrations()
+        try:
+            self.migrations()
+        except Exception as e:
+            traceback.print_exception(e)
         self.ensure_application_uuid()
         # enable in extension
         #self.ensure_directories_exist()
