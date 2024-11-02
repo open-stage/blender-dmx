@@ -49,6 +49,31 @@ class DMX_OT_Setup_NewShow(Operator):
         return {"FINISHED"}
 
 
+class DMX_OT_Setup_RemoveDMX(Operator):
+    bl_label = _("Really remove all fixtures and DMX from blend file?")
+    bl_description = _("Try to remove DMX from the Blender showfile")
+    bl_idname = "dmx.remove_show"
+    bl_options = {"UNDO"}
+
+    def draw(self, context):
+        layout = self.layout
+        col = layout.column()
+
+    def execute(self, context):
+        # DMX setup
+        dmx = context.scene.dmx
+        dmx.fixtures.clear()
+        dmx.trackers.clear()
+        if "DMX" in bpy.data.collections:
+            bpy.data.collections.remove(bpy.data.collections["DMX"])
+
+        return {"FINISHED"}
+
+    def invoke(self, context, event):
+        wm = context.window_manager
+        return wm.invoke_props_dialog(self)
+
+
 class DMX_OT_Fixture_Set_Cycles_Beams_Size_Small(Operator):
     bl_label = _("Beam diameter small")
     bl_idname = "dmx.fixture_set_cycles_beam_size_small"
@@ -242,6 +267,7 @@ class DMX_PT_Setup_Extras(Panel):
         row = layout.row()
         row.operator_context = "INVOKE_DEFAULT"  #'INVOKE_AREA'
         row.operator("dmx.clear_custom_data", text=_("Clear Project data"), icon="TRASH")
+        layout.operator("dmx.remove_show", text=_("Remove DMX from blend file"), icon="BRUSH_DATA")
         layout.operator("wm.url_open", text="User Guide Online", icon="HELP").url = "https://blenderdmx.eu/docs/faq/"
 
 
@@ -555,5 +581,3 @@ class DMX_OT_Reload_Addon(Operator):
     def invoke(self, context, event):
         wm = context.window_manager
         return wm.invoke_props_dialog(self)
-
-
