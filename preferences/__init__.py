@@ -21,7 +21,7 @@ import bpy
 from bpy.props import StringProperty
 from bpy.types import AddonPreferences, Operator
 from .. import __package__ as base_package
-
+from .. import rna_keymap_ui
 
 class DMX_Regenrate_UUID(Operator):
     bl_label = "Regenerate UUID"
@@ -73,3 +73,31 @@ class DMX_Preferences(AddonPreferences):
         col.operator("dmx.regenerate_uuid", text="", icon="FILE_REFRESH")
         layout.separator()
         layout.label(text="Make sure to save the preferences after editing.")
+
+        # https://blenderartists.org/t/keymap-for-addons/685544/28
+        scene = context.scene
+        dmx = scene.dmx
+        box = layout.box()
+        col = box.column()
+        col.label(text="Keymap Settings:",icon="HAND")
+        col.separator()
+        wm = bpy.context.window_manager
+        kc = wm.keyconfigs.user
+        get_kmi_l = []
+        for km_add, kmi_add in dmx._keymaps:
+            for km_con in kc.keymaps:
+                if km_add.name == km_con.name:
+                    km = km_con
+                    break
+
+            for kmi_con in km.keymap_items:
+                if kmi_add.idname == kmi_con.idname:
+                    if kmi_add.name == kmi_con.name:
+                        get_kmi_l.append((km,kmi_con))
+
+        get_kmi_l = sorted(set(get_kmi_l), key=get_kmi_l.index)
+
+        for km, kmi in get_kmi_l:
+            col.context_pointer_set("keymap", km)
+            rna_keymap_ui.draw_kmi([], kc, km, kmi, col, 0)
+            col.separator()
