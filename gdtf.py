@@ -528,6 +528,7 @@ class DMX_GDTF:
             obj = DMX_GDTF.load_blender_primitive(goboGeometry)
             obj["geometry_type"] = "gobo"
             obj["beam_radius"] = goboGeometry.beam_radius
+            obj["gobo_radius"] = goboGeometry.length
             obj.dimensions = (goboGeometry.length, goboGeometry.width, 0)
             obj.name = goboGeometry.name
             objs[sanitize_obj_name(goboGeometry)] = obj
@@ -702,7 +703,7 @@ class DMX_GDTF:
     def getName(profile, dmx_mode, display_beams, add_target):
         revision = profile.revisions[-1].text if len(profile.revisions) else ""
         name = f"{profile.manufacturer}, {profile.name}, {dmx_mode}, {revision}, {'with_beams' if display_beams else 'without_beams'}, {'with_target' if add_target else 'without_target'}"
-        # base64 encode the name as collections seems to have lenght limit
+        # base64 encode the name as collections seems to have length limit
         # which causes collections not to be cached, thus slowing imports down
         name = hashlib.shake_256(name.encode()).hexdigest(5)
         return name

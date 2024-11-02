@@ -509,6 +509,10 @@ class DMX_Fixture(PropertyGroup):
                 obj.material_slots[0].material = gobo_material
                 material.material = gobo_material
 
+                gobo_radius = obj.get("gobo_radius", 0)
+                if gobo_radius:
+                    obj.dimensions = (gobo_radius, gobo_radius, 0)
+
             # Setup laser geometry nodes
             if "laser" in obj.get("geometry_type", ""):
                 #emitter
