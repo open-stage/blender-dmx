@@ -159,6 +159,7 @@ class DMX(PropertyGroup):
                 setup.DMX_OT_Import_Custom_Data,
                 setup.DMX_OT_Clear_Custom_Data,
                 setup.DMX_OT_Copy_Custom_Data,
+                setup.DMX_OT_Setup_RemoveDMX,
                 setup.DMX_OT_Reload_Addon,
                 fixtures.DMX_OT_IES_Import,
                 fixtures.DMX_OT_IES_Remove,
