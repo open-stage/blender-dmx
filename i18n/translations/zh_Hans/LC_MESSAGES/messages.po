@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-09-07 16:58+0200\n"
-"PO-Revision-Date: 2024-11-08 07:52+0000\n"
+"PO-Revision-Date: 2024-11-08 08:33+0000\n"
 "Last-Translator: HuangHai <deathblood@qq.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/blenderdmx/main/zh_Hans/>\n"
@@ -458,9 +458,8 @@ msgstr "Addr"
 msgid "Uni.Addr"
 msgstr "Uni.Addr"
 
-#, fuzzy
 msgid "Foot"
-msgstr "脚注"
+msgstr "脚灯"
 
 msgid "DMX > Group Menu"
 msgstr "DMX > 组菜单"
@@ -598,13 +597,13 @@ msgid "Dimmer"
 msgstr "调光器"
 
 msgid "Pan"
-msgstr "水平旋转"
+msgstr "平移"
 
 msgid "Tilt"
 msgstr "倾斜"
 
 msgid "Pan Rotation"
-msgstr "水平旋转"
+msgstr "平移旋转"
 
 msgid "Tilt Rotation"
 msgstr "倾斜旋转"
