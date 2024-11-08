@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-09-07 16:58+0200\n"
-"PO-Revision-Date: 2024-11-08 06:30+0000\n"
-"Last-Translator: 大学没毕业 <ziweidao@foxmail.com>\n"
+"PO-Revision-Date: 2024-11-08 07:52+0000\n"
+"Last-Translator: HuangHai <deathblood@qq.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/blenderdmx/main/zh_Hans/>\n"
 "Language: zh_Hans\n"
@@ -54,10 +54,10 @@ msgid "The selected element on the PSN server list"
 msgstr "PSN 服务器列表中选定的元素"
 
 msgid "Class List i"
-msgstr ""
+msgstr "类别列表 i"
 
 msgid "The selected element on the class list"
-msgstr ""
+msgstr "类别列表中选定的元素"
 
 msgid "Universe"
 msgstr "域"
@@ -66,7 +66,7 @@ msgid "Editable"
 msgstr "可编辑"
 
 msgid "Display Pigtails"
-msgstr ""
+msgstr "显示灯具尾线"
 
 msgid "Display 2D View"
 msgstr "显示2D视图"
@@ -212,28 +212,28 @@ msgid "Port number of the host where you want to send the OSC signal"
 msgstr "要发送OSC信号的主机的端口号"
 
 msgid "Enable MVR-xchange discovery"
-msgstr ""
+msgstr "开启 MVR-xchange 发现"
 
 msgid "Enables MVR-xchange discovery"
-msgstr ""
+msgstr "开启 MVR-xchange 发现"
 
 msgid "Enable MVR-xchange connection"
-msgstr ""
+msgstr "开启 MVR-xchange 连接"
 
 msgid "Connects to MVR-xchange client"
-msgstr ""
+msgstr "连接到 MVR-xchange 客户端"
 
 msgid "Art-Net Status"
-msgstr ""
+msgstr "Art-Net 状态"
 
 msgid "sACN Status"
-msgstr ""
+msgstr "sACN 状态"
 
 msgid "Group List i"
-msgstr ""
+msgstr "组列表 i"
 
 msgid "The selected element on the group list"
-msgstr ""
+msgstr "组列表中选定的元素"
 
 msgid "Order by"
 msgstr "排序"
@@ -449,16 +449,14 @@ msgstr "F ID #"
 msgid "Cst ID"
 msgstr "Cst ID"
 
-#, fuzzy
 msgid "Uni"
-msgstr "单位"
+msgstr "Uni"
 
-#, fuzzy
 msgid "Addr"
-msgstr "DMX地址"
+msgstr "Addr"
 
 msgid "Uni.Addr"
-msgstr ""
+msgstr "Uni.Addr"
 
 #, fuzzy
 msgid "Foot"
@@ -471,214 +469,196 @@ msgid "Create"
 msgstr "创建"
 
 msgid "Update"
-msgstr ""
+msgstr "更新"
 
-#, fuzzy
 msgid "Rename"
-msgstr "名称"
+msgstr "重命名"
 
 msgid "DMX > Group > Create"
 msgstr "DMX > 组 > 创建"
 
 msgid "Create DMX group from selected fixtures"
-msgstr ""
+msgstr "从选定的灯具创建 DMX 组"
 
-#, fuzzy
 msgid "Group Name"
-msgstr "模式名称"
+msgstr "组名称"
 
-#, fuzzy
 msgid "Reset Colors"
-msgstr "胶体颜色"
+msgstr "重置颜色"
 
 msgid "Lock Movement"
-msgstr ""
+msgstr "锁定移动"
 
 msgid "Ignore pan/tilt DMX data"
-msgstr ""
+msgstr "忽略平移/倾斜 DMX 数据"
 
 msgid "Unlock Movement"
-msgstr ""
+msgstr "解锁移动"
 
 msgid "Allow pan/tilt DMX data"
-msgstr ""
+msgstr "允许平移/倾斜 DMX 数据"
 
 msgid "Lock/Unlock Movement Rotation"
-msgstr ""
+msgstr "锁定/解锁移动旋转"
 
 msgid "Deselect All"
-msgstr ""
+msgstr "全部取消选择"
 
-#, fuzzy
 msgid "Deselect every fixture in the Scene"
-msgstr "从补丁中删除此装置。"
+msgstr "取消选择场景中的每个灯具"
 
-#, fuzzy
 msgid "Select All"
-msgstr "顺序"
+msgstr "全选"
 
-#, fuzzy
 msgid "Select every fixture in the Scene"
-msgstr "从补丁中删除此装置。"
+msgstr "选择场景中的每个灯具"
 
 msgid "Select Visible (only filtered)"
-msgstr ""
+msgstr "选择可见的（仅过滤的）"
 
 msgid "Select every fixture which is visible in the fixtures list"
-msgstr ""
+msgstr "选择灯具列表中可见的每个灯具"
 
 msgid "Invert selection"
-msgstr ""
+msgstr "反选"
 
 msgid "Invert the selection"
-msgstr ""
+msgstr "反向选择"
 
 msgid "Select every other light"
-msgstr ""
+msgstr "选择其他所有灯光"
 
 msgid "Clear"
-msgstr ""
+msgstr "清除"
 
 msgid "Clear all DMX values to default and update fixtures"
-msgstr ""
+msgstr "清除所有DMX 值到默认值并更新灯具"
 
 msgid "Apply"
-msgstr ""
+msgstr "应用"
 
 msgid "Apply these values manually when render is paused"
-msgstr ""
+msgstr "暂停渲染时手动应用这些值"
 
 msgid "Targets to zero"
-msgstr ""
+msgstr "目标为零"
 
 msgid "Set Targets' position to 0 of the Scene"
-msgstr ""
+msgstr "将目标的位置设置为场景的0"
 
 msgid "Center View to Selected"
-msgstr ""
+msgstr "以选中项居中视图"
 
 msgid "Set View to center on selected objects"
-msgstr ""
+msgstr "设置视图中心到选中的物体"
 
 msgid "Reset targets"
-msgstr ""
+msgstr "重置目标"
 
-#, fuzzy
 msgid "Reset position of target of selected fixtures"
-msgstr "删除装置"
+msgstr "重置选定灯具的目标位置"
 
-#, fuzzy
 msgid "Select Fixtures"
-msgstr "删除装置"
+msgstr "选择灯具"
 
-#, fuzzy
 msgid "Select base/body of every selected fixture"
-msgstr "删除装置"
+msgstr "选择每个已选灯具的底座/灯体"
 
 msgid "Select Targets"
-msgstr ""
+msgstr "选择目标"
 
 msgid "Select target from every fixture element selected"
-msgstr ""
+msgstr "从所选的每个灯具元素中选择目标"
 
 msgid "Select Camera"
-msgstr ""
+msgstr "选择摄像机"
 
 msgid "Select camera of the selected fixture"
-msgstr ""
+msgstr "选择选中的灯具的摄像机"
 
 msgid "Programmer"
 msgstr "程序设计者"
 
-#, fuzzy
 msgid "Nothing selected"
-msgstr "未选择配置文件"
+msgstr "未选择任何内容"
 
-#, fuzzy
 msgid "{} selected"
-msgstr "未选择配置文件"
+msgstr "{} 选定"
 
-#, fuzzy
 msgid "Bodies"
-msgstr "模式名称"
+msgstr "灯体"
 
 msgid "Targets"
-msgstr ""
+msgstr "目标"
 
-#, fuzzy
 msgid "Camera"
-msgstr "名称"
+msgstr "摄像机"
 
 msgid "Dimmer"
-msgstr ""
+msgstr "调光器"
 
-#, fuzzy
 msgid "Pan"
-msgstr "扩大"
+msgstr "水平旋转"
 
 msgid "Tilt"
-msgstr ""
+msgstr "倾斜"
 
-#, fuzzy
 msgid "Pan Rotation"
-msgstr "评分"
+msgstr "水平旋转"
 
-#, fuzzy
 msgid "Tilt Rotation"
-msgstr "评分"
+msgstr "倾斜旋转"
 
 msgid "Zoom"
-msgstr ""
+msgstr "变焦"
 
 msgid "Color Wheel"
-msgstr ""
+msgstr "色轮"
 
 msgid "Color Temperature"
-msgstr ""
+msgstr "色温"
 
 msgid "Iris"
-msgstr ""
+msgstr "虹膜"
 
 msgid "Gobo1"
-msgstr ""
+msgstr "图案片 1"
 
-#, fuzzy
 msgid "Gobo1 Rotation"
-msgstr "评分"
+msgstr "图案片 1 旋转"
 
 msgid "Gobo2"
-msgstr ""
+msgstr "图案片 2"
 
-#, fuzzy
 msgid "Gobo2 Rotation"
-msgstr "评分"
+msgstr "图案片 2 旋转"
 
 msgid "Strobe"
-msgstr ""
+msgstr "频闪"
 
 msgid "Clear All"
-msgstr ""
+msgstr "清除全部"
 
 msgid "DMX > Recorder > Add Keyframe"
-msgstr ""
+msgstr "DMX > 录制 > 添加关键帧"
 
 msgid "Add a Keyframe with the current DMX data"
-msgstr ""
+msgstr "使用当前 DMX 数据添加一个关键帧"
 
 msgid "DMX > Recorder > Delete Keyframes for all fixtures"
-msgstr ""
+msgstr "DMX > 录制 > 删除所有灯具的关键帧"
 
 msgid "Deletes all keyframes from all fixtures"
-msgstr ""
+msgstr "删除所有灯具的所有关键帧"
 
 msgid "DMX > Recorder > Delete All Keyframes from selected fixtures"
-msgstr ""
+msgstr "DMX > 录制 > 删除选定灯具的所有关键帧"
 
 msgid "Deletes all keyframes from selected fixtures"
-msgstr ""
+msgstr "删除选定灯具的所有关键帧"
 
 msgid "Keyframe Recorder"
-msgstr ""
+msgstr "关键帧录制"
 
 msgid "Add Keyframe"
 msgstr "添加关键帧"
@@ -699,47 +679,46 @@ msgid "Clear any existing DMX data and create a new show."
 msgstr "清除所有现有DMX数据并创建新演出。"
 
 msgid "Beam diameter small"
-msgstr ""
+msgstr "光束直径小"
 
 msgid "Beam diameter normal"
-msgstr ""
+msgstr "光束直径常规"
 
 msgid "DMX > Setup > Create/Update Volume Box"
-msgstr ""
+msgstr "DMX > 设置 > 创建/更新体积盒"
 
 msgid "Create/Update a Box on the scene bounds with a Volume Scatter shader"
-msgstr ""
+msgstr "创建/更新场景中带有体积散射着色器的立方体"
 
 msgid "Beam Volume"
-msgstr ""
+msgstr "光束体积"
 
 msgid "Update Volume Box"
-msgstr ""
+msgstr "更新体积盒"
 
 msgid "Create Volume Box"
-msgstr ""
+msgstr "创建体积盒"
 
-#, fuzzy
 msgid "Set on selected fixtures"
-msgstr "删除装置"
+msgstr "在选定的灯具上设置"
 
 msgid "Viewport"
-msgstr ""
+msgstr "视口"
 
 msgid "Background Color"
-msgstr ""
+msgstr "背景颜色"
 
 msgid "Extras"
-msgstr ""
+msgstr "其它项"
 
 msgid "Check for BlenderDMX updates"
-msgstr ""
+msgstr "检查 BlenderDMX 更新"
 
 msgid "Status: {}"
 msgstr "状态: {}"
 
 msgid "Clear Project data"
-msgstr ""
+msgstr "清除项目数据"
 
 msgid "Copy (import) old data from addon folder"
 msgstr "从插件文件夹复制(导入)旧数据"
@@ -810,7 +789,7 @@ msgstr "导入自定义数据"
 msgid ""
 "Unzip previously exported custom data from a zip file. This will "
 "overwrite current data!"
-msgstr ""
+msgstr "从zip文件中解压以前导出的自定义数据。这将覆盖当前数据!"
 
 msgid "File Path"
 msgstr "文件路径"
@@ -862,35 +841,29 @@ msgstr "重新加载插件，在开发过程中很有用"
 msgid "Addon reloaded"
 msgstr "插件已重新加载"
 
-#, fuzzy
 msgid "Select visible"
-msgstr "顺序"
+msgstr "选择可见的"
 
-#, fuzzy
 msgid "Select visible subfixtures"
-msgstr "删除装置"
+msgstr "选择可见的子灯具"
 
-#, fuzzy
 msgid "Clear selection"
-msgstr "删除装置"
+msgstr "清除选择"
 
 msgid "Clear subfixture selection"
-msgstr ""
+msgstr "清除子灯具的选择"
 
-#, fuzzy
 msgid "Get GDTF Share account and fill it into BlenderDMX addon preferences."
-msgstr "请从GDTF Share中获取API Key，并将其填写进BlenderDMX的插件首选项中。"
+msgstr "获取 GDTF Share 帐户并将其填写到 BlenderDMX 插件首选项中。"
 
-#, fuzzy
 msgid "GDTF Share API credentials missing"
-msgstr "GDTF Share API Key不存在"
+msgstr "GDTF Share API 凭据丢失"
 
 msgid "Downloading {}"
-msgstr ""
+msgstr "下载中 {}"
 
-#, fuzzy
 msgid "GDTF Share Download"
-msgstr "GDTF Share下载错误"
+msgstr "GDTF Share下载"
 
 msgid "Share index updated. Status code was: {}"
 msgstr "Share索引已更新。状态代码为：{}"
@@ -920,11 +893,10 @@ msgid "The name of the DMX profile."
 msgstr "DMX配置文件的名称。"
 
 msgid "Channel count"
-msgstr ""
+msgstr "通道数"
 
-#, fuzzy
 msgid "Number of channels"
-msgstr "通道数量"
+msgstr "通道数"
 
 msgid "Short Name"
 msgstr "缩写名称"
@@ -932,13 +904,13 @@ msgstr "缩写名称"
 msgid ""
 "The short name of the DMX profile, all caps, used as suggestion for "
 "fixture names."
-msgstr ""
+msgstr "DMX 配置文件的短名称，全部大写，用作灯具名称的建议。"
 
 msgid "Filename"
 msgstr "文件名"
 
 msgid "Some fixtures could not be processed"
-msgstr ""
+msgstr "某些灯具无法处理"
 
 msgid "Mode name"
 msgstr "模式名称"
@@ -1015,136 +987,125 @@ msgstr "刷新文件列表"
 msgid "Update list of local files"
 msgstr "更新本地文件列表"
 
-#, fuzzy
 msgid "GDTF Share"
-msgstr "GDTF Share已更新"
+msgstr "GDTF Share"
 
 msgid "You must Allow Online access for this to work:"
-msgstr ""
+msgstr "您必须允许联机访问才能使其工作:"
 
 msgid "Fixture details"
 msgstr "装置详情"
 
-#, fuzzy
 msgid "Local Fixture files"
-msgstr "本地装置详情"
+msgstr "本地灯具文件"
 
 msgid "Local Fixture details"
 msgstr "本地装置详情"
 
-#, fuzzy
 msgid "Profiles"
-msgstr "文件"
+msgstr "配置文件"
 
 msgid "Art-Net"
-msgstr ""
+msgstr "Art-Net"
 
 msgid "IPv4"
-msgstr ""
+msgstr "IPv4"
 
 msgid "Art-Net set for {} universe(s)"
-msgstr ""
+msgstr "{} 域 的 Art-Net 设置"
 
 msgid "Live DMX"
-msgstr ""
+msgstr "直播 DMX"
 
 msgid "Source"
-msgstr ""
+msgstr "源"
 
 msgid "Refresh"
-msgstr ""
+msgstr "刷新"
 
-#, fuzzy
 msgid "Refresh connection"
-msgstr "刷新文件列表"
+msgstr "刷新连接"
 
 msgid "Request latest version"
-msgstr ""
+msgstr "请求最新版本"
 
 msgid "Sends the Request message"
-msgstr ""
+msgstr "发送请求消息"
 
-#, fuzzy
 msgid "Import commit"
-msgstr "从文件导入"
+msgstr "导入确认"
 
 msgid "Download"
-msgstr ""
+msgstr "下载"
 
 msgid "Download commit"
-msgstr ""
+msgstr "下载提交"
 
 msgid "OSC"
-msgstr ""
+msgstr "OSC"
 
 msgid "Protocols"
-msgstr ""
+msgstr "协议"
 
 msgid "Add Tracker"
-msgstr ""
+msgstr "添加跟踪器"
 
 msgid "Adding a tracker"
-msgstr ""
+msgstr "添加一个跟踪器"
 
-#, fuzzy
 msgid "Remove Tracker"
-msgstr "移除装置"
+msgstr "移除跟踪器"
 
 msgid "Removing a tracker"
-msgstr ""
+msgstr "移除一个跟踪器"
 
 msgid "Link Fixture to Tracker"
-msgstr ""
+msgstr "连接灯具至跟踪器"
 
 msgid "Link fixture to a tracker"
-msgstr ""
+msgstr "连接灯具至一个跟踪器"
 
-#, fuzzy
 msgid "Unlink Fixture from Tracker"
-msgstr "从GDTF Share导入装置"
+msgstr "从跟踪器中取消灯具链接"
 
-#, fuzzy
 msgid "Unlink fixture from a tracker"
-msgstr "从GDTF Share导入装置"
+msgstr "从一个跟踪器中取消灯具链接"
 
 msgid "Tracker Followers"
-msgstr ""
+msgstr "跟踪器跟随者"
 
 msgid "Link followers to a tracker"
-msgstr ""
+msgstr "连接跟随者至一个跟踪器"
 
-#, fuzzy
 msgid "PSN"
-msgstr "扩大"
+msgstr "PSN"
 
 msgid "Add Tracking Target"
-msgstr ""
+msgstr "添加跟踪目标"
 
 msgid "Remove Followers Target"
-msgstr ""
+msgstr "移除跟随者目标"
 
-#, fuzzy
 msgid "Remove target"
-msgstr "移除装置"
+msgstr "移除目标"
 
 msgid "Add Followers Target"
-msgstr ""
+msgstr "添加跟随者目标"
 
 msgid "Add target"
-msgstr ""
+msgstr "添加目标"
 
 msgid "sACN"
-msgstr ""
+msgstr "sACN"
 
 msgid "sACN set for {} universe(s)"
-msgstr ""
+msgstr "{} 域的 sACN 设置"
 
-#, fuzzy
 msgid "DMX > Universe Menu"
-msgstr "DMX 范围"
+msgstr "DMX > 域菜单"
 
 msgid "Universes"
-msgstr "范围"
+msgstr "域"
 
 #~ msgid "Message Box"
 #~ msgstr "信息框"
