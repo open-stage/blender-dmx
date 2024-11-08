@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-09-07 16:58+0200\n"
-"PO-Revision-Date: 2024-11-08 07:52+0000\n"
+"PO-Revision-Date: 2024-11-08 08:33+0000\n"
 "Last-Translator: \"John Joseph A. Gatchalian\" <jjgatchalian@gmail.com>\n"
 "Language-Team: English (United States) <https://hosted.weblate.org/projects/"
 "blenderdmx/main/en_US/>\n"
@@ -838,7 +838,6 @@ msgstr "Data cleared"
 msgid "Copy data from addon to user directory"
 msgstr "Copy data from addon to user directory"
 
-#, fuzzy
 msgid ""
 "Copy custom data from BlenderDMX addon directory to BlenderDMX extension "
 "user directory."
@@ -846,102 +845,78 @@ msgstr ""
 "Copy custom data from BlenderDMX addon directory to BlenderDMX extension "
 "user directory."
 
-#, fuzzy
 msgid "Data copied"
 msgstr "Data copied"
 
-#, fuzzy
 msgid "Reload BlenderDMX addon"
 msgstr "Reload BlenderDMX addon"
 
-#, fuzzy
 msgid "Reload the addon, useful during development"
 msgstr "Reload the addon, useful during development"
 
-#, fuzzy
 msgid "Addon reloaded"
 msgstr "Addon reloaded"
 
-#, fuzzy
 msgid "Select visible"
 msgstr "Select visible"
 
-#, fuzzy
 msgid "Select visible subfixtures"
 msgstr "Select visible subfixtures"
 
-#, fuzzy
 msgid "Clear selection"
 msgstr "Clear selection"
 
-#, fuzzy
 msgid "Clear subfixture selection"
 msgstr "Clear subfixture selection"
 
 msgid "Get GDTF Share account and fill it into BlenderDMX addon preferences."
 msgstr "Get GDTF Share account and fill it into BlenderDMX addon preferences."
 
-#, fuzzy
 msgid "GDTF Share API credentials missing"
 msgstr "GDTF Share API credentials missing"
 
-#, fuzzy
 msgid "Downloading {}"
 msgstr "Downloading {}"
 
-#, fuzzy
 msgid "GDTF Share Download"
 msgstr "GDTF Share Download"
 
-#, fuzzy
 msgid "Share index updated. Status code was: {}"
 msgstr "Share index updated. Status code was: {}"
 
-#, fuzzy
 msgid "GDTF Share updated"
 msgstr "GDTF Share updated"
 
-#, fuzzy
 msgid "Error while updating Share index. Error code was: {}"
 msgstr "Error while updating Share index. Error code was: {}"
 
-#, fuzzy
 msgid "GDTF Share update error"
 msgstr "GDTF Share update error"
 
-#, fuzzy
 msgid "File downloaded correctly. Status code was: {}"
 msgstr "File downloaded correctly. Status code was: {}"
 
-#, fuzzy
 msgid "GDTF file downloaded"
 msgstr "GDTF file downloaded"
 
-#, fuzzy
 msgid "Error downloading GDTF file. Error code was: {}"
 msgstr "Error downloading GDTF file. Error code was: {}"
 
-#, fuzzy
 msgid "GDTF Share download error"
 msgstr "GDTF Share download error"
 
-#, fuzzy
 msgid "The name of the DMX profile."
 msgstr "The name of the DMX profile."
 
-#, fuzzy
 msgid "Channel count"
 msgstr "Channel count"
 
-#, fuzzy
 msgid "Number of channels"
 msgstr "Number of channels"
 
-#, fuzzy
 msgid "Short Name"
 msgstr "Short Name"
 
-#, fuzzy
 msgid ""
 "The short name of the DMX profile, all caps, used as suggestion for "
 "fixture names."
@@ -949,267 +924,201 @@ msgstr ""
 "The short name of the DMX profile, all caps, used as suggestion for fixture "
 "names."
 
-#, fuzzy
 msgid "Filename"
 msgstr "Filename"
 
-#, fuzzy
 msgid "Some fixtures could not be processed"
 msgstr "Some fixtures could not be processed"
 
-#, fuzzy
 msgid "Mode name"
 msgstr "Mode name"
 
-#, fuzzy
 msgid "DMX Footprint"
 msgstr "DMX Footprint"
 
-#, fuzzy
 msgid "Fixture name"
 msgstr "Fixture name"
 
-#, fuzzy
 msgid "Manufacturer and fixture name"
 msgstr "Manufacturer and fixture name"
 
-#, fuzzy
 msgid "Manufacturer"
 msgstr "Manufacturer"
 
-#, fuzzy
 msgid "Manufacturer name"
 msgstr "Manufacturer name"
 
-#, fuzzy
 msgid "Revision"
 msgstr "Revision"
 
-#, fuzzy
 msgid "Revision text"
 msgstr "Revision text"
 
-#, fuzzy
 msgid "Uploaded by"
 msgstr "Uploaded by"
 
-#, fuzzy
 msgid "File uploaded by"
 msgstr "File uploaded by"
 
-#, fuzzy
 msgid "Created by"
 msgstr "Created by"
 
-#, fuzzy
 msgid "File created by"
 msgstr "File created by"
 
-#, fuzzy
 msgid "Rating"
 msgstr "Rating"
 
-#, fuzzy
 msgid "Revision ID"
 msgstr "Revision ID"
 
-#, fuzzy
 msgid "File identifier in the GDTF Share"
 msgstr "File identifier in the GDTF Share"
 
-#, fuzzy
 msgid "DMX Modes"
 msgstr "DMX Modes"
 
-#, fuzzy
 msgid "DMX Mode Name"
 msgstr "DMX Mode Name"
 
-#, fuzzy
 msgid "Import from Share"
 msgstr "Import from Share"
 
-#, fuzzy
 msgid "Import fixture from GDTF Share"
 msgstr "Import fixture from GDTF Share"
 
-#, fuzzy
 msgid "Update GDTF Share index"
 msgstr "Update GDTF Share index"
 
-#, fuzzy
 msgid "Update data index of GDTF Share"
 msgstr "Update data index of GDTF Share"
 
-#, fuzzy
 msgid "Delete fixture"
 msgstr "Delete fixture"
 
-#, fuzzy
 msgid "Delete fixture from local filesystem"
 msgstr "Delete fixture from local filesystem"
 
-#, fuzzy
 msgid "Refresh files listing"
 msgstr "Refresh files listing"
 
-#, fuzzy
 msgid "Update list of local files"
 msgstr "Update list of local files"
 
-#, fuzzy
 msgid "GDTF Share"
 msgstr "GDTF Share"
 
-#, fuzzy
 msgid "You must Allow Online access for this to work:"
 msgstr "You must Allow Online access for this to work:"
 
-#, fuzzy
 msgid "Fixture details"
 msgstr "Fixture details"
 
-#, fuzzy
 msgid "Local Fixture files"
 msgstr "Local Fixture files"
 
-#, fuzzy
 msgid "Local Fixture details"
 msgstr "Local Fixture details"
 
-#, fuzzy
 msgid "Profiles"
 msgstr "Profiles"
 
-#, fuzzy
 msgid "Art-Net"
 msgstr "Art-Net"
 
-#, fuzzy
 msgid "IPv4"
 msgstr "IPv4"
 
-#, fuzzy
 msgid "Art-Net set for {} universe(s)"
 msgstr "Art-Net set for {} universe(s)"
 
-#, fuzzy
 msgid "Live DMX"
 msgstr "Live DMX"
 
-#, fuzzy
 msgid "Source"
 msgstr "Source"
 
-#, fuzzy
 msgid "Refresh"
 msgstr "Refresh"
 
-#, fuzzy
 msgid "Refresh connection"
 msgstr "Refresh connection"
 
-#, fuzzy
 msgid "Request latest version"
 msgstr "Request latest version"
 
-#, fuzzy
 msgid "Sends the Request message"
 msgstr "Sends the Request message"
 
-#, fuzzy
 msgid "Import commit"
 msgstr "Import commit"
 
-#, fuzzy
 msgid "Download"
 msgstr "Download"
 
-#, fuzzy
 msgid "Download commit"
 msgstr "Download commit"
 
-#, fuzzy
 msgid "OSC"
 msgstr "OSC"
 
-#, fuzzy
 msgid "Protocols"
 msgstr "Protocols"
 
-#, fuzzy
 msgid "Add Tracker"
 msgstr "Add Tracker"
 
-#, fuzzy
 msgid "Adding a tracker"
 msgstr "Adding a tracker"
 
-#, fuzzy
 msgid "Remove Tracker"
 msgstr "Remove Tracker"
 
-#, fuzzy
 msgid "Removing a tracker"
 msgstr "Removing a tracker"
 
-#, fuzzy
 msgid "Link Fixture to Tracker"
 msgstr "Link Fixture to Tracker"
 
-#, fuzzy
 msgid "Link fixture to a tracker"
 msgstr "Link fixture to a tracker"
 
-#, fuzzy
 msgid "Unlink Fixture from Tracker"
 msgstr "Unlink Fixture from Tracker"
 
-#, fuzzy
 msgid "Unlink fixture from a tracker"
 msgstr "Unlink fixture from a tracker"
 
-#, fuzzy
 msgid "Tracker Followers"
 msgstr "Tracker Followers"
 
-#, fuzzy
 msgid "Link followers to a tracker"
 msgstr "Link followers to a tracker"
 
-#, fuzzy
 msgid "PSN"
 msgstr "PSN"
 
-#, fuzzy
 msgid "Add Tracking Target"
 msgstr "Add Tracking Target"
 
-#, fuzzy
 msgid "Remove Followers Target"
 msgstr "Remove Followers Target"
 
-#, fuzzy
 msgid "Remove target"
 msgstr "Remove target"
 
-#, fuzzy
 msgid "Add Followers Target"
 msgstr "Add Followers Target"
 
-#, fuzzy
 msgid "Add target"
 msgstr "Add target"
 
-#, fuzzy
 msgid "sACN"
 msgstr "sACN"
 
-#, fuzzy
 msgid "sACN set for {} universe(s)"
 msgstr "sACN set for {} universe(s)"
 
-#, fuzzy
 msgid "DMX > Universe Menu"
 msgstr "DMX > Universe Menu"
 
