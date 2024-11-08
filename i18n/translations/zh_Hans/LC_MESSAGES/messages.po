@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-09-07 16:58+0200\n"
 "PO-Revision-Date: 2024-11-08 06:30+0000\n"
-"Last-Translator: HuangHai <deathblood@qq.com>\n"
+"Last-Translator: 大学没毕业 <ziweidao@foxmail.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/blenderdmx/main/zh_Hans/>\n"
 "Language: zh_Hans\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Generated-By: Babel 2.14.0\n"
 
 msgid "File doesn't exist"
-msgstr ""
+msgstr "文件不存在"
 
 msgid "Fixture ID"
 msgstr "灯具 ID"
@@ -90,7 +90,7 @@ msgid "Allow Selecting Geometries"
 msgstr "允许选择几何体"
 
 msgid "Logging Level"
-msgstr ""
+msgstr "日志级别"
 
 msgid "Critical"
 msgstr "关键"
@@ -273,9 +273,8 @@ msgstr "MVR-xchange"
 msgid "Status"
 msgstr "状态"
 
-#, fuzzy
 msgid "DMX Data"
-msgstr "DMX模式"
+msgstr "DMX 数据"
 
 msgid "Fixture"
 msgstr "灯具"
@@ -343,10 +342,10 @@ msgid "PSN Target port"
 msgstr "PSN目标端口"
 
 msgid "Align and Distribute"
-msgstr ""
+msgstr "对齐与分布"
 
 msgid "Active object: {}"
-msgstr ""
+msgstr "活动物体: {}"
 
 msgid "Selected fixtures: {}"
 msgstr "选定的灯具: {}"
@@ -466,11 +465,10 @@ msgid "Foot"
 msgstr "脚注"
 
 msgid "DMX > Group Menu"
-msgstr ""
+msgstr "DMX > 组菜单"
 
-#, fuzzy
 msgid "Create"
-msgstr "创建者为"
+msgstr "创建"
 
 msgid "Update"
 msgstr ""
@@ -480,7 +478,7 @@ msgid "Rename"
 msgstr "名称"
 
 msgid "DMX > Group > Create"
-msgstr ""
+msgstr "DMX > 组 > 创建"
 
 msgid "Create DMX group from selected fixtures"
 msgstr ""
@@ -747,72 +745,67 @@ msgid "Copy (import) old data from addon folder"
 msgstr "从插件文件夹复制(导入)旧数据"
 
 msgid "Import"
-msgstr ""
+msgstr "导入"
 
 msgid "Import GDTF Profile"
 msgstr "导入 GDTF 配置"
 
-#, fuzzy
 msgid "Import MVR Scene"
-msgstr "从Share导入"
+msgstr "导入 MVR 场景"
 
-#, fuzzy
 msgid "Import Project data"
-msgstr "从Share导入"
+msgstr "导入项目数据"
 
-#, fuzzy
 msgid "Export"
-msgstr "从Share导入"
+msgstr "导出"
 
 msgid "Export Project data"
-msgstr ""
+msgstr "导出项目数据"
 
-#, fuzzy
 msgid "Export MVR"
-msgstr "从Share导入"
+msgstr "导出 MVR"
 
 msgid "Show logging directory"
-msgstr ""
+msgstr "显示日志目录"
 
 msgid "Logging"
-msgstr ""
+msgstr "日志"
 
 msgid "Log filter"
-msgstr ""
+msgstr "日志筛选"
 
 msgid "Setup"
 msgstr "设置"
 
 msgid "Error! Blender 3.4 or higher required."
-msgstr ""
+msgstr "错误！需要 Blender 3.4 或更高版本。"
 
 msgid "Create New Show"
 msgstr "创建新演出"
 
 msgid "Check version"
-msgstr ""
+msgstr "检查版本"
 
 msgid "Check if there is new release of BlenderDMX"
-msgstr ""
+msgstr "检查是否有新版 BlenderDMX"
 
 msgid "Unknown version error"
-msgstr ""
+msgstr "未知版本错误"
 
 msgid "New version {} available"
-msgstr ""
+msgstr "新版本 {} 已发布"
 
 msgid "You are using pre-release version"
-msgstr ""
+msgstr "您使用的是预发布版本"
 
 msgid "You are using latest version of BlenderDMX"
-msgstr ""
+msgstr "您使用的是最新版本的 BlenderDMX"
 
 msgid "Checking..."
-msgstr ""
+msgstr "正在检查..."
 
-#, fuzzy
 msgid "Import Custom Data"
-msgstr "从文件导入"
+msgstr "导入自定义数据"
 
 msgid ""
 "Unzip previously exported custom data from a zip file. This will "
@@ -826,49 +819,48 @@ msgid "Files"
 msgstr "文件"
 
 msgid "Incorrect file name!"
-msgstr ""
+msgstr "文件名不正确！"
 
-#, fuzzy
 msgid "Data imported from: {}"
-msgstr "从Share导入"
+msgstr "数据导入自: {}"
 
 msgid "Export Custom Data"
-msgstr ""
+msgstr "导出自定义数据"
 
 msgid "Zip and Export custom data from BlenderDMX addon directory."
-msgstr ""
+msgstr "从 BlenderDMX 插件目录中压缩并导出自定义数据。"
 
 msgid "Data exported to: {}"
-msgstr ""
+msgstr "数据导出到: {}"
 
 msgid "Clear Custom Data"
-msgstr ""
+msgstr "清除自定义数据"
 
 msgid "Clear custom data from BlenderDMX addon directory."
-msgstr ""
+msgstr "清除 BlenderDMX 插件目录中的自定义数据。"
 
 msgid "Data cleared"
-msgstr ""
+msgstr "数据已清除"
 
 msgid "Copy data from addon to user directory"
-msgstr ""
+msgstr "将数据从插件目录复制到用户目录"
 
 msgid ""
 "Copy custom data from BlenderDMX addon directory to BlenderDMX extension "
 "user directory."
-msgstr ""
+msgstr "将 BlenderDMX 插件目录中的自定义数据复制到 BlenderDMX 扩展用户目录。"
 
 msgid "Data copied"
-msgstr ""
+msgstr "数据已复制"
 
 msgid "Reload BlenderDMX addon"
-msgstr ""
+msgstr "重新加载 BlenderDMX 插件"
 
 msgid "Reload the addon, useful during development"
-msgstr ""
+msgstr "重新加载插件，在开发过程中很有用"
 
 msgid "Addon reloaded"
-msgstr ""
+msgstr "插件已重新加载"
 
 #, fuzzy
 msgid "Select visible"
