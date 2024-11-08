@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-09-07 16:58+0200\n"
-"PO-Revision-Date: 2024-11-08 06:30+0000\n"
+"PO-Revision-Date: 2024-11-08 07:52+0000\n"
 "Last-Translator: \"John Joseph A. Gatchalian\" <jjgatchalian@gmail.com>\n"
 "Language-Team: English (United States) <https://hosted.weblate.org/projects/"
 "blenderdmx/main/en_US/>\n"
@@ -59,91 +59,69 @@ msgstr "Class List i"
 msgid "The selected element on the class list"
 msgstr "The selected element on the class list"
 
-#, fuzzy
 msgid "Universe"
 msgstr "Universe"
 
-#, fuzzy
 msgid "Editable"
 msgstr "Editable"
 
-#, fuzzy
 msgid "Display Pigtails"
 msgstr "Display Pigtails"
 
-#, fuzzy
 msgid "Display 2D View"
 msgstr "Display 2D View"
 
-#, fuzzy
 msgid "Display Device Label"
 msgstr "Display Device Label"
 
-#, fuzzy
 msgid "Device Label"
 msgstr "Device Label"
 
-#, fuzzy
 msgid "None"
 msgstr "None"
 
-#, fuzzy
 msgid "Name"
 msgstr "Name"
 
-#, fuzzy
 msgid "DMX"
 msgstr "DMX"
 
-#, fuzzy
 msgid "Allow Selecting Geometries"
 msgstr "Allow Selecting Geometries"
 
-#, fuzzy
 msgid "Logging Level"
 msgstr "Logging Level"
 
-#, fuzzy
 msgid "Critical"
 msgstr "Critical"
 
-#, fuzzy
 msgid "Error"
 msgstr "Error"
 
-#, fuzzy
 msgid "Warning"
 msgstr "Warning"
 
-#, fuzzy
 msgid "Info"
 msgstr "Info"
 
-#, fuzzy
 msgid "Debug"
 msgstr "Debug"
 
-#, fuzzy
 msgid "Simple beam"
 msgstr "Simple beam"
 
-#, fuzzy
 msgid "Display 'fake' beam cone"
 msgstr "Display 'fake' beam cone"
 
-#, fuzzy
 msgid "Selected fixtures"
 msgstr "Selected fixtures"
 
-#, fuzzy
 msgid "All fixtures"
 msgstr "All fixtures"
 
-#, fuzzy
 msgid "Beam Lens Diameter in Cycles"
 msgstr "Beam Lens Diameter in Cycles"
 
-#, fuzzy
 msgid ""
 "Beam diameter is reduced to minimum when projecting gobos to prevent blur"
 " on gobo edge"
@@ -151,27 +129,21 @@ msgstr ""
 "Beam diameter is reduced to minimum when projecting gobos to prevent blur on "
 "gobo edge"
 
-#, fuzzy
 msgid "Reduced"
 msgstr "Reduced"
 
-#, fuzzy
 msgid "Full width"
 msgstr "Full width"
 
-#, fuzzy
 msgid "Custom per each beam"
 msgstr "Custom per each beam"
 
-#, fuzzy
 msgid "Disable Beam Outlines"
 msgstr "Disable Beam Outlines"
 
-#, fuzzy
 msgid "Enable Volume Scatter"
 msgstr "Enable Volume Scatter"
 
-#, fuzzy
 msgid "Noise Scale"
 msgstr "Noise Scale"
 
@@ -179,962 +151,1070 @@ msgid "Volume Noise Scale"
 msgstr "Volume Noise Scale"
 
 msgid "Density"
-msgstr ""
+msgstr "Density"
 
 msgid "Volume Scatter Density"
-msgstr ""
+msgstr "Volume Scatter Density"
 
 msgid "Multiply beams intensity"
-msgstr ""
+msgstr "Multiply beams intensity"
 
 msgid "Number of universes"
-msgstr ""
+msgstr "Number of universes"
 
 msgid "The number of universes set on the panel"
-msgstr ""
+msgstr "The number of universes set on the panel"
 
 msgid "Universe List Item"
-msgstr ""
+msgstr "Universe List Item"
 
 msgid "The selected element on the universe list"
-msgstr ""
+msgstr "The selected element on the universe list"
 
 msgid "IPv4 Address for ArtNet signal"
-msgstr ""
+msgstr "IPv4 Address for ArtNet signal"
 
 msgid "The network card/interface to listen for ArtNet DMX data"
-msgstr ""
+msgstr "The network card/interface to listen for ArtNet DMX data"
 
 msgid "Enable Art-Net Input"
-msgstr ""
+msgstr "Enable Art-Net Input"
 
 msgid ""
 "Enables the input of DMX data throught Art-Net on the selected network "
 "interface"
 msgstr ""
+"Enables the input of DMX data throught Art-Net on the selected network "
+"interface"
 
 msgid "Enable sACN Input"
-msgstr ""
+msgstr "Enable sACN Input"
 
 msgid ""
 "Enables the input of DMX data throught sACN on all detected network "
 "interfaces"
 msgstr ""
+"Enables the input of DMX data throught sACN on all detected network "
+"interfaces"
 
 msgid "Enable OSC Output"
-msgstr ""
+msgstr "Enable OSC Output"
 
 msgid "Enables Open Sound Control protocol to send fixture selection to a console"
 msgstr ""
+"Enables Open Sound Control protocol to send fixture selection to a console"
 
 msgid "OSC Target address"
-msgstr ""
+msgstr "OSC Target address"
 
 msgid ""
 "Address of the host where you want to send the OSC signal. Address ending"
 " on .255 is a broadcast address to all hosts on the network"
 msgstr ""
+"Address of the host where you want to send the OSC signal. Address ending on "
+".255 is a broadcast address to all hosts on the network"
 
 msgid "OSC Target port"
-msgstr ""
+msgstr "OSC Target port"
 
 msgid "Port number of the host where you want to send the OSC signal"
-msgstr ""
+msgstr "Port number of the host where you want to send the OSC signal"
 
 msgid "Enable MVR-xchange discovery"
-msgstr ""
+msgstr "Enable MVR-xchange discovery"
 
 msgid "Enables MVR-xchange discovery"
-msgstr ""
+msgstr "Enables MVR-xchange discovery"
 
 msgid "Enable MVR-xchange connection"
-msgstr ""
+msgstr "Enable MVR-xchange connection"
 
 msgid "Connects to MVR-xchange client"
-msgstr ""
+msgstr "Connects to MVR-xchange client"
 
 msgid "Art-Net Status"
-msgstr ""
+msgstr "Art-Net Status"
 
 msgid "sACN Status"
-msgstr ""
+msgstr "sACN Status"
 
 msgid "Group List i"
-msgstr ""
+msgstr "Group List i"
 
 msgid "The selected element on the group list"
-msgstr ""
+msgstr "The selected element on the group list"
 
 msgid "Order by"
-msgstr ""
+msgstr "Order by"
 
 msgid "Fixture sorting order"
-msgstr ""
+msgstr "Fixture sorting order"
 
 msgid "Laser collision collection"
-msgstr ""
+msgstr "Laser collision collection"
 
 msgid ""
 "Laser beams are projected onto objects in this collection. The beam stops"
 " at the first object colliding with the beam."
 msgstr ""
+"Laser beams are projected onto objects in this collection. The beam stops at "
+"the first object colliding with the beam."
 
 msgid "Pause renderer"
-msgstr ""
+msgstr "Pause renderer"
 
 msgid "Manufacturers"
-msgstr ""
+msgstr "Manufacturers"
 
 msgid "Imports"
-msgstr ""
+msgstr "Imports"
 
 msgid "Add to selection"
-msgstr ""
+msgstr "Add to selection"
 
 msgid "Remove from selection"
-msgstr ""
+msgstr "Remove from selection"
 
 msgid "Keyframe only selected fixtures (not for autokeying)"
-msgstr ""
+msgstr "Keyframe only selected fixtures (not for autokeying)"
 
 msgid "MVR-xchange"
-msgstr ""
+msgstr "MVR-xchange"
 
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 msgid "DMX Data"
-msgstr ""
+msgstr "DMX Data"
 
 msgid "Fixture"
-msgstr ""
+msgstr "Fixture"
 
 msgid "Subfixtures"
-msgstr ""
+msgstr "Subfixtures"
 
 msgid "Active Subfixtures"
-msgstr ""
+msgstr "Active Subfixtures"
 
 msgid "DMX Universe"
-msgstr ""
+msgstr "DMX Universe"
 
 msgid "Address"
-msgstr ""
+msgstr "Address"
 
 msgid "Gel Color"
-msgstr ""
+msgstr "Gel Color"
 
 msgid "Display beams"
-msgstr ""
+msgstr "Display beams"
 
 msgid "Display beam projection and cone"
-msgstr ""
+msgstr "Display beam projection and cone"
 
 msgid "Add Target"
-msgstr ""
+msgstr "Add Target"
 
 msgid "Add target for beam to follow"
-msgstr ""
+msgstr "Add target for beam to follow"
 
 msgid "Increment DMX address"
-msgstr ""
+msgstr "Increment DMX address"
 
 msgid "Increment Fixture ID"
-msgstr ""
+msgstr "Increment Fixture ID"
 
 msgid "Increment Fixture ID if numeric"
-msgstr ""
+msgstr "Increment Fixture ID if numeric"
 
 msgid ""
 "The Fixture ID is an identifier of this fixture that can be used to "
 "activate / select them for programming."
 msgstr ""
+"The Fixture ID is an identifier of this fixture that can be used to activate "
+"/ select them for programming."
 
 msgid "Units"
-msgstr ""
+msgstr "Units"
 
 msgid "How many units of this light to add"
-msgstr ""
+msgstr "How many units of this light to add"
 
 msgid "Enable PSN Input"
-msgstr ""
+msgstr "Enable PSN Input"
 
 msgid "Enables PosiStageNet input"
-msgstr ""
+msgstr "Enables PosiStageNet input"
 
 msgid "IPv4 Address for PSN signal"
-msgstr ""
+msgstr "IPv4 Address for PSN signal"
 
 msgid "The network card/interface to listen for PSN data"
-msgstr ""
+msgstr "The network card/interface to listen for PSN data"
 
 msgid "PSN Target port"
-msgstr ""
+msgstr "PSN Target port"
 
 msgid "Align and Distribute"
-msgstr ""
+msgstr "Align and Distribute"
 
 msgid "Active object: {}"
-msgstr ""
+msgstr "Active object: {}"
 
 msgid "Selected fixtures: {}"
-msgstr ""
+msgstr "Selected fixtures: {}"
 
 msgid "DMX > Fixture Menu"
-msgstr ""
+msgstr "DMX > Fixture Menu"
 
 msgid "Add"
-msgstr ""
+msgstr "Add"
 
 msgid "Edit"
-msgstr ""
+msgstr "Edit"
 
 msgid "Remove"
-msgstr ""
+msgstr "Remove"
 
 msgid "DMX > Fixture > Add > Manufacturers"
-msgstr ""
+msgstr "DMX > Fixture > Add > Manufacturers"
 
 msgid "DMX > Fixture > Add > Profiles"
-msgstr ""
+msgstr "DMX > Fixture > Add > Profiles"
 
 msgid "DMX > Fixture > Add > Mode"
-msgstr ""
+msgstr "DMX > Fixture > Add > Mode"
 
 msgid "DMX > Fixture > Add > Manufacturers > Profiles"
-msgstr ""
+msgstr "DMX > Fixture > Add > Manufacturers > Profiles"
 
 msgid "Profile"
-msgstr ""
+msgstr "Profile"
 
 msgid "Fixture GDTF Profile"
-msgstr ""
+msgstr "Fixture GDTF Profile"
 
 msgid "Mode"
-msgstr ""
+msgstr "Mode"
 
 msgid "Fixture GDTF Mode"
-msgstr ""
+msgstr "Fixture GDTF Mode"
 
 msgid "DMX Mode"
-msgstr ""
+msgstr "DMX Mode"
 
 msgid "Advanced edit"
-msgstr ""
+msgstr "Advanced edit"
 
 msgid "GDTF Profile"
-msgstr ""
+msgstr "GDTF Profile"
 
 msgid "Unknown manufacturer"
-msgstr ""
+msgstr "Unknown manufacturer"
 
 msgid "DMX: Add Fixture"
-msgstr ""
+msgstr "DMX: Add Fixture"
 
 msgid "Add fixtures to the show"
-msgstr ""
+msgstr "Add fixtures to the show"
 
 msgid "Fixture named {} already exists"
-msgstr ""
+msgstr "Fixture named {} already exists"
 
 msgid "No GDTF Profile selected."
-msgstr ""
+msgstr "No GDTF Profile selected."
 
 msgid "No DMX Mode selected."
-msgstr ""
+msgstr "No DMX Mode selected."
 
 msgid "DMX: Edit Fixture"
-msgstr ""
+msgstr "DMX: Edit Fixture"
 
 msgid "Edit selected fixtures"
-msgstr ""
+msgstr "Edit selected fixtures"
 
 msgid "DMX > Fixture > Remove"
-msgstr ""
+msgstr "DMX > Fixture > Remove"
 
 msgid "Remove selected fixtures from Scene"
-msgstr ""
+msgstr "Remove selected fixtures from Scene"
 
 msgid "DMX > Fixture > Item"
-msgstr ""
+msgstr "DMX > Fixture > Item"
 
 msgid "Select Fixture"
-msgstr ""
+msgstr "Select Fixture"
 
 msgid "Remove fixture"
-msgstr ""
+msgstr "Remove fixture"
 
 msgid "Fixtures"
-msgstr ""
+msgstr "Fixtures"
 
 msgid "F ID"
-msgstr ""
+msgstr "F ID"
 
 msgid "Unit #"
-msgstr ""
+msgstr "Unit #"
 
 msgid "F ID #"
-msgstr ""
+msgstr "F ID #"
 
 msgid "Cst ID"
-msgstr ""
+msgstr "Cst ID"
 
 msgid "Uni"
-msgstr ""
+msgstr "Uni"
 
 msgid "Addr"
-msgstr ""
+msgstr "Addr"
 
 msgid "Uni.Addr"
-msgstr ""
+msgstr "Uni.Addr"
 
 msgid "Foot"
-msgstr ""
+msgstr "Foot"
 
 msgid "DMX > Group Menu"
-msgstr ""
+msgstr "DMX > Group Menu"
 
 msgid "Create"
-msgstr ""
+msgstr "Create"
 
 msgid "Update"
-msgstr ""
+msgstr "Update"
 
 msgid "Rename"
-msgstr ""
+msgstr "Rename"
 
 msgid "DMX > Group > Create"
-msgstr ""
+msgstr "DMX > Group > Create"
 
 msgid "Create DMX group from selected fixtures"
-msgstr ""
+msgstr "Create DMX group from selected fixtures"
 
 msgid "Group Name"
-msgstr ""
+msgstr "Group Name"
 
 msgid "Reset Colors"
-msgstr ""
+msgstr "Reset Colors"
 
 msgid "Lock Movement"
-msgstr ""
+msgstr "Lock Movement"
 
 msgid "Ignore pan/tilt DMX data"
-msgstr ""
+msgstr "Ignore pan/tilt DMX data"
 
 msgid "Unlock Movement"
-msgstr ""
+msgstr "Unlock Movement"
 
 msgid "Allow pan/tilt DMX data"
-msgstr ""
+msgstr "Allow pan/tilt DMX data"
 
 msgid "Lock/Unlock Movement Rotation"
-msgstr ""
+msgstr "Lock/Unlock Movement Rotation"
 
 msgid "Deselect All"
-msgstr ""
+msgstr "Deselect All"
 
 msgid "Deselect every fixture in the Scene"
-msgstr ""
+msgstr "Deselect every fixture in the Scene"
 
 msgid "Select All"
-msgstr ""
+msgstr "Select All"
 
 msgid "Select every fixture in the Scene"
-msgstr ""
+msgstr "Select every fixture in the Scene"
 
 msgid "Select Visible (only filtered)"
-msgstr ""
+msgstr "Select Visible (only filtered)"
 
 msgid "Select every fixture which is visible in the fixtures list"
-msgstr ""
+msgstr "Select every fixture which is visible in the fixtures list"
 
 msgid "Invert selection"
-msgstr ""
+msgstr "Invert selection"
 
 msgid "Invert the selection"
-msgstr ""
+msgstr "Invert the selection"
 
 msgid "Select every other light"
-msgstr ""
+msgstr "Select every other light"
 
 msgid "Clear"
-msgstr ""
+msgstr "Clear"
 
 msgid "Clear all DMX values to default and update fixtures"
-msgstr ""
+msgstr "Clear all DMX values to default and update fixtures"
 
 msgid "Apply"
-msgstr ""
+msgstr "Apply"
 
 msgid "Apply these values manually when render is paused"
-msgstr ""
+msgstr "Apply these values manually when render is paused"
 
 msgid "Targets to zero"
-msgstr ""
+msgstr "Targets to zero"
 
 msgid "Set Targets' position to 0 of the Scene"
-msgstr ""
+msgstr "Set Targets' position to 0 of the Scene"
 
 msgid "Center View to Selected"
-msgstr ""
+msgstr "Center View to Selected"
 
 msgid "Set View to center on selected objects"
-msgstr ""
+msgstr "Set View to center on selected objects"
 
 msgid "Reset targets"
-msgstr ""
+msgstr "Reset targets"
 
 msgid "Reset position of target of selected fixtures"
-msgstr ""
+msgstr "Reset position of target of selected fixtures"
 
 msgid "Select Fixtures"
-msgstr ""
+msgstr "Select Fixtures"
 
 msgid "Select base/body of every selected fixture"
-msgstr ""
+msgstr "Select base/body of every selected fixture"
 
 msgid "Select Targets"
-msgstr ""
+msgstr "Select Targets"
 
 msgid "Select target from every fixture element selected"
-msgstr ""
+msgstr "Select target from every fixture element selected"
 
 msgid "Select Camera"
-msgstr ""
+msgstr "Select Camera"
 
 msgid "Select camera of the selected fixture"
-msgstr ""
+msgstr "Select camera of the selected fixture"
 
 msgid "Programmer"
-msgstr ""
+msgstr "Programmer"
 
 msgid "Nothing selected"
-msgstr ""
+msgstr "Nothing selected"
 
 msgid "{} selected"
-msgstr ""
+msgstr "{} selected"
 
 msgid "Bodies"
-msgstr ""
+msgstr "Bodies"
 
 msgid "Targets"
-msgstr ""
+msgstr "Targets"
 
 msgid "Camera"
-msgstr ""
+msgstr "Camera"
 
 msgid "Dimmer"
-msgstr ""
+msgstr "Dimmer"
 
 msgid "Pan"
-msgstr ""
+msgstr "Pan"
 
 msgid "Tilt"
-msgstr ""
+msgstr "Tilt"
 
 msgid "Pan Rotation"
-msgstr ""
+msgstr "Pan Rotation"
 
 msgid "Tilt Rotation"
-msgstr ""
+msgstr "Tilt Rotation"
 
 msgid "Zoom"
-msgstr ""
+msgstr "Zoom"
 
 msgid "Color Wheel"
-msgstr ""
+msgstr "Color Wheel"
 
 msgid "Color Temperature"
-msgstr ""
+msgstr "Color Temperature"
 
 msgid "Iris"
-msgstr ""
+msgstr "Iris"
 
 msgid "Gobo1"
-msgstr ""
+msgstr "Gobo1"
 
 msgid "Gobo1 Rotation"
-msgstr ""
+msgstr "Gobo1 Rotation"
 
 msgid "Gobo2"
-msgstr ""
+msgstr "Gobo2"
 
 msgid "Gobo2 Rotation"
-msgstr ""
+msgstr "Gobo2 Rotation"
 
 msgid "Strobe"
-msgstr ""
+msgstr "Strobe"
 
 msgid "Clear All"
-msgstr ""
+msgstr "Clear All"
 
 msgid "DMX > Recorder > Add Keyframe"
-msgstr ""
+msgstr "DMX > Recorder > Add Keyframe"
 
 msgid "Add a Keyframe with the current DMX data"
-msgstr ""
+msgstr "Add a Keyframe with the current DMX data"
 
 msgid "DMX > Recorder > Delete Keyframes for all fixtures"
-msgstr ""
+msgstr "DMX > Recorder > Delete Keyframes for all fixtures"
 
 msgid "Deletes all keyframes from all fixtures"
-msgstr ""
+msgstr "Deletes all keyframes from all fixtures"
 
 msgid "DMX > Recorder > Delete All Keyframes from selected fixtures"
-msgstr ""
+msgstr "DMX > Recorder > Delete All Keyframes from selected fixtures"
 
 msgid "Deletes all keyframes from selected fixtures"
-msgstr ""
+msgstr "Deletes all keyframes from selected fixtures"
 
 msgid "Keyframe Recorder"
-msgstr ""
+msgstr "Keyframe Recorder"
 
 msgid "Add Keyframe"
-msgstr ""
+msgstr "Add Keyframe"
 
 msgid "Delete Keyframes"
-msgstr ""
+msgstr "Delete Keyframes"
 
 msgid "Delete from selected fixtures"
-msgstr ""
+msgstr "Delete from selected fixtures"
 
 msgid "Delete from all fixtures"
-msgstr ""
+msgstr "Delete from all fixtures"
 
 msgid "DMX > Setup > New Show"
-msgstr ""
+msgstr "DMX > Setup > New Show"
 
 msgid "Clear any existing DMX data and create a new show."
-msgstr ""
+msgstr "Clear any existing DMX data and create a new show."
 
 msgid "Beam diameter small"
-msgstr ""
+msgstr "Beam diameter small"
 
 msgid "Beam diameter normal"
-msgstr ""
+msgstr "Beam diameter normal"
 
 msgid "DMX > Setup > Create/Update Volume Box"
-msgstr ""
+msgstr "DMX > Setup > Create/Update Volume Box"
 
 msgid "Create/Update a Box on the scene bounds with a Volume Scatter shader"
-msgstr ""
+msgstr "Create/Update a Box on the scene bounds with a Volume Scatter shader"
 
 msgid "Beam Volume"
-msgstr ""
+msgstr "Beam Volume"
 
 msgid "Update Volume Box"
-msgstr ""
+msgstr "Update Volume Box"
 
 msgid "Create Volume Box"
-msgstr ""
+msgstr "Create Volume Box"
 
 msgid "Set on selected fixtures"
-msgstr ""
+msgstr "Set on selected fixtures"
 
 msgid "Viewport"
-msgstr ""
+msgstr "Viewport"
 
 msgid "Background Color"
-msgstr ""
+msgstr "Background Color"
 
 msgid "Extras"
-msgstr ""
+msgstr "Extras"
 
 msgid "Check for BlenderDMX updates"
-msgstr ""
+msgstr "Check for BlenderDMX updates"
 
 msgid "Status: {}"
-msgstr ""
+msgstr "Status: {}"
 
 msgid "Clear Project data"
-msgstr ""
+msgstr "Clear Project data"
 
 msgid "Copy (import) old data from addon folder"
-msgstr ""
+msgstr "Copy (import) old data from addon folder"
 
 msgid "Import"
-msgstr ""
+msgstr "Import"
 
 msgid "Import GDTF Profile"
-msgstr ""
+msgstr "Import GDTF Profile"
 
 msgid "Import MVR Scene"
-msgstr ""
+msgstr "Import MVR Scene"
 
 msgid "Import Project data"
-msgstr ""
+msgstr "Import Project data"
 
 msgid "Export"
-msgstr ""
+msgstr "Export"
 
 msgid "Export Project data"
-msgstr ""
+msgstr "Export Project data"
 
 msgid "Export MVR"
-msgstr ""
+msgstr "Export MVR"
 
 msgid "Show logging directory"
-msgstr ""
+msgstr "Show logging directory"
 
 msgid "Logging"
-msgstr ""
+msgstr "Logging"
 
 msgid "Log filter"
-msgstr ""
+msgstr "Log filter"
 
 msgid "Setup"
-msgstr ""
+msgstr "Setup"
 
 msgid "Error! Blender 3.4 or higher required."
-msgstr ""
+msgstr "Error! Blender 3.4 or higher required."
 
 msgid "Create New Show"
-msgstr ""
+msgstr "Create New Show"
 
 msgid "Check version"
-msgstr ""
+msgstr "Check version"
 
 msgid "Check if there is new release of BlenderDMX"
-msgstr ""
+msgstr "Check if there is new release of BlenderDMX"
 
 msgid "Unknown version error"
-msgstr ""
+msgstr "Unknown version error"
 
 msgid "New version {} available"
-msgstr ""
+msgstr "New version {} available"
 
 msgid "You are using pre-release version"
-msgstr ""
+msgstr "You are using pre-release version"
 
 msgid "You are using latest version of BlenderDMX"
-msgstr ""
+msgstr "You are using latest version of BlenderDMX"
 
 msgid "Checking..."
-msgstr ""
+msgstr "Checking..."
 
 msgid "Import Custom Data"
-msgstr ""
+msgstr "Import Custom Data"
 
 msgid ""
 "Unzip previously exported custom data from a zip file. This will "
 "overwrite current data!"
 msgstr ""
+"Unzip previously exported custom data from a zip file. This will overwrite "
+"current data!"
 
 msgid "File Path"
-msgstr ""
+msgstr "File Path"
 
 msgid "Files"
-msgstr ""
+msgstr "Files"
 
 msgid "Incorrect file name!"
-msgstr ""
+msgstr "Incorrect file name!"
 
 msgid "Data imported from: {}"
-msgstr ""
+msgstr "Data imported from: {}"
 
 msgid "Export Custom Data"
-msgstr ""
+msgstr "Export Custom Data"
 
 msgid "Zip and Export custom data from BlenderDMX addon directory."
-msgstr ""
+msgstr "Zip and Export custom data from BlenderDMX addon directory."
 
 msgid "Data exported to: {}"
-msgstr ""
+msgstr "Data exported to: {}"
 
 msgid "Clear Custom Data"
-msgstr ""
+msgstr "Clear Custom Data"
 
 msgid "Clear custom data from BlenderDMX addon directory."
-msgstr ""
+msgstr "Clear custom data from BlenderDMX addon directory."
 
 msgid "Data cleared"
-msgstr ""
+msgstr "Data cleared"
 
 msgid "Copy data from addon to user directory"
-msgstr ""
+msgstr "Copy data from addon to user directory"
 
+#, fuzzy
 msgid ""
 "Copy custom data from BlenderDMX addon directory to BlenderDMX extension "
 "user directory."
 msgstr ""
+"Copy custom data from BlenderDMX addon directory to BlenderDMX extension "
+"user directory."
 
+#, fuzzy
 msgid "Data copied"
-msgstr ""
+msgstr "Data copied"
 
+#, fuzzy
 msgid "Reload BlenderDMX addon"
-msgstr ""
+msgstr "Reload BlenderDMX addon"
 
+#, fuzzy
 msgid "Reload the addon, useful during development"
-msgstr ""
+msgstr "Reload the addon, useful during development"
 
+#, fuzzy
 msgid "Addon reloaded"
-msgstr ""
+msgstr "Addon reloaded"
 
+#, fuzzy
 msgid "Select visible"
-msgstr ""
+msgstr "Select visible"
 
+#, fuzzy
 msgid "Select visible subfixtures"
-msgstr ""
+msgstr "Select visible subfixtures"
 
+#, fuzzy
 msgid "Clear selection"
-msgstr ""
+msgstr "Clear selection"
 
+#, fuzzy
 msgid "Clear subfixture selection"
-msgstr ""
+msgstr "Clear subfixture selection"
 
 msgid "Get GDTF Share account and fill it into BlenderDMX addon preferences."
-msgstr ""
+msgstr "Get GDTF Share account and fill it into BlenderDMX addon preferences."
 
+#, fuzzy
 msgid "GDTF Share API credentials missing"
-msgstr ""
+msgstr "GDTF Share API credentials missing"
 
+#, fuzzy
 msgid "Downloading {}"
-msgstr ""
+msgstr "Downloading {}"
 
+#, fuzzy
 msgid "GDTF Share Download"
-msgstr ""
+msgstr "GDTF Share Download"
 
+#, fuzzy
 msgid "Share index updated. Status code was: {}"
-msgstr ""
+msgstr "Share index updated. Status code was: {}"
 
+#, fuzzy
 msgid "GDTF Share updated"
-msgstr ""
+msgstr "GDTF Share updated"
 
+#, fuzzy
 msgid "Error while updating Share index. Error code was: {}"
-msgstr ""
+msgstr "Error while updating Share index. Error code was: {}"
 
+#, fuzzy
 msgid "GDTF Share update error"
-msgstr ""
+msgstr "GDTF Share update error"
 
+#, fuzzy
 msgid "File downloaded correctly. Status code was: {}"
-msgstr ""
+msgstr "File downloaded correctly. Status code was: {}"
 
+#, fuzzy
 msgid "GDTF file downloaded"
-msgstr ""
+msgstr "GDTF file downloaded"
 
+#, fuzzy
 msgid "Error downloading GDTF file. Error code was: {}"
-msgstr ""
+msgstr "Error downloading GDTF file. Error code was: {}"
 
+#, fuzzy
 msgid "GDTF Share download error"
-msgstr ""
+msgstr "GDTF Share download error"
 
+#, fuzzy
 msgid "The name of the DMX profile."
-msgstr ""
+msgstr "The name of the DMX profile."
 
+#, fuzzy
 msgid "Channel count"
-msgstr ""
+msgstr "Channel count"
 
+#, fuzzy
 msgid "Number of channels"
-msgstr ""
+msgstr "Number of channels"
 
+#, fuzzy
 msgid "Short Name"
-msgstr ""
+msgstr "Short Name"
 
+#, fuzzy
 msgid ""
 "The short name of the DMX profile, all caps, used as suggestion for "
 "fixture names."
 msgstr ""
+"The short name of the DMX profile, all caps, used as suggestion for fixture "
+"names."
 
+#, fuzzy
 msgid "Filename"
-msgstr ""
+msgstr "Filename"
 
+#, fuzzy
 msgid "Some fixtures could not be processed"
-msgstr ""
+msgstr "Some fixtures could not be processed"
 
+#, fuzzy
 msgid "Mode name"
-msgstr ""
+msgstr "Mode name"
 
+#, fuzzy
 msgid "DMX Footprint"
-msgstr ""
+msgstr "DMX Footprint"
 
+#, fuzzy
 msgid "Fixture name"
-msgstr ""
+msgstr "Fixture name"
 
+#, fuzzy
 msgid "Manufacturer and fixture name"
-msgstr ""
+msgstr "Manufacturer and fixture name"
 
+#, fuzzy
 msgid "Manufacturer"
-msgstr ""
+msgstr "Manufacturer"
 
+#, fuzzy
 msgid "Manufacturer name"
-msgstr ""
+msgstr "Manufacturer name"
 
+#, fuzzy
 msgid "Revision"
-msgstr ""
+msgstr "Revision"
 
+#, fuzzy
 msgid "Revision text"
-msgstr ""
+msgstr "Revision text"
 
+#, fuzzy
 msgid "Uploaded by"
-msgstr ""
+msgstr "Uploaded by"
 
+#, fuzzy
 msgid "File uploaded by"
-msgstr ""
+msgstr "File uploaded by"
 
+#, fuzzy
 msgid "Created by"
-msgstr ""
+msgstr "Created by"
 
+#, fuzzy
 msgid "File created by"
-msgstr ""
+msgstr "File created by"
 
+#, fuzzy
 msgid "Rating"
-msgstr ""
+msgstr "Rating"
 
+#, fuzzy
 msgid "Revision ID"
-msgstr ""
+msgstr "Revision ID"
 
+#, fuzzy
 msgid "File identifier in the GDTF Share"
-msgstr ""
+msgstr "File identifier in the GDTF Share"
 
+#, fuzzy
 msgid "DMX Modes"
-msgstr ""
+msgstr "DMX Modes"
 
+#, fuzzy
 msgid "DMX Mode Name"
-msgstr ""
+msgstr "DMX Mode Name"
 
+#, fuzzy
 msgid "Import from Share"
-msgstr ""
+msgstr "Import from Share"
 
+#, fuzzy
 msgid "Import fixture from GDTF Share"
-msgstr ""
+msgstr "Import fixture from GDTF Share"
 
+#, fuzzy
 msgid "Update GDTF Share index"
-msgstr ""
+msgstr "Update GDTF Share index"
 
+#, fuzzy
 msgid "Update data index of GDTF Share"
-msgstr ""
+msgstr "Update data index of GDTF Share"
 
+#, fuzzy
 msgid "Delete fixture"
-msgstr ""
+msgstr "Delete fixture"
 
+#, fuzzy
 msgid "Delete fixture from local filesystem"
-msgstr ""
+msgstr "Delete fixture from local filesystem"
 
+#, fuzzy
 msgid "Refresh files listing"
-msgstr ""
+msgstr "Refresh files listing"
 
+#, fuzzy
 msgid "Update list of local files"
-msgstr ""
+msgstr "Update list of local files"
 
+#, fuzzy
 msgid "GDTF Share"
-msgstr ""
+msgstr "GDTF Share"
 
+#, fuzzy
 msgid "You must Allow Online access for this to work:"
-msgstr ""
+msgstr "You must Allow Online access for this to work:"
 
+#, fuzzy
 msgid "Fixture details"
-msgstr ""
+msgstr "Fixture details"
 
+#, fuzzy
 msgid "Local Fixture files"
-msgstr ""
+msgstr "Local Fixture files"
 
+#, fuzzy
 msgid "Local Fixture details"
-msgstr ""
+msgstr "Local Fixture details"
 
+#, fuzzy
 msgid "Profiles"
-msgstr ""
+msgstr "Profiles"
 
+#, fuzzy
 msgid "Art-Net"
-msgstr ""
+msgstr "Art-Net"
 
+#, fuzzy
 msgid "IPv4"
-msgstr ""
+msgstr "IPv4"
 
+#, fuzzy
 msgid "Art-Net set for {} universe(s)"
-msgstr ""
+msgstr "Art-Net set for {} universe(s)"
 
+#, fuzzy
 msgid "Live DMX"
-msgstr ""
+msgstr "Live DMX"
 
+#, fuzzy
 msgid "Source"
-msgstr ""
+msgstr "Source"
 
+#, fuzzy
 msgid "Refresh"
-msgstr ""
+msgstr "Refresh"
 
+#, fuzzy
 msgid "Refresh connection"
-msgstr ""
+msgstr "Refresh connection"
 
+#, fuzzy
 msgid "Request latest version"
-msgstr ""
+msgstr "Request latest version"
 
+#, fuzzy
 msgid "Sends the Request message"
-msgstr ""
+msgstr "Sends the Request message"
 
+#, fuzzy
 msgid "Import commit"
-msgstr ""
+msgstr "Import commit"
 
+#, fuzzy
 msgid "Download"
-msgstr ""
+msgstr "Download"
 
+#, fuzzy
 msgid "Download commit"
-msgstr ""
+msgstr "Download commit"
 
+#, fuzzy
 msgid "OSC"
-msgstr ""
+msgstr "OSC"
 
+#, fuzzy
 msgid "Protocols"
-msgstr ""
+msgstr "Protocols"
 
+#, fuzzy
 msgid "Add Tracker"
-msgstr ""
+msgstr "Add Tracker"
 
+#, fuzzy
 msgid "Adding a tracker"
-msgstr ""
+msgstr "Adding a tracker"
 
+#, fuzzy
 msgid "Remove Tracker"
-msgstr ""
+msgstr "Remove Tracker"
 
+#, fuzzy
 msgid "Removing a tracker"
-msgstr ""
+msgstr "Removing a tracker"
 
+#, fuzzy
 msgid "Link Fixture to Tracker"
-msgstr ""
+msgstr "Link Fixture to Tracker"
 
+#, fuzzy
 msgid "Link fixture to a tracker"
-msgstr ""
+msgstr "Link fixture to a tracker"
 
+#, fuzzy
 msgid "Unlink Fixture from Tracker"
-msgstr ""
+msgstr "Unlink Fixture from Tracker"
 
+#, fuzzy
 msgid "Unlink fixture from a tracker"
-msgstr ""
+msgstr "Unlink fixture from a tracker"
 
+#, fuzzy
 msgid "Tracker Followers"
-msgstr ""
+msgstr "Tracker Followers"
 
+#, fuzzy
 msgid "Link followers to a tracker"
-msgstr ""
+msgstr "Link followers to a tracker"
 
+#, fuzzy
 msgid "PSN"
-msgstr ""
+msgstr "PSN"
 
+#, fuzzy
 msgid "Add Tracking Target"
-msgstr ""
+msgstr "Add Tracking Target"
 
+#, fuzzy
 msgid "Remove Followers Target"
-msgstr ""
+msgstr "Remove Followers Target"
 
+#, fuzzy
 msgid "Remove target"
-msgstr ""
+msgstr "Remove target"
 
+#, fuzzy
 msgid "Add Followers Target"
-msgstr ""
+msgstr "Add Followers Target"
 
+#, fuzzy
 msgid "Add target"
-msgstr ""
+msgstr "Add target"
 
+#, fuzzy
 msgid "sACN"
-msgstr ""
+msgstr "sACN"
 
+#, fuzzy
 msgid "sACN set for {} universe(s)"
-msgstr ""
+msgstr "sACN set for {} universe(s)"
 
+#, fuzzy
 msgid "DMX > Universe Menu"
-msgstr ""
+msgstr "DMX > Universe Menu"
 
 msgid "Universes"
-msgstr ""
+msgstr "Universes"
 
 #~ msgid "Select DMX Universe"
 #~ msgstr ""
