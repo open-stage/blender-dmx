@@ -8,53 +8,50 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-09-07 16:58+0200\n"
-"PO-Revision-Date: 2023-08-11 16:50+0000\n"
-"Last-Translator: \"YuxiangWang_0525(John Frederick Wang)\" "
-"<1n3-3z0la8jxie@dingtalk.com>\n"
+"PO-Revision-Date: 2024-11-08 06:30+0000\n"
+"Last-Translator: HuangHai <deathblood@qq.com>\n"
+"Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
+"projects/blenderdmx/main/zh_Hans/>\n"
 "Language: zh_Hans\n"
-"Language-Team: Chinese (Simplified) "
-"<https://hosted.weblate.org/projects/blenderdmx/main/zh_Hans/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.8.2\n"
 "Generated-By: Babel 2.14.0\n"
 
 msgid "File doesn't exist"
 msgstr ""
 
-#, fuzzy
 msgid "Fixture ID"
-msgstr "装置"
+msgstr "灯具 ID"
 
 msgid "Unit Number"
-msgstr ""
+msgstr "单元编号"
 
 msgid "Custom ID"
-msgstr ""
+msgstr "自定义 ID"
 
 msgid "DMX Address"
-msgstr "DMX地址"
+msgstr "DMX 地址"
 
 msgid "Position"
-msgstr ""
+msgstr "位置"
 
-#, fuzzy
 msgid "Rotation"
-msgstr "评分"
+msgstr "旋转"
 
 msgid "Footprint"
 msgstr "脚注"
 
 msgid "DMX Collection"
-msgstr ""
+msgstr "DMX 集合"
 
-#, fuzzy
 msgid "Selected PSN Server"
-msgstr "删除装置"
+msgstr "选定的 PSN 服务器"
 
 msgid "The selected element on the PSN server list"
-msgstr ""
+msgstr "PSN 服务器列表中选定的元素"
 
 msgid "Class List i"
 msgstr ""
@@ -62,164 +59,157 @@ msgstr ""
 msgid "The selected element on the class list"
 msgstr ""
 
-#, fuzzy
 msgid "Universe"
-msgstr "范围"
+msgstr "域"
 
 msgid "Editable"
-msgstr ""
+msgstr "可编辑"
 
 msgid "Display Pigtails"
 msgstr ""
 
 msgid "Display 2D View"
-msgstr ""
+msgstr "显示2D视图"
 
 msgid "Display Device Label"
-msgstr ""
+msgstr "显示设备标签"
 
 msgid "Device Label"
-msgstr ""
+msgstr "设备标签"
 
 msgid "None"
-msgstr ""
+msgstr "无"
 
 msgid "Name"
 msgstr "名称"
 
 msgid "DMX"
-msgstr ""
+msgstr "DMX"
 
 msgid "Allow Selecting Geometries"
-msgstr ""
+msgstr "允许选择几何体"
 
 msgid "Logging Level"
 msgstr ""
 
 msgid "Critical"
-msgstr ""
+msgstr "关键"
 
 msgid "Error"
-msgstr ""
+msgstr "错误"
 
-#, fuzzy
 msgid "Warning"
-msgstr "评分"
+msgstr "警告"
 
 msgid "Info"
-msgstr ""
+msgstr "信息"
 
 msgid "Debug"
-msgstr ""
+msgstr "调试"
 
 msgid "Simple beam"
-msgstr ""
+msgstr "简单光束"
 
 msgid "Display 'fake' beam cone"
-msgstr ""
+msgstr "显示\"仿\"光束锥体"
 
-#, fuzzy
 msgid "Selected fixtures"
-msgstr "删除装置"
+msgstr "选定的灯具"
 
-#, fuzzy
 msgid "All fixtures"
-msgstr "装置"
+msgstr "所有灯具"
 
 msgid "Beam Lens Diameter in Cycles"
-msgstr ""
+msgstr "使用Cycles光束透镜直径"
 
 msgid ""
 "Beam diameter is reduced to minimum when projecting gobos to prevent blur"
 " on gobo edge"
-msgstr ""
+msgstr "在投射图案(gobos)时，将光束直径缩小至最小，以防止图案边缘模糊"
 
 msgid "Reduced"
-msgstr ""
+msgstr "减小的"
 
 msgid "Full width"
-msgstr ""
+msgstr "完整宽度"
 
 msgid "Custom per each beam"
-msgstr ""
+msgstr "自定义每个光束"
 
 msgid "Disable Beam Outlines"
-msgstr ""
+msgstr "禁用光束轮廓"
 
 msgid "Enable Volume Scatter"
-msgstr ""
+msgstr "启用体积散射"
 
 msgid "Noise Scale"
-msgstr ""
+msgstr "噪波缩放"
 
 msgid "Volume Noise Scale"
-msgstr ""
+msgstr "体积噪波缩放"
 
 msgid "Density"
-msgstr ""
+msgstr "密度"
 
 msgid "Volume Scatter Density"
-msgstr ""
+msgstr "体积散射密度"
 
 msgid "Multiply beams intensity"
-msgstr ""
+msgstr "倍增光束强度"
 
-#, fuzzy
 msgid "Number of universes"
-msgstr "通道数量"
+msgstr "域的数目"
 
 msgid "The number of universes set on the panel"
-msgstr ""
+msgstr "面板上设定的域数目"
 
-#, fuzzy
 msgid "Universe List Item"
-msgstr "范围"
+msgstr "域列表项目"
 
 msgid "The selected element on the universe list"
-msgstr ""
+msgstr "域列表中选定的元素"
 
 msgid "IPv4 Address for ArtNet signal"
-msgstr ""
+msgstr "ArtNet 信号的 IPv4 地址"
 
 msgid "The network card/interface to listen for ArtNet DMX data"
-msgstr ""
+msgstr "用于监听ArtNet DMX数据的网卡/接口"
 
 msgid "Enable Art-Net Input"
-msgstr ""
+msgstr "开启 Art-Net 输入"
 
 msgid ""
 "Enables the input of DMX data throught Art-Net on the selected network "
 "interface"
-msgstr ""
+msgstr "允许通过所选网络接口上的 Art Net 输入 DMX 数据"
 
 msgid "Enable sACN Input"
-msgstr ""
+msgstr "开启 sACN 输入"
 
 msgid ""
 "Enables the input of DMX data throught sACN on all detected network "
 "interfaces"
-msgstr ""
+msgstr "允许通过 sACN 在所有检测到的网络接口上输入 DMX 数据"
 
 msgid "Enable OSC Output"
-msgstr ""
+msgstr "开启 OSC 输出"
 
 msgid "Enables Open Sound Control protocol to send fixture selection to a console"
-msgstr ""
+msgstr "启用Open Sound Control(OSC)协议将灯具选择发送到控制台"
 
-#, fuzzy
 msgid "OSC Target address"
-msgstr "DMX地址"
+msgstr "OSC 目标地址"
 
 msgid ""
 "Address of the host where you want to send the OSC signal. Address ending"
 " on .255 is a broadcast address to all hosts on the network"
-msgstr ""
+msgstr "要发送OSC信号的主机的地址。以.255结尾的地址是网络上所有主机的广播地址"
 
 msgid "OSC Target port"
-msgstr ""
+msgstr "OSC 目标端口"
 
 msgid "Port number of the host where you want to send the OSC signal"
-msgstr ""
+msgstr "要发送OSC信号的主机的端口号"
 
 msgid "Enable MVR-xchange discovery"
 msgstr ""
@@ -245,125 +235,112 @@ msgstr ""
 msgid "The selected element on the group list"
 msgstr ""
 
-#, fuzzy
 msgid "Order by"
-msgstr "上传者为"
+msgstr "排序"
 
-#, fuzzy
 msgid "Fixture sorting order"
-msgstr "GDTF模式"
+msgstr "灯具排序"
 
 msgid "Laser collision collection"
-msgstr ""
+msgstr "激光碰撞集合"
 
 msgid ""
 "Laser beams are projected onto objects in this collection. The beam stops"
 " at the first object colliding with the beam."
-msgstr ""
+msgstr "激光束被投射到这个集合中的物体上，光束会在第一个碰撞体的物体处停止。"
 
 msgid "Pause renderer"
-msgstr ""
+msgstr "暂停渲染器"
 
-#, fuzzy
 msgid "Manufacturers"
-msgstr "制造商"
+msgstr "生产商"
 
-#, fuzzy
 msgid "Imports"
-msgstr "从Share导入"
+msgstr "导入"
 
 msgid "Add to selection"
-msgstr ""
+msgstr "添加到选集"
 
-#, fuzzy
 msgid "Remove from selection"
-msgstr "删除装置"
+msgstr "从选集删除"
 
-#, fuzzy
 msgid "Keyframe only selected fixtures (not for autokeying)"
-msgstr "从补丁中删除此装置。"
+msgstr "仅给选定的灯具打关键帧(不适用于自动关键帧)"
 
 msgid "MVR-xchange"
-msgstr ""
+msgstr "MVR-xchange"
 
 msgid "Status"
-msgstr ""
+msgstr "状态"
 
 #, fuzzy
 msgid "DMX Data"
 msgstr "DMX模式"
 
-#, fuzzy
 msgid "Fixture"
-msgstr "装置"
+msgstr "灯具"
 
-#, fuzzy
 msgid "Subfixtures"
-msgstr "装置"
+msgstr "子灯具"
 
-#, fuzzy
 msgid "Active Subfixtures"
-msgstr "删除装置"
+msgstr "活动的子灯具"
 
 msgid "DMX Universe"
-msgstr "DMX 范围"
+msgstr "DMX 域"
 
-#, fuzzy
 msgid "Address"
-msgstr "DMX地址"
+msgstr "地址"
 
 msgid "Gel Color"
-msgstr "胶体颜色"
+msgstr "彩胶颜色"
 
 msgid "Display beams"
-msgstr ""
+msgstr "显示光束"
 
 msgid "Display beam projection and cone"
-msgstr ""
+msgstr "显示光束投影和锥体"
 
 msgid "Add Target"
-msgstr ""
+msgstr "添加目标"
 
 msgid "Add target for beam to follow"
-msgstr ""
+msgstr "添加光束跟踪目标"
 
-#, fuzzy
 msgid "Increment DMX address"
-msgstr "DMX地址"
+msgstr "增量 DMX 地址"
 
-#, fuzzy
 msgid "Increment Fixture ID"
-msgstr "移除装置"
+msgstr "增量灯具 ID"
 
 msgid "Increment Fixture ID if numeric"
-msgstr ""
+msgstr "如果为数字则增量灯具 ID"
 
 msgid ""
 "The Fixture ID is an identifier of this fixture that can be used to "
 "activate / select them for programming."
-msgstr ""
+msgstr "灯具ID是该灯具的标识符，可用于激活/选择它们用于编程。"
 
 msgid "Units"
 msgstr "单位"
 
 msgid "How many units of this light to add"
-msgstr ""
+msgstr "此灯要添加多少个单位"
 
 msgid "Enable PSN Input"
-msgstr ""
+msgstr "开启 PSN 输入"
 
 msgid "Enables PosiStageNet input"
-msgstr ""
+msgstr "开启 PosiStageNet 输入"
 
 msgid "IPv4 Address for PSN signal"
-msgstr ""
+msgstr "PSN 信号的 IPv4 地址"
 
 msgid "The network card/interface to listen for PSN data"
-msgstr ""
+msgstr "用于监听 PSN 数据的网卡/接口"
 
-#, fuzzy
 msgid "PSN Target port"
-msgstr "DMX地址"
+msgstr "PSN目标端口"
 
 msgid "Align and Distribute"
 msgstr ""
@@ -371,130 +348,107 @@ msgstr ""
 msgid "Active object: {}"
 msgstr ""
 
-#, fuzzy
 msgid "Selected fixtures: {}"
-msgstr "删除装置"
+msgstr "选定的灯具: {}"
 
-#, fuzzy
 msgid "DMX > Fixture Menu"
-msgstr "导入DMX装置"
+msgstr "DMX > 灯具菜单"
 
-#, fuzzy
 msgid "Add"
-msgstr "DMX地址"
+msgstr "添加"
 
 msgid "Edit"
-msgstr ""
+msgstr "编辑"
 
-#, fuzzy
 msgid "Remove"
-msgstr "移除装置"
+msgstr "移除"
 
 msgid "DMX > Fixture > Add > Manufacturers"
-msgstr ""
+msgstr "DMX > 灯具 > 添加 > 生产商"
 
 msgid "DMX > Fixture > Add > Profiles"
-msgstr ""
+msgstr "DMX > 灯具 > 添加 > 配置"
 
-#, fuzzy
 msgid "DMX > Fixture > Add > Mode"
-msgstr "导入DMX装置"
+msgstr "DMX > 灯具 > 添加 > 模式"
 
 msgid "DMX > Fixture > Add > Manufacturers > Profiles"
-msgstr ""
+msgstr "DMX > 灯具 > 添加 > 生产商 > 配置"
 
-#, fuzzy
 msgid "Profile"
-msgstr "GDTF配置文件"
+msgstr "配置"
 
-#, fuzzy
 msgid "Fixture GDTF Profile"
-msgstr "GDTF配置文件"
+msgstr "灯具 GDTF 配置"
 
-#, fuzzy
 msgid "Mode"
-msgstr "模式名称"
+msgstr "模式"
 
-#, fuzzy
 msgid "Fixture GDTF Mode"
-msgstr "GDTF模式"
+msgstr "灯具 GDTF 模式"
 
-#, fuzzy
 msgid "DMX Mode"
-msgstr "DMX模式"
+msgstr "DMX 模式"
 
 msgid "Advanced edit"
-msgstr ""
+msgstr "高级编辑"
 
 msgid "GDTF Profile"
-msgstr "GDTF配置文件"
+msgstr "GDTF 配置"
 
-#, fuzzy
 msgid "Unknown manufacturer"
-msgstr "制造商"
+msgstr "未知生产商"
 
-#, fuzzy
 msgid "DMX: Add Fixture"
-msgstr "本地DMX装置"
+msgstr "DMX: 添加灯具"
 
-#, fuzzy
 msgid "Add fixtures to the show"
-msgstr "添加装置批次"
+msgstr "为演出添加灯具"
 
 msgid "Fixture named {} already exists"
-msgstr ""
+msgstr "灯具名称 {} 已存在"
 
-#, fuzzy
 msgid "No GDTF Profile selected."
-msgstr "未选择配置文件"
+msgstr "未选择 GDTF 配置."
 
-#, fuzzy
 msgid "No DMX Mode selected."
-msgstr "未选择配置文件"
+msgstr "未选择 DMX 模式."
 
-#, fuzzy
 msgid "DMX: Edit Fixture"
-msgstr "删除装置"
+msgstr "DMX: 编辑灯具"
 
-#, fuzzy
 msgid "Edit selected fixtures"
-msgstr "删除装置"
+msgstr "编辑选定的灯具"
 
-#, fuzzy
 msgid "DMX > Fixture > Remove"
-msgstr "导入DMX装置"
+msgstr "DMX > 灯具 > 移除"
 
-#, fuzzy
 msgid "Remove selected fixtures from Scene"
-msgstr "从补丁中删除此装置。"
+msgstr "从场景中删除选定的灯具"
 
-#, fuzzy
 msgid "DMX > Fixture > Item"
-msgstr "导入DMX装置"
+msgstr "DMX > 灯具 > 项目"
 
-#, fuzzy
 msgid "Select Fixture"
-msgstr "删除装置"
+msgstr "选择灯具"
 
-#, fuzzy
 msgid "Remove fixture"
-msgstr "移除装置"
+msgstr "移除灯具"
 
 msgid "Fixtures"
-msgstr "装置"
+msgstr "灯具"
 
 msgid "F ID"
-msgstr ""
+msgstr "F ID"
 
-#, fuzzy
 msgid "Unit #"
-msgstr "单位"
+msgstr "单位 #"
 
 msgid "F ID #"
-msgstr ""
+msgstr "F ID #"
 
 msgid "Cst ID"
-msgstr ""
+msgstr "Cst ID"
 
 #, fuzzy
 msgid "Uni"
@@ -729,25 +683,22 @@ msgid "Keyframe Recorder"
 msgstr ""
 
 msgid "Add Keyframe"
-msgstr ""
+msgstr "添加关键帧"
 
-#, fuzzy
 msgid "Delete Keyframes"
-msgstr "删除装置"
+msgstr "删除关键帧"
 
-#, fuzzy
 msgid "Delete from selected fixtures"
-msgstr "删除装置"
+msgstr "从选定的灯具中删除"
 
-#, fuzzy
 msgid "Delete from all fixtures"
-msgstr "删除装置"
+msgstr "从所有灯具中删除"
 
 msgid "DMX > Setup > New Show"
-msgstr ""
+msgstr "DMX > 设置 > 新建演出"
 
 msgid "Clear any existing DMX data and create a new show."
-msgstr ""
+msgstr "清除所有现有DMX数据并创建新演出。"
 
 msgid "Beam diameter small"
 msgstr ""
@@ -787,20 +738,19 @@ msgid "Check for BlenderDMX updates"
 msgstr ""
 
 msgid "Status: {}"
-msgstr ""
+msgstr "状态: {}"
 
 msgid "Clear Project data"
 msgstr ""
 
 msgid "Copy (import) old data from addon folder"
-msgstr ""
+msgstr "从插件文件夹复制(导入)旧数据"
 
 msgid "Import"
 msgstr ""
 
-#, fuzzy
 msgid "Import GDTF Profile"
-msgstr "从文件导入"
+msgstr "导入 GDTF 配置"
 
 #, fuzzy
 msgid "Import MVR Scene"
@@ -831,13 +781,13 @@ msgid "Log filter"
 msgstr ""
 
 msgid "Setup"
-msgstr ""
+msgstr "设置"
 
 msgid "Error! Blender 3.4 or higher required."
 msgstr ""
 
 msgid "Create New Show"
-msgstr ""
+msgstr "创建新演出"
 
 msgid "Check version"
 msgstr ""
@@ -1404,4 +1354,3 @@ msgstr "范围"
 
 #~ msgid "For Blender 4.2 and up use the Extension"
 #~ msgstr ""
-
