@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-09-07 16:58+0200\n"
-"PO-Revision-Date: 2024-11-08 08:33+0000\n"
+"PO-Revision-Date: 2024-11-09 10:00+0000\n"
 "Last-Translator: HuangHai <deathblood@qq.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/blenderdmx/main/zh_Hans/>\n"
@@ -438,28 +438,28 @@ msgid "Fixtures"
 msgstr "灯具"
 
 msgid "F ID"
-msgstr "F ID"
+msgstr "灯具 ID"
 
 msgid "Unit #"
 msgstr "单位 #"
 
 msgid "F ID #"
-msgstr "F ID #"
+msgstr "灯具 ID #"
 
 msgid "Cst ID"
-msgstr "Cst ID"
+msgstr "自定义 ID"
 
 msgid "Uni"
 msgstr "Uni"
 
 msgid "Addr"
-msgstr "Addr"
+msgstr "地址"
 
 msgid "Uni.Addr"
-msgstr "Uni.Addr"
+msgstr "单位地址"
 
 msgid "Foot"
-msgstr "脚灯"
+msgstr "脚注"
 
 msgid "DMX > Group Menu"
 msgstr "DMX > 组菜单"
@@ -576,7 +576,7 @@ msgid "Select camera of the selected fixture"
 msgstr "选择选中的灯具的摄像机"
 
 msgid "Programmer"
-msgstr "程序设计者"
+msgstr "编程员"
 
 msgid "Nothing selected"
 msgstr "未选择任何内容"
