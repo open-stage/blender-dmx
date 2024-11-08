@@ -8,143 +8,175 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-09-07 16:58+0200\n"
-"PO-Revision-Date: 2023-03-15 22:42+0100\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2024-11-08 06:30+0000\n"
+"Last-Translator: \"John Joseph A. Gatchalian\" <jjgatchalian@gmail.com>\n"
+"Language-Team: English (United States) <https://hosted.weblate.org/projects/"
+"blenderdmx/main/en_US/>\n"
 "Language: en_US\n"
-"Language-Team: en_US <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.8.2\n"
 "Generated-By: Babel 2.14.0\n"
 
 msgid "File doesn't exist"
-msgstr ""
+msgstr "File doesn't exist"
 
 msgid "Fixture ID"
-msgstr ""
+msgstr "Fixture ID"
 
 msgid "Unit Number"
-msgstr ""
+msgstr "Unit Number"
 
 msgid "Custom ID"
-msgstr ""
+msgstr "Custom ID"
 
 msgid "DMX Address"
-msgstr ""
+msgstr "DMX Address"
 
 msgid "Position"
-msgstr ""
+msgstr "Position"
 
 msgid "Rotation"
-msgstr ""
+msgstr "Rotation"
 
 msgid "Footprint"
-msgstr ""
+msgstr "Footprint"
 
 msgid "DMX Collection"
-msgstr ""
+msgstr "DMX Collection"
 
 msgid "Selected PSN Server"
-msgstr ""
+msgstr "Selected PSN Server"
 
 msgid "The selected element on the PSN server list"
-msgstr ""
+msgstr "The selected element on the PSN server list"
 
 msgid "Class List i"
-msgstr ""
+msgstr "Class List i"
 
 msgid "The selected element on the class list"
-msgstr ""
+msgstr "The selected element on the class list"
 
+#, fuzzy
 msgid "Universe"
-msgstr ""
+msgstr "Universe"
 
+#, fuzzy
 msgid "Editable"
-msgstr ""
+msgstr "Editable"
 
+#, fuzzy
 msgid "Display Pigtails"
-msgstr ""
+msgstr "Display Pigtails"
 
+#, fuzzy
 msgid "Display 2D View"
-msgstr ""
+msgstr "Display 2D View"
 
+#, fuzzy
 msgid "Display Device Label"
-msgstr ""
+msgstr "Display Device Label"
 
+#, fuzzy
 msgid "Device Label"
-msgstr ""
+msgstr "Device Label"
 
+#, fuzzy
 msgid "None"
-msgstr ""
+msgstr "None"
 
+#, fuzzy
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
+#, fuzzy
 msgid "DMX"
-msgstr ""
+msgstr "DMX"
 
+#, fuzzy
 msgid "Allow Selecting Geometries"
-msgstr ""
+msgstr "Allow Selecting Geometries"
 
+#, fuzzy
 msgid "Logging Level"
-msgstr ""
+msgstr "Logging Level"
 
+#, fuzzy
 msgid "Critical"
-msgstr ""
+msgstr "Critical"
 
+#, fuzzy
 msgid "Error"
-msgstr ""
+msgstr "Error"
 
+#, fuzzy
 msgid "Warning"
-msgstr ""
+msgstr "Warning"
 
+#, fuzzy
 msgid "Info"
-msgstr ""
+msgstr "Info"
 
+#, fuzzy
 msgid "Debug"
-msgstr ""
+msgstr "Debug"
 
+#, fuzzy
 msgid "Simple beam"
-msgstr ""
+msgstr "Simple beam"
 
+#, fuzzy
 msgid "Display 'fake' beam cone"
-msgstr ""
+msgstr "Display 'fake' beam cone"
 
+#, fuzzy
 msgid "Selected fixtures"
-msgstr ""
+msgstr "Selected fixtures"
 
+#, fuzzy
 msgid "All fixtures"
-msgstr ""
+msgstr "All fixtures"
 
+#, fuzzy
 msgid "Beam Lens Diameter in Cycles"
-msgstr ""
+msgstr "Beam Lens Diameter in Cycles"
 
+#, fuzzy
 msgid ""
 "Beam diameter is reduced to minimum when projecting gobos to prevent blur"
 " on gobo edge"
 msgstr ""
+"Beam diameter is reduced to minimum when projecting gobos to prevent blur on "
+"gobo edge"
 
+#, fuzzy
 msgid "Reduced"
-msgstr ""
+msgstr "Reduced"
 
+#, fuzzy
 msgid "Full width"
-msgstr ""
+msgstr "Full width"
 
+#, fuzzy
 msgid "Custom per each beam"
-msgstr ""
+msgstr "Custom per each beam"
 
+#, fuzzy
 msgid "Disable Beam Outlines"
-msgstr ""
+msgstr "Disable Beam Outlines"
 
+#, fuzzy
 msgid "Enable Volume Scatter"
-msgstr ""
+msgstr "Enable Volume Scatter"
 
+#, fuzzy
 msgid "Noise Scale"
-msgstr ""
+msgstr "Noise Scale"
 
 msgid "Volume Noise Scale"
-msgstr ""
+msgstr "Volume Noise Scale"
 
 msgid "Density"
 msgstr ""
@@ -1361,4 +1393,3 @@ msgstr ""
 
 #~ msgid "For Blender 4.2 and up use the Extension"
 #~ msgstr ""
-
