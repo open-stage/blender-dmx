@@ -854,6 +854,8 @@ class DMX_Fixture(PropertyGroup):
                     shutter_dimmer[1] = 100 # if device doesn't have dimmer, set default value
                 self.updateShutterDimmer(shutter_dimmer[0], shutter_dimmer[1], geometry, shutter_dimmer[3], current_frame)
 
+        self.keyframe_objects_with_bdmx_drivers(current_frame)
+
         if current_frame:
             self.dmx_cache_dirty = False
         # end of render block
@@ -1298,6 +1300,20 @@ class DMX_Fixture(PropertyGroup):
             if current_frame and self.dmx_cache_dirty:
                 geometry.keyframe_insert(data_path="location", frame=current_frame)
                 geometry.keyframe_insert(data_path="rotation_euler", frame=current_frame)
+
+    def keyframe_objects_with_bdmx_drivers(self, current_frame = None):
+        if current_frame and self.dmx_cache_dirty:
+            for obj in bpy.data.objects:
+                if obj.data is None:
+                    continue
+                if not hasattr(obj.animation_data, "drivers"):
+                    continue
+
+                for fcurve in obj.animation_data.drivers:
+                    driver = fcurve.driver
+                    if driver is not None:
+                        if driver.expression.startswith("bdmx"):
+                            obj.keyframe_insert(fcurve.data_path, frame=current_frame)
 
     def get_object_by_geometry_name(self, geometry):
         for obj in self.collection.objects:
