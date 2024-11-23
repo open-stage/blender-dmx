@@ -494,7 +494,8 @@ class DMX_Fixture(PropertyGroup):
                 emitter.active_material = emitter_material
                 emitter.material_slots[0].link = 'OBJECT'
                 emitter.material_slots[0].material = emitter_material
-                emitter.material_slots[0].material.shadow_method = 'NONE' # eevee
+                if hasattr(emitter.material_slots[0].material, "shadow_method"):
+                    emitter.material_slots[0].material.shadow_method = 'NONE' # eevee
                 self.emitter_materials[-1].material = emitter_material
 
             if "gobo" in obj.get("geometry_type", ""):
@@ -503,7 +504,8 @@ class DMX_Fixture(PropertyGroup):
 
                 gobo_material = get_gobo_material(obj.name)
                 obj.active_material = gobo_material
-                obj.active_material.shadow_method = "CLIP"
+                if hasattr(obj.active_material, "shadow_method"):
+                    obj.active_material.shadow_method = "CLIP"
                 obj.active_material.blend_method = "BLEND"
                 obj.material_slots[0].link = 'OBJECT' # ensure that each fixture has it's own material
                 obj.material_slots[0].material = gobo_material
@@ -520,7 +522,8 @@ class DMX_Fixture(PropertyGroup):
                 self.emitter_materials.add()
                 self.emitter_materials[-1].name = obj.name
                 emitter_material = getEmitterMaterial(obj.name)
-                emitter_material.shadow_method = "NONE" # laser beam should not cast shadows
+                if hasattr(emitter_material, "shadow_method"):
+                    emitter_material.shadow_method = "NONE" # laser beam should not cast shadows
                 self.emitter_materials[-1].material = emitter_material
                 #laser beam
                 geo_node = obj

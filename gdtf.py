@@ -222,8 +222,15 @@ class DMX_GDTF:
             # default 2D
             extract_to_folder_path = DMX_GDTF.getPrimitivesPath()
             filename = "thumbnail.svg"
+        try:
+            bpy.ops.wm.grease_pencil_import_svg(filepath=extract_to_folder_path, directory=extract_to_folder_path, files=[{"name": filename}], scale=1)
+        except Exception as e:
+            print(e)
+        try:
+            bpy.ops.wm.gpencil_import_svg(filepath=extract_to_folder_path, directory=extract_to_folder_path, files=[{"name": filename}], scale=1)
+        except Exception as e:
+            print(e)
 
-        bpy.ops.wm.gpencil_import_svg(filepath="", directory=extract_to_folder_path, files=[{"name": filename}], scale=1)
         if len(bpy.context.view_layer.objects.selected):
             obj = bpy.context.view_layer.objects.selected[0]
         if obj is not None:

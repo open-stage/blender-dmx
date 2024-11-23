@@ -820,7 +820,8 @@ class DMX(PropertyGroup):
                         material.name = obj.name
                         gobo_material = get_gobo_material(obj.name)
                         obj.active_material = gobo_material
-                        obj.active_material.shadow_method = "CLIP"
+                        if hasattr(obj.active_material, "shadow_method"):
+                            obj.active_material.shadow_method = "CLIP"
                         obj.active_material.blend_method = "BLEND"
                         obj.material_slots[0].link = 'OBJECT' # ensure that each fixture has it's own material
                         obj.material_slots[0].material = gobo_material
