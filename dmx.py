@@ -327,10 +327,6 @@ class DMX(PropertyGroup):
         name = "Volume Scatter Box",
         type = Object)
 
-    volume_nodetree: PointerProperty(
-        name = "Volume Scatter Shader Node Tree",
-        type = NodeTree)
-
     # DMX Properties
     # These should be parsed to file
 
@@ -1091,9 +1087,8 @@ class DMX(PropertyGroup):
     # #  Setup > Volume > Density
 
     def onVolumeNoiseScale(self, context):
-        if (not self.volume_nodetree):
-            self.volume_nodetree = self.volume.data.materials[0].node_tree
-        self.volume_nodetree.nodes["Noise Texture"].inputs['Scale'].default_value = self.volume_noise_scale
+        volume_nodetree = self.volume.data.materials[0].node_tree
+        volume_nodetree.nodes["Noise Texture"].inputs['Scale'].default_value = self.volume_noise_scale
 
     volume_noise_scale: FloatProperty(
         name = _("Noise Scale"),
@@ -1104,9 +1099,8 @@ class DMX(PropertyGroup):
         update = onVolumeNoiseScale)
 
     def onVolumeDensity(self, context):
-        if (not self.volume_nodetree):
-            self.volume_nodetree = self.volume.data.materials[0].node_tree
-        self.volume_nodetree.nodes["Volume Scatter"].inputs['Density'].default_value = self.volume_density
+        volume_nodetree = self.volume.data.materials[0].node_tree
+        volume_nodetree.nodes["Volume Scatter"].inputs['Density'].default_value = self.volume_density
 
     volume_density: FloatProperty(
         name = _("Density"),
