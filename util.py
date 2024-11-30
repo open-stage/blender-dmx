@@ -192,6 +192,10 @@ def ShowMessageBox(message="", title="Message Box", icon="INFO"):
     bpy.context.window_manager.popup_menu(draw, title=title, icon=icon)
 
 
+def draw_top_message(self, context):
+    self.layout.label(text="READ Important Message in BlenderDMX Setup Panel!")
+
+
 def split_text_on_spaces(text, max_line_length):
     words = text.split()
     lines = []

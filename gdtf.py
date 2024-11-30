@@ -35,8 +35,6 @@ from .util import sanitize_obj_name, xyY2rgbaa
 class DMX_GDTF:
     @staticmethod
     def getProfilesPath():
-        #FIX: currently breaks packaged BlenderDMX gdtf files
-        #ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
         dmx = bpy.context.scene.dmx
         ADDON_PATH = dmx.get_addon_path()
         return os.path.join(ADDON_PATH, "assets", "profiles")
@@ -130,9 +128,7 @@ class DMX_GDTF:
         bpy.ops.import_scene.gltf(filepath=path)
         obj = bpy.context.view_layer.objects.selected[0]
         obj.users_collection[0].objects.unlink(obj)
-        obj.data.transform(Matrix.Diagonal((model.length / obj.dimensions.x,
-                                            model.width / obj.dimensions.y,
-                                            model.height / obj.dimensions.z)).to_4x4())
+        obj.data.transform(Matrix.Diagonal((model.length / obj.dimensions.x, model.width / obj.dimensions.y, model.height / obj.dimensions.z)).to_4x4())
         return obj
 
     @staticmethod
@@ -198,7 +194,7 @@ class DMX_GDTF:
             destination.write_bytes(image.read_bytes())
             count = idx
         if first:
-            sequence1 = bpy.data.images.load(first) # we need this twice as single gobos were affecting each other
+            sequence1 = bpy.data.images.load(first)  # we need this twice as single gobos were affecting each other
             sequence2 = bpy.data.images.load(first)
         else:
             return None
@@ -222,8 +218,15 @@ class DMX_GDTF:
             # default 2D
             extract_to_folder_path = DMX_GDTF.getPrimitivesPath()
             filename = "thumbnail.svg"
+        try:
+            bpy.ops.wm.grease_pencil_import_svg(filepath=extract_to_folder_path, directory=extract_to_folder_path, files=[{"name": filename}], scale=1)
+        except Exception as e:
+            print(e)
+        try:
+            bpy.ops.wm.gpencil_import_svg(filepath=extract_to_folder_path, directory=extract_to_folder_path, files=[{"name": filename}], scale=1)
+        except Exception as e:
+            print(e)
 
-        bpy.ops.wm.gpencil_import_svg(filepath="", directory=extract_to_folder_path, files=[{"name": filename}], scale=1)
         if len(bpy.context.view_layer.objects.selected):
             obj = bpy.context.view_layer.objects.selected[0]
         if obj is not None:
@@ -244,7 +247,7 @@ class DMX_GDTF:
             profile._package.extract(inside_zip_path, extract_to_folder_path)
             file_name = os.path.join(extract_to_folder_path, inside_zip_path)
             try:
-                load_3ds(file_name, bpy.context, FILTER={'MESH'}, KEYFRAME=False, APPLY_MATRIX=False)
+                load_3ds(file_name, bpy.context, FILTER={"MESH"}, KEYFRAME=False, APPLY_MATRIX=False)
             except Exception as e:
                 DMX_Log.log.error(f"Error loading a 3DS file {profile.name} {e}")
                 traceback.print_exception(e)
@@ -497,7 +500,7 @@ class DMX_GDTF:
             light_data["beam_radius_pin_sized_for_gobos"] = True
             # This allows the user to set this if wanted to prevent beam rendering differences
             light_data.shadow_buffer_clip_start = 0.0001
-            if hasattr(light_data, "use_soft_falloff"): # ensure that beam has full diameter at the lense in Cycles for Blender 4.1 and up
+            if hasattr(light_data, "use_soft_falloff"):  # ensure that beam has full diameter at the lense in Cycles for Blender 4.1 and up
                 light_data.use_soft_falloff = False
 
             light_object = bpy.data.objects.new(name="Spot", object_data=light_data)
@@ -528,6 +531,7 @@ class DMX_GDTF:
             obj = DMX_GDTF.load_blender_primitive(goboGeometry)
             obj["geometry_type"] = "gobo"
             obj["beam_radius"] = goboGeometry.beam_radius
+            obj["gobo_radius"] = goboGeometry.length
             obj.dimensions = (goboGeometry.length, goboGeometry.width, 0)
             obj.name = goboGeometry.name
             objs[sanitize_obj_name(goboGeometry)] = obj
@@ -641,8 +645,8 @@ class DMX_GDTF:
 
         yokes = get_axis("Pan")
         heads = get_axis("Tilt")
-        base = next(ob for ob in objs.values() if ob.get('geometry_root', False))
-        moving_parts = [ob for ob in objs.values() if ob.get('geometry_type') == "axis"]
+        base = next(ob for ob in objs.values() if ob.get("geometry_root", False))
+        moving_parts = [ob for ob in objs.values() if ob.get("geometry_type") == "axis"]
         DMX_Log.log.info(f"Heads: {heads}, Yokes: {yokes}, Base: {base}")
 
         # Add target for manipulating fixture
@@ -658,19 +662,19 @@ class DMX_GDTF:
                 check_pan = part.get("mobile_type") == "yoke"
                 check_tilt = part.get("mobile_type") == "head"
                 if not len(base.constraints) and (check_pan and not len(part.children) or (not check_pan and not check_tilt)):
-                    constraint = base.constraints.new('TRACK_TO')
+                    constraint = base.constraints.new("TRACK_TO")
                     constraint.target = target
                     continue
                 else:
-                    constraint = part.constraints.new('LOCKED_TRACK')
+                    constraint = part.constraints.new("LOCKED_TRACK")
                 if check_tilt or (check_parent and part.parent.parent and part.parent.parent.get("mobile_type") == "yoke"):
-                    constraint.track_axis = 'TRACK_NEGATIVE_Z'
+                    constraint.track_axis = "TRACK_NEGATIVE_Z"
                 else:
-                    constraint.track_axis = 'TRACK_NEGATIVE_Y'
-                constraint.lock_axis = 'LOCK_X' if check_tilt else 'LOCK_Z'
+                    constraint.track_axis = "TRACK_NEGATIVE_Y"
+                constraint.lock_axis = "LOCK_X" if check_tilt else "LOCK_Z"
                 constraint.target = target
             if not yokes and not heads and not len(base.constraints):
-                constraint = base.constraints.new('TRACK_TO')
+                constraint = base.constraints.new("TRACK_TO")
                 constraint.target = target
 
         # 2D thumbnail planning symbol
@@ -702,7 +706,7 @@ class DMX_GDTF:
     def getName(profile, dmx_mode, display_beams, add_target):
         revision = profile.revisions[-1].text if len(profile.revisions) else ""
         name = f"{profile.manufacturer}, {profile.name}, {dmx_mode}, {revision}, {'with_beams' if display_beams else 'without_beams'}, {'with_target' if add_target else 'without_target'}"
-        # base64 encode the name as collections seems to have lenght limit
+        # base64 encode the name as collections seems to have length limit
         # which causes collections not to be cached, thus slowing imports down
         name = hashlib.shake_256(name.encode()).hexdigest(5)
         return name

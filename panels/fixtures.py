@@ -491,7 +491,7 @@ def select_next(context, select_target=False):
 
 
 class DMX_OT_Fixture_SelectPrevious(Operator):
-    bl_label = " "
+    bl_label = _("Select Previous Fixture")
     bl_idname = "dmx.fixture_previous"
     bl_description = "Select Previous Fixture"
     bl_options = {"UNDO"}
@@ -502,7 +502,7 @@ class DMX_OT_Fixture_SelectPrevious(Operator):
 
 
 class DMX_OT_Fixture_SelectNext(Operator):
-    bl_label = " "
+    bl_label = _("Select Next Fixture")
     bl_idname = "dmx.fixture_next"
     bl_description = "Select Next Fixture"
     bl_options = {"UNDO"}
@@ -513,7 +513,7 @@ class DMX_OT_Fixture_SelectNext(Operator):
 
 
 class DMX_OT_Fixture_SelectPreviousTarget(Operator):
-    bl_label = " "
+    bl_label = _("Select Previous Target")
     bl_idname = "dmx.fixture_previous_target"
     bl_description = "Select Previous Fixture"
     bl_options = {"UNDO"}
@@ -524,7 +524,7 @@ class DMX_OT_Fixture_SelectPreviousTarget(Operator):
 
 
 class DMX_OT_Fixture_SelectNextTarget(Operator):
-    bl_label = " "
+    bl_label = _("Select Next Target")
     bl_idname = "dmx.fixture_next_target"
     bl_description = "Select Next Fixture"
     bl_options = {"UNDO"}

@@ -69,7 +69,7 @@ from .mdns import DMX_Zeroconf
 
 from .node_arranger import DMX_OT_ArrangeSelected
 
-from .util import rgb_to_cmy, ShowMessageBox, cmy_to_rgb, flatten_color
+from .util import rgb_to_cmy, ShowMessageBox, cmy_to_rgb, flatten_color, draw_top_message
 from .mvr_objects import DMX_MVR_Object, DMX_MVR_Class
 from .mvr_xchange import DMX_MVR_Xchange_Commit, DMX_MVR_Xchange_Client, DMX_MVR_Xchange
 from .mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server
@@ -159,6 +159,7 @@ class DMX(PropertyGroup):
                 setup.DMX_OT_Import_Custom_Data,
                 setup.DMX_OT_Clear_Custom_Data,
                 setup.DMX_OT_Copy_Custom_Data,
+                setup.DMX_OT_Setup_RemoveDMX,
                 setup.DMX_OT_Reload_Addon,
                 fixtures.DMX_OT_IES_Import,
                 fixtures.DMX_OT_IES_Remove,
@@ -224,6 +225,9 @@ class DMX(PropertyGroup):
                 programmer.DMX_PT_Programmer,
                 recorder.DMX_OT_Recorder_AddKeyframe,
                 recorder.DMX_PT_Recorder,
+                recorder.DMX_OT_Recorder_Enable_Drivers,
+                recorder.DMX_OT_Recorder_Disable_Drivers,
+                recorder.DMX_PT_DMX_Recorder_Drivers,
                 recorder.DMX_PT_DMX_Recorder_Delete,
                 recorder.DMX_OT_Recorder_Delete_Keyframes_Selected,
                 recorder.DMX_OT_Recorder_Delete_Keyframes_All,
@@ -322,10 +326,6 @@ class DMX(PropertyGroup):
     volume: PointerProperty(
         name = "Volume Scatter Box",
         type = Object)
-
-    volume_nodetree: PointerProperty(
-        name = "Volume Scatter Shader Node Tree",
-        type = NodeTree)
 
     # DMX Properties
     # These should be parsed to file
@@ -572,7 +572,10 @@ class DMX(PropertyGroup):
         #    group.rebuild()
 
         self.logging_level = "DEBUG" # setting high logging level to see initialization
-        self.migrations()
+        try:
+            self.migrations()
+        except Exception as e:
+            traceback.print_exception(e)
         self.ensure_application_uuid()
         # enable in extension
         self.ensure_directories_exist()
@@ -673,6 +676,7 @@ class DMX(PropertyGroup):
                         light.object.data["shutter_counter"] = 0
 
         if file_data_version < 3:
+            hide_gobo_message = True
             DMX_Log.log.info("Running migration 2→3")
             dmx = bpy.context.scene.dmx
             DMX_Log.log.info("Add UUID to fixtures")
@@ -745,7 +749,6 @@ class DMX(PropertyGroup):
         if file_data_version < 5:
             DMX_Log.log.info("Running migration 4→5")
             dmx = bpy.context.scene.dmx
-            hide_gobo_message = True
             for fixture in dmx.fixtures:
                 if "dmx_values" not in fixture:
                     DMX_Log.log.info("Adding dmx_value array to fixture")
@@ -813,7 +816,8 @@ class DMX(PropertyGroup):
                         material.name = obj.name
                         gobo_material = get_gobo_material(obj.name)
                         obj.active_material = gobo_material
-                        obj.active_material.shadow_method = "CLIP"
+                        if hasattr(obj.active_material, "shadow_method"):
+                            obj.active_material.shadow_method = "CLIP"
                         obj.active_material.blend_method = "BLEND"
                         obj.material_slots[0].link = 'OBJECT' # ensure that each fixture has it's own material
                         obj.material_slots[0].material = gobo_material
@@ -848,12 +852,12 @@ class DMX(PropertyGroup):
                     light_obj = light.object
                     ntree  = light_obj.data.node_tree
                     d.process_tree(ntree)
-
-            temp_data = bpy.context.window_manager.dmx
             if not hide_gobo_message:
-                message = "This show file has been made in older version of BlenderDMX. Check gobos, most likely you need to re-edit fixtures: Fixtures → Edit, uncheck Re-address only"
+                temp_data = bpy.context.window_manager.dmx
+                message = "This show file has been made in older version of BlenderDMX. Most likely you need to re-edit fixtures: Fixtures → Edit, uncheck Re-address only, this will re-build the fixtures from their GDTF files. Sorry for the inconvenience."
                 temp_data.migration_message = message
-                ShowMessageBox( message=message,title="Updating info!",icon="ERROR")
+                ShowMessageBox(message=message,title="Updating info!",icon="ERROR")
+                bpy.types.VIEW3D_HT_tool_header.prepend(draw_top_message)
 
         DMX_Log.log.info("Migration done.")
         # add here another if statement for next migration condition... like:
@@ -1083,9 +1087,8 @@ class DMX(PropertyGroup):
     # #  Setup > Volume > Density
 
     def onVolumeNoiseScale(self, context):
-        if (not self.volume_nodetree):
-            self.volume_nodetree = self.volume.data.materials[0].node_tree
-        self.volume_nodetree.nodes["Noise Texture"].inputs['Scale'].default_value = self.volume_noise_scale
+        volume_nodetree = self.volume.data.materials[0].node_tree
+        volume_nodetree.nodes["Noise Texture"].inputs['Scale'].default_value = self.volume_noise_scale
 
     volume_noise_scale: FloatProperty(
         name = _("Noise Scale"),
@@ -1096,9 +1099,8 @@ class DMX(PropertyGroup):
         update = onVolumeNoiseScale)
 
     def onVolumeDensity(self, context):
-        if (not self.volume_nodetree):
-            self.volume_nodetree = self.volume.data.materials[0].node_tree
-        self.volume_nodetree.nodes["Volume Scatter"].inputs['Density'].default_value = self.volume_density
+        volume_nodetree = self.volume.data.materials[0].node_tree
+        volume_nodetree.nodes["Volume Scatter"].inputs['Density'].default_value = self.volume_density
 
     volume_density: FloatProperty(
         name = _("Density"),
@@ -1769,11 +1771,11 @@ class DMX(PropertyGroup):
         return fixtures
 
 
-    def addMVR(self, file_name):
+    def addMVR(self, file_name, import_focus_points=True):
 
         bpy.context.window_manager.dmx.pause_render = True # this stops the render loop, to prevent slowness and crashes
 
-        load_mvr(self, file_name)
+        load_mvr(self, file_name, import_focus_points=import_focus_points)
 
         bpy.context.window_manager.dmx.pause_render = False # re-enable render loop
         DMX_GDTF.getManufacturerList()

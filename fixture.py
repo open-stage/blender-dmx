@@ -494,7 +494,8 @@ class DMX_Fixture(PropertyGroup):
                 emitter.active_material = emitter_material
                 emitter.material_slots[0].link = 'OBJECT'
                 emitter.material_slots[0].material = emitter_material
-                emitter.material_slots[0].material.shadow_method = 'NONE' # eevee
+                if hasattr(emitter.material_slots[0].material, "shadow_method"):
+                    emitter.material_slots[0].material.shadow_method = 'NONE' # eevee
                 self.emitter_materials[-1].material = emitter_material
 
             if "gobo" in obj.get("geometry_type", ""):
@@ -503,11 +504,16 @@ class DMX_Fixture(PropertyGroup):
 
                 gobo_material = get_gobo_material(obj.name)
                 obj.active_material = gobo_material
-                obj.active_material.shadow_method = "CLIP"
+                if hasattr(obj.active_material, "shadow_method"):
+                    obj.active_material.shadow_method = "CLIP"
                 obj.active_material.blend_method = "BLEND"
                 obj.material_slots[0].link = 'OBJECT' # ensure that each fixture has it's own material
                 obj.material_slots[0].material = gobo_material
                 material.material = gobo_material
+
+                gobo_radius = obj.get("gobo_radius", 0)
+                if gobo_radius:
+                    obj.dimensions = (gobo_radius, gobo_radius, 0)
 
             # Setup laser geometry nodes
             if "laser" in obj.get("geometry_type", ""):
@@ -516,7 +522,8 @@ class DMX_Fixture(PropertyGroup):
                 self.emitter_materials.add()
                 self.emitter_materials[-1].name = obj.name
                 emitter_material = getEmitterMaterial(obj.name)
-                emitter_material.shadow_method = "NONE" # laser beam should not cast shadows
+                if hasattr(emitter_material, "shadow_method"):
+                    emitter_material.shadow_method = "NONE" # laser beam should not cast shadows
                 self.emitter_materials[-1].material = emitter_material
                 #laser beam
                 geo_node = obj
@@ -883,6 +890,8 @@ class DMX_Fixture(PropertyGroup):
                 if shutter_dimmer[1] is None:
                     shutter_dimmer[1] = 100 # if device doesn't have dimmer, set default value
                 self.updateShutterDimmer(shutter_dimmer[0], shutter_dimmer[1], geometry, shutter_dimmer[3], current_frame)
+
+        self.keyframe_objects_with_bdmx_drivers(current_frame)
 
         if current_frame:
             self.dmx_cache_dirty = False
@@ -1358,6 +1367,20 @@ class DMX_Fixture(PropertyGroup):
             if current_frame and self.dmx_cache_dirty:
                 geometry.keyframe_insert(data_path="location", frame=current_frame)
                 geometry.keyframe_insert(data_path="rotation_euler", frame=current_frame)
+
+    def keyframe_objects_with_bdmx_drivers(self, current_frame = None):
+        if current_frame and self.dmx_cache_dirty:
+            for obj in bpy.data.objects:
+                if obj.data is None:
+                    continue
+                if not hasattr(obj.animation_data, "drivers"):
+                    continue
+
+                for fcurve in obj.animation_data.drivers:
+                    driver = fcurve.driver
+                    if driver is not None:
+                        if driver.expression.startswith("bdmx"):
+                            obj.keyframe_insert(fcurve.data_path, frame=current_frame)
 
     def get_object_by_geometry_name(self, geometry):
         for obj in self.collection.objects:

@@ -45,8 +45,35 @@ class DMX_OT_Setup_NewShow(Operator):
     def execute(self, context):
         # DMX setup
         context.scene.dmx.new()
+        dmx = context.scene.dmx
+        dmx.fixtures.clear()
 
         return {"FINISHED"}
+
+
+class DMX_OT_Setup_RemoveDMX(Operator):
+    bl_label = _("Really remove all fixtures and DMX from blend file?")
+    bl_description = _("Try to remove DMX from the Blender showfile")
+    bl_idname = "dmx.remove_show"
+    bl_options = {"UNDO"}
+
+    def draw(self, context):
+        layout = self.layout
+        col = layout.column()
+
+    def execute(self, context):
+        # DMX setup
+        dmx = context.scene.dmx
+        dmx.fixtures.clear()
+        dmx.trackers.clear()
+        if "DMX" in bpy.data.collections:
+            bpy.data.collections.remove(bpy.data.collections["DMX"])
+
+        return {"FINISHED"}
+
+    def invoke(self, context, event):
+        wm = context.window_manager
+        return wm.invoke_props_dialog(self)
 
 
 class DMX_OT_Fixture_Set_Cycles_Beams_Size_Small(Operator):
@@ -104,12 +131,14 @@ class DMX_OT_Setup_Volume_Create(Operator):
         else:
             dmx.volume = bpy.data.objects["DMX_Volume"]
 
-        if len(dmx.volume.data.materials):
-            dmx.volume_nodetree = dmx.volume.data.materials[0].node_tree
-        else:
+        if not len(dmx.volume.data.materials):
             material = getVolumeScatterMaterial()
             dmx.volume.data.materials.append(material)
-            dmx.volume_nodetree = dmx.volume.data.materials[0].node_tree
+            # The previous code was assigning embedded ID to an IDProperty
+            # https://projects.blender.org/blender/blender/issues/129393
+            # but i think we do not need this at all, as the dmx.volume holds
+            # all we need
+            # dmx.volume_nodetree = dmx.volume.data.materials[0].node_tree
 
         old_collections = dmx.volume.users_collection
         if dmx.collection not in old_collections:
@@ -246,6 +275,7 @@ class DMX_PT_Setup_Extras(Panel):
         if old_data_exists:
             row = layout.row()
             row.operator("dmx.copy_custom_data", text=_("Copy (import) old data from addon folder"), icon="DUPLICATE")
+        layout.operator("dmx.remove_show", text=_("Remove DMX from blend file"), icon="BRUSH_DATA")
         layout.operator("wm.url_open", text="User Guide Online", icon="HELP").url = "https://blenderdmx.eu/docs/faq/"
 
 
@@ -355,7 +385,7 @@ class DMX_PT_Setup(Panel):
         temp_data = bpy.context.window_manager.dmx
         message = temp_data.migration_message
 
-        if len(message)>0:
+        if len(message) > 0:
             row = layout.row()
             lines = split_text_on_spaces(message, 30)
             row.label(text="Important!", icon="ERROR")
@@ -366,7 +396,7 @@ class DMX_PT_Setup(Panel):
         if not dmx.collection:
             if not bpy.app.version >= (3, 4):
                 layout.label(text=_("Error! Blender 3.4 or higher required."), icon="ERROR")
-            #if bpy.app.version >= (4, 2):
+            # if bpy.app.version >= (4, 2):
             #    row = layout.row()
             #    row.label(text=_("For Blender 4.2 and up use the Extension"), icon="ERROR")
             #    row.operator("wm.url_open", text="BlenderDMX Extension", icon="SHADING_WIRE").url = "https://extensions.blender.org/add-ons/open-stage-blender-dmx/"
@@ -520,6 +550,7 @@ class DMX_OT_Clear_Custom_Data(Operator):
         wm = context.window_manager
         return wm.invoke_props_dialog(self)
 
+
 class DMX_OT_Copy_Custom_Data(Operator):
     bl_label = _("Copy data from addon to user directory")
     bl_idname = "dmx.copy_custom_data"
@@ -545,6 +576,7 @@ class DMX_OT_Copy_Custom_Data(Operator):
     def invoke(self, context, event):
         wm = context.window_manager
         return wm.invoke_props_dialog(self)
+
 
 class DMX_OT_Reload_Addon(Operator):
     bl_label = _("Reload BlenderDMX addon")
@@ -595,5 +627,3 @@ class DMX_OT_Reload_Addon(Operator):
     def invoke(self, context, event):
         wm = context.window_manager
         return wm.invoke_props_dialog(self)
-
-

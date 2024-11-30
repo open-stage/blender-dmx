@@ -198,3 +198,96 @@ class DMX_PT_DMX_Recorder_Delete(Panel):
         row = layout.row()
         row.operator("dmx.recorder_delete_keyframes_all", text=_("Delete from all fixtures"), icon="SELECT_EXTEND")
         row.enabled = fixtures_exist
+
+
+class DMX_PT_DMX_Recorder_Drivers(Panel):
+    bl_label = _("Objects with #bdmx drivers")
+    bl_idname = "DMX_PT_DMX_Recorder_Drivers"
+    bl_parent_id = "DMX_PT_Recorder"
+    bl_space_type = "VIEW_3D"
+    bl_region_type = "UI"
+    bl_category = "DMX"
+    bl_context = "objectmode"
+    bl_options = {"DEFAULT_CLOSED"}
+
+    def draw(self, context):
+        layout = self.layout
+        show_enable_button, show_disable_button = show_drivers_buttons(context)
+        row = layout.row()
+        row.operator("dmx.recorder_enable_drivers", icon="RECORD_ON")
+        row.enabled = show_enable_button
+
+        row = layout.row()
+        row.operator("dmx.recorder_disable_drivers", icon="PLAY")
+        row.enabled = show_disable_button
+
+
+class DMX_OT_Recorder_Enable_Drivers(Operator):
+    bl_label = _("Enable Keying - Disable Playback")
+    bl_idname = "dmx.recorder_enable_drivers"
+    bl_description = _("Enable disabled bdmx drivers")
+    bl_options = {"UNDO"}
+
+    def execute(self, context):
+        enable_drivers(context, True)
+        return {"FINISHED"}
+
+
+class DMX_OT_Recorder_Disable_Drivers(Operator):
+    bl_label = _("Disable Keying - Enable Playback")
+    bl_idname = "dmx.recorder_disable_drivers"
+    bl_description = _("Disable bdmx drivers")
+    bl_options = {"UNDO"}
+
+    def execute(self, context):
+        enable_drivers(context, False)
+        return {"FINISHED"}
+
+
+def show_drivers_buttons(context):
+    show_enable_drivers = False
+    show_disable_drivers = False
+
+    for obj in context.scene.objects:
+        if obj.data is None:
+            continue
+        if not hasattr(obj.animation_data, "drivers"):
+            continue
+        drivers = obj.animation_data.drivers
+        for fcurve in drivers:
+            driver = fcurve.driver
+            if driver is not None:
+                if driver.expression.startswith("#bdmx"):
+                    show_enable_drivers = True
+                if driver.expression.startswith("bdmx"):
+                    show_disable_drivers = True
+
+            if show_enable_drivers and show_disable_drivers:
+                return (show_enable_drivers, show_disable_drivers)
+
+        if show_enable_drivers and show_disable_drivers:
+            return (show_enable_drivers, show_disable_drivers)
+
+    return (show_enable_drivers, show_disable_drivers)
+
+
+def enable_drivers(context, enable):
+    for obj in context.scene.objects:
+        if obj.data is None:
+            continue
+        if not hasattr(obj.animation_data, "drivers"):
+            continue
+        drivers = obj.animation_data.drivers
+        for fcurve in drivers:
+            driver = fcurve.driver
+            if driver is not None:
+                if enable:
+                    if driver.expression.startswith("#bdmx"):
+                        expression = driver.expression
+                        driver.expression = expression[1:]
+                else:
+                    if driver.expression.startswith("bdmx"):
+                        # obj.animation_data.drivers.remove(fcurve)
+                        expression = driver.expression
+                        driver.expression = f"#{expression}"
+                        print("INFO", "Removing drivers will print errors but it works")
