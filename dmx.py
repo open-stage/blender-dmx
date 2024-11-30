@@ -1659,11 +1659,11 @@ class DMX(PropertyGroup):
         return fixtures
 
 
-    def addMVR(self, file_name):
+    def addMVR(self, file_name, import_focus_points=True):
 
         bpy.context.window_manager.dmx.pause_render = True # this stops the render loop, to prevent slowness and crashes
 
-        load_mvr(self, file_name)
+        load_mvr(self, file_name, import_focus_points=import_focus_points)
 
         bpy.context.window_manager.dmx.pause_render = False # re-enable render loop
         DMX_GDTF.getManufacturerList()
