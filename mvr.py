@@ -233,8 +233,12 @@ def process_mvr_object(context, mvr_scene, mvr_object, mvr_idx, mscale, import_g
         symbols += mvr_object.geometries.symbol
         geometrys += mvr_object.geometries.geometry3d
     else:
-        symbols += mvr_object.symbol
-        geometrys += mvr_object.geometry3d
+        try:
+            symbols += mvr_object.symbol
+            geometrys += mvr_object.geometry3d
+        except Exception as e:
+            # TODO: handle this
+            ...
 
     if symdef_id:
         create_mvr_props(group_collect, class_name, name=name, uid=uid, classing=classing)
@@ -498,14 +502,16 @@ def load_mvr(dmx, file_name, import_focus_points):
                 aux_directory.children.link(auxcollect)
             sym_collect = data_collect.get(uid)
             if sym_collect:
-                sym_name = sym_collect.get("MVR Name")
+                sym_name = sym_collect.get("MVR Name", "")
                 if sym_collect.name in layer_collect.children:
                     layer_collect.children.unlink(sym_collect)
                 elif sym_collect.name not in auxcollect.children:
                     auxcollect.children.link(sym_collect)
                     if sym_name in (None, "None"):
                         sym_name = "None Layer"
-                sym_collect.name = sym_name
+                if sym_name:
+                    # TODO: check if this is correct. Was added to prevent breakage of imports from Production Assist
+                    sym_collect.name = sym_name
 
     for laycollect in layer_collect.children:
         if laycollect.get("MVR Class") is not None:
