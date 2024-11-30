@@ -6,7 +6,8 @@ import sys
 import uuid as py_uuid
 from .value import Matrix, Color  # type: ignore
 
-__version__ = "0.3.0.dev0"
+__version__ = "0.4.0"
+
 
 def _find_root(pkg: "zipfile.ZipFile") -> "ElementTree.Element":
     """Given a GDTF zip archive, find the GeneralSceneDescription of the
