@@ -1,9 +1,23 @@
 ### Changelog
 
+### 1.8.1
+
+* Translated using Weblate (Tamil, Literary Chinese, Chinese Chinese (Simplified Han script), Polish, Spanish, Turkish)
+* Handle some essential MVR import errors
+* Add MVR Target import option
+* Update pygdtf and pymvr - improve imports of GDTF and MVR files
+* Add possibility to record objects with #bdmx drivers and disable/enable them to allow playback/rendering
+* Add 'Remove DMX from blend file' option
+* Ensure that gobos and iris work without zoom (again)
+* Add keymap preference screen
+
 ### 1.8.0
 
 * Updated translations
 * Add support for pan/tilt rotation, add GDTF fixture with continuous rotation
+* Add support for Iris
+* Add support for Gobo 2 and for Gobo1/Gobo2 combined gobo projection
+* Add support for static gobos (Gobo(n) without Gobo(n)Pos or Rot)
 * Add support for CTC
 * Add display device label also in 3D
 * Add subfixture based controlling
