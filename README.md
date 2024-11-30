@@ -12,7 +12,9 @@ A DMX visualization tool inside <a href="https://blender.org">Blender</a>, desig
 
 ## Installation
 
-Make sure you have [Blender](https://www.blender.org/download/), latest version 4.2 is recommended, minimal version is 3.4.
+Make sure you have [Blender](https://www.blender.org/download/) 4.x installed,
+minimal working version is 3.4 or 4.1 (via older addon), latest tested is 4.3
+via Extension.
 
 Go to [DOWNLOAD PAGE](https://blenderdmx.eu/download).
 

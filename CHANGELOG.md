@@ -1,5 +1,17 @@
 ### Changelog
 
+### 1.8.1
+
+* Translated using Weblate (Tamil, Literary Chinese, Chinese Chinese (Simplified Han script), Polish, Spanish, Turkish)
+* Handle some essential MVR import errors
+* Add MVR Target import option
+* Update pygdtf and pymvr - improve imports of GDTF and MVR files
+* Add support for Blender 4.3
+* Add possibility to record objects with #bdmx drivers and disable/enable them to allow playback/rendering
+* Add 'Remove DMX from blend file' option
+* Ensure that gobos and iris work without zoom (again)
+* Add keymap preference screen
+
 ### 1.8.0
 
 * Updated translations

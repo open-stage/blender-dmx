@@ -2,23 +2,14 @@
 * To prevent weblate merge conflicts, in weblate:
 * Push translations, merge them fast in GitHub, then reset weblate to upstream
 
-* Checkout a new branch `release_vX.Y.Z`
 * Add changes to CHANGELOG.md
-* Update versions (in text and in links) in README.md
-* Update __init__.py → bl_info → version
+* update blender_manifest.toml
 * Check that ./assets/* doesn't include extra GDTF files or folders
-* Generate a release:
- * (ensure to have pygit) python -m pip install pygit2
- * Edit scripts/build_release.py
-   * branch_name = "release_v1.0.2"
-   * if you added new directories, make sure to add them
-   * python scripts/build_release.py
-   * test the release
-* Draft a release, attach the zip file
-* Make PR, add details, merge
-* Pull latest main
-* git tag v1.0.2
-* git push origin v1.0.2
-* Edit release on GH, make public
+
+git clean -xdf .
+
+* Generate a release for Extension website:
+
+blender --command extension build
 
 
