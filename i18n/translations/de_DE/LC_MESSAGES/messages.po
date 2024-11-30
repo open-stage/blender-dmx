@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-07 16:58+0200\n"
+"POT-Creation-Date: 2024-11-30 11:27+0100\n"
 "PO-Revision-Date: 2024-05-20 20:01+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language: de_DE\n"
@@ -345,6 +345,13 @@ msgid "How many units of this light to add"
 msgstr "Anzahl der hinzuzufügenden Fixtures"
 
 #, fuzzy
+msgid "Import Focus Points as Targets"
+msgstr "Benutzerdefinierte Daten importieren"
+
+msgid "Create Targets from MVR Focus Points"
+msgstr ""
+
+#, fuzzy
 msgid "Enable PSN Input"
 msgstr "sCAN-Input aktivieren"
 
@@ -448,6 +455,22 @@ msgstr "DMX > Fixtures > Entfernen"
 
 msgid "Remove selected fixtures from Scene"
 msgstr "Fixture aus der Szene entfernen"
+
+#, fuzzy
+msgid "Select Previous Fixture"
+msgstr "Fixture auswählen"
+
+#, fuzzy
+msgid "Select Next Fixture"
+msgstr "Fixture auswählen"
+
+#, fuzzy
+msgid "Select Previous Target"
+msgstr "Ziele auswählen"
+
+#, fuzzy
+msgid "Select Next Target"
+msgstr "Ziele auswählen"
 
 msgid "DMX > Fixture > Item"
 msgstr ""
@@ -707,11 +730,33 @@ msgstr ""
 msgid "Delete from all fixtures"
 msgstr "Von allen Fixtures entfernen"
 
+msgid "Objects with #bdmx drivers"
+msgstr ""
+
+msgid "Enable Keying - Disable Playback"
+msgstr ""
+
+msgid "Enable disabled bdmx drivers"
+msgstr ""
+
+msgid "Disable Keying - Enable Playback"
+msgstr ""
+
+msgid "Disable bdmx drivers"
+msgstr ""
+
 msgid "DMX > Setup > New Show"
 msgstr "DMX > Setup > Neue Show"
 
 msgid "Clear any existing DMX data and create a new show."
 msgstr "Entfernt alle DMX-Daten und erstellt eine neue Show"
+
+#, fuzzy
+msgid "Really remove all fixtures and DMX from blend file?"
+msgstr "Fixture aus der Szene entfernen"
+
+msgid "Try to remove DMX from the Blender showfile"
+msgstr ""
 
 msgid "Beam diameter small"
 msgstr "Strahldurchmesser klein"
@@ -758,6 +803,10 @@ msgstr "Projektdaten leeren"
 
 msgid "Copy (import) old data from addon folder"
 msgstr ""
+
+#, fuzzy
+msgid "Remove DMX from blend file"
+msgstr "Aus der Auswahl entfernen"
 
 msgid "Import"
 msgstr "Importieren"

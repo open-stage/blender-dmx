@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-07 16:58+0200\n"
+"POT-Creation-Date: 2024-11-30 11:27+0100\n"
 "PO-Revision-Date: 2024-05-05 19:08+0000\n"
 "Last-Translator: Iago Emanuel <iagoemanuel@live.com>\n"
 "Language: pt_BR\n"
@@ -346,6 +346,13 @@ msgstr "Unidades"
 msgid "How many units of this light to add"
 msgstr ""
 
+#, fuzzy
+msgid "Import Focus Points as Targets"
+msgstr "Importar arquivo de"
+
+msgid "Create Targets from MVR Focus Points"
+msgstr ""
+
 msgid "Enable PSN Input"
 msgstr ""
 
@@ -464,6 +471,22 @@ msgstr "Importar dispositivos elétricos DMX"
 #, fuzzy
 msgid "Remove selected fixtures from Scene"
 msgstr "Remover este dispositivo elétrico do Patch."
+
+#, fuzzy
+msgid "Select Previous Fixture"
+msgstr "Excluir dispositivo elétrico"
+
+#, fuzzy
+msgid "Select Next Fixture"
+msgstr "Excluir dispositivo elétrico"
+
+#, fuzzy
+msgid "Select Previous Target"
+msgstr "Sequencial"
+
+#, fuzzy
+msgid "Select Next Target"
+msgstr "Excluir dispositivo elétrico"
 
 #, fuzzy
 msgid "DMX > Fixture > Item"
@@ -740,10 +763,32 @@ msgstr "Excluir dispositivo elétrico"
 msgid "Delete from all fixtures"
 msgstr "Excluir dispositivo elétrico"
 
+msgid "Objects with #bdmx drivers"
+msgstr ""
+
+msgid "Enable Keying - Disable Playback"
+msgstr ""
+
+msgid "Enable disabled bdmx drivers"
+msgstr ""
+
+msgid "Disable Keying - Enable Playback"
+msgstr ""
+
+msgid "Disable bdmx drivers"
+msgstr ""
+
 msgid "DMX > Setup > New Show"
 msgstr ""
 
 msgid "Clear any existing DMX data and create a new show."
+msgstr ""
+
+#, fuzzy
+msgid "Really remove all fixtures and DMX from blend file?"
+msgstr "Remover este dispositivo elétrico do Patch."
+
+msgid "Try to remove DMX from the Blender showfile"
 msgstr ""
 
 msgid "Beam diameter small"
@@ -791,6 +836,10 @@ msgstr ""
 
 msgid "Copy (import) old data from addon folder"
 msgstr ""
+
+#, fuzzy
+msgid "Remove DMX from blend file"
+msgstr "Excluir dispositivo elétrico"
 
 msgid "Import"
 msgstr ""

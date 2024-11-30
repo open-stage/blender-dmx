@@ -7,17 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-07 16:58+0200\n"
+"POT-Creation-Date: 2024-11-30 11:27+0100\n"
 "PO-Revision-Date: 2024-11-08 08:33+0000\n"
 "Last-Translator: \"John Joseph A. Gatchalian\" <jjgatchalian@gmail.com>\n"
-"Language-Team: English (United States) <https://hosted.weblate.org/projects/"
-"blenderdmx/main/en_US/>\n"
 "Language: en_US\n"
+"Language-Team: English (United States) "
+"<https://hosted.weblate.org/projects/blenderdmx/main/en_US/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.8.2\n"
 "Generated-By: Babel 2.14.0\n"
 
 msgid "File doesn't exist"
@@ -126,8 +125,8 @@ msgid ""
 "Beam diameter is reduced to minimum when projecting gobos to prevent blur"
 " on gobo edge"
 msgstr ""
-"Beam diameter is reduced to minimum when projecting gobos to prevent blur on "
-"gobo edge"
+"Beam diameter is reduced to minimum when projecting gobos to prevent blur"
+" on gobo edge"
 
 msgid "Reduced"
 msgstr "Reduced"
@@ -201,8 +200,7 @@ msgid "Enable OSC Output"
 msgstr "Enable OSC Output"
 
 msgid "Enables Open Sound Control protocol to send fixture selection to a console"
-msgstr ""
-"Enables Open Sound Control protocol to send fixture selection to a console"
+msgstr "Enables Open Sound Control protocol to send fixture selection to a console"
 
 msgid "OSC Target address"
 msgstr "OSC Target address"
@@ -211,8 +209,8 @@ msgid ""
 "Address of the host where you want to send the OSC signal. Address ending"
 " on .255 is a broadcast address to all hosts on the network"
 msgstr ""
-"Address of the host where you want to send the OSC signal. Address ending on "
-".255 is a broadcast address to all hosts on the network"
+"Address of the host where you want to send the OSC signal. Address ending"
+" on .255 is a broadcast address to all hosts on the network"
 
 msgid "OSC Target port"
 msgstr "OSC Target port"
@@ -257,8 +255,8 @@ msgid ""
 "Laser beams are projected onto objects in this collection. The beam stops"
 " at the first object colliding with the beam."
 msgstr ""
-"Laser beams are projected onto objects in this collection. The beam stops at "
-"the first object colliding with the beam."
+"Laser beams are projected onto objects in this collection. The beam stops"
+" at the first object colliding with the beam."
 
 msgid "Pause renderer"
 msgstr "Pause renderer"
@@ -330,14 +328,21 @@ msgid ""
 "The Fixture ID is an identifier of this fixture that can be used to "
 "activate / select them for programming."
 msgstr ""
-"The Fixture ID is an identifier of this fixture that can be used to activate "
-"/ select them for programming."
+"The Fixture ID is an identifier of this fixture that can be used to "
+"activate / select them for programming."
 
 msgid "Units"
 msgstr "Units"
 
 msgid "How many units of this light to add"
 msgstr "How many units of this light to add"
+
+#, fuzzy
+msgid "Import Focus Points as Targets"
+msgstr "Import Custom Data"
+
+msgid "Create Targets from MVR Focus Points"
+msgstr ""
 
 msgid "Enable PSN Input"
 msgstr "Enable PSN Input"
@@ -437,6 +442,22 @@ msgstr "DMX > Fixture > Remove"
 
 msgid "Remove selected fixtures from Scene"
 msgstr "Remove selected fixtures from Scene"
+
+#, fuzzy
+msgid "Select Previous Fixture"
+msgstr "Select Fixture"
+
+#, fuzzy
+msgid "Select Next Fixture"
+msgstr "Select Fixture"
+
+#, fuzzy
+msgid "Select Previous Target"
+msgstr "Select Targets"
+
+#, fuzzy
+msgid "Select Next Target"
+msgstr "Select Targets"
 
 msgid "DMX > Fixture > Item"
 msgstr "DMX > Fixture > Item"
@@ -684,11 +705,33 @@ msgstr "Delete from selected fixtures"
 msgid "Delete from all fixtures"
 msgstr "Delete from all fixtures"
 
+msgid "Objects with #bdmx drivers"
+msgstr ""
+
+msgid "Enable Keying - Disable Playback"
+msgstr ""
+
+msgid "Enable disabled bdmx drivers"
+msgstr ""
+
+msgid "Disable Keying - Enable Playback"
+msgstr ""
+
+msgid "Disable bdmx drivers"
+msgstr ""
+
 msgid "DMX > Setup > New Show"
 msgstr "DMX > Setup > New Show"
 
 msgid "Clear any existing DMX data and create a new show."
 msgstr "Clear any existing DMX data and create a new show."
+
+#, fuzzy
+msgid "Really remove all fixtures and DMX from blend file?"
+msgstr "Remove selected fixtures from Scene"
+
+msgid "Try to remove DMX from the Blender showfile"
+msgstr ""
 
 msgid "Beam diameter small"
 msgstr "Beam diameter small"
@@ -734,6 +777,10 @@ msgstr "Clear Project data"
 
 msgid "Copy (import) old data from addon folder"
 msgstr "Copy (import) old data from addon folder"
+
+#, fuzzy
+msgid "Remove DMX from blend file"
+msgstr "Remove from selection"
 
 msgid "Import"
 msgstr "Import"
@@ -802,8 +849,8 @@ msgid ""
 "Unzip previously exported custom data from a zip file. This will "
 "overwrite current data!"
 msgstr ""
-"Unzip previously exported custom data from a zip file. This will overwrite "
-"current data!"
+"Unzip previously exported custom data from a zip file. This will "
+"overwrite current data!"
 
 msgid "File Path"
 msgstr "File Path"
@@ -921,8 +968,8 @@ msgid ""
 "The short name of the DMX profile, all caps, used as suggestion for "
 "fixture names."
 msgstr ""
-"The short name of the DMX profile, all caps, used as suggestion for fixture "
-"names."
+"The short name of the DMX profile, all caps, used as suggestion for "
+"fixture names."
 
 msgid "Filename"
 msgstr "Filename"
@@ -1382,3 +1429,4 @@ msgstr "Universes"
 
 #~ msgid "For Blender 4.2 and up use the Extension"
 #~ msgstr ""
+

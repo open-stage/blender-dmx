@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-07 16:58+0200\n"
+"POT-Creation-Date: 2024-11-30 11:27+0100\n"
 "PO-Revision-Date: 2023-12-02 14:06+0000\n"
 "Last-Translator: bass python <pythonbass@gmail.com>\n"
 "Language: ar_AA\n"
@@ -347,6 +347,13 @@ msgstr "الوحدات"
 msgid "How many units of this light to add"
 msgstr ""
 
+#, fuzzy
+msgid "Import Focus Points as Targets"
+msgstr "استيراد من ملف"
+
+msgid "Create Targets from MVR Focus Points"
+msgstr ""
+
 msgid "Enable PSN Input"
 msgstr ""
 
@@ -465,6 +472,22 @@ msgstr "استيراد تركيبات DMX"
 #, fuzzy
 msgid "Remove selected fixtures from Scene"
 msgstr "قم بإزالة هذه المباراة من التصحيح."
+
+#, fuzzy
+msgid "Select Previous Fixture"
+msgstr "حذف لاعبا اساسيا"
+
+#, fuzzy
+msgid "Select Next Fixture"
+msgstr "حذف لاعبا اساسيا"
+
+#, fuzzy
+msgid "Select Previous Target"
+msgstr "‏Sequential"
+
+#, fuzzy
+msgid "Select Next Target"
+msgstr "حذف لاعبا اساسيا"
 
 #, fuzzy
 msgid "DMX > Fixture > Item"
@@ -741,10 +764,32 @@ msgstr "حذف لاعبا اساسيا"
 msgid "Delete from all fixtures"
 msgstr "حذف لاعبا اساسيا"
 
+msgid "Objects with #bdmx drivers"
+msgstr ""
+
+msgid "Enable Keying - Disable Playback"
+msgstr ""
+
+msgid "Enable disabled bdmx drivers"
+msgstr ""
+
+msgid "Disable Keying - Enable Playback"
+msgstr ""
+
+msgid "Disable bdmx drivers"
+msgstr ""
+
 msgid "DMX > Setup > New Show"
 msgstr ""
 
 msgid "Clear any existing DMX data and create a new show."
+msgstr ""
+
+#, fuzzy
+msgid "Really remove all fixtures and DMX from blend file?"
+msgstr "قم بإزالة هذه المباراة من التصحيح."
+
+msgid "Try to remove DMX from the Blender showfile"
 msgstr ""
 
 msgid "Beam diameter small"
@@ -792,6 +837,10 @@ msgstr ""
 
 msgid "Copy (import) old data from addon folder"
 msgstr ""
+
+#, fuzzy
+msgid "Remove DMX from blend file"
+msgstr "حذف لاعبا اساسيا"
 
 msgid "Import"
 msgstr ""

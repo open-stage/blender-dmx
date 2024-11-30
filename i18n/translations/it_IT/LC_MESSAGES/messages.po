@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-07 16:58+0200\n"
+"POT-Creation-Date: 2024-11-30 11:27+0100\n"
 "PO-Revision-Date: 2024-08-22 10:09+0000\n"
 "Last-Translator: Stefano siser <stefano.siser@gmail.com>\n"
 "Language: it_IT\n"
@@ -352,6 +352,13 @@ msgid "How many units of this light to add"
 msgstr "Quante unità di questa luce aggiungere"
 
 #, fuzzy
+msgid "Import Focus Points as Targets"
+msgstr "Importa commit"
+
+msgid "Create Targets from MVR Focus Points"
+msgstr ""
+
+#, fuzzy
 msgid "Enable PSN Input"
 msgstr "Abilita Ingresso sACN"
 
@@ -455,6 +462,22 @@ msgstr "DMX > Dispositivo > Rimuovi"
 
 msgid "Remove selected fixtures from Scene"
 msgstr "Rimuovi i dispositivi selezionati dalla Scena"
+
+#, fuzzy
+msgid "Select Previous Fixture"
+msgstr "Seleziona dispositivo"
+
+#, fuzzy
+msgid "Select Next Fixture"
+msgstr "Seleziona dispositivo"
+
+#, fuzzy
+msgid "Select Previous Target"
+msgstr "Seleziona Obiettivi"
+
+#, fuzzy
+msgid "Select Next Target"
+msgstr "Seleziona Obiettivi"
 
 msgid "DMX > Fixture > Item"
 msgstr "DMX > Dispositivo > Oggetto"
@@ -717,11 +740,33 @@ msgstr "Elimina dai dispositivi selezionati"
 msgid "Delete from all fixtures"
 msgstr "Elimina da tutti i dispositivi"
 
+msgid "Objects with #bdmx drivers"
+msgstr ""
+
+msgid "Enable Keying - Disable Playback"
+msgstr ""
+
+msgid "Enable disabled bdmx drivers"
+msgstr ""
+
+msgid "Disable Keying - Enable Playback"
+msgstr ""
+
+msgid "Disable bdmx drivers"
+msgstr ""
+
 msgid "DMX > Setup > New Show"
 msgstr "DMX > Configurazione > Nuovo spettacolo"
 
 msgid "Clear any existing DMX data and create a new show."
 msgstr "Cancella tutti i dati DMX esistenti e crea un nuovo spettacolo."
+
+#, fuzzy
+msgid "Really remove all fixtures and DMX from blend file?"
+msgstr "Rimuovi i dispositivi selezionati dalla Scena"
+
+msgid "Try to remove DMX from the Blender showfile"
+msgstr ""
 
 msgid "Beam diameter small"
 msgstr "Diametro del fascio piccolo"
@@ -768,6 +813,10 @@ msgstr "Azzera dati del progetto"
 
 msgid "Copy (import) old data from addon folder"
 msgstr ""
+
+#, fuzzy
+msgid "Remove DMX from blend file"
+msgstr "Rimuovi dalla selezione"
 
 msgid "Import"
 msgstr "Importa"

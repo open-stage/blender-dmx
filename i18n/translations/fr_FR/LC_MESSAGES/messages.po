@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-07 16:58+0200\n"
+"POT-Creation-Date: 2024-11-30 11:27+0100\n"
 "PO-Revision-Date: 2023-03-31 21:37+0000\n"
 "Last-Translator: max <ombre_1@hotmail.fr>\n"
 "Language: fr_FR\n"
@@ -348,6 +348,13 @@ msgstr "Unité"
 msgid "How many units of this light to add"
 msgstr ""
 
+#, fuzzy
+msgid "Import Focus Points as Targets"
+msgstr "Importer du fichier"
+
+msgid "Create Targets from MVR Focus Points"
+msgstr ""
+
 msgid "Enable PSN Input"
 msgstr ""
 
@@ -465,6 +472,22 @@ msgstr "Projecteurs DMX importés"
 #, fuzzy
 msgid "Remove selected fixtures from Scene"
 msgstr "Supprimer projecteur d'un fichier local"
+
+#, fuzzy
+msgid "Select Previous Fixture"
+msgstr "Supprimer projecteur"
+
+#, fuzzy
+msgid "Select Next Fixture"
+msgstr "Supprimer projecteur"
+
+#, fuzzy
+msgid "Select Previous Target"
+msgstr "Séquenceur"
+
+#, fuzzy
+msgid "Select Next Target"
+msgstr "Supprimer projecteur"
 
 #, fuzzy
 msgid "DMX > Fixture > Item"
@@ -738,10 +761,32 @@ msgstr "Supprimer projecteur"
 msgid "Delete from all fixtures"
 msgstr "Supprimer projecteur"
 
+msgid "Objects with #bdmx drivers"
+msgstr ""
+
+msgid "Enable Keying - Disable Playback"
+msgstr ""
+
+msgid "Enable disabled bdmx drivers"
+msgstr ""
+
+msgid "Disable Keying - Enable Playback"
+msgstr ""
+
+msgid "Disable bdmx drivers"
+msgstr ""
+
 msgid "DMX > Setup > New Show"
 msgstr ""
 
 msgid "Clear any existing DMX data and create a new show."
+msgstr ""
+
+#, fuzzy
+msgid "Really remove all fixtures and DMX from blend file?"
+msgstr "Supprimer projecteur d'un fichier local"
+
+msgid "Try to remove DMX from the Blender showfile"
 msgstr ""
 
 msgid "Beam diameter small"
@@ -789,6 +834,10 @@ msgstr ""
 
 msgid "Copy (import) old data from addon folder"
 msgstr ""
+
+#, fuzzy
+msgid "Remove DMX from blend file"
+msgstr "Supprimer projecteur"
 
 msgid "Import"
 msgstr ""

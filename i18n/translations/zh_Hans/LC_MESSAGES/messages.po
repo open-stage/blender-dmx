@@ -7,17 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-09-07 16:58+0200\n"
+"POT-Creation-Date: 2024-11-30 11:27+0100\n"
 "PO-Revision-Date: 2024-11-09 10:00+0000\n"
 "Last-Translator: 大学没毕业 <ziweidao@foxmail.com>\n"
-"Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
-"projects/blenderdmx/main/zh_Hans/>\n"
 "Language: zh_Hans\n"
+"Language-Team: Chinese (Simplified Han script) "
+"<https://hosted.weblate.org/projects/blenderdmx/main/zh_Hans/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.8.2\n"
 "Generated-By: Babel 2.14.0\n"
 
 msgid "File doesn't exist"
@@ -326,6 +325,13 @@ msgstr "单位"
 msgid "How many units of this light to add"
 msgstr "此灯要添加多少个单位"
 
+#, fuzzy
+msgid "Import Focus Points as Targets"
+msgstr "导入自定义数据"
+
+msgid "Create Targets from MVR Focus Points"
+msgstr ""
+
 msgid "Enable PSN Input"
 msgstr "开启 PSN 输入"
 
@@ -424,6 +430,22 @@ msgstr "DMX > 灯具 > 移除"
 
 msgid "Remove selected fixtures from Scene"
 msgstr "从场景中删除选定的灯具"
+
+#, fuzzy
+msgid "Select Previous Fixture"
+msgstr "选择灯具"
+
+#, fuzzy
+msgid "Select Next Fixture"
+msgstr "选择灯具"
+
+#, fuzzy
+msgid "Select Previous Target"
+msgstr "选择目标"
+
+#, fuzzy
+msgid "Select Next Target"
+msgstr "选择目标"
 
 msgid "DMX > Fixture > Item"
 msgstr "DMX > 灯具 > 项目"
@@ -671,11 +693,33 @@ msgstr "从选定的灯具中删除"
 msgid "Delete from all fixtures"
 msgstr "从所有灯具中删除"
 
+msgid "Objects with #bdmx drivers"
+msgstr ""
+
+msgid "Enable Keying - Disable Playback"
+msgstr ""
+
+msgid "Enable disabled bdmx drivers"
+msgstr ""
+
+msgid "Disable Keying - Enable Playback"
+msgstr ""
+
+msgid "Disable bdmx drivers"
+msgstr ""
+
 msgid "DMX > Setup > New Show"
 msgstr "DMX > 设置 > 新建演出"
 
 msgid "Clear any existing DMX data and create a new show."
 msgstr "清除所有现有DMX数据并创建新演出。"
+
+#, fuzzy
+msgid "Really remove all fixtures and DMX from blend file?"
+msgstr "从场景中删除选定的灯具"
+
+msgid "Try to remove DMX from the Blender showfile"
+msgstr ""
 
 msgid "Beam diameter small"
 msgstr "光束直径小"
@@ -721,6 +765,10 @@ msgstr "清除项目数据"
 
 msgid "Copy (import) old data from addon folder"
 msgstr "从插件文件夹复制(导入)旧数据"
+
+#, fuzzy
+msgid "Remove DMX from blend file"
+msgstr "从选集删除"
 
 msgid "Import"
 msgstr "导入"
@@ -1306,3 +1354,4 @@ msgstr "域"
 
 #~ msgid "For Blender 4.2 and up use the Extension"
 #~ msgstr ""
+
