@@ -9,13 +9,14 @@ if bpy.app.version >= (4, 2):
 
 from bpy.props import (
     StringProperty,
+    BoolProperty,
     CollectionProperty,
 )
 
 from bpy.types import Operator
-
 from threading import Timer
-
+from .i18n import DMX_Lang
+_ = DMX_Lang._
 
 def createDMXcollection():
     dmx = bpy.context.scene.dmx
@@ -35,6 +36,12 @@ class DMX_OT_Import_MVR(Operator, ImportHelper):
     files: CollectionProperty(type=bpy.types.OperatorFileListElement, options={"HIDDEN", "SKIP_SAVE"})
     directory: StringProperty(subtype="DIR_PATH")
 
+    import_focus_points: BoolProperty(
+        name=_("Import Focus Points as Targets"),
+        description=_("Create Targets from MVR Focus Points"),
+        default=True,
+    )
+
     def draw(self, context):
         dmx = context.scene.dmx
         if not dmx.collection:
@@ -42,6 +49,8 @@ class DMX_OT_Import_MVR(Operator, ImportHelper):
         layout = self.layout
         layout.use_property_split = True
         layout.use_property_decorate = False
+        box = layout.column().box()
+        box.prop(self, "import_focus_points")
 
     def execute(self, context):
         dmx = context.scene.dmx
@@ -50,7 +59,7 @@ class DMX_OT_Import_MVR(Operator, ImportHelper):
                 continue
             file_path = os.path.join(self.directory, file.name)
             print("INFO", f"Processing MVR file: {file_path}")
-            dmx.addMVR(file_path)
+            dmx.addMVR(file_path, import_focus_points=self.import_focus_points)
         return {"FINISHED"}
 
 
