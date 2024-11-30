@@ -88,9 +88,11 @@ class LampType(Enum):
     permitted = ["Discharge", "Tungsten", "Halogen", "LED"]
     _default = "Discharge"
 
+
 class ColorType(Enum):
     permitted = ["RGB", "SingleWaveLength"]
     _default = "RGB"
+
 
 class FuseRating(Enum):
     permitted = ["B", "C", "D", "K", "Z"]
@@ -141,12 +143,28 @@ class RelationType(Enum):
     permitted = ["Multiply", "Override"]
 
 
+class StructureType(Enum):
+    permitted = ["CenterLineBased", "Detail"]
+    _default = "CenterLineBased"
+
+
+class CrossSectionType(Enum):
+    permitted = ["TrussFramework", "Tube"]
+    _default = "TrussFramework"
+
+
+class SupportType(Enum):
+    permitted = ["Rope", "GroundSupport"]
+    _default = "Rope"
+
+
 class Resource:
-    def __init__(self, name, extension=None):
+    def __init__(self, name, extension=None, crc=None):
         self.name = name
         if name is not None:
             self.name = self.name.encode("utf-8").decode("cp437")
         self.extension = extension
+        self.crc = crc
 
     def __str__(self):
         return ".".join([self.name, self.extension])
@@ -216,6 +234,16 @@ class Rotation:
             [component[3], component[4], component[5]],
             [component[6], component[7], component[8]],
         ]
+
+
+class Vector3:
+    def __init__(self, str_repr):
+        if str_repr == "0" or str_repr == 0:
+            self.vector3 = [0, 0, 0]
+        else:
+            str_repr = str_repr.replace("{", "")
+            str_repr = str_repr.replace("}", "")
+            self.vector3 = [float(i) for i in str_repr.split(",")]
 
 
 class Matrix:
