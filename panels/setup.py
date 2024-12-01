@@ -524,7 +524,7 @@ class DMX_OT_Export_Custom_Data(Operator):
 
 
 class DMX_OT_Clear_Custom_Data(Operator):
-    bl_label = _("Clear Custom Data")
+    bl_label = _("Really delete all custom data from the addon directory?")
     bl_idname = "dmx.clear_custom_data"
     bl_description = _("Clear custom data from BlenderDMX addon directory.")
     bl_options = {"UNDO"}
