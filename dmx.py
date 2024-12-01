@@ -41,7 +41,7 @@ from .artnet import DMX_ArtNet
 from .acn import DMX_sACN
 from .network import DMX_Network
 from .logging import DMX_Log
-from .blender_utils import copy_blender_profiles
+from .blender_utils import copy_blender_profiles, get_application_version
 
 from .panels import recorder as recorder
 from .panels import setup as setup
@@ -583,6 +583,7 @@ class DMX(PropertyGroup):
         #self.copy_default_profiles_to_user_folder()
         self.check_python_version()
         self.check_blender_version()
+        self.print_extension_version()
 
         if bpy.app.version >= (4, 2):
             # do not do version check online in 4.2 and up
@@ -625,6 +626,10 @@ class DMX(PropertyGroup):
             DMX_Log.log.error(f"Blender version of at least 3.4 is needed, you are using {bpy.app.version} ❌")
             return
         DMX_Log.log.info(f"Blender version: {bpy.app.version} ✅")
+
+    def print_extension_version(self):
+        current_version = get_application_version()
+        DMX_Log.log.info(f"BlenderDMX version: {current_version}")
 
     def ensure_directories_exist(self):
         list_paths=[]
