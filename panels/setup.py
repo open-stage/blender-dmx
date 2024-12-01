@@ -51,6 +51,41 @@ class DMX_OT_Setup_NewShow(Operator):
         return {"FINISHED"}
 
 
+class DMX_OT_Setup_EnableSelectGeometries(Operator):
+    bl_label = _("Do at your own risk. Manual edits or deletes can cause issues")
+    bl_description = _("Manually editing or deleting geometries of GDTF devices may cause issues.")
+    bl_idname = "dmx.enabling_geometry_selection"
+    bl_options = {"UNDO"}
+
+    def draw(self, context):
+        layout = self.layout
+        col = layout.column()
+
+    def execute(self, context):
+        dmx = context.scene.dmx
+        for fixture in dmx.fixtures:
+            for obj in fixture.collection.objects:
+                if obj.get("geometry_root", False):
+                    continue
+                if obj.get("2d_symbol", None):
+                    continue
+                if "Target" in obj.name:
+                    continue
+                obj.hide_select = not dmx.select_geometries
+
+        return {"FINISHED"}
+
+    def invoke(self, context, event):
+        if context.scene.dmx.select_geometries:
+            wm = context.window_manager
+            return wm.invoke_props_dialog(self)
+        else:
+            return self.execute(context)
+
+    def cancel(self, context):
+        context.scene.dmx.select_geometries = False
+
+
 class DMX_OT_Setup_RemoveDMX(Operator):
     bl_label = _("Really remove all fixtures and DMX from blend file?")
     bl_description = _("Try to remove DMX from the Blender showfile")

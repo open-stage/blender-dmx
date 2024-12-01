@@ -161,6 +161,7 @@ class DMX(PropertyGroup):
                 setup.DMX_OT_Copy_Custom_Data,
                 setup.DMX_OT_Setup_RemoveDMX,
                 setup.DMX_OT_Reload_Addon,
+                setup.DMX_OT_Setup_EnableSelectGeometries,
                 fixtures.DMX_OT_IES_Import,
                 fixtures.DMX_OT_IES_Remove,
                 fixtures.DMX_PT_Fixtures,
@@ -990,15 +991,9 @@ class DMX(PropertyGroup):
         update = update_device_label)
 
     def onSelectGeometries(self, context):
-        for fixture in self.fixtures:
-            for obj in fixture.collection.objects:
-                if obj.get("geometry_root", False):
-                    continue
-                if obj.get("2d_symbol", None):
-                    continue
-                if "Target" in obj.name:
-                    continue
-                obj.hide_select = not self.select_geometries
+        # confirmation dialog
+        bpy.ops.dmx.enabling_geometry_selection('INVOKE_DEFAULT')
+        # the actual logic is now in the confirmation dialog's execute() function
 
     select_geometries: BoolProperty(
         name = _("Allow Selecting Geometries"),
