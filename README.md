@@ -6,7 +6,7 @@
 
 https://blenderdmx.eu
 
-A DMX visualization tool inside <a href="https://blender.org">Blender</a>, designed to offer a free, easy and fully packed solution for Lighting Designers. Device definition is based on <a href="https://gdtf-share.com">GDTF Specification</a>, utilizing the Fixture library on <a href="https://gdtf-share.com">GDTF Share</a>. GDTF import is based on <a href="https://github.com/open-stage/python-gdtf">pygdtf</a> - Python GDTF library, <a href="https://gdtf-share.com">MVR</a> scene import is based on <a href="https://github.com/open-stage/python-mvr">pymvr</a> - Python MVR library. For more GDTF/MVR resources and news see <a href="https://gdtf.eu">GDTF.eu</a>.
+A DMX visualization tool inside <a href="https://blender.org">Blender</a>, designed to offer a free and easy solution for Lighting Designers. Device definition is based on <a href="https://gdtf-share.com">GDTF Specification</a>, utilizing the Fixture library on <a href="https://gdtf-share.com">GDTF Share</a>. GDTF import is based on <a href="https://github.com/open-stage/python-gdtf">pygdtf</a> - Python GDTF library, <a href="https://gdtf-share.com">MVR</a> scene import is based on <a href="https://github.com/open-stage/python-mvr">pymvr</a> - Python MVR library. For more GDTF/MVR resources and news see <a href="https://gdtf.eu">GDTF.eu</a>.
 
 ![](https://i.ibb.co/rvpKYxB/render-eevee-7.png)
 
