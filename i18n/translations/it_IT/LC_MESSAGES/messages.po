@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-11-30 11:27+0100\n"
-"PO-Revision-Date: 2024-08-22 10:09+0000\n"
-"Last-Translator: Stefano siser <stefano.siser@gmail.com>\n"
+"PO-Revision-Date: 2024-12-17 21:00+0000\n"
+"Last-Translator: Fede Pre <fede0379@live.com>\n"
+"Language-Team: Italian <https://hosted.weblate.org/projects/blenderdmx/main/"
+"it/>\n"
 "Language: it_IT\n"
-"Language-Team: Italian "
-"<https://hosted.weblate.org/projects/blenderdmx/main/it/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.9.2-dev\n"
 "Generated-By: Babel 2.14.0\n"
 
 msgid "File doesn't exist"
@@ -46,20 +47,17 @@ msgstr "Traccia"
 msgid "DMX Collection"
 msgstr "Collezione DMX"
 
-#, fuzzy
 msgid "Selected PSN Server"
-msgstr "Dispositivi Selezionati"
+msgstr "Server PSN selezionato"
 
-#, fuzzy
 msgid "The selected element on the PSN server list"
-msgstr "L'elemento selezionato nell'elenco degli universi"
+msgstr "Elemento selezionato nell'elenco dei server PSN"
 
 msgid "Class List i"
-msgstr ""
+msgstr "Elenco Classe i"
 
-#, fuzzy
 msgid "The selected element on the class list"
-msgstr "L'elemento selezionato nell'elenco degli universi"
+msgstr "Elemento selezionato nell'elenco della classe"
 
 msgid "Universe"
 msgstr "Universo"
@@ -73,9 +71,8 @@ msgstr "Visualizza Trecce"
 msgid "Display 2D View"
 msgstr "Visualizza Vista 2D"
 
-#, fuzzy
 msgid "Display Device Label"
-msgstr "Etichetta device"
+msgstr "Visualizza Etichetta Device"
 
 msgid "Device Label"
 msgstr "Etichetta device"
@@ -141,9 +138,8 @@ msgstr "Larghezza intera"
 msgid "Custom per each beam"
 msgstr "Personalizzato per ogni fascio"
 
-#, fuzzy
 msgid "Disable Beam Outlines"
-msgstr "Visualizza il cono \"falso\" del fascio"
+msgstr "Disabilita il cono \"falso\" del fascio"
 
 msgid "Enable Volume Scatter"
 msgstr "Abilita la dispersione del volume"
@@ -250,7 +246,6 @@ msgstr "Elenco dei gruppi"
 msgid "The selected element on the group list"
 msgstr "L'elemento selezionato nell'elenco dei gruppi"
 
-#, fuzzy
 msgid "Order by"
 msgstr "Ordina per"
 
@@ -273,18 +268,15 @@ msgstr "Pausa rendering"
 msgid "Manufacturers"
 msgstr "Costruttori"
 
-#, fuzzy
 msgid "Imports"
 msgstr "Importazioni"
 
 msgid "Add to selection"
 msgstr "Aggiungi alla selezione"
 
-#, fuzzy
 msgid "Remove from selection"
 msgstr "Rimuovi dalla selezione"
 
-#, fuzzy
 msgid "Keyframe only selected fixtures (not for autokeying)"
 msgstr "Aggiungi keyframe solo per le luci selezionate (non per auto keyframe)"
 
@@ -300,13 +292,11 @@ msgstr "Dati DMX"
 msgid "Fixture"
 msgstr "Dispositivo"
 
-#, fuzzy
 msgid "Subfixtures"
-msgstr "Dispositivi"
+msgstr "Sotto Dispositivi"
 
-#, fuzzy
 msgid "Active Subfixtures"
-msgstr "Dispositivi Selezionati"
+msgstr "Attiva Sotto Dispositivi"
 
 msgid "DMX Universe"
 msgstr "Universo DMX"
@@ -351,32 +341,26 @@ msgstr "Unità"
 msgid "How many units of this light to add"
 msgstr "Quante unità di questa luce aggiungere"
 
-#, fuzzy
 msgid "Import Focus Points as Targets"
-msgstr "Importa commit"
+msgstr "Importa Punti Focus come Obiettivi"
 
 msgid "Create Targets from MVR Focus Points"
-msgstr ""
+msgstr "Crea Obiettivi da Punti Focus MVR"
 
-#, fuzzy
 msgid "Enable PSN Input"
-msgstr "Abilita Ingresso sACN"
+msgstr "Abilita Ingresso PSN"
 
-#, fuzzy
 msgid "Enables PosiStageNet input"
-msgstr "Abilita Ingresso sACN"
+msgstr "Abilita Ingresso PosiStageNet"
 
-#, fuzzy
 msgid "IPv4 Address for PSN signal"
-msgstr "Indirizzo IPv4 per il segnale ArtNet"
+msgstr "Indirizzo IPv4 per il segnale PSN"
 
-#, fuzzy
 msgid "The network card/interface to listen for PSN data"
-msgstr "La scheda/interfaccia di rete per ascoltare i dati ArtNet DMX"
+msgstr "La scheda/interfaccia di rete per ascoltare i dati PSN"
 
-#, fuzzy
 msgid "PSN Target port"
-msgstr "Porta di destinazione OSC"
+msgstr "Porta di destinazione PSN"
 
 msgid "Align and Distribute"
 msgstr "Allinea e distribuisci"
@@ -384,9 +368,8 @@ msgstr "Allinea e distribuisci"
 msgid "Active object: {}"
 msgstr "Oggetto attivo: {}"
 
-#, fuzzy
 msgid "Selected fixtures: {}"
-msgstr "Dispositivi Selezionati"
+msgstr "Dispositivi Selezionati: {}"
 
 msgid "DMX > Fixture Menu"
 msgstr "DMX > Menu Dispositivo"
@@ -463,21 +446,17 @@ msgstr "DMX > Dispositivo > Rimuovi"
 msgid "Remove selected fixtures from Scene"
 msgstr "Rimuovi i dispositivi selezionati dalla Scena"
 
-#, fuzzy
 msgid "Select Previous Fixture"
-msgstr "Seleziona dispositivo"
+msgstr "Seleziona dispositivo precedente"
 
-#, fuzzy
 msgid "Select Next Fixture"
-msgstr "Seleziona dispositivo"
+msgstr "Seleziona dispositivo successivo"
 
-#, fuzzy
 msgid "Select Previous Target"
-msgstr "Seleziona Obiettivi"
+msgstr "Seleziona Obiettivo precedente"
 
-#, fuzzy
 msgid "Select Next Target"
-msgstr "Seleziona Obiettivi"
+msgstr "Seleziona Obiettivo successivo"
 
 msgid "DMX > Fixture > Item"
 msgstr "DMX > Dispositivo > Oggetto"
@@ -512,9 +491,8 @@ msgstr "Ind."
 msgid "Uni.Addr"
 msgstr "Uni.Ind"
 
-#, fuzzy
 msgid "Foot"
-msgstr "Traccia"
+msgstr "Piede"
 
 msgid "DMX > Group Menu"
 msgstr "DMX > Menu Gruppo"
@@ -537,9 +515,8 @@ msgstr "Crea gruppo DMX dai dispositivi selezionati"
 msgid "Group Name"
 msgstr "Nome Gruppo"
 
-#, fuzzy
 msgid "Reset Colors"
-msgstr "Colore Gel"
+msgstr "Resetta Colori"
 
 msgid "Lock Movement"
 msgstr "Blocca Movimento"
@@ -553,9 +530,8 @@ msgstr "Sblocca Movimento"
 msgid "Allow pan/tilt DMX data"
 msgstr "Consenti dati DMX pan/tilt"
 
-#, fuzzy
 msgid "Lock/Unlock Movement Rotation"
-msgstr "Sblocca Movimento"
+msgstr "Blocca/Sblocca Movimento di rotazione"
 
 msgid "Deselect All"
 msgstr "Deseleziona Tutti"
@@ -610,13 +586,11 @@ msgstr "Centra la vista sull'oggetto selezionato"
 msgid "Set View to center on selected objects"
 msgstr "Imposta la vista sugli oggetti selezionati"
 
-#, fuzzy
 msgid "Reset targets"
-msgstr "Seleziona Obiettivi"
+msgstr "Resetta Obiettivi"
 
-#, fuzzy
 msgid "Reset position of target of selected fixtures"
-msgstr "Resetta posizione bersaglio dei dispositivi selezionati"
+msgstr "Resetta posizione dell'obiettivo dei dispositivi selezionati"
 
 msgid "Select Fixtures"
 msgstr "Seleziona Dispositivi"
@@ -663,13 +637,11 @@ msgstr "Pan"
 msgid "Tilt"
 msgstr "Tilt"
 
-#, fuzzy
 msgid "Pan Rotation"
-msgstr "Rotazione"
+msgstr "Rotazione Pan"
 
-#, fuzzy
 msgid "Tilt Rotation"
-msgstr "Rotazione"
+msgstr "Rotazione Tilt"
 
 msgid "Zoom"
 msgstr "Zoom"
@@ -678,26 +650,22 @@ msgid "Color Wheel"
 msgstr "Ruota colori"
 
 msgid "Color Temperature"
-msgstr ""
+msgstr "Temperatura Colore"
 
 msgid "Iris"
-msgstr ""
+msgstr "Iride"
 
-#, fuzzy
 msgid "Gobo1"
-msgstr "Gobo"
+msgstr "Gobo 1"
 
-#, fuzzy
 msgid "Gobo1 Rotation"
-msgstr "Rotazione Gobo"
+msgstr "Rotazione Gobo 1"
 
-#, fuzzy
 msgid "Gobo2"
-msgstr "Gobo"
+msgstr "Gobo 2"
 
-#, fuzzy
 msgid "Gobo2 Rotation"
-msgstr "Rotazione Gobo"
+msgstr "Rotazione Gobo 2"
 
 msgid "Strobe"
 msgstr "Strobo"
@@ -741,19 +709,19 @@ msgid "Delete from all fixtures"
 msgstr "Elimina da tutti i dispositivi"
 
 msgid "Objects with #bdmx drivers"
-msgstr ""
+msgstr "Oggetti con drivers #bdmx"
 
 msgid "Enable Keying - Disable Playback"
-msgstr ""
+msgstr "Abilita Keying . Disabilita Playback"
 
 msgid "Enable disabled bdmx drivers"
-msgstr ""
+msgstr "Abilita/Disabilita drivers bdmx"
 
 msgid "Disable Keying - Enable Playback"
-msgstr ""
+msgstr "Disabilita Keying - Abilita Playback"
 
 msgid "Disable bdmx drivers"
-msgstr ""
+msgstr "Disabilita drivers bdmx"
 
 msgid "DMX > Setup > New Show"
 msgstr "DMX > Configurazione > Nuovo spettacolo"
@@ -761,12 +729,11 @@ msgstr "DMX > Configurazione > Nuovo spettacolo"
 msgid "Clear any existing DMX data and create a new show."
 msgstr "Cancella tutti i dati DMX esistenti e crea un nuovo spettacolo."
 
-#, fuzzy
 msgid "Really remove all fixtures and DMX from blend file?"
-msgstr "Rimuovi i dispositivi selezionati dalla Scena"
+msgstr "Vuoi realmente rimuovere tutti i dispositivi DMX dal file blend?"
 
 msgid "Try to remove DMX from the Blender showfile"
-msgstr ""
+msgstr "Prova a rimuovere DMX dal file dello Show di Blender"
 
 msgid "Beam diameter small"
 msgstr "Diametro del fascio piccolo"
@@ -792,7 +759,6 @@ msgstr "Crea Volume Box"
 msgid "Set on selected fixtures"
 msgstr "Imposta sui dispositivi selezionati"
 
-#, fuzzy
 msgid "Viewport"
 msgstr "Vista"
 
@@ -812,11 +778,10 @@ msgid "Clear Project data"
 msgstr "Azzera dati del progetto"
 
 msgid "Copy (import) old data from addon folder"
-msgstr ""
+msgstr "Copia (importa) i vecchi dati dalla cartella dell'addon"
 
-#, fuzzy
 msgid "Remove DMX from blend file"
-msgstr "Rimuovi dalla selezione"
+msgstr "Rimuovi DMX dal file blend"
 
 msgid "Import"
 msgstr "Importa"
@@ -827,20 +792,17 @@ msgstr "Importa Profilo GDTF"
 msgid "Import MVR Scene"
 msgstr "Importa Scena MVR"
 
-#, fuzzy
 msgid "Import Project data"
-msgstr "Importa Project data"
+msgstr "Importa dati Progetto"
 
-#, fuzzy
 msgid "Export"
 msgstr "Esporta"
 
 msgid "Export Project data"
 msgstr "Esporta i dati del progetto"
 
-#, fuzzy
 msgid "Export MVR"
-msgstr "Esporta"
+msgstr "Esporta MVR"
 
 msgid "Show logging directory"
 msgstr "Mostra la directory di registrazione"
@@ -881,9 +843,8 @@ msgstr "Stai utilizzando l'ultima versione di BlenderDMX"
 msgid "Checking..."
 msgstr "Controllo..."
 
-#, fuzzy
 msgid "Import Custom Data"
-msgstr "Importa commit"
+msgstr "Importa dati personalizzati"
 
 msgid ""
 "Unzip previously exported custom data from a zip file. This will "
@@ -901,9 +862,8 @@ msgstr "Files"
 msgid "Incorrect file name!"
 msgstr "Nome del file errato!"
 
-#, fuzzy
 msgid "Data imported from: {}"
-msgstr "Importa da Share"
+msgstr "Dati importati da: {}"
 
 msgid "Export Custom Data"
 msgstr "Esporta i dati personalizzati"
@@ -916,9 +876,8 @@ msgstr ""
 msgid "Data exported to: {}"
 msgstr "Dati salvati su: {}"
 
-#, fuzzy
 msgid "Clear Custom Data"
-msgstr "ID Personalizzato"
+msgstr "Cancella Dati Personalizzati"
 
 msgid "Clear custom data from BlenderDMX addon directory."
 msgstr "Cancella i dati personalizzati dalla cartella addon di BlenderDMX."
@@ -926,19 +885,18 @@ msgstr "Cancella i dati personalizzati dalla cartella addon di BlenderDMX."
 msgid "Data cleared"
 msgstr "Dati azzerati"
 
-#, fuzzy
 msgid "Copy data from addon to user directory"
-msgstr "Cancella i dati personalizzati dalla cartella addon di BlenderDMX."
+msgstr "Copia i dati dall' addon alla cartella utente"
 
-#, fuzzy
 msgid ""
 "Copy custom data from BlenderDMX addon directory to BlenderDMX extension "
 "user directory."
-msgstr "Cancella i dati personalizzati dalla cartella addon di BlenderDMX."
+msgstr ""
+"Copia i dati personalizzati dalla cartella addon di BlenderDMX alla cartella "
+"delle estensioni utente di BlenderDMX."
 
-#, fuzzy
 msgid "Data copied"
-msgstr "Dati azzerati"
+msgstr "Dati copiati"
 
 msgid "Reload BlenderDMX addon"
 msgstr "Ricarica addon BlenderDMX"
@@ -946,25 +904,20 @@ msgstr "Ricarica addon BlenderDMX"
 msgid "Reload the addon, useful during development"
 msgstr "Ricarica addon, utile durante lo sviluppo"
 
-#, fuzzy
 msgid "Addon reloaded"
-msgstr "Scaricamento"
+msgstr "Addon ricaricato"
 
-#, fuzzy
 msgid "Select visible"
-msgstr "Seleziona Tutti"
+msgstr "Seleziona visibile"
 
-#, fuzzy
 msgid "Select visible subfixtures"
-msgstr "Dispositivi Selezionati"
+msgstr "Seleziona sotto dispositivo visibile"
 
-#, fuzzy
 msgid "Clear selection"
-msgstr "Inverti selezione"
+msgstr "Cancella selezione"
 
-#, fuzzy
 msgid "Clear subfixture selection"
-msgstr "Aggiungi alla selezione"
+msgstr "Cancella selezione del sotto dispositivo"
 
 msgid "Get GDTF Share account and fill it into BlenderDMX addon preferences."
 msgstr ""
@@ -1110,7 +1063,7 @@ msgid "GDTF Share"
 msgstr "GDTF Share"
 
 msgid "You must Allow Online access for this to work:"
-msgstr ""
+msgstr "Devi permettere l'accesso Online per questo lavoro:"
 
 msgid "Fixture details"
 msgstr "Dettagli dispositivo"
@@ -1172,54 +1125,47 @@ msgstr "Aggiungi tracciatore"
 msgid "Adding a tracker"
 msgstr "Aggiungere tracciatore"
 
-#, fuzzy
 msgid "Remove Tracker"
-msgstr "Rimuovi Dispositivo"
+msgstr "Rimuovi Tracciatore"
 
 msgid "Removing a tracker"
 msgstr "Rimuovere un tracciatore"
 
 msgid "Link Fixture to Tracker"
-msgstr ""
+msgstr "Collega Dispositivo al Tracciatore"
 
 msgid "Link fixture to a tracker"
-msgstr ""
+msgstr "Collega dispositivo ad un tracciatore"
 
-#, fuzzy
 msgid "Unlink Fixture from Tracker"
-msgstr "Importa dispositivo da GDTF Share"
+msgstr "Scollega Dispositivo dal Tracciatore"
 
-#, fuzzy
 msgid "Unlink fixture from a tracker"
-msgstr "Importa dispositivo da GDTF Share"
+msgstr "Scollega dispositivo da un tracciatore"
 
 msgid "Tracker Followers"
-msgstr ""
+msgstr "Followers Tracciatore"
 
 msgid "Link followers to a tracker"
-msgstr ""
+msgstr "Collega followers ad un tracciatore"
 
-#, fuzzy
 msgid "PSN"
-msgstr "Pan"
+msgstr "PSN"
 
-#, fuzzy
 msgid "Add Tracking Target"
-msgstr "Aggiungi bersaglio"
+msgstr "Aggiungi obiettivo Tracciante"
 
 msgid "Remove Followers Target"
-msgstr ""
+msgstr "Rimuovi Followers Obiettivo"
 
 msgid "Remove target"
 msgstr "Rimuovi Obiettivo"
 
-#, fuzzy
 msgid "Add Followers Target"
-msgstr "Aggiungi bersaglio"
+msgstr "Aggiungi Followers obiettivo"
 
-#, fuzzy
 msgid "Add target"
-msgstr "Aggiungi bersaglio"
+msgstr "Aggiungi obiettivo"
 
 msgid "sACN"
 msgstr "sACN"
@@ -1439,4 +1385,3 @@ msgstr "Universi"
 
 #~ msgid "For Blender 4.2 and up use the Extension"
 #~ msgstr "Su Blender 4.2 e superiori utilizzate l'estensione"
-
