@@ -17,6 +17,7 @@
 
 import json
 import struct
+import socket
 
 # mvr message structures
 
@@ -68,8 +69,8 @@ class mvr_message:
         "Commits": [],
         "Message": "",
         "OK": "true",
-        "Provider": "Blender DMX",
-        "StationName": "Blender DMX Station",
+        "Provider": "BlenderDMX",
+        "StationName": "BlenderDMX Station",
         "StationUUID": "",
         "Type": "MVR_JOIN_RET",
         "verMajor": 1,
@@ -88,13 +89,14 @@ class mvr_message:
 
     join_message = {
         "Type": "MVR_JOIN",
-        "Provider": "Blender DMX",
+        "Provider": "BlenderDMX",
         "verMajor": 1,
         "verMinor": 6,
         "StationUUID": "",
-        "StationName": "Blender DMX Station",
+        "StationName": "BlenderDMX Station",
         "Commits": [],
     }
+
     leave_message = {
         "Type": "MVR_LEAVE",
         "FromStationUUID": "",
@@ -106,38 +108,63 @@ class mvr_message:
         "FromStationUUID": "",
     }
 
+    commit_message = {
+        "Type": "MVR_COMMIT",
+        "verMajor": 1,
+        "verMinor": 6,
+        "FileSize": "",
+        "FileUUID": "",
+        "StationUUID": "",
+        "ForStationsUUID": [],
+        "Comment": "Comment",
+        "FileName": "",
+    }
+
     @staticmethod
-    def create_message(message, files=[], uuid=None, file_uuid=None, ok=None, nok_reason=None):
+    def create_message(message, commits=None, uuid=None, file_uuid=None, ok=None, nok_reason=None):
         if message == "MVR_JOIN_RET":
-            response = mvr_message.join_message_ret
+            response = mvr_message.join_message_ret.copy()
+            response["StationName"] = f"BlenderDMX station {socket.gethostname()}".replace(" ", "_")
             response["StationUUID"] = uuid
-            if len(files) > 0:
-                response["Commits"] = files
+            if commits is not None:
+                response["Commits"] = commits
             if ok is not None:
                 response["OK"] = ok
             if nok_reason is not None:
                 response["Message"] = nok_reason
             return mvr_message.craft_packet(response)
         elif message == "MVR_LEAVE_RET":
-            return mvr_message.craft_packet(mvr_message.leave_message_ret)
+            return mvr_message.craft_packet(mvr_message.leave_message_ret.copy())
+        elif message == "MVR_COMMIT":
+            if commits is not None:
+                commit = commits[-1]
+
+            response = mvr_message.commit_message.copy()
+            response["FileSize"] = commit.file_size
+            response["FileUUID"] = commit.commit_uuid
+            response["Comment"] = commit.comment
+            response["FileName"] = commit.file_name
+            response["StationUUID"] = uuid
+            return mvr_message.craft_packet(response)
         elif message == "MVR_COMMIT_RET":
-            return mvr_message.craft_packet(mvr_message.commit_message_ret)
+            return mvr_message.craft_packet(mvr_message.commit_message_ret.copy())
         elif message == "MVR_REQUEST":
-            response = mvr_message.request_message
+            response = mvr_message.request_message.copy()
             response["FileUUID"] = file_uuid
             response["FromStationUUID"] = uuid
             return mvr_message.craft_packet(response)
         elif message == "MVR_JOIN":
-            response = mvr_message.join_message
+            response = mvr_message.join_message.copy()
+            response["StationName"] = f"BlenderDMX station {socket.gethostname()}"
             response["StationUUID"] = uuid
-            if len(files) > 0:
-                response["Commits"] = files
+            if commits is not None:
+                response["Commits"] = commits
             return mvr_message.craft_packet(response)
         elif message == "MVR_LEAVE":
-            response = mvr_message.leave_message
+            response = mvr_message.leave_message.copy()
             response["FromStationUUID"] = uuid
             return mvr_message.craft_packet(response)
         elif message == "MVR_REQUEST":
-            response = mvr_message.request_message
+            response = mvr_message.request_message.copy()
             response["StationUUID"] = uuid
             return mvr_message.craft_packet(response)

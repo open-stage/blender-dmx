@@ -375,7 +375,6 @@ def add_mvr_fixture(dmx, mvr_scene, folder_path, fixture, fixture_idx, layer_idx
             True,
             add_target,
             mvr_position=fixture.matrix.matrix,
-            add_target=add_target,
             focus_point=focus_point,
             uuid=fixture.uuid,
             fixture_id=fixture.fixture_id,

@@ -20,6 +20,7 @@ import bpy
 from zeroconf import IPVersion, ServiceBrowser, ServiceStateChange, Zeroconf, ServiceInfo, get_all_addresses
 
 from .logging import DMX_Log
+import logging
 from typing import cast
 import uuid as pyuuid
 import socket
@@ -45,7 +46,7 @@ class DMX_Zeroconf:
         DMX_Log.log.debug(f"Service {name} of type {service_type} state changed: {state_change}")
 
         info = zeroconf.get_service_info(service_type, name)
-        service_name = name.replace(f".{service_type}", "")
+        service_name = name.replace(f".{service_type}", "").split(".")[-1]
         station_name = ""
         station_uuid = ""
         ip_address = ""
@@ -96,19 +97,22 @@ class DMX_Zeroconf:
             DMX_Zeroconf._instance = None
 
     @staticmethod
-    def enable_server(server_name="test_mvr", port=9999):
-        if server_name == "":
-            DMX_Log.log.critical("server name missing, cannot start mdns service")
-            return
+    def enable_server(server_name=None, port=9999):
+        host_name = f"{socket.gethostname()}-{pyuuid.uuid4().hex}"
+        station_name = f"BlenderDMX station {socket.gethostname()}".replace(" ", "_")
+
+        if server_name is None or server_name == "":
+            server_name = station_name
+
         if not DMX_Zeroconf._instance:
             DMX_Zeroconf._instance = DMX_Zeroconf()
-        host_name = f"{socket.gethostname()}-{pyuuid.uuid4().hex}"
-        station_name = f"BlenderDMX station {socket.gethostname()}"
+
         desc = {"StationUUID": DMX_Zeroconf._instance.application_uuid, "StationName": station_name}
-        addrs = [socket.inet_pton(socket.AF_INET, address) for address in get_all_addresses()]
+        addrs = [socket.inet_pton(socket.AF_INET, address) for address in get_all_addresses() if "127.0.0" not in address]
+
         DMX_Zeroconf._instance.info = ServiceInfo(
             "_mvrxchange._tcp.local.",
-            name=f"{server_name}._mvrxchange._tcp.local.",
+            name=f"{station_name.replace(' ', '_')}.{server_name}._mvrxchange._tcp.local.",
             addresses=addrs,
             port=port,
             properties=desc,
