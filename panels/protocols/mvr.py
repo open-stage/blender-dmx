@@ -18,10 +18,13 @@
 import os
 from bpy.props import StringProperty
 from bpy.types import Operator, Panel, UIList
+import bpy
 from ...mvrx_protocol import DMX_MVR_X_Client
 from ...logging import DMX_Log
 import uuid as py_uuid
 from datetime import datetime
+from pathlib import Path
+from types import SimpleNamespace
 
 from ...i18n import DMX_Lang
 
@@ -86,6 +89,32 @@ class DMX_OP_MVR_Import(Operator):
         return {"FINISHED"}
 
 
+class DMX_OP_MVR_X_Export(Operator):
+    bl_label = _("Export")
+    bl_description = _("Export MVR to MVR-xchange")
+    bl_idname = "dmx.mvr_x_export"
+    bl_options = {"UNDO"}
+
+    def execute(self, context):
+        scene = context.scene
+        dmx = scene.dmx
+        mvr_x = context.window_manager.dmx.mvr_xchange
+        comment = mvr_x.commit_message
+        if comment == "":
+            comment = "File shared"
+        current_file_path = bpy.data.filepath
+        file_stem = Path(current_file_path).stem
+        ADDON_PATH = dmx.get_addon_path()
+        uuid = str(py_uuid.uuid4())
+        path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{uuid}.mvr")
+        result = dmx.export_mvr(path)
+        DMX_Log.log.info(path)
+        if result.ok:
+            commit = SimpleNamespace(file_size=result.file_size, file_uuid=uuid, file_name=file_stem, comment=comment)
+            dmx.createMVR_Shared_Commit(commit)
+        return {"FINISHED"}
+
+
 class DMX_OP_MVR_Download(Operator):
     bl_label = _("Download")
     bl_description = _("Download commit")
@@ -114,6 +143,26 @@ class DMX_OP_MVR_Download(Operator):
         return {"FINISHED"}
 
 
+class DMX_OP_MVR_RemoveSharedCommit(Operator):
+    bl_label = _("Delete")
+    bl_description = _("Remove Shared Commit")
+    bl_idname = "dmx.mvr_remove_shared_commit"
+    bl_options = {"UNDO"}
+
+    uuid: StringProperty()
+
+    def execute(self, context):
+        DMX_Log.log.info("removing", self.uuid)
+
+        commits = context.window_manager.dmx.mvr_xchange.shared_commits
+        for idx, commit in enumerate(commits):
+            if commit.commit_uuid == self.uuid:
+                commits.remove(idx)
+                break
+
+        return {"FINISHED"}
+
+
 class DMX_UL_MVR_Commit(UIList):
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
         scene = context.scene
@@ -130,6 +179,42 @@ class DMX_UL_MVR_Commit(UIList):
         col.enabled = item.timestamp_saved > 0
 
 
+class DMX_UL_MVR_Shared_Commit(UIList):
+    def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
+        scene = context.scene
+        dmx = scene.dmx
+        icon = "GROUP_VERTEX"
+        # layout.context_pointer_set("mvr_xchange_clients", item)
+        col = layout.column()
+        col.label(text=f"{item.comment}")
+        col = layout.column()
+        col.operator("dmx.mvr_remove_shared_commit", text="", icon="TRASH").uuid = item.commit_uuid
+
+
+class DMX_UL_MVR_Stations(UIList):
+    def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
+        scene = context.scene
+        dmx = scene.dmx
+        icon = "GROUP_VERTEX"
+        # layout.context_pointer_set("mvr_xchange_clients", item)
+        col = layout.column()
+        col.label(text=f"{item.ip_address}")
+        col = layout.column()
+        col.label(text=f"{item.port}")
+        col = layout.column()
+        col.label(text=f"{item.subscribed}")
+        col = layout.column()
+        col.label(text=f"{item.last_seen}")
+        col = layout.column()
+        col.label(text=f"{item.station_name}")
+        col = layout.column()
+        col.label(text=f"{item.station_uuid}")
+        col = layout.column()
+        col.label(text=f"{item.service_name}")
+        col = layout.column()
+        col.label(text=f"{item.provider}")
+
+
 class DMX_PT_DMX_MVR_X(Panel):
     bl_label = _("MVR-xchange")
     bl_idname = "DMX_PT_DMX_MVR_Xchange"
@@ -143,9 +228,40 @@ class DMX_PT_DMX_MVR_X(Panel):
     def draw(self, context):
         layout = self.layout
         dmx = context.scene.dmx
+        mvr_x = context.window_manager.dmx.mvr_xchange
 
         row = layout.row()
         row.prop(dmx, "zeroconf_enabled")
+
+        row = layout.row()
+        row.prop(mvr_x, "mvr_x_group")
+        row.enabled = not dmx.zeroconf_enabled
+
+        row = layout.row()
+        row.operator("dmx.mvr_x_export", text="Share current version", icon="EXPORT")
+        row.enabled = dmx.zeroconf_enabled
+
+        row = layout.row()
+        row.prop(mvr_x, "commit_message")
+        row.enabled = dmx.zeroconf_enabled
+
+        row = layout.row()
+        row.enabled = dmx.zeroconf_enabled
+
+        row = layout.row()
+        row.label(text=_("Shared versions:"))
+
+        row = layout.row()
+        row.template_list(
+            "DMX_UL_MVR_Shared_Commit",
+            "",
+            mvr_x,
+            "shared_commits",
+            mvr_x,
+            "selected_shared_commit",
+            rows=4,
+        )
+
         row = layout.row()
 
         clients = context.window_manager.dmx.mvr_xchange
@@ -162,6 +278,19 @@ class DMX_PT_DMX_MVR_X(Panel):
 
         row.prop(clients, "selected_mvr_client", text="")
         row.enabled = not dmx.mvrx_enabled
+
+        # MVR-x stations, debug only
+        #row = layout.row()
+        #row.template_list(
+        #    "DMX_UL_MVR_Stations",
+        #    "",
+        #    mvr_x,
+        #    "mvr_xchange_clients",
+        #    mvr_x,
+        #    "selected_client",
+        #    rows=4,
+        #)
+
         row = layout.row()
         col = row.column()
         row.prop(dmx, "mvrx_enabled")
@@ -177,7 +306,11 @@ class DMX_PT_DMX_MVR_X(Panel):
             return
         row = layout.row()
         row.label(text=f"{client.station_name}", icon="LINKED" if dmx.mvrx_enabled else "UNLINKED")
-        layout.template_list(
+
+        row = layout.row()
+        row.label(text=_("Shared:"))
+        row = layout.row()
+        row.template_list(
             "DMX_UL_MVR_Commit",
             "",
             client,
