@@ -79,4 +79,9 @@ class DMX_MVR_Xchange(PropertyGroup):
     selected_shared_commit: IntProperty(default=0)
     selected_client: IntProperty(default=0)
     commit_message: StringProperty(name="Message", description="Message", default="")
-    mvr_x_group: StringProperty(name="Group", description="Group", default="WorkGroup")
+
+    def edit_group(self, context):
+        if "." in self.mvr_x_group:
+            self.mvr_x_group = self.mvr_x_group.replace(".", "_")
+
+    mvr_x_group: StringProperty(name="Group", description="Group", default="WorkGroup", update=edit_group)

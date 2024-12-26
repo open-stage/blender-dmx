@@ -21,6 +21,7 @@ from bpy.types import Operator, Panel, UIList
 import bpy
 from ...mvrx_protocol import DMX_MVR_X_Client
 from ...logging import DMX_Log
+import logging
 import uuid as py_uuid
 from datetime import datetime
 from pathlib import Path
@@ -172,6 +173,9 @@ class DMX_UL_MVR_Commit(UIList):
         col = layout.column()
         col.label(text=f"{item.comment}", icon="CHECKBOX_HLT" if item.timestamp_saved else "CHECKBOX_DEHLT")
         col = layout.column()
+        timestamp = datetime.fromtimestamp(item.timestamp).strftime("%H:%M:%S %b %d")
+        col.label(text=f"{timestamp}")
+        col = layout.column()
         col.operator("dmx.mvr_download", text="", icon="IMPORT").uuid = item.commit_uuid
         col.enabled = dmx.mvrx_enabled
         col = layout.column()
@@ -187,6 +191,9 @@ class DMX_UL_MVR_Shared_Commit(UIList):
         # layout.context_pointer_set("mvr_xchange_clients", item)
         col = layout.column()
         col.label(text=f"{item.comment}")
+        col = layout.column()
+        timestamp = datetime.fromtimestamp(item.timestamp).strftime("%H:%M:%S %b %d")
+        col.label(text=f"{timestamp}")
         col = layout.column()
         col.operator("dmx.mvr_remove_shared_commit", text="", icon="TRASH").uuid = item.commit_uuid
 
@@ -279,17 +286,17 @@ class DMX_PT_DMX_MVR_X(Panel):
         row.prop(clients, "selected_mvr_client", text="")
         row.enabled = not dmx.mvrx_enabled
 
-        # MVR-x stations, debug only
-        #row = layout.row()
-        #row.template_list(
-        #    "DMX_UL_MVR_Stations",
-        #    "",
-        #    mvr_x,
-        #    "mvr_xchange_clients",
-        #    mvr_x,
-        #    "selected_client",
-        #    rows=4,
-        #)
+        if DMX_Log.log.isEnabledFor(logging.DEBUG):
+            row = layout.row()
+            row.template_list(
+                "DMX_UL_MVR_Stations",
+                "",
+                mvr_x,
+                "mvr_xchange_clients",
+                mvr_x,
+                "selected_client",
+                rows=4,
+            )
 
         row = layout.row()
         col = row.column()

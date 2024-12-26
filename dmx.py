@@ -1184,7 +1184,7 @@ class DMX(PropertyGroup):
             DMX_MVR_X_Server.enable() # start the MVR-xchange TCP server for incoming connections
             DMX_MVR_X_Server._instance.server.get_port()
 
-            mvr_x_group = bpy.context.window_manager.dmx.mvr_xchange.mvr_x_group or "BlenderDMX"
+            mvr_x_group = bpy.context.window_manager.dmx.mvr_xchange.mvr_x_group or "WorkGroup"
             DMX_Zeroconf.enable_server(mvr_x_group, DMX_MVR_X_Server.get_port()) # start mdns server and advertise the TCP MVR server
 
         else:
