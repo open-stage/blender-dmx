@@ -178,6 +178,8 @@ class DMX_MVR_X_Server:
     def callback(json_data, data):
         DMX_Log.log.debug(("callback", json_data, data))
         addr, port = data.addr
+        provider = ""
+        station_name = ""
 
         if "StationUUID" not in json_data:
             DMX_Log.log.error(f"Bad response {json_data}")
@@ -187,12 +189,15 @@ class DMX_MVR_X_Server:
             DMX_MVR_X_Server._instance._dmx.createMVR_Commits(json_data["Commits"], uuid)
         if "FileUUID" in json_data:
             DMX_MVR_X_Server._instance._dmx.createMVR_Commits([json_data], uuid)
+
         if "Provider" in json_data:
             provider = json_data["Provider"]
-            station_name = ""
-            if "StationName" in json_data:
-                station_name = json_data["StationName"]
-            DMX_MVR_X_Server._instance._dmx.createMVR_Client(station_name=station_name, station_uuid=uuid, service_name=None, ip_address=addr, port=port, provider=provider)
+
+        if "StationName" in json_data:
+            station_name = json_data["StationName"]
+
+        if provider != "" or station_name != "":
+            DMX_MVR_X_Server._instance._dmx.createMVR_Client(station_name=station_name, station_uuid=uuid, service_name="", ip_address=addr, port=port, provider=provider)
         if "file_downloaded" in json_data:
             DMX_MVR_X_Server._instance._dmx.fetched_mvr_downloaded_file(json_data["file_downloaded"])
 
@@ -235,3 +240,8 @@ class DMX_MVR_X_Server:
                 DMX_MVR_X_Server._instance.server.stop()
             DMX_MVR_X_Server._instance = None
             DMX_Log.log.info("Disabling MVR")
+
+    @staticmethod
+    def post_data(data):
+        if DMX_MVR_X_Server._instance:
+            return DMX_MVR_X_Server._instance.server.post_data(data)

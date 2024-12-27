@@ -61,10 +61,12 @@ class DMX_MVR_Xchange_Client(PropertyGroup):
             icon = "DEFAULT_TEST"
             if any("Production Assist" in x for x in [client.provider, client.station_name]):
                 icon = "PRODUCTION_ASSIST"
-            if any("gMA3" in x for x in [client.provider, client.station_name]):
+            elif any("gMA3" in x for x in [client.provider, client.station_name]):
                 icon = "GMA3"
-            if any("GrandMA3" in x for x in [client.provider, client.station_name]):
+            elif any("GrandMA3" in x for x in [client.provider, client.station_name]):
                 icon = "GMA3"
+            elif any("BlenderDMX" in x for x in [client.provider, client.station_name]):
+                icon = "BLENDER_DMX"
             data.append((client.station_uuid, client.station_name, client.station_uuid, dmx.custom_icons[icon].icon_id, index))
         return data
 
@@ -72,5 +74,14 @@ class DMX_MVR_Xchange_Client(PropertyGroup):
 class DMX_MVR_Xchange(PropertyGroup):
     selected_commit: IntProperty(default=0)
     mvr_xchange_clients: CollectionProperty(name="MVR-xchange Clients", type=DMX_MVR_Xchange_Client)
-
     selected_mvr_client: EnumProperty(name="Client", description="", items=DMX_MVR_Xchange_Client.get_clients)
+    shared_commits: CollectionProperty(name="Commits", type=DMX_MVR_Xchange_Commit)
+    selected_shared_commit: IntProperty(default=0)
+    selected_client: IntProperty(default=0)
+    commit_message: StringProperty(name="Message", description="Message", default="")
+
+    def edit_group(self, context):
+        if "." in self.mvr_x_group:
+            self.mvr_x_group = self.mvr_x_group.replace(".", "_")
+
+    mvr_x_group: StringProperty(name="Group", description="Group", default="WorkGroup", update=edit_group)

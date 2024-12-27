@@ -6,13 +6,15 @@
 
 https://blenderdmx.eu
 
-A DMX visualization tool inside <a href="https://blender.org">Blender</a>, designed to offer a free, easy and fully packed solution for Lighting Designers. Device definition is based on <a href="https://gdtf-share.com">GDTF Specification</a>, utilizing the Fixture library on <a href="https://gdtf-share.com">GDTF Share</a>. GDTF import is based on <a href="https://github.com/open-stage/python-gdtf">pygdtf</a> - Python GDTF library, <a href="https://gdtf-share.com">MVR</a> scene import is based on <a href="https://github.com/open-stage/python-mvr">pymvr</a> - Python MVR library. For more GDTF/MVR resources and news see <a href="https://gdtf.eu">GDTF.eu</a>.
+A DMX visualization tool inside <a href="https://blender.org">Blender</a>, designed to offer a free and easy solution for Lighting Designers. Device definition is based on <a href="https://gdtf-share.com">GDTF Specification</a>, utilizing the Fixture library on <a href="https://gdtf-share.com">GDTF Share</a>. GDTF import is based on <a href="https://github.com/open-stage/python-gdtf">pygdtf</a> - Python GDTF library, <a href="https://gdtf-share.com">MVR</a> scene import is based on <a href="https://github.com/open-stage/python-mvr">pymvr</a> - Python MVR library. For more GDTF/MVR resources and news see <a href="https://gdtf.eu">GDTF.eu</a>.
 
 ![](https://i.ibb.co/rvpKYxB/render-eevee-7.png)
 
 ## Installation
 
-Make sure you have [Blender](https://www.blender.org/download/), latest version 4.2 is recommended, minimal version is 3.4.
+Make sure you have [Blender](https://www.blender.org/download/) 4.x installed,
+minimal working version is 3.4 or 4.1 (via older addon), latest tested is 4.3
+via Extension.
 
 Go to [DOWNLOAD PAGE](https://blenderdmx.eu/download).
 

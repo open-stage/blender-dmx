@@ -25,10 +25,6 @@ from datetime import datetime
 from ...mvrxchange.mvr_message import mvr_message
 from ...logging import DMX_Log
 
-# A very rudimentary MVR-xchange client
-# For some reason, some apps close the socket, so we must ensure to reconnect
-
-
 class client(Thread):
     """MVR TCP client, it is instanced via blender specific DMX_MVR_X_Client class located in mvrx_protocol.py"""
 
@@ -84,6 +80,7 @@ class client(Thread):
         else:
             commit_uuid = commit.commit_uuid
         self.send(mvr_message.create_message("MVR_REQUEST", uuid=commit.station_uuid, file_uuid=commit_uuid))
+        #self.send(mvr_message.create_message("MVR_REQUEST", uuid=self.application_uuid, file_uuid=commit_uuid))
 
     def stop(self):
         self.running = False

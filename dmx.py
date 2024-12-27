@@ -27,8 +27,10 @@ import re
 from datetime import datetime
 import traceback
 from types import SimpleNamespace
+from pathlib import Path
 
 import pymvr
+import logging
 from .mvr import load_mvr
 
 from . import param as param
@@ -41,7 +43,7 @@ from .artnet import DMX_ArtNet
 from .acn import DMX_sACN
 from .network import DMX_Network
 from .logging import DMX_Log
-from .blender_utils import copy_blender_profiles
+from .blender_utils import copy_blender_profiles, get_application_version
 
 from .panels import recorder as recorder
 from .panels import setup as setup
@@ -161,6 +163,7 @@ class DMX(PropertyGroup):
                 setup.DMX_OT_Copy_Custom_Data,
                 setup.DMX_OT_Setup_RemoveDMX,
                 setup.DMX_OT_Reload_Addon,
+                setup.DMX_OT_Setup_EnableSelectGeometries,
                 fixtures.DMX_OT_IES_Import,
                 fixtures.DMX_OT_IES_Remove,
                 fixtures.DMX_PT_Fixtures,
@@ -216,6 +219,10 @@ class DMX(PropertyGroup):
                 panels_mvr.DMX_UL_MVR_Commit,
                 panels_mvr.DMX_OP_MVR_Refresh,
                 panels_mvr.DMX_OP_MVR_Request,
+                panels_mvr.DMX_OP_MVR_X_Export,
+                panels_mvr.DMX_UL_MVR_Shared_Commit,
+                panels_mvr.DMX_UL_MVR_Stations,
+                panels_mvr.DMX_OP_MVR_RemoveSharedCommit,
                 fixtures.DMX_OT_Fixture_ForceRemove,
                 fixtures.DMX_OT_Fixture_SelectNext,
                 fixtures.DMX_OT_Fixture_SelectPrevious,
@@ -249,6 +256,7 @@ class DMX(PropertyGroup):
         DMX.custom_icons.load("PRODUCTION_ASSIST", os.path.join(path, "pa.png"), "IMAGE")
         DMX.custom_icons.load("GMA3", os.path.join(path, "ma.png"), "IMAGE")
         DMX.custom_icons.load("GDTF_FILE", os.path.join(path, "gdtf_file_icon_small.png"), "IMAGE")
+        DMX.custom_icons.load("BLENDER_DMX", os.path.join(path, "blender_dmx.png"), "IMAGE")
         DMX.custom_icons.load("MVR_FILE", os.path.join(path, "mvr_file_icon_small.png"), "IMAGE")
 
         for cls in DMX.classes_setup:
@@ -583,6 +591,7 @@ class DMX(PropertyGroup):
         #self.copy_default_profiles_to_user_folder()
         self.check_python_version()
         self.check_blender_version()
+        self.print_extension_version()
 
         if bpy.app.version >= (4, 2):
             # do not do version check online in 4.2 and up
@@ -625,6 +634,10 @@ class DMX(PropertyGroup):
             DMX_Log.log.error(f"Blender version of at least 3.4 is needed, you are using {bpy.app.version} ❌")
             return
         DMX_Log.log.info(f"Blender version: {bpy.app.version} ✅")
+
+    def print_extension_version(self):
+        current_version = get_application_version()
+        DMX_Log.log.info(f"BlenderDMX version: {current_version}")
 
     def ensure_directories_exist(self):
         list_paths=[]
@@ -985,15 +998,9 @@ class DMX(PropertyGroup):
         update = update_device_label)
 
     def onSelectGeometries(self, context):
-        for fixture in self.fixtures:
-            for obj in fixture.collection.objects:
-                if obj.get("geometry_root", False):
-                    continue
-                if obj.get("2d_symbol", None):
-                    continue
-                if "Target" in obj.name:
-                    continue
-                obj.hide_select = not self.select_geometries
+        # confirmation dialog
+        bpy.ops.dmx.enabling_geometry_selection('INVOKE_DEFAULT')
+        # the actual logic is now in the confirmation dialog's execute() function
 
     select_geometries: BoolProperty(
         name = _("Allow Selecting Geometries"),
@@ -1169,13 +1176,30 @@ class DMX(PropertyGroup):
         if self.zeroconf_enabled:
             clients  = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
             clients.clear()
+            shared_commits  = bpy.context.window_manager.dmx.mvr_xchange.shared_commits
+            shared_commits.clear()
             DMX_Log.log.info("Enable mdns discovery")
             DMX_Zeroconf.enable_discovery()
+
+            DMX_MVR_X_Server.enable() # start the MVR-xchange TCP server for incoming connections
+            DMX_MVR_X_Server._instance.server.get_port()
+
+            mvr_x_group = bpy.context.window_manager.dmx.mvr_xchange.mvr_x_group or "WorkGroup"
+            DMX_Zeroconf.enable_server(mvr_x_group, DMX_MVR_X_Server.get_port()) # start mdns server and advertise the TCP MVR server
+
         else:
+            self.mvrx_enabled = False
+            DMX_MVR_X_Server.disable()
+            DMX_Log.log.info("disable mdns")
+            DMX_Zeroconf.disable_server()
             DMX_Log.log.info("Disable mdns discovery")
             DMX_Zeroconf.close()
+            DMX_Log.log.info("disabled all")
             clients  = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
             clients.clear()
+            shared_commits  = bpy.context.window_manager.dmx.mvr_xchange.shared_commits
+            shared_commits.clear()
+
 
     def onMVR_xchange_enable(self, context):
         if self.mvrx_enabled:
@@ -1188,10 +1212,15 @@ class DMX(PropertyGroup):
                     break
             if not selected_client:
                 return
+
+            bpy.context.window_manager.dmx.mvr_xchange.mvr_x_group = selected_client.service_name
             DMX_Log.log.debug((selected_client.ip_address, selected_client.station_name))
             DMX_MVR_X_Server.enable() # start the MVR-xchange TCP server for incoming connections
             DMX_MVR_X_Server._instance.server.get_port()
+            DMX_Zeroconf.disable_server()
             DMX_Zeroconf.enable_server(selected_client.service_name, DMX_MVR_X_Server.get_port()) # start mdns server and advertise the TCP MVR server
+            #except Exception as e:
+            #    DMX_Log.log.error("Error registering an mdns server")
             DMX_MVR_X_Client.join(selected_client) # start MVR-xchange client TCP connection and send MVR_JOIN message
         else:
             DMX_Log.log.info("leave client")
@@ -1199,10 +1228,6 @@ class DMX(PropertyGroup):
             DMX_Log.log.info("disable client")
             DMX_MVR_X_Client.disable()
             DMX_Log.log.info("disable server")
-            DMX_MVR_X_Server.disable()
-            DMX_Log.log.info("disable mdns")
-            DMX_Zeroconf.disable_server()
-            DMX_Log.log.info("disabled all")
 
 
 
@@ -1266,15 +1291,15 @@ class DMX(PropertyGroup):
     )
 
     zeroconf_enabled : BoolProperty(
-        name = _("Enable MVR-xchange discovery"),
-        description=_("Enables MVR-xchange discovery"),
+        name = _("Enable MVR-xchange"),
+        description=_("Enables MVR-xchange sharing and discovery"),
         default = False,
         update = onZeroconfEnableDiscovery
     )
 
     mvrx_enabled : BoolProperty(
-        name = _("Enable MVR-xchange connection"),
-        description=_("Connects to MVR-xchange client"),
+        name = _("Connect to a selected station"),
+        description=_("Connects to an MVR-xchange station"),
         default = False,
         update = onMVR_xchange_enable
     )
@@ -1824,6 +1849,7 @@ class DMX(PropertyGroup):
             pymvr.AUXData().to_xml(parent = scene)
             mvr.files_list = list(set(fixtures_list))
             mvr.write_mvr(file_name)
+            file_size = Path(file_name).stat().st_size
 
         except Exception as e:
             traceback.print_exception(e)
@@ -1831,7 +1857,7 @@ class DMX(PropertyGroup):
 
         bpy.context.window_manager.dmx.pause_render = False # re-enable render loop
         print("INFO", "MVR scene exported in %.4f sec." % (time.time() - start_time))
-        return SimpleNamespace(ok=True)
+        return SimpleNamespace(ok=True, file_size = file_size)
 
 
     def ensureUniverseExists(self, universe):
@@ -1846,13 +1872,17 @@ class DMX(PropertyGroup):
         prefs = bpy.context.preferences.addons[__package__].preferences
         application_uuid = prefs.get("application_uuid", str(py_uuid.uuid4()))  # must never be 0
         if application_uuid == station_uuid:
-            DMX_Log.log.info("This is myself, do not register as an MVR-xchange provider")
-            return
+            if not DMX_Log.log.isEnabledFor(logging.DEBUG):
+                DMX_Log.log.info("This is myself, do not register as an MVR-xchange provider")
+                return
 
         clients  = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
         for client in clients:
             if client.station_uuid == station_uuid:
                 return # client already in the list
+
+        if ip_address == "":
+            return
 
         client = clients.add()
         client.station_name = station_name or ""
@@ -1876,6 +1906,7 @@ class DMX(PropertyGroup):
     def updateMVR_Client(self, station_uuid, station_name=None, service_name = None, ip_address=None, port=None, provider=None):
         clients  = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
         updated = False
+
         for client in clients:
             if client.station_uuid == station_uuid:
                 if station_name:
@@ -1924,6 +1955,18 @@ class DMX(PropertyGroup):
                         new_commit.file_size = commit["FileSize"]
                         new_commit.file_name = filename
                         new_commit.timestamp = now
+
+    def createMVR_Shared_Commit(self, commit):
+        commits  = bpy.context.window_manager.dmx.mvr_xchange.shared_commits
+        now = int(datetime.now().timestamp())
+        new_commit = commits.add()
+        new_commit.comment = commit.comment
+        new_commit.commit_uuid = commit.file_uuid
+        new_commit.file_size = commit.file_size
+        new_commit.file_name = commit.file_name
+        new_commit.timestamp = now
+
+        DMX_MVR_X_Server._instance.server.set_post_data(new_commit)
 
     def fetched_mvr_downloaded_file(self, commit):
         clients  = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
