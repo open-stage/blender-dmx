@@ -182,6 +182,19 @@ class DMX_UL_MVR_Commit(UIList):
         col.operator("dmx.mvr_import", text="", icon="CHECKBOX_HLT").uuid = item.commit_uuid
         col.enabled = item.timestamp_saved > 0
 
+    def filter_items(self, context, data, property):
+        # Filter the items in the UIList
+        flt_flags = []
+        flt_name = self.filter_name.lower()  # Get the search string from the UIList
+
+        for item in data.commits:
+            if flt_name in item.comment.lower():
+                flt_flags.append(self.bitflag_filter_item)
+            else:
+                flt_flags.append(0)
+
+        return flt_flags, []
+
 
 class DMX_UL_MVR_Shared_Commit(UIList):
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
@@ -196,6 +209,19 @@ class DMX_UL_MVR_Shared_Commit(UIList):
         col.label(text=f"{timestamp}")
         col = layout.column()
         col.operator("dmx.mvr_remove_shared_commit", text="", icon="TRASH").uuid = item.commit_uuid
+
+    def filter_items(self, context, data, property):
+        # Filter the items in the UIList
+        flt_flags = []
+        flt_name = self.filter_name.lower()  # Get the search string from the UIList
+
+        for item in data.shared_commits:
+            if flt_name in item.comment.lower():
+                flt_flags.append(self.bitflag_filter_item)
+            else:
+                flt_flags.append(0)
+
+        return flt_flags, []
 
 
 class DMX_UL_MVR_Stations(UIList):
@@ -220,6 +246,19 @@ class DMX_UL_MVR_Stations(UIList):
         col.label(text=f"{item.service_name}")
         col = layout.column()
         col.label(text=f"{item.provider}")
+
+    def filter_items(self, context, data, property):
+        # Filter the items in the UIList
+        flt_flags = []
+        flt_name = self.filter_name.lower()  # Get the search string from the UIList
+
+        for item in data.mvr_xchange_clients:
+            if flt_name in item.service_name.lower():
+                flt_flags.append(self.bitflag_filter_item)
+            else:
+                flt_flags.append(0)
+
+        return flt_flags, []
 
 
 class DMX_PT_DMX_MVR_X(Panel):
