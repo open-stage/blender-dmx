@@ -23,6 +23,7 @@ wheels = [
   "wheels/open_stage_zeroconf-0.132.2.dev0-py3-none-any.whl",
   "wheels/pypsn-0.2.3-py3-none-any.whl",
   "wheels/io_scene_3ds-2.7.4-py3-none-any.whl",
+  "wheels/toml-0.10.2-py2.py3-none-any.whl",
 ]
 
 [permissions]
