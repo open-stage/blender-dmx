@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-11-30 11:27+0100\n"
-"PO-Revision-Date: 2024-09-07 15:05+0000\n"
+"PO-Revision-Date: 2024-12-27 19:00+0000\n"
 "Last-Translator: vanous <petr+weblate@linuks.cz>\n"
+"Language-Team: Czech <https://hosted.weblate.org/projects/blenderdmx/main/cs/"
+">\n"
 "Language: cs_CZ\n"
-"Language-Team: Czech "
-"<https://hosted.weblate.org/projects/blenderdmx/main/cs/>\n"
-"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
+"X-Generator: Weblate 5.10-dev\n"
 "Generated-By: Babel 2.14.0\n"
 
 msgid "File doesn't exist"
@@ -335,12 +336,11 @@ msgstr "Jednotky"
 msgid "How many units of this light to add"
 msgstr "Kolik kusů tohoto svítidla přidat"
 
-#, fuzzy
 msgid "Import Focus Points as Targets"
-msgstr "Importovat vlastní data"
+msgstr "Importovat Fokusovací Body jako Cíle"
 
 msgid "Create Targets from MVR Focus Points"
-msgstr ""
+msgstr "Vytvořit Cíle z MVR Fokusovacích Bodů"
 
 msgid "Enable PSN Input"
 msgstr "Povolit PSN Vstup"
@@ -441,21 +441,17 @@ msgstr "Menu Odebrat svítidlo"
 msgid "Remove selected fixtures from Scene"
 msgstr "Odebrat vybraná svítidla ze scény"
 
-#, fuzzy
 msgid "Select Previous Fixture"
-msgstr "Vybrat Svítidlo"
+msgstr "Vybrat Předchozí Svítidlo"
 
-#, fuzzy
 msgid "Select Next Fixture"
-msgstr "Vybrat Svítidlo"
+msgstr "Vybrat Následující Svítidlo"
 
-#, fuzzy
 msgid "Select Previous Target"
-msgstr "Vybrat Cíle"
+msgstr "Vybrat Předchozí Cíl"
 
-#, fuzzy
 msgid "Select Next Target"
-msgstr "Vybrat Cíle"
+msgstr "Vybrat Následující Cíl"
 
 msgid "DMX > Fixture > Item"
 msgstr "Menu Svítidlo"
@@ -704,19 +700,19 @@ msgid "Delete from all fixtures"
 msgstr "Odstraní ze všech svítidel"
 
 msgid "Objects with #bdmx drivers"
-msgstr ""
+msgstr "Objekty s #bdmx drivery"
 
 msgid "Enable Keying - Disable Playback"
-msgstr ""
+msgstr "Zapnout Klíčování - Vypnout Přehrávání"
 
 msgid "Enable disabled bdmx drivers"
-msgstr ""
+msgstr "Zapnout vypnuté bdmx drivery"
 
 msgid "Disable Keying - Enable Playback"
-msgstr ""
+msgstr "Vypnout Klíčování - Zapnout Přehrávání"
 
 msgid "Disable bdmx drivers"
-msgstr ""
+msgstr "Vypnout bdmx drivery"
 
 msgid "DMX > Setup > New Show"
 msgstr "Menu Nová show"
@@ -724,12 +720,11 @@ msgstr "Menu Nová show"
 msgid "Clear any existing DMX data and create a new show."
 msgstr "Vyčistí existující DMX data a vytvoří novou show."
 
-#, fuzzy
 msgid "Really remove all fixtures and DMX from blend file?"
-msgstr "Odebrat vybraná svítidla ze scény"
+msgstr "Opravdu odebrat všechna svítidla a DMX z blend souboru?"
 
 msgid "Try to remove DMX from the Blender showfile"
-msgstr ""
+msgstr "Odebrání DMX z Blender souboru"
 
 msgid "Beam diameter small"
 msgstr "Malý průměr paprsku"
@@ -776,9 +771,8 @@ msgstr "Vyčistit Projektová data"
 msgid "Copy (import) old data from addon folder"
 msgstr "Kopírovat (importovat) stará data ze složky addonu"
 
-#, fuzzy
 msgid "Remove DMX from blend file"
-msgstr "Odebrat z výběru"
+msgstr "Odebrat DMX z blend souboru"
 
 msgid "Import"
 msgstr "Import"
@@ -1360,4 +1354,3 @@ msgstr "DMX Universe"
 
 #~ msgid "For Blender 4.2 and up use the Extension"
 #~ msgstr "Pro Blender 4.2 a výše použíjte Extension"
-
