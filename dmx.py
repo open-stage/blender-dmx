@@ -1227,9 +1227,6 @@ class DMX(PropertyGroup):
             DMX_MVR_X_Client.leave()
             DMX_Log.log.info("disable client")
             DMX_MVR_X_Client.disable()
-            DMX_Log.log.info("disable server")
-
-
 
 
     # OSC functionality

@@ -57,6 +57,7 @@ class server(Thread):
         self.join()
 
     def set_post_data(self, commit):
+        DMX_Log.log.debug(f"Setting post data")
         commits = [commit]
         self.post_data.append(mvr_message.create_message("MVR_COMMIT", commits=commits, uuid=self.uuid))
 
@@ -126,7 +127,6 @@ class server(Thread):
 
     def process_json_message(self, json_data, data):
         DMX_Log.log.debug(f"Json message {json_data} {data}")
-        self.callback(json_data, data)
         if json_data["Type"] == "MVR_JOIN":
             shared_commits = bpy.context.window_manager.dmx.mvr_xchange.shared_commits
             commits = []
@@ -172,6 +172,8 @@ class server(Thread):
                 data.outb.append(buffer)
                 buffer = file_object.read(1024)
             file_object.close()
+
+        self.callback(json_data, data)
 
     def run(self):
         post_data = None

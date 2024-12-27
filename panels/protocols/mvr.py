@@ -153,7 +153,7 @@ class DMX_OP_MVR_RemoveSharedCommit(Operator):
     uuid: StringProperty()
 
     def execute(self, context):
-        DMX_Log.log.info("removing", self.uuid)
+        DMX_Log.log.info(("removing", self.uuid))
 
         commits = context.window_manager.dmx.mvr_xchange.shared_commits
         for idx, commit in enumerate(commits):

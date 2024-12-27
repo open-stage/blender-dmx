@@ -48,17 +48,20 @@ class DMX_MVR_X_Client:
 
     @staticmethod
     def callback(data):
-        if "StationUUID" not in data:
-            DMX_Log.log.debug(f"Bad response {data}")
-            return
-        uuid = data["StationUUID"]
-        if "Commits" in data:
+        uuid = ""
+        if "StationUUID" in data:
+            uuid = data["StationUUID"]
+
+        if "Commits" in data and uuid != "":
             DMX_MVR_X_Client._instance._dmx.createMVR_Commits(data["Commits"], uuid)
-        if "FileUUID" in data:
+
+        if "FileUUID" in data and uuid != "":
             DMX_MVR_X_Client._instance._dmx.createMVR_Commits([data], uuid)
-        if "Provider" in data:
+
+        if "Provider" in data and uuid != "":
             provider = data["Provider"]
             DMX_MVR_X_Client._instance._dmx.updateMVR_Client(provider=provider, station_uuid=uuid)
+
         if "file_downloaded" in data:
             DMX_MVR_X_Client._instance._dmx.fetched_mvr_downloaded_file(data["file_downloaded"])
 
@@ -180,26 +183,28 @@ class DMX_MVR_X_Server:
         addr, port = data.addr
         provider = ""
         station_name = ""
+        uuid = ""
 
-        if "StationUUID" not in json_data:
-            DMX_Log.log.error(f"Bad response {json_data}")
-            return
-        uuid = json_data["StationUUID"]
-        if "Commits" in json_data:
+        if "StationUUID" in json_data:
+            uuid = json_data["StationUUID"]
+
+        if "Commits" in json_data and uuid != "":
             DMX_MVR_X_Server._instance._dmx.createMVR_Commits(json_data["Commits"], uuid)
-        if "FileUUID" in json_data:
+
+        if "FileUUID" in json_data and uuid != "":
             DMX_MVR_X_Server._instance._dmx.createMVR_Commits([json_data], uuid)
 
-        if "Provider" in json_data:
-            provider = json_data["Provider"]
+        # if "Provider" in json_data:
+        #    provider = json_data["Provider"]
 
-        if "StationName" in json_data:
-            station_name = json_data["StationName"]
+        # if "StationName" in json_data:
+        #    station_name = json_data["StationName"]
 
-        if provider != "" or station_name != "":
-            DMX_MVR_X_Server._instance._dmx.createMVR_Client(station_name=station_name, station_uuid=uuid, service_name="", ip_address=addr, port=port, provider=provider)
-        if "file_downloaded" in json_data:
-            DMX_MVR_X_Server._instance._dmx.fetched_mvr_downloaded_file(json_data["file_downloaded"])
+        # if provider != "" and station_name != "" and uuid != "":
+        #    DMX_MVR_X_Server._instance._dmx.updateMVR_Client(station_name=station_name, station_uuid=uuid, service_name="", ip_address=addr, port=port, provider=provider)
+
+        # if "file_downloaded" in json_data:
+        #    DMX_MVR_X_Server._instance._dmx.fetched_mvr_downloaded_file(json_data["file_downloaded"])
 
     @staticmethod
     def request_file(commit):
