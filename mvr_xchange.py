@@ -18,6 +18,7 @@
 import bpy
 from bpy.props import BoolProperty, CollectionProperty, EnumProperty, IntProperty, StringProperty
 from bpy.types import PropertyGroup
+from .network import DMX_Network
 
 # MVR-xchange commit and client RNA structures
 
@@ -79,6 +80,15 @@ class DMX_MVR_Xchange(PropertyGroup):
     selected_shared_commit: IntProperty(default=0)
     selected_client: IntProperty(default=0)
     commit_message: StringProperty(name="Message", description="Message", default="")
+
+    def get_addresses(self, context):
+        addresses = DMX_Network.cards(None, None)
+        if len(addresses):
+            return addresses[1:]
+        else:
+            return addresses
+
+    ip_address: EnumProperty(name="IPv4 Address for MVR-xchange", description="The network card/interface for MVR-xchange", items=get_addresses)
 
     def edit_group(self, context):
         if "." in self.mvr_x_group:

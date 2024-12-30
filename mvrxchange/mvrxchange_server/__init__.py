@@ -21,6 +21,7 @@ import selectors
 import types
 import json
 import bpy
+import time
 from threading import Thread
 from uuid import uuid4
 from datetime import datetime
@@ -37,11 +38,25 @@ class server(Thread):
         self.uuid = uuid
         self.running = True
         self.callback = callback
+
         self.sel = selectors.DefaultSelector()
         self.lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.lsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.lsock.bind(("", 0))
-        self.port = self.lsock.getsockname()[1]
+
+        # allow Windows to get the port
+        max_retries = 5
+        retry_delay = 0.1
+        for _ in range(max_retries):
+            try:
+                self.port = self.lsock.getsockname()[1]
+                break
+            except OSError:
+                time.sleep(retry_delay)
+                retry_delay = retry_delay * 2
+        else:
+            raise RuntimeError("Failed to get the port number")
+
         self.lsock.listen()
         DMX_Log.log.debug(f"Listening on {self.port}, {uuid}")
         self.lsock.setblocking(False)

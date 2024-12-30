@@ -280,6 +280,10 @@ class DMX_PT_DMX_MVR_X(Panel):
         row.prop(dmx, "zeroconf_enabled")
 
         row = layout.row()
+        row.prop(mvr_x, "ip_address")
+        row.enabled = not dmx.zeroconf_enabled
+
+        row = layout.row()
         row.prop(mvr_x, "mvr_x_group")
         row.enabled = not dmx.zeroconf_enabled
 
