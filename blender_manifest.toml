@@ -1,12 +1,12 @@
 schema_version = "1.0.0"
 id = "open_stage_blender_dmx"
-version = "1.8.2"
+version = "1.8.3"
 name = "DMX"
 tagline = "DMX visualization and programming with GDTF/MVR, and Networking"
 maintainer = "Open Stage"
 type = "add-on"
 website = "https://blenderdmx.eu/"
-tags = ["Lighting", "Animation"]
+tags = ["Lighting", "Animation", "Scene", "Import-Export", "Rigging", "Tracking", "Sequencer", "3D View", "Camera"]
 blender_version_min = "4.2.0"
 
 license = [

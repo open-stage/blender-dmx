@@ -1,10 +1,18 @@
 ### Changelog
 
+### 1.8.3
+
+* MVR-xchange networking working also on Windows:
+    * Tweak networking to get port number on Windows hosts
+    * List only MVR-xchange clients with at least minimal required data
+    * Do not allow empty mDNS service group
+    * Add network interface selection
+
 ### 1.8.2
 
 * Update pygdtf to pygdtf-1.0.5.dev8
 * Translated using Weblate:
-    * (Czech) (origin/main, origin/HEAD) [vanous]
+    * (Czech) [vanous]
     * (Italian) [Fede Pre]
     * (Tamil) [தமிழ்நேரம்]
     * (Chinese (Simplified Han script)) [大学没毕业]
