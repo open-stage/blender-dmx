@@ -93,5 +93,7 @@ class DMX_MVR_Xchange(PropertyGroup):
     def edit_group(self, context):
         if "." in self.mvr_x_group:
             self.mvr_x_group = self.mvr_x_group.replace(".", "_")
+        if not self.mvr_x_group:
+            self.mvr_x_group = "WorkGroup"
 
     mvr_x_group: StringProperty(name="Group", description="Group", default="WorkGroup", update=edit_group)
