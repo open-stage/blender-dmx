@@ -351,7 +351,7 @@ class DMX_PT_DMX_MVR_X(Panel):
             col2.operator("dmx.mvr_request", text="", icon="IMPORT").station_uuid = client.station_uuid
         col1.enabled = col2.enabled = dmx.mvrx_enabled
         # row.operator("dmx.mvr_test", text="Test", icon="CANCEL")
-        row.enabled = len(all_clients) > 0
+        row.enabled = len(clients.selected_mvr_client) > 0
         if not client:
             return
         row = layout.row()

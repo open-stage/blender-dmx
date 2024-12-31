@@ -68,7 +68,8 @@ class DMX_MVR_Xchange_Client(PropertyGroup):
                 icon = "GMA3"
             elif any("BlenderDMX" in x for x in [client.provider, client.station_name]):
                 icon = "BLENDER_DMX"
-            data.append((client.station_uuid, client.station_name, client.station_uuid, dmx.custom_icons[icon].icon_id, index))
+            if client.station_uuid and client.station_name and client.service_name:
+                data.append((client.station_uuid, client.station_name, client.station_uuid, dmx.custom_icons[icon].icon_id, index))
         return data
 
 
