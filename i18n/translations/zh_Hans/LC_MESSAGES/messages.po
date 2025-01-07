@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-11-30 11:27+0100\n"
-"PO-Revision-Date: 2024-12-05 04:00+0000\n"
-"Last-Translator: 大学没毕业 <ziweidao@foxmail.com>\n"
+"PO-Revision-Date: 2025-01-08 03:00+0000\n"
+"Last-Translator: HuangHai <deathblood@qq.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/blenderdmx/main/zh_Hans/>\n"
 "Language: zh_Hans\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.9-dev\n"
+"X-Generator: Weblate 5.10-dev\n"
 "Generated-By: Babel 2.14.0\n"
 
 msgid "File doesn't exist"
@@ -326,12 +326,11 @@ msgstr "单位"
 msgid "How many units of this light to add"
 msgstr "此灯要添加多少个单位"
 
-#, fuzzy
 msgid "Import Focus Points as Targets"
-msgstr "导入自定义数据"
+msgstr "导入焦点作为目标"
 
 msgid "Create Targets from MVR Focus Points"
-msgstr ""
+msgstr "从 MVR 焦点创建目标"
 
 msgid "Enable PSN Input"
 msgstr "开启 PSN 输入"
@@ -691,19 +690,19 @@ msgid "Delete from all fixtures"
 msgstr "从所有灯具中删除"
 
 msgid "Objects with #bdmx drivers"
-msgstr ""
+msgstr "带有 #bdmx 驱动的物体"
 
 msgid "Enable Keying - Disable Playback"
-msgstr ""
+msgstr "启用插帧 - 禁用回放"
 
 msgid "Enable disabled bdmx drivers"
-msgstr ""
+msgstr "启用禁用的 bdmx 驱动"
 
 msgid "Disable Keying - Enable Playback"
-msgstr ""
+msgstr "禁用插帧 - 启用回放"
 
 msgid "Disable bdmx drivers"
-msgstr ""
+msgstr "禁用 bdmx 驱动"
 
 msgid "DMX > Setup > New Show"
 msgstr "DMX > 设置 > 新建演出"
@@ -715,7 +714,7 @@ msgid "Really remove all fixtures and DMX from blend file?"
 msgstr "的确要从 blend 文件中移除所有灯具和 DMX 吗？"
 
 msgid "Try to remove DMX from the Blender showfile"
-msgstr ""
+msgstr "尝试从 Blender 演出文件中删除 DMX"
 
 msgid "Beam diameter small"
 msgstr "光束直径小"
