@@ -9,3 +9,4 @@ assets/models/*/*
 *.zip
 blenderDMX.log*
 *.json
+.venv

@@ -21,9 +21,11 @@ from threading import Thread
 from queue import Queue
 import time
 import selectors
+import bpy
 from datetime import datetime
 from ...mvrxchange.mvr_message import mvr_message
 from ...logging import DMX_Log
+
 
 class client(Thread):
     """MVR TCP client, it is instanced via blender specific DMX_MVR_X_Client class located in mvrx_protocol.py"""
@@ -67,10 +69,20 @@ class client(Thread):
         self.socket.close()
 
     def join_mvr(self):
-        self.send(mvr_message.create_message("MVR_JOIN", uuid=self.application_uuid))
+        shared_commits = bpy.context.window_manager.dmx.mvr_xchange.shared_commits
+        commits = []
+        for commit in shared_commits:
+            commit_template = mvr_message.commit_message.copy()
+            commit_template["FileSize"] = commit.file_size
+            commit_template["FileUUID"] = commit.commit_uuid
+            commit_template["StationUUID"] = self.application_uuid
+            commit_template["FileName"] = commit.file_name or commit.comment.replace(" ", "_")
+            commit_template["Comment"] = commit.comment
+            commits.append(commit_template)
+        self.send(mvr_message.craft_packet(mvr_message.create_message("MVR_JOIN", commits=commits, uuid=self.application_uuid)))
 
     def leave_mvr(self):
-        self.send(mvr_message.create_message("MVR_LEAVE", uuid=self.application_uuid))
+        self.send(mvr_message.craft_packet(mvr_message.create_message("MVR_LEAVE", uuid=self.application_uuid)))
 
     def request_file(self, commit, path):
         self.filepath = path
@@ -79,8 +91,8 @@ class client(Thread):
             commit_uuid = ""
         else:
             commit_uuid = commit.commit_uuid
-        self.send(mvr_message.create_message("MVR_REQUEST", uuid=commit.station_uuid, file_uuid=commit_uuid))
-        #self.send(mvr_message.create_message("MVR_REQUEST", uuid=self.application_uuid, file_uuid=commit_uuid))
+        self.send(mvr_message.craft_packet(mvr_message.create_message("MVR_REQUEST", uuid=commit.station_uuid, file_uuid=commit_uuid)))
+        # self.send(mvr_message.create_message("MVR_REQUEST", uuid=self.application_uuid, file_uuid=commit_uuid))
 
     def stop(self):
         self.running = False

@@ -74,7 +74,7 @@ from .node_arranger import DMX_OT_ArrangeSelected
 from .util import rgb_to_cmy, ShowMessageBox, cmy_to_rgb, flatten_color, draw_top_message
 from .mvr_objects import DMX_MVR_Object, DMX_MVR_Class
 from .mvr_xchange import DMX_MVR_Xchange_Commit, DMX_MVR_Xchange_Client, DMX_MVR_Xchange
-from .mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server
+from .mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server, DMX_MVR_X_WS_Client
 import bpy.utils.previews
 from .material import set_light_nodes, get_gobo_material
 from bpy.props import (BoolProperty,
@@ -117,7 +117,9 @@ class DMX(PropertyGroup):
                     DMX_Value,
                     setup.DMX_PT_Setup,
                     panels_mvr.DMX_OP_MVR_Download,
+                    panels_mvr.DMX_OP_MVR_WS_Download,
                     panels_mvr.DMX_OP_MVR_Import,
+                    panels_mvr.DMX_OP_MVR_WS_Import,
                     DMX_MVR_Xchange_Commit,
                     DMX_MVR_Xchange_Client,
                     DMX_MVR_Xchange,
@@ -217,8 +219,10 @@ class DMX(PropertyGroup):
                 fixtures.DMX_UL_Fixtures,
                 panels_mvr.DMX_PT_DMX_MVR_X,
                 panels_mvr.DMX_UL_MVR_Commit,
+                panels_mvr.DMX_UL_MVR_WS_Commit,
                 panels_mvr.DMX_OP_MVR_Refresh,
                 panels_mvr.DMX_OP_MVR_Request,
+                panels_mvr.DMX_OP_MVR_WS_Refresh,
                 panels_mvr.DMX_OP_MVR_X_Export,
                 panels_mvr.DMX_UL_MVR_Shared_Commit,
                 panels_mvr.DMX_UL_MVR_Stations,
@@ -1173,11 +1177,11 @@ class DMX(PropertyGroup):
     #zeroconf - mvr-xchange
 
     def onZeroconfEnableDiscovery(self, context):
+        clients  = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
+        clients.clear()
+        shared_commits  = bpy.context.window_manager.dmx.mvr_xchange.shared_commits
+        shared_commits.clear()
         if self.zeroconf_enabled:
-            clients  = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
-            clients.clear()
-            shared_commits  = bpy.context.window_manager.dmx.mvr_xchange.shared_commits
-            shared_commits.clear()
             DMX_Log.log.info("Enable mdns discovery")
             DMX_Zeroconf.enable_discovery()
 
@@ -1195,11 +1199,6 @@ class DMX(PropertyGroup):
             DMX_Log.log.info("Disable mdns discovery")
             DMX_Zeroconf.close()
             DMX_Log.log.info("disabled all")
-            clients  = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
-            clients.clear()
-            shared_commits  = bpy.context.window_manager.dmx.mvr_xchange.shared_commits
-            shared_commits.clear()
-
 
     def onMVR_xchange_enable(self, context):
         if self.mvrx_enabled:
@@ -1228,6 +1227,24 @@ class DMX(PropertyGroup):
             DMX_Log.log.info("disable client")
             DMX_MVR_X_Client.disable()
 
+
+
+    def onMVR_xchange_socket_enable(self, context):
+        shared_commits  = bpy.context.window_manager.dmx.mvr_xchange.shared_commits
+        shared_commits.clear()
+        ws_commits  = bpy.context.window_manager.dmx.mvr_xchange.websocket_commits
+        ws_commits.clear()
+        if self.mvrx_socket_client_enabled:
+            DMX_Log.log.info("joining server")
+            url = self.mvr_x_ws_url
+            DMX_Log.log.debug(url)
+            if url:
+                DMX_MVR_X_WS_Client.join(url) # start MVR-xchange WS client connection and send MVR_JOIN message
+        else:
+            DMX_Log.log.info("leave server")
+            DMX_MVR_X_WS_Client.leave()
+            DMX_Log.log.info("disable server")
+            DMX_MVR_X_WS_Client.disable()
 
     # OSC functionality
 
@@ -1288,7 +1305,7 @@ class DMX(PropertyGroup):
     )
 
     zeroconf_enabled : BoolProperty(
-        name = _("Enable MVR-xchange"),
+        name = _("Enable Local MVR-xchange"),
         description=_("Enables MVR-xchange sharing and discovery"),
         default = False,
         update = onZeroconfEnableDiscovery
@@ -1300,6 +1317,16 @@ class DMX(PropertyGroup):
         default = False,
         update = onMVR_xchange_enable
     )
+
+    mvrx_socket_client_enabled : BoolProperty(
+        name = _("Enable Internet MVR-xchange"),
+        description=_("Enables Internet based MVR-xchange sharing and discovery"),
+        default = False,
+        update = onMVR_xchange_socket_enable
+    )
+
+    mvr_x_ws_url: StringProperty(name="URL", description="URL", default="")
+
     # # DMX > ArtNet > Status
 
     artnet_status : EnumProperty(
@@ -1953,6 +1980,32 @@ class DMX(PropertyGroup):
                         new_commit.file_name = filename
                         new_commit.timestamp = now
 
+    def createMVR_WS_Commits(self, commits, station_uuid):
+        stored_commits  = bpy.context.window_manager.dmx.mvr_xchange.websocket_commits
+
+        for commit in commits:
+            skip = False
+            if "FileName" in commit:
+                filename = commit["FileName"]
+            else:
+                filename = commit["Comment"]
+            if not len(filename):
+                filename = commit["FileUUID"]
+
+            for existing_commit in stored_commits:
+                if existing_commit.commit_uuid == commit["FileUUID"]:
+                    skip = True
+                    continue
+            if not skip:
+                now = int(datetime.now().timestamp())
+                new_commit = stored_commits.add()
+                new_commit.station_uuid = station_uuid
+                new_commit.comment = commit["Comment"]
+                new_commit.commit_uuid = commit["FileUUID"]
+                new_commit.file_size = commit["FileSize"]
+                new_commit.file_name = filename
+                new_commit.timestamp = now
+
     def createMVR_Shared_Commit(self, commit):
         commits  = bpy.context.window_manager.dmx.mvr_xchange.shared_commits
         now = int(datetime.now().timestamp())
@@ -1963,7 +2016,11 @@ class DMX(PropertyGroup):
         new_commit.file_name = commit.file_name
         new_commit.timestamp = now
 
-        DMX_MVR_X_Server._instance.server.set_post_data(new_commit)
+        if DMX_MVR_X_WS_Client._instance is not None:
+            DMX_MVR_X_WS_Client._instance.client.set_post_data(new_commit)
+
+        if DMX_MVR_X_Server._instance is not None:
+            DMX_MVR_X_Server._instance.server.set_post_data(new_commit)
 
     def fetched_mvr_downloaded_file(self, commit):
         clients  = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
@@ -1974,6 +2031,13 @@ class DMX(PropertyGroup):
                     if c_commit.commit_uuid == commit.commit_uuid:
                         c_commit.timestamp_saved = now
 
+
+    def fetched_mvr_downloaded_ws_file(self, commit):
+        websocket_commits  = bpy.context.window_manager.dmx.mvr_xchange.websocket_commits
+        now = int(datetime.now().timestamp())
+        for c_commit in websocket_commits:
+            if c_commit.commit_uuid == commit.commit_uuid:
+                c_commit.timestamp_saved = now
 
     # # Groups
 

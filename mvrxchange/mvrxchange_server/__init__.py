@@ -74,7 +74,7 @@ class server(Thread):
     def set_post_data(self, commit):
         DMX_Log.log.debug(f"Setting post data")
         commits = [commit]
-        self.post_data.append(mvr_message.create_message("MVR_COMMIT", commits=commits, uuid=self.uuid))
+        self.post_data.append(mvr_message.craft_packet(mvr_message.create_message("MVR_COMMIT", commits=commits, uuid=self.uuid)))
 
     def accept_wrapper(self, sock):
         conn, addr = sock.accept()  # Should be ready to read
@@ -153,13 +153,12 @@ class server(Thread):
                 commit_template["FileName"] = commit.file_name or commit.comment.replace(" ", "_")
                 commit_template["Comment"] = commit.comment
                 commits.append(commit_template)
-            data.outb.append(mvr_message.create_message("MVR_JOIN_RET", commits=commits, uuid=self.uuid))
+            data.outb.append(mvr_message.craft_packet(mvr_message.create_message("MVR_JOIN_RET", commits=commits, uuid=self.uuid)))
             # data.outb.append(mvr_message.create_message("MVR_JOIN_RET"))
         if json_data["Type"] == "MVR_LEAVE":
-            data.outb.append(mvr_message.create_message("MVR_LEAVE_RET", uuid=self.uuid))
+            data.outb.append(mvr_message.craft_packet(mvr_message.create_message("MVR_LEAVE_RET", uuid=self.uuid)))
         if json_data["Type"] == "MVR_COMMIT":
-            data.outb.append(mvr_message.create_message("MVR_COMMIT_RET", uuid=self.uuid))
-
+            data.outb.append(mvr_message.craft_packet(mvr_message.create_message("MVR_COMMIT_RET", uuid=self.uuid)))
         if json_data["Type"] == "MVR_REQUEST":
             dmx = bpy.context.scene.dmx
             local_path = dmx.get_addon_path()
