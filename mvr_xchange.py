@@ -75,9 +75,11 @@ class DMX_MVR_Xchange_Client(PropertyGroup):
 
 class DMX_MVR_Xchange(PropertyGroup):
     selected_commit: IntProperty(default=0)
+    selected_ws_commit: IntProperty(default=0)
     mvr_xchange_clients: CollectionProperty(name="MVR-xchange Clients", type=DMX_MVR_Xchange_Client)
     selected_mvr_client: EnumProperty(name="Client", description="", items=DMX_MVR_Xchange_Client.get_clients)
     shared_commits: CollectionProperty(name="Commits", type=DMX_MVR_Xchange_Commit)
+    websocket_commits: CollectionProperty(name="Websocket Commits", type=DMX_MVR_Xchange_Commit)
     selected_shared_commit: IntProperty(default=0)
     selected_client: IntProperty(default=0)
     commit_message: StringProperty(name="Message", description="Message", default="")

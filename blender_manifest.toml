@@ -24,6 +24,11 @@ wheels = [
   "wheels/pypsn-0.2.3-py3-none-any.whl",
   "wheels/io_scene_3ds-2.7.4-py3-none-any.whl",
   "wheels/toml-0.10.2-py2.py3-none-any.whl",
+  "wheels/python_socketio-5.12.1-py3-none-any.whl",
+  "wheels/python_engineio-4.11.2-py3-none-any.whl",
+  "wheels/bidict-0.23.1-py3-none-any.whl",
+  "wheels/simple_websocket-1.1.0-py3-none-any.whl",
+  "wheels/websocket_client-1.8.0-py3-none-any.whl",
 ]
 
 [permissions]

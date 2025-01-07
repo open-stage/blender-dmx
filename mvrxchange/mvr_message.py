@@ -132,9 +132,9 @@ class mvr_message:
                 response["OK"] = ok
             if nok_reason is not None:
                 response["Message"] = nok_reason
-            return mvr_message.craft_packet(response)
+            return response
         elif message == "MVR_LEAVE_RET":
-            return mvr_message.craft_packet(mvr_message.leave_message_ret.copy())
+            return mvr_message.leave_message_ret.copy()
         elif message == "MVR_COMMIT":
             if commits is not None:
                 commit = commits[-1]
@@ -145,26 +145,26 @@ class mvr_message:
             response["Comment"] = commit.comment
             response["FileName"] = commit.file_name
             response["StationUUID"] = uuid
-            return mvr_message.craft_packet(response)
+            return response
         elif message == "MVR_COMMIT_RET":
-            return mvr_message.craft_packet(mvr_message.commit_message_ret.copy())
+            return mvr_message.commit_message_ret.copy()
         elif message == "MVR_REQUEST":
             response = mvr_message.request_message.copy()
             response["FileUUID"] = file_uuid
             response["FromStationUUID"] = uuid
-            return mvr_message.craft_packet(response)
+            return response
         elif message == "MVR_JOIN":
             response = mvr_message.join_message.copy()
             response["StationName"] = f"BlenderDMX station {socket.gethostname()}"
             response["StationUUID"] = uuid
             if commits is not None:
                 response["Commits"] = commits
-            return mvr_message.craft_packet(response)
+            return response
         elif message == "MVR_LEAVE":
             response = mvr_message.leave_message.copy()
             response["FromStationUUID"] = uuid
-            return mvr_message.craft_packet(response)
-        elif message == "MVR_REQUEST":
-            response = mvr_message.request_message.copy()
-            response["StationUUID"] = uuid
-            return mvr_message.craft_packet(response)
+            return response
+        # elif message == "MVR_REQUEST":
+        #    response = mvr_message.request_message.copy()
+        #    response["StationUUID"] = uuid
+        #    return response
