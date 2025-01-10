@@ -1,5 +1,11 @@
 ### Changelog
 
+### 1.9.0
+
+* MVR-xchange - initial websockets implementation
+* Fix SVG import on some systems [Lily Hopkins]
+* Translated using Weblate (Chinese (Simplified Han script))
+
 ### 1.8.3
 
 * MVR-xchange networking working also on Windows:
