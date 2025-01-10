@@ -17,7 +17,7 @@
 
 
 import bpy
-from zeroconf import IPVersion, ServiceBrowser, ServiceStateChange, Zeroconf, ServiceInfo, get_all_addresses
+from zeroconf import IPVersion, ServiceBrowser, ServiceStateChange, Zeroconf, ServiceInfo
 
 from .logging import DMX_Log
 import logging
@@ -108,7 +108,9 @@ class DMX_Zeroconf:
             DMX_Zeroconf._instance = DMX_Zeroconf()
 
         desc = {"StationUUID": DMX_Zeroconf._instance.application_uuid, "StationName": station_name}
-        addrs = [socket.inet_pton(socket.AF_INET, address) for address in get_all_addresses() if "127.0.0" not in address]
+
+        ip_address = bpy.context.window_manager.dmx.mvr_xchange.ip_address
+        addrs = [socket.inet_pton(socket.AF_INET, ip_address)]
 
         DMX_Zeroconf._instance.info = ServiceInfo(
             "_mvrxchange._tcp.local.",

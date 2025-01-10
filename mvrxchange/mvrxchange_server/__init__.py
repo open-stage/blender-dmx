@@ -21,6 +21,7 @@ import selectors
 import types
 import json
 import bpy
+import time
 from threading import Thread
 from uuid import uuid4
 from datetime import datetime
@@ -37,11 +38,25 @@ class server(Thread):
         self.uuid = uuid
         self.running = True
         self.callback = callback
+
         self.sel = selectors.DefaultSelector()
         self.lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.lsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.lsock.bind(("", 0))
-        self.port = self.lsock.getsockname()[1]
+
+        # allow Windows to get the port
+        max_retries = 5
+        retry_delay = 0.1
+        for _ in range(max_retries):
+            try:
+                self.port = self.lsock.getsockname()[1]
+                break
+            except OSError:
+                time.sleep(retry_delay)
+                retry_delay = retry_delay * 2
+        else:
+            raise RuntimeError("Failed to get the port number")
+
         self.lsock.listen()
         DMX_Log.log.debug(f"Listening on {self.port}, {uuid}")
         self.lsock.setblocking(False)
@@ -57,8 +72,9 @@ class server(Thread):
         self.join()
 
     def set_post_data(self, commit):
+        DMX_Log.log.debug(f"Setting post data")
         commits = [commit]
-        self.post_data.append(mvr_message.create_message("MVR_COMMIT", commits=commits, uuid=self.uuid))
+        self.post_data.append(mvr_message.craft_packet(mvr_message.create_message("MVR_COMMIT", commits=commits, uuid=self.uuid)))
 
     def accept_wrapper(self, sock):
         conn, addr = sock.accept()  # Should be ready to read
@@ -126,7 +142,6 @@ class server(Thread):
 
     def process_json_message(self, json_data, data):
         DMX_Log.log.debug(f"Json message {json_data} {data}")
-        self.callback(json_data, data)
         if json_data["Type"] == "MVR_JOIN":
             shared_commits = bpy.context.window_manager.dmx.mvr_xchange.shared_commits
             commits = []
@@ -138,13 +153,12 @@ class server(Thread):
                 commit_template["FileName"] = commit.file_name or commit.comment.replace(" ", "_")
                 commit_template["Comment"] = commit.comment
                 commits.append(commit_template)
-            data.outb.append(mvr_message.create_message("MVR_JOIN_RET", commits=commits, uuid=self.uuid))
+            data.outb.append(mvr_message.craft_packet(mvr_message.create_message("MVR_JOIN_RET", commits=commits, uuid=self.uuid)))
             # data.outb.append(mvr_message.create_message("MVR_JOIN_RET"))
         if json_data["Type"] == "MVR_LEAVE":
-            data.outb.append(mvr_message.create_message("MVR_LEAVE_RET", uuid=self.uuid))
+            data.outb.append(mvr_message.craft_packet(mvr_message.create_message("MVR_LEAVE_RET", uuid=self.uuid)))
         if json_data["Type"] == "MVR_COMMIT":
-            data.outb.append(mvr_message.create_message("MVR_COMMIT_RET", uuid=self.uuid))
-
+            data.outb.append(mvr_message.craft_packet(mvr_message.create_message("MVR_COMMIT_RET", uuid=self.uuid)))
         if json_data["Type"] == "MVR_REQUEST":
             dmx = bpy.context.scene.dmx
             local_path = dmx.get_addon_path()
@@ -172,6 +186,8 @@ class server(Thread):
                 data.outb.append(buffer)
                 buffer = file_object.read(1024)
             file_object.close()
+
+        self.callback(json_data, data)
 
     def run(self):
         post_data = None

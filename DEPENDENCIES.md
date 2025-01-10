@@ -16,3 +16,4 @@ is a list of included libraries.
     - export SKIP_CYTHON=1; pip wheel --no-binary=zeroconf zeroconf
     - rename to zeroconf-0.132.2-py3-none-any.whl
 * node-arrange: https://github.com/Leonardo-Pike-Excell/node-arrange
+* toml: https://github.com/uiri/toml 

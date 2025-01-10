@@ -18,6 +18,7 @@
 import bpy
 from bpy.props import BoolProperty, CollectionProperty, EnumProperty, IntProperty, StringProperty
 from bpy.types import PropertyGroup
+from .network import DMX_Network
 
 # MVR-xchange commit and client RNA structures
 
@@ -67,21 +68,35 @@ class DMX_MVR_Xchange_Client(PropertyGroup):
                 icon = "GMA3"
             elif any("BlenderDMX" in x for x in [client.provider, client.station_name]):
                 icon = "BLENDER_DMX"
-            data.append((client.station_uuid, client.station_name, client.station_uuid, dmx.custom_icons[icon].icon_id, index))
+            if client.station_uuid and client.station_name and client.service_name:
+                data.append((client.station_uuid, client.station_name, client.station_uuid, dmx.custom_icons[icon].icon_id, index))
         return data
 
 
 class DMX_MVR_Xchange(PropertyGroup):
     selected_commit: IntProperty(default=0)
+    selected_ws_commit: IntProperty(default=0)
     mvr_xchange_clients: CollectionProperty(name="MVR-xchange Clients", type=DMX_MVR_Xchange_Client)
     selected_mvr_client: EnumProperty(name="Client", description="", items=DMX_MVR_Xchange_Client.get_clients)
     shared_commits: CollectionProperty(name="Commits", type=DMX_MVR_Xchange_Commit)
+    websocket_commits: CollectionProperty(name="Websocket Commits", type=DMX_MVR_Xchange_Commit)
     selected_shared_commit: IntProperty(default=0)
     selected_client: IntProperty(default=0)
     commit_message: StringProperty(name="Message", description="Message", default="")
 
+    def get_addresses(self, context):
+        addresses = DMX_Network.cards(None, None)
+        if len(addresses):
+            return addresses[1:]
+        else:
+            return addresses
+
+    ip_address: EnumProperty(name="IPv4 Address for MVR-xchange", description="The network card/interface for MVR-xchange", items=get_addresses)
+
     def edit_group(self, context):
         if "." in self.mvr_x_group:
             self.mvr_x_group = self.mvr_x_group.replace(".", "_")
+        if not self.mvr_x_group:
+            self.mvr_x_group = "WorkGroup"
 
     mvr_x_group: StringProperty(name="Group", description="Group", default="WorkGroup", update=edit_group)

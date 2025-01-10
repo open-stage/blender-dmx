@@ -1,5 +1,30 @@
 ### Changelog
 
+### 1.8.3
+
+* MVR-xchange networking working also on Windows:
+    * Tweak networking to get port number on Windows hosts
+    * List only MVR-xchange clients with at least minimal required data
+    * Do not allow empty mDNS service group
+    * Add network interface selection
+
+### 1.8.2
+
+* Update pygdtf to pygdtf-1.0.5.dev8
+* Translated using Weblate:
+    * (Czech) [vanous]
+    * (Italian) [Fede Pre]
+    * (Tamil) [தமிழ்நேரம்]
+    * (Chinese (Simplified Han script)) [大学没毕业]
+* MVR-xchange update:
+    * Add serving part of MVR-xchange
+    * Show date time of commits, ensure mDNX groups have no dots
+    * Add search to MVR-xchange panels
+    * Change mDNS sub service naming
+* Add confirmation dialog Allow selecting geometries
+* Improve message of dialog Clear custom data
+* Print extension version to the terminal on startup
+
 ### 1.8.1
 
 * Translated using Weblate (Tamil, Literary Chinese, Chinese Chinese (Simplified Han script), Polish, Spanish, Turkish)

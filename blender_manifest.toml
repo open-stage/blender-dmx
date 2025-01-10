@@ -1,12 +1,12 @@
 schema_version = "1.0.0"
 id = "open_stage_blender_dmx"
-version = "1.8.1"
+version = "1.8.3"
 name = "DMX"
 tagline = "DMX visualization and programming with GDTF/MVR, and Networking"
 maintainer = "Open Stage"
 type = "add-on"
 website = "https://blenderdmx.eu/"
-tags = ["Lighting", "Animation"]
+tags = ["Lighting", "Animation", "Scene", "Import-Export", "Rigging", "Tracking", "Sequencer", "3D View", "Camera"]
 blender_version_min = "4.2.0"
 
 license = [
@@ -14,7 +14,7 @@ license = [
 ]
 
 wheels = [
-  "wheels/pygdtf-1.0.5.dev7-py3-none-any.whl",
+  "wheels/pygdtf-1.0.5.dev8-py3-none-any.whl",
   "wheels/pymvr-0.4.0-py3-none-any.whl",
   "wheels/sacn-1.9.1-py3-none-any.whl",
   "wheels/oscpy-0.6.0-py2.py3-none-any.whl",
@@ -23,6 +23,12 @@ wheels = [
   "wheels/open_stage_zeroconf-0.132.2.dev0-py3-none-any.whl",
   "wheels/pypsn-0.2.3-py3-none-any.whl",
   "wheels/io_scene_3ds-2.7.4-py3-none-any.whl",
+  "wheels/toml-0.10.2-py2.py3-none-any.whl",
+  "wheels/python_socketio-5.12.1-py3-none-any.whl",
+  "wheels/python_engineio-4.11.2-py3-none-any.whl",
+  "wheels/bidict-0.23.1-py3-none-any.whl",
+  "wheels/simple_websocket-1.1.0-py3-none-any.whl",
+  "wheels/websocket_client-1.8.0-py3-none-any.whl",
 ]
 
 [permissions]
