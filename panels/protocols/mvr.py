@@ -495,7 +495,7 @@ class DMX_PT_DMX_MVR_X(Panel):
 
         if dmx.mvrx_socket_client_enabled:
             row = layout.row()
-            ws_group = dmx.mvr_x_ws_url.split(".")[0].replace("https://", "").replace("http://", "")
+            ws_group = dmx.mvr_x_ws_url.split(".")[0].replace("wss://", "").replace("ws://", "")
             row.label(text=f"{ws_group}", icon="WORLD")
             col1 = row.column()
             col1.operator("dmx.mvr_ws_refresh", text="", icon="FILE_REFRESH")

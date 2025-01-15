@@ -41,7 +41,7 @@ from .panels import profiles as Profiles
 from .osc import DMX_OSC
 from .mdns import DMX_Zeroconf
 
-from .mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server
+from .mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server, DMX_MVR_X_WS_Client
 from bpy.props import PointerProperty
 
 from .i18n import DMX_Lang
@@ -75,13 +75,14 @@ def onLoadFile(scene):
         },
     )
 
-    # Stop ArtNet
+    # Stop Networking
     DMX_ArtNet.disable()
     DMX_sACN.disable()
     DMX_OSC.disable()
     DMX_MVR_X_Client.disable()
     DMX_MVR_X_Server.disable()
     DMX_Zeroconf.close()
+    DMX_MVR_X_WS_Client.disable()
 
     # register a "bdmx" namespace to get current value of a DMX channel,
     # the syntax is #bdmx(universe, channel(s)), where the channel can be
@@ -176,6 +177,7 @@ def unregister():
     DMX_MVR_X_Client.disable()
     DMX_MVR_X_Server.disable()
     DMX_Zeroconf.close()
+    DMX_MVR_X_WS_Client.disable()
 
     try:
         in_out_mvr.unregister()

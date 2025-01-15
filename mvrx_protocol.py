@@ -288,7 +288,6 @@ class DMX_MVR_X_WS_Client:
 
         if "StationUUID" in data:
             station_uuid = data["StationUUID"]
-
         if "Commits" in data and station_uuid != "":
             DMX_MVR_X_WS_Client._instance._dmx.createMVR_WS_Commits(data["Commits"], station_uuid)
 
@@ -336,9 +335,14 @@ class DMX_MVR_X_WS_Client:
                 if not os.path.exists(file_path):
                     DMX_Log.log.error("MVR file for sending via MVR-xchange does not exist")
 
+                chunk_size = 8192
                 with open(file_path, "br") as f:
-                    buffer = f.read()
-                DMX_MVR_X_WS_Client._instance.client.send(buffer)
+                    buffer = f.read(chunk_size)
+                    DMX_MVR_X_WS_Client._instance.client.send(buffer)
+                    buffer = f.read(chunk_size)
+                    while buffer:
+                        DMX_MVR_X_WS_Client._instance.client.send(buffer)
+                        buffer = f.read(chunk_size)
 
     @staticmethod
     def create_self_request_commit(mvr_commit):
@@ -390,7 +394,7 @@ class DMX_MVR_X_WS_Client:
         try:
             url = DMX_MVR_X_WS_Client._instance.server_url
             DMX_Log.log.info(f"Connecting to MVR-xchange client {url}")
-            DMX_MVR_X_WS_Client._instance.client = mvrx_ws_client.socket_client(url, callback=DMX_MVR_X_WS_Client.callback, application_uuid=DMX_MVR_X_WS_Client._instance.application_uuid)
+            DMX_MVR_X_WS_Client._instance.client = mvrx_ws_client.WebSocketClient(url, callback=DMX_MVR_X_WS_Client.callback, application_uuid=DMX_MVR_X_WS_Client._instance.application_uuid)
 
         except Exception as e:
             DMX_Log.log.error(f"Cannot connect to host {e}")
@@ -419,7 +423,7 @@ class DMX_MVR_X_WS_Client:
             if DMX_MVR_X_WS_Client._instance.client:
                 # DMX_MVR_X_WS_Client.connect()
                 DMX_MVR_X_WS_Client._instance.client.leave_mvr()
-                time.sleep(0.3)
+                time.sleep(0.1)
                 DMX_MVR_X_WS_Client._instance.client.stop()
             DMX_MVR_X_WS_Client._instance = None
             DMX_Log.log.info("Disabling MVR")
