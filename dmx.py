@@ -569,6 +569,10 @@ class DMX(PropertyGroup):
             dmx.sacn_status = 'offline'
         if dmx.osc_enabled:
             dmx.osc_enabled = False
+        if dmx.mvrx_enabled:
+            dmx.mvrx_enabled = False
+        if dmx.mvrx_socket_client_enabled:
+            dmx.mvrx_socket_client_enabled = False
 
         for tracker_item in dmx.trackers:
             tracker_item.enabled = False

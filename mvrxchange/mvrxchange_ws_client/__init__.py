@@ -15,97 +15,123 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
-import socketio
+import websocket
 import threading
 import time
 import bpy
 from queue import Queue
 from ...mvrxchange.mvr_message import mvr_message
 from ...logging import DMX_Log
+import logging
+import json
 
 
-class socket_client(threading.Thread):
-    """Socket.IO Client that connects to a Socket.IO server and allows sending and receiving messages."""
+class WebSocketClient(threading.Thread):
+    """WebSocket Client that connects to a WebSocket server and allows sending and receiving messages."""
 
     def __init__(self, server_url, callback=None, application_uuid=0):
-        super().__init__(name=f"SocketIOClient-{int(time.time())}")
+        super().__init__(name=f"WebSocketClient-{int(time.time())}")
+        if DMX_Log.log.isEnabledFor(logging.DEBUG):
+            websocket.enableTrace(True)
         self.server_url = server_url
         self.application_uuid = application_uuid
         self.callback = callback
-        self.sio = socketio.Client()
         self.message_queue = Queue()
         self.running = True
         self.error = None
         self.commit = None
         self.filepath = None
-
-        # Register the message event handler
-        @self.sio.event
-        def message(data):
-            DMX_Log.log.debug(("Message received", len(data)))
-
-            if isinstance(data, bytes):
-                with open(self.filepath, "bw") as f:
-                    f.write(data)
-                self.callback({"file_downloaded": self.commit, "StationUUID": self.commit.station_uuid})
-            else:
-                if self.callback:
-                    self.callback(data)
-
-        @self.sio.event
-        def connect():
-            self.join_mvr()
-            DMX_Log.log.info("Joining")
-
-        @self.sio.event
-        def disconnect():
-            # this seems to be only received when we disconnect
-            # not when the server disconnects us...
-            DMX_Log.log.info("Disconnected")
+        self.ws = None
+        self.file_buffer = b""
 
     def run(self):
         """Run the client, connecting to the server and waiting for events."""
-        try:
-            self.sio.connect(self.server_url)
-            DMX_Log.log.debug(f"Connected to server: {self.server_url}")
-            threading.Thread(target=self.process_queue, daemon=True).start()  # Start a thread to process the queue
-            self.sio.wait()  # Keep the thread alive to listen for events
-        except Exception as e:
-            self.error = e
-            DMX_Log.log.error(e)
+        while self.running:
+            try:
+                self.ws = websocket.WebSocketApp(
+                    self.server_url,
+                    on_message=self.on_message,
+                    on_error=self.on_error,
+                    on_close=self.on_close,
+                )
+                self.ws.on_open = self.on_open
+                self.ws.run_forever(
+                    reconnect=5,
+                    ping_timeout=30,
+                )
+            except Exception as e:
+                self.error = e
+                DMX_Log.log.error(e)
+                self.reconnect()
+                time.sleep(1)  # Delay before attempting to reconnect
+
+    def reconnect(self):
+        DMX_Log.log.info("Reconnecting to the WebSocket server...")
+
+    def on_message(self, ws, message):
+        DMX_Log.log.debug(("Message received", len(message)))
+
+        if isinstance(message, bytes):
+            self.file_buffer += message
+            if len(self.file_buffer) == self.commit.file_size:
+                with open(self.filepath, "bw") as f:
+                    f.write(self.file_buffer)
+                self.file_buffer = b""
+                self.callback({"file_downloaded": self.commit, "StationUUID": self.commit.station_uuid})
+        else:
+            if self.callback:
+                self.callback(json.loads(message))
+
+    def on_error(self, ws, error):
+        DMX_Log.log.error((f"WebSocket error:", error))
+
+    def on_close(self, ws, close_status_code, close_msg):
+        DMX_Log.log.info(("Disconnected", close_status_code, close_msg))
+
+    def on_open(self, ws):
+        self.join_mvr()
+        DMX_Log.log.info("Joining")
+
+        # Start a thread to process the queue
+        threading.Thread(target=self.process_queue, daemon=True).start()
 
     def send(self, message):
         """Add a message to the queue to be sent to the server."""
-        self.message_queue.put(message)
+
+        if isinstance(message, bytes):
+            self.message_queue.put(message)
+        else:
+            self.message_queue.put(json.dumps(message))
+        # self.message_queue.put(json.dumps({"test": "message"}))
         DMX_Log.log.debug(("Message queued", len(message)))
 
     def process_queue(self):
         """Process the message queue and send messages to the server."""
         while self.running:
             try:
-                message = self.message_queue.get(timeout=1)  # Wait for a message to be available
-                self.sio.send(message)
+                message = self.message_queue.get(block=True, timeout=None)
+                if isinstance(message, bytes):
+                    self.ws.send(message, opcode=2)
+                else:
+                    self.ws.send(message)
                 DMX_Log.log.debug(("Message sent", len(message)))
                 self.message_queue.task_done()
                 DMX_Log.log.debug("task done")
             except Exception as e:
-                # this produces exceptions when message_queue is empty
-                continue  # Handle exceptions (e.g., timeout)
+                # Handle exceptions (e.g., timeout)
+                DMX_Log.log.error(f"Error processing message queue: {e}")
+                continue
 
     def stop(self):
         """Stop the client and clean up resources."""
         self.running = False
-        self.sio.disconnect()
+        self.ws.close()
         DMX_Log.log.debug("Client stopped.")
         self.join()  # not needed. close the thread
 
     def request_file(self, commit, path):
         self.filepath = path
         self.commit = commit
-        # if commit.self_requested:  # we need to provide empty UUID in this case
-        #    commit_uuid = ""
-        # else:
-        #    commit_uuid = commit.commit_uuid
         commit_uuid = commit.commit_uuid
         self.send(mvr_message.create_message("MVR_REQUEST", uuid=commit.station_uuid, file_uuid=commit_uuid))
 
