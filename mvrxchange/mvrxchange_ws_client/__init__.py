@@ -62,8 +62,8 @@ class WebSocketClient(threading.Thread):
             except Exception as e:
                 self.error = e
                 DMX_Log.log.error(e)
-                self.reconnect()
                 time.sleep(1)  # Delay before attempting to reconnect
+                self.reconnect()
 
     def reconnect(self):
         DMX_Log.log.info("Reconnecting to the WebSocket server...")
