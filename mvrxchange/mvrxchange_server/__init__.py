@@ -96,7 +96,7 @@ class server(Thread):
         else:  # file
             dmx = bpy.context.scene.dmx
             local_path = dmx.get_addon_path()
-            path = os.path.join(local_path, "mvrs", f"{data.file_uuid}.mvr")
+            path = os.path.join(local_path, "mvrs", f"{data.file_uuid.lower()}.mvr")
             DMX_Log.log.debug("writing file")
             with open(path, "bw") as f:
                 f.write(data.inb[28:])
@@ -171,7 +171,7 @@ class server(Thread):
                     DMX_Log.log.debug("Sharing last version")
 
             ADDON_PATH = dmx.get_addon_path()
-            file_path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{file_uuid}.mvr")
+            file_path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{file_uuid.lower()}.mvr")
 
             DMX_Log.log.debug("sending file")
             if not os.path.exists(file_path):

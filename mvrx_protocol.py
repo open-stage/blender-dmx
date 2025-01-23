@@ -103,7 +103,7 @@ class DMX_MVR_X_Client:
         if DMX_MVR_X_Client._instance.client:
             dmx = bpy.context.scene.dmx
             ADDON_PATH = dmx.get_addon_path()
-            path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid}.mvr")
+            path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid.lower()}.mvr")
             DMX_Log.log.debug(f"path {path}")
             try:
                 DMX_MVR_X_Client.connect()
@@ -188,7 +188,7 @@ class DMX_MVR_X_Server:
 
     @staticmethod
     def callback(json_data, data):
-        DMX_Log.log.debug(("callback", json_data, data))
+        DMX_Log.log.debug(("callback", json_data, data, type(json_data), type(data)))
         addr, port = data.addr
         provider = ""
         station_name = ""
@@ -205,7 +205,7 @@ class DMX_MVR_X_Server:
 
         if "Type" in json_data and station_uuid != "":
             if json_data["Type"] == "MVR_COMMIT":
-                DMX_MVR_X_Server._instance._dmx.createMVR_Commits([data], station_uuid)
+                DMX_MVR_X_Server._instance._dmx.createMVR_Commits([json_data], station_uuid)
 
         # if "Provider" in json_data:
         #    provider = json_data["Provider"]
@@ -225,7 +225,7 @@ class DMX_MVR_X_Server:
             if DMX_MVR_X_Server._instance.DMX_MVR_X_Server:
                 dmx = bpy.context.scene.dmx
                 ADDON_PATH = dmx.get_addon_path()
-                path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid}.mvr")
+                path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid.lower()}.mvr")
                 try:
                     DMX_MVR_X_Server._instance.server.request_file(commit, path)
                 except:
@@ -329,7 +329,7 @@ class DMX_MVR_X_WS_Client:
                         DMX_Log.log.debug("Sharing last version")
 
                 ADDON_PATH = dmx.get_addon_path()
-                file_path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{file_uuid}.mvr")
+                file_path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{file_uuid.lower()}.mvr")
 
                 DMX_Log.log.debug("sending file")
                 if not os.path.exists(file_path):
@@ -366,7 +366,7 @@ class DMX_MVR_X_WS_Client:
         if DMX_MVR_X_WS_Client._instance.client:
             dmx = bpy.context.scene.dmx
             ADDON_PATH = dmx.get_addon_path()
-            path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid}.mvr")
+            path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid.lower()}.mvr")
             DMX_Log.log.debug(f"path {path}")
             try:
                 DMX_MVR_X_WS_Client._instance.client.request_file(commit, path)
