@@ -35,21 +35,9 @@ from .gdtf import DMX_GDTF
 from .data import DMX_Data
 from .util import cmy_to_rgb, add_rgb, colors_to_rgb, rgb2xyY, kelvin_table
 from .osc_utils import DMX_OSC_Handlers
-from bpy.props import (IntProperty,
-                       BoolProperty,
-                       FloatVectorProperty,
-                       IntVectorProperty,
-                       PointerProperty,
-                       StringProperty,
-                       CollectionProperty)
+from bpy.props import IntProperty, BoolProperty, FloatVectorProperty, IntVectorProperty, PointerProperty, StringProperty, CollectionProperty
 
-from bpy.types import (PropertyGroup,
-                       Collection,
-                       Object,
-                       Image,
-                       Material,
-                       GeometryNodeTree,
-                       Text)
+from bpy.types import PropertyGroup, Collection, Object, Image, Material, GeometryNodeTree, Text
 from .node_arranger import DMX_OT_ArrangeSelected
 
 # Shader Nodes default labels
@@ -58,6 +46,7 @@ from .node_arranger import DMX_OT_ArrangeSelected
 STRENGTH = "Strength"
 COLOR = "Color"
 
+# fmt: off
 
 class DMX_Manufacturer(PropertyGroup):
     name: StringProperty (
@@ -282,6 +271,7 @@ class DMX_Fixture(PropertyGroup):
         description="Lock Tilt Rotation",
         default = False)
 
+# fmt: on
     def build(self, name, profile, mode, universe, address, gel_color, display_beams, add_target, mvr_position = None,
               focus_point = None, uuid = None, fixture_id="", custom_id=0, fixture_id_numeric=0, unit_number=0, classing=""):
         # (Edit) Store objects positions

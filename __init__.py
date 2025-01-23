@@ -15,7 +15,7 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
-#bl_info = {
+# bl_info = {
 #    "name": "DMX",
 #    "description": "DMX visualization and programming, with GDTF/MVR and Network support",
 #    "author": "open-stage",
@@ -25,7 +25,7 @@
 #    "doc_url": "https://blenderdmx.eu/docs/faq/",
 #    "tracker_url": "https://github.com/open-stage/blender-dmx/issues",
 #    "category": "Lighting",
-#}
+# }
 
 import sys
 import bpy
@@ -99,6 +99,7 @@ def onUndo(scene):
 
 # Callbacks #
 
+
 def onActiveChanged(*args):
     dmx = bpy.context.scene.dmx
     if dmx.volume_preview == "SELECTED":
@@ -155,7 +156,6 @@ def register():
     bpy.utils.register_class(DMX)
     bpy.types.Scene.dmx = PointerProperty(type=DMX)
 
-
     for cls in Profiles.classes:
         bpy.utils.register_class(cls)
 
@@ -185,13 +185,11 @@ def unregister():
     except Exception as e:
         print("INFO", e)
 
-
     for cls in Profiles.classes:
         try:
             bpy.utils.unregister_class(cls)
         except Exception as e:
             print("INFO", e)
-
 
     # Unregister Base Classes
     for cls in DMX.classes_base:
@@ -199,7 +197,6 @@ def unregister():
             bpy.utils.unregister_class(cls)
         except Exception as e:
             print("INFO", e)
-
 
     # Unregister addon main class
     bpy.utils.unregister_class(DMX_TempData)
@@ -211,6 +208,7 @@ def unregister():
     bpy.app.handlers.undo_post.clear()
 
     clean_module_imports()
+
 
 if __name__ == "__main__":
     register()
