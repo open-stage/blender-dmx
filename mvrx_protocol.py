@@ -20,6 +20,7 @@ import bpy
 from .mvrxchange import mvrxchange_client as mvrx_client
 from .mvrxchange import mvrxchange_server as mvrx_server
 from .mvrxchange import mvrxchange_ws_client as mvrx_ws_client
+from .mvrxchange import mvr_message
 from .logging import DMX_Log
 import os
 import time
