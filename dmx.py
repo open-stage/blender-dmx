@@ -71,13 +71,32 @@ from .mdns import DMX_Zeroconf
 
 from .node_arranger import DMX_OT_ArrangeSelected
 
-from .util import rgb_to_cmy, ShowMessageBox, cmy_to_rgb, flatten_color, draw_top_message
+from .util import (
+    rgb_to_cmy,
+    ShowMessageBox,
+    cmy_to_rgb,
+    flatten_color,
+    draw_top_message,
+)
 from .mvr_objects import DMX_MVR_Object, DMX_MVR_Class
-from .mvr_xchange import DMX_MVR_Xchange_Commit, DMX_MVR_Xchange_Client, DMX_MVR_Xchange
+from .mvrxchange.mvr_xchange_blender import (
+    DMX_MVR_Xchange_Commit,
+    DMX_MVR_Xchange_Client,
+    DMX_MVR_Xchange,
+)
 from .mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server, DMX_MVR_X_WS_Client
 import bpy.utils.previews
 from .material import set_light_nodes, get_gobo_material
-from bpy.props import BoolProperty, StringProperty, IntProperty, FloatProperty, FloatVectorProperty, PointerProperty, EnumProperty, CollectionProperty
+from bpy.props import (
+    BoolProperty,
+    StringProperty,
+    IntProperty,
+    FloatProperty,
+    FloatVectorProperty,
+    PointerProperty,
+    EnumProperty,
+    CollectionProperty,
+)
 
 from bpy.types import PropertyGroup, Object, Collection, NodeTree
 
@@ -251,26 +270,46 @@ class DMX(PropertyGroup):
 
         ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
         path = os.path.join(ADDON_PATH, "assets", "icons")
-        DMX.custom_icons.load("DEFAULT_TEST", os.path.join(path, "erlenmeyer.png"), "IMAGE")
-        DMX.custom_icons.load("PRODUCTION_ASSIST", os.path.join(path, "pa.png"), "IMAGE")
+        DMX.custom_icons.load(
+            "DEFAULT_TEST", os.path.join(path, "erlenmeyer.png"), "IMAGE"
+        )
+        DMX.custom_icons.load(
+            "PRODUCTION_ASSIST", os.path.join(path, "pa.png"), "IMAGE"
+        )
         DMX.custom_icons.load("GMA3", os.path.join(path, "ma.png"), "IMAGE")
-        DMX.custom_icons.load("GDTF_FILE", os.path.join(path, "gdtf_file_icon_small.png"), "IMAGE")
-        DMX.custom_icons.load("BLENDER_DMX", os.path.join(path, "blender_dmx.png"), "IMAGE")
-        DMX.custom_icons.load("MVR_FILE", os.path.join(path, "mvr_file_icon_small.png"), "IMAGE")
+        DMX.custom_icons.load(
+            "GDTF_FILE", os.path.join(path, "gdtf_file_icon_small.png"), "IMAGE"
+        )
+        DMX.custom_icons.load(
+            "BLENDER_DMX", os.path.join(path, "blender_dmx.png"), "IMAGE"
+        )
+        DMX.custom_icons.load(
+            "MVR_FILE", os.path.join(path, "mvr_file_icon_small.png"), "IMAGE"
+        )
 
         for cls in DMX.classes_setup:
             bpy.utils.register_class(cls)
 
         # register key shortcuts
         wm = bpy.context.window_manager
-        km = wm.keyconfigs.addon.keymaps.new(name="3D View Generic", space_type="VIEW_3D")
-        kmi = km.keymap_items.new("dmx.fixture_next", "RIGHT_ARROW", "PRESS", ctrl=True, shift=False)
+        km = wm.keyconfigs.addon.keymaps.new(
+            name="3D View Generic", space_type="VIEW_3D"
+        )
+        kmi = km.keymap_items.new(
+            "dmx.fixture_next", "RIGHT_ARROW", "PRESS", ctrl=True, shift=False
+        )
         DMX._keymaps.append((km, kmi))
-        kmi = km.keymap_items.new("dmx.fixture_previous", "LEFT_ARROW", "PRESS", ctrl=True, shift=False)
+        kmi = km.keymap_items.new(
+            "dmx.fixture_previous", "LEFT_ARROW", "PRESS", ctrl=True, shift=False
+        )
         DMX._keymaps.append((km, kmi))
-        kmi = km.keymap_items.new("dmx.fixture_next_target", "RIGHT_ARROW", "PRESS", ctrl=True, shift=True)
+        kmi = km.keymap_items.new(
+            "dmx.fixture_next_target", "RIGHT_ARROW", "PRESS", ctrl=True, shift=True
+        )
         DMX._keymaps.append((km, kmi))
-        kmi = km.keymap_items.new("dmx.fixture_previous_target", "LEFT_ARROW", "PRESS", ctrl=True, shift=True)
+        kmi = km.keymap_items.new(
+            "dmx.fixture_previous_target", "LEFT_ARROW", "PRESS", ctrl=True, shift=True
+        )
         DMX._keymaps.append((km, kmi))
         kmi = km.keymap_items.new("dmx.reload_addon", "R", "PRESS", ctrl=True, alt=True)
         DMX._keymaps.append((km, kmi))
@@ -626,13 +665,17 @@ class DMX(PropertyGroup):
 
     def check_python_version(self):
         if not sys.version_info >= (3, 8):
-            DMX_Log.log.error(f"Python version of at least 3.8 is needed, you are using {sys.version} ❌")
+            DMX_Log.log.error(
+                f"Python version of at least 3.8 is needed, you are using {sys.version} ❌"
+            )
             return
         DMX_Log.log.info(f"Python version: {sys.version} ✅")
 
     def check_blender_version(self):
         if not bpy.app.version >= (3, 4):
-            DMX_Log.log.error(f"Blender version of at least 3.4 is needed, you are using {bpy.app.version} ❌")
+            DMX_Log.log.error(
+                f"Blender version of at least 3.4 is needed, you are using {bpy.app.version} ❌"
+            )
             return
         DMX_Log.log.info(f"Blender version: {bpy.app.version} ✅")
 
@@ -681,7 +724,9 @@ class DMX(PropertyGroup):
                         obj.name = "Root"
 
                 for light in fixture.lights:
-                    DMX_Log.log.info("Adding shutter and dimmer value fields to light object")
+                    DMX_Log.log.info(
+                        "Adding shutter and dimmer value fields to light object"
+                    )
                     if "shutter_value" not in light.object.data:
                         light.object.data["shutter_value"] = 0
                     if "shutter_dimmer_value" not in light.object.data:
@@ -704,7 +749,9 @@ class DMX(PropertyGroup):
                     DMX_Log.log.info("Adding UUID to {group.name}")
                     group.uuid = str(py_uuid.uuid4())
                 DMX_Log.log.info("Migrating group")
-                group.dump = json.dumps([x[1:-1] for x in group.dump.strip("[]").split(", ")])
+                group.dump = json.dumps(
+                    [x[1:-1] for x in group.dump.strip("[]").split(", ")]
+                )
 
         if file_data_version < 4:
             DMX_Log.log.info("Running migration 3→4")
@@ -736,7 +783,9 @@ class DMX(PropertyGroup):
                     for fixture in duplicates:
                         u = fixture.uuid
                         fixture.uuid = str(py_uuid.uuid4())
-                        DMX_Log.log.info(("Updating fixture", fixture.name, u, fixture.uuid))
+                        DMX_Log.log.info(
+                            ("Updating fixture", fixture.name, u, fixture.uuid)
+                        )
 
             DMX_Log.log.info("Ensure unique group UUID")
             duplicates = []
@@ -770,7 +819,9 @@ class DMX(PropertyGroup):
 
         if file_data_version < 6:
             DMX_Log.log.info("Running migration 5→6")
-            DMX_Log.log.info("To make gobos working again, edit fixtures with gobos - re-load GDTF files (Fixtures → Edit, uncheck Re-address only)")
+            DMX_Log.log.info(
+                "To make gobos working again, edit fixtures with gobos - re-load GDTF files (Fixtures → Edit, uncheck Re-address only)"
+            )
 
         if file_data_version < 7:
             DMX_Log.log.info("Running migration 6→7")
@@ -783,12 +834,16 @@ class DMX(PropertyGroup):
             if "DMX_Volume" in bpy.data.objects:
                 objs = bpy.data.objects
                 objs.remove(objs["DMX_Volume"], do_unlink=True)
-                DMX_Log.log.info("Removing Volume box due to old structure, you need to create it new")
+                DMX_Log.log.info(
+                    "Removing Volume box due to old structure, you need to create it new"
+                )
 
             if "DMX_Volume" in bpy.data.materials:
                 objs = bpy.data.materials
                 objs.remove(objs["DMX_Volume"], do_unlink=True)
-                DMX_Log.log.info("Removing Volume box material due to old structure, you need to create it new")
+                DMX_Log.log.info(
+                    "Removing Volume box material due to old structure, you need to create it new"
+                )
 
         if file_data_version < 8:
             DMX_Log.log.info("Running migration 7→8")
@@ -802,7 +857,9 @@ class DMX(PropertyGroup):
             DMX_Log.log.info("Running migration 8→9")
             dmx = bpy.context.scene.dmx
             for fixture in dmx.fixtures:
-                fixture.gel_color_rgb = list(int((255 / 1) * i) for i in fixture.gel_color[:3])
+                fixture.gel_color_rgb = list(
+                    int((255 / 1) * i) for i in fixture.gel_color[:3]
+                )
                 DMX_Log.log.info("Converting gel color to rgb")
 
         if file_data_version < 10:
@@ -832,7 +889,11 @@ class DMX(PropertyGroup):
                         if hasattr(obj.active_material, "shadow_method"):
                             obj.active_material.shadow_method = "CLIP"
                         obj.active_material.blend_method = "BLEND"
-                        obj.material_slots[0].link = "OBJECT"  # ensure that each fixture has it's own material
+                        obj.material_slots[
+                            0
+                        ].link = (
+                            "OBJECT"  # ensure that each fixture has it's own material
+                        )
                         obj.material_slots[0].material = gobo_material
                         material.material = gobo_material
                         DMX_Log.log.info(f"Recreate gobo material {fixture.name}")
@@ -875,12 +936,24 @@ class DMX(PropertyGroup):
         # add here another if statement for next migration condition... like:
         # if file_data_version < 6: #...
 
-        self.collection["DMX_DataVersion"] = self.data_version  # set data version to current
+        self.collection["DMX_DataVersion"] = (
+            self.data_version
+        )  # set data version to current
 
     def onBackgroundColor(self, context):
-        context.scene.world.node_tree.nodes["Background"].inputs[0].default_value = self.background_color
+        context.scene.world.node_tree.nodes["Background"].inputs[
+            0
+        ].default_value = self.background_color
 
-    background_color: FloatVectorProperty(name="Background Color", subtype="COLOR", size=4, min=0.0, max=1.0, default=(0.0, 0.0, 0.0, 1.0), update=onBackgroundColor)
+    background_color: FloatVectorProperty(
+        name="Background Color",
+        subtype="COLOR",
+        size=4,
+        min=0.0,
+        max=1.0,
+        default=(0.0, 0.0, 0.0, 1.0),
+        update=onBackgroundColor,
+    )
 
     # # Setup > Models > Display Pigtails, Select geometries
 
@@ -913,11 +986,24 @@ class DMX(PropertyGroup):
                     obj.hide_render = not self.display_pigtails
 
     def onDisplay2D(self, context):
-        bpy.context.window_manager.dmx.pause_render = True  # this stops the render loop, to prevent slowness and crashes
+        bpy.context.window_manager.dmx.pause_render = (
+            True  # this stops the render loop, to prevent slowness and crashes
+        )
         if self.display_2D:
             self.volume_enabled = False
-            area = [area for area in bpy.context.window.screen.areas if area.type == "VIEW_3D"][0]
-            with bpy.context.temp_override(window=bpy.context.window, area=area, region=[region for region in area.regions if region.type == "WINDOW"][0], screen=bpy.context.window.screen):
+            area = [
+                area
+                for area in bpy.context.window.screen.areas
+                if area.type == "VIEW_3D"
+            ][0]
+            with bpy.context.temp_override(
+                window=bpy.context.window,
+                area=area,
+                region=[region for region in area.regions if region.type == "WINDOW"][
+                    0
+                ],
+                screen=bpy.context.window.screen,
+            ):
                 bpy.ops.view3d.view_axis(type="TOP", align_active=True)
                 bpy.ops.view3d.view_selected()
                 area.spaces[0].shading.type = "MATERIAL"
@@ -950,7 +1036,9 @@ class DMX(PropertyGroup):
                         obj.hide_set(not self.display_pigtails)
                         obj.hide_viewport = not self.display_pigtails
                         obj.hide_render = not self.display_pigtails
-        bpy.context.window_manager.dmx.pause_render = self.display_2D  # re-enable renderer if in 3D
+        bpy.context.window_manager.dmx.pause_render = (
+            self.display_2D
+        )  # re-enable renderer if in 3D
 
     # fmt: off
     def update_device_label(self, context):
@@ -1174,8 +1262,12 @@ class DMX(PropertyGroup):
             DMX_MVR_X_Server.enable()  # start the MVR-xchange TCP server for incoming connections
             DMX_MVR_X_Server._instance.server.get_port()
 
-            mvr_x_group = bpy.context.window_manager.dmx.mvr_xchange.mvr_x_group or "WorkGroup"
-            DMX_Zeroconf.enable_server(mvr_x_group, DMX_MVR_X_Server.get_port())  # start mdns server and advertise the TCP MVR server
+            mvr_x_group = (
+                bpy.context.window_manager.dmx.mvr_xchange.mvr_x_group or "WorkGroup"
+            )
+            DMX_Zeroconf.enable_server(
+                mvr_x_group, DMX_MVR_X_Server.get_port()
+            )  # start mdns server and advertise the TCP MVR server
 
         else:
             self.mvrx_enabled = False
@@ -1198,15 +1290,23 @@ class DMX(PropertyGroup):
             if not selected_client:
                 return
 
-            bpy.context.window_manager.dmx.mvr_xchange.mvr_x_group = selected_client.service_name
-            DMX_Log.log.debug((selected_client.ip_address, selected_client.station_name))
+            bpy.context.window_manager.dmx.mvr_xchange.mvr_x_group = (
+                selected_client.service_name
+            )
+            DMX_Log.log.debug(
+                (selected_client.ip_address, selected_client.station_name)
+            )
             DMX_MVR_X_Server.enable()  # start the MVR-xchange TCP server for incoming connections
             DMX_MVR_X_Server._instance.server.get_port()
             DMX_Zeroconf.disable_server()
-            DMX_Zeroconf.enable_server(selected_client.service_name, DMX_MVR_X_Server.get_port())  # start mdns server and advertise the TCP MVR server
+            DMX_Zeroconf.enable_server(
+                selected_client.service_name, DMX_MVR_X_Server.get_port()
+            )  # start mdns server and advertise the TCP MVR server
             # except Exception as e:
             #    DMX_Log.log.error("Error registering an mdns server")
-            DMX_MVR_X_Client.join(selected_client)  # start MVR-xchange client TCP connection and send MVR_JOIN message
+            DMX_MVR_X_Client.join(
+                selected_client
+            )  # start MVR-xchange client TCP connection and send MVR_JOIN message
         else:
             DMX_Log.log.info("leave client")
             DMX_MVR_X_Client.leave()
@@ -1223,7 +1323,9 @@ class DMX(PropertyGroup):
             url = self.mvr_x_ws_url
             DMX_Log.log.debug(url)
             if url:
-                DMX_MVR_X_WS_Client.join(url)  # start MVR-xchange WS client connection and send MVR_JOIN message
+                DMX_MVR_X_WS_Client.join(
+                    url
+                )  # start MVR-xchange WS client connection and send MVR_JOIN message
         else:
             DMX_Log.log.info("leave server")
             DMX_MVR_X_WS_Client.leave()
@@ -1436,7 +1538,13 @@ class DMX(PropertyGroup):
             if fixture.collection is None:
                 continue
             if fixture.is_selected():
-                fixture.setDMX({"CTO": int(self.programmer_color_temperature), "CTC": int(self.programmer_color_temperature), "CTB": int(self.programmer_color_temperature)})
+                fixture.setDMX(
+                    {
+                        "CTO": int(self.programmer_color_temperature),
+                        "CTC": int(self.programmer_color_temperature),
+                        "CTB": int(self.programmer_color_temperature),
+                    }
+                )
         self.render()
 
     def onProgrammerIris(self, context):
@@ -1456,7 +1564,13 @@ class DMX(PropertyGroup):
             if fixture.collection is None:
                 continue
             if fixture.is_selected():
-                fixture.setDMX({"Color1": int(self.programmer_color_wheel), "Color2": int(self.programmer_color_wheel), "ColorMacro1": int(self.programmer_color_wheel)})
+                fixture.setDMX(
+                    {
+                        "Color1": int(self.programmer_color_wheel),
+                        "Color2": int(self.programmer_color_wheel),
+                        "ColorMacro1": int(self.programmer_color_wheel),
+                    }
+                )
         self.render()
 
     def onProgrammerGobo1(self, context):
@@ -1682,12 +1796,23 @@ class DMX(PropertyGroup):
         if "ColorAdd_R" in data and "ColorAdd_G" in data and "ColorAdd_B" in data:
             rgb = [data["ColorAdd_R"], data["ColorAdd_G"], data["ColorAdd_B"]]
             self.programmer_color = (*flatten_color(rgb), 255)
-        if "ColorRGB_Red" in data and "ColorRGB_Green" in data and "ColorRGB_Blue" in data:
+        if (
+            "ColorRGB_Red" in data
+            and "ColorRGB_Green" in data
+            and "ColorRGB_Blue" in data
+        ):
             rgb = [data["ColorRGB_Red"], data["ColorRGB_Green"], data["ColorRGB_Blue"]]
             self.programmer_color = (*flatten_color(rgb), 255)
         if "ColorSub_C" in data and "ColorSub_M" in data and "ColorSub_Y" in data:
-            rgb = cmy_to_rgb([data["ColorSub_C"], data["ColorSub_M"], data["ColorSub_Y"]])
-            self.programmer_color = (1 / 256 * rgb[0], 1 / 256 * rgb[1], 1 / 256 * rgb[2], 255)
+            rgb = cmy_to_rgb(
+                [data["ColorSub_C"], data["ColorSub_M"], data["ColorSub_Y"]]
+            )
+            self.programmer_color = (
+                1 / 256 * rgb[0],
+                1 / 256 * rgb[1],
+                1 / 256 * rgb[2],
+                255,
+            )
         # if ('ColorAdd_C' in data and 'ColorAdd_M' in data and 'ColorAdd_Y' in data):
         #    rgb = cmy_to_rgb([data['ColorAdd_C'], data['ColorAdd_M'], data['ColorAdd_Y']])
         #    self.programmer_color = (1/256*rgb[0], 1/256*rgb[1], 1/256*rgb[2], 255)
@@ -1717,14 +1842,47 @@ class DMX(PropertyGroup):
     # Kernel Methods
     # # Fixtures
     def addFixture(
-        self, name, profile, universe, address, mode, gel_color, display_beams, add_target, position=None, focus_point=None, uuid=None, fixture_id="", custom_id=0, fixture_id_numeric=0, unit_number=0, classing=None
+        self,
+        name,
+        profile,
+        universe,
+        address,
+        mode,
+        gel_color,
+        display_beams,
+        add_target,
+        position=None,
+        focus_point=None,
+        uuid=None,
+        fixture_id="",
+        custom_id=0,
+        fixture_id_numeric=0,
+        unit_number=0,
+        classing=None,
     ):
         # TODO: fix order of attributes to match fixture.build()
         dmx = bpy.context.scene.dmx
         new_fixture = dmx.fixtures.add()
         new_fixture.uuid = str(py_uuid.uuid4())  # ensure clean uuid
         try:
-            new_fixture.build(name, profile, mode, universe, address, gel_color, display_beams, add_target, position, focus_point, uuid, fixture_id, custom_id, fixture_id_numeric, unit_number, classing=classing)
+            new_fixture.build(
+                name,
+                profile,
+                mode,
+                universe,
+                address,
+                gel_color,
+                display_beams,
+                add_target,
+                position,
+                focus_point,
+                uuid,
+                fixture_id,
+                custom_id,
+                fixture_id_numeric,
+                unit_number,
+                classing=classing,
+            )
         except Exception as e:
             DMX_Log.log.error(f"Error while adding fixture {e}")
             dmx.fixtures.remove(len(dmx.fixtures) - 1)
@@ -1782,25 +1940,36 @@ class DMX(PropertyGroup):
 
     def sortedFixtures(self):
         def string_to_pairs(s, pairs=re.compile(r"(\D*)(\d*)").findall):
-            return [(text.lower(), int(digits or 0)) for (text, digits) in pairs(s)[:-1]]
+            return [
+                (text.lower(), int(digits or 0)) for (text, digits) in pairs(s)[:-1]
+            ]
 
         sorting_order = self.fixtures_sorting_order
 
         if sorting_order == "ADDRESS":
-            fixtures = sorted(self.fixtures, key=lambda c: string_to_pairs(str(c.universe * 1000 + c.address)))
+            fixtures = sorted(
+                self.fixtures,
+                key=lambda c: string_to_pairs(str(c.universe * 1000 + c.address)),
+            )
         elif sorting_order == "NAME":
             fixtures = sorted(self.fixtures, key=lambda c: string_to_pairs(c.name))
         elif sorting_order == "FIXTURE_ID":
-            fixtures = sorted(self.fixtures, key=lambda c: string_to_pairs(str(c.fixture_id)))
+            fixtures = sorted(
+                self.fixtures, key=lambda c: string_to_pairs(str(c.fixture_id))
+            )
         elif sorting_order == "UNIT_NUMBER":
-            fixtures = sorted(self.fixtures, key=lambda c: string_to_pairs(str(c.unit_number)))
+            fixtures = sorted(
+                self.fixtures, key=lambda c: string_to_pairs(str(c.unit_number))
+            )
         else:
             fixtures = self.fixtures
 
         return fixtures
 
     def addMVR(self, file_name, import_focus_points=True):
-        bpy.context.window_manager.dmx.pause_render = True  # this stops the render loop, to prevent slowness and crashes
+        bpy.context.window_manager.dmx.pause_render = (
+            True  # this stops the render loop, to prevent slowness and crashes
+        )
 
         load_mvr(self, file_name, import_focus_points=import_focus_points)
 
@@ -1823,7 +1992,9 @@ class DMX(PropertyGroup):
 
     def export_mvr(self, file_name):
         start_time = time.time()
-        bpy.context.window_manager.dmx.pause_render = True  # this stops the render loop, to prevent slowness and crashes
+        bpy.context.window_manager.dmx.pause_render = (
+            True  # this stops the render loop, to prevent slowness and crashes
+        )
         dmx = bpy.context.scene.dmx
 
         folder_path = self.get_addon_path()
@@ -1866,12 +2037,24 @@ class DMX(PropertyGroup):
             self.addUniverse()
         self.universes_n = len(self.universes)
 
-    def createMVR_Client(self, station_name="", station_uuid="", service_name="", ip_address="", port=0, provider=""):
+    def createMVR_Client(
+        self,
+        station_name="",
+        station_uuid="",
+        service_name="",
+        ip_address="",
+        port=0,
+        provider="",
+    ):
         prefs = bpy.context.preferences.addons[__package__].preferences
-        application_uuid = prefs.get("application_uuid", str(py_uuid.uuid4()))  # must never be 0
+        application_uuid = prefs.get(
+            "application_uuid", str(py_uuid.uuid4())
+        )  # must never be 0
         if application_uuid == station_uuid:
             if not DMX_Log.log.isEnabledFor(logging.DEBUG):
-                DMX_Log.log.info("This is myself, do not register as an MVR-xchange provider")
+                DMX_Log.log.info(
+                    "This is myself, do not register as an MVR-xchange provider"
+                )
                 return
 
         clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
@@ -1894,14 +2077,24 @@ class DMX(PropertyGroup):
         if provider:
             client.provider = provider
 
-    def removeMVR_Client(self, station_name, station_uuid, service_name, ip_addres, port):
+    def removeMVR_Client(
+        self, station_name, station_uuid, service_name, ip_addres, port
+    ):
         clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
         for client in clients:
             if client.station_uuid == station_uuid:
                 clients.remove(client)
                 break
 
-    def updateMVR_Client(self, station_uuid, station_name=None, service_name=None, ip_address=None, port=None, provider=None):
+    def updateMVR_Client(
+        self,
+        station_uuid,
+        station_name=None,
+        service_name=None,
+        ip_address=None,
+        port=None,
+        provider=None,
+    ):
         clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
         updated = False
 
@@ -1922,7 +2115,9 @@ class DMX(PropertyGroup):
                 updated = True
                 break
         if not updated:
-            self.createMVR_Client(station_name, station_uuid, service_name, ip_address, port)
+            self.createMVR_Client(
+                station_name, station_uuid, service_name, ip_address, port
+            )
 
     def createMVR_Commits(self, commits, station_uuid):
         print("commits", commits)
@@ -1992,10 +2187,10 @@ class DMX(PropertyGroup):
         new_commit.timestamp = now
 
         if DMX_MVR_X_WS_Client._instance is not None:
-            DMX_MVR_X_WS_Client._instance.client.set_post_data(new_commit)
+            DMX_MVR_X_WS_Client._instance.client.send_commit(new_commit)
 
-        if DMX_MVR_X_Server._instance is not None:
-            DMX_MVR_X_Server._instance.server.set_post_data(new_commit)
+        if DMX_MVR_X_Client._instance is not None:
+            DMX_MVR_X_Client.send_commit(new_commit)
 
     def fetched_mvr_downloaded_file(self, commit):
         clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients

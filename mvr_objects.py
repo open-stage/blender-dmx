@@ -28,45 +28,26 @@ class DMX_MVR_Object(PropertyGroup):
     """Universal MVR object... in the future, make this specific
     SceneObject, Truss, Layer..."""
 
-    name: StringProperty(
-        name = "Name",
-        description = "Name",
-        default = ""
-            )
+    name: StringProperty(name="Name", description="Name", default="")
 
-    collection: PointerProperty(
-        name = "Collection of objects",
-        type = Collection)
+    collection: PointerProperty(name="Collection of objects", type=Collection)
 
-    uuid: StringProperty(
-        name = "UUID",
-        description = "UUID",
-        default = str(uuid.uuid4())
-            )
+    uuid: StringProperty(name="UUID", description="UUID", default=str(uuid.uuid4()))
 
     object_type: StringProperty(
-        name = "Object type",
-        description = "Simple object classification",
-        default = "SceneObject" #Layer, Truss,
-            )
+        name="Object type",
+        description="Simple object classification",
+        default="SceneObject",  # Layer, Truss,
+    )
     classing: StringProperty(
-        name = "Classing",
-        description = "Grouping/Layering",
-        default = ""
-            )
+        name="Classing", description="Grouping/Layering", default=""
+    )
+
 
 class DMX_MVR_Class(PropertyGroup):
+    name: StringProperty(name="Name", description="Name", default="")
 
-    name: StringProperty(
-        name = "Name",
-        description = "Name",
-        default = ""
-            )
-
-    uuid: StringProperty(
-            name="UUID",
-            description="Unique ID, used for MVR",
-            default="")
+    uuid: StringProperty(name="UUID", description="Unique ID, used for MVR", default="")
 
     def onEnable(self, context):
         enabled = self.enabled
@@ -77,12 +58,8 @@ class DMX_MVR_Class(PropertyGroup):
                 obj.hide_render = not enabled
         for fixture in bpy.context.scene.dmx.fixtures:
             if fixture.classing == self.uuid:
-                #fixture.collection.hide_set(not enabled)
+                # fixture.collection.hide_set(not enabled)
                 fixture.collection.hide_viewport = not enabled
                 fixture.collection.hide_render = not enabled
 
-    enabled: BoolProperty(
-            name = "Enabled",
-            default = True,
-            update = onEnable
-            )
+    enabled: BoolProperty(name="Enabled", default=True, update=onEnable)

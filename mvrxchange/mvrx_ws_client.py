@@ -20,8 +20,8 @@ import threading
 import time
 import bpy
 from queue import Queue
-from ...mvrxchange.mvr_message import mvr_message
-from ...logging import DMX_Log
+from .mvrx_message import mvrx_message
+from ..logging import DMX_Log
 import logging
 import json
 
@@ -77,7 +77,12 @@ class WebSocketClient(threading.Thread):
                 with open(self.filepath, "bw") as f:
                     f.write(self.file_buffer)
                 self.file_buffer = b""
-                self.callback({"file_downloaded": self.commit, "StationUUID": self.commit.station_uuid})
+                self.callback(
+                    {
+                        "file_downloaded": self.commit,
+                        "StationUUID": self.commit.station_uuid,
+                    }
+                )
         else:
             if self.callback:
                 self.callback(json.loads(message))
@@ -133,24 +138,38 @@ class WebSocketClient(threading.Thread):
         self.filepath = path
         self.commit = commit
         commit_uuid = commit.commit_uuid
-        self.send(mvr_message.create_message("MVR_REQUEST", uuid=commit.station_uuid, file_uuid=commit_uuid))
+        self.send(
+            mvrx_message.create_message(
+                "MVR_REQUEST", uuid=commit.station_uuid, file_uuid=commit_uuid
+            )
+        )
 
     def join_mvr(self):
         shared_commits = bpy.context.window_manager.dmx.mvr_xchange.shared_commits
         commits = []
         for commit in shared_commits:
-            commit_template = mvr_message.commit_message.copy()
+            commit_template = mvrx_message.commit_message.copy()
             commit_template["FileSize"] = commit.file_size
             commit_template["FileUUID"] = commit.commit_uuid
             commit_template["StationUUID"] = self.application_uuid
-            commit_template["FileName"] = commit.file_name or commit.comment.replace(" ", "_")
+            commit_template["FileName"] = commit.file_name or commit.comment.replace(
+                " ", "_"
+            )
             commit_template["Comment"] = commit.comment
             commits.append(commit_template)
-        self.send(mvr_message.create_message("MVR_JOIN", commits=commits, uuid=self.application_uuid))
+        self.send(
+            mvrx_message.create_message(
+                "MVR_JOIN", commits=commits, uuid=self.application_uuid
+            )
+        )
 
-    def set_post_data(self, commit):
+    def send_commit(self, commit):
         commits = [commit]
-        self.send(mvr_message.create_message("MVR_COMMIT", commits=commits, uuid=self.application_uuid))
+        self.send(
+            mvrx_message.create_message(
+                "MVR_COMMIT", commits=commits, uuid=self.application_uuid
+            )
+        )
 
     def leave_mvr(self):
-        self.send(mvr_message.create_message("MVR_LEAVE", uuid=self.application_uuid))
+        self.send(mvrx_message.create_message("MVR_LEAVE", uuid=self.application_uuid))
