@@ -167,6 +167,7 @@ class client(Thread):
     def parse_data(self, data, callback):
         DMX_Log.log.debug(f"parsing {data}")
         header = mvr_message.parse_header(data)
+        print("header", header)
         if header["Type"] == 0:  # json
             json_data = json.loads(data[28:].decode("utf-8"))
             callback(json_data)

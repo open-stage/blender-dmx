@@ -82,6 +82,34 @@ class DMX_MVR_X_Client:
             dmx = bpy.context.scene.dmx
             dmx.mvrx_enabled = False
 
+        if "Type" in data:
+            if data["Type"] == "MVR_REQUEST":
+                dmx = bpy.context.scene.dmx
+                local_path = dmx.get_addon_path()
+                file_uuid = data["FileUUID"]
+                if not file_uuid:
+                    shared_commits = bpy.context.window_manager.dmx.mvr_xchange.shared_commits
+                    if len(shared_commits):
+                        last_commit = shared_commits[-1]
+                        file_uuid = last_commit.commit_uuid
+                        DMX_Log.log.debug("Sharing last version")
+
+                ADDON_PATH = dmx.get_addon_path()
+                file_path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{file_uuid.lower()}.mvr")
+
+                DMX_Log.log.debug("sending file")
+                if not os.path.exists(file_path):
+                    DMX_Log.log.error("MVR file for sending via MVR-xchange does not exist")
+
+                chunk_size = 1024
+                with open(file_path, "br") as f:
+                    buffer = f.read(chunk_size)
+                    DMX_MVR_X_Client._instance.client.send(buffer)
+                    buffer = f.read(chunk_size)
+                    while buffer:
+                        DMX_MVR_X_Client._instance.client.send(buffer)
+                        buffer = f.read(chunk_size)
+
     @staticmethod
     def create_self_request_commit(mvr_commit):
         """used when requesting commit ourselves just by mvr_request"""
@@ -223,34 +251,6 @@ class DMX_MVR_X_Server:
         if "Type" in json_data and station_uuid != "":
             if json_data["Type"] == "MVR_COMMIT":
                 DMX_MVR_X_Server._instance._dmx.createMVR_Commits([json_data], station_uuid)
-
-        if "Type" in json_data:
-            if json_data["Type"] == "MVR_REQUEST":
-                dmx = bpy.context.scene.dmx
-                local_path = dmx.get_addon_path()
-                file_uuid = json_data["FileUUID"]
-                if not file_uuid:
-                    shared_commits = bpy.context.window_manager.dmx.mvr_xchange.shared_commits
-                    if len(shared_commits):
-                        last_commit = shared_commits[-1]
-                        file_uuid = last_commit.commit_uuid
-                        DMX_Log.log.debug("Sharing last version")
-
-                ADDON_PATH = dmx.get_addon_path()
-                file_path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{file_uuid.lower()}.mvr")
-
-                DMX_Log.log.debug("sending file")
-                if not os.path.exists(file_path):
-                    DMX_Log.log.error("MVR file for sending via MVR-xchange does not exist")
-
-                chunk_size = 1024
-                with open(file_path, "br") as f:
-                    buffer = f.read(chunk_size)
-                    DMX_MVR_X_Server._instance.server.set_post_data(buffer)
-                    buffer = f.read(chunk_size)
-                    while buffer:
-                        DMX_MVR_X_Server._instance.server.set_post_data(buffer)
-                        buffer = f.read(chunk_size)
 
     @staticmethod
     def request_file(commit):
