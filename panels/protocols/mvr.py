@@ -174,6 +174,7 @@ class DMX_OP_MVR_Download(Operator):
             if commit.commit_uuid == self.uuid:
                 DMX_Log.log.info(f"downloading {commit}")
                 DMX_MVR_X_Client.request_file(commit)
+                DMX_MVR_X_Server.request_file(commit)
                 break
 
         return {"FINISHED"}
