@@ -105,7 +105,10 @@ class client(Thread):
         if self.socket is not None:
             self.sel.close()
             self.socket.close()
-        self.join()
+        # try:
+        #    self.join()
+        # except Exception as e:
+        #    print(e)
 
     def send(self, message):
         DMX_Log.log.debug(f"Send message {message}")
@@ -115,7 +118,6 @@ class client(Thread):
 
     def run(self):
         data = b""
-
         while self.running:
             events = self.sel.select(timeout=1)
             if events:
