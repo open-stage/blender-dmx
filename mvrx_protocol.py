@@ -106,12 +106,27 @@ class DMX_MVR_X_Client:
             path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid.lower()}.mvr")
             DMX_Log.log.debug(f"path {path}")
             try:
-                DMX_MVR_X_Client.connect()
+                if not DMX_MVR_X_Client._instance.client.running:
+                    DMX_MVR_X_Client.connect()
                 DMX_MVR_X_Client._instance.client.request_file(commit, path)
             except Exception as e:
                 DMX_Log.log.debug(f"problem requesting file {e}")
                 return
             DMX_Log.log.info("Requesting file")
+
+    @staticmethod
+    def send_commit(commit):
+        if not DMX_MVR_X_Client._instance:
+            return
+        if DMX_MVR_X_Client._instance.client:
+            try:
+                DMX_Log.log.debug(f"re-joining")
+                if not DMX_MVR_X_Client._instance.client.running:
+                    DMX_MVR_X_Client.connect()
+                DMX_MVR_X_Client._instance.client.send_commit(commit)
+            except Exception as e:
+                DMX_Log.log.debug(f"problem re_joining {e}")
+                return
 
     @staticmethod
     def re_join():
@@ -120,7 +135,8 @@ class DMX_MVR_X_Client:
         if DMX_MVR_X_Client._instance.client:
             try:
                 DMX_Log.log.debug(f"re-joining")
-                DMX_MVR_X_Client.connect()
+                if not DMX_MVR_X_Client._instance.client.running:
+                    DMX_MVR_X_Client.connect()
                 DMX_MVR_X_Client._instance.client.join_mvr()
             except Exception as e:
                 DMX_Log.log.debug(f"problem re_joining {e}")
@@ -156,7 +172,7 @@ class DMX_MVR_X_Client:
             if DMX_MVR_X_Client._instance.client:
                 DMX_MVR_X_Client._instance.client.stop()
             DMX_MVR_X_Client._instance = None
-            DMX_Log.log.info("Disabling MVR")
+            DMX_Log.log.info("Disabling MVR client")
 
     @staticmethod
     def leave():
