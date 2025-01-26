@@ -293,7 +293,6 @@ class DMX_UL_MVR_WS_Commit(UIList):
 
 
 class DMX_UL_MVR_Shared_Commit(UIList):
-
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
         scene = context.scene
         dmx = scene.dmx
@@ -450,17 +449,16 @@ class DMX_PT_DMX_MVR_X(Panel):
             row.enabled = not dmx.mvrx_enabled
 
             if DMX_Log.log.isEnabledFor(logging.DEBUG):
-                if dmx.mvrx_enabled:
-                    row = layout.row()
-                    row.template_list(
-                        "DMX_UL_MVR_Stations",
-                        "",
-                        mvr_x,
-                        "mvr_xchange_clients",
-                        mvr_x,
-                        "selected_client",
-                        rows=4,
-                    )
+                row = layout.row()
+                row.template_list(
+                    "DMX_UL_MVR_Stations",
+                    "",
+                    mvr_x,
+                    "mvr_xchange_clients",
+                    mvr_x,
+                    "selected_client",
+                    rows=4,
+                )
 
             row = layout.row()
             col = row.column()
