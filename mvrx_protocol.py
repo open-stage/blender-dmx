@@ -23,6 +23,7 @@ from .mvrxchange import mvrxchange_ws_client as mvrx_ws_client
 from .logging import DMX_Log
 import os
 import time
+import traceback
 
 # from dmx import bl_info as application_info
 import uuid as py_uuid
@@ -237,17 +238,19 @@ class DMX_MVR_X_Server:
 
     @staticmethod
     def request_file(commit):
+        DMX_Log.log.debug(("Requesting a file", commit))
         if DMX_MVR_X_Server._instance:
-            if DMX_MVR_X_Server._instance.DMX_MVR_X_Server:
-                dmx = bpy.context.scene.dmx
-                ADDON_PATH = dmx.get_addon_path()
-                path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid.lower()}.mvr")
-                try:
-                    DMX_MVR_X_Server._instance.server.request_file(commit, path)
-                except:
-                    DMX_Log.log.error("problem requesting file")
-                    return
-                DMX_Log.log.info("Requesting file")
+            print("yes instance")
+            dmx = bpy.context.scene.dmx
+            ADDON_PATH = dmx.get_addon_path()
+            path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid.lower()}.mvr")
+            try:
+                DMX_MVR_X_Server._instance.server.request_file(commit, path)
+            except:
+                DMX_Log.log.error("problem requesting file")
+                traceback.print_exception(e)
+                return
+            DMX_Log.log.info("Requesting file")
 
     @staticmethod
     def enable():

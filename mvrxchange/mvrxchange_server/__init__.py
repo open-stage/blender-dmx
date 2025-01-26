@@ -44,6 +44,9 @@ class server(Thread):
         self.lsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.lsock.bind(("", 0))
 
+        self.commit = None
+        self.filepath = None
+
         # allow Windows to get the port
         max_retries = 5
         retry_delay = 0.1
@@ -75,6 +78,13 @@ class server(Thread):
         DMX_Log.log.debug(f"Setting post data")
         commits = [commit]
         self.post_data.append(mvr_message.craft_packet(mvr_message.create_message("MVR_COMMIT", commits=commits, uuid=self.uuid)))
+
+    def request_file(self, commit, path):
+        DMX_Log.log.debug(f"Requesting file")
+        self.filepath = path
+        self.commit = commit
+        commit_uuid = commit.commit_uuid
+        self.post_data.append(mvr_message.craft_packet(mvr_message.create_message("MVR_REQUEST", uuid=commit.station_uuid, file_uuid=commit_uuid)))
 
     def accept_wrapper(self, sock):
         conn, addr = sock.accept()  # Should be ready to read
