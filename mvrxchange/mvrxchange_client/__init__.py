@@ -65,8 +65,9 @@ class client(Thread):
     def disconnect(self, sock):
         DMX_Log.log.info("disconnecting")
         self.sel.unregister(sock)
-        self.sel.close()
-        self.socket.close()
+        self.stop()
+        # self.sel.close()
+        # self.socket.close()
 
     def join_mvr(self):
         shared_commits = bpy.context.window_manager.dmx.mvr_xchange.shared_commits
