@@ -224,17 +224,33 @@ class DMX_MVR_X_Server:
             if json_data["Type"] == "MVR_COMMIT":
                 DMX_MVR_X_Server._instance._dmx.createMVR_Commits([json_data], station_uuid)
 
-        # if "Provider" in json_data:
-        #    provider = json_data["Provider"]
+        if "Type" in json_data:
+            if json_data["Type"] == "MVR_REQUEST":
+                dmx = bpy.context.scene.dmx
+                local_path = dmx.get_addon_path()
+                file_uuid = json_data["FileUUID"]
+                if not file_uuid:
+                    shared_commits = bpy.context.window_manager.dmx.mvr_xchange.shared_commits
+                    if len(shared_commits):
+                        last_commit = shared_commits[-1]
+                        file_uuid = last_commit.commit_uuid
+                        DMX_Log.log.debug("Sharing last version")
 
-        # if "StationName" in json_data:
-        #    station_name = json_data["StationName"]
+                ADDON_PATH = dmx.get_addon_path()
+                file_path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{file_uuid.lower()}.mvr")
 
-        # if provider != "" and station_name != "" and uuid != "":
-        #    DMX_MVR_X_Server._instance._dmx.updateMVR_Client(station_name=station_name, station_uuid=uuid, service_name="", ip_address=addr, port=port, provider=provider)
+                DMX_Log.log.debug("sending file")
+                if not os.path.exists(file_path):
+                    DMX_Log.log.error("MVR file for sending via MVR-xchange does not exist")
 
-        # if "file_downloaded" in json_data:
-        #    DMX_MVR_X_Server._instance._dmx.fetched_mvr_downloaded_file(json_data["file_downloaded"])
+                chunk_size = 1024
+                with open(file_path, "br") as f:
+                    buffer = f.read(chunk_size)
+                    DMX_MVR_X_Server._instance.server.set_post_data(buffer)
+                    buffer = f.read(chunk_size)
+                    while buffer:
+                        DMX_MVR_X_Server._instance.server.set_post_data(buffer)
+                        buffer = f.read(chunk_size)
 
     @staticmethod
     def request_file(commit):

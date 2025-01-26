@@ -16,6 +16,7 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import os
+from queue import Queue
 import socket
 import selectors
 import types
@@ -65,7 +66,7 @@ class server(Thread):
         self.lsock.setblocking(False)
         self.sel.register(self.lsock, selectors.EVENT_READ, data=None)
         self.files = []
-        self.post_data = []
+        self.post_data = Queue()
 
     def stop(self):
         self.running = False
@@ -74,17 +75,21 @@ class server(Thread):
             self.lsock.close()
         self.join()
 
-    def set_post_data(self, commit):
+    def send_commit(self, commit):
         DMX_Log.log.debug(f"Setting post data")
         commits = [commit]
-        self.post_data.append(mvr_message.craft_packet(mvr_message.create_message("MVR_COMMIT", commits=commits, uuid=self.uuid)))
+        self.post_data.put(mvr_message.craft_packet(mvr_message.create_message("MVR_COMMIT", commits=commits, uuid=self.uuid)))
+
+    def set_post_data(self, data):
+        DMX_Log.log.debug(f"Setting post data")
+        self.post_data.put(data)
 
     def request_file(self, commit, path):
         DMX_Log.log.debug(f"Requesting file")
         self.filepath = path
         self.commit = commit
         commit_uuid = commit.commit_uuid
-        self.post_data.append(mvr_message.craft_packet(mvr_message.create_message("MVR_REQUEST", uuid=commit.station_uuid, file_uuid=commit_uuid)))
+        self.post_data.put(mvr_message.craft_packet(mvr_message.create_message("MVR_REQUEST", uuid=commit.station_uuid, file_uuid=commit_uuid)))
 
     def accept_wrapper(self, sock):
         conn, addr = sock.accept()  # Should be ready to read
@@ -200,19 +205,19 @@ class server(Thread):
         self.callback(json_data, data)
 
     def run(self):
-        post_data = None
+        data_to_send = None
         while self.running:
             events = self.sel.select(timeout=1)
-            if self.post_data:
-                post_data = self.post_data.pop(0)
+            if not self.post_data.empty():
+                data_to_send = self.post_data.get()
             for key, mask in events:
                 if key.data is None:
                     self.accept_wrapper(key.fileobj)
                 else:
-                    if post_data is not None:
-                        key.data.outb.append(post_data)
+                    if data_to_send is not None:
+                        key.data.outb.append(data_to_send)
                     self.service_connection(key, mask)
-            post_data = None
+            data_to_send = None
         # self.sel.close()
 
 

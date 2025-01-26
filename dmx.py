@@ -1992,13 +1992,13 @@ class DMX(PropertyGroup):
         new_commit.timestamp = now
 
         if DMX_MVR_X_WS_Client._instance is not None:
-            DMX_MVR_X_WS_Client._instance.client.set_post_data(new_commit)
+            DMX_MVR_X_WS_Client._instance.client.send_commit(new_commit)
 
         if DMX_MVR_X_Client._instance is not None:
             DMX_MVR_X_Client.send_commit(new_commit)
 
         if DMX_MVR_X_Server._instance is not None:
-            DMX_MVR_X_Server._instance.server.set_post_data(new_commit)
+            DMX_MVR_X_Server._instance.server.send_commit(new_commit)
 
     def fetched_mvr_downloaded_file(self, commit):
         clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients

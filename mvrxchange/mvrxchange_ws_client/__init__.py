@@ -148,7 +148,7 @@ class WebSocketClient(threading.Thread):
             commits.append(commit_template)
         self.send(mvr_message.create_message("MVR_JOIN", commits=commits, uuid=self.application_uuid))
 
-    def set_post_data(self, commit):
+    def send_commit(self, commit):
         commits = [commit]
         self.send(mvr_message.create_message("MVR_COMMIT", commits=commits, uuid=self.application_uuid))
 
