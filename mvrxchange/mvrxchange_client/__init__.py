@@ -144,8 +144,12 @@ class client(Thread):
                                         data = data[total_len:]
 
                         if not recv_data:
-                            # self.disconnect(sock)
+                            try:
+                                self.disconnect(sock)
+                            except Exception as e:
+                                DMX_Log.log.debug(e)
                             return
+                            # pass
 
                     if not self.queue.empty():
                         if mask & selectors.EVENT_WRITE:
