@@ -46,7 +46,7 @@ class server(Thread):
         self.lsock.bind(("", 0))
 
         self.commit = None
-        self.filepath = None
+        self.filepath = None  # TODO: this will also need to be per connected client
 
         # allow Windows to get the port
         max_retries = 5
@@ -66,7 +66,7 @@ class server(Thread):
         self.lsock.setblocking(False)
         self.sel.register(self.lsock, selectors.EVENT_READ, data=None)
         self.files = []
-        self.post_data = Queue()
+        self.post_data = Queue()  # TODO: need a queue per service connection
 
     def stop(self):
         self.running = False
@@ -110,15 +110,10 @@ class server(Thread):
             self.process_json_message(json_data, data)
         else:  # file
             dmx = bpy.context.scene.dmx
-            local_path = dmx.get_addon_path()
-            path = os.path.join(local_path, "mvrs", f"{data.file_uuid.lower()}.mvr")
             DMX_Log.log.debug("writing file")
-            with open(path, "bw") as f:
+            with open(self.filepath, "bw") as f:
                 f.write(data.inb[28:])
-            # time.sleep(0.1)
-            # json_data["StationUUID"] = self.uuid
-            # for client in self.sel.select():
-            #    client[0].data.outb = mvr_message.craft_packet(json_data)
+            dmx.fetched_mvr_downloaded_file(self.commit)
 
     def service_connection(self, key, mask):
         sock = key.fileobj
