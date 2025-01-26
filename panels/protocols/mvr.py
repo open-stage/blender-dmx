@@ -238,7 +238,7 @@ class DMX_UL_MVR_Commit(UIList):
         col.label(text=f"{file_size}")
         col = layout.column()
         col.operator("dmx.mvr_download", text="", icon="IMPORT").uuid = item.commit_uuid
-        col.enabled = dmx.mvrx_enabled
+        # col.enabled = dmx.mvrx_enabled
         col = layout.column()
         col.operator("dmx.mvr_import", text="", icon="CHECKBOX_HLT").uuid = item.commit_uuid
         col.enabled = item.timestamp_saved > 0
