@@ -81,6 +81,11 @@ class client(Thread):
             commits.append(commit_template)
         self.send(mvr_message.craft_packet(mvr_message.create_message("MVR_JOIN", commits=commits, uuid=self.application_uuid)))
 
+    def send_commit(self, commit):
+        DMX_Log.log.debug(f"Sending commit")
+        commits = [commit]
+        self.send(mvr_message.craft_packet(mvr_message.create_message("MVR_COMMIT", commits=commits, uuid=self.application_uuid)))
+
     def leave_mvr(self):
         self.send(mvr_message.craft_packet(mvr_message.create_message("MVR_LEAVE", uuid=self.application_uuid)))
 
