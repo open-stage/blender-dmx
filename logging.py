@@ -39,6 +39,12 @@ class DMX_Log:
         log.setLevel(level)
 
         # file log
+        class CustomStreamHandler(logging.StreamHandler):
+            def emit(self, record):
+                super().emit(record)
+                # self.stream.write("\n")
+                # this allow us to add a break between log lines, to make long logs more readable
+                self.flush()
 
         # console log
         log_formatter = logging.Formatter(
@@ -46,14 +52,15 @@ class DMX_Log:
             datefmt="%Y-%m-%d %H:%M:%S",
         )
         if not log.handlers:  # logger is global, prevent duplicate registrations
-
             dmx = bpy.context.scene.dmx
             ADDON_PATH = dmx.get_addon_path()
             path = os.path.join(ADDON_PATH, "blenderDMX.log")
 
-            console_log_handler = logging.StreamHandler()
+            console_log_handler = CustomStreamHandler()
             console_log_handler.setFormatter(log_formatter)
-            file_log_handler = RotatingFileHandler(path, backupCount=5, maxBytes=8000000, encoding="utf-8", mode="a")
+            file_log_handler = RotatingFileHandler(
+                path, backupCount=5, maxBytes=8000000, encoding="utf-8", mode="a"
+            )
             file_log_handler.setFormatter(log_formatter)
             log.addHandler(file_log_handler)
             log.addHandler(console_log_handler)
@@ -79,43 +86,34 @@ class DMX_Log:
 
         def custom_filter(record):
             if DMX_Log.logging_filter_dmx_in:
-                if any([x in record.filename for x in ["data", "artnet", "acn", "logging"]]):
+                if any(
+                    [x in record.filename for x in ["data", "artnet", "acn", "logging"]]
+                ):
                     return True
 
             if DMX_Log.logging_filter_mvr_xchange:
-                if any([x in record.pathname for x in ["mdns", "mvr_xchange", "mvrx_protocol", "mvrxchange", "logging"]]):
+                if any(
+                    [
+                        x in record.pathname
+                        for x in [
+                            "mdns",
+                            "mvr_xchange",
+                            "mvrx_protocol",
+                            "mvrxchange",
+                            "logging",
+                        ]
+                    ]
+                ):
                     return True
 
             if DMX_Log.logging_filter_fixture:
                 if any([x in record.filename for x in ["gdtf", "fixture"]]):
                     return True
 
-            return not (DMX_Log.logging_filter_dmx_in or DMX_Log.logging_filter_mvr_xchange or DMX_Log.logging_filter_fixture)
+            return not (
+                DMX_Log.logging_filter_dmx_in
+                or DMX_Log.logging_filter_mvr_xchange
+                or DMX_Log.logging_filter_fixture
+            )
 
         log.addFilter(custom_filter)
-
-        # not needed, leaving just in case
-        # def mvx_filter(record):
-        #    print("rec", record.filename)
-        #    if any([x in record.filename for x in ["mdns", "mvr_xchange"]]):
-        #        return True
-        #    return False
-
-        # def dmx_filter(record):
-        #    if any([x in record.filename for x in ["data", "artnet", "acn"]]):
-        #        return True
-        #    return False
-
-        # def debug_filter(record):
-        #    print(record)
-        #    return True
-
-        # log.addFilter(debug_filter)
-
-        # if dmx.logging_filter_mvr_xchange:
-        #    log.addFilter(mvrx_filter)
-        #    print("adding mvr filter")
-
-        # if dmx.logging_filter_dmx_in:
-        #    log.addFilter(dmx_filter)
-        #    print("adding dmx filter")
