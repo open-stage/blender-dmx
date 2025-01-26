@@ -101,14 +101,16 @@ class DMX_MVR_X_Client:
                 if not os.path.exists(file_path):
                     DMX_Log.log.error("MVR file for sending via MVR-xchange does not exist")
 
-                chunk_size = 1024
-                with open(file_path, "br") as f:
-                    buffer = f.read(chunk_size)
+                file_size = os.path.getsize(file_path)
+                file_object = open(file_path, "br")
+                buffer = file_object.read(1024)
+                DMX_MVR_X_Client._instance.client.send(mvr_message.craft_packet(None, file_size, buffer, 1))
+                buffer = file_object.read(1024)
+                while buffer:
+                    data.outb.append(buffer)
                     DMX_MVR_X_Client._instance.client.send(buffer)
-                    buffer = f.read(chunk_size)
-                    while buffer:
-                        DMX_MVR_X_Client._instance.client.send(buffer)
-                        buffer = f.read(chunk_size)
+                    buffer = file_object.read(1024)
+                file_object.close()
 
     @staticmethod
     def create_self_request_commit(mvr_commit):

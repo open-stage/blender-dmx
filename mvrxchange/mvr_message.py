@@ -121,10 +121,14 @@ class mvr_message:
     }
 
     @staticmethod
-    def create_message(message, commits=None, uuid=None, file_uuid=None, ok=None, nok_reason=None):
+    def create_message(
+        message, commits=None, uuid=None, file_uuid=None, ok=None, nok_reason=None
+    ):
         if message == "MVR_JOIN_RET":
             response = mvr_message.join_message_ret.copy()
-            response["StationName"] = f"BlenderDMX station {socket.gethostname()}".replace(" ", "_")
+            response["StationName"] = (
+                f"BlenderDMX station {socket.gethostname()}".replace(" ", "_")
+            )
             response["StationUUID"] = uuid
             if commits is not None:
                 response["Commits"] = commits
