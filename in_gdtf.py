@@ -44,7 +44,9 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
 
     filename_ext = ".gdtf"
     filter_glob: StringProperty(default="*.gdtf", options={"HIDDEN"})
-    files: CollectionProperty(type=bpy.types.OperatorFileListElement, options={"HIDDEN", "SKIP_SAVE"})
+    files: CollectionProperty(
+        type=bpy.types.OperatorFileListElement, options={"HIDDEN", "SKIP_SAVE"}
+    )
     directory: StringProperty(subtype="DIR_PATH")
 
     patch: BoolProperty(
@@ -53,11 +55,22 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
         default=False,
     )
 
-    universe: IntProperty(name=_("Universe"), description=_("DMX Universe"), default=0, min=0, max=511)
+    universe: IntProperty(
+        name=_("Universe"), description=_("DMX Universe"), default=0, min=0, max=511
+    )
 
-    address: IntProperty(name=_("Address"), description=_("DMX Address"), default=1, min=1, max=512)
+    address: IntProperty(
+        name=_("Address"), description=_("DMX Address"), default=1, min=1, max=512
+    )
 
-    gel_color: FloatVectorProperty(name=_("Gel Color"), subtype="COLOR", size=4, min=0.0, max=1.0, default=(1.0, 1.0, 1.0, 1.0))
+    gel_color: FloatVectorProperty(
+        name=_("Gel Color"),
+        subtype="COLOR",
+        size=4,
+        min=0.0,
+        max=1.0,
+        default=(1.0, 1.0, 1.0, 1.0),
+    )
 
     display_beams: BoolProperty(
         name=_("Display beams"),
@@ -73,13 +86,33 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
         default=True,
     )
 
-    increment_address: BoolProperty(name=_("Increment DMX address"), description=_("Increment DMX address"), default=True)
+    increment_address: BoolProperty(
+        name=_("Increment DMX address"),
+        description=_("Increment DMX address"),
+        default=True,
+    )
 
-    increment_fixture_id: BoolProperty(name=_("Increment Fixture ID"), description=_("Increment Fixture ID if numeric"), default=True)
+    increment_fixture_id: BoolProperty(
+        name=_("Increment Fixture ID"),
+        description=_("Increment Fixture ID if numeric"),
+        default=True,
+    )
 
-    fixture_id: StringProperty(name=_("Fixture ID"), description=_("The Fixture ID is an identifier of this fixture that can be used to activate / select them for programming."), default="")
+    fixture_id: StringProperty(
+        name=_("Fixture ID"),
+        description=_(
+            "The Fixture ID is an identifier of this fixture that can be used to activate / select them for programming."
+        ),
+        default="",
+    )
 
-    units: IntProperty(name=_("Units"), description=_("How many units of this light to add"), default=1, min=1, max=1024)
+    units: IntProperty(
+        name=_("Units"),
+        description=_("How many units of this light to add"),
+        default=1,
+        min=1,
+        max=1024,
+    )
 
     def draw(self, context):
         dmx = context.scene.dmx
@@ -119,7 +152,9 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
             try:
                 shutil.copy(file_path, folder_path)
             except shutil.SameFileError:
-                DMX_Log.log.debug("Importing file which already existed in the profiles folder")
+                DMX_Log.log.debug(
+                    "Importing file which already existed in the profiles folder"
+                )
 
             if self.patch:
                 try:
@@ -129,7 +164,17 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
                     for count in range(1, 1 + self.units):
                         new_name = f"{profile.name} {count}"
                         new_name = create_unique_fixture_name(new_name)
-                        dmx.addFixture(new_name, file_name, universe, address, mode, self.gel_color, self.display_beams, self.add_target, fixture_id=fixture_id)
+                        dmx.addFixture(
+                            new_name,
+                            file_name,
+                            universe,
+                            address,
+                            mode,
+                            self.gel_color,
+                            self.display_beams,
+                            self.add_target,
+                            fixture_id=fixture_id,
+                        )
                         fixture = dmx.fixtures[-1]
                         DMX_Log.log.debug(f"Added fixture {fixture}")
                         if not fixture:
@@ -168,7 +213,10 @@ if bpy.app.version >= (4, 1):
 
 
 def menu_func_import(self, context):
-    self.layout.operator(DMX_OT_Import_GDTF.bl_idname, text="General Device Type Format (.gdtf) into BlenderDMX")
+    self.layout.operator(
+        DMX_OT_Import_GDTF.bl_idname,
+        text="General Device Type Format (.gdtf) into BlenderDMX",
+    )
 
 
 def register():

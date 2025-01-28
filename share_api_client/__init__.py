@@ -39,7 +39,7 @@ class GdtfShareApi:
     dir_path = os.path.dirname(os.path.abspath(__file__))
     data_file = os.path.join(dir_path, "data.json")
 
-    def __init__(self, api_username, api_password: str, data_file = None):
+    def __init__(self, api_username, api_password: str, data_file=None):
         self.api_username = api_username
         self.api_password = api_password
         if data_file is not None:
@@ -89,21 +89,24 @@ class GdtfShareApi:
     def get_gdtf_files(self, data, file_path):
         for fixture in data:
             if self.verbose:
-                print("INFO",
+                print(
+                    "INFO",
                     fixture.get("fixture"),
                     fixture.get("manufacturer"),
                     fixture.get("rid"),
                 )
-            filename = f"{fixture.get('manufacturer').replace(' ','_').replace('/', '_')}@{fixture.get('fixture').replace(' ','_').replace('/', '_')}@{fixture.get('revision').replace(' ','_').replace('/', '_')}.gdtf"
+            filename = f"{fixture.get('manufacturer').replace(' ', '_').replace('/', '_')}@{fixture.get('fixture').replace(' ', '_').replace('/', '_')}@{fixture.get('revision').replace(' ', '_').replace('/', '_')}.gdtf"
 
-            res = self.make_call(slug="downloadFile.php", url_params=f"rid={fixture.get('rid')}")
+            res = self.make_call(
+                slug="downloadFile.php", url_params=f"rid={fixture.get('rid')}"
+            )
             with open(os.path.join(file_path, filename), "wb") as out:
                 out.write(res.result.content)
                 print("INFO", f"saved {filename}")
         return res
 
 
-def _update_data(api_username, api_password: str, update, function, data_file = None):
+def _update_data(api_username, api_password: str, update, function, data_file=None):
     """Updates data.json."""
     gs = GdtfShareApi(api_username, api_password, data_file)
     gs.login()
@@ -112,11 +115,16 @@ def _update_data(api_username, api_password: str, update, function, data_file = 
 
 
 def update_data(api_username, api_password: str, update, function, data_file):
-    thread = Thread(target=_update_data, args=(api_username, api_password, update, function, data_file))
+    thread = Thread(
+        target=_update_data,
+        args=(api_username, api_password, update, function, data_file),
+    )
     thread.start()
 
 
-def _download_files(api_username, api_password: str, file_path: str, files, update, function, data_file):
+def _download_files(
+    api_username, api_password: str, file_path: str, files, update, function, data_file
+):
     """Download GDTF files form GDTF Share.
     @files=[] is list of GDTF files as returned by the API itself,
     it must contain revision id (rid), name (fixture), manufacturer
@@ -135,6 +143,19 @@ def _download_files(api_username, api_password: str, file_path: str, files, upda
     update(function, result)
 
 
-def download_files(api_username, api_password: str, file_path: str, files, update, function, data_file):
-    thread = Thread(target=_download_files, args=(api_username, api_password, file_path, files, update, function, data_file))
+def download_files(
+    api_username, api_password: str, file_path: str, files, update, function, data_file
+):
+    thread = Thread(
+        target=_download_files,
+        args=(
+            api_username,
+            api_password,
+            file_path,
+            files,
+            update,
+            function,
+            data_file,
+        ),
+    )
     thread.start()

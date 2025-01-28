@@ -5,7 +5,9 @@ import shutil
 from pip._internal.cli.main import main as pip_main
 
 try:
-    pygit2.clone_repository("https://github.com/python-zeroconf/python-zeroconf.git", "zeroconf")
+    pygit2.clone_repository(
+        "https://github.com/python-zeroconf/python-zeroconf.git", "zeroconf"
+    )
 except Exception as e:
     print(e)
 

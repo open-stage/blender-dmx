@@ -49,5 +49,11 @@ class DMX_PT_DMX_ArtNet(Panel):
         row.prop(dmx, "artnet_enabled")
         row.enabled = len(artnet_universes) > 0
         row = layout.row()
-        row.label(text=_("Art-Net set for {} universe(s)").format(len(artnet_universes)))
-        layout.label(text=_("Status") + ": " + layout.enum_item_name(dmx, "artnet_status", dmx.artnet_status))
+        row.label(
+            text=_("Art-Net set for {} universe(s)").format(len(artnet_universes))
+        )
+        layout.label(
+            text=_("Status")
+            + ": "
+            + layout.enum_item_name(dmx, "artnet_status", dmx.artnet_status)
+        )

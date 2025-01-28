@@ -26,7 +26,9 @@ _ = DMX_Lang._
 
 
 class DMX_UL_Class(UIList):
-    def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
+    def draw_item(
+        self, context, layout, data, item, icon, active_data, active_propname, index
+    ):
         if self.layout_type in {"DEFAULT", "COMPACT"}:
             col = layout.column()
             col.ui_units_x = 3
@@ -37,6 +39,7 @@ class DMX_UL_Class(UIList):
         elif self.layout_type in {"GRID"}:
             layout.alignment = "CENTER"
             layout.label(text=str(item.id), icon=icon)
+
 
 # Panel #
 
@@ -55,5 +58,6 @@ class DMX_PT_Classes(Panel):
         scene = context.scene
         dmx = scene.dmx
 
-        layout.template_list("DMX_UL_Class", "", scene.dmx, "classing", scene.dmx, "class_list_i", rows=4)
-
+        layout.template_list(
+            "DMX_UL_Class", "", scene.dmx, "classing", scene.dmx, "class_list_i", rows=4
+        )

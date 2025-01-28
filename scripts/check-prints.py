@@ -26,23 +26,23 @@ class PrintStatementParser(ast.NodeVisitor):
         self.prints: list[Print] = []
 
     def visit_Call(self, node: ast.Call) -> None:
-        if isinstance(node.func, ast.Name) and node.func.id == 'print':
+        if isinstance(node.func, ast.Name) and node.func.id == "print":
             if isinstance(node.args[0], ast.Constant):
                 if node.args[0].value == "INFO":
                     return
-            st = Print(node.lineno, node.col_offset, node.func.id, 'called')
+            st = Print(node.lineno, node.col_offset, node.func.id, "called")
             self.prints.append(st)
         self.generic_visit(node)
 
 
 def check_file(filename: str) -> int:
     try:
-        with open(filename, 'rb') as f:
+        with open(filename, "rb") as f:
             ast_obj = ast.parse(f.read(), filename=filename)
     except SyntaxError:
-        print(f'{filename} - Could not parse ast')
+        print(f"{filename} - Could not parse ast")
         print()
-        print('\t' + traceback.format_exc().replace('\n', '\n\t'))
+        print("\t" + traceback.format_exc().replace("\n", "\n\t"))
         print()
         return 1
 
@@ -50,14 +50,14 @@ def check_file(filename: str) -> int:
     visitor.visit(ast_obj)
 
     for bp in visitor.prints:
-        print(f'{filename}:{bp.line}:{bp.col}: {bp.name} {bp.reason}')
+        print(f"{filename}:{bp.line}:{bp.col}: {bp.name} {bp.reason}")
 
     return int(bool(visitor.prints))
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument('filenames', nargs='*', help='Filenames to run')
+    parser.add_argument("filenames", nargs="*", help="Filenames to run")
     args = parser.parse_args(argv)
 
     retv = 0
@@ -66,5 +66,5 @@ def main(argv: Sequence[str] | None = None) -> int:
     return retv
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     raise SystemExit(main())

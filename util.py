@@ -254,9 +254,42 @@ def colors_to_rgb(colors):
     magenta_rgb = color_to_rgb([255, 0, 255], colors, 10)
     yellow_rgb = color_to_rgb([255, 255, 0], colors, 11)
 
-    red = max(amber_rgb[0], lime_rgb[0], colors[0], white_rgb[0], wwhite_rgb[0], cwhite_rgb[0], uv_rgb[0], cyan_rgb[0], magenta_rgb[0], yellow_rgb[0])
-    green = max(amber_rgb[1], lime_rgb[1], colors[1], white_rgb[1], wwhite_rgb[1], cwhite_rgb[1], uv_rgb[1], cyan_rgb[1], magenta_rgb[1], yellow_rgb[1])
-    blue = max(amber_rgb[2], lime_rgb[2], colors[2], white_rgb[2], wwhite_rgb[2], cwhite_rgb[2], uv_rgb[2], cyan_rgb[2], magenta_rgb[2], yellow_rgb[2])
+    red = max(
+        amber_rgb[0],
+        lime_rgb[0],
+        colors[0],
+        white_rgb[0],
+        wwhite_rgb[0],
+        cwhite_rgb[0],
+        uv_rgb[0],
+        cyan_rgb[0],
+        magenta_rgb[0],
+        yellow_rgb[0],
+    )
+    green = max(
+        amber_rgb[1],
+        lime_rgb[1],
+        colors[1],
+        white_rgb[1],
+        wwhite_rgb[1],
+        cwhite_rgb[1],
+        uv_rgb[1],
+        cyan_rgb[1],
+        magenta_rgb[1],
+        yellow_rgb[1],
+    )
+    blue = max(
+        amber_rgb[2],
+        lime_rgb[2],
+        colors[2],
+        white_rgb[2],
+        wwhite_rgb[2],
+        cwhite_rgb[2],
+        uv_rgb[2],
+        cyan_rgb[2],
+        magenta_rgb[2],
+        yellow_rgb[2],
+    )
 
     return [red, green, blue]
 

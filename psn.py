@@ -48,7 +48,9 @@ class DMX_PSN:
             return
         DMX_Log.log.info("Enabling PSN")
         DMX_PSN._instances[uuid] = DMX_PSN(None, tracker.ip_address, tracker.ip_port)
-        DMX_PSN._instances[uuid].receiver.callback = partial(DMX_PSN.callback, tracker=tracker)
+        DMX_PSN._instances[uuid].receiver.callback = partial(
+            DMX_PSN.callback, tracker=tracker
+        )
         DMX_PSN._instances[uuid].receiver.start()
         DMX_PSN._data[uuid] = [
             [],

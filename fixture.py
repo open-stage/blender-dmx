@@ -24,7 +24,13 @@ import random
 import os
 import uuid as py_uuid
 
-from .material import getEmitterMaterial, get_gobo_material, set_light_nodes, get_ies_node, getGeometryNodes
+from .material import (
+    getEmitterMaterial,
+    get_gobo_material,
+    set_light_nodes,
+    get_ies_node,
+    getGeometryNodes,
+)
 from .model import DMX_Model
 from .logging import DMX_Log
 
@@ -35,9 +41,25 @@ from .gdtf import DMX_GDTF
 from .data import DMX_Data
 from .util import cmy_to_rgb, add_rgb, colors_to_rgb, rgb2xyY, kelvin_table
 from .osc_utils import DMX_OSC_Handlers
-from bpy.props import IntProperty, BoolProperty, FloatVectorProperty, IntVectorProperty, PointerProperty, StringProperty, CollectionProperty
+from bpy.props import (
+    IntProperty,
+    BoolProperty,
+    FloatVectorProperty,
+    IntVectorProperty,
+    PointerProperty,
+    StringProperty,
+    CollectionProperty,
+)
 
-from bpy.types import PropertyGroup, Collection, Object, Image, Material, GeometryNodeTree, Text
+from bpy.types import (
+    PropertyGroup,
+    Collection,
+    Object,
+    Image,
+    Material,
+    GeometryNodeTree,
+    Text,
+)
 from .node_arranger import DMX_OT_ArrangeSelected
 
 # Shader Nodes default labels

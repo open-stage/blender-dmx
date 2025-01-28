@@ -20,82 +20,75 @@ import bpy
 import uuid
 
 from .network import DMX_Network
-from bpy.props import (IntProperty,
-                       BoolProperty,
-                       EnumProperty,
-                       PointerProperty,
-                       StringProperty,
-                       CollectionProperty)
+from bpy.props import (
+    IntProperty,
+    BoolProperty,
+    EnumProperty,
+    PointerProperty,
+    StringProperty,
+    CollectionProperty,
+)
 
-from bpy.types import (PropertyGroup,
-                       Collection,
-                       Object)
+from bpy.types import PropertyGroup, Collection, Object
 
 
 from .psn import DMX_PSN
 from .i18n import DMX_Lang
+
 _ = DMX_Lang._
 
+
 class DMX_Tracker_Object(PropertyGroup):
-    object: PointerProperty(
-        name = "Tracker > Object",
-        type = Object)
+    object: PointerProperty(name="Tracker > Object", type=Object)
+
 
 class DMX_Tracker(PropertyGroup):
-
     def onPsnEnable(self, context):
         if self.enabled:
             DMX_PSN.enable(self)
         else:
             DMX_PSN.disable(self)
 
-    enabled : BoolProperty(
-        name = _("Enable PSN Input"),
+    enabled: BoolProperty(
+        name=_("Enable PSN Input"),
         description=_("Enables PosiStageNet input"),
-        default = False,
-        update = onPsnEnable
+        default=False,
+        update=onPsnEnable,
     )
 
-    ip_address : EnumProperty(
-        name = _("IPv4 Address for PSN signal"),
+    ip_address: EnumProperty(
+        name=_("IPv4 Address for PSN signal"),
         description=_("The network card/interface to listen for PSN data"),
-        items = DMX_Network.cards
+        items=DMX_Network.cards,
     )
 
-    ip_port : IntProperty(
-        name = _("PSN Target port"),
-        description=_(""),
-        default=56565
-    )
+    ip_port: IntProperty(name=_("PSN Target port"), description=_(""), default=56565)
 
     uuid: StringProperty(
-        name = "UUID",
-        description = "Unique ID, used for identification",
-        default = str(uuid.uuid4())
-            )
+        name="UUID",
+        description="Unique ID, used for identification",
+        default=str(uuid.uuid4()),
+    )
     # Blender RNA #
 
-    collection: PointerProperty(
-        name = "Tracker > Collection",
-        type = Collection)
+    collection: PointerProperty(name="Tracker > Collection", type=Collection)
 
-    objects: CollectionProperty(
-        name = "Tracker > Objects",
-        type = DMX_Tracker_Object
-    )
-
-
+    objects: CollectionProperty(name="Tracker > Objects", type=DMX_Tracker_Object)
 
     @staticmethod
     def add_tracker():
         dmx = bpy.context.scene.dmx
         new_tracker = dmx.trackers.add()
-        new_tracker["position"] = [[],] * 10 # hardcoded to 10 slots
+        new_tracker["position"] = [
+            [],
+        ] * 10  # hardcoded to 10 slots
         new_tracker.uuid = str(uuid.uuid4())
         new_id = len(dmx.trackers)
         new_tracker.name = generate_tracker_name(new_id)
-        target = bpy.data.objects.new(name=f"{new_tracker.name} Tracker", object_data=None)
-        target["uuid"]=new_tracker.uuid
+        target = bpy.data.objects.new(
+            name=f"{new_tracker.name} Tracker", object_data=None
+        )
+        target["uuid"] = new_tracker.uuid
         bpy.ops.collection.create(name=new_tracker.name)
         new_tracker.collection = bpy.data.collections[new_tracker.name]
         for c in new_tracker.collection.objects:
@@ -107,11 +100,9 @@ class DMX_Tracker(PropertyGroup):
         tracker_object.name = new_tracker.name
         tracker_object.object = target
         target.empty_display_size = 0.2
-        target.empty_display_type = 'ARROWS'
-        target.location = (0,0,0)
+        target.empty_display_type = "ARROWS"
+        target.location = (0, 0, 0)
         bpy.context.scene.dmx.collection.children.link(new_tracker.collection)
-
-
 
     @staticmethod
     def remove_tracker(uuid):
@@ -134,13 +125,12 @@ class DMX_Tracker(PropertyGroup):
                         bpy.data.objects.remove(obj)
             if tracker.objects is not None:
                 for obj in tracker.objects:
-                    if (obj.object):
+                    if obj.object:
                         bpy.data.objects.remove(obj.object)
             if tracker.collection is not None:
                 bpy.data.collections.remove(tracker.collection)
         if tracker_idx is not None:
             dmx.trackers.remove(tracker_idx)
-
 
     @staticmethod
     def get_tracker_idx(uuid):
@@ -148,6 +138,7 @@ class DMX_Tracker(PropertyGroup):
         for idx, tracker in enumerate(dmx.trackers):
             if tracker.uuid == uuid:
                 return idx
+
     @staticmethod
     def get_tracker(uuid):
         dmx = bpy.context.scene.dmx
@@ -155,10 +146,10 @@ class DMX_Tracker(PropertyGroup):
             if tracker.uuid == uuid:
                 return tracker
 
-    def render(self, current_frame = None):
+    def render(self, current_frame=None):
         data = DMX_PSN.get_data(self.uuid)
         for idx, slot_data in enumerate(data):
-            if idx > 10: # hardcoded number of PSN slots
+            if idx > 10:  # hardcoded number of PSN slots
                 return
             if list(self["position"][idx]) == list(slot_data):
                 return
@@ -177,12 +168,13 @@ class DMX_Tracker(PropertyGroup):
                     if current_frame:
                         obj.keyframe_insert(data_path="location", frame=current_frame)
 
+
 def generate_tracker_name(new_id):
     dmx = bpy.context.scene.dmx
     while True:
         name = f"PSN Server {new_id:>03}"
         if name in dmx.trackers or name in dmx.collection.children:
-            new_id +=1
+            new_id += 1
         else:
             break
     return name

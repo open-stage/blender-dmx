@@ -44,7 +44,9 @@ class DMX_Model:
 
         # Otherwise, build it from profile
         try:
-            new_collection = DMX_GDTF.buildCollection(profile, dmx_mode, display_beams, add_target)
+            new_collection = DMX_GDTF.buildCollection(
+                profile, dmx_mode, display_beams, add_target
+            )
         except Exception as e:
             DMX_Log.log.error(f"Error {e}")
             if name in collections:

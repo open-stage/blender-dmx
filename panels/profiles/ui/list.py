@@ -27,7 +27,9 @@ _ = DMX_Lang._
 
 
 class DMX_UL_Share_Fixtures(UIList):
-    def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
+    def draw_item(
+        self, context, layout, data, item, icon, active_data, active_propname, index
+    ):
         self.use_filter_show = True
         layout.context_pointer_set("share_profiles", item)
 
@@ -38,11 +40,15 @@ class DMX_UL_Share_Fixtures(UIList):
             icon = DMX_Icon.FAKE_USER_ON
         col.prop(item, "name", text="", icon=icon)
         col = layout.column()
-        col.operator(DMX_OP_Import_Fixture_From_Share.bl_idname, text="", icon=DMX_Icon.IMPORT).index = index
+        col.operator(
+            DMX_OP_Import_Fixture_From_Share.bl_idname, text="", icon=DMX_Icon.IMPORT
+        ).index = index
 
 
 class DMX_UL_Share_Fixtures_Dmx_Modes(UIList):
-    def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
+    def draw_item(
+        self, context, layout, data, item, icon, active_data, active_propname, index
+    ):
         main_col = layout.column()
         main_col.emboss = "NONE"
         row = main_col.row()
@@ -63,18 +69,24 @@ class DMX_UL_Share_Fixtures_Dmx_Modes(UIList):
 
 
 class DMX_UL_Local_Fixtures(UIList):
-    def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
+    def draw_item(
+        self, context, layout, data, item, icon, active_data, active_propname, index
+    ):
         self.use_filter_show = True
 
         col = layout.column()
         col.emboss = "NONE"
         col.prop(item, "name", text="")
         col = layout.column()
-        col.operator(DMX_OP_Delete_Local_Fixture.bl_idname, text="", icon=DMX_Icon.CANCEL).index = index
+        col.operator(
+            DMX_OP_Delete_Local_Fixture.bl_idname, text="", icon=DMX_Icon.CANCEL
+        ).index = index
 
 
 class DMX_UL_Local_Fixtures_Dmx_Modes(UIList):
-    def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
+    def draw_item(
+        self, context, layout, data, item, icon, active_data, active_propname, index
+    ):
         main_col = layout.column()
         main_col.emboss = "NONE"
         row = main_col.row()
