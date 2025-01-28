@@ -1,0 +1,13 @@
+name: Check if code is formatted
+on: [ push, pull_request ]
+jobs:
+  ruff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/ruff-action@v1
+        with:
+          args: --version
+      - uses: astral-sh/ruff-action@v1
+        with:
+          args: format --check
