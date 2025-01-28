@@ -73,7 +73,7 @@ from .node_arranger import DMX_OT_ArrangeSelected
 
 from .util import rgb_to_cmy, ShowMessageBox, cmy_to_rgb, flatten_color, draw_top_message
 from .mvr_objects import DMX_MVR_Object, DMX_MVR_Class
-from .mvr_xchange import DMX_MVR_Xchange_Commit, DMX_MVR_Xchange_Client, DMX_MVR_Xchange
+from .mvrxchange.mvr_xchange_blender import DMX_MVR_Xchange_Commit, DMX_MVR_Xchange_Client, DMX_MVR_Xchange
 from .mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server, DMX_MVR_X_WS_Client
 import bpy.utils.previews
 from .material import set_light_nodes, get_gobo_material
@@ -1996,9 +1996,6 @@ class DMX(PropertyGroup):
 
         if DMX_MVR_X_Client._instance is not None:
             DMX_MVR_X_Client.send_commit(new_commit)
-
-        if DMX_MVR_X_Server._instance is not None:
-            DMX_MVR_X_Server._instance.server.send_commit(new_commit)
 
     def fetched_mvr_downloaded_file(self, commit):
         clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients

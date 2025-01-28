@@ -39,6 +39,13 @@ class DMX_Log:
         log.setLevel(level)
 
         # file log
+        class CustomStreamHandler(logging.StreamHandler):
+            def emit(self, record):
+                # Call the original emit method to log the message
+                super().emit(record)
+                # Add an empty line after each log message
+                self.stream.write("\n")
+                self.flush()
 
         # console log
         log_formatter = logging.Formatter(
@@ -46,12 +53,11 @@ class DMX_Log:
             datefmt="%Y-%m-%d %H:%M:%S",
         )
         if not log.handlers:  # logger is global, prevent duplicate registrations
-
             dmx = bpy.context.scene.dmx
             ADDON_PATH = dmx.get_addon_path()
             path = os.path.join(ADDON_PATH, "blenderDMX.log")
 
-            console_log_handler = logging.StreamHandler()
+            console_log_handler = CustomStreamHandler()
             console_log_handler.setFormatter(log_formatter)
             file_log_handler = RotatingFileHandler(path, backupCount=5, maxBytes=8000000, encoding="utf-8", mode="a")
             file_log_handler.setFormatter(log_formatter)

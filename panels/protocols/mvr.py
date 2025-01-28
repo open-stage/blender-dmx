@@ -19,7 +19,7 @@ import os
 from bpy.props import StringProperty
 from bpy.types import Operator, Panel, UIList
 import bpy
-from ...mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_WS_Client, DMX_MVR_X_Server
+from ...mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_WS_Client
 from ...logging import DMX_Log
 from ...util import sizeof_fmt
 import logging
@@ -174,8 +174,6 @@ class DMX_OP_MVR_Download(Operator):
             if commit.commit_uuid == self.uuid:
                 DMX_Log.log.info(f"downloading {commit}")
                 DMX_MVR_X_Client.request_file(commit)
-                DMX_MVR_X_Server.request_file(commit)
-
                 break
 
         return {"FINISHED"}

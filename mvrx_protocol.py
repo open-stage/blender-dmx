@@ -17,10 +17,10 @@
 
 
 import bpy
-from .mvrxchange import mvrxchange_client as mvrx_client
-from .mvrxchange import mvrxchange_server as mvrx_server
-from .mvrxchange import mvrxchange_ws_client as mvrx_ws_client
-from .mvrxchange.mvr_message import mvr_message
+from .mvrxchange import mvrx_tcp_client as mvrx_client
+from .mvrxchange import mvrx_tcp_server as mvrx_server
+from .mvrxchange import mvrx_ws_client as mvrx_ws_client
+from .mvrxchange.mvrx_message import mvrx_message
 from .logging import DMX_Log
 import os
 import time
@@ -50,7 +50,7 @@ class DMX_MVR_X_Client:
         # print("bl info", application_info) # TODO: use this in the future
 
     @staticmethod
-    def callback(data):
+    def tcp_client_callback(data):
         station_uuid = ""
         if "StationUUID" in data:
             station_uuid = data["StationUUID"]
@@ -83,35 +83,35 @@ class DMX_MVR_X_Client:
             dmx = bpy.context.scene.dmx
             dmx.mvrx_enabled = False
 
-        if "Type" in data:
-            if data["Type"] == "MVR_REQUEST":
-                dmx = bpy.context.scene.dmx
-                local_path = dmx.get_addon_path()
-                file_uuid = data["FileUUID"]
-                if not file_uuid:
-                    shared_commits = bpy.context.window_manager.dmx.mvr_xchange.shared_commits
-                    if len(shared_commits):
-                        last_commit = shared_commits[-1]
-                        file_uuid = last_commit.commit_uuid
-                        DMX_Log.log.debug("Sharing last version")
-
-                ADDON_PATH = dmx.get_addon_path()
-                file_path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{file_uuid.lower()}.mvr")
-
-                DMX_Log.log.debug("sending file")
-                if not os.path.exists(file_path):
-                    DMX_Log.log.error("MVR file for sending via MVR-xchange does not exist")
-
-                file_size = os.path.getsize(file_path)
-                file_object = open(file_path, "br")
-                buffer = file_object.read(1024)
-                DMX_MVR_X_Client._instance.client.send(mvr_message.craft_packet(None, file_size, buffer, 1))
-                buffer = file_object.read(1024)
-                while buffer:
-                    data.outb.append(buffer)
-                    DMX_MVR_X_Client._instance.client.send(buffer)
-                    buffer = file_object.read(1024)
-                file_object.close()
+    #        if "Type" in data:
+    #            if data["Type"] == "MVR_REQUEST":
+    #                dmx = bpy.context.scene.dmx
+    #                local_path = dmx.get_addon_path()
+    #                file_uuid = data["FileUUID"]
+    #                if not file_uuid:
+    #                    shared_commits = bpy.context.window_manager.dmx.mvr_xchange.shared_commits
+    #                    if len(shared_commits):
+    #                        last_commit = shared_commits[-1]
+    #                        file_uuid = last_commit.commit_uuid
+    #                        DMX_Log.log.debug("Sharing last version")
+    #
+    #                ADDON_PATH = dmx.get_addon_path()
+    #                file_path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{file_uuid.lower()}.mvr")
+    #
+    #                DMX_Log.log.debug("sending file")
+    #                if not os.path.exists(file_path):
+    #                    DMX_Log.log.error("MVR file for sending via MVR-xchange does not exist")
+    #
+    #                file_size = os.path.getsize(file_path)
+    #                file_object = open(file_path, "br")
+    #                buffer = file_object.read(1024)
+    #                DMX_MVR_X_Client._instance.client.send(mvr_message.craft_packet(None, file_size, buffer, 1))
+    #                buffer = file_object.read(1024)
+    #                while buffer:
+    #                    data.outb.append(buffer)
+    #                    DMX_MVR_X_Client._instance.client.send(buffer)
+    #                    buffer = file_object.read(1024)
+    #                file_object.close()
 
     @staticmethod
     def create_self_request_commit(mvr_commit):
@@ -181,7 +181,13 @@ class DMX_MVR_X_Client:
         try:
             client = DMX_MVR_X_Client._instance.selected_client
             DMX_Log.log.info(f"Connecting to MVR-xchange client {client.ip_address} {client.port}")
-            DMX_MVR_X_Client._instance.client = mvrx_client.client(client.ip_address, client.port, timeout=0, callback=DMX_MVR_X_Client.callback, application_uuid=DMX_MVR_X_Client._instance.application_uuid)
+            DMX_MVR_X_Client._instance.client = mvrx_client.client(
+                client.ip_address,
+                client.port,
+                timeout=0,
+                callback=DMX_MVR_X_Client.tcp_client_callback,
+                application_uuid=DMX_MVR_X_Client._instance.application_uuid,
+            )
 
         except Exception as e:
             DMX_Log.log.error(f"Cannot connect to host {e}")
@@ -235,7 +241,7 @@ class DMX_MVR_X_Server:
         # print("bl info", application_info) # TODO: use this in the future
 
     @staticmethod
-    def callback(json_data, data):
+    def tcp_server_callback(json_data, data):
         DMX_Log.log.debug(("callback", json_data, data, type(json_data), type(data)))
         addr, port = data.addr
         provider = ""
@@ -255,21 +261,21 @@ class DMX_MVR_X_Server:
             if json_data["Type"] == "MVR_COMMIT":
                 DMX_MVR_X_Server._instance._dmx.createMVR_Commits([json_data], station_uuid)
 
-    @staticmethod
-    def request_file(commit):
-        DMX_Log.log.debug(("Requesting a file", commit))
-        if DMX_MVR_X_Server._instance:
-            print("yes instance")
-            dmx = bpy.context.scene.dmx
-            ADDON_PATH = dmx.get_addon_path()
-            path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid.lower()}.mvr")
-            try:
-                DMX_MVR_X_Server._instance.server.request_file(commit, path)
-            except:
-                DMX_Log.log.error("problem requesting file")
-                traceback.print_exception(e)
-                return
-            DMX_Log.log.info("Requesting file")
+    # @staticmethod
+    # def request_file(commit):
+    #    DMX_Log.log.debug(("Requesting a file", commit))
+    #    if DMX_MVR_X_Server._instance:
+    #        print("yes instance")
+    #        dmx = bpy.context.scene.dmx
+    #        ADDON_PATH = dmx.get_addon_path()
+    #        path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid.lower()}.mvr")
+    #        try:
+    #            DMX_MVR_X_Server._instance.server.request_file(commit, path)
+    #        except:
+    #            DMX_Log.log.error("problem requesting file")
+    #            traceback.print_exception(e)
+    #            return
+    #        DMX_Log.log.info("Requesting file")
 
     @staticmethod
     def enable():
@@ -277,7 +283,10 @@ class DMX_MVR_X_Server:
             return
         DMX_MVR_X_Server._instance = DMX_MVR_X_Server()
         try:
-            DMX_MVR_X_Server._instance.server = mvrx_server.server(callback=DMX_MVR_X_Server.callback, uuid=DMX_MVR_X_Server._instance.application_uuid)
+            DMX_MVR_X_Server._instance.server = mvrx_server.server(
+                callback=DMX_MVR_X_Server.tcp_server_callback,
+                uuid=DMX_MVR_X_Server._instance.application_uuid,
+            )
 
         except Exception as e:
             DMX_Log.log.error(f"Cannot connect to host {e}")
@@ -297,10 +306,10 @@ class DMX_MVR_X_Server:
             DMX_MVR_X_Server._instance = None
             DMX_Log.log.info("Disabling MVR")
 
-    @staticmethod
-    def post_data(data):
-        if DMX_MVR_X_Server._instance:
-            return DMX_MVR_X_Server._instance.server.post_data(data)
+    # @staticmethod
+    # def post_data(data):
+    #    if DMX_MVR_X_Server._instance:
+    #        return DMX_MVR_X_Server._instance.server.post_data(data)
 
 
 class DMX_MVR_X_WS_Client:
@@ -320,7 +329,7 @@ class DMX_MVR_X_WS_Client:
         # print("bl info", application_info) # TODO: use this in the future
 
     @staticmethod
-    def callback(data):
+    def ws_client_callback(data):
         DMX_Log.log.debug(("websocket data", data))
         station_uuid = ""
 
@@ -342,7 +351,14 @@ class DMX_MVR_X_WS_Client:
 
             if "StationName" in data:
                 station_name = data["StationName"]
-            DMX_MVR_X_WS_Client._instance._dmx.updateMVR_Client(provider=provider, station_uuid=station_uuid, station_name=station_name, service_name="", ip_address="0", port=0)
+            DMX_MVR_X_WS_Client._instance._dmx.updateMVR_Client(
+                provider=provider,
+                station_uuid=station_uuid,
+                station_name=station_name,
+                service_name="",
+                ip_address="0",
+                port=0,
+            )
 
         if "file_downloaded" in data:
             DMX_MVR_X_WS_Client._instance._dmx.fetched_mvr_downloaded_ws_file(data["file_downloaded"])
@@ -432,7 +448,11 @@ class DMX_MVR_X_WS_Client:
         try:
             url = DMX_MVR_X_WS_Client._instance.server_url
             DMX_Log.log.info(f"Connecting to MVR-xchange client {url}")
-            DMX_MVR_X_WS_Client._instance.client = mvrx_ws_client.WebSocketClient(url, callback=DMX_MVR_X_WS_Client.callback, application_uuid=DMX_MVR_X_WS_Client._instance.application_uuid)
+            DMX_MVR_X_WS_Client._instance.client = mvrx_ws_client.WebSocketClient(
+                url,
+                callback=DMX_MVR_X_WS_Client.ws_client_callback,
+                application_uuid=DMX_MVR_X_WS_Client._instance.application_uuid,
+            )
 
         except Exception as e:
             DMX_Log.log.error(f"Cannot connect to host {e}")

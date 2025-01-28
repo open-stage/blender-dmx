@@ -26,8 +26,8 @@ import time
 from threading import Thread
 from uuid import uuid4
 from datetime import datetime
-from ...mvrxchange.mvr_message import mvr_message
-from ...logging import DMX_Log
+from .mvrx_message import mvrx_message
+from ..logging import DMX_Log
 
 
 class server(Thread):
@@ -75,21 +75,21 @@ class server(Thread):
             self.lsock.close()
         self.join()
 
-    def send_commit(self, commit):
-        DMX_Log.log.debug(f"Setting post data")
-        commits = [commit]
-        self.post_data.put(mvr_message.craft_packet(mvr_message.create_message("MVR_COMMIT", commits=commits, uuid=self.uuid)))
+    # def send_commit(self, commit):
+    #    DMX_Log.log.debug(f"Setting post data")
+    #    commits = [commit]
+    #    self.post_data.put(mvr_message.craft_packet(mvr_message.create_message("MVR_COMMIT", commits=commits, uuid=self.uuid)))
 
     def set_post_data(self, data):
         DMX_Log.log.debug(f"Setting post data")
         self.post_data.put(data)
 
-    def request_file(self, commit, path):
-        DMX_Log.log.debug(f"Requesting file")
-        self.filepath = path
-        self.commit = commit
-        commit_uuid = commit.commit_uuid
-        self.post_data.put(mvr_message.craft_packet(mvr_message.create_message("MVR_REQUEST", uuid=commit.station_uuid, file_uuid=commit_uuid)))
+    # def request_file(self, commit, path):
+    #    DMX_Log.log.debug(f"Requesting file")
+    #    self.filepath = path
+    #    self.commit = commit
+    #    commit_uuid = commit.commit_uuid
+    #    self.post_data.put(mvr_message.craft_packet(mvr_message.create_message("MVR_REQUEST", uuid=commit.station_uuid, file_uuid=commit_uuid)))
 
     def accept_wrapper(self, sock):
         conn, addr = sock.accept()  # Should be ready to read
@@ -104,7 +104,7 @@ class server(Thread):
 
     def parse_data(self, data):
         DMX_Log.log.debug(f"parse data {data}")
-        header = mvr_message.parse_header(data.inb)
+        header = mvrx_message.parse_header(data.inb)
         if header["Type"] == 0:  # json
             json_data = json.loads(data.inb[28:].decode("utf-8"))
             self.process_json_message(json_data, data)
@@ -123,7 +123,7 @@ class server(Thread):
             if recv_data:
                 data.inb += recv_data
                 DMX_Log.log.debug(("server received", len(data.inb), data.inb, data.addr, "\n"))
-                header = mvr_message.parse_header(data.inb)
+                header = mvrx_message.parse_header(data.inb)
                 DMX_Log.log.debug(f"header {header}")
                 if header["Error"]:
                     DMX_Log.log.error(f"error {data.inb}")
@@ -143,7 +143,7 @@ class server(Thread):
             if len(data.outb):
                 msg = data.outb.pop(0)
                 DMX_Log.log.debug("send msg" + str(msg))  # strange, but logger didn't want to convert it via f-strings
-                header = mvr_message.parse_header(msg)
+                header = mvrx_message.parse_header(msg)
                 if not header["Error"]:
                     DMX_Log.log.debug("Reply" + str(msg))  # same here
                 sock.sendall(msg)  # Should be ready to write
@@ -156,19 +156,19 @@ class server(Thread):
             shared_commits = bpy.context.window_manager.dmx.mvr_xchange.shared_commits
             commits = []
             for commit in shared_commits:
-                commit_template = mvr_message.commit_message.copy()
+                commit_template = mvrx_message.commit_message.copy()
                 commit_template["FileSize"] = commit.file_size
                 commit_template["FileUUID"] = commit.commit_uuid
                 commit_template["StationUUID"] = self.uuid
                 commit_template["FileName"] = commit.file_name or commit.comment.replace(" ", "_")
                 commit_template["Comment"] = commit.comment
                 commits.append(commit_template)
-            data.outb.append(mvr_message.craft_packet(mvr_message.create_message("MVR_JOIN_RET", commits=commits, uuid=self.uuid)))
+            data.outb.append(mvrx_message.craft_packet(mvrx_message.create_message("MVR_JOIN_RET", commits=commits, uuid=self.uuid)))
             # data.outb.append(mvr_message.create_message("MVR_JOIN_RET"))
         if json_data["Type"] == "MVR_LEAVE":
-            data.outb.append(mvr_message.craft_packet(mvr_message.create_message("MVR_LEAVE_RET", uuid=self.uuid)))
+            data.outb.append(mvrx_message.craft_packet(mvrx_message.create_message("MVR_LEAVE_RET", uuid=self.uuid)))
         if json_data["Type"] == "MVR_COMMIT":
-            data.outb.append(mvr_message.craft_packet(mvr_message.create_message("MVR_COMMIT_RET", uuid=self.uuid)))
+            data.outb.append(mvrx_message.craft_packet(mvrx_message.create_message("MVR_COMMIT_RET", uuid=self.uuid)))
         if json_data["Type"] == "MVR_REQUEST":
             dmx = bpy.context.scene.dmx
             local_path = dmx.get_addon_path()
@@ -190,7 +190,7 @@ class server(Thread):
             file_size = os.path.getsize(file_path)
             file_object = open(file_path, "br")
             buffer = file_object.read(1024)
-            data.outb.append(mvr_message.craft_packet(None, file_size, buffer, 1))
+            data.outb.append(mvrx_message.craft_packet(None, file_size, buffer, 1))
             buffer = file_object.read(1024)
             while buffer:
                 data.outb.append(buffer)

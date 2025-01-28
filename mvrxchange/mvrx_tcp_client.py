@@ -23,8 +23,8 @@ import time
 import selectors
 import bpy
 from datetime import datetime
-from ...mvrxchange.mvr_message import mvr_message
-from ...logging import DMX_Log
+from .mvrx_message import mvrx_message
+from ..logging import DMX_Log
 
 
 class client(Thread):
@@ -73,22 +73,22 @@ class client(Thread):
         shared_commits = bpy.context.window_manager.dmx.mvr_xchange.shared_commits
         commits = []
         for commit in shared_commits:
-            commit_template = mvr_message.commit_message.copy()
+            commit_template = mvrx_message.commit_message.copy()
             commit_template["FileSize"] = commit.file_size
             commit_template["FileUUID"] = commit.commit_uuid
             commit_template["StationUUID"] = self.application_uuid
             commit_template["FileName"] = commit.file_name or commit.comment.replace(" ", "_")
             commit_template["Comment"] = commit.comment
             commits.append(commit_template)
-        self.send(mvr_message.craft_packet(mvr_message.create_message("MVR_JOIN", commits=commits, uuid=self.application_uuid)))
+        self.send(mvrx_message.craft_packet(mvrx_message.create_message("MVR_JOIN", commits=commits, uuid=self.application_uuid)))
 
     def send_commit(self, commit):
         DMX_Log.log.debug(f"Sending commit")
         commits = [commit]
-        self.send(mvr_message.craft_packet(mvr_message.create_message("MVR_COMMIT", commits=commits, uuid=self.application_uuid)))
+        self.send(mvrx_message.craft_packet(mvrx_message.create_message("MVR_COMMIT", commits=commits, uuid=self.application_uuid)))
 
     def leave_mvr(self):
-        self.send(mvr_message.craft_packet(mvr_message.create_message("MVR_LEAVE", uuid=self.application_uuid)))
+        self.send(mvrx_message.craft_packet(mvrx_message.create_message("MVR_LEAVE", uuid=self.application_uuid)))
 
     def request_file(self, commit, path):
         self.filepath = path
@@ -97,7 +97,7 @@ class client(Thread):
             commit_uuid = ""
         else:
             commit_uuid = commit.commit_uuid
-        self.send(mvr_message.craft_packet(mvr_message.create_message("MVR_REQUEST", uuid=commit.station_uuid, file_uuid=commit_uuid)))
+        self.send(mvrx_message.craft_packet(mvrx_message.create_message("MVR_REQUEST", uuid=commit.station_uuid, file_uuid=commit_uuid)))
         # self.send(mvr_message.create_message("MVR_REQUEST", uuid=self.application_uuid, file_uuid=commit_uuid))
 
     def stop(self):
@@ -133,7 +133,7 @@ class client(Thread):
                                 DMX_Log.log.debug(f"Received {recv_data!r}")
                                 data += recv_data
                                 if data:
-                                    header = mvr_message.parse_header(data)
+                                    header = mvrx_message.parse_header(data)
                                     if header["Error"]:
                                         data = b""
 
@@ -166,7 +166,7 @@ class client(Thread):
 
     def parse_data(self, data, callback):
         DMX_Log.log.debug(f"parsing {data}")
-        header = mvr_message.parse_header(data)
+        header = mvrx_message.parse_header(data)
         print("header", header)
         if header["Type"] == 0:  # json
             json_data = json.loads(data[28:].decode("utf-8"))
