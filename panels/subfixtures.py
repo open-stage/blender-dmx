@@ -29,7 +29,9 @@ _ = DMX_Lang._
 
 
 class DMX_UL_Subfixture(UIList):
-    def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
+    def draw_item(
+        self, context, layout, data, item, icon, active_data, active_propname, index
+    ):
         if self.layout_type in {"DEFAULT", "COMPACT"}:
             col = layout.column()
             col.ui_units_x = 3
@@ -42,7 +44,7 @@ class DMX_UL_Subfixture(UIList):
             layout.label(text=str(item.id), icon=icon)
 
     def filter_items(self, context, data, propname):
-        #temp_data = bpy.context.window_manager.dmx
+        # temp_data = bpy.context.window_manager.dmx
         vgroups = getattr(data, propname)
         helper_funcs = bpy.types.UI_UL_list
         temp_data = bpy.context.window_manager.dmx
@@ -51,11 +53,14 @@ class DMX_UL_Subfixture(UIList):
         flt_flags = []
         flt_neworder = []
 
-        flt_flags = helper_funcs.filter_items_by_name(self.filter_name, self.bitflag_filter_item, vgroups, "name")
+        flt_flags = helper_funcs.filter_items_by_name(
+            self.filter_name, self.bitflag_filter_item, vgroups, "name"
+        )
         if not flt_flags:
             flt_flags = [self.bitflag_filter_item] * len(vgroups)
         temp_data.set_filtered_subfixtures(flt_flags)
-        return flt_flags,[]
+        return flt_flags, []
+
 
 class DMX_OT_Subfixture_SelectVisible(Operator):
     bl_label = _("Select visible")
@@ -65,10 +70,13 @@ class DMX_OT_Subfixture_SelectVisible(Operator):
 
     def execute(self, context):
         temp_data = bpy.context.window_manager.dmx
-        for fixture, enabled in zip(temp_data.subfixtures, temp_data.filtered_subfixtures):
+        for fixture, enabled in zip(
+            temp_data.subfixtures, temp_data.filtered_subfixtures
+        ):
             if enabled:
                 fixture.enabled = True
         return {"FINISHED"}
+
 
 class DMX_OT_Subfixture_Clear(Operator):
     bl_label = _("Clear selection")
@@ -78,10 +86,11 @@ class DMX_OT_Subfixture_Clear(Operator):
 
     def execute(self, context):
         temp_data = bpy.context.window_manager.dmx
-        #temp_data.active_subfixtures.clear()
+        # temp_data.active_subfixtures.clear()
         for sf in temp_data.subfixtures:
-            sf.enabled=False
+            sf.enabled = False
         return {"FINISHED"}
+
 
 # Panel #
 
@@ -101,7 +110,15 @@ class DMX_PT_Subfixtures(Panel):
         dmx = scene.dmx
         temp_data = bpy.context.window_manager.dmx
 
-        layout.template_list("DMX_UL_Subfixture", "", temp_data, "subfixtures", temp_data, "active_subfixture_i", rows=4)
+        layout.template_list(
+            "DMX_UL_Subfixture",
+            "",
+            temp_data,
+            "subfixtures",
+            temp_data,
+            "active_subfixture_i",
+            rows=4,
+        )
 
         selected = ",".join([s.name for s in temp_data.active_subfixtures])
         row = layout.row()
@@ -111,6 +128,7 @@ class DMX_PT_Subfixtures(Panel):
         col3 = row.column()
         col2.operator("dmx.select_visible_subfixtures", icon="CHECKBOX_HLT", text="")
         col3.operator("dmx.clear_subfixtures", icon="CHECKBOX_DEHLT", text="")
+
 
 class DMX_Subfixture(PropertyGroup):
     name: StringProperty()

@@ -29,7 +29,9 @@ _ = DMX_Lang._
 
 
 class DMX_UL_Group(UIList):
-    def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
+    def draw_item(
+        self, context, layout, data, item, icon, active_data, active_propname, index
+    ):
         icon = "GROUP_VERTEX"
         fixture_count = len(json.loads(item.dump))
         if self.layout_type in {"DEFAULT", "COMPACT"}:
@@ -57,15 +59,28 @@ class DMX_MT_Group(Menu):
 
         row = layout.row()
         row.operator("dmx.update_group", text=_("Update"), icon="FILE_REFRESH")
-        row.enabled = len(bpy.context.selected_objects) and len(dmx.groups) and scene.dmx.group_list_i >= 0 and scene.dmx.group_list_i < len(dmx.groups)
+        row.enabled = (
+            len(bpy.context.selected_objects)
+            and len(dmx.groups)
+            and scene.dmx.group_list_i >= 0
+            and scene.dmx.group_list_i < len(dmx.groups)
+        )
 
         row = layout.row()
         row.operator("dmx.rename_group", text=_("Rename"), icon="SYNTAX_OFF")
-        row.enabled = len(dmx.groups) and scene.dmx.group_list_i >= 0 and scene.dmx.group_list_i < len(dmx.groups)
+        row.enabled = (
+            len(dmx.groups)
+            and scene.dmx.group_list_i >= 0
+            and scene.dmx.group_list_i < len(dmx.groups)
+        )
 
         row = layout.row()
         row.operator("dmx.remove_group", text=_("Remove"), icon="REMOVE")
-        row.enabled = len(dmx.groups) and scene.dmx.group_list_i >= 0 and scene.dmx.group_list_i < len(dmx.groups)
+        row.enabled = (
+            len(dmx.groups)
+            and scene.dmx.group_list_i >= 0
+            and scene.dmx.group_list_i < len(dmx.groups)
+        )
 
 
 # Operators #
@@ -167,7 +182,9 @@ class DMX_PT_Groups(Panel):
         scene = context.scene
         dmx = scene.dmx
 
-        layout.template_list("DMX_UL_Group", "", scene.dmx, "groups", scene.dmx, "group_list_i", rows=4)
+        layout.template_list(
+            "DMX_UL_Group", "", scene.dmx, "groups", scene.dmx, "group_list_i", rows=4
+        )
 
         layout.menu("DMX_MT_Group", text="...", icon="GROUP_VERTEX")
 

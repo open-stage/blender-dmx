@@ -37,7 +37,9 @@ class DMX_MT_Universe(Menu):
 
 
 class DMX_UL_Universe(UIList):
-    def draw_item(self, context, layout, data, item, icon, active_data, active_propname):
+    def draw_item(
+        self, context, layout, data, item, icon, active_data, active_propname
+    ):
         ob = data
         icon = "FILE_VOLUME"
         if self.layout_type in {"DEFAULT", "COMPACT"}:
@@ -69,7 +71,9 @@ class DMX_PT_DMX_Universes(Panel):
 
         layout.prop(dmx, "universes_n", text=_("Universes"))
 
-        layout.template_list("DMX_UL_Universe", "", dmx, "universes", dmx, "universe_list_i")
+        layout.template_list(
+            "DMX_UL_Universe", "", dmx, "universes", dmx, "universe_list_i"
+        )
 
         if dmx.universe_list_i < dmx.universes_n:
             universe = dmx.universes[dmx.universe_list_i]

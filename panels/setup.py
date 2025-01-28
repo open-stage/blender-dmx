@@ -53,7 +53,9 @@ class DMX_OT_Setup_NewShow(Operator):
 
 class DMX_OT_Setup_EnableSelectGeometries(Operator):
     bl_label = _("Do at your own risk. Manual edits or deletes can cause issues")
-    bl_description = _("Manually editing or deleting geometries of GDTF devices may cause issues.")
+    bl_description = _(
+        "Manually editing or deleting geometries of GDTF devices may cause issues."
+    )
     bl_idname = "dmx.enabling_geometry_selection"
     bl_options = {"UNDO"}
 
@@ -145,7 +147,9 @@ class DMX_OT_Fixture_Set_Cycles_Beams_Size_Normal(Operator):
 
 class DMX_OT_Setup_Volume_Create(Operator):
     bl_label = _("DMX > Setup > Create/Update Volume Box")
-    bl_description = _("Create/Update a Box on the scene bounds with a Volume Scatter shader")
+    bl_description = _(
+        "Create/Update a Box on the scene bounds with a Volume Scatter shader"
+    )
     bl_idname = "dmx.create_volume"
     bl_options = {"UNDO"}
 
@@ -206,7 +210,11 @@ class DMX_PT_Setup_Volume(Panel):
         box.prop(context.scene.dmx, "disable_overlays")
 
         box = layout.column().box()
-        box.operator("dmx.create_volume", text=(_("Update Volume Box") if dmx.volume else _("Create Volume Box")), icon="MESH_CUBE")
+        box.operator(
+            "dmx.create_volume",
+            text=(_("Update Volume Box") if dmx.volume else _("Create Volume Box")),
+            icon="MESH_CUBE",
+        )
 
         row = box.row()
         row.prop(context.scene.dmx, "volume_enabled")
@@ -230,7 +238,9 @@ class DMX_PT_Setup_Volume(Panel):
         col1 = row.column()
         col1.prop(context.scene.dmx, "reduced_beam_diameter_in_cycles")
         col2 = row.column()
-        col2.operator("wm.url_open", text="", icon="HELP").url = "https://blenderdmx.eu/docs/setup/#beam-lens-diameter-in-cycles"
+        col2.operator(
+            "wm.url_open", text="", icon="HELP"
+        ).url = "https://blenderdmx.eu/docs/setup/#beam-lens-diameter-in-cycles"
 
         if bpy.context.scene.dmx.reduced_beam_diameter_in_cycles == "CUSTOM":
             row0 = box.row()
@@ -245,7 +255,9 @@ class DMX_PT_Setup_Volume(Panel):
         col1 = row.column()
         col1.prop(context.window_manager.dmx, "collections_list")
         col2 = row.column()
-        col2.operator("wm.url_open", text="", icon="HELP").url = "https://blenderdmx.eu/docs/laser/"
+        col2.operator(
+            "wm.url_open", text="", icon="HELP"
+        ).url = "https://blenderdmx.eu/docs/laser/"
 
 
 class DMX_PT_Setup_Viewport(Panel):
@@ -298,20 +310,40 @@ class DMX_PT_Setup_Extras(Panel):
             # do not do version check online in 4.2 and up
             pass
         else:
-            layout.operator("dmx.check_version", text=_("Check for BlenderDMX updates"), icon="SHADING_WIRE")
+            layout.operator(
+                "dmx.check_version",
+                text=_("Check for BlenderDMX updates"),
+                icon="SHADING_WIRE",
+            )
             row = layout.row()
             col1 = row.column()
-            col1.label(text=_("Status: {}").format(context.window_manager.dmx.release_version_status))
+            col1.label(
+                text=_("Status: {}").format(
+                    context.window_manager.dmx.release_version_status
+                )
+            )
             col2 = row.column()
-            col2.operator("wm.url_open", text="", icon="SHADING_WIRE").url = "https://github.com/open-stage/blender-dmx/releases/latest"
+            col2.operator(
+                "wm.url_open", text="", icon="SHADING_WIRE"
+            ).url = "https://github.com/open-stage/blender-dmx/releases/latest"
         row = layout.row()
         row.operator_context = "INVOKE_DEFAULT"  #'INVOKE_AREA'
-        row.operator("dmx.clear_custom_data", text=_("Clear Project data"), icon="TRASH")
+        row.operator(
+            "dmx.clear_custom_data", text=_("Clear Project data"), icon="TRASH"
+        )
         if old_data_exists:
             row = layout.row()
-            row.operator("dmx.copy_custom_data", text=_("Copy (import) old data from addon folder"), icon="DUPLICATE")
-        layout.operator("dmx.remove_show", text=_("Remove DMX from blend file"), icon="BRUSH_DATA")
-        layout.operator("wm.url_open", text="User Guide Online", icon="HELP").url = "https://blenderdmx.eu/docs/faq/"
+            row.operator(
+                "dmx.copy_custom_data",
+                text=_("Copy (import) old data from addon folder"),
+                icon="DUPLICATE",
+            )
+        layout.operator(
+            "dmx.remove_show", text=_("Remove DMX from blend file"), icon="BRUSH_DATA"
+        )
+        layout.operator(
+            "wm.url_open", text="User Guide Online", icon="HELP"
+        ).url = "https://blenderdmx.eu/docs/faq/"
 
 
 class DMX_PT_Setup_Import(Panel):
@@ -329,15 +361,21 @@ class DMX_PT_Setup_Import(Panel):
         dmx = context.scene.dmx
         # "Import GDTF Profile"
         row = layout.row()
-        row.operator("dmx.import_gdtf_into_scene", text=_("Import GDTF Profile"), icon="IMPORT")
+        row.operator(
+            "dmx.import_gdtf_into_scene", text=_("Import GDTF Profile"), icon="IMPORT"
+        )
 
         # "Import MVR scene"
         row = layout.row()
-        row.operator("dmx.import_mvr_into_scene", text=_("Import MVR Scene"), icon="IMPORT")
+        row.operator(
+            "dmx.import_mvr_into_scene", text=_("Import MVR Scene"), icon="IMPORT"
+        )
 
         # export project data
         row = layout.row()
-        row.operator("dmx.import_custom_data", text=_("Import Project data"), icon="IMPORT")
+        row.operator(
+            "dmx.import_custom_data", text=_("Import Project data"), icon="IMPORT"
+        )
 
 
 class DMX_PT_Setup_Export(Panel):
@@ -356,7 +394,9 @@ class DMX_PT_Setup_Export(Panel):
 
         # export project data
         row = layout.row()
-        row.operator("dmx.export_custom_data", text=_("Export Project data"), icon="EXPORT")
+        row.operator(
+            "dmx.export_custom_data", text=_("Export Project data"), icon="EXPORT"
+        )
         row = layout.row()
         row.operator("dmx.export_mvr_from_scene", text=_("Export MVR"), icon="EXPORT")
 
@@ -430,13 +470,17 @@ class DMX_PT_Setup(Panel):
 
         if not dmx.collection:
             if not bpy.app.version >= (3, 4):
-                layout.label(text=_("Error! Blender 3.4 or higher required."), icon="ERROR")
+                layout.label(
+                    text=_("Error! Blender 3.4 or higher required."), icon="ERROR"
+                )
             # if bpy.app.version >= (4, 2):
             #    row = layout.row()
             #    row.label(text=_("For Blender 4.2 and up use the Extension"), icon="ERROR")
             #    row.operator("wm.url_open", text="BlenderDMX Extension", icon="SHADING_WIRE").url = "https://extensions.blender.org/add-ons/open-stage-blender-dmx/"
             layout.operator("dmx.new_show", text=_("Create New Show"), icon="LIGHT")
-            layout.operator("wm.url_open", text="User Guide Online", icon="HELP").url = "https://blenderdmx.eu/docs/faq/"
+            layout.operator(
+                "wm.url_open", text="User Guide Online", icon="HELP"
+            ).url = "https://blenderdmx.eu/docs/faq/"
 
 
 class DMX_OT_VersionCheck(Operator):
@@ -478,7 +522,9 @@ class DMX_OT_VersionCheck(Operator):
 class DMX_OT_Import_Custom_Data(Operator):
     bl_label = _("Import Custom Data")
     bl_idname = "dmx.import_custom_data"
-    bl_description = _("Unzip previously exported custom data from a zip file. This will overwrite current data!")
+    bl_description = _(
+        "Unzip previously exported custom data from a zip file. This will overwrite current data!"
+    )
     bl_options = {"UNDO"}
 
     filter_glob: StringProperty(default="*.zip", options={"HIDDEN"})
@@ -589,7 +635,9 @@ class DMX_OT_Clear_Custom_Data(Operator):
 class DMX_OT_Copy_Custom_Data(Operator):
     bl_label = _("Copy data from addon to user directory")
     bl_idname = "dmx.copy_custom_data"
-    bl_description = _("Copy custom data from BlenderDMX addon directory to BlenderDMX extension user directory.")
+    bl_description = _(
+        "Copy custom data from BlenderDMX addon directory to BlenderDMX extension user directory."
+    )
     bl_options = {"UNDO"}
 
     def draw(self, context):

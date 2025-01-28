@@ -38,10 +38,14 @@ class DMX_Fixtures_Local_Profile(PropertyGroup):
 
     short_name: StringProperty(
         name=_("Short Name"),
-        description=_("The short name of the DMX profile, all caps, used as suggestion for fixture names."),
+        description=_(
+            "The short name of the DMX profile, all caps, used as suggestion for fixture names."
+        ),
     )
 
-    filename: StringProperty(name=_("Filename"), description=_("The name of the DMX profile."))
+    filename: StringProperty(
+        name=_("Filename"), description=_("The name of the DMX profile.")
+    )
 
     modes: CollectionProperty(type=DMX_Fixtures_Local_ProfileMode)
 
@@ -78,7 +82,11 @@ class DMX_Fixtures_Local_Profile(PropertyGroup):
                 errors.append(f"{file}: {e}")
 
         if show_errors and errors:
-            MultiLineMessage(message=errors, title=_("Some fixtures could not be processed"), icon="ERROR")
+            MultiLineMessage(
+                message=errors,
+                title=_("Some fixtures could not be processed"),
+                icon="ERROR",
+            )
         return profiles
 
     @staticmethod

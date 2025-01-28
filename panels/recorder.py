@@ -192,11 +192,19 @@ class DMX_PT_DMX_Recorder_Delete(Panel):
         fixtures_exist = len(dmx.fixtures) > 0
 
         row = layout.row()
-        row.operator("dmx.recorder_delete_keyframes_selected", text=_("Delete from selected fixtures"), icon="SELECT_DIFFERENCE")
+        row.operator(
+            "dmx.recorder_delete_keyframes_selected",
+            text=_("Delete from selected fixtures"),
+            icon="SELECT_DIFFERENCE",
+        )
         row.enabled = selected
 
         row = layout.row()
-        row.operator("dmx.recorder_delete_keyframes_all", text=_("Delete from all fixtures"), icon="SELECT_EXTEND")
+        row.operator(
+            "dmx.recorder_delete_keyframes_all",
+            text=_("Delete from all fixtures"),
+            icon="SELECT_EXTEND",
+        )
         row.enabled = fixtures_exist
 
 

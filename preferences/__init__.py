@@ -23,6 +23,7 @@ from bpy.types import AddonPreferences, Operator
 from .. import __package__ as base_package
 from .. import rna_keymap_ui
 
+
 class DMX_Regenrate_UUID(Operator):
     bl_label = "Regenerate UUID"
     bl_idname = "dmx.regenerate_uuid"
@@ -60,7 +61,9 @@ class DMX_Preferences(AddonPreferences):
     def draw(self, context):
         layout = self.layout
         layout.use_property_split = True
-        layout.label(text="Username and Password for GDTF Share. Get a free account at gdtf-share.com")
+        layout.label(
+            text="Username and Password for GDTF Share. Get a free account at gdtf-share.com"
+        )
         layout.prop(self, "share_api_username")
         layout.prop(self, "share_api_password")
         layout.separator()
@@ -79,7 +82,7 @@ class DMX_Preferences(AddonPreferences):
         dmx = scene.dmx
         box = layout.box()
         col = box.column()
-        col.label(text="Keymap Settings:",icon="HAND")
+        col.label(text="Keymap Settings:", icon="HAND")
         col.separator()
         wm = bpy.context.window_manager
         kc = wm.keyconfigs.user
@@ -93,7 +96,7 @@ class DMX_Preferences(AddonPreferences):
             for kmi_con in km.keymap_items:
                 if kmi_add.idname == kmi_con.idname:
                     if kmi_add.name == kmi_con.name:
-                        get_kmi_l.append((km,kmi_con))
+                        get_kmi_l.append((km, kmi_con))
 
         get_kmi_l = sorted(set(get_kmi_l), key=get_kmi_l.index)
 

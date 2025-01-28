@@ -91,7 +91,9 @@ class DMX_GDTF:
         modes = {}
         for mode in gdtf_profile.dmx_modes:
             dmx_channels = pygdtf.utils.get_dmx_channels(gdtf_profile, mode.name)
-            dmx_channels_flattened = [channel for break_channels in dmx_channels for channel in break_channels]
+            dmx_channels_flattened = [
+                channel for break_channels in dmx_channels for channel in break_channels
+            ]
             modes[mode.name] = len(dmx_channels_flattened)
         return modes
 
@@ -118,7 +120,9 @@ class DMX_GDTF:
 
         obj = bpy.context.view_layer.objects.selected[0]
         obj.users_collection[0].objects.unlink(obj)
-        obj.data.transform(Matrix.Diagonal((model.length, model.width, model.height)).to_4x4())
+        obj.data.transform(
+            Matrix.Diagonal((model.length, model.width, model.height)).to_4x4()
+        )
         return obj
 
     @staticmethod
@@ -128,7 +132,15 @@ class DMX_GDTF:
         bpy.ops.import_scene.gltf(filepath=path)
         obj = bpy.context.view_layer.objects.selected[0]
         obj.users_collection[0].objects.unlink(obj)
-        obj.data.transform(Matrix.Diagonal((model.length / obj.dimensions.x, model.width / obj.dimensions.y, model.height / obj.dimensions.z)).to_4x4())
+        obj.data.transform(
+            Matrix.Diagonal(
+                (
+                    model.length / obj.dimensions.x,
+                    model.width / obj.dimensions.y,
+                    model.height / obj.dimensions.z,
+                )
+            ).to_4x4()
+        )
         return obj
 
     @staticmethod
@@ -137,7 +149,9 @@ class DMX_GDTF:
         gobos = []
         dmx = bpy.context.scene.dmx
         current_path = dmx.get_addon_path()
-        extract_to_folder_path = os.path.join(current_path, "assets", "models", profile.fixture_type_id)
+        extract_to_folder_path = os.path.join(
+            current_path, "assets", "models", profile.fixture_type_id
+        )
         for image_name in profile._package.namelist():
             if image_name.startswith("wheels"):
                 short_name = image_name.replace("wheels/", "", 1)
@@ -171,7 +185,9 @@ class DMX_GDTF:
     def extract_gobos_as_sequence(profile):
         dmx = bpy.context.scene.dmx
         current_path = dmx.get_addon_path()
-        gdtf_path = os.path.join(current_path, "assets", "models", profile.fixture_type_id)
+        gdtf_path = os.path.join(
+            current_path, "assets", "models", profile.fixture_type_id
+        )
         images_path = os.path.join(gdtf_path, "wheels")
         sequence_path = os.path.join(gdtf_path, "sequence")
 
@@ -194,7 +210,9 @@ class DMX_GDTF:
             destination.write_bytes(image.read_bytes())
             count = idx
         if first:
-            sequence1 = bpy.data.images.load(first)  # we need this twice as single gobos were affecting each other
+            sequence1 = bpy.data.images.load(
+                first
+            )  # we need this twice as single gobos were affecting each other
             sequence2 = bpy.data.images.load(first)
         else:
             return None
@@ -209,7 +227,9 @@ class DMX_GDTF:
     def load2D(profile):
         dmx = bpy.context.scene.dmx
         current_path = dmx.get_addon_path()
-        extract_to_folder_path = os.path.join(current_path, "assets", "models", profile.fixture_type_id)
+        extract_to_folder_path = os.path.join(
+            current_path, "assets", "models", profile.fixture_type_id
+        )
         filename = f"{profile.thumbnail}.svg"
         obj = None
         if filename in profile._package.namelist():
@@ -241,7 +261,9 @@ class DMX_GDTF:
     def loadModel(profile, model):
         dmx = bpy.context.scene.dmx
         current_path = dmx.get_addon_path()
-        extract_to_folder_path = os.path.join(current_path, "assets", "models", profile.fixture_type_id)
+        extract_to_folder_path = os.path.join(
+            current_path, "assets", "models", profile.fixture_type_id
+        )
         obj_dimension = Vector((model.length, model.width, model.height))
 
         if model.file.extension.lower() == "3ds":
@@ -249,7 +271,13 @@ class DMX_GDTF:
             profile._package.extract(inside_zip_path, extract_to_folder_path)
             file_name = os.path.join(extract_to_folder_path, inside_zip_path)
             try:
-                load_3ds(file_name, bpy.context, FILTER={"MESH"}, KEYFRAME=False, APPLY_MATRIX=False)
+                load_3ds(
+                    file_name,
+                    bpy.context,
+                    FILTER={"MESH"},
+                    KEYFRAME=False,
+                    APPLY_MATRIX=False,
+                )
             except Exception as e:
                 DMX_Log.log.error(f"Error loading a 3DS file {profile.name} {e}")
                 traceback.print_exception(e)
@@ -269,14 +297,22 @@ class DMX_GDTF:
         # obj.rotation_euler = Euler((0, 0, 0), 'XYZ')
 
         if obj.dimensions.x <= 0:
-            DMX_Log.log.error(f"Model {obj.name} X size {obj.dimensions.x} <= 0. It will likely not work correctly.")
+            DMX_Log.log.error(
+                f"Model {obj.name} X size {obj.dimensions.x} <= 0. It will likely not work correctly."
+            )
         if obj.dimensions.y <= 0:
-            DMX_Log.log.error(f"Model {obj.name} Y size {obj.dimensions.y} <= 0. It will likely not work correctly.")
+            DMX_Log.log.error(
+                f"Model {obj.name} Y size {obj.dimensions.y} <= 0. It will likely not work correctly."
+            )
         if obj.dimensions.z <= 0:
-            DMX_Log.log.error(f"Model {obj.name} Z size {obj.dimensions.z} <= 0. It will likely not work correctly.")
+            DMX_Log.log.error(
+                f"Model {obj.name} Z size {obj.dimensions.z} <= 0. It will likely not work correctly."
+            )
 
         scale_vector = obj.scale * obj_dimension
-        factor = Vector([scale_vector[val] / max(obj.dimensions[val], 1e-09) for val in range(3)])
+        factor = Vector(
+            [scale_vector[val] / max(obj.dimensions[val], 1e-09) for val in range(3)]
+        )
         if model.file.extension.lower() == "3ds":
             obj.data.transform(Matrix.Diagonal(factor).to_4x4())
         else:
@@ -331,7 +367,9 @@ class DMX_GDTF:
     @staticmethod
     def buildCollection(profile, mode, display_beams, add_target):
         # Create model collection
-        collection = bpy.data.collections.new(DMX_GDTF.getName(profile, mode, display_beams, add_target))
+        collection = bpy.data.collections.new(
+            DMX_GDTF.getName(profile, mode, display_beams, add_target)
+        )
         objs = {}
         # Get root geometry reference from the selected DMX Mode
         dmx_mode = pygdtf.utils.get_dmx_mode_by_name(profile, mode)
@@ -348,7 +386,9 @@ class DMX_GDTF:
         dmx_channels = pygdtf.utils.get_dmx_channels(profile, mode)
         virtual_channels = pygdtf.utils.get_virtual_channels(profile, mode)
         # Merge all DMX breaks together
-        dmx_channels_flattened = [channel for break_channels in dmx_channels for channel in break_channels]
+        dmx_channels_flattened = [
+            channel for break_channels in dmx_channels for channel in break_channels
+        ]
         # dmx_channels_flattened contain list of channel with id, geometry
 
         for ch in dmx_channels_flattened:
@@ -360,7 +400,9 @@ class DMX_GDTF:
             DMX_Log.log.info(f"loading geometry {geometry.name}")
 
             if isinstance(geometry, pygdtf.GeometryReference):
-                reference = pygdtf.utils.get_geometry_by_name(profile, geometry.geometry)
+                reference = pygdtf.utils.get_geometry_by_name(
+                    profile, geometry.geometry
+                )
                 geometry.model = reference.model
 
                 if hasattr(reference, "geometries"):
@@ -371,13 +413,21 @@ class DMX_GDTF:
             if geometry.model is None:
                 # Empty geometries are allowed as of GDTF 1.2
                 # If the size is 0, Blender will discard it, set it to something tiny
-                model = pygdtf.Model(name=f"{sanitize_obj_name(geometry)}", length=0.0001, width=0.0001, height=0.0001, primitive_type="Cube")
+                model = pygdtf.Model(
+                    name=f"{sanitize_obj_name(geometry)}",
+                    length=0.0001,
+                    width=0.0001,
+                    height=0.0001,
+                    primitive_type="Cube",
+                )
                 geometry.model = ""
             else:
                 # Deepcopy the model because GeometryReference will modify the name
                 # Perhaps this could be done conditionally
                 # Also, we could maybe make a copy of the beam instance, if Blender supports it...
-                model = copy.deepcopy(pygdtf.utils.get_model_by_name(profile, geometry.model))
+                model = copy.deepcopy(
+                    pygdtf.utils.get_model_by_name(profile, geometry.model)
+                )
 
             if isinstance(geometry, pygdtf.GeometryReference):
                 model.name = f"{sanitize_obj_name(geometry)}"
@@ -392,7 +442,11 @@ class DMX_GDTF:
 
             # 'Undefined' of 'File': load from file
             # Prefer File first, as some GDTFs have both File and PrimitiveType
-            if (str(model.primitive_type) == "Undefined") or (model.file is not None and model.file.name != "" and (str(model.primitive_type) != "Pigtail")):
+            if (str(model.primitive_type) == "Undefined") or (
+                model.file is not None
+                and model.file.name != ""
+                and (str(model.primitive_type) != "Pigtail")
+            ):
                 try:
                     obj = DMX_GDTF.loadModel(profile, model)
                 except Exception as e:
@@ -470,7 +524,9 @@ class DMX_GDTF:
             camera_object.hide_select = True
             camera_object.parent = obj_child
             camera_object.matrix_parent_inverse = obj_child.matrix_world.inverted()
-            camera_object.rotation_euler[0] += math.radians(90)  # The media server camera-view points into the positive Y-direction (and Z-up).
+            camera_object.rotation_euler[0] += math.radians(
+                90
+            )  # The media server camera-view points into the positive Y-direction (and Z-up).
             collection.objects.link(camera_object)
 
         def create_beam(geometry):
@@ -488,10 +544,14 @@ class DMX_GDTF:
             obj_child.visible_shadow = False
             light_data = bpy.data.lights.new(name=f"Spot {obj_child.name}", type="SPOT")
             light_data["flux"] = geometry.luminous_flux
-            light_data["shutter_value"] = 0  # Here we will store values required for strobing
+            light_data["shutter_value"] = (
+                0  # Here we will store values required for strobing
+            )
             light_data["shutter_dimmer_value"] = 0
             light_data["shutter_counter"] = 0
-            light_data.energy = light_data["flux"]  # set by default to full brightness for devices without dimmer
+            light_data.energy = light_data[
+                "flux"
+            ]  # set by default to full brightness for devices without dimmer
             light_data.use_custom_distance = True
             light_data.cutoff_distance = 23
 
@@ -502,7 +562,9 @@ class DMX_GDTF:
             light_data["beam_radius_pin_sized_for_gobos"] = True
             # This allows the user to set this if wanted to prevent beam rendering differences
             light_data.shadow_buffer_clip_start = 0.0001
-            if hasattr(light_data, "use_soft_falloff"):  # ensure that beam has full diameter at the lense in Cycles for Blender 4.1 and up
+            if hasattr(
+                light_data, "use_soft_falloff"
+            ):  # ensure that beam has full diameter at the lense in Cycles for Blender 4.1 and up
                 light_data.use_soft_falloff = False
 
             light_object = bpy.data.objects.new(name="Spot", object_data=light_data)
@@ -512,7 +574,14 @@ class DMX_GDTF:
             collection.objects.link(light_object)
 
             gobo_radius = 2.2 * 0.01 * math.tan(math.radians(geometry.beam_angle / 2))
-            goboGeometry = SimpleNamespace(name=f"gobo {sanitize_obj_name(geometry)}", length=gobo_radius, width=gobo_radius, height=0, primitive_type="Plane", beam_radius=geometry.beam_radius)
+            goboGeometry = SimpleNamespace(
+                name=f"gobo {sanitize_obj_name(geometry)}",
+                length=gobo_radius,
+                width=gobo_radius,
+                height=0,
+                primitive_type="Plane",
+                beam_radius=geometry.beam_radius,
+            )
             if has_gobos:
                 create_gobo(geometry, goboGeometry)
 
@@ -587,7 +656,9 @@ class DMX_GDTF:
                 create_camera(geometry)
 
             elif isinstance(geometry, pygdtf.GeometryReference):
-                reference = copy.deepcopy(pygdtf.utils.get_geometry_by_name(profile, geometry.geometry))
+                reference = copy.deepcopy(
+                    pygdtf.utils.get_geometry_by_name(profile, geometry.geometry)
+                )
                 reference.name = sanitize_obj_name(geometry)
 
                 # apply position of the reference
@@ -607,8 +678,12 @@ class DMX_GDTF:
                 if hasattr(reference, "geometries"):
                     if len(reference.geometries) > 0:
                         for child_geometry in reference.geometries:
-                            setattr(child_geometry, "reference_root", str(reference.name))
-                            constraint_child_to_parent(reference, child_geometry)  # parent, child
+                            setattr(
+                                child_geometry, "reference_root", str(reference.name)
+                            )
+                            constraint_child_to_parent(
+                                reference, child_geometry
+                            )  # parent, child
                             update_geometry(child_geometry)
                 return
 
@@ -618,7 +693,9 @@ class DMX_GDTF:
                         if hasattr(geometry, "reference_root"):
                             root_reference = getattr(geometry, "reference_root")
                             setattr(child_geometry, "reference_root", root_reference)
-                        constraint_child_to_parent(geometry, child_geometry)  # parent, child
+                        constraint_child_to_parent(
+                            geometry, child_geometry
+                        )  # parent, child
                         update_geometry(child_geometry)
 
         # Load 3d objects from the GDTF profile
@@ -634,12 +711,16 @@ class DMX_GDTF:
             axis_objects = []
             for obj in objs.values():
                 for channel in dmx_channels_flattened:
-                    if attribute == channel["id"] and channel["geometry"] == obj.get("original_name", "None"):
+                    if attribute == channel["id"] and channel["geometry"] == obj.get(
+                        "original_name", "None"
+                    ):
                         obj["mobile_type"] = "head" if attribute == "Tilt" else "yoke"
                         obj["geometry_type"] = "axis"
                         axis_objects.append(obj)
                 for channel in virtual_channels:
-                    if attribute == channel["id"] and channel["geometry"] == obj.get("original_name", "None"):
+                    if attribute == channel["id"] and channel["geometry"] == obj.get(
+                        "original_name", "None"
+                    ):
                         obj["mobile_type"] = "head" if attribute == "Tilt" else "yoke"
                         obj["geometry_type"] = "axis"
                         axis_objects.append(obj)
@@ -663,13 +744,21 @@ class DMX_GDTF:
                 check_parent = part.parent and part.parent.get("mobile_type") == "head"
                 check_pan = part.get("mobile_type") == "yoke"
                 check_tilt = part.get("mobile_type") == "head"
-                if not len(base.constraints) and (check_pan and not len(part.children) or (not check_pan and not check_tilt)):
+                if not len(base.constraints) and (
+                    check_pan
+                    and not len(part.children)
+                    or (not check_pan and not check_tilt)
+                ):
                     constraint = base.constraints.new("TRACK_TO")
                     constraint.target = target
                     continue
                 else:
                     constraint = part.constraints.new("LOCKED_TRACK")
-                if check_tilt or (check_parent and part.parent.parent and part.parent.parent.get("mobile_type") == "yoke"):
+                if check_tilt or (
+                    check_parent
+                    and part.parent.parent
+                    and part.parent.parent.get("mobile_type") == "yoke"
+                ):
                     constraint.track_axis = "TRACK_NEGATIVE_Z"
                 else:
                     constraint.track_axis = "TRACK_NEGATIVE_Y"

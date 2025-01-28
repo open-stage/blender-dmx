@@ -87,7 +87,9 @@ def export_custom_data(directory_name, file_name):
         shutil.copytree(models_path, os.path.join(export_dir, "models"))
         if os.path.exists(mvrs_path):
             shutil.copytree(mvrs_path, os.path.join(export_dir, "mvrs"))
-        shutil.copytree(profiles_path, os.path.join(export_dir, "profiles"), ignore=ignore)
+        shutil.copytree(
+            profiles_path, os.path.join(export_dir, "profiles"), ignore=ignore
+        )
         shutil.make_archive(export_filename, "zip", export_dir)
         shutil.rmtree(export_dir)
     except Exception as e:
@@ -118,7 +120,11 @@ def clear_custom_data():
     mvrs_path = os.path.join(folder_path, "assets", "mvrs", "*")
     profiles_path = os.path.join(folder_path, "assets", "profiles", "*")
 
-    rm_dirs = [(models_path, "models"), (mvrs_path, "mvrs"), (profiles_path, "profiles")]
+    rm_dirs = [
+        (models_path, "models"),
+        (mvrs_path, "mvrs"),
+        (profiles_path, "profiles"),
+    ]
 
     try:
         for rm_dir, name in rm_dirs:

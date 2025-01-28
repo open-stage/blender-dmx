@@ -104,7 +104,9 @@ class DMX_Data:
             return
 
         if DMX_Data._dmx is not None:
-            dmx = bpy.context.scene.dmx  # hmm, here we use non cached dmx, probably this was safer...
+            dmx = (
+                bpy.context.scene.dmx
+            )  # hmm, here we use non cached dmx, probably this was safer...
             if dmx.get_selected_live_dmx_universe().input == "BLENDERDMX":
                 dmx = bpy.context.scene.dmx
                 dmx.dmx_values[addr - 1].channel = val
@@ -113,11 +115,18 @@ class DMX_Data:
 
         # LiveDMX view
         if DMX_Data._dmx is not None:
-            dmx = bpy.context.scene.dmx  # ...or maybe it prevents using this call before the class is ready?
+            dmx = (
+                bpy.context.scene.dmx
+            )  # ...or maybe it prevents using this call before the class is ready?
             selected_live_dmx_universe = dmx.get_selected_live_dmx_universe()
             if selected_live_dmx_universe is None:  # this should not happen
-                raise ValueError("Missing selected universe, as if DMX base class is empty...")
-            if selected_live_dmx_universe.input == "BLENDERDMX" and selected_live_dmx_universe.id == universe:
+                raise ValueError(
+                    "Missing selected universe, as if DMX base class is empty..."
+                )
+            if (
+                selected_live_dmx_universe.input == "BLENDERDMX"
+                and selected_live_dmx_universe.id == universe
+            ):
                 DMX_Data._live_view_data = DMX_Data._universes[universe]
 
     @staticmethod
@@ -154,7 +163,12 @@ class DMX_Data:
             dmx = bpy.context.scene.dmx
             selected_live_dmx_universe = dmx.get_selected_live_dmx_universe()
             if selected_live_dmx_universe is None:  # this should not happen
-                raise ValueError("Missing selected universe, as if DMX base class is empty...")
-            if selected_live_dmx_universe.input == source and selected_live_dmx_universe.id == universe:
+                raise ValueError(
+                    "Missing selected universe, as if DMX base class is empty..."
+                )
+            if (
+                selected_live_dmx_universe.input == source
+                and selected_live_dmx_universe.id == universe
+            ):
                 if dmx_changed:
                     DMX_Data._live_view_data = data

@@ -144,7 +144,10 @@ class DMX_OP_DistributeCircle(Operator):
     axis: StringProperty(name="axis")
 
     def points_on_circle(self, r, n=100):
-        return [(math.cos(2 * math.pi / n * x) * r, math.sin(2 * math.pi / n * x) * r) for x in range(0, n + 1)]
+        return [
+            (math.cos(2 * math.pi / n * x) * r, math.sin(2 * math.pi / n * x) * r)
+            for x in range(0, n + 1)
+        ]
 
     def execute(self, context):
         dmx = context.scene.dmx

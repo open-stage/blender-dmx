@@ -16,7 +16,9 @@ from bpy.props import (
 from bpy.types import Operator
 from threading import Timer
 from .i18n import DMX_Lang
+
 _ = DMX_Lang._
+
 
 def createDMXcollection():
     dmx = bpy.context.scene.dmx
@@ -33,7 +35,9 @@ class DMX_OT_Import_MVR(Operator, ImportHelper):
 
     filename_ext = ".mvr"
     filter_glob: StringProperty(default="*.mvr", options={"HIDDEN"})
-    files: CollectionProperty(type=bpy.types.OperatorFileListElement, options={"HIDDEN", "SKIP_SAVE"})
+    files: CollectionProperty(
+        type=bpy.types.OperatorFileListElement, options={"HIDDEN", "SKIP_SAVE"}
+    )
     directory: StringProperty(subtype="DIR_PATH")
 
     import_focus_points: BoolProperty(
@@ -109,11 +113,15 @@ if bpy.app.version >= (4, 1):
 
 
 def menu_func_export(self, context):
-    self.layout.operator(DMX_OT_Export_MVR.bl_idname, text="My Virtual Rig (.mvr) from BlenderDMX")
+    self.layout.operator(
+        DMX_OT_Export_MVR.bl_idname, text="My Virtual Rig (.mvr) from BlenderDMX"
+    )
 
 
 def menu_func_import(self, context):
-    self.layout.operator(DMX_OT_Import_MVR.bl_idname, text="My Virtual Rig (.mvr) into BlenderDMX")
+    self.layout.operator(
+        DMX_OT_Import_MVR.bl_idname, text="My Virtual Rig (.mvr) into BlenderDMX"
+    )
 
 
 def register():

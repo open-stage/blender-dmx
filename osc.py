@@ -42,7 +42,9 @@ class DMX_OSC:
         data_value = bytes(data_value, "utf-8")
         DMX_Log.log.debug(("OSC sending:", data_path, data_value))
         dmx = bpy.context.scene.dmx
-        DMX_OSC._instance.server.send_message(data_path, [data_value], dmx.osc_target_address, dmx.osc_target_port)
+        DMX_OSC._instance.server.send_message(
+            data_path, [data_value], dmx.osc_target_address, dmx.osc_target_port
+        )
 
     @staticmethod
     def enable():
@@ -50,8 +52,12 @@ class DMX_OSC:
             return
         DMX_OSC._instance = DMX_OSC()
         # If we have for OSC input in the future, we should make port and root path configurable
-        DMX_OSC._instance.server.listen(address="0.0.0.0", port=8000, default=True)  # right now we map to 0.0.0, input is not used
-        DMX_OSC._instance.server.bind(b"/blenderdmx", DMX_OSC.callback)  # this is our address, unused at the moment
+        DMX_OSC._instance.server.listen(
+            address="0.0.0.0", port=8000, default=True
+        )  # right now we map to 0.0.0, input is not used
+        DMX_OSC._instance.server.bind(
+            b"/blenderdmx", DMX_OSC.callback
+        )  # this is our address, unused at the moment
         DMX_Log.log.info("Enabling OSC")
 
     @staticmethod

@@ -133,8 +133,12 @@ class DMX_PT_Fixtures_Local_Fixtures(Panel):
             rows=8,
         )
 
-        layout.operator(DMX_OP_Update_Local_Fixtures.bl_idname, icon=DMX_Icon.FILE_REFRESH)
-        layout.operator("dmx.import_gdtf_into_scene", text=_("Import GDTF Profile"), icon="IMPORT")
+        layout.operator(
+            DMX_OP_Update_Local_Fixtures.bl_idname, icon=DMX_Icon.FILE_REFRESH
+        )
+        layout.operator(
+            "dmx.import_gdtf_into_scene", text=_("Import GDTF Profile"), icon="IMPORT"
+        )
 
 
 class DMX_PT_Fixtures_Local_Profile_Detail(Panel):

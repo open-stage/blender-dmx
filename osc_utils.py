@@ -39,7 +39,9 @@ class DMX_OSC_Templates:
 
         DMX_Log.log.debug("reading data")
         ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
-        template_path = os.path.join(ADDON_PATH, "assets", "osc_templates", template_name)
+        template_path = os.path.join(
+            ADDON_PATH, "assets", "osc_templates", template_name
+        )
 
         with open(template_path, "r") as f:
             _data = json.loads(f.read())
@@ -57,7 +59,10 @@ class DMX_OSC_Handlers:
             template = DMX_OSC_Templates.data
             fixture_selection = template["fixture_selection"]
             for fix_sel in fixture_selection:
-                DMX_OSC.send(fix_sel["key"].format(fixture=fixture), fix_sel["value"].format(fixture=fixture))
+                DMX_OSC.send(
+                    fix_sel["key"].format(fixture=fixture),
+                    fix_sel["value"].format(fixture=fixture),
+                )
 
     @staticmethod
     def fixture_clear():

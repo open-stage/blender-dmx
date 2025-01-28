@@ -29,7 +29,7 @@ COMPACT_HEIGHT = 450
 EPS = 65
 MIN_ADJ_COLS = 2
 DISPERSE_MULT = 4
-TARGET_NODE_TYPES = {'ShaderNodeBsdfPrincipled', 'ShaderNodeDisplacement'}
+TARGET_NODE_TYPES = {"ShaderNodeBsdfPrincipled", "ShaderNodeDisplacement"}
 
 SCALE_FAC = bpy.context.preferences.system.ui_scale
 
@@ -51,7 +51,7 @@ def get_nested_children(frame):
         return
 
     for node in Maps.selected:
-        if node.bl_idname == 'NodeFrame' and node.parent == frame:
+        if node.bl_idname == "NodeFrame" and node.parent == frame:
             yield from get_nested_children(node)
 
 
@@ -97,12 +97,11 @@ def abs_loc(node):
 
 
 def dimensions(node):
-    #return node.dimensions / SCALE_FAC
+    # return node.dimensions / SCALE_FAC
     if "ShaderNodeTexImage" == node.__class__.__name__:
         return Vector((200, 300))
     else:
         return Vector((100, 150))
-
 
 
 def get_right(node):
@@ -139,7 +138,9 @@ def get_hidden_socket_y(socket):
     raw_sockets = node.outputs if socket.is_output else node.inputs
     sockets = [s for s in raw_sockets if not s.is_unavailable]
 
-    vectors = map(Vector, ((inner, top), (outer, top), (inner, bottom), (outer, bottom)))
+    vectors = map(
+        Vector, ((inner, top), (outer, top), (inner, bottom), (outer, bottom))
+    )
     points = interpolate_bezier(*vectors, len(sockets) + 2)[1:-1]
 
     return points[sockets.index(socket)].y
@@ -148,7 +149,7 @@ def get_hidden_socket_y(socket):
 def get_input_y(input, accurate=True):
     node = input.node
 
-    if not accurate or node.bl_idname == 'NodeReroute':
+    if not accurate or node.bl_idname == "NodeReroute":
         return get_top(node)
 
     if node.hide:
@@ -157,20 +158,31 @@ def get_input_y(input, accurate=True):
     y = get_top(node)
 
     inputs = [i for i in node.inputs if not i.is_unavailable]
-    if node.bl_idname != 'ShaderNodeBsdfPrincipled':
+    if node.bl_idname != "ShaderNodeBsdfPrincipled":
         # Start from the bottom socket to avoid any node properties
         y -= dimensions(node).y - BOTTOM_OFFSET
         inputs.reverse()
         idx = inputs.index(input)
 
-        for i in inputs[:idx + 1]:
-            if i.type in {'VECTOR', 'ROTATION', 'MATRIX'} and not i.hide_value and not i.is_linked:
+        for i in inputs[: idx + 1]:
+            if (
+                i.type in {"VECTOR", "ROTATION", "MATRIX"}
+                and not i.hide_value
+                and not i.is_linked
+            ):
                 y += (SOCKET_SPACING_MULTIPLIER * 0.909) * len(i.default_value)
     else:
         y -= 56.5
         idx = -inputs.index(input)
         if idx < -VISIBLE_PBSDF_SOCKETS:
-            panels = ('Subsurface', 'Specular', 'Transmission', 'Coat', 'Sheen', 'Emission')
+            panels = (
+                "Subsurface",
+                "Specular",
+                "Transmission",
+                "Coat",
+                "Sheen",
+                "Emission",
+            )
             idx = -(VISIBLE_PBSDF_SOCKETS + 0.5 + panels.index(input.name.split()[0]))
 
     return y + idx * SOCKET_SPACING_MULTIPLIER
@@ -179,7 +191,7 @@ def get_input_y(input, accurate=True):
 def get_output_y(output, accurate=True):
     node = output.node
 
-    if not accurate or node.bl_idname == 'NodeReroute':
+    if not accurate or node.bl_idname == "NodeReroute":
         return get_top(node)
 
     if node.hide:
@@ -202,7 +214,6 @@ def corrected_y(node, target_y):
 
 # This descriptor is meant to solve most floating point comparison issues
 class Side(object):
-
     def __set_name__(self, owner, name):
         self.name = name
 
@@ -314,15 +325,16 @@ def get_col_boxes(columns):
         curr_idx = 0
         for i, j in pairwise(range(len(col))):
             if get_bottom(col[i]) - get_top(col[j]) > 70:
-                subcolumns.append(col[curr_idx:i + 1])
+                subcolumns.append(col[curr_idx : i + 1])
                 curr_idx = j
 
-        subcolumns.append(col[curr_idx:j + 1])
+        subcolumns.append(col[curr_idx : j + 1])
 
     col_boxes = {
-      tuple(c): get_box(c)
-      for c in subcolumns
-      if not all(n.bl_idname == 'NodeReroute' for n in c)}
+        tuple(c): get_box(c)
+        for c in subcolumns
+        if not all(n.bl_idname == "NodeReroute" for n in c)
+    }
 
     for box in col_boxes.values():
         box.expand(70, 70)
@@ -415,7 +427,7 @@ def move_to(node, *, x=None, y=None):
 
 def move_nodes(nodes, *, x=0, y=0):
     for node in {n.parent or n for n in nodes}:
-        if node.bl_idname != 'NodeFrame' or not node.parent:
+        if node.bl_idname != "NodeFrame" or not node.parent:
             move(node, x=x, y=y)
 
 
@@ -466,7 +478,9 @@ def min_col_idx(item):
     universal_columns = Maps.universal_columns
     idxs = []
     for col in item[1]:
-        idxs.append(next(i for i, c in enumerate(universal_columns) if any(n in c for n in col)))
+        idxs.append(
+            next(i for i, c in enumerate(universal_columns) if any(n in c for n in col))
+        )
 
     return min(idxs)
 
@@ -474,12 +488,18 @@ def min_col_idx(item):
 def get_frame_columns():
     frame_columns = {}
     for frame, children in Maps.all_children.items():
-        columns = [fc for c in Maps.universal_columns if (fc := [n for n in c if n in children])]
+        columns = [
+            fc
+            for c in Maps.universal_columns
+            if (fc := [n for n in c if n in children])
+        ]
         if any(columns):
             frame_columns[frame] = columns
 
     Maps.frame_columns.update(sorted(frame_columns.items(), key=min_col_idx))
-    Maps.used_children.update({f: tuple(chain(*c)) for f, c in Maps.frame_columns.items()})
+    Maps.used_children.update(
+        {f: tuple(chain(*c)) for f, c in Maps.frame_columns.items()}
+    )
 
 
 # -------------------------------------------------------------------
@@ -513,7 +533,9 @@ def arrange_frame_columns():
         arranged = get_arranged(columns)
 
         if frame:
-            virtual_x, virtual_y = zip(*[universal_arranged[n] for n in chain(*columns)])
+            virtual_x, virtual_y = zip(
+                *[universal_arranged[n] for n in chain(*columns)]
+            )
             avg_universal_loc = Vector((fmean(virtual_x), fmean(virtual_y)))
             for node, vec in arranged.items():
                 vec += avg_universal_loc
@@ -537,7 +559,11 @@ def link_stretch(nodes, movement=0):
                 if linked in nodes:
                     continue
 
-                dist = abs_loc(linked).x - right if socket.is_output else x - get_right(linked)
+                dist = (
+                    abs_loc(linked).x - right
+                    if socket.is_output
+                    else x - get_right(linked)
+                )
                 if dist < 0:
                     stretch -= dist
 
@@ -602,7 +628,7 @@ def get_descendants(nodes, seen=None):
         except StopIteration:
             pass
         else:
-            queue.update(chain(*columns[:idx + 1]))
+            queue.update(chain(*columns[: idx + 1]))
 
         yield from get_descendants(queue, seen)
 
@@ -628,8 +654,12 @@ def ideal_x_movement(nodes, line_x):
     for node in nodes:
         input_x = abs_loc(node).x
         output_x = get_right(node)
-        to_x.extend([(abs_loc(n).x, output_x) for n in get_successors(node) if n not in nodes])
-        from_x.extend([(get_right(n), input_x) for n in get_predecessors(node) if n not in nodes])
+        to_x.extend(
+            [(abs_loc(n).x, output_x) for n in get_successors(node) if n not in nodes]
+        )
+        from_x.extend(
+            [(get_right(n), input_x) for n in get_predecessors(node) if n not in nodes]
+        )
 
     dist_to_x = lambda io: io[0] - io[1]
     dist_from_x = lambda oi: oi[1] - oi[0]
@@ -642,7 +672,9 @@ def ideal_x_movement(nodes, line_x):
 
         if stretch := link_stretch(nodes, movement):
             try:
-                nleft, left = next(oi for oi in sorted(from_x, key=dist_from_x) if oi[0] < nright)
+                nleft, left = next(
+                    oi for oi in sorted(from_x, key=dist_from_x) if oi[0] < nright
+                )
             except StopIteration:
                 return movement
 
@@ -656,10 +688,10 @@ def ideal_x_movement(nodes, line_x):
 
     if from_x:
         target_x, left = min(from_x, key=dist_from_x)
-        target_x += (right - left)
+        target_x += right - left
     elif to_x:
         target_x, right = min(to_x, key=dist_to_x)
-        target_x -= (right - left)
+        target_x -= right - left
     else:
         return 0
 
@@ -809,7 +841,9 @@ def align_columns(columns):
         if movement <= 0:
             continue
 
-        to_move = [f for f in Maps.frame_columns if f and get_frame_box(f, False).left > x]
+        to_move = [
+            f for f in Maps.frame_columns if f and get_frame_box(f, False).left > x
+        ]
         to_move.extend(chain(*columns[i:]))
         move_nodes(to_move, x=movement)
 
@@ -818,7 +852,11 @@ def line_overlap_vector(target, lines):
     l1 = lines[target]
     center = sum(l1) / 2
 
-    y = [sum(l2) / 2 - center for n, l2 in lines.items() if target != n and lines_overlap(l1, l2)]
+    y = [
+        sum(l2) / 2 - center
+        for n, l2 in lines.items()
+        if target != n and lines_overlap(l1, l2)
+    ]
 
     if not y:
         return 0
@@ -876,7 +914,8 @@ def arrange_principled():
         return
 
     all_image_nodes = [
-      n for n in get_ancestors(target_nodes) if n.bl_idname == 'ShaderNodeTexImage']
+        n for n in get_ancestors(target_nodes) if n.bl_idname == "ShaderNodeTexImage"
+    ]
 
     if not all_image_nodes:
         return
@@ -906,10 +945,12 @@ def arrange_principled():
                 continue
 
             right = get_right(node2)
-            to_move = [n for n in chain(*Maps.universal_columns) if get_right(n) <= right]
+            to_move = [
+                n for n in chain(*Maps.universal_columns) if get_right(n) <= right
+            ]
             move_nodes(to_move + [node2], x=get_right(ranked[1]) - right)
 
-        if any(n.bl_idname == 'ShaderNodeDisplacement' for n in row):
+        if any(n.bl_idname == "ShaderNodeDisplacement" for n in row):
             move(image_node, y=-1)
 
     if frame := leftmost.parent:
@@ -923,7 +964,7 @@ def arrange_principled():
 
 def get_real_sockets(socket):
     node = socket.node
-    if node.bl_idname == 'NodeReroute':
+    if node.bl_idname == "NodeReroute":
         new_socket = node.inputs[0] if socket.is_output else node.outputs[0]
         for linked_socket in Maps.sockets[new_socket]:
             yield from get_real_sockets(linked_socket)
@@ -933,7 +974,7 @@ def get_real_sockets(socket):
 
 def get_linked_y_locs(node):
     y_locs = []
-    is_reroute = node.bl_idname == 'NodeReroute'
+    is_reroute = node.bl_idname == "NodeReroute"
 
     for socket in chain(node.inputs, node.outputs):
         if not socket.is_linked or socket.is_unavailable:
@@ -947,10 +988,12 @@ def get_linked_y_locs(node):
             get_linked_socket_y = get_output_y
 
         socket_y = get_socket_y(socket, not is_reroute)
-        for linked_socket in chain(*[get_real_sockets(s) for s in Maps.sockets[socket]]):
+        for linked_socket in chain(
+            *[get_real_sockets(s) for s in Maps.sockets[socket]]
+        ):
             linked_y = get_linked_socket_y(linked_socket, is_reroute)
 
-            if linked_socket.node.bl_idname == 'NodeReroute':
+            if linked_socket.node.bl_idname == "NodeReroute":
                 linked_y += abs_loc(node).y - socket_y
 
             y_locs.append((linked_socket.node, corrected_y(node, linked_y)))
@@ -964,7 +1007,8 @@ def move_frames_to_linked_y():
             continue
 
         linked_y_locs = [
-          y for c in children for n, y in get_linked_y_locs(c) if c.parent != n.parent]
+            y for c in children for n, y in get_linked_y_locs(c) if c.parent != n.parent
+        ]
 
         if not linked_y_locs:
             continue
@@ -978,8 +1022,10 @@ def get_ideal_y(node, divided_rows, line_y):
     y = abs_loc(node).y
     parent = node.parent
 
-    exclusive = node.bl_idname != 'NodeReroute' or parent
-    y_locs = [y for n, y in get_linked_y_locs(node) if not exclusive or n.parent == parent]
+    exclusive = node.bl_idname != "NodeReroute" or parent
+    y_locs = [
+        y for n, y in get_linked_y_locs(node) if not exclusive or n.parent == parent
+    ]
 
     if not y_locs:
         return y
@@ -1037,7 +1083,7 @@ def partial_disperse_nodes_y(ideal_y_locs):
 
 def move_to_linked_y(columns):
     nodes = tuple(chain(*columns))
-    reroutes = {n for n in nodes if n.bl_idname == 'NodeReroute'}
+    reroutes = {n for n in nodes if n.bl_idname == "NodeReroute"}
 
     divided_rows = []
     for key, row in groupby(sorted(nodes, key=get_top), get_top):
@@ -1050,19 +1096,23 @@ def move_to_linked_y(columns):
         curr_idx = 0
         for i, j in pairwise(range(row_len)):
             if abs_loc(row[j]).x - get_right(row[i]) > 70:
-                divided_rows.append(row[curr_idx:i + 1])
+                divided_rows.append(row[curr_idx : i + 1])
                 curr_idx = j
 
-        divided_rows.append(row[curr_idx:j + 1])
+        divided_rows.append(row[curr_idx : j + 1])
 
     line_y = get_box(nodes).line_y()
 
     for col in columns:
-        ideal_y_locs = {n: get_ideal_y(n, divided_rows, line_y) for n in col if n not in reroutes}
+        ideal_y_locs = {
+            n: get_ideal_y(n, divided_rows, line_y) for n in col if n not in reroutes
+        }
         partial_disperse_nodes_y(ideal_y_locs)
 
     for col in columns:
-        ideal_y_locs = {n: get_ideal_y(n, divided_rows, line_y) for n in col if n in reroutes}
+        ideal_y_locs = {
+            n: get_ideal_y(n, divided_rows, line_y) for n in col if n in reroutes
+        }
         partial_disperse_nodes_y(ideal_y_locs)
 
 
@@ -1129,12 +1179,14 @@ def get_better_movement(box, lines_y, movement):
     height = box.height
 
     upper_line = (center, center + height)
-    upper_overlap = max([l[0] - center for l in lines_y if lines_overlap(upper_line, l)],
-      default=0)
+    upper_overlap = max(
+        [l[0] - center for l in lines_y if lines_overlap(upper_line, l)], default=0
+    )
 
     lower_line = (center - height, center)
-    lower_overlap = min([center - l[1] for l in lines_y if lines_overlap(lower_line, l)],
-      default=0)
+    lower_overlap = min(
+        [center - l[1] for l in lines_y if lines_overlap(lower_line, l)], default=0
+    )
 
     if movement > 0:
         diff = upper_overlap - lower_overlap
@@ -1147,7 +1199,6 @@ def get_better_movement(box, lines_y, movement):
 
 
 def dispersed(frame_boxes, col_boxes):
-
     # Most code here is to solve three issues that arise when dispersing
     # rectangles while also disallowing some from moving:
     #
@@ -1179,7 +1230,9 @@ def dispersed(frame_boxes, col_boxes):
                 else:
                     del frozen_competition[frame1]
 
-            movement, overlapping_keys = rect_overlap_vector(frame1, overlapping_x, boxes)
+            movement, overlapping_keys = rect_overlap_vector(
+                frame1, overlapping_x, boxes
+            )
 
             if not overlapping_keys:
                 if frame1 in prev_movements:
@@ -1199,8 +1252,10 @@ def dispersed(frame_boxes, col_boxes):
                     frame_boxes[overlapping_frames[0]].move(y=-nudge)
 
             competing = [
-              f for f in overlapping_frames
-              if f in prev_movements and (prev_movements[f] > 0) == (movement > 0)]
+                f
+                for f in overlapping_frames
+                if f in prev_movements and (prev_movements[f] > 0) == (movement > 0)
+            ]
             if competing:
                 competing.append(frame1)
                 if movement > 0:
@@ -1219,7 +1274,9 @@ def dispersed(frame_boxes, col_boxes):
             lines_y = [boxes[k].line_y() for k in overlapping_x[frame1]]
             movement = get_better_movement(box1, get_merged_lines(lines_y), movement)
 
-            if frame1 in prev_movements and (prev_movements[frame1] > 0) != (movement > 0):
+            if frame1 in prev_movements and (prev_movements[frame1] > 0) != (
+                movement > 0
+            ):
                 movement = prev_movements[frame1]
 
             box1.move(y=movement)
@@ -1238,7 +1295,7 @@ def get_singly_linked_ancestors(node):
     if len(get_successors(node)) > 1:
         return
 
-    if node.bl_idname != 'NodeReroute':
+    if node.bl_idname != "NodeReroute":
         yield node
 
     predecessors = get_predecessors(node)
@@ -1255,7 +1312,9 @@ def get_linear_chains(columns):
                 continue
 
             lin_chain = list(get_singly_linked_ancestors(node))
-            valid = len(lin_chain) > 2 or (len(lin_chain) == 2 and not lin_chain[-1].inputs)
+            valid = len(lin_chain) > 2 or (
+                len(lin_chain) == 2 and not lin_chain[-1].inputs
+            )
             if valid and len({get_top(n) for n in lin_chain}) != 1:
                 lin_chain.reverse()
                 linear_chains.append(lin_chain)
@@ -1265,11 +1324,15 @@ def get_linear_chains(columns):
 
 def disperse_lin_chain_box(sub_boxes, col_boxes):
     bottom = min([b.bottom for b in sub_boxes])
-    lin_chain_box = Box(sub_boxes[0].left, bottom, sub_boxes[-1].right, sub_boxes[0].top)
+    lin_chain_box = Box(
+        sub_boxes[0].left, bottom, sub_boxes[-1].right, sub_boxes[0].top
+    )
 
     prev_movement = 0
     while any(a.overlaps(b) for a in sub_boxes for b in col_boxes.values()):
-        raw_movement = rect_overlap_vector(0, {0: col_boxes}, col_boxes | {0: lin_chain_box})[0]
+        raw_movement = rect_overlap_vector(
+            0, {0: col_boxes}, col_boxes | {0: lin_chain_box}
+        )[0]
         lines_y = get_merged_lines([b.line_y() for b in col_boxes.values()])
         movement = get_better_movement(lin_chain_box, lines_y, raw_movement)
 
@@ -1293,9 +1356,11 @@ def align_lin_chain(lin_chain, linear_chains):
         sub_boxes.append(box)
 
     columns = []
-    unfixed = set(chain(*linear_chains[linear_chains.index(lin_chain):]))
+    unfixed = set(chain(*linear_chains[linear_chains.index(lin_chain) :]))
     for col in Maps.frame_columns[lin_chain[0].parent]:
-        if any(n in col for n in lin_chain) and (new_col := [n for n in col if n not in unfixed]):
+        if any(n in col for n in lin_chain) and (
+            new_col := [n for n in col if n not in unfixed]
+        ):
             columns.append(new_col)
 
     disperse_lin_chain_box(sub_boxes, get_col_boxes(columns))
@@ -1321,7 +1386,9 @@ def align_linear_chains(frame):
 
 
 def get_alignable_ancestors(trail):
-    predecessors = [n for n in get_predecessors(trail[-1]) if n.parent == trail[-1].parent]
+    predecessors = [
+        n for n in get_predecessors(trail[-1]) if n.parent == trail[-1].parent
+    ]
     try:
         pred = max(predecessors, key=get_top)
     except ValueError:
@@ -1346,7 +1413,9 @@ def align_highest_nodes(columns):
         if i < seen:
             continue
 
-        trail = [n for n in get_alignable_ancestors([col[0]]) if n.bl_idname != 'NodeReroute']
+        trail = [
+            n for n in get_alignable_ancestors([col[0]]) if n.bl_idname != "NodeReroute"
+        ]
         seen = i + len(trail)
 
         if len({get_top(n) for n in trail}) <= 1:
@@ -1368,7 +1437,6 @@ def get_line_overlap(line1, line2):
 
 
 def saves_space(box1, box2, boxes):
-
     # If the height of the boxes within the overlap range is >=
     # `COMPACT_HEIGHT` (around three math nodes) + margin * 2, then compact
     # the frame. (This is a heuristic meant to approximate how much space
@@ -1464,7 +1532,9 @@ def compact_frames_x(frame_boxes, col_boxes):
             box2 = boxes[key2]
 
             if key2 in frame_boxes:
-                if link_stretch(children1, center1 - box2.center.x) <= link_stretch(children1):
+                if link_stretch(children1, center1 - box2.center.x) <= link_stretch(
+                    children1
+                ):
                     continue
 
             movement = box1.right - box2.left
@@ -1480,7 +1550,9 @@ def compact_frames_x(frame_boxes, col_boxes):
 
             if key2 in frame_boxes:
                 children2 = children[key2]
-                if link_stretch(children2, box2.center.x - center1) <= link_stretch(children2):
+                if link_stretch(children2, box2.center.x - center1) <= link_stretch(
+                    children2
+                ):
                     continue
 
             movement = -box2.right + box1.left
@@ -1497,7 +1569,9 @@ def compact_frames_x(frame_boxes, col_boxes):
 
 def space_to_move(frame):
     children = Maps.used_children[frame]
-    lengths = chain(get_input_lengths(children).values(), get_output_lengths(children).values())
+    lengths = chain(
+        get_input_lengths(children).values(), get_output_lengths(children).values()
+    )
     return min(lengths, default=0)
 
 
@@ -1524,10 +1598,14 @@ def center_frames_x(frame_boxes):
 
                 no_movement = round(movement, 1) == 0
                 children = Maps.used_children[frame2]
-                if no_movement or link_stretch(children) < link_stretch(children, movement):
+                if no_movement or link_stretch(children) < link_stretch(
+                    children, movement
+                ):
                     continue
 
-                centered = {f for f, b in frame_boxes.items() if int(b.center.x) == int(center1)}
+                centered = {
+                    f for f, b in frame_boxes.items() if int(b.center.x) == int(center1)
+                }
 
                 moved_box2 = replace(box2)
                 moved_box2.move(x=movement)
@@ -1638,7 +1716,10 @@ def center_frames_y(frame_boxes, nearest):
             if box2.bottom > box1.bottom + height1 / 2:
                 continue
 
-            if frame2 not in nearest[row[-1]] and abs(box2.height - height1) > height1 / 2:
+            if (
+                frame2 not in nearest[row[-1]]
+                and abs(box2.height - height1) > height1 / 2
+            ):
                 continue
 
             movement = box1.center.y - box2.center.y
@@ -1652,7 +1733,10 @@ def center_frames_y(frame_boxes, nearest):
             if prev_left > curr_left or curr_right < prev_right:
                 break
 
-            if prev_right * -2 + prev_left - curr_right + curr_left * 2 > ntree_span / 4:
+            if (
+                prev_right * -2 + prev_left - curr_right + curr_left * 2
+                > ntree_span / 4
+            ):
                 break
 
             move(frame2, y=movement)
@@ -1668,11 +1752,12 @@ def center_frames_y(frame_boxes, nearest):
 def will_break_box_row(frame, row, boxes, line_x):
     row = [k for k in row if k == frame or not lines_overlap(line_x, boxes[k].line_x())]
     i = row.index(frame)
-    leftwards = row[(i - MIN_ADJ_COLS):(i)]
-    rightwards = row[(i + 1):(i + MIN_ADJ_COLS + 1)]
-    return any(#
-      isinstance(a, tuple) and isinstance(b, tuple)
-      for a, b in pairwise(leftwards + rightwards))
+    leftwards = row[(i - MIN_ADJ_COLS) : (i)]
+    rightwards = row[(i + 1) : (i + MIN_ADJ_COLS + 1)]
+    return any(  #
+        isinstance(a, tuple) and isinstance(b, tuple)
+        for a, b in pairwise(leftwards + rightwards)
+    )
 
 
 def get_levelled_frames(row_items, boxes, movement):
@@ -1720,13 +1805,17 @@ def center_and_disperse_frames_y(frame_boxes, col_boxes):
     row_map = {f: next(r for r in rows if f in r) for f in frame_boxes}
 
     for row in frame_rows:
-        row_items = {f: ([dispersed_boxes[k] for k in overlapping_x[f]], row_map[f]) for f in row}
+        row_items = {
+            f: ([dispersed_boxes[k] for k in overlapping_x[f]], row_map[f]) for f in row
+        }
         results = {}
         for frame in row:
             movement = movements[frame]
             results[movement] = get_levelled_frames(row_items, boxes, movement)
 
-        counts = {m: sum(len(nearest[f] & l) + 1 for f in l) for m, l in results.items()}
+        counts = {
+            m: sum(len(nearest[f] & l) + 1 for f in l) for m, l in results.items()
+        }
         largest = max(counts.values())
 
         if largest < 2:
@@ -1772,7 +1861,9 @@ def get_beyond(box1, boxes):
 
 def has_closer(box1, boxes, movement):
     for box2 in boxes.values():
-        if box2.left == box1.left and any(d < movement for d in get_beyond(box2, boxes)[1]):
+        if box2.left == box1.left and any(
+            d < movement for d in get_beyond(box2, boxes)[1]
+        ):
             return True
 
 
@@ -1836,10 +1927,12 @@ def get_reroute_ancestors(node, reroutes, seen):
 
 
 def get_reroute_segments(children):
-    reroutes = [#
-      n for n in children
-      if n.bl_idname == 'NodeReroute'
-      and (Maps.links[n.inputs[0]] and Maps.links[n.outputs[0]])]
+    reroutes = [  #
+        n
+        for n in children
+        if n.bl_idname == "NodeReroute"
+        and (Maps.links[n.inputs[0]] and Maps.links[n.outputs[0]])
+    ]
 
     segments = []
     for reroute in reroutes:
@@ -1939,7 +2032,7 @@ def disperse_reroutes_x(segments, boxes=None):
     MARGIN = Vector((70, 70))
     margin = MARGIN / 2 - dimensions(reroute) / 2
     for node in Maps.used_children[reroute.parent]:
-        if node.bl_idname != 'NodeReroute':
+        if node.bl_idname != "NodeReroute":
             box = get_box([node])
             box.expand(*margin)
             boxes.append(box)
@@ -2010,7 +2103,9 @@ def get_unused(frame):
         if not node.select or node in Maps.used_children[frame]:
             continue
 
-        if node.bl_idname == 'NodeFrame' and active_nodes.intersection(Maps.all_children[node]):
+        if node.bl_idname == "NodeFrame" and active_nodes.intersection(
+            Maps.all_children[node]
+        ):
             continue
 
         unused.append(node)
@@ -2068,7 +2163,7 @@ def move_unframed_unused(offset, boxes):
 
 def clear_bl_data_references():
     for key, val in vars(Maps).items():
-        if not key.startswith('_'):
+        if not key.startswith("_"):
             val.clear()
 
 
@@ -2088,16 +2183,16 @@ class Maps:
 # -------------------------------------------------------------------
 
 
-class DMX_OT_ArrangeSelected():
-
+class DMX_OT_ArrangeSelected:
     def process_tree(self, ntree):
         nodes = ntree.nodes
 
         # -------------------------------------------------------------------
 
         selected = [n for n in nodes]
-        output_nodes = [n for n in nodes if not n.outputs and any(i.is_linked for i in n.inputs)]
-
+        output_nodes = [
+            n for n in nodes if not n.outputs and any(i.is_linked for i in n.inputs)
+        ]
 
         # -------------------------------------------------------------------
 
@@ -2193,6 +2288,7 @@ class DMX_OT_ArrangeSelected():
         # -------------------------------------------------------------------
 
         clear_bl_data_references()
+
 
 classes = [DMX_OT_ArrangeSelected]
 

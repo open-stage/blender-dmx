@@ -108,7 +108,10 @@ def onActiveChanged(*args):
     if dmx.display_2D:
         selected = False
         for fixture in dmx.fixtures:
-            if bpy.context.active_object is not None and bpy.context.active_object.name in fixture.collection.objects:
+            if (
+                bpy.context.active_object is not None
+                and bpy.context.active_object.name in fixture.collection.objects
+            ):
                 selected = True
                 fixture.select()
             else:
