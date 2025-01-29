@@ -49,6 +49,8 @@ class DMX_Zeroconf:
         application_uuid = prefs.get(
             "application_uuid", str(pyuuid.uuid4())
         )  # must never be 0
+        if self._dmx.mvrx_per_project_station_uuid:
+            application_uuid = self._dmx.project_application_uuid
         self.application_uuid = application_uuid
 
     def callback(

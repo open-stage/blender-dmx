@@ -50,6 +50,9 @@ class DMX_MVR_X_Client:
         application_uuid = prefs.get(
             "application_uuid", str(py_uuid.uuid4())
         )  # must never be 0
+        if self._dmx.mvrx_per_project_station_uuid:
+            application_uuid = self._dmx.project_application_uuid
+
         self.application_uuid = application_uuid
         # print("bl info", application_info) # TODO: use this in the future
 
@@ -225,6 +228,8 @@ class DMX_MVR_X_Server:
         application_uuid = prefs.get(
             "application_uuid", str(py_uuid.uuid4())
         )  # must never be 0
+        if self._dmx.mvrx_per_project_station_uuid:
+            application_uuid = self._dmx.project_application_uuid
         self.application_uuid = application_uuid
         # print("bl info", application_info) # TODO: use this in the future
 
@@ -299,6 +304,8 @@ class DMX_MVR_X_WS_Client:
         application_uuid = prefs.get(
             "application_uuid", str(py_uuid.uuid4())
         )  # must never be 0
+        if self._dmx.mvrx_per_project_station_uuid:
+            application_uuid = self._dmx.project_application_uuid
         self.application_uuid = application_uuid
         # print("bl info", application_info) # TODO: use this in the future
 
