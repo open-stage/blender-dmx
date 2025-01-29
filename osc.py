@@ -18,6 +18,7 @@
 
 import bpy
 from oscpy.server import OSCThreadServer
+
 from .logging import DMX_Log
 
 

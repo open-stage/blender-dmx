@@ -16,8 +16,7 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import bpy
-
-from bpy.types import Panel, Menu, Operator, UIList
+from bpy.types import Menu, Operator, Panel, UIList
 
 from ..i18n import DMX_Lang
 

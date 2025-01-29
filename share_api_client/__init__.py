@@ -16,10 +16,11 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-import requests
 import json
 import os
 from threading import Thread
+
+import requests
 
 
 class Result:

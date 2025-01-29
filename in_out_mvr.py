@@ -1,20 +1,18 @@
-import bpy
 import os
-from .logging import DMX_Log
 
-from bpy_extras.io_utils import ImportHelper, ExportHelper
+import bpy
+from bpy_extras.io_utils import ExportHelper, ImportHelper
+
+from .logging import DMX_Log
 
 if bpy.app.version >= (4, 2):
     from bpy_extras.io_utils import poll_file_object_drop
 
-from bpy.props import (
-    StringProperty,
-    BoolProperty,
-    CollectionProperty,
-)
-
-from bpy.types import Operator
 from threading import Timer
+
+from bpy.props import BoolProperty, CollectionProperty, StringProperty
+from bpy.types import Operator
+
 from .i18n import DMX_Lang
 
 _ = DMX_Lang._

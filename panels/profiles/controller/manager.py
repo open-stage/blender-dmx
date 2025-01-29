@@ -15,14 +15,15 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
-from .... import share_api_client as share_api_client
-from ....gdtf import DMX_GDTF
-import bpy
 import os
 import queue
 
-from ....panels import profiles as Profiles
+import bpy
+
 from .... import __package__ as base_package
+from .... import share_api_client as share_api_client
+from ....gdtf import DMX_GDTF
+from ....panels import profiles as Profiles
 
 execution_queue = queue.Queue()
 

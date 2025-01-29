@@ -15,15 +15,17 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
-import websocket
+import json
+import logging
 import threading
 import time
-import bpy
 from queue import Queue
-from .mvrx_message import mvrx_message
+
+import bpy
+import websocket
+
 from ..logging import DMX_Log
-import logging
-import json
+from .mvrx_message import mvrx_message
 
 
 class WebSocketClient(threading.Thread):

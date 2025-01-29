@@ -20,6 +20,7 @@ import uuid as py_uuid
 import bpy
 from bpy.props import StringProperty
 from bpy.types import AddonPreferences, Operator
+
 from .. import __package__ as base_package
 from .. import rna_keymap_ui
 

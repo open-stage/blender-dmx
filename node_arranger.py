@@ -7,9 +7,9 @@ from operator import gt, itemgetter, lt
 from statistics import fmean
 
 import bpy
-from bpy.types import NodeFrame, Operator
-from bpy.props import IntVectorProperty
 from bl_math import clamp
+from bpy.props import IntVectorProperty
+from bpy.types import NodeFrame, Operator
 from mathutils import Vector
 from mathutils.geometry import interpolate_bezier
 

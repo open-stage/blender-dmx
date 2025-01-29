@@ -15,20 +15,21 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
-import os
-from bpy.props import StringProperty
-from bpy.types import Operator, Panel, UIList
-import bpy
-from ...mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_WS_Client
-from ...logging import DMX_Log
-from ...util import sizeof_fmt
 import logging
+import os
 import uuid as py_uuid
 from datetime import datetime
 from pathlib import Path
 from types import SimpleNamespace
 
+import bpy
+from bpy.props import StringProperty
+from bpy.types import Operator, Panel, UIList
+
 from ...i18n import DMX_Lang
+from ...logging import DMX_Log
+from ...mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_WS_Client
+from ...util import sizeof_fmt
 
 _ = DMX_Lang._
 

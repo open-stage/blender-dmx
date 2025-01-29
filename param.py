@@ -17,7 +17,6 @@
 
 
 from bpy.props import FloatProperty, IntProperty
-
 from bpy.types import PropertyGroup
 
 

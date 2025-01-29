@@ -16,19 +16,20 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-import os
-import bpy
-import time
 import json
-import pymvr
+import os
+import time
 from pathlib import Path
-from mathutils import Matrix
-from .logging import DMX_Log
-from .group import FixtureGroup
-from io_scene_3ds.import_3ds import load_3ds
-from .util import xyY2rgbaa, create_unique_fixture_name
 from types import SimpleNamespace
 
+import bpy
+import pymvr
+from io_scene_3ds.import_3ds import load_3ds
+from mathutils import Matrix
+
+from .group import FixtureGroup
+from .logging import DMX_Log
+from .util import create_unique_fixture_name, xyY2rgbaa
 
 auxData = {}
 objectData = {}

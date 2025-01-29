@@ -1,5 +1,6 @@
 import os
 from types import SimpleNamespace as SN
+
 import requests
 
 fixture_files = [

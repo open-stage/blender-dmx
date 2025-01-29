@@ -16,27 +16,24 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import bpy
-
-from . import fixture as fixture
-from .logging import DMX_Log
-from .panels import subfixtures
-
-from .mvrxchange.mvr_xchange_blender import DMX_MVR_Xchange
-from .panels import profiles as Profiles
 import bpy.utils.previews
 from bpy.props import (
     BoolProperty,
-    StringProperty,
-    PointerProperty,
-    IntProperty,
-    FloatProperty,
     CollectionProperty,
+    FloatProperty,
+    IntProperty,
+    PointerProperty,
+    StringProperty,
 )
-
 from bpy.types import PropertyGroup
-from .fixture import DMX_Fixture_Channel
 
+from . import fixture as fixture
+from .fixture import DMX_Fixture_Channel
 from .i18n import DMX_Lang
+from .logging import DMX_Log
+from .mvrxchange.mvr_xchange_blender import DMX_MVR_Xchange
+from .panels import profiles as Profiles
+from .panels import subfixtures
 
 _ = DMX_Lang._
 

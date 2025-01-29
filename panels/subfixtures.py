@@ -16,12 +16,9 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import bpy
+from bpy.props import BoolProperty, CollectionProperty, StringProperty
+from bpy.types import Menu, Operator, Panel, PropertyGroup, UIList
 
-from bpy.types import Panel, Menu, Operator, UIList
-
-from bpy.props import BoolProperty, StringProperty, CollectionProperty
-
-from bpy.types import PropertyGroup
 from ..i18n import DMX_Lang
 
 _ = DMX_Lang._

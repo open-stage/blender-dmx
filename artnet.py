@@ -16,23 +16,23 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-import bpy
-
-from socket import (
-    socket,
-    AF_INET,
-    SOCK_DGRAM,
-    SHUT_RDWR,
-    SOL_SOCKET,
-    SO_BROADCAST,
-    SO_REUSEADDR,
-)
 import struct
 import threading
+from socket import (
+    AF_INET,
+    SHUT_RDWR,
+    SO_BROADCAST,
+    SO_REUSEADDR,
+    SOCK_DGRAM,
+    SOL_SOCKET,
+    socket,
+)
+
+import bpy
 
 from .data import DMX_Data
-from .network import DMX_Network
 from .logging import DMX_Log
+from .network import DMX_Network
 
 # ArtnetPacket class taken from here:
 # https://gist.github.com/alarrosa14/07bd1ee88a19204cbf22

@@ -28,29 +28,25 @@
 # }
 
 import sys
-import bpy
 from threading import Timer
 
-from . import fixture as fixture
-from .data import DMX_Data
-from .artnet import DMX_ArtNet
-from .acn import DMX_sACN
-
-from .panels import profiles as Profiles
-
-from .osc import DMX_OSC
-from .mdns import DMX_Zeroconf
-
-from .mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server, DMX_MVR_X_WS_Client
+import bpy
 from bpy.props import PointerProperty
 
+from . import fixture as fixture
+from .acn import DMX_sACN
+from .artnet import DMX_ArtNet
+from .data import DMX_Data
 from .i18n import DMX_Lang
+from .mdns import DMX_Zeroconf
+from .mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server, DMX_MVR_X_WS_Client
+from .osc import DMX_OSC
+from .panels import profiles as Profiles
 
 _ = DMX_Lang._
+from . import in_gdtf, in_out_mvr
 from .dmx import DMX
 from .dmx_temp_data import DMX_TempData
-from . import in_out_mvr
-from . import in_gdtf
 
 
 @bpy.app.handlers.persistent

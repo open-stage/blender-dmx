@@ -1,10 +1,11 @@
 # run this way:
 # blender --background --python ./test_fixture_patching.py
 
-import bpy
 import os
-from mathutils import Vector
 from types import SimpleNamespace as SN
+
+import bpy
+from mathutils import Vector
 
 addon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 os.chdir(addon_path)

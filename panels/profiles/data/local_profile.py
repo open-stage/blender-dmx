@@ -15,12 +15,12 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
-import bpy
 import os
 
-from bpy.types import PropertyGroup
-from bpy.props import StringProperty, CollectionProperty, IntProperty
+import bpy
 import pygdtf
+from bpy.props import CollectionProperty, IntProperty, StringProperty
+from bpy.types import PropertyGroup
 
 from ....i18n import DMX_Lang
 

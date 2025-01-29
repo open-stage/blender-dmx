@@ -16,24 +16,22 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-import bpy
 import uuid
 
-from .network import DMX_Network
+import bpy
 from bpy.props import (
-    IntProperty,
     BoolProperty,
+    CollectionProperty,
     EnumProperty,
+    IntProperty,
     PointerProperty,
     StringProperty,
-    CollectionProperty,
 )
+from bpy.types import Collection, Object, PropertyGroup
 
-from bpy.types import PropertyGroup, Collection, Object
-
-
-from .psn import DMX_PSN
 from .i18n import DMX_Lang
+from .network import DMX_Network
+from .psn import DMX_PSN
 
 _ = DMX_Lang._
 

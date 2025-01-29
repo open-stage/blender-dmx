@@ -15,26 +15,18 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
-import bpy
 import os
 import re
 
-from ..logging import DMX_Log
+import bpy
 import pygdtf
+from bpy.props import BoolProperty, FloatVectorProperty, IntProperty, StringProperty
+from bpy.types import Menu, Operator, Panel, UIList
 from bpy_extras.io_utils import ImportHelper
 
-from bpy.props import IntProperty, BoolProperty, FloatVectorProperty, StringProperty
-
-from bpy.types import (
-    Panel,
-    Menu,
-    Operator,
-    UIList,
-)
-
 from ..gdtf import DMX_GDTF
-
 from ..i18n import DMX_Lang
+from ..logging import DMX_Log
 
 _ = DMX_Lang._
 

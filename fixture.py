@@ -16,51 +16,49 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-import traceback
-import bpy
 import math
-import mathutils
-import random
 import os
+import random
+import traceback
 import uuid as py_uuid
 
-from .material import (
-    getEmitterMaterial,
-    get_gobo_material,
-    set_light_nodes,
-    get_ies_node,
-    getGeometryNodes,
-)
-from .model import DMX_Model
-from .logging import DMX_Log
-
+import bpy
+import mathutils
 import pygdtf
 import pymvr
-
-from .gdtf import DMX_GDTF
-from .data import DMX_Data
-from .util import cmy_to_rgb, add_rgb, colors_to_rgb, rgb2xyY, kelvin_table
-from .osc_utils import DMX_OSC_Handlers
 from bpy.props import (
-    IntProperty,
     BoolProperty,
+    CollectionProperty,
     FloatVectorProperty,
+    IntProperty,
     IntVectorProperty,
     PointerProperty,
     StringProperty,
-    CollectionProperty,
 )
-
 from bpy.types import (
-    PropertyGroup,
     Collection,
-    Object,
+    GeometryNodeTree,
     Image,
     Material,
-    GeometryNodeTree,
+    Object,
+    PropertyGroup,
     Text,
 )
+
+from .data import DMX_Data
+from .gdtf import DMX_GDTF
+from .logging import DMX_Log
+from .material import (
+    get_gobo_material,
+    get_ies_node,
+    getEmitterMaterial,
+    getGeometryNodes,
+    set_light_nodes,
+)
+from .model import DMX_Model
 from .node_arranger import DMX_OT_ArrangeSelected
+from .osc_utils import DMX_OSC_Handlers
+from .util import add_rgb, cmy_to_rgb, colors_to_rgb, kelvin_table, rgb2xyY
 
 # Shader Nodes default labels
 # Blender API naming convention is inconsistent for internationalization

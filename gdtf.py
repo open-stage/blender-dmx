@@ -16,19 +16,20 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-import os
-import traceback
-import bpy
 import copy
-import math
 import hashlib
-from types import SimpleNamespace
+import math
+import os
 import pathlib
+import traceback
+from types import SimpleNamespace
+
+import bpy
+import pygdtf
+from io_scene_3ds.import_3ds import load_3ds
 from mathutils import Euler, Matrix, Vector
 
-import pygdtf
 from .logging import DMX_Log
-from io_scene_3ds.import_3ds import load_3ds
 from .util import sanitize_obj_name, xyY2rgbaa
 
 

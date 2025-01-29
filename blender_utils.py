@@ -16,15 +16,16 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-import threading
-import requests
-import shutil
-import os
-from types import SimpleNamespace
 import glob
-import sys
 import importlib
+import os
+import shutil
+import sys
+import threading
+from types import SimpleNamespace
+
 import bpy
+import requests
 
 from .i18n import DMX_Lang
 

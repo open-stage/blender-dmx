@@ -15,12 +15,12 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
-import bpy
-import os
 import json
+import os
 
+import bpy
+from bpy.props import CollectionProperty, IntProperty, StringProperty
 from bpy.types import PropertyGroup
-from bpy.props import StringProperty, CollectionProperty, IntProperty
 
 from ....i18n import DMX_Lang
 

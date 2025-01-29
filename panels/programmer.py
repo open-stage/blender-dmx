@@ -16,12 +16,11 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import bpy
-from bpy.types import Operator, Panel, Menu
-from ..osc_utils import DMX_OSC_Handlers
-
-from bpy.props import StringProperty, BoolProperty
+from bpy.props import BoolProperty, StringProperty
+from bpy.types import Menu, Operator, Panel
 
 from ..i18n import DMX_Lang
+from ..osc_utils import DMX_OSC_Handlers
 
 _ = DMX_Lang._
 # Operators #

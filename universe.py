@@ -16,8 +16,7 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-from bpy.props import IntProperty, StringProperty, EnumProperty
-
+from bpy.props import EnumProperty, IntProperty, StringProperty
 from bpy.types import PropertyGroup
 
 network_options_list = (

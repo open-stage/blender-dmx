@@ -16,12 +16,11 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-import bpy
 import uuid
 
-from bpy.props import PointerProperty, StringProperty, BoolProperty
-
-from bpy.types import PropertyGroup, Collection
+import bpy
+from bpy.props import BoolProperty, PointerProperty, StringProperty
+from bpy.types import Collection, PropertyGroup
 
 
 class DMX_MVR_Object(PropertyGroup):

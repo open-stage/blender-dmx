@@ -15,19 +15,21 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
-import os
-from queue import Queue
-import socket
-import selectors
-import types
 import json
-import bpy
+import os
+import selectors
+import socket
 import time
+import types
+from datetime import datetime
+from queue import Queue
 from threading import Thread
 from uuid import uuid4
-from datetime import datetime
-from .mvrx_message import mvrx_message
+
+import bpy
+
 from ..logging import DMX_Log
+from .mvrx_message import mvrx_message
 
 
 class server(Thread):

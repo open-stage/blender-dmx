@@ -18,6 +18,7 @@
 
 import bpy
 from sacn import sACNreceiver
+
 from .data import DMX_Data
 from .logging import DMX_Log
 
