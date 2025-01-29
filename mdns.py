@@ -143,10 +143,17 @@ class DMX_Zeroconf:
 
         ip_address = bpy.context.window_manager.dmx.mvr_xchange.ip_address
         addrs = [socket.inet_pton(socket.AF_INET, ip_address)]
+        DMX_Log.log.debug(addrs)
+
+        dmx = bpy.context.scene.dmx
+        if dmx.mvrx_hostname_in_service:
+            service_name = f"{station_name.replace(' ', '_')}.{server_name}._mvrxchange._tcp.local."
+        else:
+            service_name = f"{server_name}._mvrxchange._tcp.local."
 
         DMX_Zeroconf._instance.info = ServiceInfo(
             "_mvrxchange._tcp.local.",
-            name=f"{station_name.replace(' ', '_')}.{server_name}._mvrxchange._tcp.local.",
+            name=service_name,
             addresses=addrs,
             port=port,
             properties=desc,

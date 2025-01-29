@@ -1401,6 +1401,12 @@ class DMX(PropertyGroup):
 
     mvr_x_ws_url: StringProperty(name="URL", description="URL", default="")
 
+    mvrx_hostname_in_service : BoolProperty(
+        name = _("Add hostname to MVR-xchange service"),
+        description=_("Add computer name as sub-sub service in mDNS"),
+        default = False,
+    )
+
     # # DMX > ArtNet > Status
 
     artnet_status : EnumProperty(

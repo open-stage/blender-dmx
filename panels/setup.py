@@ -324,6 +324,8 @@ class DMX_PT_Setup_Extras(Panel):
         layout.operator(
             "wm.url_open", text="User Guide Online", icon="HELP"
         ).url = "https://blenderdmx.eu/docs/faq/"
+        row = layout.row()
+        row.prop(dmx, "mvrx_hostname_in_service")
 
 
 class DMX_PT_Setup_Import(Panel):
