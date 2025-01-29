@@ -59,13 +59,6 @@ def version_compare(current_version, new_version):
     return 0
 
 
-def get_latest_release(callback, context):
-    url = "https://api.github.com/repos/open-stage/blender-dmx/releases/latest"
-    thread = threading.Thread(target=get_version_json, args=(url, callback, context))
-    thread.start()
-    thread.join()
-
-
 def export_custom_data(directory_name, file_name):
     dmx = bpy.context.scene.dmx
     folder_path = dmx.get_addon_path()
