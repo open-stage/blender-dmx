@@ -14,8 +14,8 @@ license = [
 ]
 
 wheels = [
-  "wheels/pygdtf-1.0.5.dev8-py3-none-any.whl",
-  "wheels/pymvr-0.4.0-py3-none-any.whl",
+  "wheels/pygdtf-1.0.5-py3-none-any.whl",
+  "wheels/pymvr-0.5.0-py3-none-any.whl",
   "wheels/sacn-1.9.1-py3-none-any.whl",
   "wheels/oscpy-0.6.0-py2.py3-none-any.whl",
   "wheels/ifaddr-0.2.0-py3-none-any.whl",
@@ -50,5 +50,6 @@ paths_exclude_pattern = [
   "RELEASE.md",
   "DEPENDENCIES.md",
   "DEVELOPMENT.md",
+  "pyproject.toml",
 ]
 
