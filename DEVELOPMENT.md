@@ -2,7 +2,14 @@
 
 ### Formatting
 
-Use `ruff` to format the code. Formatting code with Blender RNA structures can be problematic as short lines are typically better.
+Use `ruff` to format the code, ideally by setting it up in your editor.
+Formatting code with Blender RNA structures can be problematic as short lines
+are typically better, so using \fmt: off , \#fmt: on can disable the formatter
+for a block of code.
+
+You can install ruff, isort, pip... by first installing
+[uv](https://docs.astral.sh/uv/), then run `uv init` in this directory. Then
+you can use for example ruff by running `uv run ruff format`.
 
 ### Pre-commit-hooks
 
