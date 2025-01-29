@@ -532,6 +532,7 @@ class DMX(PropertyGroup):
 
         # Create a DMX universe
         self.addUniverse()
+        self.generate_project_uuid()
 
         # Link addon to file
         self.linkFile()
@@ -1385,6 +1386,12 @@ class DMX(PropertyGroup):
         update = onZeroconfEnableDiscovery
     )
 
+    project_application_uuid: StringProperty(
+        default=str(py_uuid.uuid4()),
+        name="Per project application UUID",
+        description="Used for example for MVR xchange",
+    )
+
     mvrx_enabled : BoolProperty(
         name = _("Connect to a selected station"),
         description=_("Connects to an MVR-xchange station"),
@@ -1407,6 +1414,11 @@ class DMX(PropertyGroup):
         default = False,
     )
 
+    mvrx_per_project_station_uuid : BoolProperty(
+        name = _("Use per-project Station UUID"),
+        description=_("Generates a random UUID for every blend file"),
+        default = True,
+    )
     # # DMX > ArtNet > Status
 
     artnet_status : EnumProperty(
@@ -2271,6 +2283,9 @@ class DMX(PropertyGroup):
 
     def removeUniverse(self, i):
         DMX_Universe.remove(self, i)
+
+    def generate_project_uuid(self):
+        self.project_application_uuid = str(py_uuid.uuid4())
 
     # # Render
 
