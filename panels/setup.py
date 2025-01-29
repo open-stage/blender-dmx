@@ -15,22 +15,22 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
-import bpy
 import os
 import shutil
+
+import bpy
+from bpy.props import CollectionProperty, StringProperty
 from bpy.types import Operator, Panel
-from ..material import getVolumeScatterMaterial
-from ..util import getSceneRect, split_text_on_spaces
-from ..gdtf import DMX_GDTF
-from ..panels import profiles as Profiles
+
 from .. import blender_utils as blender_utils
-from bpy.props import StringProperty, CollectionProperty
-from ..logging import DMX_Log
-
+from ..gdtf import DMX_GDTF
 from ..i18n import DMX_Lang
-
-from ..in_out_mvr import DMX_OT_Export_MVR, DMX_OT_Import_MVR
 from ..in_gdtf import DMX_OT_Import_GDTF
+from ..in_out_mvr import DMX_OT_Export_MVR, DMX_OT_Import_MVR
+from ..logging import DMX_Log
+from ..material import getVolumeScatterMaterial
+from ..panels import profiles as Profiles
+from ..util import getSceneRect, split_text_on_spaces
 
 _ = DMX_Lang._
 # Operators #

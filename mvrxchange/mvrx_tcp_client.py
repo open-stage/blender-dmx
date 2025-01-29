@@ -15,16 +15,18 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
-import socket
 import json
-from threading import Thread
-from queue import Queue
-import time
 import selectors
-import bpy
+import socket
+import time
 from datetime import datetime
-from .mvrx_message import mvrx_message
+from queue import Queue
+from threading import Thread
+
+import bpy
+
 from ..logging import DMX_Log
+from .mvrx_message import mvrx_message
 
 
 class client(Thread):

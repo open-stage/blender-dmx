@@ -16,11 +16,11 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import bpy
-from bpy.props import StringProperty, IntProperty
+from bpy.props import IntProperty, StringProperty
 from bpy.types import Operator, Panel, UIList
-from ...tracker import DMX_Tracker
 
 from ...i18n import DMX_Lang
+from ...tracker import DMX_Tracker
 
 _ = DMX_Lang._
 

@@ -16,18 +16,20 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-import bpy
-from .mvrxchange import mvrx_tcp_client as mvrx_client
-from .mvrxchange import mvrx_tcp_server as mvrx_server
-from .mvrxchange import mvrx_ws_client as mvrx_ws_client
-from .mvrxchange.mvrx_message import mvrx_message
-from .logging import DMX_Log
 import os
 import time
 import traceback
 
 # from dmx import bl_info as application_info
 import uuid as py_uuid
+
+import bpy
+
+from .logging import DMX_Log
+from .mvrxchange import mvrx_tcp_client as mvrx_client
+from .mvrxchange import mvrx_tcp_server as mvrx_server
+from .mvrxchange import mvrx_ws_client as mvrx_ws_client
+from .mvrxchange.mvrx_message import mvrx_message
 
 # Instances and callbacks for the MVR TCP client and servers
 

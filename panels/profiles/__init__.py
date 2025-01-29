@@ -15,27 +15,28 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
-from bpy.types import PropertyGroup
 from bpy.props import CollectionProperty, IntProperty
+from bpy.types import PropertyGroup
 
-from .data.share_profile import (
-    DMX_Fixtures_Import_Gdtf_Profile_Dmx_Mode,
-    DMX_Fixtures_Import_Gdtf_Profile,
-)
+from .controller import DMX_Fixtures_Manager
 from .data.local_profile import (
-    DMX_Fixtures_Local_ProfileMode,
     DMX_Fixtures_Local_Profile,
+    DMX_Fixtures_Local_ProfileMode,
+)
+from .data.share_profile import (
+    DMX_Fixtures_Import_Gdtf_Profile,
+    DMX_Fixtures_Import_Gdtf_Profile_Dmx_Mode,
 )
 from .ui.list import (
-    DMX_UL_Share_Fixtures,
-    DMX_UL_Share_Fixtures_Dmx_Modes,
     DMX_UL_Local_Fixtures,
     DMX_UL_Local_Fixtures_Dmx_Modes,
+    DMX_UL_Share_Fixtures,
+    DMX_UL_Share_Fixtures_Dmx_Modes,
 )
 from .ui.operator import (
+    DMX_OP_Delete_Local_Fixture,
     DMX_OP_Import_Fixture_From_Share,
     DMX_OP_Import_Fixture_Update_Share,
-    DMX_OP_Delete_Local_Fixture,
     DMX_OP_Update_Local_Fixtures,
 )
 from .ui.panel import (
@@ -45,7 +46,6 @@ from .ui.panel import (
     DMX_PT_Fixtures_Local_Profile_Detail,
     DMX_PT_Profiles_Holder,
 )
-from .controller import DMX_Fixtures_Manager
 
 # Module Data Structure
 

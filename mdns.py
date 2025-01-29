@@ -16,20 +16,21 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 
+import logging
+import socket
+import uuid as pyuuid
+from typing import cast
+
 import bpy
 from zeroconf import (
     IPVersion,
     ServiceBrowser,
+    ServiceInfo,
     ServiceStateChange,
     Zeroconf,
-    ServiceInfo,
 )
 
 from .logging import DMX_Log
-import logging
-from typing import cast
-import uuid as pyuuid
-import socket
 
 # mdns (zeroconf) instances for discover and for mdns server
 

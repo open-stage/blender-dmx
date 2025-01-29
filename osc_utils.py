@@ -18,8 +18,8 @@
 import json
 import os
 
-from .osc import DMX_OSC
 from .logging import DMX_Log
+from .osc import DMX_OSC
 
 
 class DMX_OSC_Templates:

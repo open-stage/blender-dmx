@@ -16,11 +16,10 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import bpy
-
-from bpy.types import Panel, Operator
-from ..logging import DMX_Log
+from bpy.types import Operator, Panel
 
 from ..i18n import DMX_Lang
+from ..logging import DMX_Log
 
 _ = DMX_Lang._
 

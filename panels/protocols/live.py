@@ -16,8 +16,8 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 from bpy.types import Panel, UIList
-from ...data import DMX_Data
 
+from ...data import DMX_Data
 from ...i18n import DMX_Lang
 
 _ = DMX_Lang._

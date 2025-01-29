@@ -16,10 +16,10 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-import bpy
-import uuid
 import json
+import uuid
 
+import bpy
 from bpy.props import StringProperty
 from bpy.types import PropertyGroup
 

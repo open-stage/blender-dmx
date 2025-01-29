@@ -16,91 +16,85 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-import sys
-import bpy
-import os
-from threading import Timer
-import time
 import json
-import uuid as py_uuid
-import re
-from datetime import datetime
-import traceback
-from types import SimpleNamespace
-from pathlib import Path
-
-import pymvr
 import logging
-from .mvr import load_mvr
+import os
+import re
+import sys
+import time
+import traceback
+import uuid as py_uuid
+from datetime import datetime
+from pathlib import Path
+from threading import Timer
+from types import SimpleNamespace
 
-from . import param as param
-from . import fixture as fixture
-from . import tracker as tracker
-from .universe import DMX_Universe
-from .data import DMX_Value, DMX_Data
-from .gdtf import DMX_GDTF
-from .artnet import DMX_ArtNet
-from .acn import DMX_sACN
-from .network import DMX_Network
-from .logging import DMX_Log
-from .blender_utils import copy_blender_profiles, get_application_version
-
-from .panels import recorder as recorder
-from .panels import setup as setup
-from .panels.protocols import protocols as panels_protocols
-from .panels.protocols import artnet as panels_artnet
-from .panels.protocols import sacn as panels_sacn
-from .panels.protocols import osc as panels_osc
-from .panels.protocols import psn as panels_psn
-from .panels.protocols import mvr as panels_mvr
-from .panels.protocols import universes as panels_universes
-from .panels.protocols import live as panels_live
-from .panels import fixtures as fixtures
-from .panels import groups as groups
-from .panels import programmer as programmer
-from .panels import profiles as Profiles
-from .panels import distribute as distribute
-from .panels import classing as classing
-from .panels import subfixtures as subfixtures
-
-from .preferences import DMX_Preferences, DMX_Regenrate_UUID
-from .group import FixtureGroup, DMX_Group
-from .osc_utils import DMX_OSC_Templates
-from .osc import DMX_OSC
-from .mdns import DMX_Zeroconf
-
-from .node_arranger import DMX_OT_ArrangeSelected
-
-from .util import (
-    rgb_to_cmy,
-    ShowMessageBox,
-    cmy_to_rgb,
-    flatten_color,
-    draw_top_message,
-)
-from .mvr_objects import DMX_MVR_Object, DMX_MVR_Class
-from .mvrxchange.mvr_xchange_blender import (
-    DMX_MVR_Xchange_Commit,
-    DMX_MVR_Xchange_Client,
-    DMX_MVR_Xchange,
-)
-from .mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server, DMX_MVR_X_WS_Client
+import bpy
 import bpy.utils.previews
-from .material import set_light_nodes, get_gobo_material
+import pymvr
 from bpy.props import (
     BoolProperty,
-    StringProperty,
-    IntProperty,
+    CollectionProperty,
+    EnumProperty,
     FloatProperty,
     FloatVectorProperty,
+    IntProperty,
     PointerProperty,
-    EnumProperty,
-    CollectionProperty,
+    StringProperty,
 )
+from bpy.types import Collection, NodeTree, Object, PropertyGroup
 
-from bpy.types import PropertyGroup, Object, Collection, NodeTree
-
+from . import fixture as fixture
+from . import param as param
+from . import tracker as tracker
+from .acn import DMX_sACN
+from .artnet import DMX_ArtNet
+from .blender_utils import copy_blender_profiles, get_application_version
+from .data import DMX_Data, DMX_Value
+from .gdtf import DMX_GDTF
+from .group import DMX_Group, FixtureGroup
 from .i18n import DMX_Lang
+from .logging import DMX_Log
+from .material import get_gobo_material, set_light_nodes
+from .mdns import DMX_Zeroconf
+from .mvr import load_mvr
+from .mvr_objects import DMX_MVR_Class, DMX_MVR_Object
+from .mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server, DMX_MVR_X_WS_Client
+from .mvrxchange.mvr_xchange_blender import (
+    DMX_MVR_Xchange,
+    DMX_MVR_Xchange_Client,
+    DMX_MVR_Xchange_Commit,
+)
+from .network import DMX_Network
+from .node_arranger import DMX_OT_ArrangeSelected
+from .osc import DMX_OSC
+from .osc_utils import DMX_OSC_Templates
+from .panels import classing as classing
+from .panels import distribute as distribute
+from .panels import fixtures as fixtures
+from .panels import groups as groups
+from .panels import profiles as Profiles
+from .panels import programmer as programmer
+from .panels import recorder as recorder
+from .panels import setup as setup
+from .panels import subfixtures as subfixtures
+from .panels.protocols import artnet as panels_artnet
+from .panels.protocols import live as panels_live
+from .panels.protocols import mvr as panels_mvr
+from .panels.protocols import osc as panels_osc
+from .panels.protocols import protocols as panels_protocols
+from .panels.protocols import psn as panels_psn
+from .panels.protocols import sacn as panels_sacn
+from .panels.protocols import universes as panels_universes
+from .preferences import DMX_Preferences, DMX_Regenrate_UUID
+from .universe import DMX_Universe
+from .util import (
+    ShowMessageBox,
+    cmy_to_rgb,
+    draw_top_message,
+    flatten_color,
+    rgb_to_cmy,
+)
 
 _ = DMX_Lang._
 

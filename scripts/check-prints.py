@@ -5,9 +5,7 @@ from __future__ import annotations
 import argparse
 import ast
 import traceback
-from typing import NamedTuple
-from typing import Sequence
-
+from typing import NamedTuple, Sequence
 
 DEBUG_STATEMENTS = {
     "print",

@@ -24,6 +24,7 @@ from bpy.props import (
     StringProperty,
 )
 from bpy.types import PropertyGroup
+
 from ..network import DMX_Network
 
 # MVR-xchange commit and client RNA structures

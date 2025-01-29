@@ -1,28 +1,27 @@
-import bpy
-import shutil
 import os
+import shutil
 import traceback
-
-from bpy_extras.io_utils import ImportHelper
-
 from threading import Timer
+
+import bpy
+from bpy_extras.io_utils import ImportHelper
 
 if bpy.app.version >= (4, 2):
     from bpy_extras.io_utils import poll_file_object_drop
 
+import pygdtf
 from bpy.props import (
-    StringProperty,
     BoolProperty,
+    CollectionProperty,
     FloatVectorProperty,
     IntProperty,
-    CollectionProperty,
+    StringProperty,
 )
-from .gdtf import DMX_GDTF
-from .panels import profiles as Profiles
-import pygdtf
-from .util import create_unique_fixture_name
 
+from .gdtf import DMX_GDTF
 from .i18n import DMX_Lang
+from .panels import profiles as Profiles
+from .util import create_unique_fixture_name
 
 _ = DMX_Lang._
 

@@ -17,10 +17,10 @@
 
 
 import bpy
+from bpy.props import IntProperty
+from bpy.types import PropertyGroup
 
 from .logging import DMX_Log
-from bpy.types import PropertyGroup
-from bpy.props import IntProperty
 
 
 def update_callback(self, context):

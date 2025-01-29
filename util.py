@@ -16,9 +16,10 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-import bpy
 import math
 import random
+
+import bpy
 
 # <get Scene Rect>
 # Calculate the minimum and maximum coordinate of the scene objects

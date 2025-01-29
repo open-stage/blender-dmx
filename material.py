@@ -16,11 +16,13 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-import bpy
-from .logging import DMX_Log
 import logging
 import os
+
+import bpy
+
 from .gdtf import DMX_GDTF
+from .logging import DMX_Log
 
 # Shader Nodes default labels
 # Blender API naming convention is inconsistent for internationalization

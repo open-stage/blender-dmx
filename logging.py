@@ -17,10 +17,10 @@
 
 
 import logging
+import os
 from logging.handlers import RotatingFileHandler
 
 import bpy
-import os
 
 
 class DMX_Log:

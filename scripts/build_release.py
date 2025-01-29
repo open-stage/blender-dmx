@@ -1,9 +1,10 @@
-import re
 import os
+import re
 import shutil
-from shutil import copytree, ignore_patterns
-from pygit2 import Repository
 import sys
+from shutil import copytree, ignore_patterns
+
+from pygit2 import Repository
 
 BUILD_DIR = "build"
 
