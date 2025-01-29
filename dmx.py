@@ -239,7 +239,6 @@ class DMX(PropertyGroup):
         fixtures.DMX_OT_Fixture_SelectPrevious,
         fixtures.DMX_OT_Fixture_SelectNextTarget,
         fixtures.DMX_OT_Fixture_SelectPreviousTarget,
-        setup.DMX_OT_VersionCheck,
         programmer.DMX_PT_Programmer,
         recorder.DMX_OT_Recorder_AddKeyframe,
         recorder.DMX_PT_Recorder,
@@ -626,12 +625,6 @@ class DMX(PropertyGroup):
         self.check_python_version()
         self.check_blender_version()
         self.print_extension_version()
-
-        if bpy.app.version >= (4, 2):
-            # do not do version check online in 4.2 and up
-            pass
-        else:
-            Timer(1, bpy.ops.dmx.check_version, ()).start()
 
         DMX_GDTF.getManufacturerList()
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()

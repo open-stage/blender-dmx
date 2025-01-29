@@ -206,8 +206,8 @@ class DMX_PT_Setup_Volume(Panel):
         dmx = context.scene.dmx
 
         box = layout.column().box()
-        box.prop(context.scene.dmx, "volume_preview")
-        box.prop(context.scene.dmx, "disable_overlays")
+        box.prop(dmx, "volume_preview")
+        box.prop(dmx, "disable_overlays")
 
         box = layout.column().box()
         box.operator(
@@ -217,13 +217,13 @@ class DMX_PT_Setup_Volume(Panel):
         )
 
         row = box.row()
-        row.prop(context.scene.dmx, "volume_enabled")
+        row.prop(dmx, "volume_enabled")
         row.enabled = dmx.volume is not None
 
         row_den = box.row()
-        row_den.prop(context.scene.dmx, "volume_density")
+        row_den.prop(dmx, "volume_density")
         row_scale = box.row()
-        row_scale.prop(context.scene.dmx, "volume_noise_scale")
+        row_scale.prop(dmx, "volume_noise_scale")
         row_den.enabled = row_scale.enabled = dmx.volume is not None
 
         selected = dmx.selectedFixtures()
@@ -231,12 +231,12 @@ class DMX_PT_Setup_Volume(Panel):
 
         row = box.row()
         col1 = row.column()
-        col1.prop(context.scene.dmx, "beam_intensity_multiplier")
+        col1.prop(dmx, "beam_intensity_multiplier")
 
         box = layout.column().box()
         row = box.row()
         col1 = row.column()
-        col1.prop(context.scene.dmx, "reduced_beam_diameter_in_cycles")
+        col1.prop(dmx, "reduced_beam_diameter_in_cycles")
         col2 = row.column()
         col2.operator(
             "wm.url_open", text="", icon="HELP"
@@ -276,20 +276,20 @@ class DMX_PT_Setup_Viewport(Panel):
         row = layout.row()
         row.label(text=_("Background Color"))
         row = layout.row()
-        row.prop(context.scene.dmx, "background_color", text="")
+        row.prop(dmx, "background_color", text="")
         row = layout.row()
         row.prop(context.window_manager.dmx, "pause_render")
         row = layout.row()
-        row.prop(context.scene.dmx, "display_2D")
+        row.prop(dmx, "display_2D")
         row = layout.row()
-        row.prop(context.scene.dmx, "enable_device_label")
+        row.prop(dmx, "enable_device_label")
         row = layout.row()
-        row.prop(context.scene.dmx, "display_device_label")
+        row.prop(dmx, "display_device_label")
         row.enabled = dmx.display_2D or dmx.enable_device_label
         row = layout.row()
-        row.prop(context.scene.dmx, "display_pigtails")
+        row.prop(dmx, "display_pigtails")
         row = layout.row()
-        row.prop(context.scene.dmx, "select_geometries")
+        row.prop(dmx, "select_geometries")
 
 
 class DMX_PT_Setup_Extras(Panel):
@@ -306,26 +306,6 @@ class DMX_PT_Setup_Extras(Panel):
         layout = self.layout
         dmx = context.scene.dmx
         old_data_exists = blender_utils.old_custom_data_exists()
-        if bpy.app.version >= (4, 2):
-            # do not do version check online in 4.2 and up
-            pass
-        else:
-            layout.operator(
-                "dmx.check_version",
-                text=_("Check for BlenderDMX updates"),
-                icon="SHADING_WIRE",
-            )
-            row = layout.row()
-            col1 = row.column()
-            col1.label(
-                text=_("Status: {}").format(
-                    context.window_manager.dmx.release_version_status
-                )
-            )
-            col2 = row.column()
-            col2.operator(
-                "wm.url_open", text="", icon="SHADING_WIRE"
-            ).url = "https://github.com/open-stage/blender-dmx/releases/latest"
         row = layout.row()
         row.operator_context = "INVOKE_DEFAULT"  #'INVOKE_AREA'
         row.operator(
@@ -431,7 +411,7 @@ class DMX_PT_Setup_Logging(Panel):
         dmx = context.scene.dmx
         layout = self.layout
         row = layout.row()
-        row.prop(context.scene.dmx, "logging_level")
+        row.prop(dmx, "logging_level")
         row = layout.row()
         row.label(text=_("Log filter"))
         row = layout.row(align=True)
@@ -473,50 +453,10 @@ class DMX_PT_Setup(Panel):
                 layout.label(
                     text=_("Error! Blender 3.4 or higher required."), icon="ERROR"
                 )
-            # if bpy.app.version >= (4, 2):
-            #    row = layout.row()
-            #    row.label(text=_("For Blender 4.2 and up use the Extension"), icon="ERROR")
-            #    row.operator("wm.url_open", text="BlenderDMX Extension", icon="SHADING_WIRE").url = "https://extensions.blender.org/add-ons/open-stage-blender-dmx/"
             layout.operator("dmx.new_show", text=_("Create New Show"), icon="LIGHT")
             layout.operator(
                 "wm.url_open", text="User Guide Online", icon="HELP"
             ).url = "https://blenderdmx.eu/docs/faq/"
-
-
-class DMX_OT_VersionCheck(Operator):
-    bl_label = _("Check version")
-    bl_description = _("Check if there is new release of BlenderDMX")
-    bl_idname = "dmx.check_version"
-    bl_options = {"UNDO"}
-
-    def callback(self, data, context):
-        temp_data = context.window_manager.dmx
-        text = _("Unknown version error")
-        if "error" in data:
-            text = data["error"]
-        else:
-            try:
-                current_version = blender_utils.get_application_version()
-                new_version = data["name"]
-                res = blender_utils.version_compare(current_version, new_version)
-            except Exception as e:
-                text = f"{e.__class__.__name__} {e}"
-            else:
-                if res < 0:
-                    text = _("New version {} available").format(new_version)
-                elif res > 0:
-                    text = _("You are using pre-release version")
-                else:
-                    text = _("You are using latest version of BlenderDMX")
-
-        self.report({"INFO"}, f"{text}")
-        temp_data.release_version_status = text
-
-    def execute(self, context):
-        temp_data = context.window_manager.dmx
-        temp_data.release_version_status = _("Checking...")
-        blender_utils.get_latest_release(self.callback, context)
-        return {"FINISHED"}
 
 
 class DMX_OT_Import_Custom_Data(Operator):
