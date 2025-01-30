@@ -2055,6 +2055,9 @@ class DMX(PropertyGroup):
         application_uuid = prefs.get(
             "application_uuid", str(py_uuid.uuid4())
         )  # must never be 0
+        if self.mvrx_per_project_station_uuid:
+            application_uuid = self.project_application_uuid
+
         if application_uuid == station_uuid:
             if not DMX_Log.log.isEnabledFor(logging.DEBUG):
                 DMX_Log.log.info(

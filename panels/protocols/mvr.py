@@ -102,7 +102,7 @@ class DMX_OP_MVR_Import(Operator):
             if commit.commit_uuid == self.uuid:
                 DMX_Log.log.info(f"import {commit}")
                 path = os.path.join(
-                    ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid}.mvr"
+                    ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid.lower()}.mvr"
                 )
                 DMX_Log.log.info(path)
                 dmx.addMVR(path)
