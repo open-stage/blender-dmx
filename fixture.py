@@ -497,16 +497,19 @@ class DMX_Fixture(PropertyGroup):
         for obj in self.collection.objects:
             if "beam" in obj.get("geometry_type", ""):
                 emitter = obj
-                self.emitter_materials.add()
-                self.emitter_materials[-1].name = obj.name
+                new_material = self.emitter_materials.add()
+                new_material.name = obj.name
+                new_material["parent_geometries"] = list(
+                    set(obj.get("parent_geometries", []))
+                )
 
                 emitter_material = getEmitterMaterial(obj.name)
                 emitter.active_material = emitter_material
                 emitter.material_slots[0].link = 'OBJECT'
                 emitter.material_slots[0].material = emitter_material
                 if hasattr(emitter.material_slots[0].material, "shadow_method"):
-                    emitter.material_slots[0].material.shadow_method = 'NONE' # eevee
-                self.emitter_materials[-1].material = emitter_material
+                    emitter.material_slots[0].material.shadow_method = "NONE"  # eevee
+                new_material.material = emitter_material
 
             if "gobo" in obj.get("geometry_type", ""):
                 material = self.gobo_materials.add()
@@ -663,7 +666,7 @@ class DMX_Fixture(PropertyGroup):
         gobo2 = [None, None] #gobo selection (Gobo2), gobo indexing/rotation (Gobo2Pos)
 
         for vchannel in self.virtual_channels:
-            geometry = vchannel.geometry # for now. But, no way to know, as BlenderDMX controls are universal
+            geometry = str(vchannel.geometry) # for now. But, no way to know, as BlenderDMX controls are universal
             if geometry not in rgb_mixing_geometries.keys():
                 rgb_mixing_geometries[geometry] = [None] * 12 # R, G, B, White, WW, CW, Amber, Lime, UV, cyan, magenta, yellow
             if geometry not in xyz_moving_geometries.keys():
@@ -726,7 +729,7 @@ class DMX_Fixture(PropertyGroup):
                 elif vchannel.id == "Rot_Z": xyz_rotating_geometries[geometry][2] = data_virtual[vchannel.id]["value"]
 
         for c in range(len(channels)):
-            geometry=self.channels[c].geometry
+            geometry = str(self.channels[c].geometry)
             if geometry not in rgb_mixing_geometries.keys():
                 rgb_mixing_geometries[geometry] = [None] * 12
             if geometry not in xyz_moving_geometries.keys():
@@ -998,8 +1001,11 @@ class DMX_Fixture(PropertyGroup):
                 if (shutter > 0 and shutter != 255):
                     break # no need to do the expensive value settings if we do this anyway in shutter timer
                 if geometry is not None:
-                    if f"{geometry}" in emitter_material.name:
-                        DMX_Log.log.info("matched emitter")
+                    if geometry in emitter_material.name or any(
+                        g in geometry
+                        for g in emitter_material["parent_geometries"]
+                    ):
+                        DMX_Log.log.info(("matched emitter", geometry))
                         emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 1*(dimmer/(255.0 * bits))
                 else:
                     emitter_material.material.node_tree.nodes[1].inputs[STRENGTH].default_value = 1*(dimmer/(255.0 * bits))
@@ -1021,7 +1027,10 @@ class DMX_Fixture(PropertyGroup):
                     break # no need to do the expensive value settings if we do this anyway in shutter timer
 
                 if geometry is not None:
-                    if f"{geometry}" in  light.object.data.name:
+                    if geometry in light.object.data.name or any(
+                        g in geometry
+                        for g in light.object.data["parent_geometries"]
+                    ):
                         DMX_Log.log.info("matched emitter")
                         light.object.data.energy = (dimmer/(255.0 * bits)) * flux
 
@@ -1106,7 +1115,8 @@ class DMX_Fixture(PropertyGroup):
             for emitter_material in self.emitter_materials:
                 DMX_Log.log.info(("emitter:", emitter_material.name))
                 if geometry is not None:
-                    if f"{geometry}" in emitter_material.name:
+                    if geometry in emitter_material.name or any(
+                            g in geometry for g in emitter_material["parent_geometries"]) :
                         DMX_Log.log.info("matched emitter")
                         emitter_material.material.node_tree.nodes[1].inputs[COLOR].default_value = rgb + [1]
                 else:
@@ -1118,7 +1128,10 @@ class DMX_Fixture(PropertyGroup):
             for light in self.lights:
                 if geometry is not None:
                     DMX_Log.log.info(("light:", light.object.data.name))
-                    if f"{geometry}" in  light.object.data.name:
+                    if geometry in light.object.data.name or any(
+                        g in geometry
+                        for g in light.object.data["parent_geometries"]
+                    ):
                         DMX_Log.log.info("matched light")
                         light.object.data.color = rgb
                 else:

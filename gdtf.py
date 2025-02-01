@@ -530,6 +530,39 @@ class DMX_GDTF:
             )  # The media server camera-view points into the positive Y-direction (and Z-up).
             collection.objects.link(camera_object)
 
+        def add_beam_controlling_parent_geometries(geometry):
+            # create a list of parenting geometries with beam affecting attributes
+            # this is a list with duplicate entries, we make unique list later
+            # when adding it to the fixture
+
+            if sanitize_obj_name(geometry) not in objs:
+                return
+            obj_child = objs[sanitize_obj_name(geometry)]
+            if hasattr(geometry, "parent_name"):
+                used_attributes = [
+                    "Dimmer",
+                    "ColorAdd_R",
+                    "ColorAdd_G",
+                    "ColorAdd_B",
+                    "ColorSub_C",
+                    "ColorSub_M",
+                    "ColorAdd_Y",
+                    "ColorAdd_WW",
+                    "ColorAdd_CW",
+                    "ColorAdd_RY",
+                    "ColorAdd_GY",
+                    "ColorAdd_UV",
+                    "ColorRGB_Red",
+                    "ColorRGB_Blue",
+                    "ColorRGB_Green",
+                ]
+                parent_geometries = []
+                for ch in dmx_channels_flattened:
+                    if ch["geometry"] == geometry.parent_name:
+                        if any(used_attr in ch["id"] for used_attr in used_attributes):
+                            parent_geometries.append(ch["geometry"].replace(" ", "_"))
+                obj_child["parent_geometries"] = parent_geometries
+
         def create_beam(geometry):
             if sanitize_obj_name(geometry) not in objs:
                 return
@@ -544,6 +577,11 @@ class DMX_GDTF:
 
             obj_child.visible_shadow = False
             light_data = bpy.data.lights.new(name=f"Spot {obj_child.name}", type="SPOT")
+
+            light_data["parent_geometries"] = list(
+                set(obj_child.get("parent_geometries", []))
+            )
+
             light_data["flux"] = geometry.luminous_flux
             light_data["shutter_value"] = (
                 0  # Here we will store values required for strobing
@@ -650,6 +688,8 @@ class DMX_GDTF:
                 add_child_position(geometry)
 
             if isinstance(geometry, pygdtf.GeometryBeam):
+                geometry.original_name = geometry.name
+                add_beam_controlling_parent_geometries(geometry)
                 create_beam(geometry)
             if isinstance(geometry, pygdtf.GeometryLaser):
                 create_laser(geometry)
@@ -660,6 +700,9 @@ class DMX_GDTF:
                 reference = copy.deepcopy(
                     pygdtf.utils.get_geometry_by_name(profile, geometry.geometry)
                 )
+                reference.original_name = geometry.name
+                if hasattr(geometry, "parent_name"):
+                    reference.parent_name = geometry.parent_name
                 reference.name = sanitize_obj_name(geometry)
 
                 # apply position of the reference
@@ -670,6 +713,7 @@ class DMX_GDTF:
                 add_child_position(reference)
 
                 if isinstance(reference, pygdtf.GeometryBeam):
+                    add_beam_controlling_parent_geometries(geometry)
                     create_beam(reference)
                 if isinstance(reference, pygdtf.GeometryLaser):
                     create_laser(reference)

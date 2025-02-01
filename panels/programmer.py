@@ -705,7 +705,7 @@ class DMX_PT_Programmer(Panel):
                     text=_("Gobo2 Rotation"),
                     translate=False,
                 )
-            if selected_fixtures[0].has_attributes(["shutter"], lower=True):
+            if selected_fixtures[0].has_attributes(["Shutter1"]):
                 box.prop(
                     scene.dmx, "programmer_shutter", text=_("Strobe"), translate=False
                 )
