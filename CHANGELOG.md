@@ -1,5 +1,24 @@
 ### Changelog
 
+### NEXT
+
+* Adjust formatting of fixture.py
+* Allow control of beams from attributes on parenting geometries
+
+### 1.9.2
+
+* MVR-xchange
+    * overall improvements to the TCP communication
+    * use per blend file application/station UUID
+    * add configuration for mDNS group compatibility
+    * handle UUIDs with changed character casing
+* reformat all code and add uv based python helpers
+* update pygdtf and pymvr
+
+### 1.9.1
+
+* MVR-xchange: rework websocket implementation to pure websocket
+
 ### 1.9.0
 
 * MVR-xchange - initial websockets implementation
