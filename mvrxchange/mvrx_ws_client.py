@@ -154,9 +154,8 @@ class WebSocketClient(threading.Thread):
             commit_template["FileSize"] = commit.file_size
             commit_template["FileUUID"] = commit.commit_uuid
             commit_template["StationUUID"] = self.application_uuid
-            commit_template["FileName"] = commit.file_name or commit.comment.replace(
-                " ", "_"
-            )
+            file_name = commit.file_name or commit.comment.replace(" ", "_")
+            commit_template["FileName"] = f"{file_name}.mvr"
             commit_template["Comment"] = commit.comment
             commits.append(commit_template)
         self.send(

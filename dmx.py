@@ -2057,6 +2057,7 @@ class DMX(PropertyGroup):
         )  # must never be 0
         if self.mvrx_per_project_station_uuid:
             application_uuid = self.project_application_uuid
+        application_uuid = application_uuid.upper()
 
         if application_uuid == station_uuid:
             if not DMX_Log.log.isEnabledFor(logging.DEBUG):

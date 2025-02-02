@@ -31,7 +31,7 @@ from zeroconf import (
 )
 
 from .logging import DMX_Log
-
+from .mvrxchange.mvrx_message import defined_station_name, defined_provider_name
 # mdns (zeroconf) instances for discover and for mdns server
 
 
@@ -51,7 +51,7 @@ class DMX_Zeroconf:
         )  # must never be 0
         if self._dmx.mvrx_per_project_station_uuid:
             application_uuid = self._dmx.project_application_uuid
-        self.application_uuid = application_uuid
+        self.application_uuid = application_uuid.upper()
 
     def callback(
         zeroconf: Zeroconf,
@@ -130,7 +130,9 @@ class DMX_Zeroconf:
     @staticmethod
     def enable_server(server_name=None, port=9999):
         host_name = f"{socket.gethostname()}-{pyuuid.uuid4().hex}"
-        station_name = f"BlenderDMX station {socket.gethostname()}".replace(" ", "_")
+        station_name = f"{defined_station_name} {socket.gethostname()}".replace(
+            " ", "_"
+        )
 
         if server_name is None or server_name == "":
             server_name = station_name

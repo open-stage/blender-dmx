@@ -52,8 +52,7 @@ class DMX_MVR_X_Client:
         )  # must never be 0
         if self._dmx.mvrx_per_project_station_uuid:
             application_uuid = self._dmx.project_application_uuid
-
-        self.application_uuid = application_uuid
+        self.application_uuid = application_uuid.upper()
         # print("bl info", application_info) # TODO: use this in the future
 
     @staticmethod
@@ -121,7 +120,7 @@ class DMX_MVR_X_Client:
             dmx = bpy.context.scene.dmx
             ADDON_PATH = dmx.get_addon_path()
             path = os.path.join(
-                ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid.lower()}.mvr"
+                ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid.upper()}.mvr"
             )
             DMX_Log.log.debug(f"path {path}")
             try:
@@ -230,7 +229,7 @@ class DMX_MVR_X_Server:
         )  # must never be 0
         if self._dmx.mvrx_per_project_station_uuid:
             application_uuid = self._dmx.project_application_uuid
-        self.application_uuid = application_uuid
+        self.application_uuid = application_uuid.upper()
         # print("bl info", application_info) # TODO: use this in the future
 
     @staticmethod
@@ -306,7 +305,7 @@ class DMX_MVR_X_WS_Client:
         )  # must never be 0
         if self._dmx.mvrx_per_project_station_uuid:
             application_uuid = self._dmx.project_application_uuid
-        self.application_uuid = application_uuid
+        self.application_uuid = application_uuid.upper()
         # print("bl info", application_info) # TODO: use this in the future
 
     @staticmethod
@@ -376,7 +375,7 @@ class DMX_MVR_X_WS_Client:
 
                 ADDON_PATH = dmx.get_addon_path()
                 file_path = os.path.join(
-                    ADDON_PATH, "assets", "mvrs", f"{file_uuid.lower()}.mvr"
+                    ADDON_PATH, "assets", "mvrs", f"{file_uuid.upper()}.mvr"
                 )
 
                 DMX_Log.log.debug("sending file")
@@ -417,7 +416,7 @@ class DMX_MVR_X_WS_Client:
             dmx = bpy.context.scene.dmx
             ADDON_PATH = dmx.get_addon_path()
             path = os.path.join(
-                ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid.lower()}.mvr"
+                ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid.upper()}.mvr"
             )
             DMX_Log.log.debug(f"path {path}")
             try:

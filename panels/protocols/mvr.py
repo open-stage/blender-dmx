@@ -65,7 +65,7 @@ class DMX_OP_MVR_Request(Operator):
     station_uuid: StringProperty()
 
     def execute(self, context):
-        uuid = str(py_uuid.uuid4())
+        uuid = str(py_uuid.uuid4()).upper()
         mvr_commit = {
             "FileUUID": uuid,
             "StationUUID": self.station_uuid,
@@ -102,7 +102,7 @@ class DMX_OP_MVR_Import(Operator):
             if commit.commit_uuid == self.uuid:
                 DMX_Log.log.info(f"import {commit}")
                 path = os.path.join(
-                    ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid.lower()}.mvr"
+                    ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid.upper()}.mvr"
                 )
                 DMX_Log.log.info(path)
                 dmx.addMVR(path)
@@ -150,8 +150,10 @@ class DMX_OP_MVR_X_Export(Operator):
             comment = "File shared"
         current_file_path = bpy.data.filepath
         file_stem = Path(current_file_path).stem
+        if not file_stem:
+            file_stem = "untitled"
         ADDON_PATH = dmx.get_addon_path()
-        uuid = str(py_uuid.uuid4())
+        uuid = str(py_uuid.uuid4()).upper()
         path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{uuid}.mvr")
         result = dmx.export_mvr(path)
         DMX_Log.log.info(path)

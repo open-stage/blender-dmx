@@ -154,9 +154,8 @@ class server(Thread):
                 commit_template["FileSize"] = commit.file_size
                 commit_template["FileUUID"] = commit.commit_uuid
                 commit_template["StationUUID"] = self.uuid
-                commit_template["FileName"] = (
-                    commit.file_name or commit.comment.replace(" ", "_")
-                )
+                file_name = commit.file_name or commit.comment.replace(" ", "_")
+                commit_template["FileName"] = f"{file_name}.mvr"
                 commit_template["Comment"] = commit.comment
                 commits.append(commit_template)
             data.outb.append(
@@ -194,7 +193,7 @@ class server(Thread):
 
             ADDON_PATH = dmx.get_addon_path()
             file_path = os.path.join(
-                ADDON_PATH, "assets", "mvrs", f"{file_uuid.lower()}.mvr"
+                ADDON_PATH, "assets", "mvrs", f"{file_uuid.upper()}.mvr"
             )
 
             DMX_Log.log.debug("sending file")
