@@ -92,10 +92,14 @@ class DMX_MVR_X_Client:
 
         msg_type = data.get("Type", "")
         msg_ok = data.get("OK", "")
+        msg_message = data.get("Message", "")
         if msg_type == "MVR_JOIN_RET" and msg_ok is False:
             DMX_Log.log.error("MVR-xchange client refused our connection")
             dmx = bpy.context.scene.dmx
             dmx.mvrx_enabled = False
+
+        if msg_type == "MVR_REQUEST_RET" and msg_ok is False:
+            DMX_Log.log.error("MVR-xchange file request declined")
 
     @staticmethod
     def create_self_request_commit(mvr_commit):
@@ -354,10 +358,14 @@ class DMX_MVR_X_WS_Client:
 
         msg_type = data.get("Type", "")
         msg_ok = data.get("OK", "")
+        msg_message = data.get("Message", "")
         if msg_type == "MVR_JOIN_RET" and msg_ok is False:
             DMX_Log.log.error("MVR-xchange client refused our connection")
             dmx = bpy.context.scene.dmx
             dmx.mvrx_enabled = False
+
+        if msg_type == "MVR_REQUEST_RET" and msg_ok is False:
+            DMX_Log.log.error("MVR-xchange file request declined")
 
         if "Type" in data:
             if data["Type"] == "MVR_REQUEST":
