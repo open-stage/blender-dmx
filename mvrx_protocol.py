@@ -93,13 +93,16 @@ class DMX_MVR_X_Client:
         msg_type = data.get("Type", "")
         msg_ok = data.get("OK", "")
         msg_message = data.get("Message", "")
+        dmx = bpy.context.scene.dmx
         if msg_type == "MVR_JOIN_RET" and msg_ok is False:
             DMX_Log.log.error("MVR-xchange client refused our connection")
-            dmx = bpy.context.scene.dmx
             dmx.mvrx_enabled = False
 
         if msg_type == "MVR_REQUEST_RET" and msg_ok is False:
             DMX_Log.log.error("MVR-xchange file request declined")
+            commit = DMX_MVR_X_Client._instance.client.commit
+            if commit:
+                dmx.request_failed_mvr_downloaded_file(commit)
 
     @staticmethod
     def create_self_request_commit(mvr_commit):
@@ -359,13 +362,17 @@ class DMX_MVR_X_WS_Client:
         msg_type = data.get("Type", "")
         msg_ok = data.get("OK", "")
         msg_message = data.get("Message", "")
+        dmx = bpy.context.scene.dmx
         if msg_type == "MVR_JOIN_RET" and msg_ok is False:
             DMX_Log.log.error("MVR-xchange client refused our connection")
-            dmx = bpy.context.scene.dmx
             dmx.mvrx_enabled = False
 
         if msg_type == "MVR_REQUEST_RET" and msg_ok is False:
             DMX_Log.log.error("MVR-xchange file request declined")
+
+            commit = DMX_MVR_X_WS_Client._instance.client.commit
+            if commit:
+                dmx.request_failed_mvr_downloaded_ws_file(commit)
 
         if "Type" in data:
             if data["Type"] == "MVR_REQUEST":
@@ -391,6 +398,15 @@ class DMX_MVR_X_WS_Client:
                     DMX_Log.log.error(
                         "MVR file for sending via MVR-xchange does not exist"
                     )
+
+                    DMX_MVR_X_WS_Client._instance.client.send(
+                        mvrx_message.create_message(
+                            "MVR_REQUEST_RET",
+                            ok=False,
+                            nok_reason="Requested file does not exist",
+                        )
+                    )
+                    return
 
                 chunk_size = 8192
                 with open(file_path, "br") as f:

@@ -2210,12 +2210,26 @@ class DMX(PropertyGroup):
                     if c_commit.commit_uuid == commit.commit_uuid:
                         c_commit.timestamp_saved = now
 
+    def request_failed_mvr_downloaded_file(self, commit):
+        clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
+        for client in clients:
+            if client.station_uuid == commit.station_uuid:
+                for c_commit in client.commits:
+                    if c_commit.commit_uuid == commit.commit_uuid:
+                        c_commit.timestamp_saved = -1
+
     def fetched_mvr_downloaded_ws_file(self, commit):
         websocket_commits = bpy.context.window_manager.dmx.mvr_xchange.websocket_commits
         now = int(datetime.now().timestamp())
         for c_commit in websocket_commits:
             if c_commit.commit_uuid == commit.commit_uuid:
                 c_commit.timestamp_saved = now
+
+    def request_failed_mvr_downloaded_ws_file(self, commit):
+        websocket_commits = bpy.context.window_manager.dmx.mvr_xchange.websocket_commits
+        for c_commit in websocket_commits:
+            if c_commit.commit_uuid == commit.commit_uuid:
+                c_commit.timestamp_saved = -1
 
     # # Groups
 

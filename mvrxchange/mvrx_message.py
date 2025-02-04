@@ -90,6 +90,8 @@ class mvrx_message:
         "FromStationUUID": [],
     }
 
+    request_message_ret = {"Type": "MVR_REQUEST_RET", "OK": "false", "Message": ""}
+
     join_message = {
         "Type": "MVR_JOIN",
         "Provider": defined_provider_name,
@@ -164,4 +166,11 @@ class mvrx_message:
         elif message == "MVR_LEAVE":
             response = mvrx_message.leave_message.copy()
             response["FromStationUUID"] = uuid
+            return response
+        elif message == "MVR_REQUEST_RET":
+            response = mvrx_message.request_message_ret.copy()
+            if ok is not None:
+                response["OK"] = ok
+            if nok_reason is not None:
+                response["Message"] = nok_reason
             return response

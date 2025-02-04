@@ -199,6 +199,16 @@ class server(Thread):
             DMX_Log.log.debug("sending file")
             if not os.path.exists(file_path):
                 DMX_Log.log.error("MVR file for sending via MVR-xchange does not exist")
+                data.outb.append(
+                    mvrx_message.craft_packet(
+                        mvrx_message.create_message(
+                            "MVR_REQUEST_RET",
+                            ok=False,
+                            nok_reason="Requested file does not exist",
+                        )
+                    )
+                )
+                return
 
             file_size = os.path.getsize(file_path)
             file_object = open(file_path, "br")

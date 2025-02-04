@@ -248,9 +248,17 @@ class DMX_UL_MVR_Commit(UIList):
         icon = "GROUP_VERTEX"
         # layout.context_pointer_set("mvr_xchange_clients", item)
         col = layout.column()
+
+        if item.timestamp_saved < 0:
+            icon = "ERROR"
+        elif item.timestamp_saved == 0:
+            icon = "CHECKBOX_DEHLT"
+        else:
+            icon = "CHECKBOX_HLT"
+
         col.label(
             text=f"{item.comment}",
-            icon="CHECKBOX_HLT" if item.timestamp_saved else "CHECKBOX_DEHLT",
+            icon=icon,
         )
         col = layout.column()
         timestamp = datetime.fromtimestamp(item.timestamp).strftime("%H:%M:%S %b %d")
@@ -290,9 +298,17 @@ class DMX_UL_MVR_WS_Commit(UIList):
         icon = "GROUP_VERTEX"
         # layout.context_pointer_set("mvr_xchange_clients", item)
         col = layout.column()
+
+        if item.timestamp_saved < 0:
+            icon = "ERROR"
+        elif item.timestamp_saved == 0:
+            icon = "CHECKBOX_DEHLT"
+        else:
+            icon = "CHECKBOX_HLT"
+
         col.label(
             text=f"{item.comment}",
-            icon="CHECKBOX_HLT" if item.timestamp_saved else "CHECKBOX_DEHLT",
+            icon=icon,
         )
         col = layout.column()
         timestamp = datetime.fromtimestamp(item.timestamp).strftime("%H:%M:%S %b %d")

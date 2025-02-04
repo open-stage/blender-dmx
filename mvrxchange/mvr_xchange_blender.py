@@ -41,7 +41,7 @@ class DMX_MVR_Xchange_Commit(PropertyGroup):
     station_uuid: StringProperty(name="Station UUID")
     file_size: IntProperty(name="File Size")
     timestamp: IntProperty(name="Time of info")
-    timestamp_saved: IntProperty(name="Time of saving")
+    timestamp_saved: IntProperty(name="Time of saving", default=0)
     subscribed: BoolProperty(name="Subscribed to")
     self_requested: BoolProperty(name="We requested latest file without UUID")
 
