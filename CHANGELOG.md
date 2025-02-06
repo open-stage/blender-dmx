@@ -1,9 +1,16 @@
 ### Changelog
 
-### NEXT
+### 1.9.3
 
-* Adjust formatting of fixture.py
 * Allow control of beams from attributes on parenting geometries
+* MVR-xchange:
+    * Handle not existing commits
+    * Show info about downloaded commits
+    * Use UUID in uppercase
+    * Ensure FileName is not empty
+    * Make StationName definition global
+* Update pygdtf with better system to get geometry parent
+* Adjust formatting of fixture.py
 
 ### 1.9.2
 
