@@ -402,6 +402,9 @@ class DMX_Fixture(PropertyGroup):
             # and are not reading real world values yet
             if "shutter" in ch["id"].lower():
                 channel.default = 0
+            # blender programmer cannot control white, set it to 0
+            elif "ColorAdd_W" in ch["id"]:
+                channel.default = 0
             else:
                 channel.default = ch["default"]
 

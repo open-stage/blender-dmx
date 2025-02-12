@@ -554,6 +554,7 @@ class DMX_PT_Programmer(Panel):
                     "ColorSub_C",
                     "ColorSub_M",
                     "ColorAdd_Y",
+                    "ColorAdd_W",
                     "ColorAdd_WW",
                     "ColorAdd_CW",
                     "ColorAdd_RY",
