@@ -7,5 +7,6 @@ requires-python = ">=3.13"
 dependencies = [
     "isort>=6.0.0",
     "pip>=25.0",
+    "pre-commit>=4.1.0",
     "ruff>=0.9.3",
 ]

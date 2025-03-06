@@ -1482,6 +1482,7 @@ class DMX(PropertyGroup):
             if fixture.is_selected():
                 rgb = [int(255 * x) for x in self.programmer_color]
                 cmy = rgb_to_cmy(rgb)
+                automatic_white = self.calculate_automatic_white()
 
                 fixture.setDMX(
                     {
@@ -1494,9 +1495,22 @@ class DMX(PropertyGroup):
                         "ColorSub_C": cmy[0],
                         "ColorSub_M": cmy[1],
                         "ColorSub_Y": cmy[2],
+                        "ColorAdd_W": automatic_white,
                     }
                 )
         self.render()
+
+    def calculate_automatic_white(self):
+        rgb = [int(255 * x) for x in self.programmer_color]
+        if rgb[0] == rgb[1] == rgb[2]:
+            return rgb[0]
+        min_rgb = min(rgb)
+        if min_rgb == 0:
+            return 0
+        average_rgb = sum(rgb) / len(rgb)
+        automatic_white = int(average_rgb * (1 - (min_rgb / 255)))
+
+        return automatic_white
 
     def onProgrammerTilt(self, context):
         for fixture in self.fixtures:
@@ -2129,7 +2143,6 @@ class DMX(PropertyGroup):
             )
 
     def createMVR_Commits(self, commits, station_uuid):
-        print("commits", commits)
         clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
         for client in clients:
             if client.station_uuid == station_uuid:

@@ -244,11 +244,11 @@ class DMX_GDTF:
         try:
             bpy.ops.wm.grease_pencil_import_svg(filepath=filepath, scale=1)
         except Exception as e:
-            print(e)
+            print("INFO", e)
         try:
             bpy.ops.wm.gpencil_import_svg(filepath=filepath, scale=1)
         except Exception as e:
-            print(e)
+            print("INFO", e)
 
         if len(bpy.context.view_layer.objects.selected):
             obj = bpy.context.view_layer.objects.selected[0]
@@ -557,12 +557,41 @@ class DMX_GDTF:
                     "ColorRGB_Blue",
                     "ColorRGB_Green",
                 ]
-                parent_geometries = []
                 for ch in dmx_channels_flattened:
-                    if ch["geometry"] == geometry.parent_name:
+                    if ch["geometry"] == obj_child["original_name"]:
                         if any(used_attr in ch["id"] for used_attr in used_attributes):
-                            parent_geometries.append(ch["geometry"].replace(" ", "_"))
-                obj_child["parent_geometries"] = parent_geometries
+                            obj_child["parent_geometries"] = []
+                            return
+
+                obj_child["parent_geometries"] = find_parent_geometries(
+                    geometry, used_attributes
+                )
+
+        def find_parent_geometries(geometry, used_attributes):
+            """this finds parent geometry of a beam type of geometry
+            which does not have any color mixing/dimmig attributes attached"""
+
+            if not hasattr(geometry, "parent_name"):
+                return []
+            parent_geometries = []
+
+            for ch in dmx_channels_flattened:
+                if ch["geometry"] == geometry.parent_name:
+                    if any(used_attr in ch["id"] for used_attr in used_attributes):
+                        parent_geometries.append(ch["geometry"].replace(" ", "_"))
+
+            if not parent_geometries and geometry.parent_name is not None:
+                new_obj_name = geometry.parent_name.replace(" ", "_")
+                if new_obj_name not in objs:
+                    return []
+                obj_child = objs[new_obj_name]
+
+                geo = pygdtf.utils.get_geometry_by_name(
+                    profile, obj_child["original_name"]
+                )
+                return find_parent_geometries(geo, used_attributes)
+
+            return parent_geometries
 
         def create_beam(geometry):
             if sanitize_obj_name(geometry) not in objs:

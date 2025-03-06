@@ -1333,21 +1333,29 @@ class DMX_Fixture(PropertyGroup):
     ):
         if geometry is not None:
             geometry = geometry.replace(" ", "_")
-        DMX_Log.log.info(("color change for geometry", geometry))
+        DMX_Log.log.info(("color change for geometry", geometry, colors))
         colors = [
             c if c is not None else 0 for c in colors
         ]  # replace None with 0, can happen if someone maps colors across geometries...
         rgb = colors_to_rgb(colors)
+        DMX_Log.log.info(("color change for geometry", geometry, colors, rgb))
         if colorwheel_color is not None:
             rgb = add_rgb(rgb, colorwheel_color[:3])
         if color_temperature is not None:
             rgb = add_rgb(rgb, color_temperature[:3])
         rgb = add_rgb(self.gel_color_rgb, rgb)
         rgb = [c / 255.0 for c in rgb]
+        DMX_Log.log.info(("color change for geometry", geometry, colors, rgb))
 
         try:
             for emitter_material in self.emitter_materials:
-                DMX_Log.log.info(("emitter:", emitter_material.name))
+                DMX_Log.log.info(
+                    (
+                        "emitter:",
+                        emitter_material.name,
+                        list(emitter_material["parent_geometries"]),
+                    )
+                )
                 if geometry is not None:
                     if geometry in emitter_material.name or any(
                         g in geometry for g in emitter_material["parent_geometries"]
@@ -1368,7 +1376,9 @@ class DMX_Fixture(PropertyGroup):
 
             for light in self.lights:
                 if geometry is not None:
-                    DMX_Log.log.info(("light:", light.object.data.name))
+                    DMX_Log.log.info(
+                        ("light:", light.object.data.name, "geometry:", geometry, rgb)
+                    )
                     if geometry in light.object.data.name or any(
                         g in geometry for g in light.object.data["parent_geometries"]
                     ):
