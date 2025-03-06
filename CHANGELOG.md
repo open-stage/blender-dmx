@@ -1,5 +1,10 @@
 ### Changelog
 
+### 1.9.4
+
+* Improve getting default values for DMX channels
+* Improve detection of parenting geometries for control of beams
+
 ### 1.9.3
 
 * Allow control of beams from attributes on parenting geometries
