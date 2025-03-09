@@ -54,8 +54,8 @@ class DMX_GDTF:
             # Parse info from file name: Manufacturer@Device@Revision.gdtf
             if "@" not in file:
                 file = os.path.join(DMX_GDTF.getProfilesPath(), file)
-                fixture_type = pygdtf.FixtureType(file)
-                name = f"{fixture_type.manufacturer}"
+                with pygdtf.FixtureType(file) as fixture_type:
+                    name = f"{fixture_type.manufacturer}"
             else:
                 name = file.split("@")[0]
             manufacturers_names.add(name)
@@ -72,8 +72,12 @@ class DMX_GDTF:
             # Parse info from file name: Company@Model.gdtf
             if "@" not in file:
                 file = os.path.join(DMX_GDTF.getProfilesPath(), file)
-                fixture_type = pygdtf.FixtureType(file)
-                info = [f"{fixture_type.manufacturer}", f"{fixture_type.long_name}", ""]
+                with pygdtf.FixtureType(file) as fixture_type:
+                    info = [
+                        f"{fixture_type.manufacturer}",
+                        f"{fixture_type.long_name}",
+                        "",
+                    ]
             else:
                 info = file.split("@")
             if info[0] == manufacturer:
@@ -91,11 +95,8 @@ class DMX_GDTF:
         gdtf_profile = DMX_GDTF.loadProfile(profile)
         modes = {}
         for mode in gdtf_profile.dmx_modes:
-            dmx_channels = pygdtf.utils.get_dmx_channels(gdtf_profile, mode.name)
-            dmx_channels_flattened = [
-                channel for break_channels in dmx_channels for channel in break_channels
-            ]
-            modes[mode.name] = len(dmx_channels_flattened)
+            dmx_channels_flattened = mode.dmx_channels.as_dict()
+            modes[mode.name] = mode.dmx_channels_count
         return modes
 
     @staticmethod
@@ -373,7 +374,7 @@ class DMX_GDTF:
         )
         objs = {}
         # Get root geometry reference from the selected DMX Mode
-        dmx_mode = pygdtf.utils.get_dmx_mode_by_name(profile, mode)
+        dmx_mode = profile.dmx_modes.get_mode_by_name(mode)
 
         # Handle if dmx mode doesn't exist (maybe this is MVR import and GDTF files were replaced)
         # use mode[0] as default
@@ -381,19 +382,14 @@ class DMX_GDTF:
             dmx_mode = profile.dmx_modes[0]
             mode = dmx_mode.name
 
-        root_geometry = pygdtf.utils.get_geometry_by_name(profile, dmx_mode.geometry)
+        root_geometry = profile.geometries.get_geometry_by_name(dmx_mode.geometry)
         has_gobos = False
 
-        dmx_channels = pygdtf.utils.get_dmx_channels(profile, mode)
-        virtual_channels = pygdtf.utils.get_virtual_channels(profile, mode)
-        # Merge all DMX breaks together
-        dmx_channels_flattened = [
-            channel for break_channels in dmx_channels for channel in break_channels
-        ]
-        # dmx_channels_flattened contain list of channel with id, geometry
+        dmx_channels_flattened = dmx_mode.dmx_channels.as_dict()
+        virtual_channels = dmx_mode.virtual_channels.as_dict()
 
         for ch in dmx_channels_flattened:
-            if "Gobo" in ch["id"]:
+            if "Gobo" in ch["attribute"]:
                 has_gobos = True
 
         def load_geometries(geometry):
@@ -401,9 +397,7 @@ class DMX_GDTF:
             DMX_Log.log.info(f"loading geometry {geometry.name}")
 
             if isinstance(geometry, pygdtf.GeometryReference):
-                reference = pygdtf.utils.get_geometry_by_name(
-                    profile, geometry.geometry
-                )
+                reference = profile.geometries.get_geometry_by_name(geometry.geometry)
                 geometry.model = reference.model
 
                 if hasattr(reference, "geometries"):
@@ -426,9 +420,7 @@ class DMX_GDTF:
                 # Deepcopy the model because GeometryReference will modify the name
                 # Perhaps this could be done conditionally
                 # Also, we could maybe make a copy of the beam instance, if Blender supports it...
-                model = copy.deepcopy(
-                    pygdtf.utils.get_model_by_name(profile, geometry.model)
-                )
+                model = copy.deepcopy(profile.models.get_model_by_name(geometry.model))
 
             if isinstance(geometry, pygdtf.GeometryReference):
                 model.name = f"{sanitize_obj_name(geometry)}"
@@ -512,7 +504,7 @@ class DMX_GDTF:
             if isinstance(geometry, pygdtf.GeometryAxis):
                 return "axis"
             if isinstance(geometry, pygdtf.GeometryReference):
-                geometry = pygdtf.utils.get_geometry_by_name(profile, geometry.geometry)
+                geometry = profile.geometries.get_geometry_by_name(geometry.geometry)
                 return get_geometry_type_as_string(geometry)
             return "normal"
 
@@ -559,7 +551,10 @@ class DMX_GDTF:
                 ]
                 for ch in dmx_channels_flattened:
                     if ch["geometry"] == obj_child["original_name"]:
-                        if any(used_attr in ch["id"] for used_attr in used_attributes):
+                        if any(
+                            used_attr in ch["attribute"]
+                            for used_attr in used_attributes
+                        ):
                             obj_child["parent_geometries"] = []
                             return
 
@@ -577,7 +572,9 @@ class DMX_GDTF:
 
             for ch in dmx_channels_flattened:
                 if ch["geometry"] == geometry.parent_name:
-                    if any(used_attr in ch["id"] for used_attr in used_attributes):
+                    if any(
+                        used_attr in ch["attribute"] for used_attr in used_attributes
+                    ):
                         parent_geometries.append(ch["geometry"].replace(" ", "_"))
 
             if not parent_geometries and geometry.parent_name is not None:
@@ -586,8 +583,8 @@ class DMX_GDTF:
                     return []
                 obj_child = objs[new_obj_name]
 
-                geo = pygdtf.utils.get_geometry_by_name(
-                    profile, obj_child["original_name"]
+                geo = profile.geometries.get_geometry_by_name(
+                    obj_child["original_name"]
                 )
                 return find_parent_geometries(geo, used_attributes)
 
@@ -728,7 +725,7 @@ class DMX_GDTF:
 
             elif isinstance(geometry, pygdtf.GeometryReference):
                 reference = copy.deepcopy(
-                    pygdtf.utils.get_geometry_by_name(profile, geometry.geometry)
+                    profile.geometries.get_geometry_by_name(geometry.geometry)
                 )
                 reference.original_name = geometry.name
                 if hasattr(geometry, "parent_name"):
@@ -786,16 +783,16 @@ class DMX_GDTF:
             axis_objects = []
             for obj in objs.values():
                 for channel in dmx_channels_flattened:
-                    if attribute == channel["id"] and channel["geometry"] == obj.get(
-                        "original_name", "None"
-                    ):
+                    if attribute == channel["attribute"] and channel[
+                        "geometry"
+                    ] == obj.get("original_name", "None"):
                         obj["mobile_type"] = "head" if attribute == "Tilt" else "yoke"
                         obj["geometry_type"] = "axis"
                         axis_objects.append(obj)
                 for channel in virtual_channels:
-                    if attribute == channel["id"] and channel["geometry"] == obj.get(
-                        "original_name", "None"
-                    ):
+                    if attribute == channel["attribute"] and channel[
+                        "geometry"
+                    ] == obj.get("original_name", "None"):
                         obj["mobile_type"] = "head" if attribute == "Tilt" else "yoke"
                         obj["geometry_type"] = "axis"
                         axis_objects.append(obj)
