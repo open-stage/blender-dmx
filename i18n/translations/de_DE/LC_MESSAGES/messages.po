@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-11-30 11:27+0100\n"
-"PO-Revision-Date: 2024-05-20 20:01+0000\n"
+"PO-Revision-Date: 2025-03-09 11:08+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
+"Language-Team: German <https://hosted.weblate.org/projects/blenderdmx/main/"
+"de/>\n"
 "Language: de_DE\n"
-"Language-Team: German "
-"<https://hosted.weblate.org/projects/blenderdmx/main/de/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.10.3-dev\n"
 "Generated-By: Babel 2.14.0\n"
 
 msgid "File doesn't exist"
@@ -46,20 +47,17 @@ msgstr "Footprint"
 msgid "DMX Collection"
 msgstr "DMX-Sammlung"
 
-#, fuzzy
 msgid "Selected PSN Server"
-msgstr "Ausgewählte Fixtures"
+msgstr "Ausgewählter PSN-Server"
 
-#, fuzzy
 msgid "The selected element on the PSN server list"
-msgstr "Das ausgewählte Element in der Universumsliste"
+msgstr "Das ausgewählte Element in der PSN-Serverliste"
 
 msgid "Class List i"
-msgstr ""
+msgstr "Klassenliste i"
 
-#, fuzzy
 msgid "The selected element on the class list"
-msgstr "Das ausgewählte Element in der Universumsliste"
+msgstr "Das ausgewählte Element in der Klassenliste"
 
 msgid "Universe"
 msgstr "Universum"
@@ -1412,4 +1410,3 @@ msgstr "Universen"
 
 #~ msgid "For Blender 4.2 and up use the Extension"
 #~ msgstr ""
-
