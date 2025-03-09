@@ -91,7 +91,7 @@ class DMX_GDTF:
         gdtf_profile = DMX_GDTF.loadProfile(profile)
         modes = {}
         for mode in gdtf_profile.dmx_modes:
-            dmx_channels_flattened = mode.dmx_channels.as_dict().flattened()
+            dmx_channels_flattened = mode.dmx_channels.as_dicts().flattened()
             modes[mode.name] = len(dmx_channels_flattened)
         return modes
 
@@ -381,8 +381,8 @@ class DMX_GDTF:
         root_geometry = profile.geometries.get_geometry_by_name(dmx_mode.geometry)
         has_gobos = False
 
-        dmx_channels = dmx_mode.dmx_channels.as_dict()
-        virtual_channels = dmx_mode.virtual_channels.as_dict()
+        dmx_channels = dmx_mode.dmx_channels.as_dicts()
+        virtual_channels = dmx_mode.virtual_channels.as_dicts()
         # Merge all DMX breaks together
         dmx_channels_flattened = dmx_channels.flattened()
 

@@ -391,7 +391,7 @@ class DMX_Fixture(PropertyGroup):
             dmx_mode = profile.dmx_modes[0]
             mode = dmx_mode.name
 
-        dmx_channels_flattened = dmx_mode.dmx_channels.as_dict().flattened()
+        dmx_channels_flattened = dmx_mode.dmx_channels.as_dicts().flattened()
 
         has_gobos = False
         for ch in dmx_channels_flattened:
@@ -413,7 +413,7 @@ class DMX_Fixture(PropertyGroup):
                 has_gobos = True
 
         # Build cache of virtual channels
-        _virtual_channels = dmx_mode.virtual_channels.as_dict()
+        _virtual_channels = dmx_mode.virtual_channels.as_dicts()
         for ch in _virtual_channels:
             virtual_channel = self.virtual_channels.add()
             virtual_channel.id = ch["id"]
