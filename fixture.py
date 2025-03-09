@@ -385,40 +385,41 @@ class DMX_Fixture(PropertyGroup):
             gdtf_profile, self.mode, self.display_beams, self.add_target
         )
 
-        # Build DMX channels cache
-        dmx_channels = pygdtf.utils.get_dmx_channels(gdtf_profile, self.mode)
-        # Merge all DMX breaks together
-        dmx_channels_flattened = [
-            channel for break_channels in dmx_channels for channel in break_channels
-        ]
+        dmx_mode = gdtf_profile.dmx_modes.get_mode_by_name(mode)
+
+        if dmx_mode is None:
+            dmx_mode = profile.dmx_modes[0]
+            mode = dmx_mode.name
+
+        dmx_channels_flattened = dmx_mode.dmx_channels.as_dict()
 
         has_gobos = False
         for ch in dmx_channels_flattened:
             channel = self.channels.add()
-            channel.id = ch["id"]
+            channel.id = ch["attribute"]
             channel.geometry = ch["geometry"]
 
             # Set shutter to 0, we don't want strobing by default
             # and are not reading real world values yet
-            if "shutter" in ch["id"].lower():
+            if "shutter" in ch["attribute"].lower():
                 channel.default = 0
             # blender programmer cannot control white, set it to 0
-            elif "ColorAdd_W" in ch["id"]:
+            elif "ColorAdd_W" in ch["attribute"]:
                 channel.default = 0
             else:
                 channel.default = ch["default"]
 
-            if "Gobo" in ch["id"]:
+            if "Gobo" in ch["attribute"]:
                 has_gobos = True
 
         # Build cache of virtual channels
-        _virtual_channels = pygdtf.utils.get_virtual_channels(gdtf_profile, self.mode)
+        _virtual_channels = dmx_mode.virtual_channels.as_dict()
         for ch in _virtual_channels:
             virtual_channel = self.virtual_channels.add()
-            virtual_channel.id = ch["id"]
+            virtual_channel.id = ch["attribute"]
             virtual_channel.geometry = ch["geometry"]
             virtual_channel.default = ch["default"]
-            if "Gobo" in ch["id"]:
+            if "Gobo" in ch["attribute"]:
                 has_gobos = True
 
         # Get all gobos
@@ -1171,7 +1172,7 @@ class DMX_Fixture(PropertyGroup):
             del dictionary[geo]
 
     def remove_unset_geometries_from_multigeometry_attributes_1(self, dictionary):
-        """Remove items with 3 values of None"""
+        """Remove items with 1 value of None"""
 
         remove_empty_items = []
         for geometry, items in dictionary.items():
@@ -1181,7 +1182,7 @@ class DMX_Fixture(PropertyGroup):
             del dictionary[geo]
 
     def remove_unset_geometries_from_multigeometry_attributes_3(self, dictionary):
-        """Remove items with 1 value of None"""
+        """Remove items with 3 value of None"""
 
         remove_empty_items = []
         for geometry, items in dictionary.items():
