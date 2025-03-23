@@ -95,7 +95,6 @@ class DMX_GDTF:
         gdtf_profile = DMX_GDTF.loadProfile(profile)
         modes = {}
         for mode in gdtf_profile.dmx_modes:
-            dmx_channels_flattened = mode.dmx_channels.as_dict()
             modes[mode.name] = mode.dmx_channels_count
         return modes
 

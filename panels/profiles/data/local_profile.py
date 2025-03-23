@@ -67,31 +67,17 @@ class DMX_Fixtures_Local_Profile(PropertyGroup):
             file_path = os.path.join(profiles_path, file)
             try:
                 with pygdtf.FixtureType(file_path) as fixture_type:
-                    modes_info = []
-
-                    for idx, mode in enumerate(fixture_type.dmx_modes):
-                        dmx_mode_info = {
-                            "mode_id": idx,
-                            "mode_name": mode.name,
-                            "mode_dmx_channel_count": mode.dmx_channels_count,
-                            "mode_virtual_channel_count": mode.virtual_channels_count,
-                            "mode_dmx_breaks_count": mode.dmx_breaks_count,
-                            "mode_dmx_channels": mode.dmx_channels.as_dict(),
-                            "mode_virtual_channels": mode.virtual_channels.as_dict(),
-                        }
-                        modes_info.append(dmx_mode_info)
-
                     profiles.append(
                         {
                             "name": f"{fixture_type.manufacturer} @ {fixture_type.long_name}",
                             "short_name": fixture_type.short_name,
                             "filename": file,
-                            "modes": modes_info,
+                            "modes": fixture_type.dmx_modes,
                         }
                     )
 
             except Exception as e:
-                print("Error parsing file", file, e)
+                print("INFO", "Error parsing file", file, e)
                 errors.append(f"{file}: {e}")
 
         if show_errors and errors:
@@ -116,8 +102,8 @@ class DMX_Fixtures_Local_Profile(PropertyGroup):
 
             for mode in profile["modes"]:
                 local_mode = local_profile.modes.add()
-                local_mode.name = mode["mode_name"]
-                local_mode.footprint = mode["mode_dmx_channel_count"]
+                local_mode.name = mode.name
+                local_mode.footprint = mode.dmx_channels_count
 
 
 def MultiLineMessage(message=[], title="Message Box", icon="INFO"):

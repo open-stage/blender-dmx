@@ -65,7 +65,7 @@ class DMX_Fixtures_Import_Gdtf_Profile(PropertyGroup):
     )
 
     @staticmethod
-    def get_profile_list():
+    def get_share_profile_list():
         """List all GDTF files in \"Profiles\" folder"""
         dmx = bpy.context.scene.dmx
         dir_path = dmx.get_addon_path()
@@ -82,7 +82,7 @@ class DMX_Fixtures_Import_Gdtf_Profile(PropertyGroup):
         print("INFO", "loading start")
         imports = bpy.context.window_manager.dmx.imports
         imports.share_profiles.clear()
-        profiles = DMX_Fixtures_Import_Gdtf_Profile.get_profile_list()
+        profiles = DMX_Fixtures_Import_Gdtf_Profile.get_share_profile_list()
 
         for profile in profiles:
             share_profile = imports.share_profiles.add()
