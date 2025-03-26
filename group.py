@@ -16,10 +16,10 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-import bpy
-import uuid
 import json
+import uuid
 
+import bpy
 from bpy.props import StringProperty
 from bpy.types import PropertyGroup
 
@@ -35,7 +35,9 @@ class DMX_Group(PropertyGroup):
     # as a json representation of the fixture names array
     dump: StringProperty(name="DMX Groups")
 
-    uuid: StringProperty(name="UUID", description="Unique ID, used for MVR", default=str(uuid.uuid4()))
+    uuid: StringProperty(
+        name="UUID", description="Unique ID, used for MVR", default=str(uuid.uuid4())
+    )
     # The current groups are stored and acessed here
     # I'm not sure this data is safe for use with Undo
     # Commenting until a veredict is reached
@@ -68,12 +70,17 @@ class DMX_Group(PropertyGroup):
         # for fixture in self.runtime[self.name]:
         dmx = bpy.context.scene.dmx
 
-        if bpy.context.window_manager.dmx.aditive_selection or bpy.context.window_manager.dmx.subtractive_selection:
+        if (
+            bpy.context.window_manager.dmx.aditive_selection
+            or bpy.context.window_manager.dmx.subtractive_selection
+        ):
             pass
         else:
             bpy.ops.object.select_all(action="DESELECT")
 
-        for fixture in [dmx.findFixtureByUUID(f_uuid) for f_uuid in json.loads(self.dump)]:
+        for fixture in [
+            dmx.findFixtureByUUID(f_uuid) for f_uuid in json.loads(self.dump)
+        ]:
             if fixture is not None:
                 if bpy.context.window_manager.dmx.subtractive_selection:
                     fixture.unselect()

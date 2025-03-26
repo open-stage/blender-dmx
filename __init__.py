@@ -15,7 +15,7 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
-#bl_info = {
+# bl_info = {
 #    "name": "DMX",
 #    "description": "DMX visualization and programming, with GDTF/MVR and Network support",
 #    "author": "open-stage",
@@ -25,32 +25,28 @@
 #    "doc_url": "https://blenderdmx.eu/docs/faq/",
 #    "tracker_url": "https://github.com/open-stage/blender-dmx/issues",
 #    "category": "Lighting",
-#}
+# }
 
 import sys
-import bpy
 from threading import Timer
 
-from . import fixture as fixture
-from .data import DMX_Data
-from .artnet import DMX_ArtNet
-from .acn import DMX_sACN
-
-from .panels import profiles as Profiles
-
-from .osc import DMX_OSC
-from .mdns import DMX_Zeroconf
-
-from .mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server
+import bpy
 from bpy.props import PointerProperty
 
+from . import fixture as fixture
+from .acn import DMX_sACN
+from .artnet import DMX_ArtNet
+from .data import DMX_Data
 from .i18n import DMX_Lang
+from .mdns import DMX_Zeroconf
+from .mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server, DMX_MVR_X_WS_Client
+from .osc import DMX_OSC
+from .panels import profiles as Profiles
 
 _ = DMX_Lang._
+from . import in_gdtf, in_out_mvr
 from .dmx import DMX
 from .dmx_temp_data import DMX_TempData
-from . import in_out_mvr
-from . import in_gdtf
 
 
 @bpy.app.handlers.persistent
@@ -75,13 +71,14 @@ def onLoadFile(scene):
         },
     )
 
-    # Stop ArtNet
+    # Stop Networking
     DMX_ArtNet.disable()
     DMX_sACN.disable()
     DMX_OSC.disable()
     DMX_MVR_X_Client.disable()
     DMX_MVR_X_Server.disable()
     DMX_Zeroconf.close()
+    DMX_MVR_X_WS_Client.disable()
 
     # register a "bdmx" namespace to get current value of a DMX channel,
     # the syntax is #bdmx(universe, channel(s)), where the channel can be
@@ -98,6 +95,7 @@ def onUndo(scene):
 
 # Callbacks #
 
+
 def onActiveChanged(*args):
     dmx = bpy.context.scene.dmx
     if dmx.volume_preview == "SELECTED":
@@ -106,7 +104,10 @@ def onActiveChanged(*args):
     if dmx.display_2D:
         selected = False
         for fixture in dmx.fixtures:
-            if bpy.context.active_object is not None and bpy.context.active_object.name in fixture.collection.objects:
+            if (
+                bpy.context.active_object is not None
+                and bpy.context.active_object.name in fixture.collection.objects
+            ):
                 selected = True
                 fixture.select()
             else:
@@ -154,7 +155,6 @@ def register():
     bpy.utils.register_class(DMX)
     bpy.types.Scene.dmx = PointerProperty(type=DMX)
 
-
     for cls in Profiles.classes:
         bpy.utils.register_class(cls)
 
@@ -176,6 +176,7 @@ def unregister():
     DMX_MVR_X_Client.disable()
     DMX_MVR_X_Server.disable()
     DMX_Zeroconf.close()
+    DMX_MVR_X_WS_Client.disable()
 
     try:
         in_out_mvr.unregister()
@@ -183,13 +184,11 @@ def unregister():
     except Exception as e:
         print("INFO", e)
 
-
     for cls in Profiles.classes:
         try:
             bpy.utils.unregister_class(cls)
         except Exception as e:
             print("INFO", e)
-
 
     # Unregister Base Classes
     for cls in DMX.classes_base:
@@ -197,7 +196,6 @@ def unregister():
             bpy.utils.unregister_class(cls)
         except Exception as e:
             print("INFO", e)
-
 
     # Unregister addon main class
     bpy.utils.unregister_class(DMX_TempData)
@@ -209,6 +207,7 @@ def unregister():
     bpy.app.handlers.undo_post.clear()
 
     clean_module_imports()
+
 
 if __name__ == "__main__":
     register()

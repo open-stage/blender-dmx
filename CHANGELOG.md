@@ -1,5 +1,42 @@
 ### Changelog
 
+### 1.9.4
+
+* Improve getting default values for DMX channels
+* Improve detection of parenting geometries for control of beams
+
+### 1.9.3
+
+* Allow control of beams from attributes on parenting geometries
+* MVR-xchange:
+    * Handle not existing commits
+    * Show info about downloaded commits
+    * Use UUID in uppercase
+    * Ensure FileName is not empty
+    * Make StationName definition global
+* Update pygdtf with better system to get geometry parent
+* Adjust formatting of fixture.py
+
+### 1.9.2
+
+* MVR-xchange
+    * overall improvements to the TCP communication
+    * use per blend file application/station UUID
+    * add configuration for mDNS group compatibility
+    * handle UUIDs with changed character casing
+* reformat all code and add uv based python helpers
+* update pygdtf and pymvr
+
+### 1.9.1
+
+* MVR-xchange: rework websocket implementation to pure websocket
+
+### 1.9.0
+
+* MVR-xchange - initial websockets implementation
+* Fix SVG import on some systems [Lily Hopkins]
+* Translated using Weblate (Chinese (Simplified Han script))
+
 ### 1.8.3
 
 * MVR-xchange networking working also on Windows:

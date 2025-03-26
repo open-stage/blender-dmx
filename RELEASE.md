@@ -12,4 +12,8 @@ git clean -xdf .
 
 blender --command extension build
 
+# Updating libraries, for example pygdtf
 
+This will download the latest wheel locally:
+
+python -m pip wheel pygdtf

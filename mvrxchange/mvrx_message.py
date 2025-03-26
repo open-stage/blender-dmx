@@ -16,13 +16,16 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import json
-import struct
 import socket
+import struct
 
 # mvr message structures
 
+defined_provider_name = "BlenderDMX"
+defined_station_name = "BlenderDMX station"
 
-class mvr_message:
+
+class mvrx_message:
     @staticmethod
     def parse_header(data):
         header = {"Error": True}
@@ -69,31 +72,33 @@ class mvr_message:
         "Commits": [],
         "Message": "",
         "OK": "true",
-        "Provider": "BlenderDMX",
-        "StationName": "BlenderDMX Station",
+        "Provider": defined_provider_name,
+        "StationName": defined_station_name,
         "StationUUID": "",
         "Type": "MVR_JOIN_RET",
         "verMajor": 1,
         "verMinor": 6,
     }
 
-    leave_message_ret = {"Type": "MVR_LEAVE_RET", "OK": "true"}
+    leave_message_ret = {"Type": "MVR_LEAVE_RET", "OK": "true", "Message": ""}
 
-    commit_message_ret = {"Type": "MVR_COMMIT_RET", "OK": "true"}
+    commit_message_ret = {"Type": "MVR_COMMIT_RET", "OK": "true", "Message": ""}
 
     request_message = {
         "Type": "MVR_REQUEST",
         "FileUUID": "",
-        "FromStationUUID": "",
+        "FromStationUUID": [],
     }
+
+    request_message_ret = {"Type": "MVR_REQUEST_RET", "OK": "false", "Message": ""}
 
     join_message = {
         "Type": "MVR_JOIN",
-        "Provider": "BlenderDMX",
+        "Provider": defined_provider_name,
         "verMajor": 1,
         "verMinor": 6,
         "StationUUID": "",
-        "StationName": "BlenderDMX Station",
+        "StationName": defined_provider_name,
         "Commits": [],
     }
 
@@ -102,17 +107,11 @@ class mvr_message:
         "FromStationUUID": "",
     }
 
-    request_message = {
-        "Type": "MVR_REQUEST",
-        "FileUUID": "",
-        "FromStationUUID": "",
-    }
-
     commit_message = {
         "Type": "MVR_COMMIT",
         "verMajor": 1,
         "verMinor": 6,
-        "FileSize": "",
+        "FileSize": 0,
         "FileUUID": "",
         "StationUUID": "",
         "ForStationsUUID": [],
@@ -121,10 +120,14 @@ class mvr_message:
     }
 
     @staticmethod
-    def create_message(message, commits=None, uuid=None, file_uuid=None, ok=None, nok_reason=None):
+    def create_message(
+        message, commits=None, uuid=None, file_uuid=None, ok=None, nok_reason=None
+    ):
         if message == "MVR_JOIN_RET":
-            response = mvr_message.join_message_ret.copy()
-            response["StationName"] = f"BlenderDMX station {socket.gethostname()}".replace(" ", "_")
+            response = mvrx_message.join_message_ret.copy()
+            response["StationName"] = (
+                f"{defined_station_name} {socket.gethostname()}".replace(" ", "_")
+            )
             response["StationUUID"] = uuid
             if commits is not None:
                 response["Commits"] = commits
@@ -134,37 +137,40 @@ class mvr_message:
                 response["Message"] = nok_reason
             return response
         elif message == "MVR_LEAVE_RET":
-            return mvr_message.leave_message_ret.copy()
+            return mvrx_message.leave_message_ret.copy()
         elif message == "MVR_COMMIT":
             if commits is not None:
                 commit = commits[-1]
 
-            response = mvr_message.commit_message.copy()
+            response = mvrx_message.commit_message.copy()
             response["FileSize"] = commit.file_size
             response["FileUUID"] = commit.commit_uuid
             response["Comment"] = commit.comment
-            response["FileName"] = commit.file_name
+            response["FileName"] = f"{commit.file_name}.mvr"
             response["StationUUID"] = uuid
             return response
         elif message == "MVR_COMMIT_RET":
-            return mvr_message.commit_message_ret.copy()
+            return mvrx_message.commit_message_ret.copy()
         elif message == "MVR_REQUEST":
-            response = mvr_message.request_message.copy()
+            response = mvrx_message.request_message.copy()
             response["FileUUID"] = file_uuid
-            response["FromStationUUID"] = uuid
+            # response["FromStationUUID"].append(uuid)
             return response
         elif message == "MVR_JOIN":
-            response = mvr_message.join_message.copy()
-            response["StationName"] = f"BlenderDMX station {socket.gethostname()}"
+            response = mvrx_message.join_message.copy()
+            response["StationName"] = f"{defined_station_name} {socket.gethostname()}"
             response["StationUUID"] = uuid
             if commits is not None:
                 response["Commits"] = commits
             return response
         elif message == "MVR_LEAVE":
-            response = mvr_message.leave_message.copy()
+            response = mvrx_message.leave_message.copy()
             response["FromStationUUID"] = uuid
             return response
-        # elif message == "MVR_REQUEST":
-        #    response = mvr_message.request_message.copy()
-        #    response["StationUUID"] = uuid
-        #    return response
+        elif message == "MVR_REQUEST_RET":
+            response = mvrx_message.request_message_ret.copy()
+            if ok is not None:
+                response["OK"] = ok
+            if nok_reason is not None:
+                response["Message"] = nok_reason
+            return response

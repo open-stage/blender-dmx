@@ -15,10 +15,12 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
+from functools import partial
+
 import bpy
 import pypsn
+
 from .logging import DMX_Log
-from functools import partial
 
 
 class DMX_PSN:
@@ -48,7 +50,9 @@ class DMX_PSN:
             return
         DMX_Log.log.info("Enabling PSN")
         DMX_PSN._instances[uuid] = DMX_PSN(None, tracker.ip_address, tracker.ip_port)
-        DMX_PSN._instances[uuid].receiver.callback = partial(DMX_PSN.callback, tracker=tracker)
+        DMX_PSN._instances[uuid].receiver.callback = partial(
+            DMX_PSN.callback, tracker=tracker
+        )
         DMX_PSN._instances[uuid].receiver.start()
         DMX_PSN._data[uuid] = [
             [],

@@ -15,12 +15,12 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
-import bpy
-import os
 import json
+import os
 
+import bpy
+from bpy.props import CollectionProperty, IntProperty, StringProperty
 from bpy.types import PropertyGroup
-from bpy.props import StringProperty, CollectionProperty, IntProperty
 
 from ....i18n import DMX_Lang
 
@@ -37,9 +37,15 @@ class DMX_Fixtures_Import_Gdtf_Profile(PropertyGroup):
         # for UI updates only
         return
 
-    name: StringProperty(name=_("Fixture name"), description=_("Manufacturer and fixture name"), update=onUpdate)
+    name: StringProperty(
+        name=_("Fixture name"),
+        description=_("Manufacturer and fixture name"),
+        update=onUpdate,
+    )
     fixture: StringProperty(name=_("Fixture name"), description=_("Fixture name"))
-    manufacturer: StringProperty(name=_("Manufacturer"), description=_("Manufacturer name"))
+    manufacturer: StringProperty(
+        name=_("Manufacturer"), description=_("Manufacturer name")
+    )
 
     revision: StringProperty(name=_("Revision"), description=_("Revision text"))
 
@@ -50,12 +56,16 @@ class DMX_Fixtures_Import_Gdtf_Profile(PropertyGroup):
         name=_("Rating"),
     )
 
-    rid: IntProperty(name=_("Revision ID"), description=_("File identifier in the GDTF Share"))
+    rid: IntProperty(
+        name=_("Revision ID"), description=_("File identifier in the GDTF Share")
+    )
 
-    modes: CollectionProperty(name=_("DMX Modes"), type=DMX_Fixtures_Import_Gdtf_Profile_Dmx_Mode)
+    modes: CollectionProperty(
+        name=_("DMX Modes"), type=DMX_Fixtures_Import_Gdtf_Profile_Dmx_Mode
+    )
 
     @staticmethod
-    def get_profile_list():
+    def get_share_profile_list():
         """List all GDTF files in \"Profiles\" folder"""
         dmx = bpy.context.scene.dmx
         dir_path = dmx.get_addon_path()
@@ -72,11 +82,13 @@ class DMX_Fixtures_Import_Gdtf_Profile(PropertyGroup):
         print("INFO", "loading start")
         imports = bpy.context.window_manager.dmx.imports
         imports.share_profiles.clear()
-        profiles = DMX_Fixtures_Import_Gdtf_Profile.get_profile_list()
+        profiles = DMX_Fixtures_Import_Gdtf_Profile.get_share_profile_list()
 
         for profile in profiles:
             share_profile = imports.share_profiles.add()
-            name = f"{profile['manufacturer']}@{profile['fixture']}@{profile['revision']}"
+            name = (
+                f"{profile['manufacturer']}@{profile['fixture']}@{profile['revision']}"
+            )
             share_profile.name = name
             share_profile.fixture = profile["fixture"]
             share_profile.manufacturer = profile["manufacturer"]

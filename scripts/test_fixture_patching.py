@@ -1,10 +1,11 @@
 # run this way:
 # blender --background --python ./test_fixture_patching.py
 
-import bpy
 import os
-from mathutils import Vector
 from types import SimpleNamespace as SN
+
+import bpy
+from mathutils import Vector
 
 addon_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 os.chdir(addon_path)
@@ -16,7 +17,10 @@ from dmx.scripts.get_testing_gdtfs import fixture_files
 
 # fixture_files = [SN(name="")]
 
-test_only = ["Cameo@Evos_W7@Firmware-1.4_GDTF-1.2.gdtf", "Ayrton@Argo_6_FX@V1.1_First_Release.gdtf"]
+test_only = [
+    "Cameo@Evos_W7@Firmware-1.4_GDTF-1.2.gdtf",
+    "Ayrton@Argo_6_FX@V1.1_First_Release.gdtf",
+]
 test_only = []
 
 

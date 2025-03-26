@@ -1,19 +1,29 @@
 import os
 from types import SimpleNamespace as SN
+
 import requests
 
 fixture_files = [
-    SN(name="Ayrton@Argo_6_FX@V1.1_First_Release.gdtf", url="https://github.com/user-attachments/files/16462386/Ayrton%40Argo_6_FX%40V1.1_First_Release.zip",
-       reason="glb files are scaled differently"),
-    SN(name="Cameo@Evos_W7@Firmware-1.4_GDTF-1.2.gdtf", url="https://github.com/user-attachments/files/16462384/Cameo%40Evos_W7%40Firmware-1.4_GDTF-1.2.zip",
-       reason="3DS files"),
+    SN(
+        name="Ayrton@Argo_6_FX@V1.1_First_Release.gdtf",
+        url="https://github.com/user-attachments/files/16462386/Ayrton%40Argo_6_FX%40V1.1_First_Release.zip",
+        reason="glb files are scaled differently",
+    ),
+    SN(
+        name="Cameo@Evos_W7@Firmware-1.4_GDTF-1.2.gdtf",
+        url="https://github.com/user-attachments/files/16462384/Cameo%40Evos_W7%40Firmware-1.4_GDTF-1.2.zip",
+        reason="3DS files",
+    ),
     SN(
         name="Chauvet_Professional@Maverick_Storm_2_Profile@Rev_1.0.4.gdtf",
         url="https://github.com/open-stage/blender-dmx/files/13418605/Chauvet_Professional%40Maverick_Storm_2_Profile%40Rev_1.0.4.zip",
         reason="3D visual issue, Multipart model",
     ),
-    SN(name="Anolis@Calumma_S_SC@not_applied_models.gdtf", url="https://github.com/open-stage/blender-dmx/files/13418886/Anolis%40Calumma_S_SC%40not_applied_models.zip",
-       reason="3D visual issue, Not applied transforms"),
+    SN(
+        name="Anolis@Calumma_S_SC@not_applied_models.gdtf",
+        url="https://github.com/open-stage/blender-dmx/files/13418886/Anolis%40Calumma_S_SC%40not_applied_models.zip",
+        reason="3D visual issue, Not applied transforms",
+    ),
     SN(
         name="BlenderDMX@LED_PAR_64_RGBW@v0.3.zip",
         url="https://github.com/user-attachments/files/16461350/BlenderDMX%40LED_PAR_64_RGBW%40v0.3.zip",

@@ -17,6 +17,7 @@
 
 import gettext
 import os
+
 import bpy
 
 
@@ -31,10 +32,17 @@ class DMX_Lang:
         localedir = os.path.join(this_dir, "translations")
         try:
             print("INFO", "Setting up language:", locale)
-            lang = gettext.translation("messages", localedir=localedir, languages=[locale])
+            lang = gettext.translation(
+                "messages", localedir=localedir, languages=[locale]
+            )
         except:
-            lang = gettext.translation("messages", localedir=localedir, languages=["en_US"])  # fallback
-            print("INFO", f"Setting language did not work, locale {locale} probably not created yet")
+            lang = gettext.translation(
+                "messages", localedir=localedir, languages=["en_US"]
+            )  # fallback
+            print(
+                "INFO",
+                f"Setting language did not work, locale {locale} probably not created yet",
+            )
         finally:
             DMX_Lang._ = lang.gettext
 

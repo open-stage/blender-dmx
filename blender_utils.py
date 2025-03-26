@@ -16,15 +16,16 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-import threading
-import requests
-import shutil
-import os
-from types import SimpleNamespace
 import glob
-import sys
 import importlib
+import os
+import shutil
+import sys
+import threading
+from types import SimpleNamespace
+
 import bpy
+import requests
 
 from .i18n import DMX_Lang
 
@@ -58,13 +59,6 @@ def version_compare(current_version, new_version):
     return 0
 
 
-def get_latest_release(callback, context):
-    url = "https://api.github.com/repos/open-stage/blender-dmx/releases/latest"
-    thread = threading.Thread(target=get_version_json, args=(url, callback, context))
-    thread.start()
-    thread.join()
-
-
 def export_custom_data(directory_name, file_name):
     dmx = bpy.context.scene.dmx
     folder_path = dmx.get_addon_path()
@@ -87,7 +81,9 @@ def export_custom_data(directory_name, file_name):
         shutil.copytree(models_path, os.path.join(export_dir, "models"))
         if os.path.exists(mvrs_path):
             shutil.copytree(mvrs_path, os.path.join(export_dir, "mvrs"))
-        shutil.copytree(profiles_path, os.path.join(export_dir, "profiles"), ignore=ignore)
+        shutil.copytree(
+            profiles_path, os.path.join(export_dir, "profiles"), ignore=ignore
+        )
         shutil.make_archive(export_filename, "zip", export_dir)
         shutil.rmtree(export_dir)
     except Exception as e:
@@ -118,7 +114,11 @@ def clear_custom_data():
     mvrs_path = os.path.join(folder_path, "assets", "mvrs", "*")
     profiles_path = os.path.join(folder_path, "assets", "profiles", "*")
 
-    rm_dirs = [(models_path, "models"), (mvrs_path, "mvrs"), (profiles_path, "profiles")]
+    rm_dirs = [
+        (models_path, "models"),
+        (mvrs_path, "mvrs"),
+        (profiles_path, "profiles"),
+    ]
 
     try:
         for rm_dir, name in rm_dirs:

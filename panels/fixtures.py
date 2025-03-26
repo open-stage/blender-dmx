@@ -15,26 +15,18 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
-import bpy
 import os
 import re
 
-from ..logging import DMX_Log
+import bpy
 import pygdtf
+from bpy.props import BoolProperty, FloatVectorProperty, IntProperty, StringProperty
+from bpy.types import Menu, Operator, Panel, UIList
 from bpy_extras.io_utils import ImportHelper
 
-from bpy.props import IntProperty, BoolProperty, FloatVectorProperty, StringProperty
-
-from bpy.types import (
-    Panel,
-    Menu,
-    Operator,
-    UIList,
-)
-
 from ..gdtf import DMX_GDTF
-
 from ..i18n import DMX_Lang
+from ..logging import DMX_Log
 
 _ = DMX_Lang._
 
@@ -86,7 +78,10 @@ class DMX_MT_Fixture_Manufacturers(Menu):
             row = layout.row()
             row.context_pointer_set("add_edit_panel", context.add_edit_panel)
             row.context_pointer_set("manufacturer", manufacturer)
-            row.menu(DMX_MT_Fixture_Profiles.bl_idname, text=manufacturer.name.replace("_", " "))
+            row.menu(
+                DMX_MT_Fixture_Profiles.bl_idname,
+                text=manufacturer.name.replace("_", " "),
+            )
 
 
 class DMX_MT_Fixture_Profiles(Menu):
@@ -100,7 +95,10 @@ class DMX_MT_Fixture_Profiles(Menu):
             row = layout.row()
             row.context_pointer_set("add_edit_panel", context.add_edit_panel)
             revision = f" ({profile[2]})" if profile[2] else ""
-            op = row.operator(DMX_OT_Fixture_Profiles.bl_idname, text=f"{profile[1]}{revision}".replace("_", " "))
+            op = row.operator(
+                DMX_OT_Fixture_Profiles.bl_idname,
+                text=f"{profile[1]}{revision}".replace("_", " "),
+            )
             op.profile = profile[0]
             op.short_name = profile[1]
 
@@ -117,7 +115,9 @@ class DMX_MT_Fixture_Mode(Menu):
         for mode, channel_count in DMX_GDTF.getModes(profile).items():
             row = layout.row()
             row.context_pointer_set("add_edit_panel", context.add_edit_panel)
-            row.operator(DMX_OT_Fixture_Mode.bl_idname, text=f"{mode}, {channel_count} channels").mode = mode
+            row.operator(
+                DMX_OT_Fixture_Mode.bl_idname, text=f"{mode}, {channel_count} channels"
+            ).mode = mode
 
 
 # Operators #
@@ -127,7 +127,9 @@ class DMX_OT_Fixture_Profiles(Operator):
     bl_label = _("DMX > Fixture > Add > Manufacturers > Profiles")
     bl_idname = "dmx.fixture_pick_profile"
 
-    profile: StringProperty(name=_("Profile"), description=_("Fixture GDTF Profile"), default="")
+    profile: StringProperty(
+        name=_("Profile"), description=_("Fixture GDTF Profile"), default=""
+    )
     short_name: StringProperty()
 
     def execute(self, context):
@@ -150,20 +152,38 @@ class DMX_OT_Fixture_Mode(Operator):
 class DMX_Fixture_AddEdit:
     def onProfile(self, context):
         if hasattr(context, "add_edit_panel"):
-            mode, channel_count = list(DMX_GDTF.getModes(context.add_edit_panel.profile).items())[0]
+            mode, channel_count = list(
+                DMX_GDTF.getModes(context.add_edit_panel.profile).items()
+            )[0]
             context.add_edit_panel.mode = f"{mode}"
 
-    profile: StringProperty(name=_("Profile"), description=_("Fixture GDTF Profile"), default="", update=onProfile)
+    profile: StringProperty(
+        name=_("Profile"),
+        description=_("Fixture GDTF Profile"),
+        default="",
+        update=onProfile,
+    )
 
     name: StringProperty(name=_("Name"), default="Fixture")
 
-    universe: IntProperty(name=_("Universe"), description=_("DMX Universe"), default=0, min=0, max=511)
+    universe: IntProperty(
+        name=_("Universe"), description=_("DMX Universe"), default=0, min=0, max=511
+    )
 
-    address: IntProperty(name=_("Address"), description=_("DMX Address"), default=1, min=1, max=512)
+    address: IntProperty(
+        name=_("Address"), description=_("DMX Address"), default=1, min=1, max=512
+    )
 
     mode: StringProperty(name=_("Mode"), description=_("DMX Mode"), default="")
 
-    gel_color: FloatVectorProperty(name=_("Gel Color"), subtype="COLOR", size=4, min=0.0, max=1.0, default=(1.0, 1.0, 1.0, 1.0))
+    gel_color: FloatVectorProperty(
+        name=_("Gel Color"),
+        subtype="COLOR",
+        size=4,
+        min=0.0,
+        max=1.0,
+        default=(1.0, 1.0, 1.0, 1.0),
+    )
 
     display_beams: BoolProperty(
         name=_("Display beams"),
@@ -179,15 +199,39 @@ class DMX_Fixture_AddEdit:
         default=True,
     )
 
-    advanced_edit: BoolProperty(name=_("Advanced edit"), description="Re-build fixture structure during Advanced edit", default=False)
+    advanced_edit: BoolProperty(
+        name=_("Advanced edit"),
+        description="Re-build fixture structure during Advanced edit",
+        default=False,
+    )
 
-    increment_address: BoolProperty(name=_("Increment DMX address"), description=_("Increment DMX address"), default=True)
+    increment_address: BoolProperty(
+        name=_("Increment DMX address"),
+        description=_("Increment DMX address"),
+        default=True,
+    )
 
-    increment_fixture_id: BoolProperty(name=_("Increment Fixture ID"), description=_("Increment Fixture ID if numeric"), default=True)
+    increment_fixture_id: BoolProperty(
+        name=_("Increment Fixture ID"),
+        description=_("Increment Fixture ID if numeric"),
+        default=True,
+    )
 
-    fixture_id: StringProperty(name=_("Fixture ID"), description=_("The Fixture ID is an identifier of this fixture that can be used to activate / select them for programming."), default="")
+    fixture_id: StringProperty(
+        name=_("Fixture ID"),
+        description=_(
+            "The Fixture ID is an identifier of this fixture that can be used to activate / select them for programming."
+        ),
+        default="",
+    )
 
-    units: IntProperty(name=_("Units"), description=_("How many units of this light to add"), default=1, min=0, max=1024)
+    units: IntProperty(
+        name=_("Units"),
+        description=_("How many units of this light to add"),
+        default=1,
+        min=0,
+        max=1024,
+    )
 
     def draw(self, context):
         layout = self.layout
@@ -202,7 +246,11 @@ class DMX_Fixture_AddEdit:
             if "@" not in self.profile:
                 file = os.path.join(DMX_GDTF.getProfilesPath(), self.profile)
                 fixture_type = pygdtf.FixtureType(file)
-                text_profile = [f"{fixture_type.manufacturer}", f"{fixture_type.long_name}", ""]
+                text_profile = [
+                    f"{fixture_type.manufacturer}",
+                    f"{fixture_type.long_name}",
+                    "",
+                ]
             else:
                 text_profile = self.profile[:-5].replace("_", " ").split("@")
 
@@ -222,7 +270,9 @@ class DMX_Fixture_AddEdit:
         col.prop(self, "address")
         col.prop(self, "fixture_id")
         if self.units == 0:  # Edit fixtures:
-            col.prop(self, "advanced_edit")  #     Be default, only change address, don't rebuild models (slow)
+            col.prop(
+                self, "advanced_edit"
+            )  #     Be default, only change address, don't rebuild models (slow)
             if not self.advanced_edit:
                 col.operator("dmx.import_ies_file")
                 col.operator("dmx.remove_ies_files")
@@ -231,9 +281,13 @@ class DMX_Fixture_AddEdit:
         col.prop(self, "increment_address")
         col.prop(self, "increment_fixture_id")
         if self.advanced_edit:  # When adding and editing:
-            col.prop(self, "display_beams")  #     Allow not to create and draw Beams (faster, only for emitter views)
+            col.prop(
+                self, "display_beams"
+            )  #     Allow not to create and draw Beams (faster, only for emitter views)
             col.prop(self, "add_target")  #     Should a target be added to the fixture
-            col.prop(self, "gel_color")  #     This works when both adding AND when editing
+            col.prop(
+                self, "gel_color"
+            )  #     This works when both adding AND when editing
 
 
 class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
@@ -246,7 +300,9 @@ class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
         scene = context.scene
         dmx = scene.dmx
         if self.name in bpy.data.collections:
-            self.report({"ERROR"}, _("Fixture named {} already exists").format(self.name))
+            self.report(
+                {"ERROR"}, _("Fixture named {} already exists").format(self.name)
+            )
             return {"CANCELLED"}
         if not len(self.profile):
             self.report({"ERROR"}, _("No GDTF Profile selected."))
@@ -260,7 +316,17 @@ class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
         for i in range(self.units):
             DMX_Log.log.debug(f"Adding fixture {self.name}")
             new_name = generate_fixture_name(self.name, i + 1)
-            dmx.addFixture(new_name, self.profile, universe, address, self.mode, self.gel_color, self.display_beams, self.add_target, fixture_id=fixture_id)
+            dmx.addFixture(
+                new_name,
+                self.profile,
+                universe,
+                address,
+                self.mode,
+                self.gel_color,
+                self.display_beams,
+                self.add_target,
+                fixture_id=fixture_id,
+            )
             fixture = dmx.fixtures[-1]
             DMX_Log.log.debug(f"Added fixture {fixture}")
             if not fixture:
@@ -304,10 +370,23 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
         if len(selected) == 1:
             fixture = selected[0]
             if self.name != fixture.name and self.name in bpy.data.collections:
-                self.report({"ERROR"}, _("Fixture named {} already exists").format(self.name))
+                self.report(
+                    {"ERROR"}, _("Fixture named {} already exists").format(self.name)
+                )
                 return {"CANCELLED"}
             if self.advanced_edit:
-                fixture.build(self.name, self.profile, self.mode, self.universe, self.address, self.gel_color, self.display_beams, self.add_target, uuid=fixture.uuid, fixture_id=fixture.fixture_id)
+                fixture.build(
+                    self.name,
+                    self.profile,
+                    self.mode,
+                    self.universe,
+                    self.address,
+                    self.gel_color,
+                    self.display_beams,
+                    self.add_target,
+                    uuid=fixture.uuid,
+                    fixture_id=fixture.fixture_id,
+                )
                 context.window_manager.dmx.pause_render = False
             else:
                 fixture.address = self.address
@@ -323,15 +402,33 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             for i, fixture in enumerate(selected):
                 name = generate_fixture_name(self.name, i + 1)
                 if name != fixture.name and name in bpy.data.collections:
-                    self.report({"ERROR"}, _("Fixture named {} already exists".format(self.name)))
+                    self.report(
+                        {"ERROR"},
+                        _("Fixture named {} already exists".format(self.name)),
+                    )
                     return {"CANCELLED"}
             for i, fixture in enumerate(selected):
-                name = generate_fixture_name(self.name, i + 1) if (self.name != "*") else fixture.name
+                name = (
+                    generate_fixture_name(self.name, i + 1)
+                    if (self.name != "*")
+                    else fixture.name
+                )
                 # fixture_id = f"{self.fixture_id}{i+1}" if (self.name != '*') else fixture.name
                 profile = self.profile if (self.profile != "") else fixture.profile
                 mode = self.mode if (self.mode != "") else fixture.mode
                 if self.advanced_edit:
-                    fixture.build(name, profile, mode, self.universe, address, self.gel_color, self.display_beams, self.add_target, uuid=fixture.uuid, fixture_id=fixture_id)
+                    fixture.build(
+                        name,
+                        profile,
+                        mode,
+                        self.universe,
+                        address,
+                        self.gel_color,
+                        self.display_beams,
+                        self.add_target,
+                        uuid=fixture.uuid,
+                        fixture_id=fixture_id,
+                    )
                 if address + len(fixture.channels) > 512:
                     universe += 1
                     address = 1
@@ -367,7 +464,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             self.universe = fixture.universe
             self.address = fixture.address
             self.mode = fixture.mode
-            self.gel_color = [c/255 for c in fixture.gel_color_rgb]+[1]
+            self.gel_color = [c / 255 for c in fixture.gel_color_rgb] + [1]
             self.advanced_edit = False
             self.display_beams = fixture.display_beams
             self.add_target = fixture.add_target
@@ -556,10 +653,16 @@ class DMX_OT_Fixture_Item(Operator):
             for sorted_fixture in sorted_fixtures:
                 if start_selecting:
                     sorted_fixture.select()
-                    if sorted_fixture == context.fixture or sorted_fixture == from_fixture_fixture:
+                    if (
+                        sorted_fixture == context.fixture
+                        or sorted_fixture == from_fixture_fixture
+                    ):
                         break
 
-                if sorted_fixture == from_fixture_fixture or sorted_fixture == context.fixture:
+                if (
+                    sorted_fixture == from_fixture_fixture
+                    or sorted_fixture == context.fixture
+                ):
                     start_selecting = True
         else:
             context.fixture.toggleSelect()
@@ -697,7 +800,9 @@ class DMX_UL_Fixtures(UIList):
         flt_flags = []
         flt_neworder = []
 
-        flt_flags = helper_funcs.filter_items_by_name(self.filter_name, self.bitflag_filter_item, vgroups, "name")
+        flt_flags = helper_funcs.filter_items_by_name(
+            self.filter_name, self.bitflag_filter_item, vgroups, "name"
+        )
         if not flt_flags:
             flt_flags = [self.bitflag_filter_item] * len(vgroups)
         dmx.set_fixtures_filter(flt_flags)
@@ -705,21 +810,31 @@ class DMX_UL_Fixtures(UIList):
         sorting_order = dmx.fixtures_sorting_order
 
         if sorting_order == "ADDRESS":
-            _sort = [(idx, vgroups[vg.name].universe * 1000 + vgroups[vg.name].address) for idx, vg in enumerate(vgroups)]
+            _sort = [
+                (idx, vgroups[vg.name].universe * 1000 + vgroups[vg.name].address)
+                for idx, vg in enumerate(vgroups)
+            ]
             flt_neworder = helper_funcs.sort_items_helper(_sort, lambda e: e[1], False)
         elif sorting_order == "NAME":
             flt_neworder = helper_funcs.sort_items_by_name(vgroups, "name")
         elif sorting_order == "FIXTURE_ID":
-            _sort = [(idx, self.str_to_digit(vgroups[vg.name].fixture_id)) for idx, vg in enumerate(vgroups)]
+            _sort = [
+                (idx, self.str_to_digit(vgroups[vg.name].fixture_id))
+                for idx, vg in enumerate(vgroups)
+            ]
             flt_neworder = helper_funcs.sort_items_helper(_sort, lambda e: e[1], False)
         elif sorting_order == "UNIT_NUMBER":
-            _sort = [(idx, vgroups[vg.name].unit_number) for idx, vg in enumerate(vgroups)]
+            _sort = [
+                (idx, vgroups[vg.name].unit_number) for idx, vg in enumerate(vgroups)
+            ]
             flt_neworder = helper_funcs.sort_items_helper(_sort, lambda e: e[1], False)
         else:
             flt_neworder = []
         return flt_flags, flt_neworder
 
-    def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
+    def draw_item(
+        self, context, layout, data, item, icon, active_data, active_propname, index
+    ):
         self.use_filter_show = True
         scene = context.scene
         dmx = scene.dmx
@@ -728,7 +843,10 @@ class DMX_UL_Fixtures(UIList):
         col = layout.column()
         col.context_pointer_set("fixture", item)
         col.operator(
-            "dmx.fixture_item", text=f"{item.name}{' 📈' if has_ies else ''} {'*' if item.dmx_cache_dirty else ''}", depress=item.is_selected(), icon="LOCKED" if item.ignore_movement_dmx else "OUTLINER_DATA_LIGHT"
+            "dmx.fixture_item",
+            text=f"{item.name}{' 📈' if has_ies else ''} {'*' if item.dmx_cache_dirty else ''}",
+            depress=item.is_selected(),
+            icon="LOCKED" if item.ignore_movement_dmx else "OUTLINER_DATA_LIGHT",
         )
         col.ui_units_x = 6
 
@@ -777,8 +895,12 @@ class DMX_UL_Fixtures(UIList):
                 if fixture.name == item.name:
                     continue
                 if fixture.universe == item.universe:
-                    channels = set(range(fixture.address, fixture.address + len(fixture.channels)))
-                    if not item_channels.isdisjoint(channels):  # should be fastest way of checking https://stackoverflow.com/a/17735466/2949947
+                    channels = set(
+                        range(fixture.address, fixture.address + len(fixture.channels))
+                    )
+                    if not item_channels.isdisjoint(
+                        channels
+                    ):  # should be fastest way of checking https://stackoverflow.com/a/17735466/2949947
                         overlapping = True
                         break
 

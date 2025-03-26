@@ -18,15 +18,10 @@
 import bpy
 from bpy.types import Panel
 
-from ....icon import DMX_Icon
-
-from .operator import (
-    DMX_OP_Import_Fixture_Update_Share,
-    DMX_OP_Update_Local_Fixtures,
-)
-from ....in_gdtf import DMX_OT_Import_GDTF
-
 from ....i18n import DMX_Lang
+from ....icon import DMX_Icon
+from ....in_gdtf import DMX_OT_Import_GDTF
+from .operator import DMX_OP_Import_Fixture_Update_Share, DMX_OP_Update_Local_Fixtures
 
 _ = DMX_Lang._
 
@@ -133,8 +128,12 @@ class DMX_PT_Fixtures_Local_Fixtures(Panel):
             rows=8,
         )
 
-        layout.operator(DMX_OP_Update_Local_Fixtures.bl_idname, icon=DMX_Icon.FILE_REFRESH)
-        layout.operator("dmx.import_gdtf_into_scene", text=_("Import GDTF Profile"), icon="IMPORT")
+        layout.operator(
+            DMX_OP_Update_Local_Fixtures.bl_idname, icon=DMX_Icon.FILE_REFRESH
+        )
+        layout.operator(
+            "dmx.import_gdtf_into_scene", text=_("Import GDTF Profile"), icon="IMPORT"
+        )
 
 
 class DMX_PT_Fixtures_Local_Profile_Detail(Panel):

@@ -16,11 +16,10 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import bpy
-
-from bpy.types import Panel, Operator
-from ..logging import DMX_Log
+from bpy.types import Operator, Panel
 
 from ..i18n import DMX_Lang
+from ..logging import DMX_Log
 
 _ = DMX_Lang._
 
@@ -192,11 +191,19 @@ class DMX_PT_DMX_Recorder_Delete(Panel):
         fixtures_exist = len(dmx.fixtures) > 0
 
         row = layout.row()
-        row.operator("dmx.recorder_delete_keyframes_selected", text=_("Delete from selected fixtures"), icon="SELECT_DIFFERENCE")
+        row.operator(
+            "dmx.recorder_delete_keyframes_selected",
+            text=_("Delete from selected fixtures"),
+            icon="SELECT_DIFFERENCE",
+        )
         row.enabled = selected
 
         row = layout.row()
-        row.operator("dmx.recorder_delete_keyframes_all", text=_("Delete from all fixtures"), icon="SELECT_EXTEND")
+        row.operator(
+            "dmx.recorder_delete_keyframes_all",
+            text=_("Delete from all fixtures"),
+            icon="SELECT_EXTEND",
+        )
         row.enabled = fixtures_exist
 
 

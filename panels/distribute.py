@@ -1,16 +1,11 @@
-import bpy
 import math
 
+import bpy
 from bpy.props import FloatProperty, StringProperty
-from bpy.types import (
-    Operator,
-    Panel,
-)
-
-
-from ..logging import DMX_Log
+from bpy.types import Operator, Panel
 
 from ..i18n import DMX_Lang
+from ..logging import DMX_Log
 
 _ = DMX_Lang._
 
@@ -144,7 +139,10 @@ class DMX_OP_DistributeCircle(Operator):
     axis: StringProperty(name="axis")
 
     def points_on_circle(self, r, n=100):
-        return [(math.cos(2 * math.pi / n * x) * r, math.sin(2 * math.pi / n * x) * r) for x in range(0, n + 1)]
+        return [
+            (math.cos(2 * math.pi / n * x) * r, math.sin(2 * math.pi / n * x) * r)
+            for x in range(0, n + 1)
+        ]
 
     def execute(self, context):
         dmx = context.scene.dmx

@@ -15,20 +15,21 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
-import os
-from bpy.props import StringProperty
-from bpy.types import Operator, Panel, UIList
-import bpy
-from ...mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_WS_Client
-from ...logging import DMX_Log
-from ...util import sizeof_fmt
 import logging
+import os
 import uuid as py_uuid
 from datetime import datetime
 from pathlib import Path
 from types import SimpleNamespace
 
+import bpy
+from bpy.props import StringProperty
+from bpy.types import Operator, Panel, UIList
+
 from ...i18n import DMX_Lang
+from ...logging import DMX_Log
+from ...mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_WS_Client
+from ...util import sizeof_fmt
 
 _ = DMX_Lang._
 
@@ -64,8 +65,13 @@ class DMX_OP_MVR_Request(Operator):
     station_uuid: StringProperty()
 
     def execute(self, context):
-        uuid = str(py_uuid.uuid4())
-        mvr_commit = {"FileUUID": uuid, "StationUUID": self.station_uuid, "Comment": datetime.now().strftime("%H:%M:%S %B %d, %Y"), "FileSize": 0}
+        uuid = str(py_uuid.uuid4()).upper()
+        mvr_commit = {
+            "FileUUID": uuid,
+            "StationUUID": self.station_uuid,
+            "Comment": datetime.now().strftime("%H:%M:%S %B %d, %Y"),
+            "FileSize": 0,
+        }
 
         last_commit = DMX_MVR_X_Client.create_self_request_commit(mvr_commit)
         if last_commit:
@@ -95,7 +101,9 @@ class DMX_OP_MVR_Import(Operator):
         for commit in client.commits:
             if commit.commit_uuid == self.uuid:
                 DMX_Log.log.info(f"import {commit}")
-                path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid}.mvr")
+                path = os.path.join(
+                    ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid.upper()}.mvr"
+                )
                 DMX_Log.log.info(path)
                 dmx.addMVR(path)
                 break
@@ -118,7 +126,9 @@ class DMX_OP_MVR_WS_Import(Operator):
         for commit in websocket_commits:
             if commit.commit_uuid == self.uuid:
                 DMX_Log.log.info(f"import {commit}")
-                path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid}.mvr")
+                path = os.path.join(
+                    ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid}.mvr"
+                )
                 DMX_Log.log.info(path)
                 dmx.addMVR(path)
                 break
@@ -140,13 +150,20 @@ class DMX_OP_MVR_X_Export(Operator):
             comment = "File shared"
         current_file_path = bpy.data.filepath
         file_stem = Path(current_file_path).stem
+        if not file_stem:
+            file_stem = "untitled"
         ADDON_PATH = dmx.get_addon_path()
-        uuid = str(py_uuid.uuid4())
+        uuid = str(py_uuid.uuid4()).upper()
         path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{uuid}.mvr")
         result = dmx.export_mvr(path)
         DMX_Log.log.info(path)
         if result.ok:
-            commit = SimpleNamespace(file_size=result.file_size, file_uuid=uuid, file_name=file_stem, comment=comment)
+            commit = SimpleNamespace(
+                file_size=result.file_size,
+                file_uuid=uuid,
+                file_name=file_stem,
+                comment=comment,
+            )
             dmx.createMVR_Shared_Commit(commit)
         return {"FINISHED"}
 
@@ -223,13 +240,26 @@ class DMX_OP_MVR_RemoveSharedCommit(Operator):
 
 
 class DMX_UL_MVR_Commit(UIList):
-    def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
+    def draw_item(
+        self, context, layout, data, item, icon, active_data, active_propname, index
+    ):
         scene = context.scene
         dmx = scene.dmx
         icon = "GROUP_VERTEX"
         # layout.context_pointer_set("mvr_xchange_clients", item)
         col = layout.column()
-        col.label(text=f"{item.comment}", icon="CHECKBOX_HLT" if item.timestamp_saved else "CHECKBOX_DEHLT")
+
+        if item.timestamp_saved < 0:
+            icon = "ERROR"
+        elif item.timestamp_saved == 0:
+            icon = "CHECKBOX_DEHLT"
+        else:
+            icon = "CHECKBOX_HLT"
+
+        col.label(
+            text=f"{item.comment}",
+            icon=icon,
+        )
         col = layout.column()
         timestamp = datetime.fromtimestamp(item.timestamp).strftime("%H:%M:%S %b %d")
         col.label(text=f"{timestamp}")
@@ -240,7 +270,9 @@ class DMX_UL_MVR_Commit(UIList):
         col.operator("dmx.mvr_download", text="", icon="IMPORT").uuid = item.commit_uuid
         col.enabled = dmx.mvrx_enabled
         col = layout.column()
-        col.operator("dmx.mvr_import", text="", icon="CHECKBOX_HLT").uuid = item.commit_uuid
+        col.operator(
+            "dmx.mvr_import", text="", icon="CHECKBOX_HLT"
+        ).uuid = item.commit_uuid
         col.enabled = item.timestamp_saved > 0
 
     def filter_items(self, context, data, property):
@@ -258,13 +290,26 @@ class DMX_UL_MVR_Commit(UIList):
 
 
 class DMX_UL_MVR_WS_Commit(UIList):
-    def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
+    def draw_item(
+        self, context, layout, data, item, icon, active_data, active_propname, index
+    ):
         scene = context.scene
         dmx = scene.dmx
         icon = "GROUP_VERTEX"
         # layout.context_pointer_set("mvr_xchange_clients", item)
         col = layout.column()
-        col.label(text=f"{item.comment}", icon="CHECKBOX_HLT" if item.timestamp_saved else "CHECKBOX_DEHLT")
+
+        if item.timestamp_saved < 0:
+            icon = "ERROR"
+        elif item.timestamp_saved == 0:
+            icon = "CHECKBOX_DEHLT"
+        else:
+            icon = "CHECKBOX_HLT"
+
+        col.label(
+            text=f"{item.comment}",
+            icon=icon,
+        )
         col = layout.column()
         timestamp = datetime.fromtimestamp(item.timestamp).strftime("%H:%M:%S %b %d")
         col.label(text=f"{timestamp}")
@@ -272,10 +317,14 @@ class DMX_UL_MVR_WS_Commit(UIList):
         file_size = sizeof_fmt(item.file_size)
         col.label(text=f"{file_size}")
         col = layout.column()
-        col.operator("dmx.mvr_ws_download", text="", icon="IMPORT").uuid = item.commit_uuid
+        col.operator(
+            "dmx.mvr_ws_download", text="", icon="IMPORT"
+        ).uuid = item.commit_uuid
         col.enabled = dmx.mvrx_socket_client_enabled
         col = layout.column()
-        col.operator("dmx.mvr_ws_import", text="", icon="CHECKBOX_HLT").uuid = item.commit_uuid
+        col.operator(
+            "dmx.mvr_ws_import", text="", icon="CHECKBOX_HLT"
+        ).uuid = item.commit_uuid
         col.enabled = item.timestamp_saved > 0
 
     def filter_items(self, context, data, property):
@@ -293,8 +342,9 @@ class DMX_UL_MVR_WS_Commit(UIList):
 
 
 class DMX_UL_MVR_Shared_Commit(UIList):
-
-    def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
+    def draw_item(
+        self, context, layout, data, item, icon, active_data, active_propname, index
+    ):
         scene = context.scene
         dmx = scene.dmx
         icon = "GROUP_VERTEX"
@@ -308,7 +358,9 @@ class DMX_UL_MVR_Shared_Commit(UIList):
         file_size = sizeof_fmt(item.file_size)
         col.label(text=f"{file_size}")
         col = layout.column()
-        col.operator("dmx.mvr_remove_shared_commit", text="", icon="TRASH").uuid = item.commit_uuid
+        col.operator(
+            "dmx.mvr_remove_shared_commit", text="", icon="TRASH"
+        ).uuid = item.commit_uuid
 
     def filter_items(self, context, data, property):
         # Filter the items in the UIList
@@ -325,7 +377,9 @@ class DMX_UL_MVR_Shared_Commit(UIList):
 
 
 class DMX_UL_MVR_Stations(UIList):
-    def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
+    def draw_item(
+        self, context, layout, data, item, icon, active_data, active_propname, index
+    ):
         scene = context.scene
         dmx = scene.dmx
         icon = "GROUP_VERTEX"
@@ -450,17 +504,16 @@ class DMX_PT_DMX_MVR_X(Panel):
             row.enabled = not dmx.mvrx_enabled
 
             if DMX_Log.log.isEnabledFor(logging.DEBUG):
-                if dmx.mvrx_enabled:
-                    row = layout.row()
-                    row.template_list(
-                        "DMX_UL_MVR_Stations",
-                        "",
-                        mvr_x,
-                        "mvr_xchange_clients",
-                        mvr_x,
-                        "selected_client",
-                        rows=4,
-                    )
+                row = layout.row()
+                row.template_list(
+                    "DMX_UL_MVR_Stations",
+                    "",
+                    mvr_x,
+                    "mvr_xchange_clients",
+                    mvr_x,
+                    "selected_client",
+                    rows=4,
+                )
 
             row = layout.row()
             col = row.column()
@@ -470,14 +523,19 @@ class DMX_PT_DMX_MVR_X(Panel):
                 col1 = row.column()
                 col1.operator("dmx.mvr_refresh", text="", icon="FILE_REFRESH")
                 col2 = row.column()
-                col2.operator("dmx.mvr_request", text="", icon="IMPORT").station_uuid = client.station_uuid
+                col2.operator(
+                    "dmx.mvr_request", text="", icon="IMPORT"
+                ).station_uuid = client.station_uuid
                 col1.enabled = col2.enabled = dmx.mvrx_enabled
 
             # row.operator("dmx.mvr_test", text="Test", icon="CANCEL")
 
             if client:
                 row = layout.row()
-                row.label(text=f"{client.station_name}", icon="LINKED" if dmx.mvrx_enabled else "UNLINKED")
+                row.label(
+                    text=f"{client.station_name}",
+                    icon="LINKED" if dmx.mvrx_enabled else "UNLINKED",
+                )
 
                 row = layout.row()
                 row.label(text=_("Shared to me:"))
@@ -495,7 +553,11 @@ class DMX_PT_DMX_MVR_X(Panel):
 
         if dmx.mvrx_socket_client_enabled:
             row = layout.row()
-            ws_group = dmx.mvr_x_ws_url.split(".")[0].replace("https://", "").replace("http://", "")
+            ws_group = (
+                dmx.mvr_x_ws_url.split(".")[0]
+                .replace("wss://", "")
+                .replace("ws://", "")
+            )
             row.label(text=f"{ws_group}", icon="WORLD")
             col1 = row.column()
             col1.operator("dmx.mvr_ws_refresh", text="", icon="FILE_REFRESH")

@@ -16,11 +16,13 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-import bpy
-from .logging import DMX_Log
 import logging
 import os
+
+import bpy
+
 from .gdtf import DMX_GDTF
+from .logging import DMX_Log
 
 # Shader Nodes default labels
 # Blender API naming convention is inconsistent for internationalization
@@ -33,7 +35,9 @@ VOLUME_SCATTER = bpy.app.translations.pgettext("Volume Scatter")
 EMISSION = bpy.app.translations.pgettext("Emission")
 LIGHT_NODE = bpy.app.translations.pgettext("Light Output")
 SHADER_NODE_MIX_SHADER = bpy.app.translations.pgettext("ShaderNodeMixShader")
-SHADER_NODE_BSDF_TRANSPARENT = bpy.app.translations.pgettext("ShaderNodeBsdfTransparent")
+SHADER_NODE_BSDF_TRANSPARENT = bpy.app.translations.pgettext(
+    "ShaderNodeBsdfTransparent"
+)
 SHADER_NODE_TEX_IMAGE = bpy.app.translations.pgettext("ShaderNodeTexImage")
 SHADER_NODE_MIX = bpy.app.translations.pgettext("ShaderNodeMix")
 SHADER_NODE_COLOR_RAMP = bpy.app.translations.pgettext("ShaderNodeValToRGB")
@@ -52,13 +56,17 @@ def getEmitterMaterial(name):
     if PRINCIPLED_BSDF in material.node_tree.nodes:
         material.node_tree.nodes.remove(material.node_tree.nodes[PRINCIPLED_BSDF])
     else:
-        DMX_Log.log.error("BSDF material could not be removed when adding new Emitter, this could cause issues. Set Logging level to Info to get more details.")
+        DMX_Log.log.error(
+            "BSDF material could not be removed when adding new Emitter, this could cause issues. Set Logging level to Info to get more details."
+        )
         if DMX_Log.log.isEnabledFor(logging.INFO):
             print("INFO", "Nodes in material tree nodes:")
             for node in material.node_tree.nodes:
                 print("INFO", node)
     node = material.node_tree.nodes.new(SHADER_NODE_EMISSION)
-    material.node_tree.links.new(material.node_tree.nodes[MATERIAL_OUTPUT].inputs[0], node.outputs[0])
+    material.node_tree.links.new(
+        material.node_tree.nodes[MATERIAL_OUTPUT].inputs[0], node.outputs[0]
+    )
     return material
 
 
@@ -74,7 +82,9 @@ def getVolumeScatterMaterial():
     if PRINCIPLED_BSDF in material.node_tree.nodes:
         material.node_tree.nodes.remove(material.node_tree.nodes[PRINCIPLED_BSDF])
     else:
-        DMX_Log.log.error("BSDF material could not be removed when adding creating Volume, this could cause issues. Set Logging level to Info to get more details")
+        DMX_Log.log.error(
+            "BSDF material could not be removed when adding creating Volume, this could cause issues. Set Logging level to Info to get more details"
+        )
         if DMX_Log.log.isEnabledFor(logging.INFO):
             print("INFO", "Nodes in material tree nodes:")
             for node in material.node_tree.nodes:
@@ -86,7 +96,9 @@ def getVolumeScatterMaterial():
     color_ramp.name = "Color Ramp"
     noise_texture = material.node_tree.nodes.new(SHADER_NODE_NOISE_TEXTURE)
     noise_texture.name = "Noise Texture"
-    material.node_tree.links.new(material.node_tree.nodes[MATERIAL_OUTPUT].inputs[1], volume_scatter.outputs[0])
+    material.node_tree.links.new(
+        material.node_tree.nodes[MATERIAL_OUTPUT].inputs[1], volume_scatter.outputs[0]
+    )
     material.node_tree.links.new(noise_texture.outputs[0], color_ramp.inputs[0])
     material.node_tree.links.new(color_ramp.outputs[0], volume_scatter.inputs[0])
     volume_scatter.inputs["Density"].default_value = 0.1
@@ -110,7 +122,6 @@ def get_gobo_material(name):
     bsdf = material.node_tree.nodes.new(SHADER_NODE_BSDF_TRANSPARENT)
     material.node_tree.links.new(matout.inputs[0], bsdf.outputs[0])
 
-
     # set gobo node
     gobo_geometry_node = material.node_tree.nodes.new("ShaderNodeTexCoord")
 
@@ -130,11 +141,13 @@ def get_gobo_material(name):
     gobo1_image = material.node_tree.nodes.new(SHADER_NODE_TEX_IMAGE)
     gobo1_image.name = "Gobo1Texture"
 
-
-
-    material.node_tree.links.new(gobo_geometry_node.outputs[0], gobo1_image_rotate.inputs[0])
+    material.node_tree.links.new(
+        gobo_geometry_node.outputs[0], gobo1_image_rotate.inputs[0]
+    )
     material.node_tree.links.new(gobo1_image_rotate.outputs[0], gobo1_image.inputs[0])
-    material.node_tree.links.new(gobo_geometry_node.outputs[0], gobo2_image_rotate.inputs[0])
+    material.node_tree.links.new(
+        gobo_geometry_node.outputs[0], gobo2_image_rotate.inputs[0]
+    )
     material.node_tree.links.new(gobo2_image_rotate.outputs[0], gobo2_image.inputs[0])
 
     gobo1_mix = material.node_tree.nodes.new(SHADER_NODE_MIX)
@@ -171,7 +184,6 @@ def get_gobo_material(name):
     material.node_tree.links.new(gobos_mix.outputs["Result"], mix.inputs["A"])
     material.node_tree.links.new(mix.outputs["Result"], bsdf.inputs[0])
 
-
     # set iris up
 
     iris_texture = material.node_tree.nodes.new("ShaderNodeTexImage")
@@ -185,8 +197,9 @@ def get_gobo_material(name):
 
     scale_node = material.node_tree.nodes.new("ShaderNodeVectorMath")
     center_node = material.node_tree.nodes.new("ShaderNodeVectorMath")
-    center_node.inputs[1].default_value[:2] = add_node.inputs[1].default_value[:2] = [0.5] * 2
-
+    center_node.inputs[1].default_value[:2] = add_node.inputs[1].default_value[:2] = [
+        0.5
+    ] * 2
 
     # inputnode.blend_type = 'DARKEN' if check_spot else 'MULTIPLY'
     scale_node.label = scale_node.name = "Iris Size"
@@ -233,12 +246,18 @@ def set_light_nodes(light):
     gobo1_image = light_obj.data.node_tree.nodes.new(SHADER_NODE_TEX_IMAGE)
     gobo1_image.name = "Gobo1Texture"
 
-
-
-    light_obj.data.node_tree.links.new(gobo_geometry_node.outputs[5], gobo1_image_rotate.inputs[0])
-    light_obj.data.node_tree.links.new(gobo1_image_rotate.outputs[0], gobo1_image.inputs[0])
-    light_obj.data.node_tree.links.new(gobo_geometry_node.outputs[5], gobo2_image_rotate.inputs[0])
-    light_obj.data.node_tree.links.new(gobo2_image_rotate.outputs[0], gobo2_image.inputs[0])
+    light_obj.data.node_tree.links.new(
+        gobo_geometry_node.outputs[5], gobo1_image_rotate.inputs[0]
+    )
+    light_obj.data.node_tree.links.new(
+        gobo1_image_rotate.outputs[0], gobo1_image.inputs[0]
+    )
+    light_obj.data.node_tree.links.new(
+        gobo_geometry_node.outputs[5], gobo2_image_rotate.inputs[0]
+    )
+    light_obj.data.node_tree.links.new(
+        gobo2_image_rotate.outputs[0], gobo2_image.inputs[0]
+    )
 
     gobo1_mix = light_obj.data.node_tree.nodes.new(SHADER_NODE_MIX)
     gobo1_mix.data_type = "RGBA"
@@ -262,8 +281,12 @@ def set_light_nodes(light):
     light_obj.data.node_tree.links.new(gobo1_image.outputs[0], gobo1_mix.inputs["A"])
     light_obj.data.node_tree.links.new(gobo2_image.outputs[0], gobo2_mix.inputs["A"])
 
-    light_obj.data.node_tree.links.new(gobo1_mix.outputs["Result"], gobos_mix.inputs["A"])
-    light_obj.data.node_tree.links.new(gobo2_mix.outputs["Result"], gobos_mix.inputs["B"])
+    light_obj.data.node_tree.links.new(
+        gobo1_mix.outputs["Result"], gobos_mix.inputs["A"]
+    )
+    light_obj.data.node_tree.links.new(
+        gobo2_mix.outputs["Result"], gobos_mix.inputs["B"]
+    )
 
     mix = light_obj.data.node_tree.nodes.new(SHADER_NODE_MIX)
     mix.data_type = "RGBA"
@@ -273,7 +296,6 @@ def set_light_nodes(light):
 
     light_obj.data.node_tree.links.new(gobos_mix.outputs["Result"], mix.inputs["A"])
     light_obj.data.node_tree.links.new(mix.outputs["Result"], emission.inputs[0])
-
 
     # set iris up
     iris_geometry_node = light_obj.data.node_tree.nodes.new("ShaderNodeNewGeometry")
@@ -288,8 +310,9 @@ def set_light_nodes(light):
 
     scale_node = light_obj.data.node_tree.nodes.new("ShaderNodeVectorMath")
     center_node = light_obj.data.node_tree.nodes.new("ShaderNodeVectorMath")
-    center_node.inputs[1].default_value[:2] = add_node.inputs[1].default_value[:2] = [0.5] * 2
-
+    center_node.inputs[1].default_value[:2] = add_node.inputs[1].default_value[:2] = [
+        0.5
+    ] * 2
 
     # inputnode.blend_type = 'DARKEN' if check_spot else 'MULTIPLY'
     scale_node.label = scale_node.name = "Iris Size"
@@ -303,7 +326,9 @@ def set_light_nodes(light):
     iris_texture.extension = "EXTEND"
     iris_texture.label = iris_texture.name = "Iris"
 
-    light_obj.data.node_tree.links.new(iris_geometry_node.outputs[5], center_node.inputs[0])
+    light_obj.data.node_tree.links.new(
+        iris_geometry_node.outputs[5], center_node.inputs[0]
+    )
     light_obj.data.node_tree.links.new(center_node.outputs[0], scale_node.inputs[0])
     light_obj.data.node_tree.links.new(scale_node.outputs[0], add_node.inputs[0])
     light_obj.data.node_tree.links.new(add_node.outputs[0], iris_texture.inputs[0])
@@ -327,11 +352,15 @@ def getGeometryNodes(obj):
     # initialize geometry_nodes nodes
     # geometry_nodes interface
     # Socket Geometry
-    geometry_socket = geometry_nodes.interface.new_socket(name="Geometry", in_out="OUTPUT", socket_type="NodeSocketGeometry")
+    geometry_socket = geometry_nodes.interface.new_socket(
+        name="Geometry", in_out="OUTPUT", socket_type="NodeSocketGeometry"
+    )
     geometry_socket.attribute_domain = "POINT"
 
     # Socket Geometry
-    geometry_socket_1 = geometry_nodes.interface.new_socket(name="Geometry", in_out="INPUT", socket_type="NodeSocketGeometry")
+    geometry_socket_1 = geometry_nodes.interface.new_socket(
+        name="Geometry", in_out="INPUT", socket_type="NodeSocketGeometry"
+    )
     geometry_socket_1.attribute_domain = "POINT"
 
     # Socket Material
@@ -541,7 +570,6 @@ def getGeometryNodes(obj):
     set_material_001.inputs[1].default_value = True
     set_material_001.inputs[2].default_value = bpy.data.materials[name]
 
-
     # Set dimensions
     realize_instances.width, realize_instances.height = 140.0, 100.0
     vector.width, vector.height = 140.0, 100.0
@@ -570,7 +598,9 @@ def getGeometryNodes(obj):
     # vector.Vector -> align_euler_to_vector.Vector
     geometry_nodes.links.new(vector.outputs[0], align_euler_to_vector.inputs[2])
     # align_euler_to_vector.Rotation -> transform_geometry.Rotation
-    geometry_nodes.links.new(align_euler_to_vector.outputs[0], transform_geometry.inputs[2])
+    geometry_nodes.links.new(
+        align_euler_to_vector.outputs[0], transform_geometry.inputs[2]
+    )
     # collection_info.Instances -> realize_instances.Geometry
     geometry_nodes.links.new(collection_info.outputs[0], realize_instances.inputs[0])
     # realize_instances.Geometry -> raycast.Target Geometry
@@ -594,7 +624,9 @@ def getGeometryNodes(obj):
     # compare.Result -> set_position.Selection
     geometry_nodes.links.new(compare.outputs[0], set_position.inputs[1])
     # align_euler_to_vector.Rotation -> transform_geometry_001.Rotation
-    geometry_nodes.links.new(align_euler_to_vector.outputs[0], transform_geometry_001.inputs[2])
+    geometry_nodes.links.new(
+        align_euler_to_vector.outputs[0], transform_geometry_001.inputs[2]
+    )
     # join_geometry.Geometry -> group_output.Geometry
     geometry_nodes.links.new(join_geometry.outputs[0], group_output.inputs[0])
     # set_curve_radius.Curve -> curve_to_mesh.Curve

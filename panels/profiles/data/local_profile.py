@@ -15,12 +15,12 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
-import bpy
 import os
 
-from bpy.types import PropertyGroup
-from bpy.props import StringProperty, CollectionProperty, IntProperty
+import bpy
 import pygdtf
+from bpy.props import CollectionProperty, IntProperty, StringProperty
+from bpy.types import PropertyGroup
 
 from ....i18n import DMX_Lang
 
@@ -38,10 +38,14 @@ class DMX_Fixtures_Local_Profile(PropertyGroup):
 
     short_name: StringProperty(
         name=_("Short Name"),
-        description=_("The short name of the DMX profile, all caps, used as suggestion for fixture names."),
+        description=_(
+            "The short name of the DMX profile, all caps, used as suggestion for fixture names."
+        ),
     )
 
-    filename: StringProperty(name=_("Filename"), description=_("The name of the DMX profile."))
+    filename: StringProperty(
+        name=_("Filename"), description=_("The name of the DMX profile.")
+    )
 
     modes: CollectionProperty(type=DMX_Fixtures_Local_ProfileMode)
 
@@ -62,23 +66,26 @@ class DMX_Fixtures_Local_Profile(PropertyGroup):
         for file in os.listdir(profiles_path):
             file_path = os.path.join(profiles_path, file)
             try:
-                fixture_type = pygdtf.FixtureType(file_path)
-                modes_info = pygdtf.utils.get_dmx_modes_info(fixture_type)
+                with pygdtf.FixtureType(file_path) as fixture_type:
+                    profiles.append(
+                        {
+                            "name": f"{fixture_type.manufacturer} @ {fixture_type.long_name}",
+                            "short_name": fixture_type.short_name,
+                            "filename": file,
+                            "modes": fixture_type.dmx_modes,
+                        }
+                    )
 
-                profiles.append(
-                    {
-                        "name": f"{fixture_type.manufacturer} @ {fixture_type.long_name}",
-                        "short_name": fixture_type.short_name,
-                        "filename": file,
-                        "modes": modes_info,
-                    }
-                )
             except Exception as e:
-                print("Error parsing file", file, e)
+                print("INFO", "Error parsing file", file, e)
                 errors.append(f"{file}: {e}")
 
         if show_errors and errors:
-            MultiLineMessage(message=errors, title=_("Some fixtures could not be processed"), icon="ERROR")
+            MultiLineMessage(
+                message=errors,
+                title=_("Some fixtures could not be processed"),
+                icon="ERROR",
+            )
         return profiles
 
     @staticmethod
@@ -95,8 +102,8 @@ class DMX_Fixtures_Local_Profile(PropertyGroup):
 
             for mode in profile["modes"]:
                 local_mode = local_profile.modes.add()
-                local_mode.name = mode["mode_name"]
-                local_mode.footprint = mode["mode_dmx_channel_count"]
+                local_mode.name = mode.name
+                local_mode.footprint = mode.dmx_channels_count
 
 
 def MultiLineMessage(message=[], title="Message Box", icon="INFO"):

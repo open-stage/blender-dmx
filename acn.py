@@ -18,6 +18,7 @@
 
 import bpy
 from sacn import sACNreceiver
+
 from .data import DMX_Data
 from .logging import DMX_Log
 
@@ -38,7 +39,9 @@ class DMX_sACN:
             return
         dmx = bpy.context.scene.dmx
         if packet.universe >= len(dmx.universes):
-            DMX_Log.log.error("Not enough DMX universes set in BlenderDMX for incoming sACN data")
+            DMX_Log.log.error(
+                "Not enough DMX universes set in BlenderDMX for incoming sACN data"
+            )
             return
         if dmx.universes[packet.universe].input != "sACN":
             DMX_Log.log.warning("This DMX universe is not set to accept sACN data")
@@ -64,7 +67,9 @@ class DMX_sACN:
                 continue
             if universe == 0:  # invalid for sACN
                 continue
-            DMX_sACN._instance.receiver.register_listener("universe", DMX_sACN.callback, universe=universe)
+            DMX_sACN._instance.receiver.register_listener(
+                "universe", DMX_sACN.callback, universe=universe
+            )
             DMX_Log.log.info(("Joining sACN universe:", universe))
             DMX_sACN._instance.receiver.join_multicast(universe)
         bpy.app.timers.register(DMX_sACN.run_render)

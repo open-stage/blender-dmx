@@ -13,10 +13,8 @@ __all__ = (
 
 
 import bpy  # type: ignore
-from bpy.app.translations import (  # type: ignore
-    contexts as i18n_contexts,
-    pgettext_iface as iface_,
-)
+from bpy.app.translations import contexts as i18n_contexts  # type: ignore
+from bpy.app.translations import pgettext_iface as iface_
 
 
 def _indented_layout(layout, level):
@@ -35,7 +33,11 @@ def draw_entry(display_keymaps, entry, col, level=0):
     idname, spaceid, regionid, children = entry
 
     for km, kc in display_keymaps:
-        if km.name == idname and km.space_type == spaceid and km.region_type == regionid:
+        if (
+            km.name == idname
+            and km.space_type == spaceid
+            and km.region_type == regionid
+        ):
             draw_km(display_keymaps, kc, km, children, col, level)
 
     """
@@ -78,7 +80,9 @@ def draw_km(display_keymaps, kc, km, children, layout, level):
             subrow = subcol.row(align=True)
             subrow.prop(km, "show_expanded_items", text="", emboss=False)
             subrow.label(
-                text=iface_("{:s} (Global)").format(iface_(km.name, i18n_contexts.id_windowmanager)),
+                text=iface_("{:s} (Global)").format(
+                    iface_(km.name, i18n_contexts.id_windowmanager)
+                ),
                 translate=False,
             )
         else:
@@ -93,7 +97,12 @@ def draw_km(display_keymaps, kc, km, children, layout, level):
             # "Add New" at end of keymap item list
             subcol = _indented_layout(col, kmi_level)
             subcol = subcol.split(factor=0.2).column()
-            subcol.operator("preferences.keyitem_add", text="Add New", text_ctxt=i18n_contexts.id_windowmanager, icon="ADD")
+            subcol.operator(
+                "preferences.keyitem_add",
+                text="Add New",
+                text_ctxt=i18n_contexts.id_windowmanager,
+                icon="ADD",
+            )
 
             col.separator()
 
@@ -147,7 +156,9 @@ def draw_kmi(display_keymaps, kc, km, kmi, layout, level):
         row.label()
 
     if (not kmi.is_user_defined) and kmi.is_user_modified:
-        row.operator("preferences.keyitem_restore", text="", icon="BACK").item_id = kmi.id
+        row.operator(
+            "preferences.keyitem_restore", text="", icon="BACK"
+        ).item_id = kmi.id
     else:
         pass
         # row.operator(
@@ -223,7 +234,9 @@ def draw_filtered(display_keymaps, filter_type, filter_text, layout):
         if not _EVENT_TYPES:
             enum = bpy.types.Event.bl_rna.properties["type"].enum_items
             _EVENT_TYPES.update(enum.keys())
-            _EVENT_TYPE_MAP.update({item.name.replace(" ", "_").upper(): key for key, item in enum.items()})
+            _EVENT_TYPE_MAP.update(
+                {item.name.replace(" ", "_").upper(): key for key, item in enum.items()}
+            )
 
             del enum
             _EVENT_TYPE_MAP_EXTRA.update(
@@ -240,7 +253,9 @@ def draw_filtered(display_keymaps, filter_type, filter_text, layout):
                     "MMB": "MIDDLEMOUSE",
                 }
             )
-            _EVENT_TYPE_MAP_EXTRA.update({"{:d}".format(i): "NUMPAD_{:d}".format(i) for i in range(10)})
+            _EVENT_TYPE_MAP_EXTRA.update(
+                {"{:d}".format(i): "NUMPAD_{:d}".format(i) for i in range(10)}
+            )
         # done with once off init
 
         filter_text_split = filter_text.strip()
@@ -336,7 +351,9 @@ def draw_filtered(display_keymaps, filter_type, filter_text, layout):
             col = layout.column()
 
             row = col.row(align=True)
-            row.label(text=km.name, icon="DOT", text_ctxt=i18n_contexts.id_windowmanager)
+            row.label(
+                text=km.name, icon="DOT", text_ctxt=i18n_contexts.id_windowmanager
+            )
 
             if km.is_user_modified:
                 subrow = row.row()
@@ -412,7 +429,9 @@ def draw_keymaps(context, layout):
         search_placeholder = iface_("Search by Name")
     elif spref.filter_type == "KEY":
         search_placeholder = iface_("Search by Key-Binding")
-    rowsubsub.prop(spref, "filter_text", text="", icon="VIEWZOOM", placeholder=search_placeholder)
+    rowsubsub.prop(
+        spref, "filter_text", text="", icon="VIEWZOOM", placeholder=search_placeholder
+    )
 
     if not filter_text:
         # When the keyconfig defines its own preferences.
@@ -428,7 +447,9 @@ def draw_keymaps(context, layout):
                 keymappref,
                 "show_ui_keyconfig",
                 text="",
-                icon="DISCLOSURE_TRI_DOWN" if show_ui_keyconfig else "DISCLOSURE_TRI_RIGHT",
+                icon="DISCLOSURE_TRI_DOWN"
+                if show_ui_keyconfig
+                else "DISCLOSURE_TRI_RIGHT",
                 emboss=False,
             )
             row.label(text="Preferences")

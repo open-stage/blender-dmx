@@ -16,15 +16,23 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 
-import bpy
-
-from socket import socket, AF_INET, SOCK_DGRAM, SHUT_RDWR, SOL_SOCKET, SO_BROADCAST, SO_REUSEADDR
 import struct
 import threading
+from socket import (
+    AF_INET,
+    SHUT_RDWR,
+    SO_BROADCAST,
+    SO_REUSEADDR,
+    SOCK_DGRAM,
+    SOL_SOCKET,
+    socket,
+)
+
+import bpy
 
 from .data import DMX_Data
-from .network import DMX_Network
 from .logging import DMX_Log
+from .network import DMX_Network
 
 # ArtnetPacket class taken from here:
 # https://gist.github.com/alarrosa14/07bd1ee88a19204cbf22
@@ -48,8 +56,18 @@ class ArtnetPacket:
         self.data = None
 
     def __str__(self):
-        return ("ArtNet package:\n - op_code: {0}\n - version: {1}\n - " "sequence: {2}\n - physical: {3}\n - universe: {4}\n - " "length: {5}\n - data : {6}").format(
-            self.op_code, self.ver, self.sequence, self.physical, self.universe, self.length, [c for c in self.data]
+        return (
+            "ArtNet package:\n - op_code: {0}\n - version: {1}\n - "
+            "sequence: {2}\n - physical: {3}\n - universe: {4}\n - "
+            "length: {5}\n - data : {6}"
+        ).format(
+            self.op_code,
+            self.ver,
+            self.sequence,
+            self.physical,
+            self.universe,
+            self.length,
+            [c for c in self.data],
         )
 
     def build(udp_data):
@@ -58,10 +76,19 @@ class ArtnetPacket:
             return None
 
         packet = ArtnetPacket()
-        (packet.op_code, packet.ver, packet.sequence, packet.physical, packet.universe, packet.length) = struct.unpack("!HHBBHH", udp_data[8:18])
+        (
+            packet.op_code,
+            packet.ver,
+            packet.sequence,
+            packet.physical,
+            packet.universe,
+            packet.length,
+        ) = struct.unpack("!HHBBHH", udp_data[8:18])
         (packet.universe,) = struct.unpack("<H", udp_data[14:16])
 
-        packet.data = struct.unpack("{0}s".format(int(packet.length)), udp_data[18 : 18 + int(packet.length)])[0]
+        packet.data = struct.unpack(
+            "{0}s".format(int(packet.length)), udp_data[18 : 18 + int(packet.length)]
+        )[0]
 
         return packet
 
@@ -175,7 +202,9 @@ class DMX_ArtNet(threading.Thread):
         # Status1
         content.append(struct.pack("H", 0))
         # Manufacture ESTA Code
-        content.append(struct.pack("<H", 32767))  # ESTA RDM test code since we did not apply
+        content.append(
+            struct.pack("<H", 32767)
+        )  # ESTA RDM test code since we did not apply
         # Short Name
         content.append(struct.pack("18s", b"BlenderDMX"))
         content.append(struct.pack("64s", b"BlenderDMX GDTF & MVR plugin for Blender"))
@@ -244,7 +273,11 @@ class DMX_ArtNet(threading.Thread):
         return [
             ("offline", "Offline", ""),
             ("socket_open", "Opening socket...", ""),
-            ("socket_error", "Error opening socket... Close other Art-Net applications, re-enable Art-Net in BlenderDMX and start the other application", ""),
+            (
+                "socket_error",
+                "Error opening socket... Close other Art-Net applications, re-enable Art-Net in BlenderDMX and start the other application",
+                "",
+            ),
             ("listen", "Waiting for data...", ""),
             ("online", "Online", ""),
             ("stop", "Stopping thread...", ""),

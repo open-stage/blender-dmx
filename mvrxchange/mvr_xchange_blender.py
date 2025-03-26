@@ -16,9 +16,16 @@
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import bpy
-from bpy.props import BoolProperty, CollectionProperty, EnumProperty, IntProperty, StringProperty
+from bpy.props import (
+    BoolProperty,
+    CollectionProperty,
+    EnumProperty,
+    IntProperty,
+    StringProperty,
+)
 from bpy.types import PropertyGroup
-from .network import DMX_Network
+
+from ..network import DMX_Network
 
 # MVR-xchange commit and client RNA structures
 
@@ -34,7 +41,7 @@ class DMX_MVR_Xchange_Commit(PropertyGroup):
     station_uuid: StringProperty(name="Station UUID")
     file_size: IntProperty(name="File Size")
     timestamp: IntProperty(name="Time of info")
-    timestamp_saved: IntProperty(name="Time of saving")
+    timestamp_saved: IntProperty(name="Time of saving", default=0)
     subscribed: BoolProperty(name="Subscribed to")
     self_requested: BoolProperty(name="We requested latest file without UUID")
 
@@ -60,7 +67,9 @@ class DMX_MVR_Xchange_Client(PropertyGroup):
         data = []
         for index, client in enumerate(clients):
             icon = "DEFAULT_TEST"
-            if any("Production Assist" in x for x in [client.provider, client.station_name]):
+            if any(
+                "Production Assist" in x for x in [client.provider, client.station_name]
+            ):
                 icon = "PRODUCTION_ASSIST"
             elif any("gMA3" in x for x in [client.provider, client.station_name]):
                 icon = "GMA3"
@@ -69,17 +78,31 @@ class DMX_MVR_Xchange_Client(PropertyGroup):
             elif any("BlenderDMX" in x for x in [client.provider, client.station_name]):
                 icon = "BLENDER_DMX"
             if client.station_uuid and client.station_name and client.service_name:
-                data.append((client.station_uuid, client.station_name, client.station_uuid, dmx.custom_icons[icon].icon_id, index))
+                data.append(
+                    (
+                        client.station_uuid,
+                        client.station_name,
+                        client.station_uuid,
+                        dmx.custom_icons[icon].icon_id,
+                        index,
+                    )
+                )
         return data
 
 
 class DMX_MVR_Xchange(PropertyGroup):
     selected_commit: IntProperty(default=0)
     selected_ws_commit: IntProperty(default=0)
-    mvr_xchange_clients: CollectionProperty(name="MVR-xchange Clients", type=DMX_MVR_Xchange_Client)
-    selected_mvr_client: EnumProperty(name="Client", description="", items=DMX_MVR_Xchange_Client.get_clients)
+    mvr_xchange_clients: CollectionProperty(
+        name="MVR-xchange Clients", type=DMX_MVR_Xchange_Client
+    )
+    selected_mvr_client: EnumProperty(
+        name="Client", description="", items=DMX_MVR_Xchange_Client.get_clients
+    )
     shared_commits: CollectionProperty(name="Commits", type=DMX_MVR_Xchange_Commit)
-    websocket_commits: CollectionProperty(name="Websocket Commits", type=DMX_MVR_Xchange_Commit)
+    websocket_commits: CollectionProperty(
+        name="Websocket Commits", type=DMX_MVR_Xchange_Commit
+    )
     selected_shared_commit: IntProperty(default=0)
     selected_client: IntProperty(default=0)
     commit_message: StringProperty(name="Message", description="Message", default="")
@@ -91,7 +114,11 @@ class DMX_MVR_Xchange(PropertyGroup):
         else:
             return addresses
 
-    ip_address: EnumProperty(name="IPv4 Address for MVR-xchange", description="The network card/interface for MVR-xchange", items=get_addresses)
+    ip_address: EnumProperty(
+        name="IPv4 Address for MVR-xchange",
+        description="The network card/interface for MVR-xchange",
+        items=get_addresses,
+    )
 
     def edit_group(self, context):
         if "." in self.mvr_x_group:
@@ -99,4 +126,6 @@ class DMX_MVR_Xchange(PropertyGroup):
         if not self.mvr_x_group:
             self.mvr_x_group = "WorkGroup"
 
-    mvr_x_group: StringProperty(name="Group", description="Group", default="WorkGroup", update=edit_group)
+    mvr_x_group: StringProperty(
+        name="Group", description="Group", default="WorkGroup", update=edit_group
+    )

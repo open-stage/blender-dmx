@@ -20,6 +20,7 @@ import bpy
 
 from .gdtf import DMX_GDTF
 from .logging import DMX_Log
+import traceback
 
 
 class DMX_Model:
@@ -44,9 +45,13 @@ class DMX_Model:
 
         # Otherwise, build it from profile
         try:
-            new_collection = DMX_GDTF.buildCollection(profile, dmx_mode, display_beams, add_target)
+            new_collection = DMX_GDTF.buildCollection(
+                profile, dmx_mode, display_beams, add_target
+            )
         except Exception as e:
             DMX_Log.log.error(f"Error {e}")
+            DMX_Log.log.error(f"Traceback: {traceback.print_exception(e)}")
+
             if name in collections:
                 collections.remove(collections[name])
             return None

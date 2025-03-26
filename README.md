@@ -27,6 +27,13 @@ Check the demonstration video:
 
 We also have a `Discord` server for sharing knowledge: [discord server link](https://discord.gg/FQVVyc45T9)
 
+## Learning
+
+Having an open source visualizer in Python provides many opportunities to learn
+and understand how stuff works under the hood. Check out how each component
+works and make improvements or modifications as required. [Read
+more](https://blenderdmx.eu/community/#development) about development.
+
 ## Donate
 
 > Initially, Hugo, who originally started the BlenderDMX project, put a donation link here. We keep it below for Hugo, if you like to support him. Currently there is no donation link for the project itself.

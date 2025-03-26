@@ -15,14 +15,15 @@
 #    You should have received a copy of the GNU General Public License along
 #    with this program. If not, see <https://www.gnu.org/licenses/>.
 
-from .... import share_api_client as share_api_client
-from ....gdtf import DMX_GDTF
-import bpy
 import os
 import queue
 
-from ....panels import profiles as Profiles
+import bpy
+
 from .... import __package__ as base_package
+from .... import share_api_client as share_api_client
+from ....gdtf import DMX_GDTF
+from ....panels import profiles as Profiles
 
 execution_queue = queue.Queue()
 
@@ -58,9 +59,16 @@ class DMX_Fixtures_Manager:
         ADDON_PATH = dmx.get_addon_path()
         data_file = os.path.join(ADDON_PATH, "data.json")
 
-        if api_username is None or len(api_username) < 2 or api_password is None or len(api_password) < 2:
+        if (
+            api_username is None
+            or len(api_username) < 2
+            or api_password is None
+            or len(api_password) < 2
+        ):
             ShowMessageBox(
-                _("Get GDTF Share account and fill it into BlenderDMX addon preferences."),
+                _(
+                    "Get GDTF Share account and fill it into BlenderDMX addon preferences."
+                ),
                 _("GDTF Share API credentials missing"),
                 "ERROR",
             )
@@ -97,9 +105,16 @@ class DMX_Fixtures_Manager:
         dmx = bpy.context.scene.dmx
         ADDON_PATH = dmx.get_addon_path()
         data_file = os.path.join(ADDON_PATH, "data.json")
-        if api_username is None or len(api_username) < 2 or api_password is None or len(api_password) < 2:
+        if (
+            api_username is None
+            or len(api_username) < 2
+            or api_password is None
+            or len(api_password) < 2
+        ):
             ShowMessageBox(
-                _("Get GDTF Share account and fill it into BlenderDMX addon preferences."),
+                _(
+                    "Get GDTF Share account and fill it into BlenderDMX addon preferences."
+                ),
                 _("GDTF Share API credentials missing"),
                 "ERROR",
             )
@@ -108,7 +123,9 @@ class DMX_Fixtures_Manager:
         if not bpy.app.timers.is_registered(execute_queued_functions):
             bpy.app.timers.register(execute_queued_functions)
         timer_subscribers.append("update index")
-        share_api_client.update_data(api_username, api_password, queue_up, reload_share_profiles, data_file)
+        share_api_client.update_data(
+            api_username, api_password, queue_up, reload_share_profiles, data_file
+        )
 
 
 timer_subscribers = []
@@ -127,7 +144,11 @@ def execute_queued_functions():
         execute(arg)
         if len(timer_subscribers) > 0:
             timer_subscribers.pop()
-        if len(timer_subscribers) < 1 and execution_queue.empty() and bpy.app.timers.is_registered(execute_queued_functions):
+        if (
+            len(timer_subscribers) < 1
+            and execution_queue.empty()
+            and bpy.app.timers.is_registered(execute_queued_functions)
+        ):
             bpy.app.timers.unregister(execute_queued_functions)
 
     return 1.0
@@ -136,13 +157,17 @@ def execute_queued_functions():
 def reload_share_profiles(result):
     if result.status:
         ShowMessageBox(
-            _("Share index updated. Status code was: {}").format(result.result.status_code),
+            _("Share index updated. Status code was: {}").format(
+                result.result.status_code
+            ),
             _("GDTF Share updated"),
             "INFO",
         )
     else:
         ShowMessageBox(
-            _("Error while updating Share index. Error code was: {}").format(result.result.status_code),
+            _("Error while updating Share index. Error code was: {}").format(
+                result.result.status_code
+            ),
             _("GDTF Share update error"),
             "ERROR",
         )
@@ -154,13 +179,17 @@ def reload_local_profiles(result):
     Profiles.DMX_Fixtures_Local_Profile.loadLocal()
     if result.status:
         ShowMessageBox(
-            _("File downloaded correctly. Status code was: {}").format(result.result.status_code),
+            _("File downloaded correctly. Status code was: {}").format(
+                result.result.status_code
+            ),
             _("GDTF file downloaded"),
             "INFO",
         )
     else:
         ShowMessageBox(
-            _("Error downloading GDTF file. Error code was: {}").format(result.result.status_code),
+            _("Error downloading GDTF file. Error code was: {}").format(
+                result.result.status_code
+            ),
             _("GDTF Share download error"),
             "ERROR",
         )
