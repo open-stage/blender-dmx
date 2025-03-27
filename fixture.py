@@ -112,14 +112,51 @@ class DMX_IES_Data(PropertyGroup):
 
 class DMX_Fixture_Channel(PropertyGroup):
     id: StringProperty(
-        name = "Fixture > Channel > ID",
+        name = "Attribute",
         default = '')
+    offset: IntProperty(
+        name = "DMX Channel offset",
+        default = 1)
     default: IntProperty(
         name = "Fixture > Channel > Default",
         default = 0)
     geometry: StringProperty(
         name = "Fixture > Geometry",
         default = '')
+    dmx_break: IntProperty(
+        name = "DMX Break of the channel",
+        default = 1)
+    byte: IntProperty(
+        name = "course 0, fine 1, ultra 2, uber 3",
+        default = 0)
+
+class DMX_Break(PropertyGroup):
+    def ensure_universe_exists(self, context):
+        dmx = bpy.context.scene.dmx
+        dmx.ensureUniverseExists(self.universe)
+
+    dmx_break : IntProperty(
+        name = "DMX Break",
+        description="DMX entry point",
+        default = 1,
+        min = 1,
+        max = 511,
+        )
+    universe : IntProperty(
+        name = "Fixture > Universe",
+        description="Fixture DMX Universe",
+        default = 0,
+        min = 0,
+        max = 511,
+        update = ensure_universe_exists
+        )
+
+    address : IntProperty(
+        name = "Fixture > Address",
+        description="Fixture DMX Address",
+        default = 1,
+        min = 1) # no max for now
+
 
 # fmt: on
 class DMX_Fixture(PropertyGroup):
@@ -188,26 +225,6 @@ class DMX_Fixture(PropertyGroup):
     gdtf_manufacturer: StringProperty(
         name = "Fixture > Manufacturer",
         default = "")
-
-    def ensure_universe_exists(self, context):
-        dmx = bpy.context.scene.dmx
-        dmx.ensureUniverseExists(self.universe)
-
-    universe : IntProperty(
-        name = "Fixture > Universe",
-        description="Fixture DMX Universe",
-        default = 0,
-        min = 0,
-        max = 511,
-        update = ensure_universe_exists
-        )
-
-    address : IntProperty(
-        name = "Fixture > Address",
-        description="Fixture DMX Address",
-        default = 1,
-        min = 1,
-        max = 512)
 
     uuid: StringProperty(
         name = "UUID",
@@ -290,6 +307,11 @@ class DMX_Fixture(PropertyGroup):
         name = "Lock Tilt Rotation",
         description="Lock Tilt Rotation",
         default = False)
+
+    dmx_breaks:  CollectionProperty(
+            name = "DMX Break",
+            type = DMX_Break)
+
     # fmt: on
 
     def build(
@@ -297,8 +319,7 @@ class DMX_Fixture(PropertyGroup):
         name,
         profile,
         mode,
-        universe,
-        address,
+        dmx_breaks,
         gel_color,
         display_beams,
         add_target,
@@ -339,8 +360,12 @@ class DMX_Fixture(PropertyGroup):
             self.classing = classing
 
         # DMX Properties
-        self.universe = universe
-        self.address = address
+        for dmx_break in dmx_breaks:
+            new_break = self.dmx_breaks.add()
+            new_break.dmx_break = dmx_break.dmx_break
+            new_break.universe = dmx_break.universe
+            new_break.address = dmx_break.address
+
         self.gel_color_rgb = list(int((255 / 1) * i) for i in gel_color[:3])
         self.display_beams = display_beams
         self.add_target = add_target
@@ -390,35 +415,37 @@ class DMX_Fixture(PropertyGroup):
             dmx_mode = profile.dmx_modes[0]
             mode = dmx_mode.name
 
-        dmx_channels_flattened = dmx_mode.dmx_channels.as_dict()
-
         has_gobos = False
-        for ch in dmx_channels_flattened:
-            channel = self.channels.add()
-            channel.id = ch["attribute"]
-            channel.geometry = ch["geometry"]
 
-            # Set shutter to 0, we don't want strobing by default
-            # and are not reading real world values yet
-            if "shutter" in ch["attribute"].lower():
-                channel.default = 0
-            # blender programmer cannot control white, set it to 0
-            elif "ColorAdd_W" in ch["attribute"]:
-                channel.default = 0
-            else:
-                channel.default = ch["default"]
+        for channel in dmx_mode.dmx_channels:
+            for byte, offset in enumerate(channel.offset):
+                new_channel = self.channels.add()
+                new_channel.id = channel.attribute.str_link
+                new_channel.geometry = channel.geometry
+                new_channel.dmx_break = channel.dmx_break
+                new_channel.offset = offset
+                new_channel.byte = byte
 
-            if "Gobo" in ch["attribute"]:
-                has_gobos = True
+                # Set shutter to 0, we don't want strobing by default
+                # and are not reading real world values yet
+                if "shutter" in channel.attribute.str_link.lower():
+                    new_channel.default = 0
+                # blender programmer cannot control white, set it to 0
+                elif "ColorAdd_W" in channel.attribute.str_link:
+                    new_channel.default = 0
+                else:
+                    new_channel.default = channel.default
+
+                if "Gobo" in channel["attribute"]:
+                    has_gobos = True
 
         # Build cache of virtual channels
-        _virtual_channels = dmx_mode.virtual_channels.as_dict()
-        for ch in _virtual_channels:
-            virtual_channel = self.virtual_channels.add()
-            virtual_channel.id = ch["attribute"]
-            virtual_channel.geometry = ch["geometry"]
-            virtual_channel.default = ch["default"]
-            if "Gobo" in ch["attribute"]:
+        for channel in dmx_mode.virtual_channels:
+            new_virtual_channel = self.virtual_channels.add()
+            new_virtual_channel.id = channel.attribute
+            new_virtual_channel.geometry = channel.geometry
+            new_virtual_channel.default = channel.default
+            if "Gobo" in channel.attribute.str_link:
                 has_gobos = True
 
         # Get all gobos
