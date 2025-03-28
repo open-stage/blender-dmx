@@ -27,9 +27,11 @@ from bpy_extras.io_utils import ImportHelper
 from ..gdtf import DMX_GDTF
 from ..i18n import DMX_Lang
 from ..logging import DMX_Log
+from ..fixture import DMX_Break
 
 _ = DMX_Lang._
 
+from bpy.props import CollectionProperty
 # Menus #
 
 
@@ -166,13 +168,7 @@ class DMX_Fixture_AddEdit:
 
     name: StringProperty(name=_("Name"), default="Fixture")
 
-    universe: IntProperty(
-        name=_("Universe"), description=_("DMX Universe"), default=0, min=0, max=511
-    )
-
-    address: IntProperty(
-        name=_("Address"), description=_("DMX Address"), default=1, min=1, max=512
-    )
+    dmx_breaks: CollectionProperty(name="DMX Break", type=DMX_Break)
 
     mode: StringProperty(name=_("Mode"), description=_("DMX Mode"), default="")
 
@@ -242,17 +238,15 @@ class DMX_Fixture_AddEdit:
             col.prop(self, "name")
         col.context_pointer_set("add_edit_panel", self)
         text_profile = _("GDTF Profile")
+        fixture_type = None
         if self.profile != "":
-            if "@" not in self.profile:
-                file = os.path.join(DMX_GDTF.getProfilesPath(), self.profile)
-                fixture_type = pygdtf.FixtureType(file)
-                text_profile = [
-                    f"{fixture_type.manufacturer}",
-                    f"{fixture_type.long_name}",
-                    "",
-                ]
-            else:
-                text_profile = self.profile[:-5].replace("_", " ").split("@")
+            file = os.path.join(DMX_GDTF.getProfilesPath(), self.profile)
+            fixture_type = pygdtf.FixtureType(file)
+            text_profile = [
+                f"{fixture_type.manufacturer}",
+                f"{fixture_type.long_name}",
+                "",
+            ]
 
             if len(text_profile) > 1:
                 text_profile = text_profile[0] + " > " + text_profile[1]
@@ -266,8 +260,23 @@ class DMX_Fixture_AddEdit:
             text_mode = self.mode
         if self.advanced_edit:
             col.menu("DMX_MT_Fixture_Mode", text=text_mode)
-        col.prop(self, "universe")
-        col.prop(self, "address")
+
+        if fixture_type is not None:
+            self.dmx_breaks.clear()
+            print("processing here")
+            for i in range(
+                0, fixture_type.dmx_modes.get_mode_by_name(self.mode).dmx_breaks_count
+            ):
+                new_break = self.dmx_breaks.add()
+                new_break.address = 1
+                new_break.universe = 1
+                new_break.dmx_break = 1  # we need the break here
+
+            for dmx_break in self.dmx_breaks:
+                col.label(text=f"DMX Break: {dmx_break.dmx_break}")
+                col.prop(dmx_break, "universe")
+                col.prop(dmx_break, "address")
+
         col.prop(self, "fixture_id")
         if self.units == 0:  # Edit fixtures:
             col.prop(
