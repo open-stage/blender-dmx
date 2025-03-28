@@ -111,6 +111,7 @@ class DMX(PropertyGroup):
         fixture.DMX_IES_Data,
         fixture.DMX_Geometry_Node,
         fixture.DMX_Fixture_Channel,
+        fixture.DMX_Break,
         fixture.DMX_Fixture,
         tracker.DMX_Tracker_Object,
         tracker.DMX_Tracker,

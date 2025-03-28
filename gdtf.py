@@ -383,11 +383,11 @@ class DMX_GDTF:
         root_geometry = profile.geometries.get_geometry_by_name(dmx_mode.geometry)
         has_gobos = False
 
-        dmx_channels_flattened = dmx_mode.dmx_channels.as_dict()
-        virtual_channels = dmx_mode.virtual_channels.as_dict()
+        dmx_channels_flattened = dmx_mode.dmx_channels
+        virtual_channels = dmx_mode.virtual_channels
 
         for ch in dmx_channels_flattened:
-            if "Gobo" in ch["attribute"]:
+            if "Gobo" in ch.attribute.str_link:
                 has_gobos = True
 
         def load_geometries(geometry):
@@ -548,9 +548,9 @@ class DMX_GDTF:
                     "ColorRGB_Green",
                 ]
                 for ch in dmx_channels_flattened:
-                    if ch["geometry"] == obj_child["original_name"]:
+                    if ch.geometry == obj_child["original_name"]:
                         if any(
-                            used_attr in ch["attribute"]
+                            used_attr in ch.attribute.str_link
                             for used_attr in used_attributes
                         ):
                             obj_child["parent_geometries"] = []
@@ -569,11 +569,12 @@ class DMX_GDTF:
             parent_geometries = []
 
             for ch in dmx_channels_flattened:
-                if ch["geometry"] == geometry.parent_name:
+                if ch.geometry == geometry.parent_name:
                     if any(
-                        used_attr in ch["attribute"] for used_attr in used_attributes
+                        used_attr in ch.attribute.str_link
+                        for used_attr in used_attributes
                     ):
-                        parent_geometries.append(ch["geometry"].replace(" ", "_"))
+                        parent_geometries.append(ch.geometry.replace(" ", "_"))
 
             if not parent_geometries and geometry.parent_name is not None:
                 new_obj_name = geometry.parent_name.replace(" ", "_")
@@ -781,16 +782,17 @@ class DMX_GDTF:
             axis_objects = []
             for obj in objs.values():
                 for channel in dmx_channels_flattened:
-                    if attribute == channel["attribute"] and channel[
-                        "geometry"
-                    ] == obj.get("original_name", "None"):
+                    if (
+                        attribute == channel.attribute.str_link
+                        and channel.geometry == obj.get("original_name", "None")
+                    ):
                         obj["mobile_type"] = "head" if attribute == "Tilt" else "yoke"
                         obj["geometry_type"] = "axis"
                         axis_objects.append(obj)
                 for channel in virtual_channels:
-                    if attribute == channel["attribute"] and channel[
-                        "geometry"
-                    ] == obj.get("original_name", "None"):
+                    if attribute == channel.attribute and channel.geometry == obj.get(
+                        "original_name", "None"
+                    ):
                         obj["mobile_type"] = "head" if attribute == "Tilt" else "yoke"
                         obj["geometry_type"] = "axis"
                         axis_objects.append(obj)

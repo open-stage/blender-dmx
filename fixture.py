@@ -126,7 +126,7 @@ class DMX_Fixture_Channel(PropertyGroup):
     dmx_break: IntProperty(
         name = "DMX Break of the channel",
         default = 1)
-    byte: IntProperty(
+    byte_offset: IntProperty(
         name = "course 0, fine 1, ultra 2, uber 3",
         default = 0)
 
@@ -156,6 +156,12 @@ class DMX_Break(PropertyGroup):
         description="Fixture DMX Address",
         default = 1,
         min = 1) # no max for now
+
+    channels_count : IntProperty(
+        name = "Number of channels",
+        description="Number of DMX channels",
+        default = 0,
+        min = 0) # no max for now
 
 
 # fmt: on
@@ -359,13 +365,6 @@ class DMX_Fixture(PropertyGroup):
         if classing is not None:
             self.classing = classing
 
-        # DMX Properties
-        for dmx_break in dmx_breaks:
-            new_break = self.dmx_breaks.add()
-            new_break.dmx_break = dmx_break.dmx_break
-            new_break.universe = dmx_break.universe
-            new_break.address = dmx_break.address
-
         self.gel_color_rgb = list(int((255 / 1) * i) for i in gel_color[:3])
         self.display_beams = display_beams
         self.add_target = add_target
@@ -424,7 +423,7 @@ class DMX_Fixture(PropertyGroup):
                 new_channel.geometry = channel.geometry
                 new_channel.dmx_break = channel.dmx_break
                 new_channel.offset = offset
-                new_channel.byte = byte
+                new_channel.byte_offset = byte
 
                 # Set shutter to 0, we don't want strobing by default
                 # and are not reading real world values yet
@@ -438,6 +437,23 @@ class DMX_Fixture(PropertyGroup):
 
                 if "Gobo" in channel["attribute"]:
                     has_gobos = True
+
+        grouped = {}
+        for channel in dmx_mode.dmx_channels:
+            key = channel.dmx_break
+            if key not in grouped:
+                grouped[key] = 0
+
+            if channel.offset is not None:
+                grouped[key] += channel.offset
+
+        for dmx_break in dmx_breaks:
+            new_break = self.dmx_breaks.add()
+            new_break.dmx_break = dmx_break.dmx_break
+            new_break.universe = dmx_break.universe
+            new_break.address = dmx_break.address
+            if new_break.dmx_break in grouped.keys():
+                new_break.channels_count = len(set(grouped[new_break.dmx_break]))
 
         # Build cache of virtual channels
         for channel in dmx_mode.virtual_channels:
@@ -660,18 +676,32 @@ class DMX_Fixture(PropertyGroup):
         # virtuals = [c.id for c in self.virtual_channels]
 
         for attribute, value in pvalues.items():
-            for idx, channel in enumerate(self.channels):
+            for channel in self.channels:
                 if channel.id == attribute:
                     if len(temp_data.active_subfixtures) > 0:
                         if any(
                             channel.geometry == g.name
                             for g in temp_data.active_subfixtures
                         ):
-                            DMX_Log.log.info(("Set DMX data", channel.id, value))
-                            DMX_Data.set(self.universe, self.address + idx, value)
+                            for dmx_break in self.dmx_breaks:
+                                if dmx_break.dmx_break == channel.dmx_break:
+                                    DMX_Log.log.info(
+                                        ("Set DMX data", channel.id, value)
+                                    )
+                                    DMX_Data.set(
+                                        dmx_break.universe,
+                                        dmx_break.address + channel.offset,
+                                        value,
+                                    )
                     else:
-                        DMX_Log.log.info(("Set DMX data", channel, value))
-                        DMX_Data.set(self.universe, self.address + idx, value)
+                        for dmx_break in self.dmx_breaks:
+                            if dmx_break.dmx_break == channel.dmx_break:
+                                DMX_Log.log.info(("Set DMX data", channel, value))
+                                DMX_Data.set(
+                                    dmx_break.universe,
+                                    dmx_break.address + channel.offset,
+                                    value,
+                                )
             for vchannel in self.virtual_channels:
                 if vchannel.id == attribute:
                     if len(temp_data.active_subfixtures) > 0:
@@ -697,7 +727,12 @@ class DMX_Fixture(PropertyGroup):
         channels = [c.id for c in self.channels]
         # virtual_channels = [c.id for c in self.virtual_channels]
 
-        data = DMX_Data.get(self.universe, self.address, len(channels))
+        data = []
+        for dmx_break in self_dmx_breaks:
+            data += DMX_Data.get(
+                dmx_break.universe, dmx_break.address, dmx_break.channels_count
+            )
+
         data_virtual = DMX_Data.get_virtual(self.name)
 
         s_data = [int(b) for b in data] + [
