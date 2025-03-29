@@ -36,3 +36,8 @@ DMX_LOG.log.warning("Logging warning message here, level 30")
 DMX_LOG.log.info("Logging info message here, level 20")
 DMX_LOG.log.debug("Logging debug message here, level 10")
 ```
+
+### Code Attribution
+
+Add/update code license headers with  [hawkeye](https://github.com/korandoru/hawkeye):
+ - `hawkeye format`
