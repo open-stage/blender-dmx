@@ -497,8 +497,8 @@ def add_mvr_fixture(
     else:
         # if the file is not in the MVR package, use an RGBW Par64
         fixture.gdtf_spec = "BlenderDMX@LED_PAR_64_RGBW@v0.3.gdtf"
-
-    dmx.ensureUniverseExists(fixture.addresses[0].universe)
+    for address in fixture.addresses:
+        dmx.ensureUniverseExists(address.universe)
 
     add_target = import_globals.import_focus_points
 
@@ -510,8 +510,7 @@ def add_mvr_fixture(
             unique_name,
             fixture.gdtf_spec,
             fixture.gdtf_mode,
-            fixture.addresses[0].universe,
-            fixture.addresses[0].address,
+            fixture.addresses,
             xyY2rgbaa(fixture.color),
             True,
             add_target,
@@ -530,8 +529,7 @@ def add_mvr_fixture(
         dmx.addFixture(
             unique_name,
             fixture.gdtf_spec,
-            fixture.addresses[0].universe,
-            fixture.addresses[0].address,
+            fixture.addresses,
             fixture.gdtf_mode,
             xyY2rgbaa(fixture.color),
             True,

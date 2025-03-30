@@ -138,8 +138,8 @@ class DMX_Break(PropertyGroup):
     dmx_break : IntProperty(
         name = "DMX Break",
         description="DMX entry point",
-        default = 1,
-        min = 1,
+        default = 0,
+        min = 0,
         max = 511,
         )
     universe : IntProperty(
@@ -380,6 +380,7 @@ class DMX_Fixture(PropertyGroup):
         self.gobo_materials.clear()
         self.ies_data.clear()
         self.dmx_cache_dirty = False
+        self.dmx_breaks.clear()
 
         # Custom python data storage, outside of bpy.props. So called ID props
         self["dmx_values"] = []
@@ -443,7 +444,13 @@ class DMX_Fixture(PropertyGroup):
             new_break.dmx_break = dmx_break.dmx_break
             new_break.universe = dmx_break.universe
             new_break.address = dmx_break.address
-            new_break.channels_count = dmx_break.channels_count
+            print(
+                "new  break", new_break.dmx_break, new_break.address, new_break.universe
+            )
+
+            for mode_break in dmx_mode.dmx_breaks:
+                if dmx_break.dmx_break == mode_break.dmx_break:
+                    new_break.channels_count = mode_break.channels_count
 
         # Build cache of virtual channels
         for channel in dmx_mode.virtual_channels:
@@ -719,8 +726,16 @@ class DMX_Fixture(PropertyGroup):
 
         data = []
         for dmx_break in self.dmx_breaks:
+            # there is still an issue here if the patch is not continuous
             data += DMX_Data.get(
                 dmx_break.universe, dmx_break.address, dmx_break.channels_count
+            )
+            print(
+                "data",
+                dmx_break.universe,
+                dmx_break.address,
+                dmx_break.channels_count,
+                data,
             )
 
         data_virtual = DMX_Data.get_virtual(self.name)
@@ -1793,7 +1808,6 @@ class DMX_Fixture(PropertyGroup):
 
             for idx, d in enumerate(data):
                 for channel in self.channels:
-                    print("channel offset", channel.offset, "idx", idx)
                     if channel.offset == idx:
                         params[channel.id] = d
         return params
