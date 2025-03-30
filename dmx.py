@@ -1864,8 +1864,7 @@ class DMX(PropertyGroup):
         self,
         name,
         profile,
-        universe,
-        address,
+        dmx_breaks,
         mode,
         gel_color,
         display_beams,
@@ -1888,8 +1887,7 @@ class DMX(PropertyGroup):
                 name,
                 profile,
                 mode,
-                universe,
-                address,
+                dmx_breaks,
                 gel_color,
                 display_beams,
                 add_target,
@@ -1968,7 +1966,9 @@ class DMX(PropertyGroup):
         if sorting_order == "ADDRESS":
             fixtures = sorted(
                 self.fixtures,
-                key=lambda c: string_to_pairs(str(c.universe * 1000 + c.address)),
+                key=lambda c: string_to_pairs(
+                    str(c.dmx_breaks[0].universe * 1000 + c.dmx_breaks[0].address)
+                ),
             )
         elif sorting_order == "NAME":
             fixtures = sorted(self.fixtures, key=lambda c: string_to_pairs(c.name))

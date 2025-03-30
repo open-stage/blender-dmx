@@ -433,34 +433,24 @@ class DMX_Fixture(PropertyGroup):
                 elif "ColorAdd_W" in channel.attribute.str_link:
                     new_channel.default = 0
                 else:
-                    new_channel.default = channel.default
+                    new_channel.default = channel.default.get_value(byte > 0)
 
-                if "Gobo" in channel["attribute"]:
+                if "Gobo" in channel.attribute.str_link:
                     has_gobos = True
-
-        grouped = {}
-        for channel in dmx_mode.dmx_channels:
-            key = channel.dmx_break
-            if key not in grouped:
-                grouped[key] = 0
-
-            if channel.offset is not None:
-                grouped[key] += channel.offset
 
         for dmx_break in dmx_breaks:
             new_break = self.dmx_breaks.add()
             new_break.dmx_break = dmx_break.dmx_break
             new_break.universe = dmx_break.universe
             new_break.address = dmx_break.address
-            if new_break.dmx_break in grouped.keys():
-                new_break.channels_count = len(set(grouped[new_break.dmx_break]))
+            new_break.channels_count = dmx_break.channels_count
 
         # Build cache of virtual channels
         for channel in dmx_mode.virtual_channels:
             new_virtual_channel = self.virtual_channels.add()
-            new_virtual_channel.id = channel.attribute
+            new_virtual_channel.id = channel.attribute.str_link
             new_virtual_channel.geometry = channel.geometry
-            new_virtual_channel.default = channel.default
+            new_virtual_channel.default = channel.default.get_value()
             if "Gobo" in channel.attribute.str_link:
                 has_gobos = True
 
@@ -690,7 +680,7 @@ class DMX_Fixture(PropertyGroup):
                                     )
                                     DMX_Data.set(
                                         dmx_break.universe,
-                                        dmx_break.address + channel.offset,
+                                        dmx_break.address + channel.offset - 1,
                                         value,
                                     )
                     else:
@@ -699,7 +689,7 @@ class DMX_Fixture(PropertyGroup):
                                 DMX_Log.log.info(("Set DMX data", channel, value))
                                 DMX_Data.set(
                                     dmx_break.universe,
-                                    dmx_break.address + channel.offset,
+                                    dmx_break.address + channel.offset - 1,
                                     value,
                                 )
             for vchannel in self.virtual_channels:
@@ -728,7 +718,7 @@ class DMX_Fixture(PropertyGroup):
         # virtual_channels = [c.id for c in self.virtual_channels]
 
         data = []
-        for dmx_break in self_dmx_breaks:
+        for dmx_break in self.dmx_breaks:
             data += DMX_Data.get(
                 dmx_break.universe, dmx_break.address, dmx_break.channels_count
             )
@@ -1788,11 +1778,24 @@ class DMX_Fixture(PropertyGroup):
                     return obj
 
     def getProgrammerData(self):
-        channels = [c.id for c in self.channels]
-        data = DMX_Data.get(self.universe, self.address, len(channels))
+        # channels = [c.id for c in self.channels]
         params = {}
-        for c in range(len(channels)):
-            params[channels[c]] = data[c]
+        print("get programmer data")
+
+        for dmx_break in self.dmx_breaks:
+            print(
+                "break", dmx_break.universe, dmx_break.address, dmx_break.channels_count
+            )
+            data = DMX_Data.get(
+                dmx_break.universe, dmx_break.address, dmx_break.channels_count
+            )
+            print("data", data)
+
+            for idx, d in enumerate(data):
+                for channel in self.channels:
+                    print("channel offset", channel.offset, "idx", idx)
+                    if channel.offset == idx:
+                        params[channel.id] = d
         return params
 
     def select(self, select_target=False):
@@ -1912,8 +1915,14 @@ class DMX_Fixture(PropertyGroup):
         return selected
 
     def clear(self):
-        for i, ch in enumerate(self.channels):
-            DMX_Data.set(self.universe, self.address + i, ch.default)
+        for dmx_break in self.dmx_breaks:
+            for channel in self.channels:
+                if channel.dmx_break == dmx_break.dmx_break:
+                    DMX_Data.set(
+                        dmx_break.universe,
+                        dmx_break.address + channel.offset,
+                        channel.default,
+                    )
         self.render()
 
     def set_gobo_slot(self, n, index=-1, current_frame=None):
