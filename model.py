@@ -15,11 +15,12 @@
 # You should have received a copy of the GNU General Public License along
 # with this program. If not, see <https://www.gnu.org/licenses/>.
 
+import traceback
+
 import bpy
 
 from .gdtf import DMX_GDTF
 from .logging import DMX_Log
-import traceback
 
 
 class DMX_Model:

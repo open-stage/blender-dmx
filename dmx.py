@@ -50,7 +50,7 @@ from .acn import DMX_sACN
 from .artnet import DMX_ArtNet
 from .blender_utils import copy_blender_profiles, get_application_version
 from .data import DMX_Data, DMX_Value
-from .gdtf import DMX_GDTF
+from .gdtf_file import DMX_GDTF_File
 from .group import DMX_Group, FixtureGroup
 from .i18n import DMX_Lang
 from .logging import DMX_Log
@@ -627,7 +627,7 @@ class DMX(PropertyGroup):
         self.check_blender_version()
         self.print_extension_version()
 
-        DMX_GDTF.getManufacturerList()
+        DMX_GDTF_File.getManufacturerList()
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
         Profiles.DMX_Fixtures_Import_Gdtf_Profile.loadShare()
         self.logging_level = "ERROR"  # setting default logging level
@@ -682,7 +682,7 @@ class DMX(PropertyGroup):
 
     def copy_default_profiles_to_user_folder(self):
         copy_blender_profiles()
-        DMX_GDTF.getManufacturerList()
+        DMX_GDTF_File.getManufacturerList()
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
 
     def ensure_application_uuid(self):
@@ -1993,7 +1993,7 @@ class DMX(PropertyGroup):
         load_mvr(self, file_name, import_focus_points=import_focus_points)
 
         bpy.context.window_manager.dmx.pause_render = False  # re-enable render loop
-        DMX_GDTF.getManufacturerList()
+        DMX_GDTF_File.getManufacturerList()
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
 
     def clean_up_empty_mvr_collections(self, collections):

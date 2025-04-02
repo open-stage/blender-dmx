@@ -34,16 +34,12 @@ from bpy.props import (
     IntProperty,
     StringProperty,
 )
+from bpy.types import PropertyGroup
 
-
-from bpy.types import (
-    PropertyGroup,
-)
-
-from .gdtf import DMX_GDTF
 from .i18n import DMX_Lang
 from .panels import profiles as Profiles
 from .util import create_unique_fixture_name
+from .gdtf_file import DMX_GDTF_File
 
 _ = DMX_Lang._
 
@@ -214,8 +210,7 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
 
             if self.patch:
                 try:
-                    file_name = os.path.join(folder_path, file.name)
-                    profile = pygdtf.FixtureType(file_name)
+                    profile = DMX_GDTF_File.loadProfile(file.name)
                     dmx_mode = profile.dmx_modes[0]
                     self.dmx_breaks.clear()
                     print("dmx mode", dmx_mode.name, dmx_mode.dmx_breaks)
@@ -231,7 +226,7 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
                         new_name = create_unique_fixture_name(new_name)
                         dmx.addFixture(
                             new_name,
-                            file_name,
+                            file.name,
                             self.dmx_breaks,
                             dmx_mode.name,
                             self.gel_color,
@@ -259,7 +254,7 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
 
                 except Exception as e:
                     traceback.print_exception(e)
-        DMX_GDTF.getManufacturerList()
+        DMX_GDTF_File.getManufacturerList()
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
         return {"FINISHED"}
 

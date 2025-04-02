@@ -24,14 +24,15 @@ from bpy.props import BoolProperty, FloatVectorProperty, IntProperty, StringProp
 from bpy.types import Menu, Operator, Panel, UIList
 from bpy_extras.io_utils import ImportHelper
 
-from ..gdtf import DMX_GDTF
+from ..fixture import DMX_Break
+from ..gdtf_file import DMX_GDTF_File
 from ..i18n import DMX_Lang
 from ..logging import DMX_Log
-from ..fixture import DMX_Break
 
 _ = DMX_Lang._
 
 from bpy.props import CollectionProperty
+
 # Menus #
 
 
@@ -93,7 +94,7 @@ class DMX_MT_Fixture_Profiles(Menu):
     def draw(self, context):
         layout = self.layout
         manufacturer = context.manufacturer
-        for profile in DMX_GDTF.getProfileList(manufacturer.name):
+        for profile in DMX_GDTF_File.getProfileList(manufacturer.name):
             row = layout.row()
             row.context_pointer_set("add_edit_panel", context.add_edit_panel)
             revision = f" ({profile[2]})" if profile[2] else ""
@@ -114,7 +115,7 @@ class DMX_MT_Fixture_Mode(Menu):
         profile = context.add_edit_panel.profile
         if not profile:
             return
-        for mode, channel_count in DMX_GDTF.getModes(profile).items():
+        for mode, channel_count in DMX_GDTF_File.getModes(profile).items():
             row = layout.row()
             row.context_pointer_set("add_edit_panel", context.add_edit_panel)
             row.operator(
@@ -155,7 +156,7 @@ class DMX_Fixture_AddEdit:
     def onProfile(self, context):
         if hasattr(context, "add_edit_panel"):
             mode, channel_count = list(
-                DMX_GDTF.getModes(context.add_edit_panel.profile).items()
+                DMX_GDTF_File.getModes(context.add_edit_panel.profile).items()
             )[0]
             context.add_edit_panel.mode = f"{mode}"
 
@@ -240,8 +241,7 @@ class DMX_Fixture_AddEdit:
         text_profile = _("GDTF Profile")
         fixture_type = None
         if self.profile != "":
-            file = os.path.join(DMX_GDTF.getProfilesPath(), self.profile)
-            fixture_type = pygdtf.FixtureType(file)
+            fixture_type = DMX_GDTF_File.loadProfile(self.profile)
             text_profile = [
                 f"{fixture_type.manufacturer}",
                 f"{fixture_type.long_name}",
@@ -263,15 +263,23 @@ class DMX_Fixture_AddEdit:
 
         if fixture_type is not None:
             print("processing here")
+            # self.dmx_breaks.clear()
             for dmx_break in fixture_type.dmx_modes.get_mode_by_name(
                 self.mode
             ).dmx_breaks:
                 new_break = None
                 for existing_break in self.dmx_breaks:
-                    print("existing break", existing_break)
+                    print(
+                        "existing break",
+                        existing_break.dmx_break,
+                        "dmx break",
+                        dmx_break.dmx_break,
+                    )
                     if existing_break.dmx_break == dmx_break.dmx_break:
+                        print("new existing break")
                         new_break = existing_break
                 if new_break is None:
+                    print("new new break")
                     new_break = self.dmx_breaks.add()
                     new_break.dmx_break = dmx_break.dmx_break
                 new_break.channels_count = dmx_break.channels_count
@@ -389,12 +397,21 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                     {"ERROR"}, _("Fixture named {} already exists").format(self.name)
                 )
                 return {"CANCELLED"}
+
+            fixture.dmx_breaks.clear()
+            for dmx_break in self.dmx_breaks:
+                new_break = fixture.dmx_breaks.add()
+                new_break.dmx_break = dmx_break.dmx_break
+                new_break.universe = dmx_break.universe
+                new_break.address = dmx_break.address
+                new_break.channels_count = dmx_break.channels_count
+                dmx.ensureUniverseExists(dmx_break.universe)
             if self.advanced_edit:
                 fixture.build(
                     self.name,
                     self.profile,
                     self.mode,
-                    self.breaks,
+                    self.dmx_breaks,
                     self.gel_color,
                     self.display_beams,
                     self.add_target,

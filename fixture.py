@@ -46,6 +46,7 @@ from bpy.types import (
 
 from .data import DMX_Data
 from .gdtf import DMX_GDTF
+from .gdtf_file import DMX_GDTF_File
 from .logging import DMX_Log
 from .material import (
     get_gobo_material,
@@ -396,7 +397,7 @@ class DMX_Fixture(PropertyGroup):
             self.collection.children.unlink(c)
 
         # Import and deep copy Fixture Model Collection
-        gdtf_profile = DMX_GDTF.loadProfile(profile)
+        gdtf_profile = DMX_GDTF_File.loadProfile(profile)
         self.gdtf_long_name = gdtf_profile.long_name
         self.gdtf_manufacturer = gdtf_profile.manufacturer
 
@@ -445,7 +446,7 @@ class DMX_Fixture(PropertyGroup):
             new_break.universe = dmx_break.universe
             new_break.address = dmx_break.address
             print(
-                "new  break", new_break.dmx_break, new_break.address, new_break.universe
+                "new break", new_break.dmx_break, new_break.address, new_break.universe
             )
 
             for mode_break in dmx_mode.dmx_breaks:

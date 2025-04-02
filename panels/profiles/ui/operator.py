@@ -22,7 +22,7 @@ import bpy
 from bpy.props import CollectionProperty, IntProperty, StringProperty
 from bpy.types import Operator
 
-from ....gdtf import DMX_GDTF
+from ....gdtf_file import DMX_GDTF_File
 from ....i18n import DMX_Lang
 from ....logging import DMX_Log
 from ....panels import profiles as Profiles
@@ -42,7 +42,7 @@ class DMX_OP_Import_Fixture_From_Share(Operator):
 
     def execute(self, context):
         Profiles.controller.DMX_Fixtures_Manager.import_from_share(self, self.index)
-        DMX_GDTF.getManufacturerList()
+        DMX_GDTF_File.getManufacturerList()
         return {"FINISHED"}
 
 
@@ -67,7 +67,7 @@ class DMX_OP_Delete_Local_Fixture(Operator):
 
     def execute(self, context):
         Profiles.controller.DMX_Fixtures_Manager.delete_local_fixture(self, self.index)
-        DMX_GDTF.getManufacturerList()
+        DMX_GDTF_File.getManufacturerList()
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
         return {"FINISHED"}
 
@@ -79,6 +79,6 @@ class DMX_OP_Update_Local_Fixtures(Operator):
     bl_options = {"UNDO"}
 
     def execute(self, context):
-        DMX_GDTF.getManufacturerList()
+        DMX_GDTF_File.getManufacturerList()
         Profiles.DMX_Fixtures_Local_Profile.loadLocal(show_errors=True)
         return {"FINISHED"}

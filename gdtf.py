@@ -34,74 +34,9 @@ from .util import sanitize_obj_name, xyY2rgbaa
 
 class DMX_GDTF:
     @staticmethod
-    def getProfilesPath():
-        dmx = bpy.context.scene.dmx
-        ADDON_PATH = dmx.get_addon_path()
-        return os.path.join(ADDON_PATH, "assets", "profiles")
-
-    @staticmethod
     def getPrimitivesPath():
         ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
         return os.path.join(ADDON_PATH, "assets", "primitives")
-
-    @staticmethod
-    def getManufacturerList():
-        # List profiles in folder
-        manufacturers_names = set()
-        # TODO cache this, as it can make a slow addon start
-        for file in os.listdir(DMX_GDTF.getProfilesPath()):
-            # Parse info from file name: Manufacturer@Device@Revision.gdtf
-            if "@" not in file:
-                file = os.path.join(DMX_GDTF.getProfilesPath(), file)
-                with pygdtf.FixtureType(file) as fixture_type:
-                    name = f"{fixture_type.manufacturer}"
-            else:
-                name = file.split("@")[0]
-            manufacturers_names.add(name)
-        manufacturers = bpy.context.window_manager.dmx.manufacturers
-        manufacturers.clear()
-        for name in sorted(manufacturers_names):
-            manufacturers.add().name = name
-
-    @staticmethod
-    def getProfileList(manufacturer):
-        # List profiles in folder
-        profiles = []
-        for file in os.listdir(DMX_GDTF.getProfilesPath()):
-            # Parse info from file name: Company@Model.gdtf
-            if "@" not in file:
-                file = os.path.join(DMX_GDTF.getProfilesPath(), file)
-                with pygdtf.FixtureType(file) as fixture_type:
-                    info = [
-                        f"{fixture_type.manufacturer}",
-                        f"{fixture_type.long_name}",
-                        "",
-                    ]
-            else:
-                info = file.split("@")
-            if info[0] == manufacturer:
-                # Remove ".gdtf" from the end of the string
-                if info[-1][-5:].lower() == ".gdtf":
-                    info[-1] = info[-1][:-5]
-                # Add to list (identifier, short name, full name)
-                profiles.append((file, info[1], (info[2] if len(info) > 2 else "")))
-
-        return tuple(profiles)
-
-    @staticmethod
-    def getModes(profile):
-        """Returns an array, keys are mode names, value is channel count"""
-        gdtf_profile = DMX_GDTF.loadProfile(profile)
-        modes = {}
-        for mode in gdtf_profile.dmx_modes:
-            modes[mode.name] = mode.dmx_channels_count
-        return modes
-
-    @staticmethod
-    def loadProfile(filename):
-        path = os.path.join(DMX_GDTF.getProfilesPath(), filename)
-        profile = pygdtf.FixtureType(path)
-        return profile
 
     @staticmethod
     def load_blender_primitive(model):

@@ -30,7 +30,8 @@ from zeroconf import (
 )
 
 from .logging import DMX_Log
-from .mvrxchange.mvrx_message import defined_station_name, defined_provider_name
+from .mvrxchange.mvrx_message import defined_provider_name, defined_station_name
+
 # mdns (zeroconf) instances for discover and for mdns server
 
 

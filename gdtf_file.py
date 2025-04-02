@@ -1,4 +1,4 @@
-# Copyright (C) none
+# Copyright (C) 2025 vanous
 #
 # This file is part of BlenderDMX.
 #
@@ -15,6 +15,9 @@
 # You should have received a copy of the GNU General Public License along
 # with this program. If not, see <https://www.gnu.org/licenses/>.
 
+import os
+
+import bpy
 import pygdtf
 
 
@@ -30,10 +33,10 @@ class DMX_GDTF_File:
         # List profiles in folder
         manufacturers_names = set()
         # TODO cache this, as it can make a slow addon start
-        for file in os.listdir(DMX_GDTF.getProfilesPath()):
+        for file in os.listdir(DMX_GDTF_File.getProfilesPath()):
             # Parse info from file name: Manufacturer@Device@Revision.gdtf
             if "@" not in file:
-                file = os.path.join(DMX_GDTF.getProfilesPath(), file)
+                file = os.path.join(DMX_GDTF_File.getProfilesPath(), file)
                 with pygdtf.FixtureType(file) as fixture_type:
                     name = f"{fixture_type.manufacturer}"
             else:
@@ -48,10 +51,10 @@ class DMX_GDTF_File:
     def getProfileList(manufacturer):
         # List profiles in folder
         profiles = []
-        for file in os.listdir(DMX_GDTF.getProfilesPath()):
+        for file in os.listdir(DMX_GDTF_File.getProfilesPath()):
             # Parse info from file name: Company@Model.gdtf
             if "@" not in file:
-                file = os.path.join(DMX_GDTF.getProfilesPath(), file)
+                file = os.path.join(DMX_GDTF_File.getProfilesPath(), file)
                 with pygdtf.FixtureType(file) as fixture_type:
                     info = [
                         f"{fixture_type.manufacturer}",
@@ -72,7 +75,7 @@ class DMX_GDTF_File:
     @staticmethod
     def getModes(profile):
         """Returns an array, keys are mode names, value is channel count"""
-        gdtf_profile = DMX_GDTF.loadProfile(profile)
+        gdtf_profile = DMX_GDTF_File.loadProfile(profile)
         modes = {}
         for mode in gdtf_profile.dmx_modes:
             modes[mode.name] = mode.dmx_channels_count
@@ -80,6 +83,6 @@ class DMX_GDTF_File:
 
     @staticmethod
     def loadProfile(filename):
-        path = os.path.join(DMX_GDTF.getProfilesPath(), filename)
+        path = os.path.join(DMX_GDTF_File.getProfilesPath(), filename)
         profile = pygdtf.FixtureType(path)
         return profile

@@ -502,15 +502,24 @@ def add_mvr_fixture(
 
     add_target = import_globals.import_focus_points
 
+    addresses = [
+        SimpleNamespace(
+            dmx_break=address.dmx_break,
+            address=address.address,
+            universe=address.universe,
+        )
+        for address in fixture.addresses
+    ]
     if existing_fixture is not None:
         # TODO: we should not rename the fixture on import unless if the user wants it
         # but we must ensure that the name is unique in the collection
         unique_name = create_unique_fixture_name(fixture.name)
+
         existing_fixture.build(
             unique_name,
             fixture.gdtf_spec,
             fixture.gdtf_mode,
-            fixture.addresses,
+            addresses,
             xyY2rgbaa(fixture.color),
             True,
             add_target,
@@ -529,7 +538,7 @@ def add_mvr_fixture(
         dmx.addFixture(
             unique_name,
             fixture.gdtf_spec,
-            fixture.addresses,
+            addresses,
             fixture.gdtf_mode,
             xyY2rgbaa(fixture.color),
             True,

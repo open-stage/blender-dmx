@@ -23,6 +23,7 @@ from bpy.props import CollectionProperty, IntProperty, StringProperty
 from bpy.types import PropertyGroup
 
 from ....i18n import DMX_Lang
+from ....gdtf_file import DMX_GDTF_File
 
 _ = DMX_Lang._
 
@@ -50,23 +51,16 @@ class DMX_Fixtures_Local_Profile(PropertyGroup):
     modes: CollectionProperty(type=DMX_Fixtures_Local_ProfileMode)
 
     @staticmethod
-    def get_profiles_path() -> str:
-        """Return the path to the "profiles" folder."""
-        dmx = bpy.context.scene.dmx
-        FILE_PATH = dmx.get_addon_path()
-        return os.path.join(FILE_PATH, "assets", "profiles")
-
-    @staticmethod
     def get_profile_list(show_errors=False):
         """List gdtf files in in profiles folder"""
 
-        profiles_path = DMX_Fixtures_Local_Profile.get_profiles_path()
+        profiles_path = DMX_GDTF_File.getProfilesPath()
         profiles = []
         errors = []
         for file in os.listdir(profiles_path):
             file_path = os.path.join(profiles_path, file)
             try:
-                with pygdtf.FixtureType(file_path) as fixture_type:
+                with DMX_GDTF_File.loadProfile(file) as fixture_type:
                     profiles.append(
                         {
                             "name": f"{fixture_type.manufacturer} @ {fixture_type.long_name}",

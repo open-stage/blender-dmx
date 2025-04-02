@@ -23,7 +23,7 @@ from bpy.props import CollectionProperty, StringProperty
 from bpy.types import Operator, Panel
 
 from .. import blender_utils as blender_utils
-from ..gdtf import DMX_GDTF
+from ..gdtf_file import DMX_GDTF_File
 from ..i18n import DMX_Lang
 from ..in_gdtf import DMX_OT_Import_GDTF
 from ..in_out_mvr import DMX_OT_Export_MVR, DMX_OT_Import_MVR
@@ -495,7 +495,7 @@ class DMX_OT_Import_Custom_Data(Operator):
             self.report({"ERROR"}, _("Incorrect file name!"))
             return {"FINISHED"}
 
-        DMX_GDTF.getManufacturerList()
+        DMX_GDTF_File.getManufacturerList()
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
 
         if result.ok:
@@ -561,7 +561,7 @@ class DMX_OT_Clear_Custom_Data(Operator):
     def execute(self, context):
         result = blender_utils.clear_custom_data()
 
-        DMX_GDTF.getManufacturerList()
+        DMX_GDTF_File.getManufacturerList()
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
 
         if result.ok:
@@ -590,7 +590,7 @@ class DMX_OT_Copy_Custom_Data(Operator):
 
     def execute(self, context):
         result = blender_utils.copy_custom_data()
-        DMX_GDTF.getManufacturerList()
+        DMX_GDTF_File.getManufacturerList()
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
 
         if result.ok:
