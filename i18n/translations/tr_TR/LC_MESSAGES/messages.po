@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-11-30 11:27+0100\n"
-"PO-Revision-Date: 2024-09-15 23:09+0000\n"
-"Last-Translator: Ugur Saglam <saglamugur556@gmail.com>\n"
+"PO-Revision-Date: 2025-04-16 06:01+0000\n"
+"Last-Translator: polarwood <polarwood@users.noreply.hosted.weblate.org>\n"
+"Language-Team: Turkish <https://hosted.weblate.org/projects/blenderdmx/main/"
+"tr/>\n"
 "Language: tr_TR\n"
-"Language-Team: Turkish "
-"<https://hosted.weblate.org/projects/blenderdmx/main/tr/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.11.1-dev\n"
 "Generated-By: Babel 2.14.0\n"
 
 msgid "File doesn't exist"
@@ -342,10 +343,10 @@ msgid "How many units of this light to add"
 msgstr "Bu ışıktan kaç adet eklenmeli"
 
 msgid "Import Focus Points as Targets"
-msgstr ""
+msgstr "Odak Noktalarını Hedef Olarak İçeri Aktar"
 
 msgid "Create Targets from MVR Focus Points"
-msgstr ""
+msgstr "MVR Odak Noktalarından Hedef Oluştur"
 
 msgid "Enable PSN Input"
 msgstr "PSN Girişini Etkinleştir"
@@ -446,21 +447,17 @@ msgstr "DMX > Fikstür > Kaldır"
 msgid "Remove selected fixtures from Scene"
 msgstr "Seçilen armatürleri Sahne'den kaldır"
 
-#, fuzzy
 msgid "Select Previous Fixture"
-msgstr "Fikstür Seçin"
+msgstr "Önceki Fikstürü Seçin"
 
-#, fuzzy
 msgid "Select Next Fixture"
-msgstr "Fikstür Seçin"
+msgstr "Sonraki Fikstürü Seçin"
 
-#, fuzzy
 msgid "Select Previous Target"
-msgstr "Hedefleri Seçin"
+msgstr "Önceki Hedefi Seçin"
 
-#, fuzzy
 msgid "Select Next Target"
-msgstr "Hedefleri Seçin"
+msgstr "Sonraki Hedefi Seçin"
 
 msgid "DMX > Fixture > Item"
 msgstr "DMX > Fikstür > Ürün"
@@ -646,16 +643,16 @@ msgid "Tilt Rotation"
 msgstr "Tilt Rotation"
 
 msgid "Zoom"
-msgstr ""
+msgstr "Yakınlaştır"
 
 msgid "Color Wheel"
-msgstr ""
+msgstr "Renk Tekerleği"
 
 msgid "Color Temperature"
-msgstr ""
+msgstr "Renk Sıcaklığı"
 
 msgid "Iris"
-msgstr ""
+msgstr "İris"
 
 msgid "Gobo1"
 msgstr ""
@@ -1411,4 +1408,3 @@ msgstr ""
 
 #~ msgid "For Blender 4.2 and up use the Extension"
 #~ msgstr ""
-
