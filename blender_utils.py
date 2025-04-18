@@ -27,6 +27,7 @@ import bpy
 import requests
 
 from .i18n import DMX_Lang
+from .gdtf_file import DMX_GDTF_File
 
 _ = DMX_Lang._
 
@@ -184,6 +185,8 @@ def copy_blender_profiles():
                 dest_path = os.path.join(profiles_path_user, os.path.basename(file))
                 if not os.path.exists(dest_path):
                     shutil.copy(file, profiles_path_user)
+                    print("updating data", os.path.basename(file))
+                    DMX_GDTF_File.add_to_data(os.path.basename(file))
 
 
 def reload_addon():

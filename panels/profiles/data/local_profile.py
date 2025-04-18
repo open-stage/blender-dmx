@@ -51,44 +51,13 @@ class DMX_Fixtures_Local_Profile(PropertyGroup):
     modes: CollectionProperty(type=DMX_Fixtures_Local_ProfileMode)
 
     @staticmethod
-    def get_profile_list(show_errors=False):
-        """List gdtf files in in profiles folder"""
-
-        profiles_path = DMX_GDTF_File.getProfilesPath()
-        profiles = []
-        errors = []
-        for file in os.listdir(profiles_path):
-            file_path = os.path.join(profiles_path, file)
-            try:
-                with DMX_GDTF_File.loadProfile(file) as fixture_type:
-                    profiles.append(
-                        {
-                            "name": f"{fixture_type.manufacturer} @ {fixture_type.long_name}",
-                            "short_name": fixture_type.short_name,
-                            "filename": file,
-                            "modes": fixture_type.dmx_modes,
-                        }
-                    )
-
-            except Exception as e:
-                print("INFO", "Error parsing file", file, e)
-                errors.append(f"{file}: {e}")
-
-        if show_errors and errors:
-            MultiLineMessage(
-                message=errors,
-                title=_("Some fixtures could not be processed"),
-                icon="ERROR",
-            )
-        return profiles
-
-    @staticmethod
-    def loadLocal(show_errors=False):
+    def loadLocal():
         local_profiles = bpy.context.window_manager.dmx.imports.local_profiles
         local_profiles.clear()
-        profiles = DMX_Fixtures_Local_Profile.get_profile_list(show_errors)
+        DMX_GDTF_File.recreate_data()
+        profiles = DMX_GDTF_File.profiles_list
 
-        for profile in profiles:
+        for profile in profiles.values():
             local_profile = local_profiles.add()
             local_profile.name = profile["name"]
             local_profile.short_name = profile["short_name"]
@@ -96,8 +65,8 @@ class DMX_Fixtures_Local_Profile(PropertyGroup):
 
             for mode in profile["modes"]:
                 local_mode = local_profile.modes.add()
-                local_mode.name = mode.name
-                local_mode.footprint = mode.dmx_channels_count
+                local_mode.name = mode["mode_name"]
+                local_mode.footprint = mode["dmx_channels_count"]
 
 
 def MultiLineMessage(message=[], title="Message Box", icon="INFO"):
