@@ -74,15 +74,23 @@ class DMX_GDTF_File:
                         "mode_name": mode.name,
                         "dmx_channels_count": mode.dmx_channels_count,
                         "description": mode.description,
+                        "dmx_breaks": [
+                            dmx_break.as_dict() for dmx_break in mode.dmx_breaks
+                        ],
                     }
                 )
 
+            revisions = fixture_type.revisions.sorted()
+            revision = ""
+            if revisions:
+                revision = revisions[-1].text
             data = {
-                "name": f"{fixture_type.manufacturer} @ {fixture_type.long_name}",
+                "name": f"{fixture_type.name}",
                 "short_name": fixture_type.short_name,
                 "manufacturer_name": f"{fixture_type.manufacturer}",
                 "filename": filename,
                 "modes": modes,
+                "revision": revision,
             }
 
             DMX_GDTF_File.profiles_list[filename] = data
@@ -94,7 +102,6 @@ class DMX_GDTF_File:
         for file in os.listdir(DMX_GDTF_File.getProfilesPath()):
             if file not in DMX_GDTF_File.profiles_list:
                 DMX_GDTF_File.add_to_data(file)
-        DMX_GDTF_File.write_cache()
 
     @staticmethod
     def remove_from_data(fixture):
@@ -137,6 +144,8 @@ class DMX_GDTF_File:
             for profile in DMX_GDTF_File.profiles_list.values()
             if manufacturer == profile["manufacturer_name"]
         ]
+        if profiles:
+            profiles.sort(key=lambda x: x["name"])
         return tuple(profiles)
 
     @staticmethod
@@ -145,8 +154,9 @@ class DMX_GDTF_File:
             DMX_GDTF_File.instance = DMX_GDTF_File()
         """Returns an array, keys are mode names, value is channel count"""
         gdtf_profile = DMX_GDTF_File.profiles_list.get(file_name)
-        for mode in gdtf_profile.dmx_modes:
-            modes[mode.name] = mode.dmx_channels_count
+        modes = {}
+        for mode in gdtf_profile["modes"]:
+            modes[mode["mode_name"]] = mode["dmx_channels_count"]
         return modes
 
     @staticmethod

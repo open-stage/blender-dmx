@@ -80,5 +80,5 @@ class DMX_OP_Update_Local_Fixtures(Operator):
 
     def execute(self, context):
         DMX_GDTF_File.getManufacturerList()
-        Profiles.DMX_Fixtures_Local_Profile.loadLocal(show_errors=True)
+        Profiles.DMX_Fixtures_Local_Profile.loadLocal(write_cache=True)
         return {"FINISHED"}

@@ -19,7 +19,6 @@ import os
 import re
 
 import bpy
-import pygdtf
 from bpy.props import BoolProperty, FloatVectorProperty, IntProperty, StringProperty
 from bpy.types import Menu, Operator, Panel, UIList
 from bpy_extras.io_utils import ImportHelper
@@ -97,13 +96,12 @@ class DMX_MT_Fixture_Profiles(Menu):
         for profile in DMX_GDTF_File.getProfileList(manufacturer.name):
             row = layout.row()
             row.context_pointer_set("add_edit_panel", context.add_edit_panel)
-            revision = f" ({profile[2]})" if profile[2] else ""
             op = row.operator(
                 DMX_OT_Fixture_Profiles.bl_idname,
-                text=f"{profile[1]}{revision}".replace("_", " "),
+                text=f"{profile['name']} @ {profile['revision']}".replace("_", " "),
             )
-            op.profile = profile[0]
-            op.short_name = profile[1]
+            op.profile = profile["filename"]
+            op.short_name = profile["short_name"]
 
 
 class DMX_MT_Fixture_Mode(Menu):
@@ -241,17 +239,11 @@ class DMX_Fixture_AddEdit:
         text_profile = _("GDTF Profile")
         fixture_type = None
         if self.profile != "":
-            fixture_type = DMX_GDTF_File.loadProfile(self.profile)
-            text_profile = [
-                f"{fixture_type.manufacturer}",
-                f"{fixture_type.long_name}",
-                "",
-            ]
+            fixture_type = DMX_GDTF_File.profiles_list.get(self.profile)
 
-            if len(text_profile) > 1:
-                text_profile = text_profile[0] + " > " + text_profile[1]
-            else:
-                text_profile = _("Unknown manufacturer") + " > " + text_profile[0]
+            text_profile = (
+                f"{fixture_type['manufacturer_name']} > {fixture_type['name']}"
+            )
 
         if self.advanced_edit:
             col.menu("DMX_MT_Fixture_Manufacturers", text=text_profile)
@@ -264,25 +256,26 @@ class DMX_Fixture_AddEdit:
         if fixture_type is not None:
             print("processing here")
             # self.dmx_breaks.clear()
-            for dmx_break in fixture_type.dmx_modes.get_mode_by_name(
-                self.mode
-            ).dmx_breaks:
+
+            for dmx_break in [
+                mode for mode in fixture_type["modes"] if mode["mode_name"] == self.mode
+            ][0]["dmx_breaks"]:
                 new_break = None
                 for existing_break in self.dmx_breaks:
                     print(
                         "existing break",
                         existing_break.dmx_break,
                         "dmx break",
-                        dmx_break.dmx_break,
+                        dmx_break["dmx_break"],
                     )
-                    if existing_break.dmx_break == dmx_break.dmx_break:
+                    if existing_break.dmx_break == dmx_break["dmx_break"]:
                         print("new existing break")
                         new_break = existing_break
                 if new_break is None:
                     print("new new break")
                     new_break = self.dmx_breaks.add()
-                    new_break.dmx_break = dmx_break.dmx_break
-                new_break.channels_count = dmx_break.channels_count
+                    new_break.dmx_break = dmx_break["dmx_break"]
+                new_break.channels_count = dmx_break["channels_count"]
                 # TODO: remove unused breaks!
 
             for dmx_break in self.dmx_breaks:

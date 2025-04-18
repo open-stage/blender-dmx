@@ -51,15 +51,18 @@ class DMX_Fixtures_Local_Profile(PropertyGroup):
     modes: CollectionProperty(type=DMX_Fixtures_Local_ProfileMode)
 
     @staticmethod
-    def loadLocal():
+    def loadLocal(write_cache=False):
+        print("load local profiles")
         local_profiles = bpy.context.window_manager.dmx.imports.local_profiles
         local_profiles.clear()
         DMX_GDTF_File.recreate_data()
+        if write_cache:
+            DMX_GDTF_File.write_cache()
         profiles = DMX_GDTF_File.profiles_list
 
         for profile in profiles.values():
             local_profile = local_profiles.add()
-            local_profile.name = profile["name"]
+            local_profile.name = f"{profile['manufacturer_name']} @ {profile['name']} @ {profile['revision']}"
             local_profile.short_name = profile["short_name"]
             local_profile.filename = profile["filename"]
 
