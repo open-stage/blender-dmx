@@ -940,7 +940,12 @@ class DMX_UL_Fixtures(UIList):
 
         if dmx.column_fixture_footprint:
             overlapping = False
-            item_channels = set(range(item.address, item.address + len(item.channels)))
+            item_channels = set(
+                range(
+                    item.dmx_breaks[0].address,
+                    item.dmx_breaks[0].address + item.dmx_breaks[0].channels_count,
+                )
+            )
             for fixture in dmx.fixtures:
                 fixture_dmx_break = fixture.dmx_breaks[
                     0

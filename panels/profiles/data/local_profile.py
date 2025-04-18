@@ -58,7 +58,7 @@ class DMX_Fixtures_Local_Profile(PropertyGroup):
         DMX_GDTF_File.recreate_data()
         if write_cache:
             DMX_GDTF_File.write_cache()
-        profiles = DMX_GDTF_File.profiles_list
+        profiles = dict(sorted(DMX_GDTF_File.profiles_list.items(), key=lambda x: x[0]))
 
         for profile in profiles.values():
             local_profile = local_profiles.add()

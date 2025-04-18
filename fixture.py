@@ -2220,7 +2220,12 @@ class DMX_Fixture(PropertyGroup):
             gdtf_mode=self.mode,
             fixture_id=self.fixture_id,
             addresses=[
-                pymvr.Address(dmx_break=0, universe=self.universe, address=self.address)
+                pymvr.Address(
+                    dmx_break=dmx_break.dmx_break,
+                    universe=dmx_break.universe,
+                    address=dmx_break.address,
+                )
+                for dmx_break in self.dmx_breaks
             ],
             matrix=pymvr.Matrix(matrix),
             focus=uuid_focus_point,
