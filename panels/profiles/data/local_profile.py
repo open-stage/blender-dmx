@@ -55,10 +55,15 @@ class DMX_Fixtures_Local_Profile(PropertyGroup):
         print("load local profiles")
         local_profiles = bpy.context.window_manager.dmx.imports.local_profiles
         local_profiles.clear()
-        DMX_GDTF_File.recreate_data()
         if write_cache:
+            DMX_GDTF_File.recreate_data()
             DMX_GDTF_File.write_cache()
-        profiles = dict(sorted(DMX_GDTF_File.profiles_list.items(), key=lambda x: x[0]))
+        profiles = dict(
+            sorted(
+                DMX_GDTF_File.profiles_list.items(),
+                key=lambda item: (item[1]["manufacturer_name"], item[1]["name"]),
+            )
+        )
 
         for profile in profiles.values():
             local_profile = local_profiles.add()

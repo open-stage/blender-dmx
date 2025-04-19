@@ -62,11 +62,11 @@ class DMX_GDTF_File:
             print("INFO", e)
 
     @staticmethod
-    def add_to_data(filename):
+    def add_to_data(file_name):
         if DMX_GDTF_File.instance is None:
             DMX_GDTF_File.instance = DMX_GDTF_File()
-        filepath = os.path.join(DMX_GDTF_File.getProfilesPath(), filename)
-        with DMX_GDTF_File.loadProfile(filepath) as fixture_type:
+        filepath = os.path.join(DMX_GDTF_File.get_profiles_ath(), file_name)
+        with DMX_GDTF_File.load_gdtf_profile(filepath) as fixture_type:
             modes = []
             for mode in fixture_type.dmx_modes:
                 modes.append(
@@ -88,36 +88,37 @@ class DMX_GDTF_File:
                 "name": f"{fixture_type.name}",
                 "short_name": fixture_type.short_name,
                 "manufacturer_name": f"{fixture_type.manufacturer}",
-                "filename": filename,
+                "filename": file_name,
                 "modes": modes,
                 "revision": revision,
             }
 
-            DMX_GDTF_File.profiles_list[filename] = data
+            DMX_GDTF_File.profiles_list[file_name] = data
 
     @staticmethod
     def recreate_data():
         if DMX_GDTF_File.instance is None:
             DMX_GDTF_File.instance = DMX_GDTF_File()
-        for file in os.listdir(DMX_GDTF_File.getProfilesPath()):
+        DMX_GDTF_File.profiles_list = {}
+        for file in os.listdir(DMX_GDTF_File.get_profiles_ath()):
             if file not in DMX_GDTF_File.profiles_list:
                 DMX_GDTF_File.add_to_data(file)
 
     @staticmethod
-    def remove_from_data(fixture):
+    def remove_from_data(file_name):
         if DMX_GDTF_File.instance is None:
             DMX_GDTF_File.instance = DMX_GDTF_File()
-        # remove from the data
-        ...
+        if file_name in DMX_GDTF_File.profiles_list:
+            del DMX_GDTF_File.profiles_list[file_name]
 
     @staticmethod
-    def getProfilesPath():
+    def get_profiles_ath():
         dmx = bpy.context.scene.dmx
         ADDON_PATH = dmx.get_addon_path()
         return os.path.join(ADDON_PATH, "assets", "profiles")
 
     @staticmethod
-    def getManufacturerList():
+    def get_manufacturers_list():
         if DMX_GDTF_File.instance is None:
             DMX_GDTF_File.instance = DMX_GDTF_File()
         # List profiles in folder
@@ -134,7 +135,7 @@ class DMX_GDTF_File:
             manufacturers.add().name = name
 
     @staticmethod
-    def getProfileList(manufacturer):
+    def get_profiles_list(manufacturer):
         if DMX_GDTF_File.instance is None:
             DMX_GDTF_File.instance = DMX_GDTF_File()
         # List profiles in folder
@@ -149,7 +150,7 @@ class DMX_GDTF_File:
         return tuple(profiles)
 
     @staticmethod
-    def getModes(file_name):
+    def get_dmx_modes(file_name):
         if DMX_GDTF_File.instance is None:
             DMX_GDTF_File.instance = DMX_GDTF_File()
         """Returns an array, keys are mode names, value is channel count"""
@@ -160,7 +161,7 @@ class DMX_GDTF_File:
         return modes
 
     @staticmethod
-    def loadProfile(file_name):
-        path = os.path.join(DMX_GDTF_File.getProfilesPath(), file_name)
+    def load_gdtf_profile(file_name):
+        path = os.path.join(DMX_GDTF_File.get_profiles_ath(), file_name)
         profile = pygdtf.FixtureType(path)
         return profile

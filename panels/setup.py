@@ -495,8 +495,8 @@ class DMX_OT_Import_Custom_Data(Operator):
             self.report({"ERROR"}, _("Incorrect file name!"))
             return {"FINISHED"}
 
-        DMX_GDTF_File.getManufacturerList()
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
+        DMX_GDTF_File.get_manufacturers_list()
 
         if result.ok:
             import_filename = os.path.join(self.directory, file_name)
@@ -561,7 +561,7 @@ class DMX_OT_Clear_Custom_Data(Operator):
     def execute(self, context):
         result = blender_utils.clear_custom_data()
 
-        DMX_GDTF_File.getManufacturerList()
+        DMX_GDTF_File.get_manufacturers_list()
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
 
         if result.ok:
@@ -590,7 +590,7 @@ class DMX_OT_Copy_Custom_Data(Operator):
 
     def execute(self, context):
         result = blender_utils.copy_custom_data()
-        DMX_GDTF_File.getManufacturerList()
+        DMX_GDTF_File.get_manufacturers_list()
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
 
         if result.ok:

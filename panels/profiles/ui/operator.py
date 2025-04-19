@@ -42,7 +42,8 @@ class DMX_OP_Import_Fixture_From_Share(Operator):
 
     def execute(self, context):
         Profiles.controller.DMX_Fixtures_Manager.import_from_share(self, self.index)
-        DMX_GDTF_File.getManufacturerList()
+        Profiles.DMX_Fixtures_Local_Profile.loadLocal(write_cache=True)
+        DMX_GDTF_File.get_manufacturers_list()
         return {"FINISHED"}
 
 
@@ -67,8 +68,7 @@ class DMX_OP_Delete_Local_Fixture(Operator):
 
     def execute(self, context):
         Profiles.controller.DMX_Fixtures_Manager.delete_local_fixture(self, self.index)
-        DMX_GDTF_File.getManufacturerList()
-        Profiles.DMX_Fixtures_Local_Profile.loadLocal()
+        DMX_GDTF_File.get_manufacturers_list()
         return {"FINISHED"}
 
 
@@ -79,6 +79,6 @@ class DMX_OP_Update_Local_Fixtures(Operator):
     bl_options = {"UNDO"}
 
     def execute(self, context):
-        DMX_GDTF_File.getManufacturerList()
         Profiles.DMX_Fixtures_Local_Profile.loadLocal(write_cache=True)
+        DMX_GDTF_File.get_manufacturers_list()
         return {"FINISHED"}

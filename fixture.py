@@ -397,7 +397,7 @@ class DMX_Fixture(PropertyGroup):
             self.collection.children.unlink(c)
 
         # Import and deep copy Fixture Model Collection
-        gdtf_profile = DMX_GDTF_File.loadProfile(profile)
+        gdtf_profile = DMX_GDTF_File.load_gdtf_profile(profile)
         self.gdtf_long_name = gdtf_profile.long_name
         self.gdtf_manufacturer = gdtf_profile.manufacturer
 

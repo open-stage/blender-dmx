@@ -203,6 +203,7 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
             DMX_Log.log.info(f"Importing GDTF Profile: {file_path}")
             try:
                 shutil.copy(file_path, folder_path)
+                DMX_GDTF_File.add_to_data(file.name)
             except shutil.SameFileError:
                 DMX_Log.log.debug(
                     "Importing file which already existed in the profiles folder"
@@ -210,7 +211,7 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
 
             if self.patch:
                 try:
-                    profile = DMX_GDTF_File.loadProfile(file.name)
+                    profile = DMX_GDTF_File.load_gdtf_profile(file.name)
                     dmx_mode = profile.dmx_modes[0]
                     self.dmx_breaks.clear()
                     print("dmx mode", dmx_mode.name, dmx_mode.dmx_breaks)
@@ -254,8 +255,8 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
 
                 except Exception as e:
                     traceback.print_exception(e)
-        DMX_GDTF_File.getManufacturerList()
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
+        DMX_GDTF_File.get_manufacturers_list()
         return {"FINISHED"}
 
 

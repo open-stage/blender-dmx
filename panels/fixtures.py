@@ -93,7 +93,7 @@ class DMX_MT_Fixture_Profiles(Menu):
     def draw(self, context):
         layout = self.layout
         manufacturer = context.manufacturer
-        for profile in DMX_GDTF_File.getProfileList(manufacturer.name):
+        for profile in DMX_GDTF_File.get_profiles_list(manufacturer.name):
             row = layout.row()
             row.context_pointer_set("add_edit_panel", context.add_edit_panel)
             op = row.operator(
@@ -113,7 +113,7 @@ class DMX_MT_Fixture_Mode(Menu):
         profile = context.add_edit_panel.profile
         if not profile:
             return
-        for mode, channel_count in DMX_GDTF_File.getModes(profile).items():
+        for mode, channel_count in DMX_GDTF_File.get_dmx_modes(profile).items():
             row = layout.row()
             row.context_pointer_set("add_edit_panel", context.add_edit_panel)
             row.operator(
@@ -154,7 +154,7 @@ class DMX_Fixture_AddEdit:
     def onProfile(self, context):
         if hasattr(context, "add_edit_panel"):
             mode, channel_count = list(
-                DMX_GDTF_File.getModes(context.add_edit_panel.profile).items()
+                DMX_GDTF_File.get_dmx_modes(context.add_edit_panel.profile).items()
             )[0]
             context.add_edit_panel.mode = f"{mode}"
 

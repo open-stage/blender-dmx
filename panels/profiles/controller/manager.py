@@ -45,8 +45,9 @@ class DMX_Fixtures_Manager:
         filename = profile.filename
         file_path = os.path.join(dir_path, "assets", "profiles", filename)
         os.remove(file_path)
-        DMX_GDTF_File.getManufacturerList()
+        DMX_GDTF_File.remove_from_data(filename)
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
+        DMX_GDTF_File.get_manufacturers_list()
 
     # Fixture Import
 
@@ -175,8 +176,8 @@ def reload_share_profiles(result):
 
 
 def reload_local_profiles(result):
-    DMX_GDTF_File.getManufacturerList()
     Profiles.DMX_Fixtures_Local_Profile.loadLocal()
+    DMX_GDTF_File.get_manufacturers_list()
     if result.status:
         ShowMessageBox(
             _("File downloaded correctly. Status code was: {}").format(
