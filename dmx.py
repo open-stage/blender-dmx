@@ -441,7 +441,7 @@ class DMX(PropertyGroup):
 
     data_version: IntProperty(
             name = "BlenderDMX data version, bump when changing RNA structure and provide migration script",
-            default = 11,
+            default = 12,
             )
 
     def get_fixture_by_index(self, index):
@@ -920,9 +920,25 @@ class DMX(PropertyGroup):
                 ShowMessageBox(message=message, title="Updating info!", icon="ERROR")
                 bpy.types.VIEW3D_HT_tool_header.prepend(draw_top_message)
 
-        DMX_Log.log.info("Migration done.")
+        if file_data_version < 12:
+            DMX_Log.log.info("Running migration 11→12")
+            dmx = bpy.context.scene.dmx
+
+            for fixture in dmx.fixtures:
+                DMX_Log.log.info(f"Migrate address/universe of {fixture.name}")
+                new_break = fixture.dmx_breaks.add()
+                new_break.dmx_break = 1
+                new_break.address = fixture["address"]
+                new_break.universe = fixture["universe"]
+                new_break.channels_count = len(fixture["channels"])
+                del fixture["address"]
+                del fixture["universe"]
+
         # add here another if statement for next migration condition... like:
-        # if file_data_version < 6: #...
+        # if file_data_version < 6:
+        # ...
+
+        DMX_Log.log.info("Migration done.")
 
         self.collection["DMX_DataVersion"] = (
             self.data_version
