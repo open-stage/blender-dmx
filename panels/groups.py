@@ -179,7 +179,6 @@ class DMX_PT_Groups(Panel):
     def draw(self, context):
         layout = self.layout
         scene = context.scene
-        dmx = scene.dmx
 
         layout.template_list(
             "DMX_UL_Group", "", scene.dmx, "groups", scene.dmx, "group_list_i", rows=4

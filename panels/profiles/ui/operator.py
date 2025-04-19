@@ -15,16 +15,12 @@
 # You should have received a copy of the GNU General Public License along
 # with this program. If not, see <https://www.gnu.org/licenses/>.
 
-import os
-import shutil
 
-import bpy
-from bpy.props import CollectionProperty, IntProperty, StringProperty
+from bpy.props import IntProperty
 from bpy.types import Operator
 
 from ....gdtf_file import DMX_GDTF_File
 from ....i18n import DMX_Lang
-from ....logging import DMX_Log
 from ....panels import profiles as Profiles
 
 _ = DMX_Lang._

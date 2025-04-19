@@ -26,7 +26,6 @@ from bpy_extras.io_utils import ImportHelper
 if bpy.app.version >= (4, 2):
     from bpy_extras.io_utils import poll_file_object_drop
 
-import pygdtf
 from bpy.props import (
     BoolProperty,
     CollectionProperty,
@@ -40,10 +39,9 @@ from .i18n import DMX_Lang
 from .panels import profiles as Profiles
 from .util import create_unique_fixture_name
 from .gdtf_file import DMX_GDTF_File
+from .logging_setup import DMX_Log
 
 _ = DMX_Lang._
-
-from .logging import DMX_Log
 
 
 def createDMXcollection():
@@ -214,7 +212,6 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
                     profile = DMX_GDTF_File.load_gdtf_profile(file.name)
                     dmx_mode = profile.dmx_modes[0]
                     self.dmx_breaks.clear()
-                    print("dmx mode", dmx_mode.name, dmx_mode.dmx_breaks)
                     for idx, dmx_break in enumerate(dmx_mode.dmx_breaks):
                         new_break = self.dmx_breaks.add()
                         new_break.dmx_break = dmx_break.dmx_break

@@ -43,10 +43,11 @@ from .mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server, DMX_MVR_X_WS_Clie
 from .osc import DMX_OSC
 from .panels import profiles as Profiles
 
-_ = DMX_Lang._
 from . import in_gdtf, in_out_mvr
 from .dmx import DMX
 from .dmx_temp_data import DMX_TempData
+
+_ = DMX_Lang._
 
 
 @bpy.app.handlers.persistent

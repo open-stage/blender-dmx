@@ -54,7 +54,7 @@ class GdtfShareApi:
         try:
             with open(fname, "r") as a:
                 return json.load(a)
-        except:
+        except Exception:
             return None
 
     def make_call(self, slug=None, url_params="", method="GET", data={}):

@@ -15,10 +15,8 @@
 # You should have received a copy of the GNU General Public License along
 # with this program. If not, see <https://www.gnu.org/licenses/>.
 
-import os
 
 import bpy
-import pygdtf
 from bpy.props import CollectionProperty, IntProperty, StringProperty
 from bpy.types import PropertyGroup
 
@@ -52,7 +50,6 @@ class DMX_Fixtures_Local_Profile(PropertyGroup):
 
     @staticmethod
     def loadLocal(write_cache=False):
-        print("load local profiles")
         local_profiles = bpy.context.window_manager.dmx.imports.local_profiles
         local_profiles.clear()
         if write_cache:

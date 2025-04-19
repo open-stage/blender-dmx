@@ -27,7 +27,7 @@ from bpy.props import StringProperty
 from bpy.types import Operator, Panel, UIList
 
 from ...i18n import DMX_Lang
-from ...logging import DMX_Log
+from ...logging_setup import DMX_Log
 from ...mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_WS_Client
 from ...util import sizeof_fmt
 
@@ -345,9 +345,6 @@ class DMX_UL_MVR_Shared_Commit(UIList):
     def draw_item(
         self, context, layout, data, item, icon, active_data, active_propname, index
     ):
-        scene = context.scene
-        dmx = scene.dmx
-        icon = "GROUP_VERTEX"
         # layout.context_pointer_set("mvr_xchange_clients", item)
         col = layout.column()
         col.label(text=f"{item.comment}")
@@ -380,9 +377,6 @@ class DMX_UL_MVR_Stations(UIList):
     def draw_item(
         self, context, layout, data, item, icon, active_data, active_propname, index
     ):
-        scene = context.scene
-        dmx = scene.dmx
-        icon = "GROUP_VERTEX"
         # layout.context_pointer_set("mvr_xchange_clients", item)
         col = layout.column()
         col.label(text=f"{item.ip_address}")
@@ -394,7 +388,6 @@ class DMX_UL_MVR_Stations(UIList):
         col.label(text=f"{item.last_seen}")
         col = layout.column()
         col.label(text=f"{item.station_name}")
-        col = layout.column()
         col.label(text=f"{item.station_uuid}")
         col = layout.column()
         col.label(text=f"{item.service_name}")
@@ -516,7 +509,6 @@ class DMX_PT_DMX_MVR_X(Panel):
                 )
 
             row = layout.row()
-            col = row.column()
             row.prop(dmx, "mvrx_enabled")
             row.enabled = client is not None
             if client:  # need the client props here:

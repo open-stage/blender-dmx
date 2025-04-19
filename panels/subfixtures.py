@@ -16,8 +16,8 @@
 # with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import bpy
-from bpy.props import BoolProperty, CollectionProperty, StringProperty
-from bpy.types import Menu, Operator, Panel, PropertyGroup, UIList
+from bpy.props import BoolProperty, StringProperty
+from bpy.types import Operator, Panel, PropertyGroup, UIList
 
 from ..i18n import DMX_Lang
 
@@ -48,7 +48,6 @@ class DMX_UL_Subfixture(UIList):
 
         # Default return values.
         flt_flags = []
-        flt_neworder = []
 
         flt_flags = helper_funcs.filter_items_by_name(
             self.filter_name, self.bitflag_filter_item, vgroups, "name"
@@ -103,8 +102,6 @@ class DMX_PT_Subfixtures(Panel):
 
     def draw(self, context):
         layout = self.layout
-        scene = context.scene
-        dmx = scene.dmx
         temp_data = bpy.context.window_manager.dmx
 
         layout.template_list(

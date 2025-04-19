@@ -41,9 +41,9 @@ from bpy.props import (
     PointerProperty,
     StringProperty,
 )
-from bpy.types import Collection, NodeTree, Object, PropertyGroup
+from bpy.types import Collection, Object, PropertyGroup
 
-from . import fixture as fixture
+from . import fixture
 from . import param as param
 from . import tracker as tracker
 from .acn import DMX_sACN
@@ -51,9 +51,9 @@ from .artnet import DMX_ArtNet
 from .blender_utils import copy_blender_profiles, get_application_version
 from .data import DMX_Data, DMX_Value
 from .gdtf_file import DMX_GDTF_File
-from .group import DMX_Group, FixtureGroup
+from .group import DMX_Group
 from .i18n import DMX_Lang
-from .logging import DMX_Log
+from .logging_setup import DMX_Log
 from .material import get_gobo_material, set_light_nodes
 from .mdns import DMX_Zeroconf
 from .mvr import load_mvr
@@ -445,9 +445,9 @@ class DMX(PropertyGroup):
             )
 
     def get_fixture_by_index(self, index):
-        for idx, fixture in enumerate(self.fixtures):
+        for idx, fixture_ in enumerate(self.fixtures):
             if idx == index:
-                return fixture
+                return fixture_
 
     def on_ui_selection_change(self, context):
         """ If fixture selection is changed via UILists 'normal' interaction, rather then an operator.
@@ -455,11 +455,11 @@ class DMX(PropertyGroup):
         if fixture was actually being selected or unselected.
         """
         return
-        for idx, fixture in enumerate(self.fixtures):
+        for idx, fixture_ in enumerate(self.fixtures):
             if idx == self.selected_fixture_index:
-                if not fixture.is_selected():
+                if not fixture_.is_selected():
                     #fixture.toggleSelect()
-                    fixture.select()
+                    fixture_.select()
                     return
 
     selected_fixture_index: IntProperty(
@@ -705,13 +705,13 @@ class DMX(PropertyGroup):
             DMX_Log.log.info("Running migration 1→2")
             dmx = bpy.context.scene.dmx
 
-            for fixture in dmx.fixtures:
-                for obj in fixture.objects:
+            for fixture_ in dmx.fixtures:
+                for obj in fixture_.objects:
                     if any(obj.name == name for name in ["Body", "Base"]):
                         DMX_Log.log.info(f"updating {obj.name}")
                         obj.name = "Root"
 
-                for light in fixture.lights:
+                for light in fixture_.lights:
                     DMX_Log.log.info(
                         "Adding shutter and dimmer value fields to light object"
                     )
@@ -727,10 +727,10 @@ class DMX(PropertyGroup):
             DMX_Log.log.info("Running migration 2→3")
             dmx = bpy.context.scene.dmx
             DMX_Log.log.info("Add UUID to fixtures")
-            for fixture in dmx.fixtures:
-                if "uuid" not in fixture:
-                    DMX_Log.log.info(f"Adding UUID to {fixture.name}")
-                    fixture.uuid = str(py_uuid.uuid4())
+            for fixture_ in dmx.fixtures:
+                if "uuid" not in fixture_:
+                    DMX_Log.log.info(f"Adding UUID to {fixture_.name}")
+                    fixture_.uuid = str(py_uuid.uuid4())
             DMX_Log.log.info("Add UUID to groups, convert groups to json")
             for group in dmx.groups:
                 if "uuid" not in group:
@@ -747,11 +747,11 @@ class DMX(PropertyGroup):
 
             def findFixtureUuidDuplicates(uuid):
                 found = []
-                for fixture in self.fixtures:
-                    if fixture is None:
+                for fixture_ in self.fixtures:
+                    if fixture_ is None:
                         continue
-                    if fixture.uuid == uuid:
-                        found.append(fixture)
+                    if fixture_.uuid == uuid:
+                        found.append(fixture_)
                 return found
 
             def findGroupUuidDuplicates(uuid):
@@ -765,14 +765,14 @@ class DMX(PropertyGroup):
 
             DMX_Log.log.info("Ensure unique fixture UUID")
             duplicates = []
-            for fixture in dmx.fixtures:
-                duplicates = findFixtureUuidDuplicates(fixture.uuid)
+            for fixture_ in dmx.fixtures:
+                duplicates = findFixtureUuidDuplicates(fixture_.uuid)
                 if len(duplicates) > 1:
-                    for fixture in duplicates:
-                        u = fixture.uuid
-                        fixture.uuid = str(py_uuid.uuid4())
+                    for fixture_ in duplicates:
+                        u = fixture_.uuid
+                        fixture_.uuid = str(py_uuid.uuid4())
                         DMX_Log.log.info(
-                            ("Updating fixture", fixture.name, u, fixture.uuid)
+                            ("Updating fixture", fixture_.name, u, fixture_.uuid)
                         )
 
             DMX_Log.log.info("Ensure unique group UUID")
@@ -791,19 +791,19 @@ class DMX(PropertyGroup):
                 uuid_list = []
                 for g_fixture in grouped_fixtures:
                     if g_fixture in dmx.fixtures:
-                        fixture = dmx.fixtures[g_fixture]
-                        if fixture is not None:
-                            uuid_list.append(fixture.uuid)
+                        fixture_ = dmx.fixtures[g_fixture]
+                        if fixture_ is not None:
+                            uuid_list.append(fixture_.uuid)
                 group.dump = json.dumps(uuid_list)
             DMX_Log.log.info("Groups updated")
 
         if file_data_version < 5:
             DMX_Log.log.info("Running migration 4→5")
             dmx = bpy.context.scene.dmx
-            for fixture in dmx.fixtures:
-                if "dmx_values" not in fixture:
+            for fixture_ in dmx.fixtures:
+                if "dmx_values" not in fixture_:
                     DMX_Log.log.info("Adding dmx_value array to fixture")
-                    fixture["dmx_values"] = []
+                    fixture_["dmx_values"] = []
 
         if file_data_version < 6:
             DMX_Log.log.info("Running migration 5→6")
@@ -814,8 +814,8 @@ class DMX(PropertyGroup):
         if file_data_version < 7:
             DMX_Log.log.info("Running migration 6→7")
             dmx = bpy.context.scene.dmx
-            for fixture in dmx.fixtures:
-                for light in fixture.lights:
+            for fixture_ in dmx.fixtures:
+                for light in fixture_.lights:
                     DMX_Log.log.info("Adding nodes to light")
                     set_light_nodes(light)
 
@@ -836,17 +836,17 @@ class DMX(PropertyGroup):
         if file_data_version < 8:
             DMX_Log.log.info("Running migration 7→8")
             dmx = bpy.context.scene.dmx
-            for fixture in dmx.fixtures:
-                if "slot_colors" not in fixture:
+            for fixture_ in dmx.fixtures:
+                if "slot_colors" not in fixture_:
                     DMX_Log.log.info("Adding slot_colors array to fixture")
-                    fixture["slot_colors"] = []
+                    fixture_["slot_colors"] = []
 
         if file_data_version < 9:
             DMX_Log.log.info("Running migration 8→9")
             dmx = bpy.context.scene.dmx
-            for fixture in dmx.fixtures:
-                fixture.gel_color_rgb = list(
-                    int((255 / 1) * i) for i in fixture.gel_color[:3]
+            for fixture_ in dmx.fixtures:
+                fixture_.gel_color_rgb = list(
+                    int((255 / 1) * i) for i in fixture_.gel_color[:3]
                 )
                 DMX_Log.log.info("Converting gel color to rgb")
 
@@ -854,8 +854,8 @@ class DMX(PropertyGroup):
             DMX_Log.log.info("Running migration 9→10")
             dmx = bpy.context.scene.dmx
 
-            for fixture in dmx.fixtures:
-                for obj in fixture.objects:
+            for fixture_ in dmx.fixtures:
+                for obj in fixture_.objects:
                     if "Target" in obj.name:
                         if "uuid" not in obj.object:
                             DMX_Log.log.info(f"Add uuid to {obj.name}")
@@ -866,11 +866,11 @@ class DMX(PropertyGroup):
             dmx = bpy.context.scene.dmx
             d = DMX_OT_ArrangeSelected()
 
-            for fixture in dmx.fixtures:
-                fixture.gobo_materials.clear()
-                for obj in fixture.collection.objects:
+            for fixture_ in dmx.fixtures:
+                fixture_.gobo_materials.clear()
+                for obj in fixture_.collection.objects:
                     if "gobo" in obj.get("geometry_type", ""):
-                        material = fixture.gobo_materials.add()
+                        material = fixture_.gobo_materials.add()
                         material.name = obj.name
                         gobo_material = get_gobo_material(obj.name)
                         obj.active_material = gobo_material
@@ -884,32 +884,32 @@ class DMX(PropertyGroup):
                         )
                         obj.material_slots[0].material = gobo_material
                         material.material = gobo_material
-                        DMX_Log.log.info(f"Recreate gobo material {fixture.name}")
-                for light in fixture.lights:
+                        DMX_Log.log.info(f"Recreate gobo material {fixture_.name}")
+                for light in fixture_.lights:
                     set_light_nodes(light)
 
-                if len(fixture.images) > 0:
-                    old_gobos = fixture.images["gobos"]
+                if len(fixture_.images) > 0:
+                    old_gobos = fixture_.images["gobos"]
                     if old_gobos is not None:
-                        gobo1 = fixture.images.add()
+                        gobo1 = fixture_.images.add()
                         gobo1.name = "gobos1"
                         gobo1.image = old_gobos.image
                         gobo1.count = old_gobos.count
 
-                        gobo2 = fixture.images.add()
+                        gobo2 = fixture_.images.add()
                         gobo2.name = "gobos2"
                         gobo2.image = old_gobos.image
                         gobo2.count = old_gobos.count
 
-                fixture.hide_gobo()
-                for item in fixture.gobo_materials:
+                fixture_.hide_gobo()
+                for item in fixture_.gobo_materials:
                     ntree = item.material.node_tree
                     d.process_tree(ntree)
-                for item in fixture.geometry_nodes:
+                for item in fixture_.geometry_nodes:
                     ntree = item.node
                     d.process_tree(ntree)
 
-                for light in fixture.lights:  # CYCLES
+                for light in fixture_.lights:  # CYCLES
                     light_obj = light.object
                     ntree = light_obj.data.node_tree
                     d.process_tree(ntree)
@@ -924,15 +924,15 @@ class DMX(PropertyGroup):
             DMX_Log.log.info("Running migration 11→12")
             dmx = bpy.context.scene.dmx
 
-            for fixture in dmx.fixtures:
-                DMX_Log.log.info(f"Migrate address/universe of {fixture.name}")
-                new_break = fixture.dmx_breaks.add()
+            for fixture_ in dmx.fixtures:
+                DMX_Log.log.info(f"Migrate address/universe of {fixture_.name}")
+                new_break = fixture_.dmx_breaks.add()
                 new_break.dmx_break = 1
-                new_break.address = fixture["address"]
-                new_break.universe = fixture["universe"]
-                new_break.channels_count = len(fixture["channels"])
-                del fixture["address"]
-                del fixture["universe"]
+                new_break.address = fixture_["address"]
+                new_break.universe = fixture_["universe"]
+                new_break.channels_count = len(fixture_["channels"])
+                del fixture_["address"]
+                del fixture_["universe"]
 
         # add here another if statement for next migration condition... like:
         # if file_data_version < 6:
@@ -962,28 +962,28 @@ class DMX(PropertyGroup):
     # # Setup > Models > Display Pigtails, Select geometries
 
     def onDisplayLabel(self, context):
-        for fixture in self.fixtures:
-            for obj in fixture.collection.objects:
+        for fixture_ in self.fixtures:
+            for obj in fixture_.collection.objects:
                 if obj.get("geometry_root", False):
                     if self.display_device_label == "NONE":
                         obj.show_name = False
                     elif self.display_device_label == "NAME":
-                        obj.name = f"{fixture.name}"
+                        obj.name = f"{fixture_.name}"
                         obj.show_name = self.enable_device_label
                     elif self.display_device_label == "DMX":
-                        obj.name = f"{fixture.universe}.{fixture.address}"
+                        obj.name = f"{fixture_.universe}.{fixture_.address}"
                         obj.show_name = self.enable_device_label
                     elif self.display_device_label == "FIXTURE_ID":
-                        if fixture.fixture_id:
-                            obj.name = f"{fixture.fixture_id}"
+                        if fixture_.fixture_id:
+                            obj.name = f"{fixture_.fixture_id}"
                             obj.show_name = self.enable_device_label
                         else:
                             obj.show_name = False
                     break
 
     def onDisplayPigtails(self, context):
-        for fixture in self.fixtures:
-            for obj in fixture.collection.objects:
+        for fixture_ in self.fixtures:
+            for obj in fixture_.collection.objects:
                 if "pigtail" in obj.get("geometry_type", ""):
                     obj.hide_set(not self.display_pigtails)
                     obj.hide_viewport = not self.display_pigtails
@@ -1012,8 +1012,8 @@ class DMX(PropertyGroup):
                 bpy.ops.view3d.view_selected()
                 area.spaces[0].shading.type = "MATERIAL"
 
-        for fixture in self.fixtures:
-            for obj in fixture.collection.objects:
+        for fixture_ in self.fixtures:
+            for obj in fixture_.collection.objects:
                 if obj.get("2d_symbol", None) == "all":
                     obj.hide_set(not self.display_2D)
                     obj.hide_viewport = not self.display_2D
@@ -1021,14 +1021,14 @@ class DMX(PropertyGroup):
                     if self.display_device_label == "NONE":
                         obj.show_name = False
                     elif self.display_device_label == "NAME":
-                        obj.name = f"{fixture.name}"
+                        obj.name = f"{fixture_.name}"
                         obj.show_name = True
                     elif self.display_device_label == "DMX":
-                        obj.name = f"{fixture.universe}.{fixture.address}"
+                        obj.name = f"{fixture_.universe}.{fixture_.address}"
                         obj.show_name = True
                     elif self.display_device_label == "FIXTURE_ID":
-                        if fixture.fixture_id:
-                            obj.name = f"{fixture.fixture_id}"
+                        if fixture_.fixture_id:
+                            obj.name = f"{fixture_.fixture_id}"
                             obj.show_name = True
                         else:
                             obj.show_name = False
@@ -1129,8 +1129,8 @@ class DMX(PropertyGroup):
         )
 
     def onReducedBeam(self, context):
-        for fixture in self.fixtures:
-            fixture.render(skip_cache=True)
+        for fixture_ in self.fixtures:
+            fixture_.render(skip_cache=True)
 
     reduced_beam_diameter_in_cycles: EnumProperty(
         name= _("Beam Lens Diameter in Cycles"),
@@ -1199,8 +1199,8 @@ class DMX(PropertyGroup):
 
 
     def onMultiplyIntensity(self, context):
-        for fixture in self.fixtures:
-            fixture.render(skip_cache=True)
+        for fixture_ in self.fixtures:
+            fixture_.render(skip_cache=True)
 
     beam_intensity_multiplier: FloatProperty(
         name = _("Multiply beams intensity"),
@@ -1473,11 +1473,11 @@ class DMX(PropertyGroup):
     # # Programmer > Dimmer
 
     def onProgrammerDimmer(self, context):
-        for fixture in self.fixtures:
-            if fixture.collection is None:
+        for fixture_ in self.fixtures:
+            if fixture_.collection is None:
                 continue
-            if fixture.is_selected():
-                fixture.setDMX({"Dimmer": int(255 * self.programmer_dimmer)})
+            if fixture_.is_selected():
+                fixture_.setDMX({"Dimmer": int(255 * self.programmer_dimmer)})
         self.render()
 
     # fmt: off
@@ -1492,15 +1492,15 @@ class DMX(PropertyGroup):
     # # Programmer > Color
 
     def onProgrammerColor(self, context):
-        for fixture in self.fixtures:
-            if fixture.collection is None:
+        for fixture_ in self.fixtures:
+            if fixture_.collection is None:
                 continue
-            if fixture.is_selected():
+            if fixture_.is_selected():
                 rgb = [int(255 * x) for x in self.programmer_color]
                 cmy = rgb_to_cmy(rgb)
                 automatic_white = self.calculate_automatic_white()
 
-                fixture.setDMX(
+                fixture_.setDMX(
                     {
                         "ColorAdd_R": rgb[0],
                         "ColorAdd_G": rgb[1],
@@ -1529,51 +1529,51 @@ class DMX(PropertyGroup):
         return automatic_white
 
     def onProgrammerTilt(self, context):
-        for fixture in self.fixtures:
-            if fixture.collection is None:
+        for fixture_ in self.fixtures:
+            if fixture_.collection is None:
                 continue
-            if fixture.is_selected():
-                fixture.setDMX({"Tilt": int(255 * (self.programmer_tilt + 1) / 2)})
+            if fixture_.is_selected():
+                fixture_.setDMX({"Tilt": int(255 * (self.programmer_tilt + 1) / 2)})
         self.render()
 
     def onProgrammerTiltRotate(self, context):
-        for fixture in self.fixtures:
-            if fixture.collection is None:
+        for fixture_ in self.fixtures:
+            if fixture_.collection is None:
                 continue
-            if fixture.is_selected():
-                fixture.setDMX({"TiltRotate": int(self.programmer_tilt_rotate)})
+            if fixture_.is_selected():
+                fixture_.setDMX({"TiltRotate": int(self.programmer_tilt_rotate)})
         self.render()
 
     def onProgrammerPan(self, context):
-        for fixture in self.fixtures:
-            if fixture.collection is None:
+        for fixture_ in self.fixtures:
+            if fixture_.collection is None:
                 continue
-            if fixture.is_selected():
-                fixture.setDMX({"Pan": int(255 * (self.programmer_pan + 1) / 2)})
+            if fixture_.is_selected():
+                fixture_.setDMX({"Pan": int(255 * (self.programmer_pan + 1) / 2)})
         self.render()
 
     def onProgrammerPanRotate(self, context):
-        for fixture in self.fixtures:
-            if fixture.collection is None:
+        for fixture_ in self.fixtures:
+            if fixture_.collection is None:
                 continue
-            if fixture.is_selected():
-                fixture.setDMX({"PanRotate": int(self.programmer_pan_rotate)})
+            if fixture_.is_selected():
+                fixture_.setDMX({"PanRotate": int(self.programmer_pan_rotate)})
         self.render()
 
     def onProgrammerZoom(self, context):
-        for fixture in self.fixtures:
-            if fixture.collection is None:
+        for fixture_ in self.fixtures:
+            if fixture_.collection is None:
                 continue
-            if fixture.is_selected():
-                fixture.setDMX({"Zoom": int(self.programmer_zoom)})
+            if fixture_.is_selected():
+                fixture_.setDMX({"Zoom": int(self.programmer_zoom)})
         self.render()
 
     def onProgrammerColorTemperature(self, context):
-        for fixture in self.fixtures:
-            if fixture.collection is None:
+        for fixture_ in self.fixtures:
+            if fixture_.collection is None:
                 continue
-            if fixture.is_selected():
-                fixture.setDMX(
+            if fixture_.is_selected():
+                fixture_.setDMX(
                     {
                         "CTO": int(self.programmer_color_temperature),
                         "CTC": int(self.programmer_color_temperature),
@@ -1583,11 +1583,11 @@ class DMX(PropertyGroup):
         self.render()
 
     def onProgrammerIris(self, context):
-        for fixture in self.fixtures:
-            if fixture.collection is None:
+        for fixture_ in self.fixtures:
+            if fixture_.collection is None:
                 continue
-            if fixture.is_selected():
-                fixture.setDMX(
+            if fixture_.is_selected():
+                fixture_.setDMX(
                     {
                         "Iris": int(self.programmer_iris),
                     }
@@ -1595,11 +1595,11 @@ class DMX(PropertyGroup):
         self.render()
 
     def onProgrammerColorWheel(self, context):
-        for fixture in self.fixtures:
-            if fixture.collection is None:
+        for fixture_ in self.fixtures:
+            if fixture_.collection is None:
                 continue
-            if fixture.is_selected():
-                fixture.setDMX(
+            if fixture_.is_selected():
+                fixture_.setDMX(
                     {
                         "Color1": int(self.programmer_color_wheel),
                         "Color2": int(self.programmer_color_wheel),
@@ -1609,11 +1609,11 @@ class DMX(PropertyGroup):
         self.render()
 
     def onProgrammerGobo1(self, context):
-        for fixture in self.fixtures:
-            if fixture.collection is None:
+        for fixture_ in self.fixtures:
+            if fixture_.collection is None:
                 continue
-            if fixture.is_selected():
-                fixture.setDMX(
+            if fixture_.is_selected():
+                fixture_.setDMX(
                     {
                         "Gobo1": int(self.programmer_gobo1),
                     }
@@ -1621,11 +1621,11 @@ class DMX(PropertyGroup):
         self.render()
 
     def onProgrammerGoboIndex1(self, context):
-        for fixture in self.fixtures:
-            if fixture.collection is None:
+        for fixture_ in self.fixtures:
+            if fixture_.collection is None:
                 continue
-            if fixture.is_selected():
-                fixture.setDMX(
+            if fixture_.is_selected():
+                fixture_.setDMX(
                     {
                         "Gobo1Pos": int(self.programmer_gobo_index1),
                         "Gobo1PosRotate": int(self.programmer_gobo_index1),
@@ -1634,11 +1634,11 @@ class DMX(PropertyGroup):
         self.render()
 
     def onProgrammerGobo2(self, context):
-        for fixture in self.fixtures:
-            if fixture.collection is None:
+        for fixture_ in self.fixtures:
+            if fixture_.collection is None:
                 continue
-            if fixture.is_selected():
-                fixture.setDMX(
+            if fixture_.is_selected():
+                fixture_.setDMX(
                     {
                         "Gobo2": int(self.programmer_gobo2),
                     }
@@ -1646,11 +1646,11 @@ class DMX(PropertyGroup):
         self.render()
 
     def onProgrammerGoboIndex2(self, context):
-        for fixture in self.fixtures:
-            if fixture.collection is None:
+        for fixture_ in self.fixtures:
+            if fixture_.collection is None:
                 continue
-            if fixture.is_selected():
-                fixture.setDMX(
+            if fixture_.is_selected():
+                fixture_.setDMX(
                     {
                         "Gobo2Pos": int(self.programmer_gobo_index2),
                         "Gobo2PosRotate": int(self.programmer_gobo_index2),
@@ -1659,11 +1659,11 @@ class DMX(PropertyGroup):
         self.render()
 
     def onProgrammerShutter(self, context):
-        for fixture in self.fixtures:
-            if fixture.collection is None:
+        for fixture_ in self.fixtures:
+            if fixture_.collection is None:
                 continue
-            if fixture.is_selected():
-                fixture.setDMX({"Shutter1": int(self.programmer_shutter)})
+            if fixture_.is_selected():
+                fixture_.setDMX({"Shutter1": int(self.programmer_shutter)})
         self.render()
 
     # fmt: off
@@ -1944,31 +1944,31 @@ class DMX(PropertyGroup):
         self.fixtures.remove(self.fixtures.find(fixture.name))
 
     def getFixture(self, collection):
-        for fixture in self.fixtures:
-            if fixture.collection == collection:
-                return fixture
+        for fixture_ in self.fixtures:
+            if fixture_.collection == collection:
+                return fixture_
 
     def findFixture(self, object):
-        for fixture in self.fixtures:
-            if fixture is None:
+        for fixture_ in self.fixtures:
+            if fixture_ is None:
                 continue
-            if object.name in fixture.collection.objects:
-                return fixture
+            if object.name in fixture_.collection.objects:
+                return fixture_
         return None
 
     def findFixtureByUUID(self, uuid):
-        for fixture in self.fixtures:
-            if fixture is None:
+        for fixture_ in self.fixtures:
+            if fixture_ is None:
                 continue
-            if fixture.uuid == uuid:
-                return fixture
+            if fixture_.uuid == uuid:
+                return fixture_
         return None
 
     def selectedFixtures(self):
         selected = []
-        for fixture in self.fixtures:
-            if fixture.is_selected():
-                selected.append(fixture)
+        for fixture_ in self.fixtures:
+            if fixture_.is_selected():
+                selected.append(fixture_)
         return selected
 
     def sortedFixtures(self):
@@ -2301,25 +2301,25 @@ class DMX(PropertyGroup):
     def updatePreviewVolume(self):
         if self.volume_preview == "SELECTED":
             self.disable_overlays = False  # overlay must be enabled
-            for fixture in self.fixtures:
+            for fixture_ in self.fixtures:
                 selected = False
-                if fixture is None:
+                if fixture_ is None:
                     continue
-                if fixture.collection is None:
+                if fixture_.collection is None:
                     continue
-                if fixture.is_selected():
+                if fixture_.is_selected():
                     selected = True
-                for light in fixture.lights:
+                for light in fixture_.lights:
                     light.object.data.show_cone = selected
 
         elif self.volume_preview == "ALL":
             self.disable_overlays = False  # overlay must be enabled
-            for fixture in self.fixtures:
-                for light in fixture.lights:
+            for fixture_ in self.fixtures:
+                for light in fixture_.lights:
                     light.object.data.show_cone = True
         else:
-            for fixture in self.fixtures:
-                for light in fixture.lights:
+            for fixture_ in self.fixtures:
+                for light in fixture_.lights:
                     light.object.data.show_cone = False
 
     # # Universes
@@ -2343,17 +2343,17 @@ class DMX(PropertyGroup):
         else:
             current_frame = None
 
-        for fixture in self.fixtures:
-            fixture.render(current_frame=current_frame)
-        for tracker in self.trackers:
-            tracker.render(current_frame=current_frame)
+        for fixture_ in self.fixtures:
+            fixture_.render(current_frame=current_frame)
+        for tracker_ in self.trackers:
+            tracker_.render(current_frame=current_frame)
 
     def set_fixtures_filter(self, fixtures_filter):
         DMX.fixtures_filter = fixtures_filter
 
     def update_laser_collision_collect(self):
-        for fixture in self.fixtures:
-            for nodes in fixture.geometry_nodes:
+        for fixture_ in self.fixtures:
+            for nodes in fixture_.geometry_nodes:
                 collection_info = nodes.node.nodes["Collection Info"]
                 collection = bpy.context.window_manager.dmx.collections_list
                 collection_info.inputs[0].default_value = collection

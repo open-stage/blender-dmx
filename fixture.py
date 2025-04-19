@@ -17,13 +17,11 @@
 
 import math
 import os
-import random
 import traceback
 import uuid as py_uuid
 
 import bpy
 import mathutils
-import pygdtf
 import pymvr
 from bpy.props import (
     BoolProperty,
@@ -47,7 +45,7 @@ from bpy.types import (
 from .data import DMX_Data
 from .gdtf import DMX_GDTF
 from .gdtf_file import DMX_GDTF_File
-from .logging import DMX_Log
+from .logging_setup import DMX_Log
 from .material import (
     get_gobo_material,
     get_ies_node,
@@ -445,9 +443,6 @@ class DMX_Fixture(PropertyGroup):
             new_break.dmx_break = dmx_break.dmx_break
             new_break.universe = dmx_break.universe
             new_break.address = dmx_break.address
-            print(
-                "new break", new_break.dmx_break, new_break.address, new_break.universe
-            )
 
             for mode_break in dmx_mode.dmx_breaks:
                 if dmx_break.dmx_break == mode_break.dmx_break:
@@ -733,18 +728,6 @@ class DMX_Fixture(PropertyGroup):
             result = {i: value for i, value in enumerate(new_data, 1)}
             dmx_data[dmx_break.dmx_break] = result
             data_for_cached += new_data
-
-            print(
-                "data",
-                dmx_break.dmx_break,
-                dmx_break.universe,
-                dmx_break.address,
-                dmx_break.channels_count,
-                "new data:",
-                new_data,
-                "all data:",
-                dmx_data,
-            )
 
         data_virtual = DMX_Data.get_virtual(self.name)
 
@@ -1298,7 +1281,7 @@ class DMX_Fixture(PropertyGroup):
 
         remove_empty_items = []
         for geometry, items in dictionary.items():
-            if all([i == None for i in items]):
+            if all([i is None for i in items]):
                 remove_empty_items.append(geometry)
         for geo in remove_empty_items:
             del dictionary[geo]
@@ -1768,7 +1751,7 @@ class DMX_Fixture(PropertyGroup):
         # calculate target position, head will follow
         try:
             head = self.objects["Head"].object
-        except Exception as e:
+        except Exception:
             self.updatePTDirectly(None, "pan", pan, current_frame)
             self.updatePTDirectly(None, "tilt", tilt, current_frame)
             DMX_Log.log.info(
@@ -1861,16 +1844,11 @@ class DMX_Fixture(PropertyGroup):
     def getProgrammerData(self):
         # channels = [c.id for c in self.channels]
         params = {}
-        print("get programmer data")
 
         for dmx_break in self.dmx_breaks:
-            print(
-                "break", dmx_break.universe, dmx_break.address, dmx_break.channels_count
-            )
             data = DMX_Data.get(
                 dmx_break.universe, dmx_break.address, dmx_break.channels_count
             )
-            print("data", data)
 
             for idx, d in enumerate(data):
                 for channel in self.channels:
@@ -1905,9 +1883,9 @@ class DMX_Fixture(PropertyGroup):
                 if "Root" in self.objects:
                     try:
                         self.objects["Root"].object.select_set(True)
-                    except Exception as e:
+                    except Exception:
                         DMX_Log.log.error(
-                            f"Fixture doesn't exist, remove it via Fixture list → Edit → X"
+                            "Fixture doesn't exist, remove it via Fixture list → Edit → X"
                         )
             else:
                 if len(targets):
@@ -1919,9 +1897,9 @@ class DMX_Fixture(PropertyGroup):
                 if "Root" in self.objects:
                     try:
                         self.objects["Root"].object.select_set(True)
-                    except Exception as e:
+                    except Exception:
                         DMX_Log.log.error(
-                            f"Fixture doesn't exist, remove it via Fixture list → Edit → X"
+                            "Fixture doesn't exist, remove it via Fixture list → Edit → X"
                         )
             else:
                 targets = []
@@ -1952,18 +1930,18 @@ class DMX_Fixture(PropertyGroup):
         if "Root" in self.objects:
             try:
                 self.objects["Root"].object.select_set(False)
-            except Exception as e:
+            except Exception:
                 DMX_Log.log.error(
-                    f"Fixture doesn't exist, remove it via Fixture list → Edit → X"
+                    "Fixture doesn't exist, remove it via Fixture list → Edit → X"
                 )
         if "Target" in self.objects:
             self.objects["Target"].object.select_set(False)
         if "2D Symbol" in self.objects:
             try:
                 self.objects["2D Symbol"].object.select_set(False)
-            except Exception as e:
+            except Exception:
                 DMX_Log.log.error(
-                    f"Fixture doesn't exist, remove it via Fixture list → Edit → X"
+                    "Fixture doesn't exist, remove it via Fixture list → Edit → X"
                 )
         if dmx.display_2D:
             for obj in self.collection.objects:
@@ -2242,7 +2220,7 @@ class DMX_Fixture(PropertyGroup):
                 matrix = [list(col) for col in m.col]
                 uuid_ = obj.object.get("uuid", None)
                 if matrix is None or uuid_ is None:
-                    DMX_Log.log.error(f"Matrix or uuid of a Target not defined")
+                    DMX_Log.log.error("Matrix or uuid of a Target not defined")
                     return
                 return pymvr.FocusPoint(
                     matrix=pymvr.Matrix(matrix),

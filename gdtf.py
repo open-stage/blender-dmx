@@ -26,9 +26,9 @@ from types import SimpleNamespace
 import bpy
 import pygdtf
 from io_scene_3ds.import_3ds import load_3ds
-from mathutils import Euler, Matrix, Vector
+from mathutils import Matrix, Vector
 
-from .logging import DMX_Log
+from .logging_setup import DMX_Log
 from .util import sanitize_obj_name, xyY2rgbaa
 
 
@@ -110,7 +110,7 @@ class DMX_GDTF:
             for slot in wheel.wheel_slots:
                 try:
                     color = xyY2rgbaa(slot.color)
-                except:
+                except Exception:
                     color = None
                 if color is not None and color not in colors:
                     colors.append(color)
@@ -140,7 +140,7 @@ class DMX_GDTF:
             if idx == 1:
                 first = str(destination.resolve())
             if idx == 256:  # more gobos then values on a channel, must stop
-                DMX_Log.log.info(f"Only 255 gobos are supported at the moment")
+                DMX_Log.log.info("Only 255 gobos are supported at the moment")
                 break
             destination.write_bytes(image.read_bytes())
             count = idx
@@ -442,7 +442,7 @@ class DMX_GDTF:
             return "normal"
 
         def create_camera(geometry):
-            if not sanitize_obj_name(geometry) in objs:
+            if sanitize_obj_name(geometry) not in objs:
                 return
             obj_child = objs[sanitize_obj_name(geometry)]
             camera_data = bpy.data.cameras.new(name=f"{obj_child.name}")
@@ -630,10 +630,10 @@ class DMX_GDTF:
             obj_child.matrix_local = Matrix.LocRotScale(translate, rotation, scale)
 
         def constraint_child_to_parent(parent_geometry, child_geometry):
-            if not sanitize_obj_name(parent_geometry) in objs:
+            if sanitize_obj_name(parent_geometry) not in objs:
                 return
             obj_parent = objs[sanitize_obj_name(parent_geometry)]
-            if not sanitize_obj_name(child_geometry) in objs:
+            if sanitize_obj_name(child_geometry) not in objs:
                 return
             obj_child = objs[sanitize_obj_name(child_geometry)]
             obj_child.parent = obj_parent

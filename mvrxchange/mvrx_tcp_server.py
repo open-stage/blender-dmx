@@ -28,7 +28,7 @@ from uuid import uuid4
 
 import bpy
 
-from ..logging import DMX_Log
+from ..logging_setup import DMX_Log
 from .mvrx_message import mvrx_message
 
 
@@ -78,7 +78,7 @@ class server(Thread):
         self.join()
 
     def set_post_data(self, data):
-        DMX_Log.log.debug(f"Setting post data")
+        DMX_Log.log.debug("Setting post data")
         self.post_data.put(data)
 
     def accept_wrapper(self, sock):
@@ -180,7 +180,6 @@ class server(Thread):
             )
         if json_data["Type"] == "MVR_REQUEST":
             dmx = bpy.context.scene.dmx
-            local_path = dmx.get_addon_path()
             file_uuid = json_data["FileUUID"]
             if not file_uuid:
                 shared_commits = (

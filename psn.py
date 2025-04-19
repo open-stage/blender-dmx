@@ -20,7 +20,7 @@ from functools import partial
 import bpy
 import pypsn
 
-from .logging import DMX_Log
+from .logging_setup import DMX_Log
 
 
 class DMX_PSN:

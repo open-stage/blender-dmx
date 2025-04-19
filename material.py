@@ -21,7 +21,7 @@ import os
 import bpy
 
 from .gdtf import DMX_GDTF
-from .logging import DMX_Log
+from .logging_setup import DMX_Log
 
 # Shader Nodes default labels
 # Blender API naming convention is inconsistent for internationalization

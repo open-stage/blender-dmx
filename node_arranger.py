@@ -25,8 +25,7 @@ from statistics import fmean
 
 import bpy
 from bl_math import clamp
-from bpy.props import IntVectorProperty
-from bpy.types import NodeFrame, Operator
+from bpy.types import NodeFrame
 from mathutils import Vector
 from mathutils.geometry import interpolate_bezier
 
@@ -527,6 +526,7 @@ def get_frame_columns():
 def get_arranged(columns):
     arranged = {}
     for i, col in enumerate(columns):
+        prev_x = 0
         if i != 0:
             max_width = max([dimensions(n).x for n in col])
             x = prev_x - (max_width + 70)
@@ -2215,9 +2215,6 @@ class DMX_OT_ArrangeSelected:
 
         get_links(ntree)
         universal_columns = get_columns(output_nodes)
-
-        if not universal_columns:
-            print("No valid nodes selected")
 
         Maps.universal_columns.extend(universal_columns)
         Maps.selected.extend(selected)

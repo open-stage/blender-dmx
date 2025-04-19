@@ -24,10 +24,9 @@ from .... import __package__ as base_package
 from .... import share_api_client as share_api_client
 from ....gdtf_file import DMX_GDTF_File
 from ....panels import profiles as Profiles
+from ....i18n import DMX_Lang
 
 execution_queue = queue.Queue()
-
-from ....i18n import DMX_Lang
 
 _ = DMX_Lang._
 

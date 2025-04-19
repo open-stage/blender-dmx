@@ -35,19 +35,17 @@ class DMX_GDTF_File:
 
     @staticmethod
     def read_cache():
-        print("reading cache")
         dmx = bpy.context.scene.dmx
         dir_path = dmx.get_addon_path()
         try:
             with open(os.path.join(dir_path, "fixtures_data.json")) as f:
                 fixtures_data = json.load(f)
                 DMX_GDTF_File.profiles_list = fixtures_data.get("profiles_list", {})
-        except Exception as e:
+        except Exception:
             ...
 
     @staticmethod
     def write_cache():
-        print("writing cache")
         if DMX_GDTF_File.instance is None:
             DMX_GDTF_File.instance = DMX_GDTF_File()
         dmx = bpy.context.scene.dmx

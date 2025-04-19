@@ -19,7 +19,7 @@ import bpy
 from bpy.types import Operator, Panel
 
 from ..i18n import DMX_Lang
-from ..logging import DMX_Log
+from ..logging_setup import DMX_Log
 
 _ = DMX_Lang._
 

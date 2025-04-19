@@ -256,7 +256,6 @@ class DMX_OT_Programmer_TargetsToZero(Operator):
         for fixture in dmx.fixtures:
             for obj in fixture.collection.objects:
                 if obj.get("geometry_root", False):
-                    body = obj
                     break
             for obj in fixture.collection.objects:
                 if obj in bpy.context.selected_objects:

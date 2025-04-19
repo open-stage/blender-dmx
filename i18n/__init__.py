@@ -35,7 +35,7 @@ class DMX_Lang:
             lang = gettext.translation(
                 "messages", localedir=localedir, languages=[locale]
             )
-        except:
+        except Exception:
             lang = gettext.translation(
                 "messages", localedir=localedir, languages=["en_US"]
             )  # fallback

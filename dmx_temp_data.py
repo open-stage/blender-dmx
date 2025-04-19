@@ -27,10 +27,8 @@ from bpy.props import (
 )
 from bpy.types import PropertyGroup
 
-from . import fixture as fixture
-from .fixture import DMX_Fixture_Channel
 from .i18n import DMX_Lang
-from .logging import DMX_Log
+from .logging_setup import DMX_Log
 from .mvrxchange.mvr_xchange_blender import DMX_MVR_Xchange
 from .panels import profiles as Profiles
 from .panels import subfixtures

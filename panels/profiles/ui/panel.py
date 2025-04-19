@@ -20,7 +20,6 @@ from bpy.types import Panel
 
 from ....i18n import DMX_Lang
 from ....icon import DMX_Icon
-from ....in_gdtf import DMX_OT_Import_GDTF
 from .operator import DMX_OP_Import_Fixture_Update_Share, DMX_OP_Update_Local_Fixtures
 
 _ = DMX_Lang._
@@ -186,8 +185,7 @@ class DMX_PT_Profiles_Holder(Panel):
     bl_options = {"DEFAULT_CLOSED"}
 
     def draw(self, context):
-        layout = self.layout
-        dmx = context.scene.dmx
+        pass
 
     @classmethod
     def poll(self, context):

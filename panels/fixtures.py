@@ -15,7 +15,6 @@
 # You should have received a copy of the GNU General Public License along
 # with this program. If not, see <https://www.gnu.org/licenses/>.
 
-import os
 import re
 
 import bpy
@@ -26,11 +25,10 @@ from bpy_extras.io_utils import ImportHelper
 from ..fixture import DMX_Break
 from ..gdtf_file import DMX_GDTF_File
 from ..i18n import DMX_Lang
-from ..logging import DMX_Log
+from ..logging_setup import DMX_Log
+from bpy.props import CollectionProperty
 
 _ = DMX_Lang._
-
-from bpy.props import CollectionProperty
 
 # Menus #
 
@@ -254,7 +252,6 @@ class DMX_Fixture_AddEdit:
             col.menu("DMX_MT_Fixture_Mode", text=text_mode)
 
         if fixture_type is not None:
-            print("processing here")
             # self.dmx_breaks.clear()
 
             for dmx_break in [
@@ -262,17 +259,9 @@ class DMX_Fixture_AddEdit:
             ][0]["dmx_breaks"]:
                 new_break = None
                 for existing_break in self.dmx_breaks:
-                    print(
-                        "existing break",
-                        existing_break.dmx_break,
-                        "dmx break",
-                        dmx_break["dmx_break"],
-                    )
                     if existing_break.dmx_break == dmx_break["dmx_break"]:
-                        print("new existing break")
                         new_break = existing_break
                 if new_break is None:
-                    print("new new break")
                     new_break = self.dmx_breaks.add()
                     new_break.dmx_break = dmx_break["dmx_break"]
                 new_break.channels_count = dmx_break["channels_count"]
@@ -692,8 +681,6 @@ class DMX_OT_Fixture_Item(Operator):
             from_fixture_index = dmx.selected_fixture_index
             from_fixture_fixture = dmx.get_fixture_by_index(from_fixture_index)
             context.fixture.toggleSelect()
-            to_fixture_index = dmx.selected_fixture_index
-
             sorted_fixtures = dmx.sortedFixtures()
 
             start_selecting = False

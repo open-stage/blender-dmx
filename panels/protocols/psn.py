@@ -53,7 +53,6 @@ class DMX_UL_Tracker(UIList):
     def draw_item(
         self, context, layout, data, item, icon, active_data, active_propname
     ):
-        ob = data
         icon = "FILE_VOLUME"
         if self.layout_type in {"DEFAULT", "COMPACT"}:
             col = layout.column()
@@ -84,8 +83,6 @@ class DMX_OP_Link_Fixture_Tracker(Operator):
     def execute(self, context):
         scene = context.scene
         dmx = scene.dmx
-        dmx = scene.dmx
-        layout = self.layout
         target = None
         for tracker in dmx.trackers:
             if tracker.uuid == self.tracker_uuid:
@@ -118,13 +115,12 @@ class DMX_OP_Unlink_Fixture_Tracker(Operator):
     def execute(self, context):
         scene = context.scene
         dmx = scene.dmx
-        layout = self.layout
         for fixture in dmx.fixtures:
             if fixture.uuid == self.fixture_uuid:
                 for obj in fixture.objects:
                     if obj.name == "Target":
                         for constraint in obj.object.constraints:
-                            if constraint.target != None:
+                            if constraint.target is not None:
                                 if (
                                     constraint.target.get("uuid", None)
                                     == self.tracker_uuid
@@ -142,9 +138,6 @@ class DMX_UL_Tracker_Followers(UIList):
         self, context, layout, data, item, icon, active_data, active_propname
     ):
         fixture = item
-        scene = context.scene
-        dmx = scene.dmx
-        icon = "FILE_VOLUME"
         self.tracker_uuid = context.window_manager.dmx.selected_tracker
         self.tracker_index = context.window_manager.dmx.selected_tracker_index
 

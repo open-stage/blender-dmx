@@ -15,8 +15,7 @@
 # You should have received a copy of the GNU General Public License along
 # with this program. If not, see <https://www.gnu.org/licenses/>.
 
-import bpy
-from bpy.types import Menu, Operator, Panel, UIList
+from bpy.types import Panel, UIList
 
 from ..i18n import DMX_Lang
 
@@ -55,7 +54,6 @@ class DMX_PT_Classes(Panel):
     def draw(self, context):
         layout = self.layout
         scene = context.scene
-        dmx = scene.dmx
 
         layout.template_list(
             "DMX_UL_Class", "", scene.dmx, "classing", scene.dmx, "class_list_i", rows=4

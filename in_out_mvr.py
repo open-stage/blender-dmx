@@ -20,7 +20,7 @@ import os
 import bpy
 from bpy_extras.io_utils import ExportHelper, ImportHelper
 
-from .logging import DMX_Log
+from .logging_setup import DMX_Log
 
 if bpy.app.version >= (4, 2):
     from bpy_extras.io_utils import poll_file_object_drop
