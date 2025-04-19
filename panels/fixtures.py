@@ -91,7 +91,7 @@ class DMX_MT_Fixture_Profiles(Menu):
     def draw(self, context):
         layout = self.layout
         manufacturer = context.manufacturer
-        for profile in DMX_GDTF_File.get_profiles_list(manufacturer.name):
+        for profile in DMX_GDTF_File.get_manufacturer_profiles_list(manufacturer.name):
             row = layout.row()
             row.context_pointer_set("add_edit_panel", context.add_edit_panel)
             op = row.operator(
@@ -111,12 +111,19 @@ class DMX_MT_Fixture_Mode(Menu):
         profile = context.add_edit_panel.profile
         if not profile:
             return
-        for mode, channel_count in DMX_GDTF_File.get_dmx_modes(profile).items():
+        for mode_info in DMX_GDTF_File.get_profile_dmx_modes_info(profile):
+            breaks_text = (
+                f" {mode_info['dmx_breaks_count']} Breaks,"
+                if mode_info["dmx_breaks_count"] > 1
+                else ""
+            )
+
             row = layout.row()
             row.context_pointer_set("add_edit_panel", context.add_edit_panel)
             row.operator(
-                DMX_OT_Fixture_Mode.bl_idname, text=f"{mode}, {channel_count} channels"
-            ).mode = mode
+                DMX_OT_Fixture_Mode.bl_idname,
+                text=f"{mode_info['mode_name']},{breaks_text} {mode_info['dmx_channels_count']} Channels",
+            ).mode = mode_info["mode_name"]
 
 
 # Operators #
@@ -151,10 +158,10 @@ class DMX_OT_Fixture_Mode(Operator):
 class DMX_Fixture_AddEdit:
     def onProfile(self, context):
         if hasattr(context, "add_edit_panel"):
-            mode, channel_count = list(
-                DMX_GDTF_File.get_dmx_modes(context.add_edit_panel.profile).items()
-            )[0]
-            context.add_edit_panel.mode = f"{mode}"
+            mode_name = DMX_GDTF_File.get_profile_dmx_modes_info(
+                context.add_edit_panel.profile
+            )[0]["mode_name"]
+            context.add_edit_panel.mode = f"{mode_name}"
 
     profile: StringProperty(
         name=_("Profile"),
@@ -233,6 +240,10 @@ class DMX_Fixture_AddEdit:
             self.advanced_edit = True
         if self.advanced_edit:
             col.prop(self, "name")
+        else:
+            if self.name != "*":
+                col.label(text=f"{self.name}")
+
         col.context_pointer_set("add_edit_panel", self)
         text_profile = _("GDTF Profile")
         fixture_type = None
@@ -252,11 +263,11 @@ class DMX_Fixture_AddEdit:
             col.menu("DMX_MT_Fixture_Mode", text=text_mode)
 
         if fixture_type is not None:
-            # self.dmx_breaks.clear()
-
-            for dmx_break in [
+            dmx_breaks = [
                 mode for mode in fixture_type["modes"] if mode["mode_name"] == self.mode
-            ][0]["dmx_breaks"]:
+            ][0]["dmx_breaks"]
+
+            for dmx_break in dmx_breaks:
                 new_break = None
                 for existing_break in self.dmx_breaks:
                     if existing_break.dmx_break == dmx_break["dmx_break"]:
@@ -265,12 +276,17 @@ class DMX_Fixture_AddEdit:
                     new_break = self.dmx_breaks.add()
                     new_break.dmx_break = dmx_break["dmx_break"]
                 new_break.channels_count = dmx_break["channels_count"]
-                # TODO: remove unused breaks!
+
+            all_breaks = [dmx_break["dmx_break"] for dmx_break in dmx_breaks]
+            for idx, dmx_break in enumerate(self.dmx_breaks):
+                if dmx_break.dmx_break not in all_breaks:
+                    self.dmx_breaks.remove(idx)
 
             for dmx_break in self.dmx_breaks:
-                col.label(
-                    text=f"DMX Break: {dmx_break.dmx_break}, {dmx_break.channels_count}ch:"
-                )
+                if len(self.dmx_breaks) > 1:
+                    col.label(
+                        text=f"DMX Break: {dmx_break.dmx_break}, {dmx_break.channels_count}ch:"
+                    )
                 col.prop(dmx_break, "universe")
                 col.prop(dmx_break, "address")
 

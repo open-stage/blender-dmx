@@ -689,7 +689,9 @@ class DMX_Fixture(PropertyGroup):
                     else:
                         for dmx_break in self.dmx_breaks:
                             if dmx_break.dmx_break == channel.dmx_break:
-                                DMX_Log.log.info(("Set DMX data", channel, value))
+                                DMX_Log.log.info(
+                                    ("Set DMX data", channel.id, channel.offset, value)
+                                )
                                 DMX_Data.set(
                                     dmx_break.universe,
                                     dmx_break.address + channel.offset - 1,
@@ -721,7 +723,6 @@ class DMX_Fixture(PropertyGroup):
         data_for_cached = []
 
         for dmx_break in self.dmx_breaks:
-            # there is still an issue here if the patch is not continuous
             new_data = DMX_Data.get(
                 dmx_break.universe, dmx_break.address, dmx_break.channels_count
             )
@@ -778,6 +779,8 @@ class DMX_Fixture(PropertyGroup):
             None,
         ]  # gobo selection (Gobo2), gobo indexing/rotation (Gobo2Pos)
 
+        attributes_16_bit = ["Dimmer", "Pan", "Tilt"]
+
         for vchannel in self.virtual_channels:
             geometry = str(
                 vchannel.geometry
@@ -800,21 +803,27 @@ class DMX_Fixture(PropertyGroup):
                 pan_cont_rotating_geometries[geometry] = [None, 1]
             if geometry not in tilt_cont_rotating_geometries.keys():
                 tilt_cont_rotating_geometries[geometry] = [None, 1]
+
             if vchannel.id in data_virtual:
+                # skip fine channels except for supported attributes
+                if vchannel.byte_offset != 0 and vchannel.id not in attributes_16_bit:
+                    continue
+
                 if vchannel.id == "Shutter1":
                     shutter_dimmer_geometries[geometry][0] = data_virtual[vchannel.id][
                         "value"
                     ]
                 elif vchannel.id == "Dimmer":
-                    shutter_dimmer_geometries[geometry][1] = data_virtual[vchannel.id][
-                        "value"
-                    ]
-                elif vchannel.id == "+Dimmer":
-                    shutter_dimmer_geometries[geometry][1] = (
-                        shutter_dimmer_geometries[geometry][1] * 256
-                        + data_virtual[vchannel.id]["value"]
-                    )
-                    shutter_dimmer_geometries[geometry][3] = 256
+                    if vchannel.byte_offset == 0:
+                        shutter_dimmer_geometries[geometry][1] = data_virtual[
+                            vchannel.id
+                        ]["value"]
+                    elif vchannel.byte_offset == 1:
+                        shutter_dimmer_geometries[geometry][1] = (
+                            shutter_dimmer_geometries[geometry][1] * 256
+                            + data_virtual[vchannel.id]["value"]
+                        )
+                        shutter_dimmer_geometries[geometry][3] = 256
 
                 elif vchannel.id == "ColorAdd_R" or vchannel.id == "ColorRGB_Red":
                     rgb_mixing_geometries[geometry][0] = data_virtual[vchannel.id][
@@ -835,32 +844,38 @@ class DMX_Fixture(PropertyGroup):
                 elif vchannel.id == "ColorSub_Y":
                     cmy[2] = data_virtual[vchannel.id]["value"]
                 elif vchannel.id == "Pan":
-                    panTilt[0] = data_virtual[vchannel.id]["value"]
-                    pan_rotating_geometries[geometry][0] = data_virtual[vchannel.id][
-                        "value"
-                    ]
-                elif vchannel.id == "+Pan":
-                    panTilt[0] = panTilt[0] * 256 + data_virtual[vchannel.id]["value"]
-                    panTilt[2] = 256  # 16bit
-                    pan_rotating_geometries[geometry][0] = (
-                        pan_rotating_geometries[geometry][0] * 256
-                        + data_virtual[vchannel.id]["value"]
-                    )
-                    pan_rotating_geometries[geometry][2] = 256
+                    if vchannel.byte_offset == 0:
+                        panTilt[0] = data_virtual[vchannel.id]["value"]
+                        pan_rotating_geometries[geometry][0] = data_virtual[
+                            vchannel.id
+                        ]["value"]
+                    elif vchannel.byte_offset == 1:
+                        panTilt[0] = (
+                            panTilt[0] * 256 + data_virtual[vchannel.id]["value"]
+                        )
+                        panTilt[2] = 256  # 16bit
+                        pan_rotating_geometries[geometry][0] = (
+                            pan_rotating_geometries[geometry][0] * 256
+                            + data_virtual[vchannel.id]["value"]
+                        )
+                        pan_rotating_geometries[geometry][2] = 256
 
                 elif vchannel.id == "Tilt":
-                    panTilt[1] = data_virtual[vchannel.id]["value"]
-                    tilt_rotating_geometries[geometry][0] = data_virtual[vchannel.id][
-                        "value"
-                    ]
-                elif vchannel.id == "+Tilt":
-                    panTilt[1] = panTilt[1] * 256 + data_virtual[vchannel.id]["value"]
-                    panTilt[3] = 256  # 16bit
-                    tilt_rotating_geometries[geometry][0] = (
-                        tilt_rotating_geometries[geometry][0] * 256
-                        + data_virtual[vchannel.id]["value"]
-                    )
-                    tilt_rotating_geometries[geometry][2] = 256
+                    if vchannel.byte_offset == 0:
+                        panTilt[1] = data_virtual[vchannel.id]["value"]
+                        tilt_rotating_geometries[geometry][0] = data_virtual[
+                            vchannel.id
+                        ]["value"]
+                    elif vchannel.byte_offset == 1:
+                        panTilt[1] = (
+                            panTilt[1] * 256 + data_virtual[vchannel.id]["value"]
+                        )
+                        panTilt[3] = 256  # 16bit
+                        tilt_rotating_geometries[geometry][0] = (
+                            tilt_rotating_geometries[geometry][0] * 256
+                            + data_virtual[vchannel.id]["value"]
+                        )
+                        tilt_rotating_geometries[geometry][2] = 256
 
                 elif vchannel.id == "PanRotate":
                     pan_cont_rotating_geometries[geometry][0] = data_virtual[
@@ -921,16 +936,21 @@ class DMX_Fixture(PropertyGroup):
             if geometry not in tilt_cont_rotating_geometries.keys():
                 tilt_cont_rotating_geometries[geometry] = [None, 1]
 
+            if channel.byte_offset != 0 and channel.id not in attributes_16_bit:
+                # skip unsupported 16bit channels
+                continue
+
             if channel.id == "Dimmer":
-                shutter_dimmer_geometries[geometry][1] = dmx_data[channel.dmx_break][
-                    channel.offset
-                ]
-            if channel.id == "+Dimmer":
-                shutter_dimmer_geometries[geometry][1] = (
-                    shutter_dimmer_geometries[geometry][1] * 256
-                    + dmx_data[channel.dmx_break][channel.offset]
-                )
-                shutter_dimmer_geometries[geometry][3] = 256
+                if channel.byte_offset == 0:
+                    shutter_dimmer_geometries[geometry][1] = dmx_data[
+                        channel.dmx_break
+                    ][channel.offset]
+                elif channel.byte_offset == 1:
+                    shutter_dimmer_geometries[geometry][1] = (
+                        shutter_dimmer_geometries[geometry][1] * 256
+                        + dmx_data[channel.dmx_break][channel.offset]
+                    )
+                    shutter_dimmer_geometries[geometry][3] = 256
             elif channel.id == "Shutter1":
                 shutter_dimmer_geometries[geometry][0] = dmx_data[channel.dmx_break][
                     channel.offset
@@ -990,35 +1010,37 @@ class DMX_Fixture(PropertyGroup):
             elif channel.id == "ColorSub_Y":
                 cmy[2] = dmx_data[channel.dmx_break][channel.offset]
             elif channel.id == "Pan":
-                panTilt[0] = dmx_data[channel.dmx_break][channel.offset]
-                pan_rotating_geometries[geometry][0] = dmx_data[channel.dmx_break][
-                    channel.offset
-                ]
-            elif channel.id == "+Pan":
-                panTilt[0] = (
-                    panTilt[0] * 256 + dmx_data[channel.dmx_break][channel.offset]
-                )
-                panTilt[2] = 256  # 16bit
-                pan_rotating_geometries[geometry][0] = (
-                    pan_rotating_geometries[geometry][0] * 256
-                    + dmx_data[channel.dmx_break][channel.offset]
-                )
-                pan_rotating_geometries[geometry][1] = 256
+                if channel.byte_offset == 0:
+                    panTilt[0] = dmx_data[channel.dmx_break][channel.offset]
+                    pan_rotating_geometries[geometry][0] = dmx_data[channel.dmx_break][
+                        channel.offset
+                    ]
+                elif channel.byte_offset == 1:
+                    panTilt[0] = (
+                        panTilt[0] * 256 + dmx_data[channel.dmx_break][channel.offset]
+                    )
+                    panTilt[2] = 256  # 16bit
+                    pan_rotating_geometries[geometry][0] = (
+                        pan_rotating_geometries[geometry][0] * 256
+                        + dmx_data[channel.dmx_break][channel.offset]
+                    )
+                    pan_rotating_geometries[geometry][1] = 256
             elif channel.id == "Tilt":
-                panTilt[1] = dmx_data[channel.dmx_break][channel.offset]
-                tilt_rotating_geometries[geometry][0] = dmx_data[channel.dmx_break][
-                    channel.offset
-                ]
-            elif channel.id == "+Tilt":
-                panTilt[1] = (
-                    panTilt[1] * 256 + dmx_data[channel.dmx_break][channel.offset]
-                )
-                panTilt[3] = 256  # 16bit
-                tilt_rotating_geometries[geometry][0] = (
-                    tilt_rotating_geometries[geometry][0] * 256
-                    + dmx_data[channel.dmx_break][channel.offset]
-                )
-                tilt_rotating_geometries[geometry][1] = 256
+                if channel.byte_offset == 0:
+                    panTilt[1] = dmx_data[channel.dmx_break][channel.offset]
+                    tilt_rotating_geometries[geometry][0] = dmx_data[channel.dmx_break][
+                        channel.offset
+                    ]
+                elif channel.byte_offset == 1:
+                    panTilt[1] = (
+                        panTilt[1] * 256 + dmx_data[channel.dmx_break][channel.offset]
+                    )
+                    panTilt[3] = 256  # 16bit
+                    tilt_rotating_geometries[geometry][0] = (
+                        tilt_rotating_geometries[geometry][0] * 256
+                        + dmx_data[channel.dmx_break][channel.offset]
+                    )
+                    tilt_rotating_geometries[geometry][1] = 256
 
             elif channel.id == "PanRotate":
                 pan_cont_rotating_geometries[geometry][0] = dmx_data[channel.dmx_break][
@@ -1842,7 +1864,6 @@ class DMX_Fixture(PropertyGroup):
                     return obj
 
     def getProgrammerData(self):
-        # channels = [c.id for c in self.channels]
         params = {}
 
         for dmx_break in self.dmx_breaks:
@@ -1850,9 +1871,13 @@ class DMX_Fixture(PropertyGroup):
                 dmx_break.universe, dmx_break.address, dmx_break.channels_count
             )
 
-            for idx, d in enumerate(data):
+            for idx, d in enumerate(data, 1):
                 for channel in self.channels:
-                    if channel.offset == idx:
+                    if (
+                        channel.dmx_break == dmx_break.dmx_break
+                        and channel.offset == idx
+                        and channel.byte_offset == 0
+                    ):
                         params[channel.id] = d
         return params
 
@@ -1978,7 +2003,7 @@ class DMX_Fixture(PropertyGroup):
                 if channel.dmx_break == dmx_break.dmx_break:
                     DMX_Data.set(
                         dmx_break.universe,
-                        dmx_break.address + channel.offset,
+                        dmx_break.address + channel.offset - 1,
                         channel.default,
                     )
         self.render()

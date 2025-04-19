@@ -49,11 +49,14 @@ class DMX_Fixtures_Local_Profile(PropertyGroup):
     modes: CollectionProperty(type=DMX_Fixtures_Local_ProfileMode)
 
     @staticmethod
-    def loadLocal(write_cache=False):
+    def loadLocal(write_cache=False, recreate_profiles=False):
         local_profiles = bpy.context.window_manager.dmx.imports.local_profiles
         local_profiles.clear()
-        if write_cache:
+
+        if recreate_profiles:
             DMX_GDTF_File.recreate_data()
+
+        if write_cache:
             DMX_GDTF_File.write_cache()
         profiles = dict(
             sorted(

@@ -20,6 +20,7 @@ import os
 import bpy
 import pygdtf
 import json
+from .logging_setup import DMX_Log
 
 
 class DMX_GDTF_File:
@@ -34,18 +35,26 @@ class DMX_GDTF_File:
         DMX_GDTF_File.read_cache()
 
     @staticmethod
+    def get_profiles_path():
+        dmx = bpy.context.scene.dmx
+        ADDON_PATH = dmx.get_addon_path()
+        return os.path.join(ADDON_PATH, "assets", "profiles")
+
+    @staticmethod
     def read_cache():
         dmx = bpy.context.scene.dmx
         dir_path = dmx.get_addon_path()
+        DMX_Log.log.info("Read cache")
         try:
             with open(os.path.join(dir_path, "fixtures_data.json")) as f:
                 fixtures_data = json.load(f)
                 DMX_GDTF_File.profiles_list = fixtures_data.get("profiles_list", {})
         except Exception:
-            ...
+            pass
 
     @staticmethod
     def write_cache():
+        DMX_Log.log.info("Writing profiles cache...")
         if DMX_GDTF_File.instance is None:
             DMX_GDTF_File.instance = DMX_GDTF_File()
         dmx = bpy.context.scene.dmx
@@ -63,7 +72,7 @@ class DMX_GDTF_File:
     def add_to_data(file_name):
         if DMX_GDTF_File.instance is None:
             DMX_GDTF_File.instance = DMX_GDTF_File()
-        filepath = os.path.join(DMX_GDTF_File.get_profiles_ath(), file_name)
+        filepath = os.path.join(DMX_GDTF_File.get_profiles_path(), file_name)
         with DMX_GDTF_File.load_gdtf_profile(filepath) as fixture_type:
             modes = []
             for mode in fixture_type.dmx_modes:
@@ -95,10 +104,9 @@ class DMX_GDTF_File:
 
     @staticmethod
     def recreate_data():
-        if DMX_GDTF_File.instance is None:
-            DMX_GDTF_File.instance = DMX_GDTF_File()
+        DMX_Log.log.info("Regenerating fixture profiles list...")
         DMX_GDTF_File.profiles_list = {}
-        for file in os.listdir(DMX_GDTF_File.get_profiles_ath()):
+        for file in os.listdir(DMX_GDTF_File.get_profiles_path()):
             if file not in DMX_GDTF_File.profiles_list:
                 DMX_GDTF_File.add_to_data(file)
 
@@ -108,12 +116,6 @@ class DMX_GDTF_File:
             DMX_GDTF_File.instance = DMX_GDTF_File()
         if file_name in DMX_GDTF_File.profiles_list:
             del DMX_GDTF_File.profiles_list[file_name]
-
-    @staticmethod
-    def get_profiles_ath():
-        dmx = bpy.context.scene.dmx
-        ADDON_PATH = dmx.get_addon_path()
-        return os.path.join(ADDON_PATH, "assets", "profiles")
 
     @staticmethod
     def get_manufacturers_list():
@@ -133,7 +135,7 @@ class DMX_GDTF_File:
             manufacturers.add().name = name
 
     @staticmethod
-    def get_profiles_list(manufacturer):
+    def get_manufacturer_profiles_list(manufacturer):
         if DMX_GDTF_File.instance is None:
             DMX_GDTF_File.instance = DMX_GDTF_File()
         # List profiles in folder
@@ -148,18 +150,24 @@ class DMX_GDTF_File:
         return tuple(profiles)
 
     @staticmethod
-    def get_dmx_modes(file_name):
+    def get_profile_dmx_modes_info(file_name):
         if DMX_GDTF_File.instance is None:
             DMX_GDTF_File.instance = DMX_GDTF_File()
         """Returns an array, keys are mode names, value is channel count"""
         gdtf_profile = DMX_GDTF_File.profiles_list.get(file_name)
-        modes = {}
+        modes_info = []
         for mode in gdtf_profile["modes"]:
-            modes[mode["mode_name"]] = mode["dmx_channels_count"]
-        return modes
+            modes_info.append(
+                {
+                    "mode_name": mode["mode_name"],
+                    "dmx_channels_count": mode["dmx_channels_count"],
+                    "dmx_breaks_count": len(mode["dmx_breaks"]),
+                }
+            )
+        return modes_info
 
     @staticmethod
     def load_gdtf_profile(file_name):
-        path = os.path.join(DMX_GDTF_File.get_profiles_ath(), file_name)
+        path = os.path.join(DMX_GDTF_File.get_profiles_path(), file_name)
         profile = pygdtf.FixtureType(path)
         return profile

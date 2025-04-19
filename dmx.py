@@ -622,7 +622,6 @@ class DMX(PropertyGroup):
         # enable in extension
         self.ensure_directories_exist()
         Timer(1, self.copy_default_profiles_to_user_folder, ()).start()
-        # self.copy_default_profiles_to_user_folder()
         self.check_python_version()
         self.check_blender_version()
         self.print_extension_version()
@@ -682,7 +681,7 @@ class DMX(PropertyGroup):
 
     def copy_default_profiles_to_user_folder(self):
         copy_blender_profiles()
-        Profiles.DMX_Fixtures_Local_Profile.loadLocal()
+        Profiles.DMX_Fixtures_Local_Profile.loadLocal(recreate_profiles=True)
         DMX_GDTF_File.get_manufacturers_list()
 
     def ensure_application_uuid(self):
