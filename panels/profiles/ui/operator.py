@@ -15,16 +15,12 @@
 # You should have received a copy of the GNU General Public License along
 # with this program. If not, see <https://www.gnu.org/licenses/>.
 
-import os
-import shutil
 
-import bpy
-from bpy.props import CollectionProperty, IntProperty, StringProperty
+from bpy.props import IntProperty
 from bpy.types import Operator
 
-from ....gdtf import DMX_GDTF
+from ....gdtf_file import DMX_GDTF_File
 from ....i18n import DMX_Lang
-from ....logging import DMX_Log
 from ....panels import profiles as Profiles
 
 _ = DMX_Lang._
@@ -42,7 +38,8 @@ class DMX_OP_Import_Fixture_From_Share(Operator):
 
     def execute(self, context):
         Profiles.controller.DMX_Fixtures_Manager.import_from_share(self, self.index)
-        DMX_GDTF.getManufacturerList()
+        Profiles.DMX_Fixtures_Local_Profile.loadLocal(recreate_profiles=True)
+        DMX_GDTF_File.get_manufacturers_list()
         return {"FINISHED"}
 
 
@@ -67,8 +64,7 @@ class DMX_OP_Delete_Local_Fixture(Operator):
 
     def execute(self, context):
         Profiles.controller.DMX_Fixtures_Manager.delete_local_fixture(self, self.index)
-        DMX_GDTF.getManufacturerList()
-        Profiles.DMX_Fixtures_Local_Profile.loadLocal()
+        DMX_GDTF_File.get_manufacturers_list()
         return {"FINISHED"}
 
 
@@ -79,6 +75,8 @@ class DMX_OP_Update_Local_Fixtures(Operator):
     bl_options = {"UNDO"}
 
     def execute(self, context):
-        DMX_GDTF.getManufacturerList()
-        Profiles.DMX_Fixtures_Local_Profile.loadLocal(show_errors=True)
+        Profiles.DMX_Fixtures_Local_Profile.loadLocal(
+            recreate_profiles=True, write_cache=True
+        )
+        DMX_GDTF_File.get_manufacturers_list()
         return {"FINISHED"}

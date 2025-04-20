@@ -22,12 +22,11 @@ import bpy
 
 from .... import __package__ as base_package
 from .... import share_api_client as share_api_client
-from ....gdtf import DMX_GDTF
+from ....gdtf_file import DMX_GDTF_File
 from ....panels import profiles as Profiles
+from ....i18n import DMX_Lang
 
 execution_queue = queue.Queue()
-
-from ....i18n import DMX_Lang
 
 _ = DMX_Lang._
 
@@ -45,8 +44,9 @@ class DMX_Fixtures_Manager:
         filename = profile.filename
         file_path = os.path.join(dir_path, "assets", "profiles", filename)
         os.remove(file_path)
-        DMX_GDTF.getManufacturerList()
+        DMX_GDTF_File.remove_from_data(filename)
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
+        DMX_GDTF_File.get_manufacturers_list()
 
     # Fixture Import
 
@@ -175,8 +175,8 @@ def reload_share_profiles(result):
 
 
 def reload_local_profiles(result):
-    DMX_GDTF.getManufacturerList()
     Profiles.DMX_Fixtures_Local_Profile.loadLocal()
+    DMX_GDTF_File.get_manufacturers_list()
     if result.status:
         ShowMessageBox(
             _("File downloaded correctly. Status code was: {}").format(

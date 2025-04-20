@@ -26,82 +26,17 @@ from types import SimpleNamespace
 import bpy
 import pygdtf
 from io_scene_3ds.import_3ds import load_3ds
-from mathutils import Euler, Matrix, Vector
+from mathutils import Matrix, Vector
 
-from .logging import DMX_Log
+from .logging_setup import DMX_Log
 from .util import sanitize_obj_name, xyY2rgbaa
 
 
 class DMX_GDTF:
     @staticmethod
-    def getProfilesPath():
-        dmx = bpy.context.scene.dmx
-        ADDON_PATH = dmx.get_addon_path()
-        return os.path.join(ADDON_PATH, "assets", "profiles")
-
-    @staticmethod
     def getPrimitivesPath():
         ADDON_PATH = os.path.dirname(os.path.abspath(__file__))
         return os.path.join(ADDON_PATH, "assets", "primitives")
-
-    @staticmethod
-    def getManufacturerList():
-        # List profiles in folder
-        manufacturers_names = set()
-        # TODO cache this, as it can make a slow addon start
-        for file in os.listdir(DMX_GDTF.getProfilesPath()):
-            # Parse info from file name: Manufacturer@Device@Revision.gdtf
-            if "@" not in file:
-                file = os.path.join(DMX_GDTF.getProfilesPath(), file)
-                with pygdtf.FixtureType(file) as fixture_type:
-                    name = f"{fixture_type.manufacturer}"
-            else:
-                name = file.split("@")[0]
-            manufacturers_names.add(name)
-        manufacturers = bpy.context.window_manager.dmx.manufacturers
-        manufacturers.clear()
-        for name in sorted(manufacturers_names):
-            manufacturers.add().name = name
-
-    @staticmethod
-    def getProfileList(manufacturer):
-        # List profiles in folder
-        profiles = []
-        for file in os.listdir(DMX_GDTF.getProfilesPath()):
-            # Parse info from file name: Company@Model.gdtf
-            if "@" not in file:
-                file = os.path.join(DMX_GDTF.getProfilesPath(), file)
-                with pygdtf.FixtureType(file) as fixture_type:
-                    info = [
-                        f"{fixture_type.manufacturer}",
-                        f"{fixture_type.long_name}",
-                        "",
-                    ]
-            else:
-                info = file.split("@")
-            if info[0] == manufacturer:
-                # Remove ".gdtf" from the end of the string
-                if info[-1][-5:].lower() == ".gdtf":
-                    info[-1] = info[-1][:-5]
-                # Add to list (identifier, short name, full name)
-                profiles.append((file, info[1], (info[2] if len(info) > 2 else "")))
-
-        return tuple(profiles)
-
-    @staticmethod
-    def getModes(profile):
-        """Returns an array, keys are mode names, value is channel count"""
-        gdtf_profile = DMX_GDTF.loadProfile(profile)
-        modes = {}
-        for mode in gdtf_profile.dmx_modes:
-            modes[mode.name] = mode.dmx_channels_count
-        return modes
-
-    @staticmethod
-    def loadProfile(filename):
-        path = os.path.join(DMX_GDTF.getProfilesPath(), filename)
-        profile = pygdtf.FixtureType(path)
-        return profile
 
     @staticmethod
     def load_blender_primitive(model):
@@ -175,7 +110,7 @@ class DMX_GDTF:
             for slot in wheel.wheel_slots:
                 try:
                     color = xyY2rgbaa(slot.color)
-                except:
+                except Exception:
                     color = None
                 if color is not None and color not in colors:
                     colors.append(color)
@@ -205,7 +140,7 @@ class DMX_GDTF:
             if idx == 1:
                 first = str(destination.resolve())
             if idx == 256:  # more gobos then values on a channel, must stop
-                DMX_Log.log.info(f"Only 255 gobos are supported at the moment")
+                DMX_Log.log.info("Only 255 gobos are supported at the moment")
                 break
             destination.write_bytes(image.read_bytes())
             count = idx
@@ -383,11 +318,11 @@ class DMX_GDTF:
         root_geometry = profile.geometries.get_geometry_by_name(dmx_mode.geometry)
         has_gobos = False
 
-        dmx_channels_flattened = dmx_mode.dmx_channels.as_dict()
-        virtual_channels = dmx_mode.virtual_channels.as_dict()
+        dmx_channels_flattened = dmx_mode.dmx_channels
+        virtual_channels = dmx_mode.virtual_channels
 
         for ch in dmx_channels_flattened:
-            if "Gobo" in ch["attribute"]:
+            if "Gobo" in ch.attribute.str_link:
                 has_gobos = True
 
         def load_geometries(geometry):
@@ -507,7 +442,7 @@ class DMX_GDTF:
             return "normal"
 
         def create_camera(geometry):
-            if not sanitize_obj_name(geometry) in objs:
+            if sanitize_obj_name(geometry) not in objs:
                 return
             obj_child = objs[sanitize_obj_name(geometry)]
             camera_data = bpy.data.cameras.new(name=f"{obj_child.name}")
@@ -548,9 +483,9 @@ class DMX_GDTF:
                     "ColorRGB_Green",
                 ]
                 for ch in dmx_channels_flattened:
-                    if ch["geometry"] == obj_child["original_name"]:
+                    if ch.geometry == obj_child["original_name"]:
                         if any(
-                            used_attr in ch["attribute"]
+                            used_attr in ch.attribute.str_link
                             for used_attr in used_attributes
                         ):
                             obj_child["parent_geometries"] = []
@@ -569,11 +504,12 @@ class DMX_GDTF:
             parent_geometries = []
 
             for ch in dmx_channels_flattened:
-                if ch["geometry"] == geometry.parent_name:
+                if ch.geometry == geometry.parent_name:
                     if any(
-                        used_attr in ch["attribute"] for used_attr in used_attributes
+                        used_attr in ch.attribute.str_link
+                        for used_attr in used_attributes
                     ):
-                        parent_geometries.append(ch["geometry"].replace(" ", "_"))
+                        parent_geometries.append(ch.geometry.replace(" ", "_"))
 
             if not parent_geometries and geometry.parent_name is not None:
                 new_obj_name = geometry.parent_name.replace(" ", "_")
@@ -694,10 +630,10 @@ class DMX_GDTF:
             obj_child.matrix_local = Matrix.LocRotScale(translate, rotation, scale)
 
         def constraint_child_to_parent(parent_geometry, child_geometry):
-            if not sanitize_obj_name(parent_geometry) in objs:
+            if sanitize_obj_name(parent_geometry) not in objs:
                 return
             obj_parent = objs[sanitize_obj_name(parent_geometry)]
-            if not sanitize_obj_name(child_geometry) in objs:
+            if sanitize_obj_name(child_geometry) not in objs:
                 return
             obj_child = objs[sanitize_obj_name(child_geometry)]
             obj_child.parent = obj_parent
@@ -781,16 +717,17 @@ class DMX_GDTF:
             axis_objects = []
             for obj in objs.values():
                 for channel in dmx_channels_flattened:
-                    if attribute == channel["attribute"] and channel[
-                        "geometry"
-                    ] == obj.get("original_name", "None"):
+                    if (
+                        attribute == channel.attribute.str_link
+                        and channel.geometry == obj.get("original_name", "None")
+                    ):
                         obj["mobile_type"] = "head" if attribute == "Tilt" else "yoke"
                         obj["geometry_type"] = "axis"
                         axis_objects.append(obj)
                 for channel in virtual_channels:
-                    if attribute == channel["attribute"] and channel[
-                        "geometry"
-                    ] == obj.get("original_name", "None"):
+                    if attribute == channel.attribute and channel.geometry == obj.get(
+                        "original_name", "None"
+                    ):
                         obj["mobile_type"] = "head" if attribute == "Tilt" else "yoke"
                         obj["geometry_type"] = "axis"
                         axis_objects.append(obj)

@@ -15,7 +15,6 @@
 # You should have received a copy of the GNU General Public License along
 # with this program. If not, see <https://www.gnu.org/licenses/>.
 
-import logging
 import socket
 import uuid as pyuuid
 from typing import cast
@@ -29,8 +28,9 @@ from zeroconf import (
     Zeroconf,
 )
 
-from .logging import DMX_Log
-from .mvrxchange.mvrx_message import defined_station_name, defined_provider_name
+from .logging_setup import DMX_Log
+from .mvrxchange.mvrx_message import defined_station_name
+
 # mdns (zeroconf) instances for discover and for mdns server
 
 

@@ -19,7 +19,7 @@ import bpy
 from bpy.props import IntProperty
 from bpy.types import PropertyGroup
 
-from .logging import DMX_Log
+from .logging_setup import DMX_Log
 
 
 def update_callback(self, context):
@@ -55,7 +55,7 @@ class DMX_Data:
     def setup(universes):
         try:
             DMX_Data._dmx = bpy.context.scene.dmx
-        except:
+        except Exception:
             pass
         DMX_Data.prepare_empty_buffer()
         old_n = len(DMX_Data._universes)

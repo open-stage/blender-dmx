@@ -15,11 +15,12 @@
 # You should have received a copy of the GNU General Public License along
 # with this program. If not, see <https://www.gnu.org/licenses/>.
 
+import traceback
+
 import bpy
 
 from .gdtf import DMX_GDTF
-from .logging import DMX_Log
-import traceback
+from .logging_setup import DMX_Log
 
 
 class DMX_Model:
@@ -32,7 +33,7 @@ class DMX_Model:
         collections = bpy.data.collections
 
         # Make sure the profile was passed as an argument, otherwise return None
-        if profile == None:
+        if profile is None:
             return None
 
         name = DMX_GDTF.getName(profile, dmx_mode, display_beams, add_target)

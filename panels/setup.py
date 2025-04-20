@@ -16,18 +16,16 @@
 # with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import os
-import shutil
 
 import bpy
 from bpy.props import CollectionProperty, StringProperty
 from bpy.types import Operator, Panel
 
 from .. import blender_utils as blender_utils
-from ..gdtf import DMX_GDTF
+from ..gdtf_file import DMX_GDTF_File
 from ..i18n import DMX_Lang
 from ..in_gdtf import DMX_OT_Import_GDTF
 from ..in_out_mvr import DMX_OT_Export_MVR, DMX_OT_Import_MVR
-from ..logging import DMX_Log
 from ..material import getVolumeScatterMaterial
 from ..panels import profiles as Profiles
 from ..util import getSceneRect, split_text_on_spaces
@@ -60,8 +58,7 @@ class DMX_OT_Setup_EnableSelectGeometries(Operator):
     bl_options = {"UNDO"}
 
     def draw(self, context):
-        layout = self.layout
-        col = layout.column()
+        pass
 
     def execute(self, context):
         dmx = context.scene.dmx
@@ -93,10 +90,6 @@ class DMX_OT_Setup_RemoveDMX(Operator):
     bl_description = _("Try to remove DMX from the Blender showfile")
     bl_idname = "dmx.remove_show"
     bl_options = {"UNDO"}
-
-    def draw(self, context):
-        layout = self.layout
-        col = layout.column()
 
     def execute(self, context):
         # DMX setup
@@ -342,7 +335,6 @@ class DMX_PT_Setup_Import(Panel):
 
     def draw(self, context):
         layout = self.layout
-        dmx = context.scene.dmx
         # "Import GDTF Profile"
         row = layout.row()
         row.operator(
@@ -374,7 +366,6 @@ class DMX_PT_Setup_Export(Panel):
 
     def draw(self, context):
         layout = self.layout
-        dmx = context.scene.dmx
 
         # export project data
         row = layout.row()
@@ -495,8 +486,8 @@ class DMX_OT_Import_Custom_Data(Operator):
             self.report({"ERROR"}, _("Incorrect file name!"))
             return {"FINISHED"}
 
-        DMX_GDTF.getManufacturerList()
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
+        DMX_GDTF_File.get_manufacturers_list()
 
         if result.ok:
             import_filename = os.path.join(self.directory, file_name)
@@ -554,14 +545,10 @@ class DMX_OT_Clear_Custom_Data(Operator):
     bl_description = _("Clear custom data from BlenderDMX addon directory.")
     bl_options = {"UNDO"}
 
-    def draw(self, context):
-        layout = self.layout
-        col = layout.column()
-
     def execute(self, context):
         result = blender_utils.clear_custom_data()
 
-        DMX_GDTF.getManufacturerList()
+        DMX_GDTF_File.get_manufacturers_list()
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
 
         if result.ok:
@@ -585,12 +572,11 @@ class DMX_OT_Copy_Custom_Data(Operator):
     bl_options = {"UNDO"}
 
     def draw(self, context):
-        layout = self.layout
-        col = layout.column()
+        pass
 
     def execute(self, context):
         result = blender_utils.copy_custom_data()
-        DMX_GDTF.getManufacturerList()
+        DMX_GDTF_File.get_manufacturers_list()
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
 
         if result.ok:
@@ -611,10 +597,6 @@ class DMX_OT_Reload_Addon(Operator):
     bl_description = _("Reload the addon, useful during development")
     bl_options = {"UNDO"}
 
-    def draw(self, context):
-        layout = self.layout
-        col = layout.column()
-
     def execute(self, context):
         dmx = context.scene.dmx
 
@@ -622,24 +604,24 @@ class DMX_OT_Reload_Addon(Operator):
             bpy.utils.unregister_class(DMX_OT_Import_GDTF)
             bpy.utils.unregister_class(DMX_OT_Import_MVR)
             bpy.utils.unregister_class(DMX_OT_Export_MVR)
-        except:
+        except Exception:
             ...
 
         for cls in dmx.classes:
             try:
                 bpy.utils.unregister_class(cls)
-            except:
+            except Exception:
                 ...
 
         for cls in dmx.classes_base:
             try:
                 bpy.utils.unregister_class(cls)
-            except:
+            except Exception:
                 ...
         for cls in dmx.classes_setup:
             try:
                 bpy.utils.unregister_class(cls)
-            except:
+            except Exception:
                 ...
 
         result = blender_utils.reload_addon()

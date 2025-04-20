@@ -18,7 +18,7 @@
 import bpy
 from oscpy.server import OSCThreadServer
 
-from .logging import DMX_Log
+from .logging_setup import DMX_Log
 
 
 class DMX_OSC:
@@ -65,7 +65,7 @@ class DMX_OSC:
         if DMX_OSC._instance:
             try:
                 DMX_OSC._instance.server.stop()  # Stop the default socket
-            except Exception as e:
+            except Exception:
                 ...
             DMX_OSC._instance.server.terminate_server()
             DMX_OSC._instance.server.join_server()

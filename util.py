@@ -174,7 +174,7 @@ def rgb2xyY(sR, sG, sB):
 
 def xyY2rgba(xyz):
     """Unused for now"""
-    rgb = xyY2rgb(xyz)
+    rgb = xyY2rgbaa(xyz)
     lowest = min(rgb)
     alpha = (255 - lowest) / 255
     red = (rgb[0] - lowest) / alpha

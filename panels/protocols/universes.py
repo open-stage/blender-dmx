@@ -27,20 +27,13 @@ class DMX_MT_Universe(Menu):
     bl_idname = "DMX_MT_Universe"
 
     def draw(self, context):
-        layout = self.layout
-        scene = context.scene
-        dmx = scene.dmx
-
-        # "Add"
-        row = layout.row()
-        # row.operator("dmx.add_universe", text="Add", icon="ADD")
+        pass
 
 
 class DMX_UL_Universe(UIList):
     def draw_item(
         self, context, layout, data, item, icon, active_data, active_propname
     ):
-        ob = data
         icon = "FILE_VOLUME"
         if self.layout_type in {"DEFAULT", "COMPACT"}:
             col = layout.column()

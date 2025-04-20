@@ -42,11 +42,13 @@ from .mdns import DMX_Zeroconf
 from .mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server, DMX_MVR_X_WS_Client
 from .osc import DMX_OSC
 from .panels import profiles as Profiles
+from .gdtf_file import DMX_GDTF_File
 
-_ = DMX_Lang._
 from . import in_gdtf, in_out_mvr
 from .dmx import DMX
 from .dmx_temp_data import DMX_TempData
+
+_ = DMX_Lang._
 
 
 @bpy.app.handlers.persistent
@@ -169,6 +171,7 @@ def register():
 
 
 def unregister():
+    DMX_GDTF_File.write_cache()
     # Stop ArtNet
     DMX_ArtNet.disable()
     DMX_sACN.disable()

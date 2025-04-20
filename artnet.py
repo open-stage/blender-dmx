@@ -30,7 +30,7 @@ from socket import (
 import bpy
 
 from .data import DMX_Data
-from .logging import DMX_Log
+from .logging_setup import DMX_Log
 from .network import DMX_Network
 
 # ArtnetPacket class taken from here:

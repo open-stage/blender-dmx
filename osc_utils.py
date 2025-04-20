@@ -18,7 +18,7 @@
 import json
 import os
 
-from .logging import DMX_Log
+from .logging_setup import DMX_Log
 from .osc import DMX_OSC
 
 

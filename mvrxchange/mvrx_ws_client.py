@@ -24,7 +24,7 @@ from queue import Queue
 import bpy
 import websocket
 
-from ..logging import DMX_Log
+from ..logging_setup import DMX_Log
 from .mvrx_message import mvrx_message
 
 
@@ -90,7 +90,7 @@ class WebSocketClient(threading.Thread):
                 self.callback(json.loads(message))
 
     def on_error(self, ws, error):
-        DMX_Log.log.error((f"WebSocket error:", error))
+        DMX_Log.log.error(("WebSocket error:", error))
 
     def on_close(self, ws, close_status_code, close_msg):
         DMX_Log.log.info(("Disconnected", close_status_code, close_msg))

@@ -15,14 +15,13 @@
 # You should have received a copy of the GNU General Public License along
 # with this program. If not, see <https://www.gnu.org/licenses/>.
 
-import os
 
 import bpy
-import pygdtf
 from bpy.props import CollectionProperty, IntProperty, StringProperty
 from bpy.types import PropertyGroup
 
 from ....i18n import DMX_Lang
+from ....gdtf_file import DMX_GDTF_File
 
 _ = DMX_Lang._
 
@@ -50,60 +49,32 @@ class DMX_Fixtures_Local_Profile(PropertyGroup):
     modes: CollectionProperty(type=DMX_Fixtures_Local_ProfileMode)
 
     @staticmethod
-    def get_profiles_path() -> str:
-        """Return the path to the "profiles" folder."""
-        dmx = bpy.context.scene.dmx
-        FILE_PATH = dmx.get_addon_path()
-        return os.path.join(FILE_PATH, "assets", "profiles")
-
-    @staticmethod
-    def get_profile_list(show_errors=False):
-        """List gdtf files in in profiles folder"""
-
-        profiles_path = DMX_Fixtures_Local_Profile.get_profiles_path()
-        profiles = []
-        errors = []
-        for file in os.listdir(profiles_path):
-            file_path = os.path.join(profiles_path, file)
-            try:
-                with pygdtf.FixtureType(file_path) as fixture_type:
-                    profiles.append(
-                        {
-                            "name": f"{fixture_type.manufacturer} @ {fixture_type.long_name}",
-                            "short_name": fixture_type.short_name,
-                            "filename": file,
-                            "modes": fixture_type.dmx_modes,
-                        }
-                    )
-
-            except Exception as e:
-                print("INFO", "Error parsing file", file, e)
-                errors.append(f"{file}: {e}")
-
-        if show_errors and errors:
-            MultiLineMessage(
-                message=errors,
-                title=_("Some fixtures could not be processed"),
-                icon="ERROR",
-            )
-        return profiles
-
-    @staticmethod
-    def loadLocal(show_errors=False):
+    def loadLocal(write_cache=False, recreate_profiles=False):
         local_profiles = bpy.context.window_manager.dmx.imports.local_profiles
         local_profiles.clear()
-        profiles = DMX_Fixtures_Local_Profile.get_profile_list(show_errors)
 
-        for profile in profiles:
+        if recreate_profiles:
+            DMX_GDTF_File.recreate_data()
+
+        if write_cache:
+            DMX_GDTF_File.write_cache()
+        profiles = dict(
+            sorted(
+                DMX_GDTF_File.profiles_list.items(),
+                key=lambda item: (item[1]["manufacturer_name"], item[1]["name"]),
+            )
+        )
+
+        for profile in profiles.values():
             local_profile = local_profiles.add()
-            local_profile.name = profile["name"]
+            local_profile.name = f"{profile['manufacturer_name']} @ {profile['name']} @ {profile['revision']}"
             local_profile.short_name = profile["short_name"]
             local_profile.filename = profile["filename"]
 
             for mode in profile["modes"]:
                 local_mode = local_profile.modes.add()
-                local_mode.name = mode.name
-                local_mode.footprint = mode.dmx_channels_count
+                local_mode.name = mode["mode_name"]
+                local_mode.footprint = mode["dmx_channels_count"]
 
 
 def MultiLineMessage(message=[], title="Message Box", icon="INFO"):

@@ -18,11 +18,10 @@
 import math
 
 import bpy
-from bpy.props import FloatProperty, StringProperty
+from bpy.props import StringProperty
 from bpy.types import Operator, Panel
 
 from ..i18n import DMX_Lang
-from ..logging import DMX_Log
 
 _ = DMX_Lang._
 

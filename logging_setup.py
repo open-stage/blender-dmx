@@ -1,4 +1,4 @@
-# Copyright (C) 2022 Hugo Aboud, vanous
+# Copyright (C) 2025 vanous
 #
 # This file is part of BlenderDMX.
 #

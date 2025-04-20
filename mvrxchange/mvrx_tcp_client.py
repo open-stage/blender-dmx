@@ -25,7 +25,7 @@ from threading import Thread
 
 import bpy
 
-from ..logging import DMX_Log
+from ..logging_setup import DMX_Log
 from .mvrx_message import mvrx_message
 
 
@@ -92,7 +92,7 @@ class client(Thread):
         )
 
     def send_commit(self, commit):
-        DMX_Log.log.debug(f"Sending commit")
+        DMX_Log.log.debug("Sending commit")
         commits = [commit]
         self.send(
             mvrx_message.craft_packet(
@@ -192,7 +192,6 @@ class client(Thread):
     def parse_data(self, data, callback):
         DMX_Log.log.debug(f"parsing {data}")
         header = mvrx_message.parse_header(data)
-        print("header", header)
         if header["Type"] == 0:  # json
             json_data = json.loads(data[28:].decode("utf-8"))
             callback(json_data)
