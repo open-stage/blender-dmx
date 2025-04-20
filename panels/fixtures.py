@@ -404,6 +404,15 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                 new_break.address = dmx_break.address
                 new_break.channels_count = dmx_break.channels_count
                 dmx.ensureUniverseExists(dmx_break.universe)
+
+            if not fixture.dmx_breaks:
+                new_break = fixture.dmx_breaks.add()
+                new_break.dmx_break = 0
+                new_break.universe = 0
+                new_break.address = 0
+                new_break.channels_count = 0
+                dmx.ensureUniverseExists(0)
+
             if self.advanced_edit:
                 fixture.build(
                     self.name,
@@ -426,6 +435,14 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                     new_break.address = dmx_break.address
                     new_break.channels_count = dmx_break.channels_count
                     dmx.ensureUniverseExists(dmx_break.universe)
+
+                if not fixture.dmx_breaks:
+                    new_break = fixture.dmx_breaks.add()
+                    new_break.dmx_break = 0
+                    new_break.universe = 0
+                    new_break.address = 0
+                    new_break.channels_count = 0
+                    dmx.ensureUniverseExists(0)
 
                 fixture.fixture_id = self.fixture_id
         # Multiple fixtures
@@ -476,6 +493,14 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                         new_break.address = dmx_break.address
                         new_break.channels_count = dmx_break.channels_count
 
+                    if not fixture.dmx_breaks:
+                        new_break = fixture.dmx_breaks.add()
+                        new_break.dmx_break = 0
+                        new_break.universe = 0
+                        new_break.address = 0
+                        new_break.channels_count = 0
+                        dmx.ensureUniverseExists(0)
+
                 fixture.fixture_id = fixture_id
 
                 if self.increment_fixture_id:
@@ -510,6 +535,13 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                 new_break.universe = dmx_break.universe
                 new_break.address = dmx_break.address
                 new_break.channels_count = dmx_break.channels_count
+
+            if not self.dmx_breaks:
+                new_break = self.dmx_breaks.add()
+                new_break.dmx_break = 0
+                new_break.universe = 0
+                new_break.address = 0
+                new_break.channels_count = 0
 
             self.mode = fixture.mode
             self.gel_color = [c / 255 for c in fixture.gel_color_rgb] + [1]

@@ -38,8 +38,6 @@ class DMX_OP_Import_Fixture_From_Share(Operator):
 
     def execute(self, context):
         Profiles.controller.DMX_Fixtures_Manager.import_from_share(self, self.index)
-        Profiles.DMX_Fixtures_Local_Profile.loadLocal(recreate_profiles=True)
-        DMX_GDTF_File.get_manufacturers_list()
         return {"FINISHED"}
 
 

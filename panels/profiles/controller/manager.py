@@ -175,7 +175,7 @@ def reload_share_profiles(result):
 
 
 def reload_local_profiles(result):
-    Profiles.DMX_Fixtures_Local_Profile.loadLocal()
+    Profiles.DMX_Fixtures_Local_Profile.loadLocal(recreate_profiles=True)
     DMX_GDTF_File.get_manufacturers_list()
     if result.status:
         ShowMessageBox(

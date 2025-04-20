@@ -219,6 +219,13 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
                         new_break.universe = universe
                         new_break.channels_count = dmx_break.channels_count
 
+                    if not self.dmx_breaks:
+                        new_break = self.dmx_breaks.add()
+                        new_break.dmx_break = 0
+                        new_break.universe = 0
+                        new_break.address = 0
+                        new_break.channels_count = 0
+
                     for count in range(1, 1 + self.units):
                         new_name = f"{profile.name} {count}"
                         new_name = create_unique_fixture_name(new_name)

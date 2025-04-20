@@ -448,6 +448,13 @@ class DMX_Fixture(PropertyGroup):
                 if dmx_break.dmx_break == mode_break.dmx_break:
                     new_break.channels_count = mode_break.channels_count
 
+        if not self.dmx_breaks:
+            new_break = self.dmx_breaks.add()
+            new_break.dmx_break = 0
+            new_break.universe = 0
+            new_break.address = 0
+            new_break.channels_count = 0
+
         # Build cache of virtual channels
         for channel in dmx_mode.virtual_channels:
             new_virtual_channel = self.virtual_channels.add()

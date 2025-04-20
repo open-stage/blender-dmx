@@ -548,8 +548,8 @@ class DMX_OT_Clear_Custom_Data(Operator):
     def execute(self, context):
         result = blender_utils.clear_custom_data()
 
+        Profiles.DMX_Fixtures_Local_Profile.loadLocal(recreate_profiles=True)
         DMX_GDTF_File.get_manufacturers_list()
-        Profiles.DMX_Fixtures_Local_Profile.loadLocal()
 
         if result.ok:
             self.report({"INFO"}, _("Data cleared"))

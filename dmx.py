@@ -2008,8 +2008,8 @@ class DMX(PropertyGroup):
         load_mvr(self, file_name, import_focus_points=import_focus_points)
 
         bpy.context.window_manager.dmx.pause_render = False  # re-enable render loop
+        Profiles.DMX_Fixtures_Local_Profile.loadLocal(recreate_profiles=True)
         DMX_GDTF_File.get_manufacturers_list()
-        Profiles.DMX_Fixtures_Local_Profile.loadLocal()
 
     def clean_up_empty_mvr_collections(self, collections):
         for collection in collections.children:
