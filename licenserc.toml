@@ -1,0 +1,20 @@
+headerPath = "gpl-header.txt"
+
+excludes = [
+    # Test files
+    "*.toml",
+    "*.md",
+    ".github/",
+    "*.whl",
+    "*.lock",
+    "assets",
+    "scripts",
+]
+
+[git]
+attrs = 'auto'
+ignore = 'auto'
+
+[properties]
+projectName = "BlenderDMX"
+

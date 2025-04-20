@@ -1,19 +1,19 @@
-#    Copyright vanous
+# Copyright (C) 2025 vanous
 #
-#    This file is part of BlenderDMX.
+# This file is part of BlenderDMX.
 #
-#    BlenderDMX is free software: you can redistribute it and/or modify it
-#    under the terms of the GNU General Public License as published by the Free
-#    Software Foundation, either version 3 of the License, or (at your option)
-#    any later version.
+# BlenderDMX is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation, either version 3 of the License, or (at your option)
+# any later version.
 #
-#    BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
-#    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-#    FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
-#    more details.
+# BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
 #
-#    You should have received a copy of the GNU General Public License along
-#    with this program. If not, see <https://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import json
 import logging
@@ -24,7 +24,7 @@ from queue import Queue
 import bpy
 import websocket
 
-from ..logging import DMX_Log
+from ..logging_setup import DMX_Log
 from .mvrx_message import mvrx_message
 
 
@@ -90,7 +90,7 @@ class WebSocketClient(threading.Thread):
                 self.callback(json.loads(message))
 
     def on_error(self, ws, error):
-        DMX_Log.log.error((f"WebSocket error:", error))
+        DMX_Log.log.error(("WebSocket error:", error))
 
     def on_close(self, ws, close_status_code, close_msg):
         DMX_Log.log.info(("Disconnected", close_status_code, close_msg))

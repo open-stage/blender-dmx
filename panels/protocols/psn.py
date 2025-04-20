@@ -1,19 +1,19 @@
-#    Copyright vanous
+# Copyright (C) 2024 vanous
 #
-#    This file is part of BlenderDMX.
+# This file is part of BlenderDMX.
 #
-#    BlenderDMX is free software: you can redistribute it and/or modify it
-#    under the terms of the GNU General Public License as published by the Free
-#    Software Foundation, either version 3 of the License, or (at your option)
-#    any later version.
+# BlenderDMX is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation, either version 3 of the License, or (at your option)
+# any later version.
 #
-#    BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
-#    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-#    FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
-#    more details.
+# BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
 #
-#    You should have received a copy of the GNU General Public License along
-#    with this program. If not, see <https://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import bpy
 from bpy.props import IntProperty, StringProperty
@@ -53,7 +53,6 @@ class DMX_UL_Tracker(UIList):
     def draw_item(
         self, context, layout, data, item, icon, active_data, active_propname
     ):
-        ob = data
         icon = "FILE_VOLUME"
         if self.layout_type in {"DEFAULT", "COMPACT"}:
             col = layout.column()
@@ -84,8 +83,6 @@ class DMX_OP_Link_Fixture_Tracker(Operator):
     def execute(self, context):
         scene = context.scene
         dmx = scene.dmx
-        dmx = scene.dmx
-        layout = self.layout
         target = None
         for tracker in dmx.trackers:
             if tracker.uuid == self.tracker_uuid:
@@ -118,13 +115,12 @@ class DMX_OP_Unlink_Fixture_Tracker(Operator):
     def execute(self, context):
         scene = context.scene
         dmx = scene.dmx
-        layout = self.layout
         for fixture in dmx.fixtures:
             if fixture.uuid == self.fixture_uuid:
                 for obj in fixture.objects:
                     if obj.name == "Target":
                         for constraint in obj.object.constraints:
-                            if constraint.target != None:
+                            if constraint.target is not None:
                                 if (
                                     constraint.target.get("uuid", None)
                                     == self.tracker_uuid
@@ -142,9 +138,6 @@ class DMX_UL_Tracker_Followers(UIList):
         self, context, layout, data, item, icon, active_data, active_propname
     ):
         fixture = item
-        scene = context.scene
-        dmx = scene.dmx
-        icon = "FILE_VOLUME"
         self.tracker_uuid = context.window_manager.dmx.selected_tracker
         self.tracker_index = context.window_manager.dmx.selected_tracker_index
 

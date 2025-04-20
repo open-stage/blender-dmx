@@ -1,31 +1,29 @@
-#    Copyright vanous
+# Copyright (C) 2023 vanous
 #
-#    This file is part of BlenderDMX.
+# This file is part of BlenderDMX.
 #
-#    BlenderDMX is free software: you can redistribute it and/or modify it
-#    under the terms of the GNU General Public License as published by the Free
-#    Software Foundation, either version 3 of the License, or (at your option)
-#    any later version.
+# BlenderDMX is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation, either version 3 of the License, or (at your option)
+# any later version.
 #
-#    BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
-#    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-#    FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
-#    more details.
+# BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
 #
-#    You should have received a copy of the GNU General Public License along
-#    with this program. If not, see <https://www.gnu.org/licenses/>.
-
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import os
 import time
-import traceback
 
 # from dmx import bl_info as application_info
 import uuid as py_uuid
 
 import bpy
 
-from .logging import DMX_Log
+from .logging_setup import DMX_Log
 from .mvrxchange import mvrx_tcp_client as mvrx_client
 from .mvrxchange import mvrx_tcp_server as mvrx_server
 from .mvrxchange import mvrx_ws_client as mvrx_ws_client
@@ -92,7 +90,7 @@ class DMX_MVR_X_Client:
 
         msg_type = data.get("Type", "")
         msg_ok = data.get("OK", "")
-        msg_message = data.get("Message", "")
+        # msg_message = data.get("Message", "")
         dmx = bpy.context.scene.dmx
         if msg_type == "MVR_JOIN_RET" and msg_ok is False:
             DMX_Log.log.error("MVR-xchange client refused our connection")
@@ -145,7 +143,7 @@ class DMX_MVR_X_Client:
             return
         if DMX_MVR_X_Client._instance.client:
             try:
-                DMX_Log.log.debug(f"re-joining")
+                DMX_Log.log.debug("re-joining")
                 if not DMX_MVR_X_Client._instance.client.running:
                     DMX_MVR_X_Client.connect()
                 DMX_MVR_X_Client._instance.client.send_commit(commit)
@@ -159,7 +157,7 @@ class DMX_MVR_X_Client:
             return
         if DMX_MVR_X_Client._instance.client:
             try:
-                DMX_Log.log.debug(f"re-joining")
+                DMX_Log.log.debug("re-joining")
                 if not DMX_MVR_X_Client._instance.client.running:
                     DMX_MVR_X_Client.connect()
                 DMX_MVR_X_Client._instance.client.join_mvr()
@@ -244,8 +242,8 @@ class DMX_MVR_X_Server:
         # TODO: rework this from a keyword based parsing to message Type based parsing
         DMX_Log.log.debug(("callback", json_data, data, type(json_data), type(data)))
         addr, port = data.addr
-        provider = ""
-        station_name = ""
+        # provider = ""
+        # station_name = ""
         station_uuid = ""
 
         if "StationUUID" in json_data:
@@ -361,7 +359,7 @@ class DMX_MVR_X_WS_Client:
 
         msg_type = data.get("Type", "")
         msg_ok = data.get("OK", "")
-        msg_message = data.get("Message", "")
+        # msg_message = data.get("Message", "")
         dmx = bpy.context.scene.dmx
         if msg_type == "MVR_JOIN_RET" and msg_ok is False:
             DMX_Log.log.error("MVR-xchange client refused our connection")
@@ -377,7 +375,6 @@ class DMX_MVR_X_WS_Client:
         if "Type" in data:
             if data["Type"] == "MVR_REQUEST":
                 dmx = bpy.context.scene.dmx
-                local_path = dmx.get_addon_path()
                 file_uuid = data["FileUUID"]
                 if not file_uuid:
                     shared_commits = (
@@ -456,7 +453,7 @@ class DMX_MVR_X_WS_Client:
             return
         if DMX_MVR_X_WS_Client._instance.client:
             try:
-                DMX_Log.log.debug(f"re-joining")
+                DMX_Log.log.debug("re-joining")
                 DMX_MVR_X_WS_Client._instance.client.join_mvr()
             except Exception as e:
                 DMX_Log.log.debug(f"problem re_joining {e}")

@@ -1,19 +1,19 @@
-#    Copyright vanous
+# Copyright (C) 2024 vanous
 #
-#    This file is part of BlenderDMX.
+# This file is part of BlenderDMX.
 #
-#    BlenderDMX is free software: you can redistribute it and/or modify it
-#    under the terms of the GNU General Public License as published by the Free
-#    Software Foundation, either version 3 of the License, or (at your option)
-#    any later version.
+# BlenderDMX is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation, either version 3 of the License, or (at your option)
+# any later version.
 #
-#    BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
-#    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-#    FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
-#    more details.
+# BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
 #
-#    You should have received a copy of the GNU General Public License along
-#    with this program. If not, see <https://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import logging
 import os
@@ -27,7 +27,7 @@ from bpy.props import StringProperty
 from bpy.types import Operator, Panel, UIList
 
 from ...i18n import DMX_Lang
-from ...logging import DMX_Log
+from ...logging_setup import DMX_Log
 from ...mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_WS_Client
 from ...util import sizeof_fmt
 
@@ -345,9 +345,6 @@ class DMX_UL_MVR_Shared_Commit(UIList):
     def draw_item(
         self, context, layout, data, item, icon, active_data, active_propname, index
     ):
-        scene = context.scene
-        dmx = scene.dmx
-        icon = "GROUP_VERTEX"
         # layout.context_pointer_set("mvr_xchange_clients", item)
         col = layout.column()
         col.label(text=f"{item.comment}")
@@ -380,9 +377,6 @@ class DMX_UL_MVR_Stations(UIList):
     def draw_item(
         self, context, layout, data, item, icon, active_data, active_propname, index
     ):
-        scene = context.scene
-        dmx = scene.dmx
-        icon = "GROUP_VERTEX"
         # layout.context_pointer_set("mvr_xchange_clients", item)
         col = layout.column()
         col.label(text=f"{item.ip_address}")
@@ -394,7 +388,6 @@ class DMX_UL_MVR_Stations(UIList):
         col.label(text=f"{item.last_seen}")
         col = layout.column()
         col.label(text=f"{item.station_name}")
-        col = layout.column()
         col.label(text=f"{item.station_uuid}")
         col = layout.column()
         col.label(text=f"{item.service_name}")
@@ -516,7 +509,6 @@ class DMX_PT_DMX_MVR_X(Panel):
                 )
 
             row = layout.row()
-            col = row.column()
             row.prop(dmx, "mvrx_enabled")
             row.enabled = client is not None
             if client:  # need the client props here:

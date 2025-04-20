@@ -1,3 +1,20 @@
+# Copyright (C) 2024 vanous
+#
+# This file is part of BlenderDMX.
+#
+# BlenderDMX is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation, either version 3 of the License, or (at your option)
+# any later version.
+#
+# BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <https://www.gnu.org/licenses/>.
+
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 from collections import defaultdict
@@ -8,8 +25,7 @@ from statistics import fmean
 
 import bpy
 from bl_math import clamp
-from bpy.props import IntVectorProperty
-from bpy.types import NodeFrame, Operator
+from bpy.types import NodeFrame
 from mathutils import Vector
 from mathutils.geometry import interpolate_bezier
 
@@ -510,6 +526,7 @@ def get_frame_columns():
 def get_arranged(columns):
     arranged = {}
     for i, col in enumerate(columns):
+        prev_x = 0
         if i != 0:
             max_width = max([dimensions(n).x for n in col])
             x = prev_x - (max_width + 70)
@@ -2198,9 +2215,6 @@ class DMX_OT_ArrangeSelected:
 
         get_links(ntree)
         universal_columns = get_columns(output_nodes)
-
-        if not universal_columns:
-            print("No valid nodes selected")
 
         Maps.universal_columns.extend(universal_columns)
         Maps.selected.extend(selected)

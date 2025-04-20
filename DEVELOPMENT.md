@@ -25,6 +25,7 @@ Use [predefined python logging module](https://docs.python.org/3/library/logging
 
 ```python
 from dmx.logging import DMX_LOG
+
 ```
 
 Then use it. Choose appropriate level. Default level is `Error`, which means `Error` and `Critical` messages will be displayed. Following logging levels are available:
@@ -36,3 +37,8 @@ DMX_LOG.log.warning("Logging warning message here, level 30")
 DMX_LOG.log.info("Logging info message here, level 20")
 DMX_LOG.log.debug("Logging debug message here, level 10")
 ```
+
+### Code Attribution
+
+Add/update code license headers with  [hawkeye](https://github.com/korandoru/hawkeye):
+ - `hawkeye format`

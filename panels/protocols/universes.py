@@ -1,19 +1,19 @@
-#    Copyright Hugo Aboud
+# Copyright (C) 2024 vanous
 #
-#    This file is part of BlenderDMX.
+# This file is part of BlenderDMX.
 #
-#    BlenderDMX is free software: you can redistribute it and/or modify it
-#    under the terms of the GNU General Public License as published by the Free
-#    Software Foundation, either version 3 of the License, or (at your option)
-#    any later version.
+# BlenderDMX is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation, either version 3 of the License, or (at your option)
+# any later version.
 #
-#    BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
-#    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-#    FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
-#    more details.
+# BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
 #
-#    You should have received a copy of the GNU General Public License along
-#    with this program. If not, see <https://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <https://www.gnu.org/licenses/>.
 
 from bpy.types import Menu, Panel, UIList
 
@@ -27,20 +27,13 @@ class DMX_MT_Universe(Menu):
     bl_idname = "DMX_MT_Universe"
 
     def draw(self, context):
-        layout = self.layout
-        scene = context.scene
-        dmx = scene.dmx
-
-        # "Add"
-        row = layout.row()
-        # row.operator("dmx.add_universe", text="Add", icon="ADD")
+        pass
 
 
 class DMX_UL_Universe(UIList):
     def draw_item(
         self, context, layout, data, item, icon, active_data, active_propname
     ):
-        ob = data
         icon = "FILE_VOLUME"
         if self.layout_type in {"DEFAULT", "COMPACT"}:
             col = layout.column()

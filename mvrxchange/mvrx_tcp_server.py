@@ -1,19 +1,19 @@
-#    Copyright vanous
+# Copyright (C) 2025 vanous
 #
-#    This file is part of BlenderDMX.
+# This file is part of BlenderDMX.
 #
-#    BlenderDMX is free software: you can redistribute it and/or modify it
-#    under the terms of the GNU General Public License as published by the Free
-#    Software Foundation, either version 3 of the License, or (at your option)
-#    any later version.
+# BlenderDMX is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation, either version 3 of the License, or (at your option)
+# any later version.
 #
-#    BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
-#    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-#    FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
-#    more details.
+# BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
 #
-#    You should have received a copy of the GNU General Public License along
-#    with this program. If not, see <https://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import json
 import os
@@ -28,7 +28,7 @@ from uuid import uuid4
 
 import bpy
 
-from ..logging import DMX_Log
+from ..logging_setup import DMX_Log
 from .mvrx_message import mvrx_message
 
 
@@ -78,7 +78,7 @@ class server(Thread):
         self.join()
 
     def set_post_data(self, data):
-        DMX_Log.log.debug(f"Setting post data")
+        DMX_Log.log.debug("Setting post data")
         self.post_data.put(data)
 
     def accept_wrapper(self, sock):
@@ -180,7 +180,6 @@ class server(Thread):
             )
         if json_data["Type"] == "MVR_REQUEST":
             dmx = bpy.context.scene.dmx
-            local_path = dmx.get_addon_path()
             file_uuid = json_data["FileUUID"]
             if not file_uuid:
                 shared_commits = (

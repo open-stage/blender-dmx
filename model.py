@@ -1,26 +1,26 @@
-#    Copyright vanous
+# Copyright (C) 2020 Hugo Aboud, Kaspars Jaudzems, vanous
 #
-#    This file is part of BlenderDMX.
+# This file is part of BlenderDMX.
 #
-#    BlenderDMX is free software: you can redistribute it and/or modify it
-#    under the terms of the GNU General Public License as published by the Free
-#    Software Foundation, either version 3 of the License, or (at your option)
-#    any later version.
+# BlenderDMX is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation, either version 3 of the License, or (at your option)
+# any later version.
 #
-#    BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
-#    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-#    FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
-#    more details.
+# BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
 #
-#    You should have received a copy of the GNU General Public License along
-#    with this program. If not, see <https://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <https://www.gnu.org/licenses/>.
 
+import traceback
 
 import bpy
 
 from .gdtf import DMX_GDTF
-from .logging import DMX_Log
-import traceback
+from .logging_setup import DMX_Log
 
 
 class DMX_Model:
@@ -33,7 +33,7 @@ class DMX_Model:
         collections = bpy.data.collections
 
         # Make sure the profile was passed as an argument, otherwise return None
-        if profile == None:
+        if profile is None:
             return None
 
         name = DMX_GDTF.getName(profile, dmx_mode, display_beams, add_target)

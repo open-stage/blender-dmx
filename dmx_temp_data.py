@@ -1,19 +1,19 @@
-#    Copyright vanous
+# Copyright (C) 2024 vanous
 #
-#    This file is part of BlenderDMX.
+# This file is part of BlenderDMX.
 #
-#    BlenderDMX is free software: you can redistribute it and/or modify it
-#    under the terms of the GNU General Public License as published by the Free
-#    Software Foundation, either version 3 of the License, or (at your option)
-#    any later version.
+# BlenderDMX is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation, either version 3 of the License, or (at your option)
+# any later version.
 #
-#    BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
-#    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-#    FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
-#    more details.
+# BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
 #
-#    You should have received a copy of the GNU General Public License along
-#    with this program. If not, see <https://www.gnu.org/licenses/>.
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import bpy
 import bpy.utils.previews
@@ -27,10 +27,8 @@ from bpy.props import (
 )
 from bpy.types import PropertyGroup
 
-from . import fixture as fixture
-from .fixture import DMX_Fixture_Channel
 from .i18n import DMX_Lang
-from .logging import DMX_Log
+from .logging_setup import DMX_Log
 from .mvrxchange.mvr_xchange_blender import DMX_MVR_Xchange
 from .panels import profiles as Profiles
 from .panels import subfixtures

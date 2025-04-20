@@ -34,15 +34,15 @@ and understand how stuff works under the hood. Check out how each component
 works and make improvements or modifications as required. [Read
 more](https://blenderdmx.eu/community/#development) about development.
 
-## Donate
+## Donations
 
-> Initially, Hugo, who originally started the BlenderDMX project, put a donation link here. We keep it below for Hugo, if you like to support him. Currently there is no donation link for the project itself.
-
-I've put months of effort into this project, and it will always be free and
-open source. If it helps you, please consider donating:
-
-- Fiat: [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?hosted_button_id=K2DRRKRFE583J)
-- Bitcon (BTC only): 1BApp5s16pEPk5oECtJJ7G8iYmbj7r2YrG
-- NFTs (Tezos): https://hicetnunc.art/lisorius
+Currently there is no donation link for the project itself. We have put
+months/years of effort into this project, and it will always be free and open
+source. If it helps you, please give us a [five star review ⭐⭐⭐⭐⭐ on the
+Extension
+store](https://extensions.blender.org/add-ons/open-stage-blender-dmx/reviews/),
+mention BlenderDMX on social media, share your renders, [help with
+coding](https://github.com/open-stage/blender-dmx/), or [help to improve the
+documentation](https://github.com/open-stage/blender-dmx-web).
 
 Thank you.

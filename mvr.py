@@ -1,20 +1,19 @@
-#    Copyright vanous, NRG Sille
+# Copyright (C) 2023 Sebastian, vanous
 #
-#    This file is part of BlenderDMX.
+# This file is part of BlenderDMX.
 #
-#    BlenderDMX is free software: you can redistribute it and/or modify it
-#    under the terms of the GNU General Public License as published by the Free
-#    Software Foundation, either version 3 of the License, or (at your option)
-#    any later version.
+# BlenderDMX is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation, either version 3 of the License, or (at your option)
+# any later version.
 #
-#    BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
-#    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-#    FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
-#    more details.
+# BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
 #
-#    You should have received a copy of the GNU General Public License along
-#    with this program. If not, see <https://www.gnu.org/licenses/>.
-
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import json
 import os
@@ -28,7 +27,7 @@ from io_scene_3ds.import_3ds import load_3ds
 from mathutils import Matrix
 
 from .group import FixtureGroup
-from .logging import DMX_Log
+from .logging_setup import DMX_Log
 from .util import create_unique_fixture_name, xyY2rgbaa
 
 auxData = {}
@@ -106,9 +105,6 @@ def get_child_list(
 
         if fixture_group is None:
             group_name = truss_obj.name or "Truss"
-            group_name = (
-                "%s %d" % (group_name, truss_idx) if scene_idx >= 1 else group_name
-            )
             fixture_group = FixtureGroup(group_name, truss_obj.uuid)
 
         if not existing:
@@ -228,7 +224,6 @@ def process_mvr_object(
     viewlayer = context.view_layer
     object_data = bpy.data.objects
     data_collect = bpy.data.collections
-    scene_collect = context.scene.collection
     class_name = mvr_object.__class__.__name__
     layer_collect = viewlayer.layer_collection
     active_layer = viewlayer.active_layer_collection
@@ -335,7 +330,7 @@ def process_mvr_object(
         try:
             symbols += mvr_object.symbol
             geometrys += mvr_object.geometry3d
-        except Exception as e:
+        except Exception:
             # TODO: handle this
             ...
 
@@ -498,21 +493,29 @@ def add_mvr_fixture(
     else:
         # if the file is not in the MVR package, use an RGBW Par64
         fixture.gdtf_spec = "BlenderDMX@LED_PAR_64_RGBW@v0.3.gdtf"
-
-    dmx.ensureUniverseExists(fixture.addresses[0].universe)
+    for address in fixture.addresses:
+        dmx.ensureUniverseExists(address.universe)
 
     add_target = import_globals.import_focus_points
 
+    addresses = [
+        SimpleNamespace(
+            dmx_break=address.dmx_break,
+            address=address.address,
+            universe=address.universe,
+        )
+        for address in fixture.addresses
+    ]
     if existing_fixture is not None:
         # TODO: we should not rename the fixture on import unless if the user wants it
         # but we must ensure that the name is unique in the collection
         unique_name = create_unique_fixture_name(fixture.name)
+
         existing_fixture.build(
             unique_name,
             fixture.gdtf_spec,
             fixture.gdtf_mode,
-            fixture.addresses[0].universe,
-            fixture.addresses[0].address,
+            addresses,
             xyY2rgbaa(fixture.color),
             True,
             add_target,
@@ -531,8 +534,7 @@ def add_mvr_fixture(
         dmx.addFixture(
             unique_name,
             fixture.gdtf_spec,
-            fixture.addresses[0].universe,
-            fixture.addresses[0].address,
+            addresses,
             fixture.gdtf_mode,
             xyY2rgbaa(fixture.color),
             True,
@@ -575,7 +577,6 @@ def load_mvr(dmx, file_name, import_focus_points):
     scene_collect = context.scene.collection
     view_collect = viewlayer.layer_collection
     layer_collect = view_collect.collection
-    active_layer = viewlayer.active_layer_collection
     mvr_scene = pymvr.GeneralSceneDescription(file_name)
     aux_dir = scene_collect.children.get("AUXData")
     dmx = bpy.context.scene.dmx
@@ -583,7 +584,6 @@ def load_mvr(dmx, file_name, import_focus_points):
     folder_path = os.path.join(current_path, "assets", "profiles")
     media_folder_path = os.path.join(current_path, "assets", "models", "mvr")
     extract_mvr_textures(mvr_scene, media_folder_path)
-    mvr_layer = mvr_scene.layers
     auxdata = mvr_scene.aux_data
     if auxdata is not None:
         classes = auxdata.classes

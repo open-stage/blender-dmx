@@ -1,3 +1,20 @@
+# Copyright (C) 2024 vanous
+#
+# This file is part of BlenderDMX.
+#
+# BlenderDMX is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation, either version 3 of the License, or (at your option)
+# any later version.
+#
+# BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <https://www.gnu.org/licenses/>.
+
 import os
 import shutil
 import traceback
@@ -9,7 +26,6 @@ from bpy_extras.io_utils import ImportHelper
 if bpy.app.version >= (4, 2):
     from bpy_extras.io_utils import poll_file_object_drop
 
-import pygdtf
 from bpy.props import (
     BoolProperty,
     CollectionProperty,
@@ -17,21 +33,54 @@ from bpy.props import (
     IntProperty,
     StringProperty,
 )
+from bpy.types import PropertyGroup
 
-from .gdtf import DMX_GDTF
 from .i18n import DMX_Lang
 from .panels import profiles as Profiles
 from .util import create_unique_fixture_name
+from .gdtf_file import DMX_GDTF_File
+from .logging_setup import DMX_Log
 
 _ = DMX_Lang._
-
-from .logging import DMX_Log
 
 
 def createDMXcollection():
     dmx = bpy.context.scene.dmx
     if not dmx.collection:
         bpy.context.scene.dmx.new()
+
+
+class DMX_Break_Import(PropertyGroup):
+    def ensure_universe_exists(self, context):
+        dmx = bpy.context.scene.dmx
+        dmx.ensureUniverseExists(self.universe)
+
+    dmx_break: IntProperty(
+        name="DMX Break",
+        description="DMX entry point",
+        default=0,
+        min=0,
+        max=511,
+    )
+    universe: IntProperty(
+        name="Fixture > Universe",
+        description="Fixture DMX Universe",
+        default=0,
+        min=0,
+        max=511,
+        update=ensure_universe_exists,
+    )
+
+    address: IntProperty(
+        name="Fixture > Address", description="Fixture DMX Address", default=1, min=1
+    )  # no max for now
+
+    channels_count: IntProperty(
+        name="Number of channels",
+        description="Number of DMX channels",
+        default=0,
+        min=0,
+    )  # no max for now
 
 
 class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
@@ -61,6 +110,8 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
     address: IntProperty(
         name=_("Address"), description=_("DMX Address"), default=1, min=1, max=512
     )
+
+    dmx_breaks: CollectionProperty(name="DMX Break", type=DMX_Break_Import)
 
     gel_color: FloatVectorProperty(
         name=_("Gel Color"),
@@ -150,6 +201,7 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
             DMX_Log.log.info(f"Importing GDTF Profile: {file_path}")
             try:
                 shutil.copy(file_path, folder_path)
+                DMX_GDTF_File.add_to_data(file.name)
             except shutil.SameFileError:
                 DMX_Log.log.debug(
                     "Importing file which already existed in the profiles folder"
@@ -157,18 +209,24 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
 
             if self.patch:
                 try:
-                    file_name = os.path.join(folder_path, file.name)
-                    profile = pygdtf.FixtureType(file_name)
-                    mode, channel_count = list(DMX_GDTF.getModes(file_name).items())[0]
+                    profile = DMX_GDTF_File.load_gdtf_profile(file.name)
+                    dmx_mode = profile.dmx_modes[0]
+                    self.dmx_breaks.clear()
+                    for idx, dmx_break in enumerate(dmx_mode.dmx_breaks):
+                        new_break = self.dmx_breaks.add()
+                        new_break.dmx_break = dmx_break.dmx_break
+                        new_break.address = address
+                        new_break.universe = universe
+                        new_break.channels_count = dmx_break.channels_count
+
                     for count in range(1, 1 + self.units):
                         new_name = f"{profile.name} {count}"
                         new_name = create_unique_fixture_name(new_name)
                         dmx.addFixture(
                             new_name,
-                            file_name,
-                            universe,
-                            address,
-                            mode,
+                            file.name,
+                            self.dmx_breaks,
+                            dmx_mode.name,
                             self.gel_color,
                             self.display_beams,
                             self.add_target,
@@ -183,17 +241,19 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
                             if fixture_id.isnumeric():
                                 fixture_id = str(int(fixture_id) + 1)
                         if self.increment_address:
-                            if (address + len(fixture.channels)) > 512:
+                            # This will only increment correctly the address of the first break
+                            # Other breaks will have to be adjusted in the Fixtures list after import
+                            if (address + self.dmx_breaks[0].channels_count) > 512:
                                 universe += 1
                                 address = 1
                                 dmx.ensureUniverseExists(universe)
                             else:
-                                address += len(fixture.channels)
+                                address += self.dmx_breaks[0].channels_count
 
                 except Exception as e:
                     traceback.print_exception(e)
-        DMX_GDTF.getManufacturerList()
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
+        DMX_GDTF_File.get_manufacturers_list()
         return {"FINISHED"}
 
 
@@ -219,6 +279,7 @@ def menu_func_import(self, context):
 
 
 def register():
+    bpy.utils.register_class(DMX_Break_Import)
     bpy.utils.register_class(DMX_OT_Import_GDTF)
     bpy.types.TOPBAR_MT_file_import.append(menu_func_import)
     if bpy.app.version >= (4, 1):
