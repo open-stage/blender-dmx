@@ -115,7 +115,7 @@ class DMX_OT_Group_Create(Operator):
 class DMX_OT_Group_Update(Operator):
     bl_label = "DMX > Group > Update"
     bl_idname = "dmx.update_group"
-    bl_description = "Replace DMX group fixtures with selected ones"
+    bl_description = _("Replace DMX group fixtures with selected ones")
     bl_options = {"UNDO"}
 
     def execute(self, context):
@@ -125,9 +125,9 @@ class DMX_OT_Group_Update(Operator):
 
 
 class DMX_OT_Group_Rename(Operator):
-    bl_label = "DMX > Group > Rename"
+    bl_label = _("DMX > Group > Rename")
     bl_idname = "dmx.rename_group"
-    bl_description = "Rename selected DMX group"
+    bl_description = _("Rename selected DMX group")
     bl_options = {"UNDO"}
 
     name: StringProperty(name="Name", default="Group")
@@ -153,9 +153,9 @@ class DMX_OT_Group_Rename(Operator):
 
 
 class DMX_OT_Group_Remove(Operator):
-    bl_label = "DMX > Group > Remove"
+    bl_label = _("DMX > Group > Remove")
     bl_idname = "dmx.remove_group"
-    bl_description = "Remove selected DMX group"
+    bl_description = _("Remove selected DMX group")
     bl_options = {"UNDO"}
 
     def execute(self, context):
@@ -168,7 +168,7 @@ class DMX_OT_Group_Remove(Operator):
 
 
 class DMX_PT_Groups(Panel):
-    bl_label = "Groups"
+    bl_label = _("Groups")
     bl_idname = "DMX_PT_Groups"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"

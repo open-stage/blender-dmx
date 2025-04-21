@@ -28,8 +28,8 @@ _ = DMX_Lang._
 
 class DMX_OP_AlignLocationOperator(Operator):
     bl_idname = "dmx.align_location"
-    bl_label = "Align selected fixtures to active fixture"
-    bl_description = "Align selected fixtures to active fixture"
+    bl_label = _("Align selected fixtures to active fixture")
+    bl_description = _("Align selected fixtures to active fixture")
     bl_options = {"UNDO"}
 
     axis: StringProperty(name="axis")
@@ -63,8 +63,8 @@ class DMX_OP_AlignLocationOperator(Operator):
 
 class DMX_OP_DistributeEvenlyOperator(Operator):
     bl_idname = "dmx.distribute_evenly"
-    bl_label = "Distribute selected fixtures evenly"
-    bl_description = "Distribute selected fixtures evenly"
+    bl_label = _("Distribute selected fixtures evenly")
+    bl_description = _("Distribute selected fixtures evenly")
     bl_options = {"UNDO"}
 
     axis: StringProperty(name="axis")
@@ -108,8 +108,8 @@ class DMX_OP_DistributeEvenlyOperator(Operator):
 
 class DMX_OP_DistributeWithGapOperator(Operator):
     bl_idname = "dmx.distribute_with_gap"
-    bl_label = "Distribute selected fixtures with gap"
-    bl_description = "Distribute selected fixtures with gap"
+    bl_label = _("Distribute selected fixtures with gap")
+    bl_description = _("Distribute selected fixtures with gap")
     bl_options = {"UNDO"}
 
     axis: StringProperty(name="axis")
@@ -148,8 +148,8 @@ class DMX_OP_DistributeWithGapOperator(Operator):
 
 class DMX_OP_DistributeCircle(Operator):
     bl_idname = "dmx.distribute_circle"
-    bl_label = "Align selected fixtures to active fixture"
-    bl_description = "Align selected fixtures to active fixture"
+    bl_label = _("Align selected fixtures to active fixture")
+    bl_description = _("Align selected fixtures to active fixture")
     bl_options = {"UNDO"}
 
     axis: StringProperty(name="axis")

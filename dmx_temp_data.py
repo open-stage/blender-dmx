@@ -70,7 +70,9 @@ class DMX_TempData(PropertyGroup):
     )
 
     pause_render: BoolProperty(
-        description="The renderer is paused during MVR import and in 2D view. This checkbox allows to re-enable it in case of some failure during import, which would leave it paused",
+        description=_(
+            "The renderer is paused during MVR import and in 2D view. This checkbox allows to re-enable it in case of some failure during import, which would leave it paused"
+        ),
         name=_("Pause renderer"),
         default=False,
     )
@@ -88,24 +90,18 @@ class DMX_TempData(PropertyGroup):
 
     subtractive_selection: BoolProperty(
         name=_("Remove from selection"),
-        description="When selecting a group, remove from existing selection",
+        description=_("When selecting a group, remove from existing selection"),
         update=onToggleSubSelection,
         default=False,
     )
 
     keyframe_only_selected: BoolProperty(
         name=_("Keyframe only selected fixtures (not for autokeying)"),
-        description="Add keyframes with changes only for selected fixtures",
+        description=_("Add keyframes with changes only for selected fixtures"),
         default=False,
     )
 
     mvr_xchange: PointerProperty(name=_("MVR-xchange"), type=DMX_MVR_Xchange)
-
-    release_version_status: StringProperty(
-        name=_("Status"),
-        description="Information about latest release of BlenderDMX",
-        default="Not checked",
-    )
 
     def onUpdateLoggingFilter(self, context):
         DMX_Log.update_filters()
@@ -125,10 +121,10 @@ class DMX_TempData(PropertyGroup):
     selected_tracker: StringProperty()  # to pass data to fixture list
     selected_tracker_index: IntProperty()  # to pass data to fixture list
 
-    dist_gap: FloatProperty(name="Gap", default=2)
-    dist_diameter: FloatProperty(name="Diameter", default=2)
-    dist_rotate: BoolProperty(name="Rotate", default=False)
-    programmer_source: StringProperty(name="Source")
+    dist_gap: FloatProperty(name=_("Gap"), default=2)
+    dist_diameter: FloatProperty(name=_("Diameter"), default=2)
+    dist_rotate: BoolProperty(name=_("Rotate"), default=False)
+    programmer_source: StringProperty(name=_("Source"))
 
     subfixtures: CollectionProperty(
         name=_("Subfixtures"),
@@ -145,8 +141,9 @@ class DMX_TempData(PropertyGroup):
 
     migration_message: StringProperty()  # to pass data to fixture list
 
-    pan_rotate_enabled: BoolProperty(name="Pan Rotate", default=False)
-    tilt_rotate_enabled: BoolProperty(name="Tilt Rotate", default=False)
+    pan_rotate_enabled: BoolProperty(name=_("Pan Rotate"), default=False)
+    tilt_rotate_enabled: BoolProperty(name=_("Tilt Rotate"), default=False)
+
     light_data_cutoff_distance: IntProperty(
         name=_("Custom Cutoff Distance"),
         default=23,
