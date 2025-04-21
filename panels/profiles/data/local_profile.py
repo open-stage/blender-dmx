@@ -53,8 +53,7 @@ class DMX_Fixtures_Local_Profile(PropertyGroup):
         local_profiles = bpy.context.window_manager.dmx.imports.local_profiles
         local_profiles.clear()
 
-        if recreate_profiles:
-            DMX_GDTF_File.recreate_data()
+        DMX_GDTF_File.recreate_data(recreate_profiles=recreate_profiles)
 
         if write_cache:
             DMX_GDTF_File.write_cache()

@@ -44,7 +44,11 @@ class DMX_GDTF_File:
     def read_cache():
         dmx = bpy.context.scene.dmx
         dir_path = dmx.get_addon_path()
-        DMX_Log.log.info("Read cache")
+        try:
+            DMX_Log.log.info("Read cache")
+        except Exception as e:
+            print("INFO", "Read cache")
+
         try:
             with open(os.path.join(dir_path, "fixtures_data.json")) as f:
                 fixtures_data = json.load(f)
@@ -54,7 +58,10 @@ class DMX_GDTF_File:
 
     @staticmethod
     def write_cache():
-        DMX_Log.log.info("Writing profiles cache...")
+        try:
+            DMX_Log.log.info("Writing profiles cache...")
+        except Exception:
+            print("INFO", "Writing profiles cache...")
         if DMX_GDTF_File.instance is None:
             DMX_GDTF_File.instance = DMX_GDTF_File()
         dmx = bpy.context.scene.dmx
@@ -106,9 +113,10 @@ class DMX_GDTF_File:
             DMX_Log.log.error((file_name, e))
 
     @staticmethod
-    def recreate_data():
+    def recreate_data(recreate_profiles=False):
         DMX_Log.log.info("Regenerating fixture profiles list...")
-        DMX_GDTF_File.profiles_list = {}
+        if recreate_profiles:
+            DMX_GDTF_File.profiles_list = {}
         for file in os.listdir(DMX_GDTF_File.get_profiles_path()):
             if file not in DMX_GDTF_File.profiles_list:
                 DMX_GDTF_File.add_to_data(file)
