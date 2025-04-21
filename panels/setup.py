@@ -122,6 +122,25 @@ class DMX_OT_Fixture_Set_Cycles_Beams_Size_Small(Operator):
         return {"FINISHED"}
 
 
+class DMX_OT_Fixture_Set_Eevee_Cutoff_Distance(Operator):
+    bl_label = _("Set Eevee Cutoff distance on selected fixtures")
+    bl_idname = "dmx.fixture_set_eevee_cutoff_distance"
+    bl_description = _(
+        "Distance at which the influence of the light will be set to 0. Value bigger then 23 will break gobo rendering in Eevee Next."
+    )
+
+    def execute(self, context):
+        distance = context.window_manager.dmx.light_data_cutoff_distance
+        dmx = context.scene.dmx
+        selected = dmx.selectedFixtures()
+        for fixture in selected:
+            for light in fixture.lights:
+                light.object.data.cutoff_distance = distance
+                fixture.dmx_cache_dirty = True
+                fixture.render(skip_cache=True)
+        return {"FINISHED"}
+
+
 class DMX_OT_Fixture_Set_Cycles_Beams_Size_Normal(Operator):
     bl_label = _("Beam diameter normal")
     bl_idname = "dmx.fixture_set_cycles_beam_size_normal"
@@ -243,6 +262,14 @@ class DMX_PT_Setup_Volume(Panel):
             row1.operator("dmx.fixture_set_cycles_beam_size_normal", icon="CONE")
             row2.operator("dmx.fixture_set_cycles_beam_size_small", icon="LIGHT_SPOT")
             row0.enabled = row1.enabled = row2.enabled = enabled
+
+        box = layout.column().box()
+        row0 = box.row()
+        row1 = box.row()
+        row0.prop(context.window_manager.dmx, "light_data_cutoff_distance")
+        row1.operator("dmx.fixture_set_eevee_cutoff_distance", icon="CONE")
+        box.enabled = enabled
+
         box = layout.column().box()
         row = box.row()
         col1 = row.column()

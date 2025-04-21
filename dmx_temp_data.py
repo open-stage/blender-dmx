@@ -147,3 +147,10 @@ class DMX_TempData(PropertyGroup):
 
     pan_rotate_enabled: BoolProperty(name="Pan Rotate", default=False)
     tilt_rotate_enabled: BoolProperty(name="Tilt Rotate", default=False)
+    light_data_cutoff_distance: IntProperty(
+        name=_("Custom Cutoff Distance"),
+        default=23,
+        description=_(
+            "Distance at which the influence of the light will be set to 0. Value bigger then 23 will break gobo rendering in Eevee Next."
+        ),
+    )

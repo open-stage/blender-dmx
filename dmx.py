@@ -250,6 +250,7 @@ class DMX(PropertyGroup):
         recorder.DMX_OT_Recorder_Delete_Keyframes_All,
         setup.DMX_OT_Fixture_Set_Cycles_Beams_Size_Small,
         setup.DMX_OT_Fixture_Set_Cycles_Beams_Size_Normal,
+        setup.DMX_OT_Fixture_Set_Eevee_Cutoff_Distance,
     )
 
     linkedToFile = False
