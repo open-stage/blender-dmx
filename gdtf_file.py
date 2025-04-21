@@ -73,34 +73,37 @@ class DMX_GDTF_File:
         if DMX_GDTF_File.instance is None:
             DMX_GDTF_File.instance = DMX_GDTF_File()
         filepath = os.path.join(DMX_GDTF_File.get_profiles_path(), file_name)
-        with DMX_GDTF_File.load_gdtf_profile(filepath) as fixture_type:
-            modes = []
-            for mode in fixture_type.dmx_modes:
-                modes.append(
-                    {
-                        "mode_name": mode.name,
-                        "dmx_channels_count": mode.dmx_channels_count,
-                        "description": mode.description,
-                        "dmx_breaks": [
-                            dmx_break.as_dict() for dmx_break in mode.dmx_breaks
-                        ],
-                    }
-                )
+        try:
+            with DMX_GDTF_File.load_gdtf_profile(filepath) as fixture_type:
+                modes = []
+                for mode in fixture_type.dmx_modes:
+                    modes.append(
+                        {
+                            "mode_name": mode.name,
+                            "dmx_channels_count": mode.dmx_channels_count,
+                            "description": mode.description,
+                            "dmx_breaks": [
+                                dmx_break.as_dict() for dmx_break in mode.dmx_breaks
+                            ],
+                        }
+                    )
 
-            revisions = fixture_type.revisions.sorted()
-            revision = ""
-            if revisions:
-                revision = revisions[-1].text
-            data = {
-                "name": f"{fixture_type.name}",
-                "short_name": fixture_type.short_name,
-                "manufacturer_name": f"{fixture_type.manufacturer}",
-                "filename": file_name,
-                "modes": modes,
-                "revision": revision,
-            }
+                revisions = fixture_type.revisions.sorted()
+                revision = ""
+                if revisions:
+                    revision = revisions[-1].text
+                data = {
+                    "name": f"{fixture_type.name}",
+                    "short_name": fixture_type.short_name,
+                    "manufacturer_name": f"{fixture_type.manufacturer}",
+                    "filename": file_name,
+                    "modes": modes,
+                    "revision": revision,
+                }
 
-            DMX_GDTF_File.profiles_list[file_name] = data
+                DMX_GDTF_File.profiles_list[file_name] = data
+        except Exception as e:
+            DMX_Log.log.error((file_name, e))
 
     @staticmethod
     def recreate_data():
