@@ -13,11 +13,11 @@ you can use for example ruff by running `uv run ruff format`.
 
 ### Pre-commit-hooks
 
-There is a configuration for [pre-commit](https://pre-commit.com/) which is not
-enabled by default. You can run this manually by (ensure that `python -m pip
-install pre-commit` is installed) running `pre-commit`. Note that it checks for
-print statements. Print statements with "INFO" as first argument are skipped.
-This runs on staged files.
+There is a configuration for [pre-commit](https://pre-commit.com/). You can run
+this manually by (ensure that `python -m pip install pre-commit` is installed)
+running `pre-commit`. Note that it checks for print statements. Print
+statements with "INFO" as first argument are skipped.  This runs on staged
+files.
 
 ### Logging
 
@@ -42,3 +42,15 @@ DMX_LOG.log.debug("Logging debug message here, level 10")
 
 Add/update code license headers with  [hawkeye](https://github.com/korandoru/hawkeye):
  - `hawkeye format`
+
+### Local development
+
+Since the Extension store, developing locally is a bit harder but still
+possible, with the git folder being the source of the data for Blender:
+
+* Build or download the extension file
+* Install the Extension from the local file
+* Go to local user folder, for example this on linux:
+  ./config/blender/4.4/extensions/user\_default, there will be a folder
+  open\_stage\_blender\_dmx. Remove this folder and make a symlink of your
+  local git folder to open\_stage\_blender\_dmx.

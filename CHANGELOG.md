@@ -1,5 +1,12 @@
 ### Changelog
 
+### 1.9.5
+
+* Allow proper patching of fixtures with multiple DMX entry points (DMX Breaks)
+* Centralize GDTF loading to gain speed
+* Add possibility to Set Eevee Cutoff distance on selected fixtures
+* Accommodate to latest pygdtf changes - use channels directly and so on
+
 ### 1.9.4
 
 * Improve getting default values for DMX channels
