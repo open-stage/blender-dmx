@@ -682,7 +682,7 @@ class DMX(PropertyGroup):
 
     def copy_default_profiles_to_user_folder(self):
         copy_blender_profiles()
-        Profiles.DMX_Fixtures_Local_Profile.loadLocal(recreate_profiles=True)
+        Profiles.DMX_Fixtures_Local_Profile.loadLocal()
         DMX_GDTF_File.get_manufacturers_list()
 
     def ensure_application_uuid(self):
@@ -2009,7 +2009,7 @@ class DMX(PropertyGroup):
         load_mvr(self, file_name, import_focus_points=import_focus_points)
 
         bpy.context.window_manager.dmx.pause_render = False  # re-enable render loop
-        Profiles.DMX_Fixtures_Local_Profile.loadLocal(recreate_profiles=True)
+        Profiles.DMX_Fixtures_Local_Profile.loadLocal()
         DMX_GDTF_File.get_manufacturers_list()
 
     def clean_up_empty_mvr_collections(self, collections):
