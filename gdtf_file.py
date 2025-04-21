@@ -106,9 +106,10 @@ class DMX_GDTF_File:
             DMX_Log.log.error((file_name, e))
 
     @staticmethod
-    def recreate_data():
+    def recreate_data(recreate_profiles=False):
         DMX_Log.log.info("Regenerating fixture profiles list...")
-        DMX_GDTF_File.profiles_list = {}
+        if recreate_profiles:
+            DMX_GDTF_File.profiles_list = {}
         for file in os.listdir(DMX_GDTF_File.get_profiles_path()):
             if file not in DMX_GDTF_File.profiles_list:
                 DMX_GDTF_File.add_to_data(file)
