@@ -593,7 +593,7 @@ class DMX_OT_IES_Remove(Operator):
     """Remove IES"""
 
     bl_idname = "dmx.remove_ies_files"
-    bl_label = "Remove IES Files"
+    bl_label = _("Remove IES Files")
 
     def execute(self, context):
         selected = context.scene.dmx.selectedFixtures()
@@ -606,7 +606,7 @@ class DMX_OT_IES_Import(Operator, ImportHelper):
     """Import IES"""
 
     bl_idname = "dmx.import_ies_file"
-    bl_label = "Import IES File"
+    bl_label = _("Import IES File")
 
     # ImportHelper mixin class uses this
     filename_ext = ".ies"
@@ -674,7 +674,7 @@ def select_next(context, select_target=False):
 class DMX_OT_Fixture_SelectPrevious(Operator):
     bl_label = _("Select Previous Fixture")
     bl_idname = "dmx.fixture_previous"
-    bl_description = "Select Previous Fixture"
+    bl_description = _("Select Previous Fixture")
     bl_options = {"UNDO"}
 
     def execute(self, context):
@@ -685,7 +685,7 @@ class DMX_OT_Fixture_SelectPrevious(Operator):
 class DMX_OT_Fixture_SelectNext(Operator):
     bl_label = _("Select Next Fixture")
     bl_idname = "dmx.fixture_next"
-    bl_description = "Select Next Fixture"
+    bl_description = _("Select Next Fixture")
     bl_options = {"UNDO"}
 
     def execute(self, context):
@@ -696,7 +696,7 @@ class DMX_OT_Fixture_SelectNext(Operator):
 class DMX_OT_Fixture_SelectPreviousTarget(Operator):
     bl_label = _("Select Previous Target")
     bl_idname = "dmx.fixture_previous_target"
-    bl_description = "Select Previous Fixture"
+    bl_description = _("Select Previous Target")
     bl_options = {"UNDO"}
 
     def execute(self, context):
@@ -707,7 +707,7 @@ class DMX_OT_Fixture_SelectPreviousTarget(Operator):
 class DMX_OT_Fixture_SelectNextTarget(Operator):
     bl_label = _("Select Next Target")
     bl_idname = "dmx.fixture_next_target"
-    bl_description = "Select Next Fixture"
+    bl_description = _("Select Next Target")
     bl_options = {"UNDO"}
 
     def execute(self, context):

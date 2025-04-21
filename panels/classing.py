@@ -43,7 +43,7 @@ class DMX_UL_Class(UIList):
 
 
 class DMX_PT_Classes(Panel):
-    bl_label = "Classes"
+    bl_label = _("Classes")
     bl_idname = "DMX_PT_Classes"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"
