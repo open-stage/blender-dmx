@@ -348,7 +348,6 @@ class DMX_GDTF:
                     height=0.0001,
                     primitive_type="Cube",
                 )
-                geometry.model = ""
             else:
                 # Deepcopy the model because GeometryReference will modify the name
                 # Perhaps this could be done conditionally
