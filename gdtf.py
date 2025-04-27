@@ -704,9 +704,6 @@ class DMX_GDTF:
                         update_geometry(child_geometry)
 
         # Load 3d objects from the GDTF profile
-        # The whole procedure is still quite simplified
-        # We could use more hierarchical approach inside Blender
-        # To represent the geometries in a kinematic chain rather then flat structure
         # Also, we mostly omit links between geometry and channel function's geometry linking
         # For places, where for example multiple yokes would exist...
         load_geometries(root_geometry)
