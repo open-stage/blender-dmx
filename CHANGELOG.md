@@ -1,5 +1,10 @@
 ### Changelog
 
+### 1.9.6
+
+* Ensure that empty geometries are handled correctly
+* Update pygdtf to version 1.2.0
+
 ### 1.9.5
 
 * Allow proper patching of fixtures with multiple DMX entry points (DMX Breaks)
