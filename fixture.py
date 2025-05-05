@@ -577,8 +577,10 @@ class DMX_Fixture(PropertyGroup):
 
                 emitter_material = getEmitterMaterial(obj.name)
                 emitter.active_material = emitter_material
-                emitter.material_slots[0].link = "OBJECT"
-                emitter.material_slots[0].material = emitter_material
+                for slot in emitter.material_slots:
+                    # handle beam geometries with multiple material slots
+                    slot.link = "OBJECT"
+                    slot.material = emitter_material
                 if hasattr(emitter.material_slots[0].material, "shadow_method"):
                     emitter.material_slots[0].material.shadow_method = "NONE"  # eevee
                 new_material.material = emitter_material
