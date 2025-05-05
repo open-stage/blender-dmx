@@ -110,6 +110,7 @@ class DMX(PropertyGroup):
         fixture.DMX_Emitter_Material,
         fixture.DMX_IES_Data,
         fixture.DMX_Geometry_Node,
+        fixture.DMX_Fixture_Channel_Function,
         fixture.DMX_Fixture_Channel,
         fixture.DMX_Break,
         fixture.DMX_Fixture,
