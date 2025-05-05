@@ -28,6 +28,7 @@ from bpy.props import (
     CollectionProperty,
     FloatVectorProperty,
     IntProperty,
+    FloatProperty,
     IntVectorProperty,
     PointerProperty,
     StringProperty,
@@ -56,7 +57,14 @@ from .material import (
 from .model import DMX_Model
 from .node_arranger import DMX_OT_ArrangeSelected
 from .osc_utils import DMX_OSC_Handlers
-from .util import add_rgb, cmy_to_rgb, colors_to_rgb, kelvin_table, rgb2xyY
+from .util import (
+    add_rgb,
+    cmy_to_rgb,
+    colors_to_rgb,
+    kelvin_table,
+    kelvin_to_rgb,
+    rgb2xyY,
+)
 
 # Shader Nodes default labels
 # Blender API naming convention is inconsistent for internationalization
@@ -108,8 +116,41 @@ class DMX_IES_Data(PropertyGroup):
         name = "Spot > IES",
         type = Text)
 
+class DMX_Fixture_Channel_Function(PropertyGroup):
+
+    def dmx_to_physical(self, dmx_value):
+        # test if this works or if we need physical_min, physical_max
+
+        if ((self.dmx_from  - self.dmx_to) + self.physical_from) == 0:
+            return (self.dmx_from - self.dmx_from) * (self.physical_to - self.physical_from )
+        return (dmx_value - self.dmx_from) * (self.physical_to - self.physical_from) / (self.dmx_to - self.dmx_from) + self.physical_from
+
+    id: StringProperty(
+        name = "Attribute",
+        default = '')
+    dmx_from: IntProperty(
+        name = "DMX From",
+        default = 1)
+    dmx_to: IntProperty(
+        name = "DMX To",
+        default = 1)
+    physical_from: FloatProperty(
+        name = "Physical From",
+        default = 1)
+    physical_to: FloatProperty(
+        name = "Physical To",
+        default = 1)
 
 class DMX_Fixture_Channel(PropertyGroup):
+
+    def get_function_attribute_data(self, dmx_value):
+        for ch_f in self.channel_functions:
+            if ch_f.dmx_from <= dmx_value <= ch_f.dmx_to or ch_f.dmx_to <= dmx_value <= ch_f.dmx_from:
+                attribute = ch_f.id
+                physical_value = ch_f.dmx_to_physical(dmx_value)
+                return attribute, physical_value
+        return None, None
+
     id: StringProperty(
         name = "Attribute",
         default = '')
@@ -128,6 +169,12 @@ class DMX_Fixture_Channel(PropertyGroup):
     byte_offset: IntProperty(
         name = "course 0, fine 1, ultra 2, uber 3",
         default = 0)
+    channel_functions: CollectionProperty(
+        name = "Fixture > Channels > Channel Functions",
+        type = DMX_Fixture_Channel_Function
+    )
+
+
 
 class DMX_Break(PropertyGroup):
     def ensure_universe_exists(self, context):
@@ -437,6 +484,21 @@ class DMX_Fixture(PropertyGroup):
 
                 if "Gobo" in channel.attribute.str_link:
                     has_gobos = True
+
+                for logical_channel in channel.logical_channels:
+                    for channel_function in logical_channel.channel_functions:
+                        new_channel_function = new_channel.channel_functions.add()
+                        new_channel_function.id = channel_function.attribute.str_link
+                        new_channel_function.dmx_from = (
+                            channel_function.dmx_from.get_value()
+                        )
+                        new_channel_function.dmx_to = (
+                            channel_function.dmx_to.get_value()
+                        )
+                        new_channel_function.physical_from = (
+                            channel_function.physical_from
+                        )
+                        new_channel_function.physical_to = channel_function.physical_to
 
         for dmx_break in dmx_breaks:
             new_break = self.dmx_breaks.add()
@@ -767,7 +829,7 @@ class DMX_Fixture(PropertyGroup):
         cmy = [None, None, None]
         zoom = None
         color1 = None
-        ctc = None
+        ctc = None, None
         iris = None
         rgb_mixing_geometries = {}
         xyz_moving_geometries = {}
@@ -949,6 +1011,19 @@ class DMX_Fixture(PropertyGroup):
                 # skip unsupported 16bit channels
                 continue
 
+            dmx_value = dmx_data[channel.dmx_break][channel.offset]
+            channel_function_attribute, channel_function_physical_value = (
+                channel.get_function_attribute_data(dmx_value)
+            )
+            DMX_Log.log.error(
+                (
+                    "channel function",
+                    channel_function_attribute,
+                    channel_function_physical_value,
+                    dmx_value,
+                )
+            )
+
             if channel.id == "Dimmer":
                 if channel.byte_offset == 0:
                     shutter_dimmer_geometries[geometry][1] = dmx_data[
@@ -1059,18 +1134,18 @@ class DMX_Fixture(PropertyGroup):
                 tilt_cont_rotating_geometries[geometry][0] = dmx_data[
                     channel.dmx_break
                 ][channel.offset]
-            elif channel.id == "Zoom":
-                zoom = dmx_data[channel.dmx_break][channel.offset]
+            elif channel_function_attribute == "Zoom":
+                zoom = channel_function_physical_value
             elif channel.id == "Color1":
                 color1 = dmx_data[channel.dmx_break][channel.offset]
             elif channel.id == "Color2":
                 color1 = dmx_data[channel.dmx_break][channel.offset]
             elif channel.id == "CTC":
-                ctc = dmx_data[channel.dmx_break][channel.offset]
-            elif channel.id == "CTO":
-                ctc = dmx_data[channel.dmx_break][channel.offset]
+                ctc = channel_function_physical_value, dmx_value
+            elif channel_function_attribute == "CTO":
+                ctc = channel_function_physical_value, dmx_value
             elif channel.id == "CTB":
-                ctc = dmx_data[channel.dmx_break][channel.offset]
+                ctc = channel_function_physical_value, dmx_value
             elif channel.id == "Iris":
                 iris = dmx_data[channel.dmx_break][channel.offset]
             elif channel.id == "ColorMacro1":
@@ -1137,8 +1212,8 @@ class DMX_Fixture(PropertyGroup):
         if color1 is not None:
             colorwheel_color = self.get_colorwheel_color(color1)
         color_temperature = None
-        if ctc is not None:
-            color_temperature = self.get_color_temperature(ctc)
+        if ctc[0] is not None:
+            color_temperature = self.get_color_temperature(*ctc)
 
         for geometry, colors in rgb_mixing_geometries.items():
             if len(rgb_mixing_geometries) == 1:
@@ -1633,15 +1708,19 @@ class DMX_Fixture(PropertyGroup):
         if len(colors) > index:
             return list(colors[index])
 
-    def get_color_temperature(self, ctc):
-        if ctc == 0:
-            return
-        if 1 <= ctc <= 255:
-            ctc = 1000 + (ctc - 1) * (12000 - 1000) / (255 - 1)
-            ctc -= ctc % -100  # round to full 100s
-            return kelvin_table[ctc]
-        else:
-            return
+    def get_color_temperature(self, ctc, dmx_value):
+        if dmx_value == 0:
+            return None
+
+        if ctc < 101:
+            # for fixtures that do not define physical range
+            # get ct form dmx range
+            if 1 <= dmx_value <= 255:
+                ctc = 1000 + (dmx_value - 1) * (20000 - 1000) / (255 - 1)
+
+        ctc = max(1000, min(20000, ctc))
+        ctc -= ctc % -100  # round to full 100s
+        return kelvin_table[ctc]
 
     def update_iris(self, iris, current_frame):
         for obj in self.collection.objects:  # EEVEE
