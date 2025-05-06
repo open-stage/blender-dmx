@@ -131,6 +131,9 @@ class DMX_Fixture_Channel_Function(PropertyGroup):
     dmx_from: IntProperty(
         name = "DMX From",
         default = 1)
+    name_: StringProperty(
+        name = "Name",
+        default = "")
     dmx_to: IntProperty(
         name = "DMX To",
         default = 1)
@@ -140,20 +143,55 @@ class DMX_Fixture_Channel_Function(PropertyGroup):
     physical_to: FloatProperty(
         name = "Physical To",
         default = 1)
+    mode_master: StringProperty(
+        name = "Mode master",
+        default = '')
+    mode_from: IntProperty(
+        name = "Mode From",
+        default = 1)
+    mode_to: IntProperty(
+        name = "Mode To",
+        default = 1)
+    mm_dmx_break: IntProperty(
+        name = "ModeMaster break",
+        default = 1)
+    mm_offset: IntProperty(
+        name = "ModeMaster offset",
+        default = 1)
 
 class DMX_Fixture_Channel(PropertyGroup):
 
-    def get_function_attribute_data(self, dmx_value):
+    def get_function_attribute_data(self, dmx_value, dmx_data):
         for ch_f in self.channel_functions:
-            if ch_f.dmx_from <= dmx_value <= ch_f.dmx_to or ch_f.dmx_to <= dmx_value <= ch_f.dmx_from:
-                attribute = ch_f.id
-                physical_value = ch_f.dmx_to_physical(dmx_value)
-                return attribute, physical_value
+            # get a function which contains dmx from/to encapsulating our current dmx value
+            if ch_f.dmx_from <= dmx_value <= ch_f.dmx_to:
+                print("have the function", ch_f.name_)
+                if ch_f.mode_master != "":
+                    mode_from = ch_f.mode_from
+                    mode_to = ch_f.mode_to
+                    mm_dmx_value = dmx_data[ch_f.mm_dmx_break][ch_f.mm_offset]
+                    print("mm_dmx_value", mm_dmx_value, mode_from, mode_to)
+                    if mode_from <= mm_dmx_value <= mode_to:
+                        print("return the mm function", ch_f.name_)
+                        attribute = ch_f.id
+                        physical_value = ch_f.dmx_to_physical(dmx_value) # calculate physical value for this dmx value
+                        return attribute, physical_value
+                else:
+                    print("return the single function", ch_f.name_)
+                    attribute = ch_f.id
+                    physical_value = ch_f.dmx_to_physical(dmx_value) # calculate physical value for this dmx value
+                    return attribute, physical_value
         return None, None
+
 
     id: StringProperty(
         name = "Attribute",
         default = '')
+    name_: StringProperty(
+        name = "Name",
+        default = "")
+    # do not use "name" as blender will be adding 001 to ensure unique names...
+
     offset: IntProperty(
         name = "DMX Channel offset",
         default = 1)
@@ -173,6 +211,7 @@ class DMX_Fixture_Channel(PropertyGroup):
         name = "Fixture > Channels > Channel Functions",
         type = DMX_Fixture_Channel_Function
     )
+
 
 
 
@@ -467,6 +506,8 @@ class DMX_Fixture(PropertyGroup):
             for byte, offset in enumerate(channel.offset):
                 new_channel = self.channels.add()
                 new_channel.id = channel.attribute.str_link
+                new_channel.name_ = channel.name
+                print("set channel name", channel.name, new_channel.name_)
                 new_channel.geometry = channel.geometry
                 new_channel.dmx_break = channel.dmx_break
                 new_channel.offset = offset
@@ -484,11 +525,28 @@ class DMX_Fixture(PropertyGroup):
 
                 if "Gobo" in channel.attribute.str_link:
                     has_gobos = True
+                if byte > 0:
+                    continue
 
                 for logical_channel in channel.logical_channels:
                     for channel_function in logical_channel.channel_functions:
                         new_channel_function = new_channel.channel_functions.add()
                         new_channel_function.id = channel_function.attribute.str_link
+                        new_channel_function.name_ = channel_function.name
+                        print("set channel name", channel.name, new_channel.name_)
+
+                        mode_master = channel_function.mode_master.str_link
+                        new_channel_function.mode_master = (
+                            mode_master if mode_master is not None else ""
+                        )
+
+                        new_channel_function.mode_from = (
+                            channel_function.mode_from.get_value()
+                        )
+                        new_channel_function.mode_to = (
+                            channel_function.mode_to.get_value()
+                        )
+
                         new_channel_function.dmx_from = (
                             channel_function.dmx_from.get_value()
                         )
@@ -499,6 +557,18 @@ class DMX_Fixture(PropertyGroup):
                             channel_function.physical_from
                         )
                         new_channel_function.physical_to = channel_function.physical_to
+
+        # create a link from channel function to a mode_master channel:
+        for channel in self.channels:
+            for ch_function in channel.channel_functions:
+                if ch_function.mode_master != "":
+                    print("search for master", ch_function.mode_master)
+                    for ch in self.channels:
+                        print("channel name", ch.name_)
+                        if ch.name_ == ch_function.mode_master:
+                            print("linking mm channel", ch.name_)
+                            ch_function.mm_dmx_break = ch.dmx_break
+                            ch_function.mm_offset = ch.offset
 
         for dmx_break in dmx_breaks:
             new_break = self.dmx_breaks.add()
@@ -1012,8 +1082,15 @@ class DMX_Fixture(PropertyGroup):
                 continue
 
             dmx_value = dmx_data[channel.dmx_break][channel.offset]
+            print(
+                "start function search",
+                channel.name_,
+                channel.offset,
+                channel.byte_offset,
+            )
+
             channel_function_attribute, channel_function_physical_value = (
-                channel.get_function_attribute_data(dmx_value)
+                channel.get_function_attribute_data(dmx_value, dmx_data)
             )
             DMX_Log.log.error(
                 (
@@ -1024,7 +1101,7 @@ class DMX_Fixture(PropertyGroup):
                 )
             )
 
-            if channel.id == "Dimmer":
+            if channel_function_attribute == "Dimmer":
                 if channel.byte_offset == 0:
                     shutter_dimmer_geometries[geometry][1] = dmx_data[
                         channel.dmx_break
