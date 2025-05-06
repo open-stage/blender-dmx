@@ -321,6 +321,7 @@ class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
     def execute(self, context):
         scene = context.scene
         dmx = scene.dmx
+        context.window_manager.dmx.pause_render = True  # pause renderer as partially imported fixture can cause issues during updates
         if self.name in bpy.data.collections:
             self.report(
                 {"ERROR"}, _("Fixture named {} already exists").format(self.name)
@@ -364,6 +365,7 @@ class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
                     else:
                         dmx_break.address += dmx_break.channels_count
 
+        context.window_manager.dmx.pause_render = False
         return {"FINISHED"}
 
     def invoke(self, context, event):
