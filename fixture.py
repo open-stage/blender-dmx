@@ -155,23 +155,33 @@ class DMX_Fixture_Channel_Function(PropertyGroup):
     mm_dmx_break: IntProperty(
         name = "ModeMaster break",
         default = 1)
-    mm_offset: IntProperty(
-        name = "ModeMaster offset",
+    mm_offsets: IntVectorProperty(
+        name = "ModeMaster offsets",
+        size = 2,
+        default = (0,0))
+    mm_offsets_bytes: IntProperty(
+        name = "ModeMaster Bytes",
         default = 1)
 
 class DMX_Fixture_Channel(PropertyGroup):
 
-    def get_function_attribute_data(self, dmx_value, dmx_data):
+    def get_function_attribute_data(self, dmx_value, dmx_data, skip_mode_master = False):
         for ch_f in self.channel_functions:
             # get a function which contains dmx from/to encapsulating our current dmx value
             if ch_f.dmx_from <= dmx_value <= ch_f.dmx_to:
                 print("have the function", ch_f.name_)
-                if ch_f.mode_master != "":
+                if ch_f.mode_master != "" and skip_mode_master is False:
                     mode_from = ch_f.mode_from
                     mode_to = ch_f.mode_to
-                    mm_dmx_value = dmx_data[ch_f.mm_dmx_break][ch_f.mm_offset]
-                    print("mm_dmx_value", mm_dmx_value, mode_from, mode_to)
-                    if mode_from <= mm_dmx_value <= mode_to:
+                    mm_dmx_value_coarse = dmx_data[ch_f.mm_dmx_break][ch_f.mm_offsets[0]]
+                    mm_dmx_value_fine = None
+                    mm_dmx_value_final = mm_dmx_value_coarse
+                    if ch_f.mm_offsets_bytes > 1:
+                        mm_dmx_value_fine = dmx_data[ch_f.mm_dmx_break][ch_f.mm_offsets[1]]
+                        mm_dmx_value_final = (mm_dmx_value_coarse << 8) | mm_dmx_value_fine
+
+                    print("mm_dmx_value", mm_dmx_value_final, mode_from, mode_to)
+                    if mode_from <= mm_dmx_value_final <= mode_to:
                         print("return the mm function", ch_f.name_)
                         attribute = ch_f.id
                         physical_value = ch_f.dmx_to_physical(dmx_value) # calculate physical value for this dmx value
@@ -182,7 +192,6 @@ class DMX_Fixture_Channel(PropertyGroup):
                     physical_value = ch_f.dmx_to_physical(dmx_value) # calculate physical value for this dmx value
                     return attribute, physical_value
         return None, None
-
 
     attribute: StringProperty(
         name = "Attribute",
@@ -541,6 +550,11 @@ class DMX_Fixture(PropertyGroup):
                     new_channel_function.mode_master = (
                         mode_master if mode_master is not None else ""
                     )
+                    print(
+                        "set mode master?",
+                        mode_master,
+                        new_channel_function.mode_master,
+                    )
 
                     new_channel_function.mode_from = channel_function.mode_from.value
                     new_channel_function.mode_to = channel_function.mode_to.value
@@ -556,11 +570,17 @@ class DMX_Fixture(PropertyGroup):
                 if ch_function.mode_master != "":
                     print("search for master", ch_function.mode_master)
                     for ch in self.channels:
-                        print("channel name", ch.name_)
+                        # print("channel name", ch.name_)
                         if ch.name_ == ch_function.mode_master:
-                            print("linking mm channel", ch.name_)
+                            print(
+                                "linking mm channel",
+                                ch.name_,
+                                ch.offsets,
+                                ch.offsets_bytes,
+                            )
                             ch_function.mm_dmx_break = ch.dmx_break
-                            ch_function.mm_offset = ch.offset
+                            ch_function.mm_offsets = ch.offsets
+                            ch_function.mm_offsets_bytes = ch.offsets_bytes
 
         for dmx_break in dmx_breaks:
             new_break = self.dmx_breaks.add()
@@ -892,7 +912,7 @@ class DMX_Fixture(PropertyGroup):
         DMX_Log.log.debug(f"{current_frame=}, {self.dmx_cache_dirty=}")
 
         self["dmx_values"] = cached_dmx_data
-        panTilt = [None, None, 1, 1]  # pan, tilt, 1 = 8bit, 256 = 16bit
+        panTilt = [None, None]
         cmy = [None, None, None]
         zoom = None
         color1 = None
@@ -932,15 +952,22 @@ class DMX_Fixture(PropertyGroup):
             if geometry not in shutter_dimmer_geometries.keys():
                 shutter_dimmer_geometries[geometry] = [None, None, None, 1]  # + bits
             if geometry not in pan_rotating_geometries.keys():
-                pan_rotating_geometries[geometry] = [None, 1]
+                pan_rotating_geometries[geometry] = [None]
             if geometry not in tilt_rotating_geometries.keys():
-                tilt_rotating_geometries[geometry] = [None, 1]
+                tilt_rotating_geometries[geometry] = [None]
             if geometry not in pan_cont_rotating_geometries.keys():
-                pan_cont_rotating_geometries[geometry] = [None, 1]
+                pan_cont_rotating_geometries[geometry] = [None]
             if geometry not in tilt_cont_rotating_geometries.keys():
-                tilt_cont_rotating_geometries[geometry] = [None, 1]
+                tilt_cont_rotating_geometries[geometry] = [None]
 
             if vchannel.attribute in data_virtual:
+                dmx_value_virtual = data_virtual[vchannel.attribute]["value"]
+                channel_function_attribute, channel_function_physical_value = (
+                    channel.get_function_attribute_data(
+                        dmx_value_virtual, None, skip_mode_master=True
+                    )
+                )
+
                 if vchannel.attribute == "Shutter1":
                     shutter_dimmer_geometries[geometry][0] = data_virtual[
                         vchannel.attribute
@@ -977,30 +1004,37 @@ class DMX_Fixture(PropertyGroup):
                     cmy[1] = data_virtual[vchannel.attribute]["value"]
                 elif vchannel.attribute == "ColorSub_Y":
                     cmy[2] = data_virtual[vchannel.attribute]["value"]
-                elif vchannel.attribute == "Pan":
-                    panTilt[0] = data_virtual[vchannel.attribute]["value"]
-                    pan_rotating_geometries[geometry][0] = data_virtual[
-                        vchannel.attribute
-                    ]["value"]
+                elif channel_function_attribute == "Pan":
+                    panTilt[0] = channel_function_physical_value
+                    pan_rotating_geometries[geometry][0] = (
+                        channel_function_physical_value
+                    )
 
-                elif vchannel.attribute == "Tilt":
-                    panTilt[1] = data_virtual[vchannel.attribute]["value"]
-                    tilt_rotating_geometries[geometry][0] = data_virtual[
-                        vchannel.attribute
-                    ]["value"]
+                elif channel_function_attribute == "Tilt":
+                    panTilt[1] = channel_function_physical_value
+                    tilt_rotating_geometries[geometry][0] = (
+                        channel_function_physical_value
+                    )
 
-                elif vchannel.attribute == "PanRotate":
-                    pan_cont_rotating_geometries[geometry][0] = data_virtual[
-                        vchannel.attribute
-                    ]["value"]
+                elif channel_function_attribute == "PanRotate":
+                    pan_cont_rotating_geometries[geometry][0] = (
+                        channel_function_physical_value
+                    )
 
-                elif vchannel.attribute == "TiltRotate":
-                    tilt_cont_rotating_geometries[geometry][0] = data_virtual[
-                        vchannel.attribute
-                    ]["value"]
+                elif channel_function_attribute == "TiltRotate":
+                    tilt_cont_rotating_geometries[geometry][0] = (
+                        channel_function_physical_value
+                    )
 
-                elif vchannel.attribute == "Zoom":
-                    zoom = data_virtual[vchannel.attribute]["value"]
+                elif channel_function_attribute == "Zoom":
+                    zoom = channel_function_physical_value
+
+                elif channel_function_attribute == "CTC":
+                    ctc = channel_function_physical_value, dmx_value_virtual
+                elif channel_function_attribute == "CTO":
+                    ctc = channel_function_physical_value, dmx_value_virtual
+                elif channel_function_attribute == "CTB":
+                    ctc = channel_function_physical_value, dmx_value_virtual
                 elif vchannel.attribute == "XYZ_X":
                     xyz_moving_geometries[geometry][0] = data_virtual[
                         vchannel.attribute
@@ -1040,13 +1074,13 @@ class DMX_Fixture(PropertyGroup):
             if geometry not in shutter_dimmer_geometries.keys():
                 shutter_dimmer_geometries[geometry] = [None, None, None, 1]  # + bits
             if geometry not in pan_rotating_geometries.keys():
-                pan_rotating_geometries[geometry] = [None, 1]
+                pan_rotating_geometries[geometry] = [None]
             if geometry not in tilt_rotating_geometries.keys():
-                tilt_rotating_geometries[geometry] = [None, 1]
+                tilt_rotating_geometries[geometry] = [None]
             if geometry not in pan_cont_rotating_geometries.keys():
-                pan_cont_rotating_geometries[geometry] = [None, 1]
+                pan_cont_rotating_geometries[geometry] = [None]
             if geometry not in tilt_cont_rotating_geometries.keys():
-                tilt_cont_rotating_geometries[geometry] = [None, 1]
+                tilt_cont_rotating_geometries[geometry] = [None]
 
             dmx_value_coarse = dmx_data[channel.dmx_break][channel.offsets[0]]
             dmx_value_fine = None
@@ -1150,59 +1184,32 @@ class DMX_Fixture(PropertyGroup):
                 cmy[1] = dmx_data[channel.dmx_break][channel.offsets[0]]
             elif channel.attribute == "ColorSub_Y":
                 cmy[2] = dmx_data[channel.dmx_break][channel.offsets[0]]
-            elif channel.attribute == "Pan":
-                panTilt[0] = dmx_data[channel.dmx_break][channel.offsets[0]]
-                pan_rotating_geometries[geometry][0] = dmx_data[channel.dmx_break][
-                    channel.offsets[0]
-                ]
-                if channel.offsets_bytes > 1:
-                    panTilt[0] = (
-                        panTilt[0] * 256
-                        + dmx_data[channel.dmx_break][channel.offsets[1]]
-                    )
-                    panTilt[2] = 256  # 16bit
-                    pan_rotating_geometries[geometry][0] = (
-                        pan_rotating_geometries[geometry][0] * 256
-                        + dmx_data[channel.dmx_break][channel.offsets[1]]
-                    )
-                    pan_rotating_geometries[geometry][1] = 256
-            elif channel.attribute == "Tilt":
-                panTilt[1] = dmx_data[channel.dmx_break][channel.offsets[0]]
-                tilt_rotating_geometries[geometry][0] = dmx_data[channel.dmx_break][
-                    channel.offsets[0]
-                ]
+            elif channel_function_attribute == "Pan":
+                panTilt[0] = channel_function_physical_value
+                pan_rotating_geometries[geometry][0] = channel_function_physical_value
+            elif channel_function_attribute == "Tilt":
+                panTilt[1] = channel_function_physical_value
+                tilt_rotating_geometries[geometry][0] = channel_function_physical_value
 
-                if channel.offsets_bytes > 1:
-                    panTilt[1] = (
-                        panTilt[1] * 256
-                        + dmx_data[channel.dmx_break][channel.offsets[1]]
-                    )
-                    panTilt[3] = 256  # 16bit
-                    tilt_rotating_geometries[geometry][0] = (
-                        tilt_rotating_geometries[geometry][0] * 256
-                        + dmx_data[channel.dmx_break][channel.offsets[1]]
-                    )
-                    tilt_rotating_geometries[geometry][1] = 256
-
-            elif channel.attribute == "PanRotate":
-                pan_cont_rotating_geometries[geometry][0] = dmx_data[channel.dmx_break][
-                    channel.offsets[0]
-                ]
-            elif channel.attribute == "TiltRotate":
-                tilt_cont_rotating_geometries[geometry][0] = dmx_data[
-                    channel.dmx_break
-                ][channel.offsets[0]]
+            elif channel_function_attribute == "PanRotate":
+                pan_cont_rotating_geometries[geometry][0] = (
+                    channel_function_physical_value
+                )
+            elif channel_function_attribute == "TiltRotate":
+                tilt_cont_rotating_geometries[geometry][0] = (
+                    channel_function_physical_value
+                )
             elif channel_function_attribute == "Zoom":
                 zoom = channel_function_physical_value
             elif channel.attribute == "Color1":
                 color1 = dmx_data[channel.dmx_break][channel.offsets[0]]
             elif channel.attribute == "Color2":
                 color1 = dmx_data[channel.dmx_break][channel.offsets[0]]
-            elif channel.attribute == "CTC":
+            elif channel_function_attribute == "CTC":
                 ctc = channel_function_physical_value, dmx_value_coarse
             elif channel_function_attribute == "CTO":
                 ctc = channel_function_physical_value, dmx_value_coarse
-            elif channel.attribute == "CTB":
+            elif channel_function_attribute == "CTB":
                 ctc = channel_function_physical_value, dmx_value_coarse
             elif channel.attribute == "Iris":
                 iris = dmx_data[channel.dmx_break][channel.offsets[0]]
@@ -1310,24 +1317,16 @@ class DMX_Fixture(PropertyGroup):
                             data_path="rotation_euler", frame=current_frame
                         )
             else:
-                if panTilt[0] is None:
-                    panTilt[0] = (
-                        0 * panTilt[2]
-                    )  # if the device doesn't have pan, align head with base
-                if panTilt[1] is None:
-                    panTilt[1] = 0 * panTilt[3]
-                pan = (panTilt[0] / (panTilt[2] * 127.0) - 1) * 540 * (math.pi / 360)
-                tilt = (panTilt[1] / (panTilt[3] * 127.0) - 1) * 270 * (math.pi / 360)
+                pan = math.radians(panTilt[0] or 0)
+                tilt = math.radians(panTilt[1] or 0)
                 self.updatePanTiltViaTarget(pan, tilt, current_frame)
 
         else:  # no Target
             for geometry, pan_vals in pan_rotating_geometries.items():
-                pan = (pan_vals[0] / (pan_vals[1] * 127.0) - 1) * 540 * (math.pi / 360)
+                pan = math.radians(pan_vals[0])
                 self.updatePTDirectly(geometry, "pan", pan, current_frame)
             for geometry, tilt_vals in tilt_rotating_geometries.items():
-                tilt = (
-                    (tilt_vals[0] / (tilt_vals[1] * 127.0) - 1) * 270 * (math.pi / 360)
-                )
+                tilt = math.radians(tilt_vals[0])
                 self.updatePTDirectly(geometry, "tilt", tilt, current_frame)
 
         for geometry, pan_rotate in pan_cont_rotating_geometries.items():
@@ -1426,16 +1425,12 @@ class DMX_Fixture(PropertyGroup):
             geometry.driver_remove("rotation_euler", offset)
 
             if lock_rotation:
-                rotation = rotation / 128 * 360 * (math.pi / 360)
-                geometry.rotation_euler[offset] = (
-                    rotation  # just some value, not very precise
-                )
+                rotation = math.radians(rotation)
+                geometry.rotation_euler[offset] = rotation
             else:
                 if rotation != 0:
                     driver = geometry.driver_add("rotation_euler", offset)
-                    value = (
-                        rotation - 128
-                    )  # rotating in both direction, slowest in the middle
+                    value = rotation
                     driver.driver.expression = f"frame*{value * 0.005}"
 
             if current_frame and self.dmx_cache_dirty:
@@ -1936,7 +1931,7 @@ class DMX_Fixture(PropertyGroup):
         target = self.objects["Target"].object
 
         eul = mathutils.Euler(
-            (0.0, base.rotation_euler[1] + tilt, base.rotation_euler[0] + pan), "XYZ"
+            (base.rotation_euler.x + tilt, 0.0, base.rotation_euler.y + pan), "XYZ"
         )
         vec = mathutils.Vector((0.0, 0.0, -(target.location - head_location).length))
         vec.rotate(eul)
