@@ -107,8 +107,8 @@ class DMX_GDTF_File:
                     "modes": modes,
                     "revision": revision,
                 }
-
-                DMX_GDTF_File.profiles_list[file_name] = data
+                if file_name not in DMX_GDTF_File.profiles_list:
+                    DMX_GDTF_File.profiles_list[file_name] = data
         except Exception as e:
             DMX_Log.log.error((file_name, e))
 

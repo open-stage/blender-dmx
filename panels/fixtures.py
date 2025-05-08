@@ -94,9 +94,10 @@ class DMX_MT_Fixture_Profiles(Menu):
         for profile in DMX_GDTF_File.get_manufacturer_profiles_list(manufacturer.name):
             row = layout.row()
             row.context_pointer_set("add_edit_panel", context.add_edit_panel)
+            revision_name = profile["revision"].replace("_", " ")
             op = row.operator(
                 DMX_OT_Fixture_Profiles.bl_idname,
-                text=f"{profile['name']} @ {profile['revision']}".replace("_", " "),
+                text=f"{profile['name']} {'@' if revision_name else ''} {revision_name}",
             )
             op.profile = profile["filename"]
             op.short_name = profile["short_name"]
