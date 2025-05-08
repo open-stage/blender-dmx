@@ -18,7 +18,9 @@
 import math
 import os
 import traceback
+from types import SimpleNamespace
 import uuid as py_uuid
+from itertools import zip_longest
 
 import bpy
 import mathutils
@@ -526,15 +528,18 @@ class DMX_Fixture(PropertyGroup):
                     has_gobos = True
                     break
 
-        for dmx_break in dmx_breaks:
+        for mode_dmx_break, provided_dmx_break in zip_longest(
+            dmx_mode.dmx_breaks, dmx_breaks
+        ):
+            if mode_dmx_break is None:
+                mode_dmx_break = SimpleNamespace(dmx_break=1, channels_count=0)
+            if provided_dmx_break is None:
+                provided_dmx_break = SimpleNamespace(dmx_break=0, address=0, universe=0)
             new_break = self.dmx_breaks.add()
-            new_break.dmx_break = dmx_break.dmx_break
-            new_break.universe = dmx_break.universe
-            new_break.address = dmx_break.address
-
-            for mode_break in dmx_mode.dmx_breaks:
-                if dmx_break.dmx_break == mode_break.dmx_break:
-                    new_break.channels_count = mode_break.channels_count
+            new_break.dmx_break = mode_dmx_break.dmx_break
+            new_break.universe = provided_dmx_break.universe
+            new_break.address = provided_dmx_break.address
+            new_break.channels_count = mode_dmx_break.channels_count
 
         if not self.dmx_breaks:
             new_break = self.dmx_breaks.add()
