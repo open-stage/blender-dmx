@@ -1708,9 +1708,9 @@ class DMX(PropertyGroup):
 
     programmer_zoom: IntProperty(
         name = "Programmer Zoom",
-        min = 1,
-        max = 180,
-        default = 25,
+        min = 0,
+        max = 255,
+        default = 128,
         update = onProgrammerZoom)
 
     programmer_color_wheel: IntProperty(

@@ -513,74 +513,18 @@ class DMX_Fixture(PropertyGroup):
 
         has_gobos = False
 
-        for channel in dmx_mode.dmx_channels:
-            new_channel = self.channels.add()
-            new_channel.attribute = channel.attribute.str_link
-            new_channel.name_ = channel.name
-            print("set channel name", channel.name, new_channel.name_)
-            new_channel.geometry = channel.geometry
-            new_channel.dmx_break = channel.dmx_break
-            new_channel.offsets = tuple((channel.offset + [0])[:2])
-            new_channel.offsets_bytes = len(channel.offset)
+        self.process_channels(dmx_mode.dmx_channels, self.channels)
+        self.process_channels(dmx_mode.virtual_channels, self.virtual_channels)
 
-            # Set shutter to 0, we don't want strobing by default
-            # and are not reading real world values yet
-            if "shutter" in channel.attribute.str_link.lower():
-                new_channel.defaults = (0, 0)
-            # blender programmer cannot control white, set it to 0
-            elif "ColorAdd_W" in channel.attribute.str_link:
-                new_channel.defaults = (0, 0)
-            else:
-                fine_default = 0
-                if len(channel.offset) > 1:
-                    fine_default = channel.default.get_value(fine=True)
-                new_channel.defaults = (channel.default.get_value(), fine_default)
-
-            if "Gobo" in channel.attribute.str_link:
-                has_gobos = True
-
-            for logical_channel in channel.logical_channels:
-                for channel_function in logical_channel.channel_functions:
-                    new_channel_function = new_channel.channel_functions.add()
-                    new_channel_function.id = channel_function.attribute.str_link
-                    new_channel_function.name_ = channel_function.name
-                    print("set channel name", channel.name, new_channel.name_)
-
-                    mode_master = channel_function.mode_master.str_link
-                    new_channel_function.mode_master = (
-                        mode_master if mode_master is not None else ""
-                    )
-                    print(
-                        "set mode master?",
-                        mode_master,
-                        new_channel_function.mode_master,
-                    )
-
-                    new_channel_function.mode_from = channel_function.mode_from.value
-                    new_channel_function.mode_to = channel_function.mode_to.value
-
-                    new_channel_function.dmx_from = channel_function.dmx_from.value
-                    new_channel_function.dmx_to = channel_function.dmx_to.value
-                    new_channel_function.physical_from = channel_function.physical_from
-                    new_channel_function.physical_to = channel_function.physical_to
-
-        # create a link from channel function to a mode_master channel:
         for channel in self.channels:
-            for ch_function in channel.channel_functions:
-                if ch_function.mode_master != "":
-                    print("search for master", ch_function.mode_master)
-                    for ch in self.channels:
-                        # print("channel name", ch.name_)
-                        if ch.name_ == ch_function.mode_master:
-                            print(
-                                "linking mm channel",
-                                ch.name_,
-                                ch.offsets,
-                                ch.offsets_bytes,
-                            )
-                            ch_function.mm_dmx_break = ch.dmx_break
-                            ch_function.mm_offsets = ch.offsets
-                            ch_function.mm_offsets_bytes = ch.offsets_bytes
+            if "Gobo" in channel.attribute:
+                has_gobos = True
+                break
+        if not has_gobos:
+            for channel in self.virtual_channels:
+                if "Gobo" in channel.attribute:
+                    has_gobos = True
+                    break
 
         for dmx_break in dmx_breaks:
             new_break = self.dmx_breaks.add()
@@ -598,15 +542,6 @@ class DMX_Fixture(PropertyGroup):
             new_break.universe = 0
             new_break.address = 0
             new_break.channels_count = 0
-
-        # Build cache of virtual channels
-        for channel in dmx_mode.virtual_channels:
-            new_virtual_channel = self.virtual_channels.add()
-            new_virtual_channel.attribute = channel.attribute.str_link
-            new_virtual_channel.geometry = channel.geometry
-            new_virtual_channel.defaults = (channel.default.get_value(), 0)
-            if "Gobo" in channel.attribute.str_link:
-                has_gobos = True
 
         # Get all gobos
         if has_gobos:
@@ -813,6 +748,93 @@ class DMX_Fixture(PropertyGroup):
 
         self.render()
 
+    def process_channels(self, dmx_mode_channels, channels):
+        for dmx_channel in dmx_mode_channels:
+            new_channel = channels.add()
+            new_channel.attribute = dmx_channel.attribute.str_link
+            new_channel.name_ = dmx_channel.name
+            print("set channel name", dmx_channel.name, new_channel.name_)
+            new_channel.geometry = dmx_channel.geometry
+            new_channel.dmx_break = dmx_channel.dmx_break
+            if dmx_channel.offset is not None:
+                new_channel.offsets = tuple((dmx_channel.offset + [0])[:2])
+                new_channel.offsets_bytes = len(dmx_channel.offset)
+            else:
+                # virtual channels are 8 bit now
+                new_channel.offsets = (0, 0)
+                new_channel.offsets_bytes = 1
+
+            # Set shutter to 0, we don't want strobing by default
+            # and are not reading real world values yet
+            if "shutter" in dmx_channel.attribute.str_link.lower():
+                new_channel.defaults = (0, 0)
+            # blender programmer cannot control white, set it to 0
+            elif "ColorAdd_W" in dmx_channel.attribute.str_link:
+                new_channel.defaults = (0, 0)
+            else:
+                fine_default = 0
+                if new_channel.offsets_bytes > 1:
+                    fine_default = dmx_channel.default.get_value(fine=True)
+                new_channel.defaults = (dmx_channel.default.get_value(), fine_default)
+
+            for logical_channel in dmx_channel.logical_channels:
+                for channel_function in logical_channel.channel_functions:
+                    new_channel_function = new_channel.channel_functions.add()
+                    new_channel_function.id = channel_function.attribute.str_link
+                    new_channel_function.name_ = channel_function.name
+                    print("set channel name", dmx_channel.name, new_channel.name_)
+
+                    mode_master = channel_function.mode_master.str_link
+                    new_channel_function.mode_master = (
+                        mode_master if mode_master is not None else ""
+                    )
+                    print(
+                        "set mode master?",
+                        mode_master,
+                        new_channel_function.mode_master,
+                    )
+
+                    new_channel_function.mode_from = channel_function.mode_from.value
+                    new_channel_function.mode_to = channel_function.mode_to.value
+
+                    # virtual channels have byte count 4 which is too much for blender int
+                    # and we treat them as 8 bit only anyways
+                    if channel_function.dmx_from.byte_count > 2:
+                        new_channel_function.dmx_from = (
+                            channel_function.dmx_from.get_value()
+                        )
+                    else:
+                        new_channel_function.dmx_from = channel_function.dmx_from.value
+
+                    if channel_function.dmx_to.byte_count > 2:
+                        new_channel_function.dmx_to = (
+                            channel_function.dmx_to.get_value()
+                        )
+                    else:
+                        new_channel_function.dmx_to = channel_function.dmx_to.value
+
+                    new_channel_function.physical_from = channel_function.physical_from
+                    new_channel_function.physical_to = channel_function.physical_to
+
+        # create a link from channel function to a mode_master channel:
+        for dmx_channel in channels:
+            for ch_function in dmx_channel.channel_functions:
+                if ch_function.mode_master != "":
+                    print("search for master", ch_function.mode_master)
+                    for ch in channels:
+                        # we might have to search in both dmx and virtual
+                        # print("channel name", ch.name_)
+                        if ch.name_ == ch_function.mode_master:
+                            print(
+                                "linking mm channel",
+                                ch.name_,
+                                ch.offsets,
+                                ch.offsets_bytes,
+                            )
+                            ch_function.mm_dmx_break = ch.dmx_break
+                            ch_function.mm_offsets = ch.offsets
+                            ch_function.mm_offsets_bytes = ch.offsets_bytes
+
     # Interface Methods #
 
     def setDMX(self, pvalues):
@@ -960,12 +982,20 @@ class DMX_Fixture(PropertyGroup):
             if geometry not in tilt_cont_rotating_geometries.keys():
                 tilt_cont_rotating_geometries[geometry] = [None]
 
+            print("virtual", vchannel.attribute)
             if vchannel.attribute in data_virtual:
+                print("search virtual")
                 dmx_value_virtual = data_virtual[vchannel.attribute]["value"]
+                print("data virtual", dmx_value_virtual)
                 channel_function_attribute, channel_function_physical_value = (
-                    channel.get_function_attribute_data(
+                    vchannel.get_function_attribute_data(
                         dmx_value_virtual, None, skip_mode_master=True
                     )
+                )
+                print(
+                    "virtual result",
+                    channel_function_attribute,
+                    channel_function_physical_value,
                 )
 
                 if vchannel.attribute == "Shutter1":
