@@ -169,7 +169,7 @@ class DMX_Fixture_Channel(PropertyGroup):
         for ch_f in self.channel_functions:
             # get a function which contains dmx from/to encapsulating our current dmx value
             if ch_f.dmx_from <= dmx_value <= ch_f.dmx_to:
-                print("have the function", ch_f.name_)
+                DMX_Log.log.debug(("have the function", ch_f.name_))
                 if ch_f.mode_master != "" and skip_mode_master is False:
                     mode_from = ch_f.mode_from
                     mode_to = ch_f.mode_to
@@ -180,14 +180,14 @@ class DMX_Fixture_Channel(PropertyGroup):
                         mm_dmx_value_fine = dmx_data[ch_f.mm_dmx_break][ch_f.mm_offsets[1]]
                         mm_dmx_value_final = (mm_dmx_value_coarse << 8) | mm_dmx_value_fine
 
-                    print("mm_dmx_value", mm_dmx_value_final, mode_from, mode_to)
+                    DMX_Log.log.debug(("mm_dmx_value", mm_dmx_value_final, mode_from, mode_to))
                     if mode_from <= mm_dmx_value_final <= mode_to:
-                        print("return the mm function", ch_f.name_)
+                        DMX_Log.log.debug(("return the mm function", ch_f.name_))
                         attribute = ch_f.id
                         physical_value = ch_f.dmx_to_physical(dmx_value) # calculate physical value for this dmx value
                         return attribute, physical_value
                 else:
-                    print("return the single function", ch_f.name_)
+                    DMX_Log.log.debug(("return the single function", ch_f.name_))
                     attribute = ch_f.id
                     physical_value = ch_f.dmx_to_physical(dmx_value) # calculate physical value for this dmx value
                     return attribute, physical_value
@@ -753,7 +753,6 @@ class DMX_Fixture(PropertyGroup):
             new_channel = channels.add()
             new_channel.attribute = dmx_channel.attribute.str_link
             new_channel.name_ = dmx_channel.name
-            print("set channel name", dmx_channel.name, new_channel.name_)
             new_channel.geometry = dmx_channel.geometry
             new_channel.dmx_break = dmx_channel.dmx_break
             if dmx_channel.offset is not None:
@@ -782,18 +781,11 @@ class DMX_Fixture(PropertyGroup):
                     new_channel_function = new_channel.channel_functions.add()
                     new_channel_function.id = channel_function.attribute.str_link
                     new_channel_function.name_ = channel_function.name
-                    print("set channel name", dmx_channel.name, new_channel.name_)
 
                     mode_master = channel_function.mode_master.str_link
                     new_channel_function.mode_master = (
                         mode_master if mode_master is not None else ""
                     )
-                    print(
-                        "set mode master?",
-                        mode_master,
-                        new_channel_function.mode_master,
-                    )
-
                     new_channel_function.mode_from = channel_function.mode_from.value
                     new_channel_function.mode_to = channel_function.mode_to.value
 
@@ -820,17 +812,9 @@ class DMX_Fixture(PropertyGroup):
         for dmx_channel in channels:
             for ch_function in dmx_channel.channel_functions:
                 if ch_function.mode_master != "":
-                    print("search for master", ch_function.mode_master)
                     for ch in channels:
                         # we might have to search in both dmx and virtual
-                        # print("channel name", ch.name_)
                         if ch.name_ == ch_function.mode_master:
-                            print(
-                                "linking mm channel",
-                                ch.name_,
-                                ch.offsets,
-                                ch.offsets_bytes,
-                            )
                             ch_function.mm_dmx_break = ch.dmx_break
                             ch_function.mm_offsets = ch.offsets
                             ch_function.mm_offsets_bytes = ch.offsets_bytes
@@ -982,20 +966,21 @@ class DMX_Fixture(PropertyGroup):
             if geometry not in tilt_cont_rotating_geometries.keys():
                 tilt_cont_rotating_geometries[geometry] = [None]
 
-            print("virtual", vchannel.attribute)
+            DMX_Log.log.debug(("virtual", vchannel.attribute))
             if vchannel.attribute in data_virtual:
-                print("search virtual")
                 dmx_value_virtual = data_virtual[vchannel.attribute]["value"]
-                print("data virtual", dmx_value_virtual)
+                DMX_Log.log.debug(("data virtual", dmx_value_virtual))
                 channel_function_attribute, channel_function_physical_value = (
                     vchannel.get_function_attribute_data(
                         dmx_value_virtual, None, skip_mode_master=True
                     )
                 )
-                print(
-                    "virtual result",
-                    channel_function_attribute,
-                    channel_function_physical_value,
+                DMX_Log.log.debug(
+                    (
+                        "virtual result",
+                        channel_function_attribute,
+                        channel_function_physical_value,
+                    )
                 )
 
                 if vchannel.attribute == "Shutter1":
@@ -1119,17 +1104,19 @@ class DMX_Fixture(PropertyGroup):
                 dmx_value_fine = dmx_data[channel.dmx_break][channel.offsets[1]]
                 dmx_value_final = (dmx_value_coarse << 8) | dmx_value_fine
 
-            print(
-                "start function search",
-                channel.name_,
-                channel.offsets,
-                channel.offsets_bytes,
+            DMX_Log.log.debug(
+                (
+                    "start function search",
+                    channel.name_,
+                    channel.offsets,
+                    channel.offsets_bytes,
+                )
             )
 
             channel_function_attribute, channel_function_physical_value = (
                 channel.get_function_attribute_data(dmx_value_final, dmx_data)
             )
-            DMX_Log.log.error(
+            DMX_Log.log.debug(
                 (
                     "channel function",
                     channel_function_attribute,
@@ -1353,9 +1340,11 @@ class DMX_Fixture(PropertyGroup):
 
         else:  # no Target
             for geometry, pan_vals in pan_rotating_geometries.items():
+                self.set_pan_tilt_no_rotation(geometry=geometry, axis="pan")
                 pan = math.radians(pan_vals[0])
                 self.updatePTDirectly(geometry, "pan", pan, current_frame)
             for geometry, tilt_vals in tilt_rotating_geometries.items():
+                self.set_pan_tilt_no_rotation(geometry=geometry, axis="tilt")
                 tilt = math.radians(tilt_vals[0])
                 self.updatePTDirectly(geometry, "tilt", tilt, current_frame)
 
@@ -1434,6 +1423,22 @@ class DMX_Fixture(PropertyGroup):
         if current_frame:
             self.dmx_cache_dirty = False
         # end of render block
+
+    def set_pan_tilt_no_rotation(self, geometry, axis):
+        if axis == "pan":
+            mobile_type = "yoke"
+            offset = 2
+
+        else:  # tilt
+            mobile_type = "head"
+            offset = 0
+
+        if geometry is None:
+            geometry = self.get_mobile_type(mobile_type)
+        else:
+            geometry = self.get_object_by_geometry_name(geometry)
+        if geometry:
+            geometry.driver_remove("rotation_euler", offset)
 
     def set_pan_tilt_rotation(self, geometry, axis, rotation, current_frame):
         if axis == "pan":

@@ -218,7 +218,7 @@ class DMX_OT_Programmer_Clear(Operator):
         scene.dmx.programmer_pan_rotate = 128
         scene.dmx.programmer_tilt = 0.0
         scene.dmx.programmer_tilt_rotate = 128
-        scene.dmx.programmer_zoom = 25
+        scene.dmx.programmer_zoom = 128
         scene.dmx.programmer_color_wheel = 0
         scene.dmx.programmer_color_temperature = 0
         scene.dmx.programmer_iris = 0
