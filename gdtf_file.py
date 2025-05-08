@@ -98,7 +98,7 @@ class DMX_GDTF_File:
                 revisions = fixture_type.revisions.sorted()
                 revision = ""
                 if revisions:
-                    revision = revisions[-1].text
+                    revision = revisions[0].text
                 data = {
                     "name": f"{fixture_type.name}",
                     "short_name": fixture_type.short_name,
