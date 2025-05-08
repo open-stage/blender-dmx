@@ -526,15 +526,17 @@ class DMX_Fixture(PropertyGroup):
                     has_gobos = True
                     break
 
-        for dmx_break in dmx_breaks:
+        for idx, dmx_break in enumerate(dmx_breaks, start=1):
+            # we should perhaps rather do it differently and go through
+            # fixture's dmx_breaks and assign the provided breaks to it
             new_break = self.dmx_breaks.add()
             new_break.dmx_break = dmx_break.dmx_break
+            new_break.dmx_break = idx
             new_break.universe = dmx_break.universe
             new_break.address = dmx_break.address
 
-            for mode_break in dmx_mode.dmx_breaks:
-                if dmx_break.dmx_break == mode_break.dmx_break:
-                    new_break.channels_count = mode_break.channels_count
+            if len(dmx_mode.dmx_breaks) >= idx - 1:
+                new_break.channels_count = dmx_mode.dmx_breaks[idx - 1].channels_count
 
         if not self.dmx_breaks:
             new_break = self.dmx_breaks.add()
