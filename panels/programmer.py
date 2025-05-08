@@ -218,13 +218,15 @@ class DMX_OT_Programmer_Clear(Operator):
         scene.dmx.programmer_pan_rotate = 128
         scene.dmx.programmer_tilt = 0.0
         scene.dmx.programmer_tilt_rotate = 128
-        scene.dmx.programmer_zoom = 25
+        scene.dmx.programmer_zoom = 128
         scene.dmx.programmer_color_wheel = 0
         scene.dmx.programmer_color_temperature = 0
         scene.dmx.programmer_iris = 0
         scene.dmx.programmer_gobo1 = 0
         scene.dmx.programmer_gobo_index1 = 63
         scene.dmx.programmer_shutter = 0
+        scene.dmx.programmer_pan_mode = 0
+        scene.dmx.programmer_tilt_mode = 0
 
         return {"FINISHED"}
 
@@ -709,6 +711,17 @@ class DMX_PT_Programmer(Panel):
                 box.prop(
                     scene.dmx, "programmer_shutter", text=_("Strobe"), translate=False
                 )
+            if selected_fixtures[0].has_attributes(["PanMode"]):
+                box.prop(
+                    scene.dmx, "programmer_pan_mode", text=_("PanMode"), translate=False
+                )
+            if selected_fixtures[0].has_attributes(["TiltMode"]):
+                box.prop(
+                    scene.dmx,
+                    "programmer_tilt_mode",
+                    text=_("TiltMode"),
+                    translate=False,
+                )
         else:
             box.template_color_picker(scene.dmx, "programmer_color", value_slider=True)
             row = box.row()
@@ -826,6 +839,13 @@ class DMX_PT_Programmer(Panel):
             )
             box.prop(scene.dmx, "programmer_shutter", text=_("Strobe"), translate=False)
 
+            box.prop(
+                scene.dmx, "programmer_pan_mode", text=_("PanMode"), translate=False
+            )
+
+            box.prop(
+                scene.dmx, "programmer_tilt_mode", text=_("TiltMode"), translate=False
+            )
         box.enabled = selected
 
         dmx = context.scene.dmx
