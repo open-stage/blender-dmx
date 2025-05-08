@@ -1241,8 +1241,8 @@ class DMX_Fixture(PropertyGroup):
                 ctc = channel_function_physical_value, dmx_value_coarse
             elif channel_function_attribute == "CTB":
                 ctc = channel_function_physical_value, dmx_value_coarse
-            elif channel.attribute == "Iris":
-                iris = dmx_data[channel.dmx_break][channel.offsets[0]]
+            elif channel_function_attribute == "Iris":
+                iris = channel_function_physical_value
             elif channel.attribute == "ColorMacro1":
                 color1 = dmx_data[channel.dmx_break][channel.offsets[0]]
             elif channel.attribute == "Gobo1":
@@ -1388,7 +1388,7 @@ class DMX_Fixture(PropertyGroup):
 
         if iris is not None:
             if 0 <= iris <= 255:
-                iris = iris * 12 / 255
+                iris = 12 - (iris * 12)
                 self.update_iris(iris, current_frame)
 
         for geometry, xyz in xyz_moving_geometries.items():
@@ -1461,7 +1461,9 @@ class DMX_Fixture(PropertyGroup):
                 if rotation != 0:
                     driver = geometry.driver_add("rotation_euler", offset)
                     value = rotation
-                    driver.driver.expression = f"frame*{value * 0.005}"
+                    driver.driver.expression = (
+                        f"{value} * (frame / {bpy.context.scene.render.fps})"
+                    )
 
             if current_frame and self.dmx_cache_dirty:
                 geometry.keyframe_insert(data_path="location", frame=current_frame)
