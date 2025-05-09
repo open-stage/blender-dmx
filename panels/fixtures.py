@@ -290,6 +290,14 @@ class DMX_Fixture_AddEdit:
                     )
                 col.prop(dmx_break, "universe")
                 col.prop(dmx_break, "address")
+        else:
+            for dmx_break in self.dmx_breaks:
+                if len(self.dmx_breaks) > 1:
+                    col.label(
+                        text=f"DMX Break: {dmx_break.dmx_break}, {dmx_break.channels_count}ch:"
+                    )
+                col.prop(dmx_break, "universe")
+                col.prop(dmx_break, "address")
 
         col.prop(self, "fixture_id")
         if self.units == 0:  # Edit fixtures:
@@ -482,27 +490,21 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                         uuid=fixture.uuid,
                         fixture_id=fixture_id,
                     )
-                for dmx_break in dmx_breaks:
-                    if dmx_break.address + dmx_break.channels_count > 512:
-                        dmx_break.universe += 1
-                        dmx_break.address = 1
-                        dmx.ensureUniverseExists(dmx_break.universe)
 
-                    fixture.dmx_breaks.clear()
-                    for dmx_break in dmx_breaks:
-                        new_break = fixture.dmx_breaks.add()
-                        new_break.dmx_break = dmx_break.dmx_break
-                        new_break.universe = dmx_break.universe
-                        new_break.address = dmx_break.address
-                        new_break.channels_count = dmx_break.channels_count
+                if not fixture.dmx_breaks:
+                    new_break = fixture.dmx_breaks.add()
+                    new_break.dmx_break = 1
+                    new_break.universe = 0
+                    new_break.address = 1
+                    new_break.channels_count = 0
+                    dmx.ensureUniverseExists(0)
 
-                    if not fixture.dmx_breaks:
-                        new_break = fixture.dmx_breaks.add()
-                        new_break.dmx_break = 0
-                        new_break.universe = 0
-                        new_break.address = 0
-                        new_break.channels_count = 0
-                        dmx.ensureUniverseExists(0)
+                for fixture_break, edit_break in zip(
+                    fixture.dmx_breaks, self.dmx_breaks
+                ):
+                    if edit_break:
+                        fixture_break.universe = edit_break.universe
+                        fixture_break.address = edit_break.address
 
                 fixture.fixture_id = fixture_id
 
@@ -557,12 +559,13 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
         else:
             self.name = "*"
             self.profile = ""
+            self.dmx_breaks.clear()
             for selected_dmx_break in selected[0].dmx_breaks:
-                for my_break in self.dmx_breaks:
-                    if my_break.dmx_break == selected_dmx_break.dmx_break:
-                        my_break.universe = 0
-                        my_break.address = selected_dmx_break.address
-                        my_break.channels_count = selected_dmx_break.channels_count
+                new_break = self.dmx_breaks.add()
+                new_break.universe = selected_dmx_break.universe
+                new_break.address = selected_dmx_break.address
+                new_break.channels_count = selected_dmx_break.channels_count
+
             self.mode = ""
             self.gel_color = (1, 1, 1, 1)
             self.units = 0
