@@ -102,7 +102,7 @@ class DMX_GDTF_File:
                 data = {
                     "name": f"{fixture_type.name}",
                     "short_name": fixture_type.short_name,
-                    "manufacturer_name": f"{fixture_type.manufacturer}",
+                    "manufacturer_name": f"{fixture_type.manufacturer or 'No manufacturer'}",
                     "filename": file_name,
                     "modes": modes,
                     "revision": revision,
