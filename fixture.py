@@ -118,14 +118,20 @@ class DMX_IES_Data(PropertyGroup):
         name = "Spot > IES",
         type = Text)
 
+# fmt: on
 class DMX_Fixture_Channel_Function(PropertyGroup):
-
     def dmx_to_physical(self, dmx_value):
         # test if this works or if we need physical_min, physical_max
 
-        if ((self.dmx_from  - self.dmx_to) + self.physical_from) == 0:
-            return (self.dmx_from - self.dmx_from) * (self.physical_to - self.physical_from )
-        return (dmx_value - self.dmx_from) * (self.physical_to - self.physical_from) / (self.dmx_to - self.dmx_from) + self.physical_from
+        if ((self.dmx_from - self.dmx_to) + self.physical_from) == 0:
+            return (self.dmx_from - self.dmx_from) * (
+                self.physical_to - self.physical_from
+            )
+        return (dmx_value - self.dmx_from) * (self.physical_to - self.physical_from) / (
+            self.dmx_to - self.dmx_from
+        ) + self.physical_from
+
+    # fmt: off
 
     id: StringProperty(
         name = "Attribute",
@@ -165,36 +171,57 @@ class DMX_Fixture_Channel_Function(PropertyGroup):
         name = "ModeMaster Bytes",
         default = 1)
 
-class DMX_Fixture_Channel(PropertyGroup):
 
-    def get_function_attribute_data(self, dmx_value, dmx_data, skip_mode_master = False):
+# fmt: on
+class DMX_Fixture_Channel(PropertyGroup):
+    def get_function_attribute_data(self, dmx_value, dmx_data, skip_mode_master=False):
         for ch_f in self.channel_functions:
+            if len(self.channel_functions) == 1:
+                attribute = ch_f.id
+                physical_value = ch_f.dmx_to_physical(
+                    dmx_value
+                )  # calculate physical value for this dmx value
+                return attribute, physical_value
             # get a function which contains dmx from/to encapsulating our current dmx value
             if ch_f.dmx_from <= dmx_value <= ch_f.dmx_to:
                 DMX_Log.log.debug(("have the function", ch_f.name_))
                 if ch_f.mode_master != "" and skip_mode_master is False:
                     mode_from = ch_f.mode_from
                     mode_to = ch_f.mode_to
-                    mm_dmx_value_coarse = dmx_data[ch_f.mm_dmx_break][ch_f.mm_offsets[0]]
-                    mm_dmx_value_fine = None
-                    mm_dmx_value_final = mm_dmx_value_coarse
-                    if ch_f.mm_offsets_bytes > 1:
-                        mm_dmx_value_fine = dmx_data[ch_f.mm_dmx_break][ch_f.mm_offsets[1]]
-                        mm_dmx_value_final = (mm_dmx_value_coarse << 8) | mm_dmx_value_fine
+                    mm_dmx_value_coarse = dmx_data[ch_f.mm_dmx_break].get(
+                        ch_f.mm_offsets[0], None
+                    )
+                    if mm_dmx_value_coarse is not None:
+                        mm_dmx_value_fine = None
+                        mm_dmx_value_final = mm_dmx_value_coarse
+                        if ch_f.mm_offsets_bytes > 1:
+                            mm_dmx_value_fine = dmx_data[ch_f.mm_dmx_break][
+                                ch_f.mm_offsets[1]
+                            ]
+                            mm_dmx_value_final = (
+                                mm_dmx_value_coarse << 8
+                            ) | mm_dmx_value_fine
 
-                    DMX_Log.log.debug(("mm_dmx_value", mm_dmx_value_final, mode_from, mode_to))
-                    if mode_from <= mm_dmx_value_final <= mode_to:
-                        DMX_Log.log.debug(("return the mm function", ch_f.name_))
-                        attribute = ch_f.id
-                        physical_value = ch_f.dmx_to_physical(dmx_value) # calculate physical value for this dmx value
-                        return attribute, physical_value
+                        DMX_Log.log.debug(
+                            ("mm_dmx_value", mm_dmx_value_final, mode_from, mode_to)
+                        )
+                        if mode_from <= mm_dmx_value_final <= mode_to:
+                            DMX_Log.log.debug(("return the mm function", ch_f.name_))
+                            attribute = ch_f.id
+                            physical_value = ch_f.dmx_to_physical(
+                                dmx_value
+                            )  # calculate physical value for this dmx value
+                            return attribute, physical_value
                 else:
-                    DMX_Log.log.debug(("return the single function", ch_f.name_))
+                    DMX_Log.log.debug(("no mm, return", ch_f.name_))
                     attribute = ch_f.id
-                    physical_value = ch_f.dmx_to_physical(dmx_value) # calculate physical value for this dmx value
+                    physical_value = ch_f.dmx_to_physical(
+                        dmx_value
+                    )  # calculate physical value for this dmx value
                     return attribute, physical_value
         return None, None
 
+    # fmt: off
     attribute: StringProperty(
         name = "Attribute",
         default = '')
@@ -226,40 +253,37 @@ class DMX_Fixture_Channel(PropertyGroup):
     )
 
 
-
-
 class DMX_Break(PropertyGroup):
     def ensure_universe_exists(self, context):
         dmx = bpy.context.scene.dmx
         dmx.ensureUniverseExists(self.universe)
 
-    dmx_break : IntProperty(
-        name = "DMX Break",
+    dmx_break: IntProperty(
+        name="DMX Break",
         description="DMX entry point",
-        default = 0,
-        min = 0,
-        max = 511,
-        )
-    universe : IntProperty(
-        name = "Fixture > Universe",
+        default=0,
+        min=0,
+        max=511,
+    )
+    universe: IntProperty(
+        name="Fixture > Universe",
         description="Fixture DMX Universe",
-        default = 0,
-        min = 0,
-        max = 511,
-        update = ensure_universe_exists
-        )
+        default=0,
+        min=0,
+        max=511,
+        update=ensure_universe_exists,
+    )
 
-    address : IntProperty(
-        name = "Fixture > Address",
-        description="Fixture DMX Address",
-        default = 1,
-        min = 1) # no max for now
+    address: IntProperty(
+        name="Fixture > Address", description="Fixture DMX Address", default=1, min=1
+    )  # no max for now
 
-    channels_count : IntProperty(
-        name = "Number of channels",
+    channels_count: IntProperty(
+        name="Number of channels",
         description="Number of DMX channels",
-        default = 0,
-        min = 0) # no max for now
+        default=0,
+        min=0,
+    )  # no max for now
 
 
 # fmt: on
@@ -510,7 +534,7 @@ class DMX_Fixture(PropertyGroup):
         dmx_mode = gdtf_profile.dmx_modes.get_mode_by_name(mode)
 
         if dmx_mode is None:
-            dmx_mode = profile.dmx_modes[0]
+            dmx_mode = gdtf_profile.dmx_modes[0]
             mode = dmx_mode.name
 
         has_gobos = False
@@ -1102,7 +1126,29 @@ class DMX_Fixture(PropertyGroup):
             if geometry not in tilt_cont_rotating_geometries.keys():
                 tilt_cont_rotating_geometries[geometry] = [None]
 
-            dmx_value_coarse = dmx_data[channel.dmx_break][channel.offsets[0]]
+            if not channel.offsets:
+                # if channel has no address, we cannot continue
+                DMX_Log.log.error(
+                    (
+                        "No offsets in channel, skipping",
+                        channel.attribute,
+                        channel.offsets_bytes,
+                    )
+                )
+                continue
+
+            dmx_value_coarse = dmx_data[channel.dmx_break].get(channel.offsets[0], None)
+            if dmx_value_coarse is None:
+                DMX_Log.log.error(
+                    (
+                        "Address offset not in dmx data, skipping",
+                        channel.attribute,
+                        channel.dmx_break,
+                        channel.offsets[0],
+                    )
+                )
+                continue
+
             dmx_value_fine = None
             dmx_value_final = dmx_value_coarse
             if channel.offsets_bytes > 1:
