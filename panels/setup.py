@@ -310,6 +310,8 @@ class DMX_PT_Setup_Viewport(Panel):
         row.prop(dmx, "display_pigtails")
         row = layout.row()
         row.prop(dmx, "select_geometries")
+        row = layout.row()
+        row.prop(dmx, "use_fixtures_channel_functions")
 
 
 class DMX_PT_Setup_Extras(Panel):

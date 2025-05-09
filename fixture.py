@@ -133,7 +133,7 @@ class DMX_Fixture_Channel_Function(PropertyGroup):
 
     # fmt: off
 
-    id: StringProperty(
+    attribute: StringProperty(
         name = "Attribute",
         default = '')
     dmx_from: IntProperty(
@@ -177,7 +177,7 @@ class DMX_Fixture_Channel(PropertyGroup):
     def get_function_attribute_data(self, dmx_value, dmx_data, skip_mode_master=False):
         for ch_f in self.channel_functions:
             if len(self.channel_functions) == 1:
-                attribute = ch_f.id
+                attribute = ch_f.attribute
                 physical_value = ch_f.dmx_to_physical(
                     dmx_value
                 )  # calculate physical value for this dmx value
@@ -207,14 +207,14 @@ class DMX_Fixture_Channel(PropertyGroup):
                         )
                         if mode_from <= mm_dmx_value_final <= mode_to:
                             DMX_Log.log.debug(("return the mm function", ch_f.name_))
-                            attribute = ch_f.id
+                            attribute = ch_f.attribute
                             physical_value = ch_f.dmx_to_physical(
                                 dmx_value
                             )  # calculate physical value for this dmx value
                             return attribute, physical_value
                 else:
                     DMX_Log.log.debug(("no mm, return", ch_f.name_))
-                    attribute = ch_f.id
+                    attribute = ch_f.attribute
                     physical_value = ch_f.dmx_to_physical(
                         dmx_value
                     )  # calculate physical value for this dmx value
@@ -808,7 +808,7 @@ class DMX_Fixture(PropertyGroup):
             for logical_channel in dmx_channel.logical_channels:
                 for channel_function in logical_channel.channel_functions:
                     new_channel_function = new_channel.channel_functions.add()
-                    new_channel_function.id = channel_function.attribute.str_link
+                    new_channel_function.attribute = channel_function.attribute.str_link
                     new_channel_function.name_ = channel_function.name
 
                     mode_master = channel_function.mode_master.str_link
@@ -946,6 +946,7 @@ class DMX_Fixture(PropertyGroup):
 
         DMX_Log.log.debug(f"{current_frame=}, {self.dmx_cache_dirty=}")
 
+        dmx = bpy.context.scene.dmx
         self["dmx_values"] = cached_dmx_data
         panTilt = [None, None]
         cmy = [None, None, None]
@@ -999,11 +1000,25 @@ class DMX_Fixture(PropertyGroup):
             if vchannel.attribute in data_virtual:
                 dmx_value_virtual = data_virtual[vchannel.attribute]["value"]
                 DMX_Log.log.debug(("data virtual", dmx_value_virtual))
-                channel_function_attribute, channel_function_physical_value = (
-                    vchannel.get_function_attribute_data(
-                        dmx_value_virtual, None, skip_mode_master=True
+                channel_function_attribute = None
+
+                if not dmx.use_fixtures_channel_functions:
+                    channel_function = dmx.get_default_channel_function_by_attribute(
+                        vchannel.attribute
                     )
-                )
+                    if channel_function:
+                        channel_function_attribute = channel_function.attribute
+                        channel_function_physical_value = (
+                            channel_function.dmx_to_physical(dmx_value_virtual)
+                        )
+
+                if channel_function_attribute is None:
+                    channel_function_attribute, channel_function_physical_value = (
+                        vchannel.get_function_attribute_data(
+                            dmx_value_virtual, None, skip_mode_master=True
+                        )
+                    )
+
                 DMX_Log.log.debug(
                     (
                         "virtual result",
@@ -1164,9 +1179,22 @@ class DMX_Fixture(PropertyGroup):
                 )
             )
 
-            channel_function_attribute, channel_function_physical_value = (
-                channel.get_function_attribute_data(dmx_value_final, dmx_data)
-            )
+            channel_function_attribute = None
+
+            if not dmx.use_fixtures_channel_functions:
+                channel_function = dmx.get_default_channel_function_by_attribute(
+                    channel.attribute
+                )
+                if channel_function:
+                    channel_function_attribute = channel_function.attribute
+                    channel_function_physical_value = channel_function.dmx_to_physical(
+                        dmx_value_coarse
+                    )
+
+            if channel_function_attribute is None:
+                channel_function_attribute, channel_function_physical_value = (
+                    channel.get_function_attribute_data(dmx_value_final, dmx_data)
+                )
             DMX_Log.log.debug(
                 (
                     "channel function",

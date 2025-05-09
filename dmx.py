@@ -472,6 +472,22 @@ class DMX(PropertyGroup):
     fixture_properties_editable: BoolProperty(
         name = _("Editable"),
         default = False)
+
+    default_channel_functions: CollectionProperty(
+        name = "Fixture > Channels > Channel Functions",
+        type = fixture.DMX_Fixture_Channel_Function
+    )
+
+    def get_default_channel_function_by_attribute(self, attribute):
+        for ch_function in self.default_channel_functions:
+            if attribute == ch_function.attribute:
+                return ch_function
+
+    use_fixtures_channel_functions: BoolProperty(
+        name = _("Use Fixtures Physical Properties"),
+        description = _("Use Channel Functions of each fixture"),
+        default = True)
+
     # fmt: on
 
     # New DMX Scene
@@ -535,6 +551,7 @@ class DMX(PropertyGroup):
         # Create a DMX universe
         self.addUniverse()
         self.generate_project_uuid()
+        self.generate_default_channel_functions()
 
         # Link addon to file
         self.linkFile()
@@ -2370,6 +2387,28 @@ class DMX(PropertyGroup):
 
     def generate_project_uuid(self):
         self.project_application_uuid = str(py_uuid.uuid4())
+
+    def generate_default_channel_functions(self):
+        self.default_channel_functions.clear()
+        defaults = [
+            ["Zoom", 0, 120],
+            ["Pan", -270, 270],
+            ["Tilt", -135, 135],
+            ["PanRotate", -500, 500],
+            ["TiltRotate", -500, 500],
+            ["CTC", 2700, 12000],
+            ["CTB", 2700, 12000],
+            ["CT0", 2700, 12000],
+            ["Iris", 0, 1],
+        ]
+        for default in defaults:
+            new_function = self.default_channel_functions.add()
+            new_function.attribute = default[0]
+            new_function.name_ = f"{default[0]} 1"
+            new_function.dmx_from = 0
+            new_function.dmx_to = 255
+            new_function.physical_from = default[1]
+            new_function.physical_to = default[2]
 
     # # Render
 
