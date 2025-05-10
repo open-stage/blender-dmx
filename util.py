@@ -97,79 +97,65 @@ def xyY2rgbaa(xyY):
     x = xyY.x
     y = xyY.y
     Y = xyY.Y
+    if y == 0:
+        return (0, 0, 0)
 
-    if not x or not y or not Y:
-        return (0, 0, 0, 0)
+    # xyY → XYZ
+    X = (x * Y) / y
+    Z = ((1 - x - y) * Y) / y
 
-    # convert to XYZ
+    # XYZ → Linear RGB
+    R_lin = 3.2406 * X - 1.5372 * Y - 0.4986 * Z
+    G_lin = -0.9689 * X + 1.8758 * Y + 0.0415 * Z
+    B_lin = 0.0557 * X - 0.2040 * Y + 1.0570 * Z
 
-    X = x * (Y / y)
-    Z = (1 - x - y) * (Y / y)
+    # Gamma correction
+    def gamma_correct(c):
+        a = 0.055
+        if c <= 0.0031308:
+            return 12.92 * c
+        else:
+            return (1 + a) * (c ** (1 / 2.4)) - a
 
-    var_X = X / 100
-    var_Y = Y / 100
-    var_Z = Z / 100
+    # Clamp and convert to 0–255
+    def to_255(c):
+        c = gamma_correct(c)
+        c = max(0.0, min(1.0, c))
+        return round(c * 255)
 
-    # XYZ to RGB
-    var_R = var_X * 3.2406 + var_Y * -1.5372 + var_Z * -0.4986
-    var_G = var_X * -0.9689 + var_Y * 1.8758 + var_Z * 0.0415
-    var_B = var_X * 0.0557 + var_Y * -0.204 + var_Z * 1.057
-
-    if var_R > 0.0031308:
-        var_R = 1.055 * math.pow(var_R, 1 / 2.4) - 0.055
-    else:
-        var_R = 12.92 * var_R
-
-    if var_G > 0.0031308:
-        var_G = 1.055 * math.pow(var_G, 1 / 2.4) - 0.055
-    else:
-        var_G = 12.92 * var_G
-
-    if var_B > 0.0031308:
-        var_B = 1.055 * math.pow(var_B, 1 / 2.4) - 0.055
-    else:
-        var_B = 12.92 * var_B
-
-    return (int(var_R * 100), int(var_G * 100), int(var_B * 100), 0)
+    return (to_255(R_lin), to_255(G_lin), to_255(B_lin), 1)
 
 
-def rgb2xyY(sR, sG, sB):
-    # Convert RGB values to the 0-1 range
-    var_R = sR / 255
-    var_G = sG / 255
-    var_B = sB / 255
+def rgb2xyY(R, G, B):
+    # Normalize RGB values to the range [0, 1]
+    R /= 255.0
+    G /= 255.0
+    B /= 255.0
 
-    # Apply the gamma correction
-    if var_R > 0.04045:
-        var_R = ((var_R + 0.055) / 1.055) ** 2.4
-    else:
-        var_R = var_R / 12.92
+    # Apply the inverse gamma correction (assuming sRGB)
+    def inverse_gamma_correction(c):
+        if c <= 0.04045:
+            return c / 12.92
+        else:
+            return ((c + 0.055) / 1.055) ** 2.4
 
-    if var_G > 0.04045:
-        var_G = ((var_G + 0.055) / 1.055) ** 2.4
-    else:
-        var_G = var_G / 12.92
+    R = inverse_gamma_correction(R)
+    G = inverse_gamma_correction(G)
+    B = inverse_gamma_correction(B)
 
-    if var_B > 0.04045:
-        var_B = ((var_B + 0.055) / 1.055) ** 2.4
-    else:
-        var_B = var_B / 12.92
+    # Convert RGB to XYZ using the sRGB conversion matrix
+    X = (R * 0.4124564) + (G * 0.3575761) + (B * 0.1804375)
+    Y = (R * 0.2126729) + (G * 0.7151522) + (B * 0.0721750)
+    Z = (R * 0.0193339) + (G * 0.1191920) + (B * 0.9503041)
 
-    # Convert to the 0-100 range
-    var_R = var_R * 100
-    var_G = var_G * 100
-    var_B = var_B * 100
+    # Convert XYZ to xyY
+    if Y == 0:  # Avoid division by zero
+        return (0, 0, 0)  # If Y is 0, return (0, 0, 0)
 
-    # Convert to XYZ color space
-    X = var_R * 0.4124 + var_G * 0.3576 + var_B * 0.1805
-    Y = var_R * 0.2126 + var_G * 0.7152 + var_B * 0.0722
-    Z = var_R * 0.0193 + var_G * 0.1192 + var_B * 0.9505
-
-    # convert to xyY
-    Y = Y
     x = X / (X + Y + Z)
     y = Y / (X + Y + Z)
-    return x, y, Y
+
+    return (x, y, Y)
 
 
 def xyY2rgba(xyz):

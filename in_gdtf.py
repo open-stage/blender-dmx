@@ -221,9 +221,9 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
 
                     if not self.dmx_breaks:
                         new_break = self.dmx_breaks.add()
-                        new_break.dmx_break = 0
-                        new_break.universe = 0
-                        new_break.address = 0
+                        new_break.dmx_break = 1
+                        new_break.universe = universe
+                        new_break.address = address
                         new_break.channels_count = 0
 
                     for count in range(1, 1 + self.units):
@@ -232,8 +232,8 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
                         dmx.addFixture(
                             new_name,
                             file.name,
-                            self.dmx_breaks,
                             dmx_mode.name,
+                            self.dmx_breaks,
                             self.gel_color,
                             self.display_beams,
                             self.add_target,

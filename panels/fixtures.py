@@ -21,6 +21,7 @@ import bpy
 from bpy.props import BoolProperty, FloatVectorProperty, IntProperty, StringProperty
 from bpy.types import Menu, Operator, Panel, UIList
 from bpy_extras.io_utils import ImportHelper
+from itertools import zip_longest
 
 from ..fixture import DMX_Break
 from ..gdtf_file import DMX_GDTF_File
@@ -357,8 +358,8 @@ class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
             dmx.addFixture(
                 new_name,
                 self.profile,
-                dmx_breaks,
                 self.mode,
+                dmx_breaks,
                 self.gel_color,
                 self.display_beams,
                 self.add_target,
@@ -414,23 +415,6 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                 )
                 return {"CANCELLED"}
 
-            fixture.dmx_breaks.clear()
-            for dmx_break in self.dmx_breaks:
-                new_break = fixture.dmx_breaks.add()
-                new_break.dmx_break = dmx_break.dmx_break
-                new_break.universe = dmx_break.universe
-                new_break.address = dmx_break.address
-                new_break.channels_count = dmx_break.channels_count
-                dmx.ensureUniverseExists(dmx_break.universe)
-
-            if not fixture.dmx_breaks:
-                new_break = fixture.dmx_breaks.add()
-                new_break.dmx_break = 0
-                new_break.universe = 0
-                new_break.address = 0
-                new_break.channels_count = 0
-                dmx.ensureUniverseExists(0)
-
             if self.advanced_edit:
                 fixture.build(
                     self.name,
@@ -445,14 +429,18 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                 )
                 context.window_manager.dmx.pause_render = False
             else:
-                fixture.dmx_breaks.clear()
-                for dmx_break in self.dmx_breaks:
-                    new_break = fixture.dmx_breaks.add()
-                    new_break.dmx_break = dmx_break.dmx_break
-                    new_break.universe = dmx_break.universe
-                    new_break.address = dmx_break.address
-                    new_break.channels_count = dmx_break.channels_count
-                    dmx.ensureUniverseExists(dmx_break.universe)
+                for mode_dmx_break, provided_dmx_break in zip_longest(
+                    fixture.dmx_breaks, self.dmx_breaks
+                ):
+                    if mode_dmx_break is None:
+                        continue
+                    if provided_dmx_break is None:
+                        provided_dmx_break = SimpleNamespace(
+                            dmx_break=0, address=0, universe=0
+                        )
+                    mode_dmx_break.universe = provided_dmx_break.universe
+                    mode_dmx_break.address = provided_dmx_break.address
+                    dmx.ensureUniverseExists(mode_dmx_break.universe)
 
                 if not fixture.dmx_breaks:
                     new_break = fixture.dmx_breaks.add()
@@ -502,17 +490,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                         fixture_id=fixture_id,
                     )
 
-                if not fixture.dmx_breaks:
-                    new_break = fixture.dmx_breaks.add()
-                    new_break.dmx_break = 1
-                    new_break.universe = 0
-                    new_break.address = 1
-                    new_break.channels_count = 0
-                    dmx.ensureUniverseExists(0)
-
-                for fixture_break, edit_break in zip(
-                    fixture.dmx_breaks, self.dmx_breaks
-                ):
+                for fixture_break, edit_break in zip(fixture.dmx_breaks, dmx_breaks):
                     if edit_break:
                         fixture_break.universe = edit_break.universe
                         fixture_break.address = edit_break.address
@@ -540,7 +518,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
         scene = context.scene
         selected = scene.dmx.selectedFixtures()
 
-        # Single fixture
+        # Single fixture edit
         if len(selected) == 1:
             fixture = selected[0]
             self.name = fixture.name
@@ -568,7 +546,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             self.units = 0
             self.fixture_id = fixture.fixture_id
             self.use_fixtures_channel_functions = fixture.use_fixtures_channel_functions
-        # Multiple fixtures
+        # Multiple fixtures edit
         else:
             self.name = "*"
             self.profile = ""
