@@ -47,6 +47,7 @@ from bpy.types import (
 
 from .data import DMX_Data
 from .gdtf import DMX_GDTF
+from .i18n import DMX_Lang
 from .gdtf_file import DMX_GDTF_File
 from .logging_setup import DMX_Log
 from .material import (
@@ -74,6 +75,7 @@ from .util import (
 STRENGTH = "Strength"
 COLOR = "Color"
 
+_ = DMX_Lang._
 # fmt: off
 
 class DMX_Manufacturer(PropertyGroup):
@@ -439,6 +441,11 @@ class DMX_Fixture(PropertyGroup):
     dmx_breaks:  CollectionProperty(
             name = "DMX Break",
             type = DMX_Break)
+
+    use_fixtures_channel_functions: BoolProperty(
+        name = _("Use Fixtures Physical Properties"),
+        description = _("Use Channel Functions of this fixture"),
+        default = True)
 
     # fmt: on
 
@@ -1002,7 +1009,7 @@ class DMX_Fixture(PropertyGroup):
                 DMX_Log.log.debug(("data virtual", dmx_value_virtual))
                 channel_function_attribute = None
 
-                if not dmx.use_fixtures_channel_functions:
+                if not self.use_fixtures_channel_functions:
                     channel_function = dmx.get_default_channel_function_by_attribute(
                         vchannel.attribute
                     )
@@ -1181,7 +1188,7 @@ class DMX_Fixture(PropertyGroup):
 
             channel_function_attribute = None
 
-            if not dmx.use_fixtures_channel_functions:
+            if not self.use_fixtures_channel_functions:
                 channel_function = dmx.get_default_channel_function_by_attribute(
                     channel.attribute
                 )
