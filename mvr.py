@@ -20,6 +20,7 @@ import os
 import time
 from pathlib import Path
 from types import SimpleNamespace
+import traceback
 
 import bpy
 import pymvr
@@ -330,9 +331,9 @@ def process_mvr_object(
         try:
             symbols += mvr_object.symbol
             geometrys += mvr_object.geometry3d
-        except Exception:
+        except Exception as e:
             # TODO: handle this
-            ...
+            traceback.print_exception(e)
 
     if symdef_id:
         create_mvr_props(
@@ -508,18 +509,20 @@ def add_mvr_fixture(
             universe=address.universe,
         )
         for address in fixture.addresses
+        if address.address > 0
     ]
     if existing_fixture is not None:
         # TODO: we should not rename the fixture on import unless if the user wants it
         # but we must ensure that the name is unique in the collection
         unique_name = create_unique_fixture_name(fixture.name)
-
+        color_rgb = xyY2rgbaa(fixture.color)
+        gel_color = [c / 255 for c in color_rgb] + [1]
         existing_fixture.build(
             unique_name,
             fixture.gdtf_spec,
             fixture.gdtf_mode,
             addresses,
-            xyY2rgbaa(fixture.color),
+            gel_color,
             True,
             add_target,
             mvr_position=fixture.matrix.matrix,
@@ -534,12 +537,14 @@ def add_mvr_fixture(
     else:
         unique_name = f"{fixture.name} {layer_idx}-{fixture_idx}"
         unique_name = create_unique_fixture_name(unique_name)
+        color_rgb = xyY2rgbaa(fixture.color)
+        gel_color = [c / 255 for c in color_rgb] + [1]
         dmx.addFixture(
             unique_name,
             fixture.gdtf_spec,
-            addresses,
             fixture.gdtf_mode,
-            xyY2rgbaa(fixture.color),
+            addresses,
+            gel_color,
             True,
             add_target,
             position=fixture.matrix.matrix,
@@ -670,8 +675,12 @@ def load_mvr(dmx, file_name, import_focus_points):
             create_mvr_props(aux_directory, aux_type)
             layer_collect.children.link(aux_directory)
         for uid, auxcollect in auxData.items():
-            if auxcollect.name not in aux_directory.children:
-                aux_directory.children.link(auxcollect)
+            try:
+                if auxcollect.name not in aux_directory.children:
+                    aux_directory.children.link(auxcollect)
+            except Exception as e:
+                traceback.print_exception(e)
+
             sym_collect = data_collect.get(uid)
             if sym_collect:
                 sym_name = sym_collect.get("MVR Name", "")

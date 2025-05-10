@@ -563,7 +563,7 @@ class DMX_Fixture(PropertyGroup):
             dmx_mode.dmx_breaks, dmx_breaks
         ):
             if mode_dmx_break is None:
-                mode_dmx_break = SimpleNamespace(dmx_break=1, channels_count=0)
+                continue
             if provided_dmx_break is None:
                 provided_dmx_break = SimpleNamespace(dmx_break=0, address=0, universe=0)
             new_break = self.dmx_breaks.add()
