@@ -396,6 +396,15 @@ class DMX_Fixture(PropertyGroup):
         description="Add target for beam to follow",
         default = True)
 
+    def on_use_target(self, context):
+        self.follow_target_constraint_enable(self.use_target)
+
+    use_target: BoolProperty(
+        name = "Use Target",
+        description="Follow the target",
+        update = on_use_target,
+        default = True)
+
     dmx_cache_dirty: BoolProperty(
         name = "DMX cache dirty",
         description="if dmx data has changed but keyframe has not been saved yet",
@@ -1009,22 +1018,20 @@ class DMX_Fixture(PropertyGroup):
                 DMX_Log.log.debug(("data virtual", dmx_value_virtual))
                 channel_function_attribute = None
 
+                channel_function_attribute, channel_function_physical_value = (
+                    vchannel.get_function_attribute_data(
+                        dmx_value_virtual, None, skip_mode_master=True
+                    )
+                )
                 if not self.use_fixtures_channel_functions:
                     channel_function = dmx.get_default_channel_function_by_attribute(
-                        vchannel.attribute
+                        channel_function_attribute
                     )
                     if channel_function:
                         channel_function_attribute = channel_function.attribute
                         channel_function_physical_value = (
                             channel_function.dmx_to_physical(dmx_value_virtual)
                         )
-
-                if channel_function_attribute is None:
-                    channel_function_attribute, channel_function_physical_value = (
-                        vchannel.get_function_attribute_data(
-                            dmx_value_virtual, None, skip_mode_master=True
-                        )
-                    )
 
                 DMX_Log.log.debug(
                     (
@@ -1186,11 +1193,13 @@ class DMX_Fixture(PropertyGroup):
                 )
             )
 
-            channel_function_attribute = None
+            channel_function_attribute, channel_function_physical_value = (
+                channel.get_function_attribute_data(dmx_value_final, dmx_data)
+            )
 
             if not self.use_fixtures_channel_functions:
                 channel_function = dmx.get_default_channel_function_by_attribute(
-                    channel.attribute
+                    channel_function_attribute
                 )
                 if channel_function:
                     channel_function_attribute = channel_function.attribute
@@ -1198,10 +1207,6 @@ class DMX_Fixture(PropertyGroup):
                         dmx_value_coarse
                     )
 
-            if channel_function_attribute is None:
-                channel_function_attribute, channel_function_physical_value = (
-                    channel.get_function_attribute_data(dmx_value_final, dmx_data)
-                )
             DMX_Log.log.debug(
                 (
                     "channel function",
@@ -1407,7 +1412,7 @@ class DMX_Fixture(PropertyGroup):
         if cmy[0] is not None and cmy[1] is not None and cmy[2] is not None:
             self.updateCMY(cmy, colorwheel_color, color_temperature, current_frame)
 
-        if "Target" in self.objects:
+        if "Target" in self.objects and self.use_target:
             if self.ignore_movement_dmx:
                 # programming by target, dmx for p/t locked
                 if "Target" in self.objects:
@@ -1536,6 +1541,10 @@ class DMX_Fixture(PropertyGroup):
             mobile_type = "head"
             offset = 0
             lock_rotation = self.lock_tilt_rotation
+        if self.use_target:
+            # autodisable target tracking as pan/tilt rotate
+            # cannot work with track constraint
+            self.use_target = False
 
         if geometry is None:
             geometry = self.get_mobile_type(mobile_type)
@@ -2522,6 +2531,12 @@ class DMX_Fixture(PropertyGroup):
                     uuid=uuid_,
                     name=f"Target for {self.name}",
                 )
+
+    def follow_target_constraint_enable(self, enabled):
+        for obj in self.collection.objects:
+            for constraint in obj.constraints:
+                if constraint.name == "FollowTarget":
+                    constraint.enabled = enabled
 
     def onDepsgraphUpdate(self):
         # TODO: rename this and hook again somewhere.

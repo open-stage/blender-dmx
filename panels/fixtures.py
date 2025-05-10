@@ -241,6 +241,10 @@ class DMX_Fixture_AddEdit:
         default=True,
     )
 
+    use_target: BoolProperty(
+        name="Use Target", description="Follow the target", default=True
+    )
+
     def draw(self, context):
         layout = self.layout
         col = layout.column()
@@ -315,6 +319,7 @@ class DMX_Fixture_AddEdit:
                 col.operator("dmx.import_ies_file")
                 col.operator("dmx.remove_ies_files")
                 col.prop(self, "use_fixtures_channel_functions")
+                col.prop(self, "use_target")
         else:  # Adding new fixtures:
             col.prop(self, "units")  #     Allow to define how many
         col.prop(self, "increment_address")
@@ -454,11 +459,11 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                 fixture.use_fixtures_channel_functions = (
                     self.use_fixtures_channel_functions
                 )
+                fixture.use_target = self.use_target
         # Multiple fixtures
         else:
             dmx_breaks = self.dmx_breaks
             fixture_id = self.fixture_id
-            use_fixtures_channel_functions = self.use_fixtures_channel_functions
 
             for i, fixture in enumerate(selected):
                 name = generate_fixture_name(self.name, i + 1)
@@ -496,7 +501,10 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                         fixture_break.address = edit_break.address
 
                 fixture.fixture_id = fixture_id
-                fixture.use_fixtures_channel_functions = use_fixtures_channel_functions
+                fixture.use_fixtures_channel_functions = (
+                    self.use_fixtures_channel_functions
+                )
+                fixture.use_target = self.use_target
 
                 if self.increment_fixture_id:
                     if fixture_id.isnumeric():
@@ -546,6 +554,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             self.units = 0
             self.fixture_id = fixture.fixture_id
             self.use_fixtures_channel_functions = fixture.use_fixtures_channel_functions
+            self.use_target = fixture.use_target
         # Multiple fixtures edit
         else:
             self.name = "*"
@@ -567,6 +576,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             self.use_fixtures_channel_functions = selected[
                 0
             ].use_fixtures_channel_functions
+            self.use_target = selected[0].use_target
 
         wm = context.window_manager
         return wm.invoke_props_dialog(self)
