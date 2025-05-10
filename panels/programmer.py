@@ -75,7 +75,86 @@ class DMX_OT_Programmer_Unset_Ignore_Movement(Operator):
         for fixture in dmx.fixtures:
             if fixture in selected:
                 fixture.ignore_movement_dmx = False
-                fixture.ignore_movement_dmx = False
+        return {"FINISHED"}
+
+
+class DMX_OT_Programmer_Set_Track_Target(Operator):
+    bl_label = _("Track Target")
+    bl_idname = "dmx.track_target_true"
+    bl_description = _("Follow the target")
+    bl_options = {"UNDO"}
+
+    def execute(self, context):
+        dmx = context.scene.dmx
+        selected = []
+        for fixture in dmx.fixtures:
+            for obj in fixture.collection.objects:
+                if obj in bpy.context.selected_objects:
+                    selected.append(fixture)
+
+        for fixture in dmx.fixtures:
+            if fixture in selected:
+                fixture.use_target = True
+        return {"FINISHED"}
+
+
+class DMX_OT_Programmer_Unset_Track_Target(Operator):
+    bl_label = _("Do Not Track Target")
+    bl_idname = "dmx.track_target_false"
+    bl_description = _("Do not follow the target")
+    bl_options = {"UNDO"}
+
+    def execute(self, context):
+        dmx = context.scene.dmx
+        selected = []
+        for fixture in dmx.fixtures:
+            for obj in fixture.collection.objects:
+                if obj in bpy.context.selected_objects:
+                    selected.append(fixture)
+
+        for fixture in dmx.fixtures:
+            if fixture in selected:
+                fixture.use_target = False
+        return {"FINISHED"}
+
+
+class DMX_OT_Programmer_Set_Use_Physical(Operator):
+    bl_label = _("Use Fixtures Physical Properties")
+    bl_idname = "dmx.use_channel_functions_true"
+    bl_description = _("Use Fixtures Channel Functions")
+    bl_options = {"UNDO"}
+
+    def execute(self, context):
+        dmx = context.scene.dmx
+        selected = []
+        for fixture in dmx.fixtures:
+            for obj in fixture.collection.objects:
+                if obj in bpy.context.selected_objects:
+                    selected.append(fixture)
+
+        for fixture in dmx.fixtures:
+            if fixture in selected:
+                fixture.use_fixtures_channel_functions = True
+        return {"FINISHED"}
+
+
+class DMX_OT_Programmer_Unset_Use_Physical(Operator):
+    bl_label = _("Do Not Use Fixtures Physical Properties")
+    bl_idname = "dmx.use_channel_functions_false"
+    bl_description = _("Do not use Fixtures Channel Functions")
+    bl_options = {"UNDO"}
+
+    def execute(self, context):
+        dmx = context.scene.dmx
+        selected = []
+        for fixture in dmx.fixtures:
+            for obj in fixture.collection.objects:
+                if obj in bpy.context.selected_objects:
+                    selected.append(fixture)
+
+        for fixture in dmx.fixtures:
+            if fixture in selected:
+                fixture.use_fixtures_channel_functions = False
         return {"FINISHED"}
 
 
@@ -502,6 +581,10 @@ class DMX_PT_Programmer(Panel):
         c4 = row.column()
         c5 = row.column()
         c6 = row.column()
+        c7 = row.column()
+        c8 = row.column()
+        c9 = row.column()
+        c10 = row.column()
         c0.operator("dmx.select_filtered", text="", icon="SELECT_DIFFERENCE")
         c1.operator("dmx.deselect_all", text="", icon="SELECT_SET")
         c2.operator("dmx.targets_to_zero", text="", icon="LIGHT_POINT")
@@ -509,7 +592,13 @@ class DMX_PT_Programmer(Panel):
         c4.operator("dmx.ignore_movement_true", text="", icon="LOCKED")
         c5.operator("dmx.ignore_movement_false", text="", icon="UNLOCKED")
         c6.operator("dmx.center_to_selected", text="", icon="ZOOM_IN")
-        c1.enabled = c2.enabled = c3.enabled = c4.enabled = selected
+        c7.operator("dmx.track_target_true", text="", icon="TRACKING_FORWARDS")
+        c8.operator("dmx.track_target_false", text="", icon="TRACKING_CLEAR_FORWARDS")
+        c9.operator("dmx.use_channel_functions_true", text="", icon="KEY_TAB")
+        c10.operator("dmx.use_channel_functions_false", text="", icon="KEY_TAB_FILLED")
+        c1.enabled = c2.enabled = c3.enabled = c4.enabled = c7.enabled = c8.enabled = (
+            c9.enabled
+        ) = c10.enabled = selected
         c5.enabled = locked and selected
 
         row = layout.row()

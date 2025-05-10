@@ -396,6 +396,15 @@ class DMX_Fixture(PropertyGroup):
         description="Add target for beam to follow",
         default = True)
 
+    def on_use_target(self, context):
+        self.follow_target_constraint_enable(self.use_target)
+
+    use_target: BoolProperty(
+        name = "Use Target",
+        description="Follow the target",
+        update = on_use_target,
+        default = True)
+
     dmx_cache_dirty: BoolProperty(
         name = "DMX cache dirty",
         description="if dmx data has changed but keyframe has not been saved yet",
@@ -1407,7 +1416,7 @@ class DMX_Fixture(PropertyGroup):
         if cmy[0] is not None and cmy[1] is not None and cmy[2] is not None:
             self.updateCMY(cmy, colorwheel_color, color_temperature, current_frame)
 
-        if "Target" in self.objects:
+        if "Target" in self.objects and self.use_target:
             if self.ignore_movement_dmx:
                 # programming by target, dmx for p/t locked
                 if "Target" in self.objects:
@@ -1531,6 +1540,10 @@ class DMX_Fixture(PropertyGroup):
             mobile_type = "yoke"
             offset = 2
             lock_rotation = self.lock_pan_rotation
+            if self.use_target:
+                # autodisable target tracking as tilt rotate
+                # cannot work with track constraint
+                self.use_target = False
 
         else:  # tilt
             mobile_type = "head"
@@ -2522,6 +2535,12 @@ class DMX_Fixture(PropertyGroup):
                     uuid=uuid_,
                     name=f"Target for {self.name}",
                 )
+
+    def follow_target_constraint_enable(self, enabled):
+        for obj in self.collection.objects:
+            for constraint in obj.constraints:
+                if constraint.name == "FollowTarget":
+                    constraint.enabled = enabled
 
     def onDepsgraphUpdate(self):
         # TODO: rename this and hook again somewhere.
