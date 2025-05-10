@@ -234,6 +234,12 @@ class DMX_Fixture_AddEdit:
         max=1024,
     )
 
+    use_fixtures_channel_functions: BoolProperty(
+        name=_("Use Fixtures Physical Properties"),
+        description=_("Use Channel Functions of this fixture"),
+        default=True,
+    )
+
     def draw(self, context):
         layout = self.layout
         col = layout.column()
@@ -307,6 +313,7 @@ class DMX_Fixture_AddEdit:
             if not self.advanced_edit:
                 col.operator("dmx.import_ies_file")
                 col.operator("dmx.remove_ies_files")
+                col.prop(self, "use_fixtures_channel_functions")
         else:  # Adding new fixtures:
             col.prop(self, "units")  #     Allow to define how many
         col.prop(self, "increment_address")
@@ -456,10 +463,14 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                     dmx.ensureUniverseExists(0)
 
                 fixture.fixture_id = self.fixture_id
+                fixture.use_fixtures_channel_functions = (
+                    self.use_fixtures_channel_functions
+                )
         # Multiple fixtures
         else:
             dmx_breaks = self.dmx_breaks
             fixture_id = self.fixture_id
+            use_fixtures_channel_functions = self.use_fixtures_channel_functions
 
             for i, fixture in enumerate(selected):
                 name = generate_fixture_name(self.name, i + 1)
@@ -507,6 +518,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                         fixture_break.address = edit_break.address
 
                 fixture.fixture_id = fixture_id
+                fixture.use_fixtures_channel_functions = use_fixtures_channel_functions
 
                 if self.increment_fixture_id:
                     if fixture_id.isnumeric():
@@ -555,6 +567,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             self.add_target = fixture.add_target
             self.units = 0
             self.fixture_id = fixture.fixture_id
+            self.use_fixtures_channel_functions = fixture.use_fixtures_channel_functions
         # Multiple fixtures
         else:
             self.name = "*"
@@ -573,6 +586,9 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             self.add_target = True
             self.advanced_edit = False
             self.fixture_id = selected[0].fixture_id
+            self.use_fixtures_channel_functions = selected[
+                0
+            ].use_fixtures_channel_functions
 
         wm = context.window_manager
         return wm.invoke_props_dialog(self)
@@ -875,6 +891,7 @@ class DMX_UL_Fixtures(UIList):
         col = row.column()
         col.prop(dmx, "column_fixture_position")
         col.prop(dmx, "column_fixture_rotation")
+        col.prop(dmx, "column_fixture_physical_properties")
         col.enabled = dmx.fixture_properties_editable
         row = layout.row()
         row.prop(dmx, "fixtures_sorting_order")
@@ -1014,6 +1031,12 @@ class DMX_UL_Fixtures(UIList):
             c.label(
                 text=f"{item_dmx_break.channels_count}{'!' if overlapping else ' '}"
             )
+
+        if dmx.column_fixture_physical_properties:
+            c = layout.column()
+            c.prop(item, "use_fixtures_channel_functions", text="")
+            c.ui_units_x = 2
+            c.enabled = dmx.fixture_properties_editable
 
         if dmx.fixture_properties_editable and dmx.column_fixture_position:
             body = None

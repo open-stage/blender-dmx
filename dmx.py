@@ -359,6 +359,10 @@ class DMX(PropertyGroup):
         name = _("Footprint"),
         default = False)
 
+    column_fixture_physical_properties: BoolProperty(
+        name = _("Physical Properties"),
+        default = False)
+
     collection: PointerProperty(
         name = _("DMX Collection"),
         type = Collection)
@@ -483,10 +487,6 @@ class DMX(PropertyGroup):
             if attribute == ch_function.attribute:
                 return ch_function
 
-    use_fixtures_channel_functions: BoolProperty(
-        name = _("Use Fixtures Physical Properties"),
-        description = _("Use Channel Functions of each fixture"),
-        default = True)
 
     # fmt: on
 
