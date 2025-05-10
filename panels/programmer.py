@@ -811,6 +811,13 @@ class DMX_PT_Programmer(Panel):
                     text=_("TiltMode"),
                     translate=False,
                 )
+            if selected_fixtures[0].has_attributes(["PanTiltMode"]):
+                box.prop(
+                    scene.dmx,
+                    "programmer_pan_tilt_mode",
+                    text=_("PanTiltMode"),
+                    translate=False,
+                )
         else:
             box.template_color_picker(scene.dmx, "programmer_color", value_slider=True)
             row = box.row()
@@ -934,6 +941,12 @@ class DMX_PT_Programmer(Panel):
 
             box.prop(
                 scene.dmx, "programmer_tilt_mode", text=_("TiltMode"), translate=False
+            )
+            box.prop(
+                scene.dmx,
+                "programmer_pan_tilt_mode",
+                text=_("PanTiltMode"),
+                translate=False,
             )
         box.enabled = selected
 
