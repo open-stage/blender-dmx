@@ -508,6 +508,7 @@ def add_mvr_fixture(
             universe=address.universe,
         )
         for address in fixture.addresses
+        if address.address > 0
     ]
     if existing_fixture is not None:
         # TODO: we should not rename the fixture on import unless if the user wants it
