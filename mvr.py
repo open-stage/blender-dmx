@@ -492,6 +492,9 @@ def add_mvr_fixture(
             import_globals.extracted[fixture.gdtf_spec] += 1
     else:
         # if the file is not in the MVR package, use an RGBW Par64
+        DMX_Log.log.error(
+            f"{fixture.gdtf_spec} not in mvr_scene._package.namelist, using a generic PAR"
+        )
         fixture.gdtf_spec = "BlenderDMX@LED_PAR_64_RGBW@v0.3.gdtf"
     for address in fixture.addresses:
         dmx.ensureUniverseExists(address.universe)
@@ -505,6 +508,7 @@ def add_mvr_fixture(
             universe=address.universe,
         )
         for address in fixture.addresses
+        if address.address > 0
     ]
     if existing_fixture is not None:
         # TODO: we should not rename the fixture on import unless if the user wants it

@@ -98,17 +98,17 @@ class DMX_GDTF_File:
                 revisions = fixture_type.revisions.sorted()
                 revision = ""
                 if revisions:
-                    revision = revisions[-1].text
+                    revision = revisions[0].text
                 data = {
                     "name": f"{fixture_type.name}",
                     "short_name": fixture_type.short_name,
-                    "manufacturer_name": f"{fixture_type.manufacturer}",
+                    "manufacturer_name": f"{fixture_type.manufacturer or 'No manufacturer'}",
                     "filename": file_name,
                     "modes": modes,
                     "revision": revision,
                 }
-
-                DMX_GDTF_File.profiles_list[file_name] = data
+                if file_name not in DMX_GDTF_File.profiles_list:
+                    DMX_GDTF_File.profiles_list[file_name] = data
         except Exception as e:
             DMX_Log.log.error((file_name, e))
 

@@ -754,9 +754,11 @@ class DMX_GDTF:
                 ):
                     constraint = base.constraints.new("TRACK_TO")
                     constraint.target = target
+                    constraint.name = "FollowTarget"
                     continue
                 else:
                     constraint = part.constraints.new("LOCKED_TRACK")
+                    constraint.name = "FollowTarget"
                 if check_tilt or (
                     check_parent
                     and part.parent.parent
@@ -769,6 +771,7 @@ class DMX_GDTF:
                 constraint.target = target
             if not yokes and not heads and not len(base.constraints):
                 constraint = base.constraints.new("TRACK_TO")
+                constraint.name = "FollowTarget"
                 constraint.target = target
 
         # 2D thumbnail planning symbol

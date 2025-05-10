@@ -110,6 +110,7 @@ class DMX(PropertyGroup):
         fixture.DMX_Emitter_Material,
         fixture.DMX_IES_Data,
         fixture.DMX_Geometry_Node,
+        fixture.DMX_Fixture_Channel_Function,
         fixture.DMX_Fixture_Channel,
         fixture.DMX_Break,
         fixture.DMX_Fixture,
@@ -207,6 +208,10 @@ class DMX(PropertyGroup):
         programmer.DMX_MT_PIE_Reset,
         programmer.DMX_OT_Programmer_Unset_Ignore_Movement,
         programmer.DMX_OT_Programmer_Set_Lock_Movement_Rotation,
+        programmer.DMX_OT_Programmer_Set_Track_Target,
+        programmer.DMX_OT_Programmer_Unset_Track_Target,
+        programmer.DMX_OT_Programmer_Set_Use_Physical,
+        programmer.DMX_OT_Programmer_Unset_Use_Physical,
         distribute.DMX_PT_AlignAndDistributePanel,
         distribute.DMX_OP_AlignLocationOperator,
         distribute.DMX_OP_DistributeWithGapOperator,
@@ -358,6 +363,10 @@ class DMX(PropertyGroup):
         name = _("Footprint"),
         default = False)
 
+    column_fixture_physical_properties: BoolProperty(
+        name = _("Physical Properties"),
+        default = False)
+
     collection: PointerProperty(
         name = _("DMX Collection"),
         type = Collection)
@@ -471,6 +480,18 @@ class DMX(PropertyGroup):
     fixture_properties_editable: BoolProperty(
         name = _("Editable"),
         default = False)
+
+    default_channel_functions: CollectionProperty(
+        name = "Fixture > Channels > Channel Functions",
+        type = fixture.DMX_Fixture_Channel_Function
+    )
+
+    def get_default_channel_function_by_attribute(self, attribute):
+        for ch_function in self.default_channel_functions:
+            if attribute == ch_function.attribute:
+                return ch_function
+
+
     # fmt: on
 
     # New DMX Scene
@@ -534,6 +555,7 @@ class DMX(PropertyGroup):
         # Create a DMX universe
         self.addUniverse()
         self.generate_project_uuid()
+        self.generate_default_channel_functions()
 
         # Link addon to file
         self.linkFile()
@@ -1666,6 +1688,22 @@ class DMX(PropertyGroup):
                 fixture_.setDMX({"Shutter1": int(self.programmer_shutter)})
         self.render()
 
+    def onProgrammerPanMode(self, context):
+        for fixture_ in self.fixtures:
+            if fixture_.collection is None:
+                continue
+            if fixture_.is_selected():
+                fixture_.setDMX({"PanMode": int(self.programmer_pan_mode)})
+        self.render()
+
+    def onProgrammerTiltMode(self, context):
+        for fixture_ in self.fixtures:
+            if fixture_.collection is None:
+                continue
+            if fixture_.is_selected():
+                fixture_.setDMX({"TiltMode": int(self.programmer_tilt_mode)})
+        self.render()
+
     # fmt: off
 
     programmer_color: FloatVectorProperty(
@@ -1707,9 +1745,9 @@ class DMX(PropertyGroup):
 
     programmer_zoom: IntProperty(
         name = "Programmer Zoom",
-        min = 1,
-        max = 180,
-        default = 25,
+        min = 0,
+        max = 255,
+        default = 128,
         update = onProgrammerZoom)
 
     programmer_color_wheel: IntProperty(
@@ -1768,6 +1806,20 @@ class DMX(PropertyGroup):
         default = 0,
         update = onProgrammerShutter)
 
+    programmer_pan_mode: IntProperty(
+        name = "Programmer PanMode",
+        min = 0,
+        max = 255,
+        default = 0,
+        update = onProgrammerPanMode)
+
+    programmer_tilt_mode: IntProperty(
+        name = "Programmer TiltMode",
+        min = 0,
+        max = 255,
+        default = 0,
+        update = onProgrammerTiltMode)
+
     # fmt: on
 
     # # Programmer > Sync
@@ -1791,6 +1843,8 @@ class DMX(PropertyGroup):
             self.programmer_gobo_index1 = 63
             self.programmer_gobo2 = 0
             self.programmer_gobo_index2 = 63
+            self.programmer_tilt_mode = 0
+            self.programmer_pan_mode = 0
             return
         elif n > 1:
             return
@@ -1859,6 +1913,10 @@ class DMX(PropertyGroup):
             self.programmer_pan_rotate = int(data["PanRotate"])
         if "TiltRotate" in data:
             self.programmer_tilt_rotate = int(data["TiltRotate"])
+        if "PanMode" in data:
+            self.programmer_pan_mode = int(data["PanMode"])
+        if "TiltMode" in data:
+            self.programmer_tilt_mode = int(data["TiltMode"])
 
     # fmt: off
     fixtures_sorting_order: EnumProperty(
@@ -2333,6 +2391,28 @@ class DMX(PropertyGroup):
 
     def generate_project_uuid(self):
         self.project_application_uuid = str(py_uuid.uuid4())
+
+    def generate_default_channel_functions(self):
+        self.default_channel_functions.clear()
+        defaults = [
+            ["Zoom", 0, 120],
+            ["Pan", -270, 270],
+            ["Tilt", -135, 135],
+            ["PanRotate", -10, 10],
+            ["TiltRotate", -10, 10],
+            ["CTC", 2700, 12000],
+            ["CTB", 2700, 12000],
+            ["CT0", 2700, 12000],
+            ["Iris", 0, 1],
+        ]
+        for default in defaults:
+            new_function = self.default_channel_functions.add()
+            new_function.attribute = default[0]
+            new_function.name_ = f"{default[0]} 1"
+            new_function.dmx_from = 0
+            new_function.dmx_to = 255
+            new_function.physical_from = default[1]
+            new_function.physical_to = default[2]
 
     # # Render
 
