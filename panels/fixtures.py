@@ -262,9 +262,10 @@ class DMX_Fixture_AddEdit:
         if self.profile != "":
             fixture_type = DMX_GDTF_File.profiles_list.get(self.profile)
 
-            text_profile = (
-                f"{fixture_type['manufacturer_name']} > {fixture_type['name']}"
-            )
+            if fixture_type is not None:
+                text_profile = (
+                    f"{fixture_type['manufacturer_name']} > {fixture_type['name']}"
+                )
 
         if self.advanced_edit:
             col.menu("DMX_MT_Fixture_Manufacturers", text=text_profile)

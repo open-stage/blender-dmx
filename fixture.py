@@ -1561,9 +1561,7 @@ class DMX_Fixture(PropertyGroup):
                 if rotation != 0:
                     driver = geometry.driver_add("rotation_euler", offset)
                     value = rotation
-                    driver.driver.expression = (
-                        f"{value} * (frame / {bpy.context.scene.render.fps})"
-                    )
+                    driver.driver.expression = f"{value} * (3.14159 / 180) * (frame / {bpy.context.scene.render.fps})"
 
             if current_frame and self.dmx_cache_dirty:
                 geometry.keyframe_insert(data_path="location", frame=current_frame)
