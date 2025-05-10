@@ -1704,6 +1704,14 @@ class DMX(PropertyGroup):
                 fixture_.setDMX({"TiltMode": int(self.programmer_tilt_mode)})
         self.render()
 
+    def onProgrammerPanTiltMode(self, context):
+        for fixture_ in self.fixtures:
+            if fixture_.collection is None:
+                continue
+            if fixture_.is_selected():
+                fixture_.setDMX({"PanTiltMode": int(self.programmer_pan_tilt_mode)})
+        self.render()
+
     # fmt: off
 
     programmer_color: FloatVectorProperty(
@@ -1820,6 +1828,13 @@ class DMX(PropertyGroup):
         default = 0,
         update = onProgrammerTiltMode)
 
+    programmer_pan_tilt_mode: IntProperty(
+        name = "Programmer PanTiltMode",
+        min = 0,
+        max = 255,
+        default = 0,
+        update = onProgrammerPanTiltMode)
+
     # fmt: on
 
     # # Programmer > Sync
@@ -1845,6 +1860,7 @@ class DMX(PropertyGroup):
             self.programmer_gobo_index2 = 63
             self.programmer_tilt_mode = 0
             self.programmer_pan_mode = 0
+            self.programmer_pan_tilt_mode = 0
             return
         elif n > 1:
             return
@@ -1917,6 +1933,8 @@ class DMX(PropertyGroup):
             self.programmer_pan_mode = int(data["PanMode"])
         if "TiltMode" in data:
             self.programmer_tilt_mode = int(data["TiltMode"])
+        if "PanTiltMode" in data:
+            self.programmer_pan_tilt_mode = int(data["PanTiltMode"])
 
     # fmt: off
     fixtures_sorting_order: EnumProperty(
