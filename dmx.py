@@ -2422,6 +2422,8 @@ class DMX(PropertyGroup):
             ["CTB", 2700, 12000],
             ["CT0", 2700, 12000],
             ["Iris", 0, 1],
+            ["Shutter1", 0, 1],
+            ["Shutter1Strobe", 0.3, 20],
         ]
         for default in defaults:
             new_function = self.default_channel_functions.add()

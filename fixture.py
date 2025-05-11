@@ -808,12 +808,8 @@ class DMX_Fixture(PropertyGroup):
                 new_channel.offsets = (0, 0)
                 new_channel.offsets_bytes = 1
 
-            # Set shutter to 0, we don't want strobing by default
-            # and are not reading real world values yet
-            if "shutter" in dmx_channel.attribute.str_link.lower():
-                new_channel.defaults = (0, 0)
             # blender programmer cannot control white, set it to 0
-            elif "ColorAdd_W" in dmx_channel.attribute.str_link:
+            if "ColorAdd_W" in dmx_channel.attribute.str_link:
                 new_channel.defaults = (0, 0)
             else:
                 fine_default = 0
@@ -973,7 +969,7 @@ class DMX_Fixture(PropertyGroup):
         rgb_mixing_geometries = {}
         xyz_moving_geometries = {}
         xyz_rotating_geometries = {}
-        shutter_dimmer_geometries = {}  # item: shutter, dimmer, unused, dimmer bits
+        shutter_dimmer_geometries = {}  # dimmer, shutter, strobe
         pan_rotating_geometries = {}
         tilt_rotating_geometries = {}
 
@@ -1002,7 +998,7 @@ class DMX_Fixture(PropertyGroup):
             if geometry not in xyz_rotating_geometries.keys():
                 xyz_rotating_geometries[geometry] = [None, None, None]
             if geometry not in shutter_dimmer_geometries.keys():
-                shutter_dimmer_geometries[geometry] = [None, None, None, 1]  # + bits
+                shutter_dimmer_geometries[geometry] = [None, None, None]
             if geometry not in pan_rotating_geometries.keys():
                 pan_rotating_geometries[geometry] = [None]
             if geometry not in tilt_rotating_geometries.keys():
@@ -1041,15 +1037,20 @@ class DMX_Fixture(PropertyGroup):
                     )
                 )
 
-                if vchannel.attribute == "Shutter1":
-                    shutter_dimmer_geometries[geometry][0] = data_virtual[
-                        vchannel.attribute
-                    ]["value"]
-                elif vchannel.attribute == "Dimmer":
-                    shutter_dimmer_geometries[geometry][1] = data_virtual[
-                        vchannel.attribute
-                    ]["value"]
+                if channel_function_attribute == "Dimmer":
+                    shutter_dimmer_geometries[geometry][0] = (
+                        channel_function_physical_value
+                    )
+                elif channel_function_attribute == "Shutter1":
+                    shutter_dimmer_geometries[geometry][1] = (
+                        channel_function_physical_value if dmx_value_virtual > 0 else 1
+                    )
+                    # we set the shutter to be open by default
 
+                elif channel_function_attribute == "Shutter1Strobe":
+                    shutter_dimmer_geometries[geometry][2] = (
+                        channel_function_physical_value
+                    )
                 elif (
                     vchannel.attribute == "ColorAdd_R"
                     or vchannel.attribute == "ColorRGB_Red"
@@ -1145,7 +1146,7 @@ class DMX_Fixture(PropertyGroup):
             if geometry not in xyz_rotating_geometries.keys():
                 xyz_rotating_geometries[geometry] = [None, None, None]
             if geometry not in shutter_dimmer_geometries.keys():
-                shutter_dimmer_geometries[geometry] = [None, None, None, 1]  # + bits
+                shutter_dimmer_geometries[geometry] = [None, None, None]
             if geometry not in pan_rotating_geometries.keys():
                 pan_rotating_geometries[geometry] = [None]
             if geometry not in tilt_rotating_geometries.keys():
@@ -1217,19 +1218,15 @@ class DMX_Fixture(PropertyGroup):
             )
 
             if channel_function_attribute == "Dimmer":
-                shutter_dimmer_geometries[geometry][1] = dmx_data[channel.dmx_break][
-                    channel.offsets[0]
-                ]
-                if channel.offsets_bytes > 1:
-                    shutter_dimmer_geometries[geometry][1] = (
-                        shutter_dimmer_geometries[geometry][1] * 256
-                        + dmx_data[channel.dmx_break][channel.offsets[1]]
-                    )
-                    shutter_dimmer_geometries[geometry][3] = 256
-            elif channel.attribute == "Shutter1":
-                shutter_dimmer_geometries[geometry][0] = dmx_data[channel.dmx_break][
-                    channel.offsets[0]
-                ]
+                shutter_dimmer_geometries[geometry][0] = channel_function_physical_value
+            elif channel_function_attribute == "Shutter1":
+                shutter_dimmer_geometries[geometry][1] = (
+                    channel_function_physical_value if dmx_value_coarse > 0 else 1
+                )
+            # we set the shutter to be open by default
+
+            elif channel_function_attribute == "Shutter1Strobe":
+                shutter_dimmer_geometries[geometry][2] = channel_function_physical_value
             elif (
                 channel.attribute == "ColorAdd_R" or channel.attribute == "ColorRGB_Red"
             ):
@@ -1456,7 +1453,7 @@ class DMX_Fixture(PropertyGroup):
             )
 
         if zoom is not None:
-            self.updateZoom(zoom, current_frame)
+            self.update_zoom(zoom, current_frame)
 
         self.hide_gobo_geometry(gobo1, gobo2, iris, current_frame)
 
@@ -1492,22 +1489,22 @@ class DMX_Fixture(PropertyGroup):
         for geometry, shutter_dimmer in shutter_dimmer_geometries.items():
             if len(shutter_dimmer_geometries) == 1:
                 geometry = None
-            if shutter_dimmer[0] is not None or shutter_dimmer[1] is not None:
-                if shutter_dimmer[0] is None:
-                    shutter_dimmer[0] = (
-                        0  # if device doesn't have shutter, set default value
-                    )
-                if shutter_dimmer[1] is None:
-                    shutter_dimmer[1] = (
-                        100  # if device doesn't have dimmer, set default value
-                    )
-                self.updateShutterDimmer(
-                    shutter_dimmer[0],
-                    shutter_dimmer[1],
-                    geometry,
-                    shutter_dimmer[3],
-                    current_frame,
-                )
+            shutter_dimmer[1] = (
+                shutter_dimmer[1] if shutter_dimmer[1] is not None else 1
+            )
+            # if device doesn't have shutter, set default value
+            shutter_dimmer[0] = (
+                shutter_dimmer[0] if shutter_dimmer[0] is not None else 1
+            )
+            # if device doesn't have dimmer, set default value
+            self.update_shutter_dimmer(
+                shutter_dimmer[0],
+                shutter_dimmer[1],
+                shutter_dimmer[2],
+                geometry,
+                zoom,
+                current_frame,
+            )
 
         self.keyframe_objects_with_bdmx_drivers(current_frame)
 
@@ -1614,57 +1611,83 @@ class DMX_Fixture(PropertyGroup):
             if channel.attribute == attribute:
                 return channel
 
-    def updateShutterDimmer(self, shutter, dimmer, geometry, bits, current_frame):
-        DMX_Log.log.info(("set shutter, dimmer", shutter, dimmer, geometry))
+    def update_shutter_dimmer(
+        self, dimmer, shutter, strobe, geometry, zoom, current_frame
+    ):
+        DMX_Log.log.info(
+            ("set dimmer, shutter, strobe", dimmer, shutter, strobe, geometry)
+        )
+        dimmer = dimmer * round(shutter)  # get a discreet value from channel function
         dmx = bpy.context.scene.dmx
         if geometry is not None:
             geometry = geometry.replace(" ", "_")
-        last_shutter_value = 0
-        last_dimmer_value = 0
         try:
             for emitter_material in self.emitter_materials:
-                if shutter > 0 and shutter != 255:
-                    break  # no need to do the expensive value settings if we do this anyway in shutter timer
                 if geometry is not None:
                     if geometry in emitter_material.name or any(
                         g in geometry for g in emitter_material["parent_geometries"]
                     ):
                         DMX_Log.log.info(("matched emitter", geometry))
-                        emitter_material.material.node_tree.nodes[1].inputs[
-                            STRENGTH
-                        ].default_value = 1 * (dimmer / (255.0 * bits))
+
+                        strength_input = emitter_material.material.node_tree.nodes[
+                            1
+                        ].inputs[STRENGTH]
+                        strength_input.driver_remove("default_value")
+                        if strobe is not None:
+                            driver = strength_input.driver_add("default_value").driver
+                            driver.expression = f"(floor(frame * ({strobe} / {bpy.context.scene.render.fps})) % 2) * ({dimmer})"
+                        else:
+                            strength_input.default_value = dimmer
+
                 else:
-                    emitter_material.material.node_tree.nodes[1].inputs[
-                        STRENGTH
-                    ].default_value = 1 * (dimmer / (255.0 * bits))
+                    strength_input = emitter_material.material.node_tree.nodes[
+                        1
+                    ].inputs[STRENGTH]
+                    strength_input.driver_remove("default_value")
+                    if strobe is not None:
+                        driver = strength_input.driver_add("default_value").driver
+                        driver.expression = f"(floor(frame * ({strobe} /  {bpy.context.scene.render.fps})) % 2) * ({dimmer})"
+                    else:
+                        strength_input.default_value = dimmer
+
                 if current_frame and self.dmx_cache_dirty:
                     emitter_material.material.node_tree.nodes[1].inputs[
                         STRENGTH
                     ].keyframe_insert(data_path="default_value", frame=current_frame)
 
             for light in self.lights:
-                last_shutter_value = light.object.data["shutter_value"]
-                last_dimmer_value = light.object.data["shutter_dimmer_value"]
-                light.object.data["shutter_value"] = shutter
-                light.object.data["shutter_dimmer_value"] = dimmer
-                light.object.data["shutter_dimmer_bits"] = bits
                 flux = light.object.data["flux"] * dmx.beam_intensity_multiplier
+                if zoom is None:
+                    zoom = math.degrees(light.object.data.spot_size)
+                zoom_compensation = max(flux / pow(zoom, 2), 0.1)
+                value = dimmer * flux * zoom_compensation
+
                 # we should improve this to get more Cycles/Eevee compatibility... add a driver which would adjust the intensity
                 # depending on the IES linking or not, adding drivers: https://blender.stackexchange.com/a/314329/176407
                 # plus, we would still need to calculate correct energy, so they match between Cycles/Eevee
                 # here are some ideas: https://blender.stackexchange.com/a/180533/176407
-                if shutter > 0 and shutter != 255:
-                    break  # no need to do the expensive value settings if we do this anyway in shutter timer
 
                 if geometry is not None:
                     if geometry in light.object.data.name or any(
                         g in geometry for g in light.object.data["parent_geometries"]
                     ):
                         DMX_Log.log.info("matched emitter")
-                        light.object.data.energy = (dimmer / (255.0 * bits)) * flux
+                        light.object.data.driver_remove("energy")
+                        if strobe is not None:
+                            driver = light.object.data.driver_add("energy").driver
+                            DMX_Log.log.info("matched light")
+                            driver.expression = f"(floor(frame * ({strobe} /  {bpy.context.scene.render.fps})) % 2) * ({value})"
+                        else:
+                            light.object.data.energy = value
 
                 else:
-                    light.object.data.energy = (dimmer / (255.0 * bits)) * flux
+                    light.object.data.driver_remove("energy")
+                    if strobe is not None:
+                        driver = light.object.data.driver_add("energy").driver
+                        DMX_Log.log.info("matched light")
+                        driver.expression = f"(floor(frame * ({strobe} /  {bpy.context.scene.render.fps})) % 2) * ({value})"
+                    else:
+                        light.object.data.energy = value
 
                 if current_frame and self.dmx_cache_dirty:
                     light.object.data.keyframe_insert(
@@ -1682,60 +1705,6 @@ class DMX_Fixture(PropertyGroup):
 
         except Exception as e:
             DMX_Log.log.error(f"Error updating dimmer {e}")
-
-        if (
-            last_shutter_value == 0
-            or last_shutter_value == 255
-            or last_dimmer_value == 0
-        ) and (shutter > 0 and shutter != 255):
-            bpy.app.timers.register(self.runStrobe)
-            DMX_Log.log.info("Register shutter timer")
-
-        return dimmer
-
-    def runStrobe(self):
-        # TODO: try to convert strobe to a blender driver, less resources and keyframable
-        try:
-            exit_timer = False
-            dimmer_value = 0  # reused also for emitter
-            dimmer_bits = 1
-
-            for light in self.lights:
-                if light.object.data["shutter_value"] == 0:
-                    exit_timer = True
-                if light.object.data["shutter_value"] == 255:
-                    exit_timer = True
-                if light.object.data["shutter_dimmer_value"] == 0:
-                    exit_timer = True
-                dimmer_value = 0
-                flux = light.object.data["flux"]
-                if light.object.data["shutter_counter"] == 1:
-                    dimmer_value = light.object.data["shutter_dimmer_value"]
-                    dimmer_bits = light.object.data["shutter_dimmer_bits"]
-                if (
-                    light.object.data["shutter_counter"]
-                    > light.object.data["shutter_value"]
-                ):
-                    light.object.data["shutter_counter"] = 0
-
-                light.object.data.energy = (dimmer_value / (255.0 * dimmer_bits)) * flux
-                light.object.data["shutter_counter"] += 1
-
-            # Here we can reuse data we got from the light object...
-            for emitter_material in self.emitter_materials:
-                emitter_material.material.node_tree.nodes[1].inputs[
-                    STRENGTH
-                ].default_value = 1 * (dimmer_value / (255.0 * dimmer_bits))
-
-            if exit_timer:
-                DMX_Log.log.info("Killing shutter timer")
-                return None  # exit the timer
-
-        except Exception as e:
-            DMX_Log.log.error(f"Error updating lights and emitters {e}")
-            DMX_Log.log.info("Killing shutter timer")
-            return None  # kills the timer
-        return 1.0 / 24.0
 
     def updateRGB(
         self, colors, geometry, colorwheel_color, color_temperature, current_frame
@@ -1842,7 +1811,7 @@ class DMX_Fixture(PropertyGroup):
                 )
         return cmy
 
-    def updateZoom(self, zoom, current_frame):
+    def update_zoom(self, zoom, current_frame):
         try:
             spot_size = math.radians(zoom)
             gobo_diameter = 2.2 * 0.01 * math.tan(math.radians(zoom / 2))
