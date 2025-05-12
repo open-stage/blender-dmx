@@ -176,6 +176,11 @@ class DMX_Fixture_Channel_Function(PropertyGroup):
 
 # fmt: on
 class DMX_Fixture_Channel(PropertyGroup):
+    def has_attribute(self, attribute):
+        return any(
+            getattr(item, "attribute") == attribute for item in self.channel_functions
+        )
+
     def get_function_attribute_data(self, dmx_value, dmx_data, skip_mode_master=False):
         for ch_f in self.channel_functions:
             if len(self.channel_functions) == 1:
@@ -590,20 +595,30 @@ class DMX_Fixture(PropertyGroup):
 
         # Get all gobos
         if has_gobos:
-            gobo_seq = DMX_GDTF.extract_gobos_as_sequence(gdtf_profile)
-            if gobo_seq is not None:
-                gobo1 = self.images.add()
-                gobo1.name = "gobos1"
-                gobo1.image = gobo_seq[0]
-                gobo1.count = gobo_seq[0]["count"]
-                gobo1.image.pack()
-                gobo2 = self.images.add()
-                gobo2.name = "gobos2"
-                gobo2.image = gobo_seq[1]
-                gobo2.count = gobo_seq[1]["count"]
-                gobo2.image.pack()
+            gobo_wheels_links = set(
+                [
+                    (ch_fnc.attribute.str_link, ch_fnc.wheel.str_link)
+                    for channel in dmx_mode.dmx_channels
+                    for logical in channel.logical_channels
+                    for ch_fnc in logical.channel_functions
+                    if ch_fnc.attribute.str_link in ["Gobo1", "Gobo2"]
+                ]
+            )
 
-        if "gobos1" not in self.images:
+            if gobo_wheels_links:
+                gobo_seq = DMX_GDTF.extract_gobos_as_sequence(
+                    gdtf_profile, gobo_wheels_links
+                )
+                for gobo in gobo_seq:
+                    gobo1 = self.images.add()
+                    gobo1.name = gobo["attribute"]
+                    gobo1.image = gobo
+                    gobo1.count = gobo["count"]
+                    gobo1.attribute = gobo["attribute"]
+                    gobo1.wheel = gobo["wheel"]
+                    gobo1.image.pack()
+
+        if "Gobo1" not in self.images:
             has_gobos = False  # faulty GDTF might have channels but no images
 
         self["slot_colors"] = []
@@ -870,7 +885,7 @@ class DMX_Fixture(PropertyGroup):
 
         for attribute, value in pvalues.items():
             for channel in self.channels:
-                if channel.attribute == attribute:
+                if channel.attribute == attribute or channel.has_attribute(attribute):
                     if len(temp_data.active_subfixtures) > 0:
                         if any(
                             channel.geometry == g.name
@@ -979,11 +994,13 @@ class DMX_Fixture(PropertyGroup):
         gobo1 = [
             None,
             None,
-        ]  # gobo selection (Gobo1), gobo indexing/rotation (Gobo1Pos)
+            None,
+        ]  # gobo selection (Gobo1), gobo indexing Gobo1Pos, rotation (Gobo1PosRotate)
         gobo2 = [
             None,
             None,
-        ]  # gobo selection (Gobo2), gobo indexing/rotation (Gobo2Pos)
+            None,
+        ]  # gobo selection (Gobo2), gobo indexing Gobo2Pos, rotation (Gobo2PosRotate)
 
         for vchannel in self.virtual_channels:
             geometry = str(
@@ -1322,16 +1339,16 @@ class DMX_Fixture(PropertyGroup):
                 color1 = dmx_data[channel.dmx_break][channel.offsets[0]]
             elif channel.attribute == "Gobo1":
                 gobo1[0] = dmx_data[channel.dmx_break][channel.offsets[0]]
-            elif (
-                channel.attribute == "Gobo1Pos" or channel.attribute == "Gobo1PosRotate"
-            ):
-                gobo1[1] = dmx_data[channel.dmx_break][channel.offsets[0]]
+            elif channel_function_attribute == "Gobo1Pos":
+                gobo1[1] = channel_function_physical_value
+            elif channel_function_attribute == "Gobo1PosRotate":
+                gobo1[2] = channel_function_physical_value
             elif channel.attribute == "Gobo2":
                 gobo2[0] = dmx_data[channel.dmx_break][channel.offsets[0]]
-            elif (
-                channel.attribute == "Gobo2Pos" or channel.attribute == "Gobo2PosRotate"
-            ):
-                gobo2[1] = dmx_data[channel.dmx_break][channel.offsets[0]]
+            elif channel_function_attribute == "Gobo2Pos":
+                gobo2[1] = channel_function_physical_value
+            elif channel_function_attribute == "Gobo2PosRotate":
+                gobo2[2] = channel_function_physical_value
             elif channel.attribute == "XYZ_X":
                 xyz_moving_geometries[geometry][0] = dmx_data[channel.dmx_break][
                     channel.offsets[0]
@@ -1458,10 +1475,10 @@ class DMX_Fixture(PropertyGroup):
         self.hide_gobo_geometry(gobo1, gobo2, iris, current_frame)
 
         if gobo1[0] is not None:
-            self.updateGobo(gobo1, 1, current_frame)
+            self.update_gobo(gobo1, 1, current_frame)
 
         if gobo2[0] is not None:
-            self.updateGobo(gobo2, 2, current_frame)
+            self.update_gobo(gobo2, 2, current_frame)
 
         if iris is not None:
             if 0 <= iris <= 255:
@@ -1905,8 +1922,8 @@ class DMX_Fixture(PropertyGroup):
                     data_path="default_value", frame=current_frame
                 )
 
-    def updateGobo(self, gobo, n, current_frame):
-        if "gobos1" not in self.images:
+    def update_gobo(self, gobo, n, current_frame):
+        if "Gobo1" not in self.images:
             self.hide_gobo([1, 2], current_frame=current_frame)
             return
 
@@ -1918,34 +1935,50 @@ class DMX_Fixture(PropertyGroup):
             self.hide_gobo([n], current_frame=current_frame)
             return
 
-        gobos = self.images["gobos1"]
+        gobos = self.images[f"Gobo{n}"]
         if not gobos.count:
             self.hide_gobo([1, 2], current_frame=current_frame)
             return
 
         DMX_Log.log.debug(("update gobo", gobo, n))
         self.hide_gobo([n], False, current_frame=current_frame)
-        index = int(gobo[0] / int(255 / (gobos.count - 1)))
+        index = (gobo[0] - 1) % gobos.count
         self.set_gobo_slot(n, index, current_frame=current_frame)
         if gobo[1] is not None:
-            self.set_gobo_rotation(gobo, n, current_frame=current_frame)
+            self.set_gobo_indexing(gobo[1], n, current_frame=current_frame)
+        elif gobo[2] is not None:
+            self.set_gobo_rotation(gobo[2], n, current_frame=current_frame)
 
-    def set_gobo_rotation(self, gobo, n, current_frame):
+    def set_gobo_indexing(self, value, n, current_frame):
         for obj in self.collection.objects:  # EEVEE
             if "gobo" in obj.get("geometry_type", ""):
                 material = self.gobo_materials[obj.name].material
                 gobo_rotation = material.node_tree.nodes.get(f"Gobo{n}Rotation")
-                if gobo[1] < 128:  # half for indexing
-                    gobo_rotation.inputs[3].driver_remove("default_value")
-                    gobo_rotation.inputs[3].default_value = (
-                        (gobo[1] / 62.0 - 1) * 360 * (math.pi / 360)
+                gobo_rotation.inputs[3].driver_remove("default_value")
+                gobo_rotation.inputs[3].default_value = value * (math.pi / 360)
+                if current_frame and self.dmx_cache_dirty:
+                    gobo_rotation.inputs[3].keyframe_insert(
+                        data_path="default_value", frame=current_frame
                     )
-                else:  # half for rotation
-                    driver = gobo_rotation.inputs[3].driver_add("default_value")
-                    value = (
-                        gobo[1] - 128 - 62
-                    )  # rotating in both direction, slowest in the middle
-                    driver.driver.expression = f"frame*{value * 0.005}"
+
+        for light in self.lights:  # CYCLES
+            light_obj = light.object
+            gobo_rotation = light_obj.data.node_tree.nodes.get(f"Gobo{n}Rotation")
+            gobo_rotation.inputs[3].driver_remove("default_value")
+            gobo_rotation.inputs[3].default_value = value * (math.pi / 360)
+
+            if current_frame and self.dmx_cache_dirty:
+                gobo_rotation.inputs[3].keyframe_insert(
+                    data_path="default_value", frame=current_frame
+                )
+
+    def set_gobo_rotation(self, value, n, current_frame):
+        for obj in self.collection.objects:  # EEVEE
+            if "gobo" in obj.get("geometry_type", ""):
+                material = self.gobo_materials[obj.name].material
+                gobo_rotation = material.node_tree.nodes.get(f"Gobo{n}Rotation")
+                driver = gobo_rotation.inputs[3].driver_add("default_value")
+                driver.driver.expression = f"{value} * (3.14159 / 180) * (frame / {bpy.context.scene.render.fps})"
 
                 if current_frame and self.dmx_cache_dirty:
                     gobo_rotation.inputs[3].keyframe_insert(
@@ -1955,17 +1988,10 @@ class DMX_Fixture(PropertyGroup):
         for light in self.lights:  # CYCLES
             light_obj = light.object
             gobo_rotation = light_obj.data.node_tree.nodes.get(f"Gobo{n}Rotation")
-            if gobo[1] < 128:  # half for indexing
-                gobo_rotation.inputs[3].driver_remove("default_value")
-                gobo_rotation.inputs[3].default_value = (
-                    (gobo[1] / 62.0 - 1) * 360 * (math.pi / 360)
-                )
-            else:  # half for rotation
-                driver = gobo_rotation.inputs[3].driver_add("default_value")
-                value = (
-                    gobo[1] - 128 - 62
-                )  # rotating in both direction, slowest in the middle
-                driver.driver.expression = f"frame*{value * 0.005}"
+            driver = gobo_rotation.inputs[3].driver_add("default_value")
+            driver.driver.expression = (
+                f"{value} * (3.14159 / 180) * (frame / {bpy.context.scene.render.fps})"
+            )
 
             if current_frame and self.dmx_cache_dirty:
                 gobo_rotation.inputs[3].keyframe_insert(
@@ -2253,7 +2279,7 @@ class DMX_Fixture(PropertyGroup):
         self.render()
 
     def set_gobo_slot(self, n, index=-1, current_frame=None):
-        gobos = self.images[f"gobos{n}"]
+        gobos = self.images[f"Gobo{n}"]
         for obj in self.collection.objects:  # EEVEE
             if "gobo" in obj.get("geometry_type", ""):
                 material = self.gobo_materials[obj.name].material

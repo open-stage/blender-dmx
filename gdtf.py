@@ -117,46 +117,65 @@ class DMX_GDTF:
         return colors
 
     @staticmethod
-    def extract_gobos_as_sequence(profile):
+    def extract_gobos_as_sequence(profile, attr_names_gobo_wheels_names):
         dmx = bpy.context.scene.dmx
         current_path = dmx.get_addon_path()
+        result = []
         gdtf_path = os.path.join(
             current_path, "assets", "models", profile.fixture_type_id
         )
-        images_path = os.path.join(gdtf_path, "wheels")
-        sequence_path = os.path.join(gdtf_path, "sequence")
 
-        # TODO: do the extracting and renaming in one step by renaming filename in zipfile infolist
+        attr_gobo_wheels = [
+            (attr_name, wheel)  # (gobo_wheel_name, attribute_name)
+            for attr_name, gobo_wheel_name in attr_names_gobo_wheels_names
+            for wheel in profile.wheels
+            if wheel.name == gobo_wheel_name
+        ]
+
+        if not attr_gobo_wheels:
+            return result
+
         for image_name in profile._package.namelist():
             if image_name.startswith("wheels"):
                 profile._package.extract(image_name, gdtf_path)
 
-        if not os.path.isdir(sequence_path):
-            os.makedirs(sequence_path)
-        first = ""
-        count = 0
-        for idx, image in enumerate(pathlib.Path(images_path).rglob("*"), start=1):
-            destination = pathlib.Path(sequence_path, f"image_{idx:04}{image.suffix}")
-            if idx == 1:
-                first = str(destination.resolve())
-            if idx == 256:  # more gobos then values on a channel, must stop
-                DMX_Log.log.info("Only 255 gobos are supported at the moment")
-                break
-            destination.write_bytes(image.read_bytes())
-            count = idx
-        if first:
-            sequence1 = bpy.data.images.load(
-                first
-            )  # we need this twice as single gobos were affecting each other
-            sequence2 = bpy.data.images.load(first)
-        else:
-            return None
+        images_path = os.path.join(gdtf_path, "wheels")
 
-        # TODO: add names from wheels
-        # TODO: add some structure to indicate which gobo belongs to which wheel
-        sequence1["count"] = count
-        sequence2["count"] = count
-        return sequence1, sequence2
+        images_paths = list(pathlib.Path(images_path).rglob("*"))
+
+        for index, (attribute_name, wheel) in enumerate(attr_gobo_wheels):
+            sequence_path = os.path.join(gdtf_path, attribute_name.lower())
+
+            if not os.path.isdir(sequence_path):
+                os.makedirs(sequence_path)
+            idx = 1
+            first = None
+            for slot in wheel.wheel_slots:
+                if not slot.media_file_name.name:
+                    continue
+
+                for image in images_paths:
+                    if slot.media_file_name.name == image.stem:
+                        destination = pathlib.Path(sequence_path, f"image_{idx:04}.png")
+                        destination.write_bytes(image.read_bytes())
+                        if first is None:
+                            first = str(destination.resolve())
+                        break
+
+                if idx == 256:  # more gobos then values on a channel, must stop
+                    DMX_Log.log.info("Only 255 gobos are supported at the moment")
+                    break
+                count = idx
+                idx += 1
+
+            if first:
+                sequence = bpy.data.images.load(first)
+                sequence["count"] = count
+                sequence["attribute"] = attribute_name
+                sequence["wheel"] = wheel.name
+                result.append(sequence)
+
+        return result
 
     @staticmethod
     def load2D(profile):

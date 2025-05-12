@@ -1487,8 +1487,10 @@ class DMX(PropertyGroup):
         self.onProgrammerColor(context)
         self.onProgrammerDimmer(context)
         self.onProgrammerColorWheel(context)
-        self.onProgrammerGobo(context)
-        self.onProgrammerGoboIndex(context)
+        self.onProgrammerGobo1(context)
+        self.onProgrammerGoboIndex1(context)
+        self.onProgrammerGobo2(context)
+        self.onProgrammerGoboIndex2(context)
         self.onProgrammerShutter(context)
         self.onProgrammerZoom(context)
 
@@ -1787,10 +1789,10 @@ class DMX(PropertyGroup):
         update = onProgrammerGobo1)
 
     programmer_gobo_index1: IntProperty(
-        name = "Gobo1 Rotation",
+        name = "Gobo1 Adjust",
         min = 0,
         max = 255,
-        default = 63,
+        default = 128,
         update = onProgrammerGoboIndex1)
 
     programmer_gobo2: IntProperty(
@@ -1801,10 +1803,10 @@ class DMX(PropertyGroup):
         update = onProgrammerGobo2)
 
     programmer_gobo_index2: IntProperty(
-        name = "Gobo2 Rotation",
+        name = "Gobo2 Adjust",
         min = 0,
         max = 255,
-        default = 63,
+        default = 128,
         update = onProgrammerGoboIndex2)
 
     programmer_shutter: IntProperty(
@@ -1855,9 +1857,9 @@ class DMX(PropertyGroup):
             self.programmer_color_temperature = 0
             self.programmer_iris = 0
             self.programmer_gobo1 = 0
-            self.programmer_gobo_index1 = 63
+            self.programmer_gobo_index1 = 128
             self.programmer_gobo2 = 0
-            self.programmer_gobo_index2 = 63
+            self.programmer_gobo_index2 = 128
             self.programmer_tilt_mode = 0
             self.programmer_pan_mode = 0
             self.programmer_pan_tilt_mode = 0
@@ -2418,6 +2420,10 @@ class DMX(PropertyGroup):
             ["Tilt", -135, 135],
             ["PanRotate", 500, -500],
             ["TiltRotate", 500, -500],
+            ["Gobo1Pos", -180, 180],
+            ["Gobo1PosRotate", -1000, 1000],
+            ["Gobo2Pos", -180, 180],
+            ["Gobo2PosRotate", -1000, 1000],
             ["CTC", 2700, 12000],
             ["CTB", 2700, 12000],
             ["CT0", 2700, 12000],
