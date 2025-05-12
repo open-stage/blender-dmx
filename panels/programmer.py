@@ -594,8 +594,8 @@ class DMX_PT_Programmer(Panel):
         c6.operator("dmx.center_to_selected", text="", icon="ZOOM_IN")
         c7.operator("dmx.track_target_true", text="", icon="TRACKING_FORWARDS")
         c8.operator("dmx.track_target_false", text="", icon="TRACKING_CLEAR_FORWARDS")
-        c9.operator("dmx.use_channel_functions_true", text="", icon="KEY_TAB")
-        c10.operator("dmx.use_channel_functions_false", text="", icon="KEY_TAB_FILLED")
+        c9.operator("dmx.use_channel_functions_true", text="", icon="PROP_ON")
+        c10.operator("dmx.use_channel_functions_false", text="", icon="PROP_OFF")
         c1.enabled = c2.enabled = c3.enabled = c4.enabled = c7.enabled = c8.enabled = (
             c9.enabled
         ) = c10.enabled = selected
