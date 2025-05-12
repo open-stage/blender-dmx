@@ -1,5 +1,32 @@
 ### Changelog
 
+### 2.0.0
+
+* Add support for ChannelFunctions and ChannelSets with their Physical From,
+  Physical To and WheelSlotIndex:
+    * Add this support to following GDTF Attributes:
+        * Pan, Tilt, PanRotate, TiltRotate, Zoom
+        * CTC, CTB, CTO, Iris
+        * Shutter1, Dimmer, ShutterStrobe
+        * Color1, Color2, Color3, ColorMacro1
+        * Gobo1, Gobo1Pos, Gobo1PosRotate
+        * Gobo2, Gobo2Pos, Gobo2PosRotate
+    * Add support for Mode Masters
+    * Add optional BlenderDMX defined default Physical From/To values
+* Reworked Shutter/Dimmer - removed complex code
+* Added compensation of intensity when zooming
+* Adjusted and separated color related code
+* Add support for PanMode, TiltMode, and PanTiltMode GDTF Attributes
+* Add support for emitter models with multiple materials
+* Add option to ignore Target during programming
+* Fix DMX breaks during MVR import
+* Fix color import during MVR import
+* Re-add address/universe option when editing multiple fixtures
+* Fix GDFT processing
+   * Mark empty manufacturer
+   * Handle some importing errors
+* Fix DMX Breaks processing on fixtures
+
 ### 1.9.6
 
 * Ensure that empty geometries are handled correctly
