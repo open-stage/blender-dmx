@@ -782,7 +782,7 @@ class DMX_PT_Programmer(Panel):
                 box.prop(
                     scene.dmx,
                     "programmer_gobo_index1",
-                    text=_("Gobo1 Rotation"),
+                    text=_("Gobo1 Adjust"),
                     translate=False,
                 )
             if selected_fixtures[0].has_attributes(["Gobo2"]):
@@ -793,7 +793,7 @@ class DMX_PT_Programmer(Panel):
                 box.prop(
                     scene.dmx,
                     "programmer_gobo_index2",
-                    text=_("Gobo2 Rotation"),
+                    text=_("Gobo2 Adjust"),
                     translate=False,
                 )
             if selected_fixtures[0].has_attributes(["Shutter1"]):
@@ -923,14 +923,14 @@ class DMX_PT_Programmer(Panel):
             box.prop(
                 scene.dmx,
                 "programmer_gobo_index1",
-                text=_("Gobo1 Rotation"),
+                text=_("Gobo1 Adjust"),
                 translate=False,
             )
             box.prop(scene.dmx, "programmer_gobo2", text=_("Gobo2"), translate=False)
             box.prop(
                 scene.dmx,
                 "programmer_gobo_index2",
-                text=_("Gobo2 Rotation"),
+                text=_("Gobo2 Adjust"),
                 translate=False,
             )
             box.prop(scene.dmx, "programmer_shutter", text=_("Strobe"), translate=False)
