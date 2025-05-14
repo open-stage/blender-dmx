@@ -207,7 +207,6 @@ class DMX(PropertyGroup):
         programmer.DMX_OT_Programmer_ResetTargets,
         programmer.DMX_MT_PIE_Reset,
         programmer.DMX_OT_Programmer_Unset_Ignore_Movement,
-        programmer.DMX_OT_Programmer_Set_Lock_Movement_Rotation,
         programmer.DMX_OT_Programmer_Set_Track_Target,
         programmer.DMX_OT_Programmer_Unset_Track_Target,
         programmer.DMX_OT_Programmer_Set_Use_Physical,

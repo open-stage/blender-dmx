@@ -158,33 +158,6 @@ class DMX_OT_Programmer_Unset_Use_Physical(Operator):
         return {"FINISHED"}
 
 
-class DMX_OT_Programmer_Set_Lock_Movement_Rotation(Operator):
-    bl_label = _("Lock/Unlock Movement Rotation")
-    bl_idname = "dmx.set_movement_rotation"
-    bl_description = _("Lock/Unlock Movement Rotation")
-    bl_options = {"UNDO"}
-
-    axis: StringProperty(name="axis")
-    enable: BoolProperty(name="enable")
-
-    def execute(self, context):
-        dmx = context.scene.dmx
-        selected = []
-        for fixture in dmx.fixtures:
-            for obj in fixture.collection.objects:
-                if obj in bpy.context.selected_objects:
-                    selected.append(fixture)
-
-        for fixture in dmx.fixtures:
-            if fixture in selected:
-                if "pan" in self.axis:
-                    fixture.lock_pan_rotation = self.enable
-                elif "tilt" in self.axis:
-                    fixture.lock_tilt_rotation = self.enable
-
-        return {"FINISHED"}
-
-
 class DMX_OT_Programmer_DeselectAll(Operator):
     bl_label = _("Deselect All")
     bl_idname = "dmx.deselect_all"
@@ -713,18 +686,6 @@ class DMX_PT_Programmer(Panel):
                     translate=False,
                     slider=True,
                 )
-                col2 = row.column()
-                col3 = row.column()
-                lock_movement = col2.operator(
-                    "dmx.set_movement_rotation", text="", icon="UNLOCKED"
-                )
-                lock_movement.axis = "pan"
-                lock_movement.enable = False
-                lock_movement = col3.operator(
-                    "dmx.set_movement_rotation", text="", icon="LOCKED"
-                )
-                lock_movement.axis = "pan"
-                lock_movement.enable = True
 
             if selected_fixtures[0].has_attributes(["TiltRotate"]):
                 row = box.row()
@@ -736,18 +697,6 @@ class DMX_PT_Programmer(Panel):
                     translate=False,
                     slider=True,
                 )
-                col2 = row.column()
-                col3 = row.column()
-                lock_movement = col2.operator(
-                    "dmx.set_movement_rotation", text="", icon="UNLOCKED"
-                )
-                lock_movement.axis = "tilt"
-                lock_movement.enable = False
-                lock_movement = col3.operator(
-                    "dmx.set_movement_rotation", text="", icon="LOCKED"
-                )
-                lock_movement.axis = "tilt"
-                lock_movement.enable = True
 
             if selected_fixtures[0].has_attributes(["Zoom"]):
                 box.prop(
@@ -864,18 +813,6 @@ class DMX_PT_Programmer(Panel):
                 translate=False,
                 slider=True,
             )
-            col2 = row.column()
-            col3 = row.column()
-            lock_movement = col2.operator(
-                "dmx.set_movement_rotation", text="", icon="UNLOCKED"
-            )
-            lock_movement.axis = "pan"
-            lock_movement.enable = False
-            lock_movement = col3.operator(
-                "dmx.set_movement_rotation", text="", icon="LOCKED"
-            )
-            lock_movement.axis = "pan"
-            lock_movement.enable = True
 
             row = box.row()
             col1 = row.column()
@@ -886,18 +823,6 @@ class DMX_PT_Programmer(Panel):
                 translate=False,
                 slider=True,
             )
-            col2 = row.column()
-            col3 = row.column()
-            lock_movement = col2.operator(
-                "dmx.set_movement_rotation", text="", icon="UNLOCKED"
-            )
-            lock_movement.axis = "tilt"
-            lock_movement.enable = False
-            lock_movement = col3.operator(
-                "dmx.set_movement_rotation", text="", icon="LOCKED"
-            )
-            lock_movement.axis = "tilt"
-            lock_movement.enable = True
 
             box.prop(
                 scene.dmx,

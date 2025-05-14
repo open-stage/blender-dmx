@@ -183,16 +183,11 @@ class DMX_Fixture_Channel(PropertyGroup):
 
     def get_function_attribute_data(self, dmx_value, dmx_data, skip_mode_master=False):
         for ch_f in self.channel_functions:
-            if len(self.channel_functions) == 1:
-                attribute = ch_f.attribute
-                physical_value = ch_f.dmx_to_physical(
-                    dmx_value
-                )  # calculate physical value for this dmx value
-                return attribute, physical_value
             # get a function which contains dmx from/to encapsulating our current dmx value
             if ch_f.dmx_from <= dmx_value <= ch_f.dmx_to:
-                DMX_Log.log.debug(("have the function", ch_f.name_))
+                DMX_Log.log.debug(("have a function", ch_f.attribute))
                 if ch_f.mode_master != "" and skip_mode_master is False:
+                    DMX_Log.log.debug("check if mm confirms it")
                     mode_from = ch_f.mode_from
                     mode_to = ch_f.mode_to
                     mm_dmx_value_coarse = dmx_data[ch_f.mm_dmx_break].get(
@@ -213,19 +208,24 @@ class DMX_Fixture_Channel(PropertyGroup):
                             ("mm_dmx_value", mm_dmx_value_final, mode_from, mode_to)
                         )
                         if mode_from <= mm_dmx_value_final <= mode_to:
-                            DMX_Log.log.debug(("return the mm function", ch_f.name_))
+                            DMX_Log.log.debug(
+                                ("return the function confirmed by mm", ch_f.attribute)
+                            )
                             attribute = ch_f.attribute
                             physical_value = ch_f.dmx_to_physical(
                                 dmx_value
                             )  # calculate physical value for this dmx value
                             return attribute, physical_value
+
+                        DMX_Log.log.debug("try another channel function or exit")
                 else:
-                    DMX_Log.log.debug(("no mm, return", ch_f.name_))
+                    DMX_Log.log.debug(("no mm, return", ch_f.attribute))
                     attribute = ch_f.attribute
                     physical_value = ch_f.dmx_to_physical(
                         dmx_value
                     )  # calculate physical value for this dmx value
                     return attribute, physical_value
+        DMX_Log.log.debug("exit with None")
         return None, None
 
     # fmt: off
@@ -441,16 +441,6 @@ class DMX_Fixture(PropertyGroup):
         description = "Classing - logical grouping across different layers",
         default = ""
             )
-
-    lock_pan_rotation: BoolProperty(
-        name = "Lock Pan Rotation",
-        description="Lock Pan Rotation",
-        default = False)
-
-    lock_tilt_rotation: BoolProperty(
-        name = "Lock Tilt Rotation",
-        description="Lock Tilt Rotation",
-        default = False)
 
     dmx_breaks:  CollectionProperty(
             name = "DMX Break",
@@ -1549,12 +1539,10 @@ class DMX_Fixture(PropertyGroup):
         if axis == "pan":
             mobile_type = "yoke"
             offset = 2
-            lock_rotation = self.lock_pan_rotation
 
         else:  # tilt
             mobile_type = "head"
             offset = 0
-            lock_rotation = self.lock_tilt_rotation
         if self.use_target:
             # autodisable target tracking as pan/tilt rotate
             # cannot work with track constraint
@@ -1568,14 +1556,10 @@ class DMX_Fixture(PropertyGroup):
             geometry.rotation_mode = "XYZ"
             geometry.driver_remove("rotation_euler", offset)
 
-            if lock_rotation:
-                rotation = math.radians(rotation)
-                geometry.rotation_euler[offset] = rotation
-            else:
-                if rotation != 0:
-                    driver = geometry.driver_add("rotation_euler", offset)
-                    value = rotation
-                    driver.driver.expression = f"{value} * (3.14159 / 180) * (frame / {bpy.context.scene.render.fps})"
+            if rotation != 0:
+                driver = geometry.driver_add("rotation_euler", offset)
+                value = rotation
+                driver.driver.expression = f"{value} * (3.14159 / 180) * (frame / {bpy.context.scene.render.fps})"
 
             if current_frame and self.dmx_cache_dirty:
                 geometry.keyframe_insert(data_path="location", frame=current_frame)
