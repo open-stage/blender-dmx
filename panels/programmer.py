@@ -272,6 +272,9 @@ class DMX_OT_Programmer_Clear(Operator):
         scene.dmx.programmer_tilt_rotate = 128
         scene.dmx.programmer_zoom = 128
         scene.dmx.programmer_color_wheel = 0
+        scene.dmx.programmer_color_wheel2 = 0
+        scene.dmx.programmer_color_wheel3 = 0
+        scene.dmx.programmer_color_wheel4 = 0
         scene.dmx.programmer_color_temperature = 0
         scene.dmx.programmer_iris = 0
         scene.dmx.programmer_gobo1 = 0
@@ -707,11 +710,32 @@ class DMX_PT_Programmer(Panel):
                     slider=True,
                 )
 
-            if selected_fixtures[0].has_attributes(["Color1", "Color2", "ColorMacro1"]):
+            if selected_fixtures[0].has_attributes(["Color1"]):
                 box.prop(
                     scene.dmx,
-                    "programmer_color_wheel",
-                    text=_("Color Wheel"),
+                    "programmer_color_wheel1",
+                    text=_("Color Wheel1"),
+                    translate=False,
+                )
+            if selected_fixtures[0].has_attributes(["Color2"]):
+                box.prop(
+                    scene.dmx,
+                    "programmer_color_wheel2",
+                    text=_("Color Wheel2"),
+                    translate=False,
+                )
+            if selected_fixtures[0].has_attributes(["Color3"]):
+                box.prop(
+                    scene.dmx,
+                    "programmer_color_wheel3",
+                    text=_("Color Wheel3"),
+                    translate=False,
+                )
+            if selected_fixtures[0].has_attributes(["ColorMacro1"]):
+                box.prop(
+                    scene.dmx,
+                    "programmer_color_wheel4",
+                    text=_("Color Macro1"),
                     translate=False,
                 )
             if selected_fixtures[0].has_attributes(["CTO", "CTC", "CTB"]):
@@ -833,8 +857,26 @@ class DMX_PT_Programmer(Panel):
             )
             box.prop(
                 scene.dmx,
-                "programmer_color_wheel",
-                text=_("Color Wheel"),
+                "programmer_color_wheel1",
+                text=_("Color Wheel1"),
+                translate=False,
+            )
+            box.prop(
+                scene.dmx,
+                "programmer_color_wheel2",
+                text=_("Color Wheel2"),
+                translate=False,
+            )
+            box.prop(
+                scene.dmx,
+                "programmer_color_wheel3",
+                text=_("Color Wheel3"),
+                translate=False,
+            )
+            box.prop(
+                scene.dmx,
+                "programmer_color_wheel4",
+                text=_("Color Macro1"),
                 translate=False,
             )
             box.prop(

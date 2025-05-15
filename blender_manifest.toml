@@ -14,7 +14,7 @@ license = [
 ]
 
 wheels = [
-  "wheels/pygdtf-1.2.1-py3-none-any.whl",
+  "wheels/pygdtf-1.2.2-py3-none-any.whl",
   "wheels/pymvr-0.5.0-py3-none-any.whl",
   "wheels/sacn-1.9.1-py3-none-any.whl",
   "wheels/oscpy-0.6.0-py2.py3-none-any.whl",
