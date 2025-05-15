@@ -123,7 +123,7 @@ def xyY2rgbaa(xyY):
         c = max(0.0, min(1.0, c))
         return round(c * 255)
 
-    return (to_255(R_lin), to_255(G_lin), to_255(B_lin), 1)
+    return (to_255(R_lin), to_255(G_lin), to_255(B_lin), 0)
 
 
 def rgb2xyY(R, G, B):

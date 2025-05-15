@@ -47,7 +47,6 @@ from .gdtf_file import DMX_GDTF_File
 from . import in_gdtf, in_out_mvr
 from .dmx import DMX
 from .dmx_temp_data import DMX_TempData
-from .fixture import DMX_Fixture_Channel, DMX_Fixture_Channel_Function
 
 _ = DMX_Lang._
 
@@ -153,12 +152,6 @@ def register():
 
     for cls in DMX.classes_base:
         bpy.utils.register_class(cls)
-
-    # DMX_Fixture_Channel_Function.mode_master_linked: PointerProperty(
-    #    type=DMX_Fixture_Channel
-    # )
-    # we need to add declaration of the mode_master_linked only here
-    # due to circular imports
 
     # Register addon main class
     bpy.utils.register_class(DMX)

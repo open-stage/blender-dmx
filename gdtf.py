@@ -79,42 +79,30 @@ class DMX_GDTF:
         return obj
 
     @staticmethod
-    def extract_gobos(profile):
-        """now unused as we need sequences for keyframe animating"""
-        gobos = []
-        dmx = bpy.context.scene.dmx
-        current_path = dmx.get_addon_path()
-        extract_to_folder_path = os.path.join(
-            current_path, "assets", "models", profile.fixture_type_id
-        )
-        for image_name in profile._package.namelist():
-            if image_name.startswith("wheels"):
-                short_name = image_name.replace("wheels/", "", 1)
-                if short_name in bpy.data.images:
-                    image = bpy.data.images[short_name]
-                else:
-                    profile._package.extract(image_name, extract_to_folder_path)
-                    image_path = os.path.join(extract_to_folder_path, image_name)
-                    image = bpy.data.images.load(image_path)
-                image["content_type"] = "image"
-                # TODO: we could add gobo names from Wheels
-                gobo = {"name": image_name, "image": image}
-                gobos.append(gobo)
+    def get_wheel_slot_colors(profile, attr_names_color_wheels_names):
+        result = {}
 
-        return gobos
+        attr_color_wheels = [
+            (attr_name, wheel)
+            for attr_name, color_wheel_name in attr_names_color_wheels_names
+            for wheel in profile.wheels
+            if wheel.name == color_wheel_name
+        ]
 
-    @staticmethod
-    def get_wheel_slot_colors(profile):
-        colors = []
-        for wheel in profile.wheels:
+        if not attr_color_wheels:
+            return result
+
+        for index, (attribute_name, wheel) in enumerate(attr_color_wheels):
+            colors = []
             for slot in wheel.wheel_slots:
                 try:
                     color = xyY2rgbaa(slot.color)
-                except Exception:
-                    color = None
-                if color is not None and color not in colors:
-                    colors.append(color)
-        return colors
+                except Exception as e:
+                    color = (0, 0, 0, 1)
+                colors.append(color)
+            result[attribute_name] = colors
+
+        return result
 
     @staticmethod
     def extract_gobos_as_sequence(profile, attr_names_gobo_wheels_names):

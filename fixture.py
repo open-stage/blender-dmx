@@ -121,9 +121,51 @@ class DMX_IES_Data(PropertyGroup):
         type = Text)
 
 # fmt: on
+
+
+class DMX_Fixture_Channel_Set(PropertyGroup):
+    def dmx_to_physical(self, dmx_value):
+        # test if this works or if we need physical_min, physical_max
+        dmx_range = self.dmx_to - self.dmx_from
+        if dmx_range == 0:
+            return self.physical_from
+
+        if ((self.dmx_from - self.dmx_to) + self.physical_from) == 0:
+            return (self.dmx_from - self.dmx_from) * (
+                self.physical_to - self.physical_from
+            )
+        return (dmx_value - self.dmx_from) * (self.physical_to - self.physical_from) / (
+            self.dmx_to - self.dmx_from
+        ) + self.physical_from
+
+    # fmt: off
+
+    name_: StringProperty(
+        name = "Name",
+        default = '')
+    dmx_from: IntProperty(
+        name = "DMX From",
+        default = 1)
+    dmx_to: IntProperty(
+        name = "DMX To",
+        default = 1)
+    physical_from: FloatProperty(
+        name = "Physical From",
+        default = 1)
+    physical_to: FloatProperty(
+        name = "Physical To",
+        default = 1)
+    wheel_slot: IntProperty(
+        name = "Wheel Slot",
+        default = 0)
+
+
 class DMX_Fixture_Channel_Function(PropertyGroup):
     def dmx_to_physical(self, dmx_value):
         # test if this works or if we need physical_min, physical_max
+        dmx_range = self.dmx_to - self.dmx_from
+        if dmx_range == 0:
+            return self.physical_from
 
         if ((self.dmx_from - self.dmx_to) + self.physical_from) == 0:
             return (self.dmx_from - self.dmx_from) * (
@@ -138,12 +180,12 @@ class DMX_Fixture_Channel_Function(PropertyGroup):
     attribute: StringProperty(
         name = "Attribute",
         default = '')
-    dmx_from: IntProperty(
-        name = "DMX From",
-        default = 1)
     name_: StringProperty(
         name = "Name",
         default = "")
+    dmx_from: IntProperty(
+        name = "DMX From",
+        default = 1)
     dmx_to: IntProperty(
         name = "DMX To",
         default = 1)
@@ -172,6 +214,10 @@ class DMX_Fixture_Channel_Function(PropertyGroup):
     mm_offsets_bytes: IntProperty(
         name = "ModeMaster Bytes",
         default = 1)
+    channel_sets: CollectionProperty(
+        name = "Fixture > Channels > Channel Functions > Channel Sets",
+        type = DMX_Fixture_Channel_Set
+    )
 
 
 # fmt: on
@@ -182,6 +228,7 @@ class DMX_Fixture_Channel(PropertyGroup):
         )
 
     def get_function_attribute_data(self, dmx_value, dmx_data, skip_mode_master=False):
+        wheel_slot = None
         for ch_f in self.channel_functions:
             # get a function which contains dmx from/to encapsulating our current dmx value
             if ch_f.dmx_from <= dmx_value <= ch_f.dmx_to:
@@ -215,7 +262,14 @@ class DMX_Fixture_Channel(PropertyGroup):
                             physical_value = ch_f.dmx_to_physical(
                                 dmx_value
                             )  # calculate physical value for this dmx value
-                            return attribute, physical_value
+
+                            for ch_s in ch_f.channel_sets:
+                                if ch_s.dmx_from <= dmx_value <= ch_s.dmx_to:
+                                    wheel_slot = ch_s.wheel_slot
+                                    physical_value = ch_s.dmx_to_physical(
+                                        dmx_value
+                                    )  # calculate physical value for this dmx value
+                            return attribute, physical_value, wheel_slot
 
                         DMX_Log.log.debug("try another channel function or exit")
                 else:
@@ -224,9 +278,16 @@ class DMX_Fixture_Channel(PropertyGroup):
                     physical_value = ch_f.dmx_to_physical(
                         dmx_value
                     )  # calculate physical value for this dmx value
-                    return attribute, physical_value
+
+                    for ch_s in ch_f.channel_sets:
+                        if ch_s.dmx_from <= dmx_value <= ch_s.dmx_to:
+                            wheel_slot = ch_s.wheel_slot
+                            physical_value = ch_s.dmx_to_physical(
+                                dmx_value
+                            )  # calculate physical value for this dmx value
+                    return attribute, physical_value, wheel_slot
         DMX_Log.log.debug("exit with None")
-        return None, None
+        return None, None, None
 
     # fmt: off
     attribute: StringProperty(
@@ -611,12 +672,24 @@ class DMX_Fixture(PropertyGroup):
         if "Gobo1" not in self.images:
             has_gobos = False  # faulty GDTF might have channels but no images
 
-        self["slot_colors"] = []
-        slot_colors = DMX_GDTF.get_wheel_slot_colors(gdtf_profile)
-        if len(slot_colors) > 1:
-            self["slot_colors"] = slot_colors[
-                :255
-            ]  # limit number of colors to an 8bit control channel
+        color_wheels_links = set(
+            [
+                (ch_fnc.attribute.str_link, ch_fnc.wheel.str_link)
+                for channel in dmx_mode.dmx_channels
+                for logical in channel.logical_channels
+                for ch_fnc in logical.channel_functions
+                if ch_fnc.attribute.str_link
+                in ["Color1", "Color2", "Color3", "ColorMacro1"]
+            ]
+        )
+
+        self["slot_colors"] = {}
+
+        if color_wheels_links:
+            slot_colors = DMX_GDTF.get_wheel_slot_colors(
+                gdtf_profile, color_wheels_links
+            )
+            self["slot_colors"] = slot_colors
 
         links = {}
         base = self.get_root(model_collection)
@@ -854,6 +927,23 @@ class DMX_Fixture(PropertyGroup):
                     new_channel_function.physical_from = channel_function.physical_from
                     new_channel_function.physical_to = channel_function.physical_to
 
+                    for channel_set in channel_function.channel_sets:
+                        new_channel_set = new_channel_function.channel_sets.add()
+                        new_channel_set.name_ = channel_set.name
+                        if channel_set.dmx_from.byte_count > 2:
+                            new_channel_set.dmx_from = channel_set.dmx_from.get_value()
+                        else:
+                            new_channel_set.dmx_from = channel_set.dmx_from.value
+
+                        if channel_set.dmx_to.byte_count > 2:
+                            new_channel_set.dmx_to = channel_set.dmx_to.get_value()
+                        else:
+                            new_channel_set.dmx_to = channel_set.dmx_to.value
+
+                        new_channel_set.physical_from = channel_set.physical_from
+                        new_channel_set.physical_to = channel_set.physical_to
+                        new_channel_set.wheel_slot = channel_set.wheel_slot_index
+
         # create a link from channel function to a mode_master channel:
         for dmx_channel in channels:
             for ch_function in dmx_channel.channel_functions:
@@ -969,6 +1059,9 @@ class DMX_Fixture(PropertyGroup):
         cmy = [None, None, None]
         zoom = None
         color1 = None
+        color2 = None
+        color3 = None
+        color4 = None
         ctc = None, None
         iris = None
         rgb_mixing_geometries = {}
@@ -1021,10 +1114,12 @@ class DMX_Fixture(PropertyGroup):
                 DMX_Log.log.debug(("data virtual", dmx_value_virtual))
                 channel_function_attribute = None
 
-                channel_function_attribute, channel_function_physical_value = (
-                    vchannel.get_function_attribute_data(
-                        dmx_value_virtual, None, skip_mode_master=True
-                    )
+                (
+                    channel_function_attribute,
+                    channel_function_physical_value,
+                    channel_set_wheel_slot,
+                ) = vchannel.get_function_attribute_data(
+                    dmx_value_virtual, None, skip_mode_master=True
                 )
                 if not self.use_fixtures_channel_functions:
                     channel_function = dmx.get_default_channel_function_by_attribute(
@@ -1201,9 +1296,11 @@ class DMX_Fixture(PropertyGroup):
                 )
             )
 
-            channel_function_attribute, channel_function_physical_value = (
-                channel.get_function_attribute_data(dmx_value_final, dmx_data)
-            )
+            (
+                channel_function_attribute,
+                channel_function_physical_value,
+                channel_set_wheel_slot,
+            ) = channel.get_function_attribute_data(dmx_value_final, dmx_data)
 
             if not self.use_fixtures_channel_functions:
                 channel_function = dmx.get_default_channel_function_by_attribute(
@@ -1313,10 +1410,14 @@ class DMX_Fixture(PropertyGroup):
                 )
             elif channel_function_attribute == "Zoom":
                 zoom = channel_function_physical_value
-            elif channel.attribute == "Color1":
-                color1 = dmx_data[channel.dmx_break][channel.offsets[0]]
-            elif channel.attribute == "Color2":
-                color1 = dmx_data[channel.dmx_break][channel.offsets[0]]
+            elif channel_function_attribute == "Color1":
+                color1 = channel_set_wheel_slot
+            elif channel_function_attribute == "Color2":
+                color2 = channel_set_wheel_slot
+            elif channel_function_attribute == "Color3":
+                color3 = channel_set_wheel_slot
+            elif channel_function_attribute == "ColorMacro1":
+                color4 = channel_set_wheel_slot
             elif channel_function_attribute == "CTC":
                 ctc = channel_function_physical_value, dmx_value_coarse
             elif channel_function_attribute == "CTO":
@@ -1325,16 +1426,14 @@ class DMX_Fixture(PropertyGroup):
                 ctc = channel_function_physical_value, dmx_value_coarse
             elif channel_function_attribute == "Iris":
                 iris = channel_function_physical_value
-            elif channel.attribute == "ColorMacro1":
-                color1 = dmx_data[channel.dmx_break][channel.offsets[0]]
-            elif channel.attribute == "Gobo1":
-                gobo1[0] = dmx_data[channel.dmx_break][channel.offsets[0]]
+            elif channel_function_attribute == "Gobo1":
+                gobo1[0] = channel_set_wheel_slot
             elif channel_function_attribute == "Gobo1Pos":
                 gobo1[1] = channel_function_physical_value
             elif channel_function_attribute == "Gobo1PosRotate":
                 gobo1[2] = channel_function_physical_value
-            elif channel.attribute == "Gobo2":
-                gobo2[0] = dmx_data[channel.dmx_break][channel.offsets[0]]
+            elif channel_function_attribute == "Gobo2":
+                gobo2[0] = channel_set_wheel_slot
             elif channel_function_attribute == "Gobo2Pos":
                 gobo2[1] = channel_function_physical_value
             elif channel_function_attribute == "Gobo2PosRotate":
@@ -1390,8 +1489,16 @@ class DMX_Fixture(PropertyGroup):
         )
 
         colorwheel_color = None
-        if color1 is not None:
-            colorwheel_color = self.get_colorwheel_color(color1)
+
+        if color1 is not None and color1 != 1:
+            colorwheel_color = self.get_colorwheel_color(color1, "Color1")
+        if color2 is not None and color2 != 1:
+            colorwheel_color = self.get_colorwheel_color(color2, "Color2")
+        if color3 is not None and color3 != 1:
+            colorwheel_color = self.get_colorwheel_color(color3, "Color3")
+        if color4 is not None and color4 != 1:
+            colorwheel_color = self.get_colorwheel_color(color4, "ColorMacro1")
+
         color_temperature = None
         if ctc[0] is not None:
             color_temperature = self.get_color_temperature(*ctc)
@@ -1660,8 +1767,8 @@ class DMX_Fixture(PropertyGroup):
                 flux = light.object.data["flux"] * dmx.beam_intensity_multiplier
                 if zoom is None:
                     zoom = math.degrees(light.object.data.spot_size)
-                zoom_compensation = max(flux / pow(zoom, 2), 0.1)
-                value = dimmer * flux * zoom_compensation
+                zoom_compensation = flux / (pow(max(zoom, 2), 0.1))
+                value = dimmer * zoom_compensation * 1.5
 
                 # we should improve this to get more Cycles/Eevee compatibility... add a driver which would adjust the intensity
                 # depending on the IES linking or not, adding drivers: https://blender.stackexchange.com/a/314329/176407
@@ -1855,15 +1962,16 @@ class DMX_Fixture(PropertyGroup):
             DMX_Log.log.error(f"Error updating zoom {e}")
         return zoom
 
-    def get_colorwheel_color(self, color1):
-        if not len(self["slot_colors"]) or color1 == 0:
+    def get_colorwheel_color(self, color, attribute):
+        if not len(self["slot_colors"]) or color == 0 or color == 1:
+            return
+        if attribute not in self["slot_colors"]:
             return
 
-        colors = self["slot_colors"]
-        index = int(color1 / int(255 / (len(colors) - 1)))
+        colors = self["slot_colors"][attribute]
 
-        if len(colors) > index:
-            return list(colors[index])
+        if len(colors) > color:
+            return list(colors[color])
 
     def get_color_temperature(self, ctc, dmx_value):
         if dmx_value == 0:
@@ -1915,7 +2023,7 @@ class DMX_Fixture(PropertyGroup):
             self.hide_gobo([n], current_frame=current_frame)
             return
 
-        if gobo[0] == 0:
+        if gobo[0] == 1:
             self.hide_gobo([n], current_frame=current_frame)
             return
 
@@ -1926,8 +2034,8 @@ class DMX_Fixture(PropertyGroup):
 
         DMX_Log.log.debug(("update gobo", gobo, n))
         self.hide_gobo([n], False, current_frame=current_frame)
-        index = (gobo[0] - 1) % gobos.count
-        self.set_gobo_slot(n, index, current_frame=current_frame)
+        gobo_index = gobo[0] - 2  # 1 is empty, 2 is first, we start from 0...
+        self.set_gobo_slot(n, gobo_index, current_frame=current_frame)
         if gobo[1] is not None:
             self.set_gobo_indexing(gobo[1], n, current_frame=current_frame)
         elif gobo[2] is not None:

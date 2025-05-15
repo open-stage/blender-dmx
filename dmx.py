@@ -110,6 +110,7 @@ class DMX(PropertyGroup):
         fixture.DMX_Emitter_Material,
         fixture.DMX_IES_Data,
         fixture.DMX_Geometry_Node,
+        fixture.DMX_Fixture_Channel_Set,
         fixture.DMX_Fixture_Channel_Function,
         fixture.DMX_Fixture_Channel,
         fixture.DMX_Break,
@@ -1485,7 +1486,10 @@ class DMX(PropertyGroup):
         self.onProgrammerTilt(context)
         self.onProgrammerColor(context)
         self.onProgrammerDimmer(context)
-        self.onProgrammerColorWheel(context)
+        self.onProgrammerColorWheel1(context)
+        self.onProgrammerColorWheel2(context)
+        self.onProgrammerColorWheel3(context)
+        self.onProgrammerColorWheel4(context)
         self.onProgrammerGobo1(context)
         self.onProgrammerGoboIndex1(context)
         self.onProgrammerGobo2(context)
@@ -1617,16 +1621,50 @@ class DMX(PropertyGroup):
                 )
         self.render()
 
-    def onProgrammerColorWheel(self, context):
+    def onProgrammerColorWheel1(self, context):
         for fixture_ in self.fixtures:
             if fixture_.collection is None:
                 continue
             if fixture_.is_selected():
                 fixture_.setDMX(
                     {
-                        "Color1": int(self.programmer_color_wheel),
-                        "Color2": int(self.programmer_color_wheel),
-                        "ColorMacro1": int(self.programmer_color_wheel),
+                        "Color1": int(self.programmer_color_wheel1),
+                    }
+                )
+        self.render()
+
+    def onProgrammerColorWheel2(self, context):
+        for fixture_ in self.fixtures:
+            if fixture_.collection is None:
+                continue
+            if fixture_.is_selected():
+                fixture_.setDMX(
+                    {
+                        "Color2": int(self.programmer_color_wheel2),
+                    }
+                )
+        self.render()
+
+    def onProgrammerColorWheel3(self, context):
+        for fixture_ in self.fixtures:
+            if fixture_.collection is None:
+                continue
+            if fixture_.is_selected():
+                fixture_.setDMX(
+                    {
+                        "Color3": int(self.programmer_color_wheel3),
+                    }
+                )
+        self.render()
+
+    def onProgrammerColorWheel4(self, context):
+        for fixture_ in self.fixtures:
+            if fixture_.collection is None:
+                continue
+            if fixture_.is_selected():
+                fixture_.setDMX(
+                    {
+                        "ColorMacro1": int(self.programmer_color_wheel4),
                     }
                 )
         self.render()
@@ -1759,12 +1797,34 @@ class DMX(PropertyGroup):
         default = 128,
         update = onProgrammerZoom)
 
-    programmer_color_wheel: IntProperty(
-        name = "Programmer Color Wheel",
+    programmer_color_wheel1: IntProperty(
+        name = "Programmer Color Wheel1",
         min = 0,
         max = 255,
         default = 0,
-        update = onProgrammerColorWheel)
+        update = onProgrammerColorWheel1)
+
+    programmer_color_wheel2: IntProperty(
+        name = "Programmer Color Wheel2",
+        min = 0,
+        max = 255,
+        default = 0,
+        update = onProgrammerColorWheel2)
+
+    programmer_color_wheel3: IntProperty(
+        name = "Programmer Color Wheel3",
+        min = 0,
+        max = 255,
+        default = 0,
+        update = onProgrammerColorWheel3)
+
+    programmer_color_wheel4: IntProperty(
+        name = "Programmer Color Macro1",
+        min = 0,
+        max = 255,
+        default = 0,
+        update = onProgrammerColorWheel4)
+
 
     programmer_color_temperature: IntProperty(
         name = "Programmer Color Temperature",
@@ -1846,13 +1906,16 @@ class DMX(PropertyGroup):
         if n < 1:
             self.programmer_dimmer = 0
             self.programmer_color = (255, 255, 255, 255)
-            self.programmer_pan = 0
+            self.programmer_pan = 128
             self.programmer_pan_rotate = 128
-            self.programmer_tilt = 0
+            self.programmer_tilt = 128
             self.programmer_tilt_rotate = 128
             self.programmer_zoom = 25
             self.programmer_shutter = 0
-            self.programmer_color_wheel = 0
+            self.programmer_color_wheel1 = 0
+            self.programmer_color_wheel2 = 0
+            self.programmer_color_wheel3 = 0
+            self.programmer_color_wheel4 = 0
             self.programmer_color_temperature = 0
             self.programmer_iris = 0
             self.programmer_gobo1 = 0
@@ -1874,11 +1937,13 @@ class DMX(PropertyGroup):
         if "Zoom" in data:
             self.programmer_zoom = int(data["Zoom"])
         if "Color1" in data:
-            self.programmer_color_wheel = int(data["Color1"])
+            self.programmer_color_wheel1 = int(data["Color1"])
         if "Color2" in data:
-            self.programmer_color_wheel = int(data["Color2"])
+            self.programmer_color_wheel2 = int(data["Color2"])
+        if "Color3" in data:
+            self.programmer_color_wheel3 = int(data["Color3"])
         if "ColorMacro1" in data:
-            self.programmer_color_wheel = int(data["ColorMacro1"])
+            self.programmer_color_wheel4 = int(data["ColorMacro1"])
         if "CTC" in data:
             self.programmer_color_temperature = int(data["CTC"])
         if "CTO" in data:
