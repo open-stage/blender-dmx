@@ -1201,7 +1201,7 @@ class DMX(PropertyGroup):
     volume_noise_scale: FloatProperty(
         name = _("Noise Scale"),
         description=_("Volume Noise Scale"),
-        default = 1,
+        default = 0,
         min = 0,
         max = 100,
         update = onVolumeNoiseScale)
@@ -1213,7 +1213,7 @@ class DMX(PropertyGroup):
     volume_density: FloatProperty(
         name = _("Density"),
         description=_("Volume Scatter Density"),
-        default = 0.1,
+        default = 0.05,
         min = 0,
         max = 1,
         update = onVolumeDensity)
