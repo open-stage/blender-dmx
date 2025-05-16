@@ -901,12 +901,15 @@ class DMX_Fixture(PropertyGroup):
                     new_channel_function.attribute = channel_function.attribute.str_link
                     new_channel_function.name_ = channel_function.name
 
-                    mode_master = channel_function.mode_master.str_link
-                    new_channel_function.mode_master = (
-                        mode_master if mode_master is not None else ""
-                    )
-                    new_channel_function.mode_from = channel_function.mode_from.value
-                    new_channel_function.mode_to = channel_function.mode_to.value
+                    if channel_function.mode_master is not None:
+                        mode_master = channel_function.mode_master.str_link
+                        new_channel_function.mode_master = (
+                            mode_master if mode_master is not None else ""
+                        )
+                        new_channel_function.mode_from = (
+                            channel_function.mode_from.value
+                        )
+                        new_channel_function.mode_to = channel_function.mode_to.value
 
                     # virtual channels have byte count 4 which is too much for blender int
                     # and we treat them as 8 bit only anyways
@@ -929,7 +932,7 @@ class DMX_Fixture(PropertyGroup):
 
                     for channel_set in channel_function.channel_sets:
                         new_channel_set = new_channel_function.channel_sets.add()
-                        new_channel_set.name_ = channel_set.name
+                        new_channel_set.name_ = channel_set.name or ""
                         if channel_set.dmx_from.byte_count > 2:
                             new_channel_set.dmx_from = channel_set.dmx_from.get_value()
                         else:
