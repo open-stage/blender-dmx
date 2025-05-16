@@ -100,30 +100,38 @@ def xyY2rgbaa(xyY):
     if y == 0:
         return (0, 0, 0)
 
-    # xyY → XYZ
-    X = (x * Y) / y
-    Z = ((1 - x - y) * Y) / y
+    # Convert to XYZ
+    X = x * (Y / y)
+    Z = (1 - x - y) * (Y / y)
 
-    # XYZ → Linear RGB
-    R_lin = 3.2406 * X - 1.5372 * Y - 0.4986 * Z
-    G_lin = -0.9689 * X + 1.8758 * Y + 0.0415 * Z
-    B_lin = 0.0557 * X - 0.2040 * Y + 1.0570 * Z
+    var_X = X / 100
+    var_Y = Y / 100
+    var_Z = Z / 100
 
-    # Gamma correction
-    def gamma_correct(c):
-        a = 0.055
-        if c <= 0.0031308:
-            return 12.92 * c
-        else:
-            return (1 + a) * (c ** (1 / 2.4)) - a
+    # XYZ to RGB
+    var_R = var_X * 3.2406 + var_Y * -1.5372 + var_Z * -0.4986
+    var_G = var_X * -0.9689 + var_Y * 1.8758 + var_Z * 0.0415
+    var_B = var_X * 0.0557 + var_Y * -0.204 + var_Z * 1.057
 
-    # Clamp and convert to 0–255
-    def to_255(c):
-        c = gamma_correct(c)
-        c = max(0.0, min(1.0, c))
-        return round(c * 255)
+    if var_R > 0.0031308:
+        var_R = 1.055 * (var_R ** (1 / 2.4)) - 0.055
+    else:
+        var_R = 12.92 * var_R
 
-    return (to_255(R_lin), to_255(G_lin), to_255(B_lin), 0)
+    if var_G > 0.0031308:
+        var_G = 1.055 * (var_G ** (1 / 2.4)) - 0.055
+    else:
+        var_G = 12.92 * var_G
+
+    if var_B > 0.0031308:
+        var_B = 1.055 * (var_B ** (1 / 2.4)) - 0.055
+    else:
+        var_B = 12.92 * var_B
+
+    R = max(0, min(1, var_R)) * 255
+    G = max(0, min(1, var_G)) * 255
+    B = max(0, min(1, var_B)) * 255
+    return (R, G, B, 1)
 
 
 def rgb2xyY(R, G, B):
