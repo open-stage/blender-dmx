@@ -60,7 +60,7 @@ from .material import (
 from .model import DMX_Model
 from .node_arranger import DMX_OT_ArrangeSelected
 from .osc_utils import DMX_OSC_Handlers
-from .util import (
+from .color_utils import (
     add_rgb,
     cmy_to_rgb,
     colors_to_rgb,
@@ -484,14 +484,6 @@ class DMX_Fixture(PropertyGroup):
         max = 255,
         default = (255,255,255))
 
-    gel_color: FloatVectorProperty(
-        name = "Unused",
-        subtype = "COLOR",
-        size = 4,
-        min = 0.0,
-        max = 1.0,
-        default = (1.0,1.0,1.0,1.0))
-
     ignore_movement_dmx: BoolProperty(
         name = "Ignore movement DMX",
         description="Stay in position set by Target",
@@ -559,7 +551,7 @@ class DMX_Fixture(PropertyGroup):
         if classing is not None:
             self.classing = classing
 
-        self.gel_color_rgb = list(int((255 / 1) * i) for i in gel_color[:3])
+        self.gel_color_rgb = [int(255 * i) for i in gel_color[:3]]
         self.display_beams = display_beams
         self.add_target = add_target
 

@@ -29,7 +29,8 @@ from io_scene_3ds.import_3ds import load_3ds
 from mathutils import Matrix, Vector
 
 from .logging_setup import DMX_Log
-from .util import sanitize_obj_name, xyY2rgbaa
+from .util import sanitize_obj_name
+from .color_utils import xyY2rgbaa
 
 
 class DMX_GDTF:

@@ -89,8 +89,11 @@ from .preferences import DMX_Preferences, DMX_Regenrate_UUID
 from .universe import DMX_Universe
 from .util import (
     ShowMessageBox,
-    cmy_to_rgb,
     draw_top_message,
+)
+
+from .color_utils import (
+    cmy_to_rgb,
     flatten_color,
     rgb_to_cmy,
 )
@@ -1132,11 +1135,6 @@ class DMX(PropertyGroup):
     def onVolumePreview(self, context):
         self.updatePreviewVolume()
 
-    #volume_preview: BoolProperty(
-    #    name = "Preview Volume",
-    #    default = False,
-    #    update = onVolumePreview)
-
 
     volume_preview: EnumProperty(
         name= _("Simple beam"),
@@ -1214,7 +1212,7 @@ class DMX(PropertyGroup):
     volume_density: FloatProperty(
         name = _("Density"),
         description=_("Volume Scatter Density"),
-        default = 0.05,
+        default = 0.5,
         min = 0,
         max = 1,
         update = onVolumeDensity)

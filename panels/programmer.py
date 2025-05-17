@@ -590,6 +590,8 @@ class DMX_PT_Programmer(Panel):
 
         row = layout.row()
         box = layout.column().box()
+        row = box.row()
+        row.operator("dmx.clear", text=_("Clear"))
 
         if selected_fixture_class is not None:
             all_channels = []
@@ -916,8 +918,6 @@ class DMX_PT_Programmer(Panel):
                 translate=False,
             )
         box.enabled = selected
-
-        dmx = context.scene.dmx
 
         if selected:
             if bpy.context.window_manager.dmx.pause_render:

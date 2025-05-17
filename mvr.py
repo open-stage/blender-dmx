@@ -29,7 +29,8 @@ from mathutils import Matrix
 
 from .group import FixtureGroup
 from .logging_setup import DMX_Log
-from .util import create_unique_fixture_name, xyY2rgbaa
+from .util import create_unique_fixture_name
+from .color_utils import xyY2rgbaa
 
 auxData = {}
 objectData = {}

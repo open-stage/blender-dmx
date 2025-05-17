@@ -101,7 +101,7 @@ def getVolumeScatterMaterial():
     )
     material.node_tree.links.new(noise_texture.outputs[0], color_ramp.inputs[0])
     material.node_tree.links.new(color_ramp.outputs[0], volume_scatter.inputs[0])
-    volume_scatter.inputs["Density"].default_value = 0.05
+    volume_scatter.inputs["Density"].default_value = 0.5
     material.node_tree.nodes["Color Ramp"].color_ramp.elements[0].position = 0.444
     material.node_tree.nodes["Color Ramp"].color_ramp.elements[1].position = 1
     return material
