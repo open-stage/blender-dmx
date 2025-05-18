@@ -1558,7 +1558,7 @@ class DMX(PropertyGroup):
             if fixture_.collection is None:
                 continue
             if fixture_.is_selected():
-                fixture_.setDMX({"Tilt": int(255 * (self.programmer_tilt + 1) / 2)})
+                fixture_.setDMX({"Tilt": round(255 * (self.programmer_tilt + 1) / 2)})
         self.render()
 
     def onProgrammerTiltRotate(self, context):
@@ -1574,7 +1574,7 @@ class DMX(PropertyGroup):
             if fixture_.collection is None:
                 continue
             if fixture_.is_selected():
-                fixture_.setDMX({"Pan": int(255 * (self.programmer_pan + 1) / 2)})
+                fixture_.setDMX({"Pan": round(255 * (self.programmer_pan + 1) / 2)})
         self.render()
 
     def onProgrammerPanRotate(self, context):
