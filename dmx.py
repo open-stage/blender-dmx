@@ -1558,7 +1558,7 @@ class DMX(PropertyGroup):
             if fixture_.collection is None:
                 continue
             if fixture_.is_selected():
-                fixture_.setDMX({"Tilt": round(255 * (self.programmer_tilt + 1) / 2)})
+                fixture_.setDMX({"Tilt": int((self.programmer_tilt * 128) + 128)})
         self.render()
 
     def onProgrammerTiltRotate(self, context):
@@ -1574,7 +1574,7 @@ class DMX(PropertyGroup):
             if fixture_.collection is None:
                 continue
             if fixture_.is_selected():
-                fixture_.setDMX({"Pan": round(255 * (self.programmer_pan + 1) / 2)})
+                fixture_.setDMX({"Pan": int((self.programmer_pan * 128) + 128)})
         self.render()
 
     def onProgrammerPanRotate(self, context):
@@ -1986,9 +1986,9 @@ class DMX(PropertyGroup):
         #    rgb = cmy_to_rgb([data['ColorAdd_C'], data['ColorAdd_M'], data['ColorAdd_Y']])
         #    self.programmer_color = (1/256*rgb[0], 1/256*rgb[1], 1/256*rgb[2], 255)
         if "Pan" in data:
-            self.programmer_pan = data["Pan"] / 127.0 - 1
+            self.programmer_pan = (data["Pan"] - 128) / 128.0
         if "Tilt" in data:
-            self.programmer_tilt = data["Tilt"] / 127.0 - 1
+            self.programmer_tilt = (data["Tilt"] - 128) / 128.0
         if "PanRotate" in data:
             self.programmer_pan_rotate = int(data["PanRotate"])
         if "TiltRotate" in data:
