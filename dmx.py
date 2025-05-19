@@ -94,8 +94,8 @@ from .util import (
 
 from .color_utils import (
     cmy_to_rgb,
-    flatten_color,
     rgb_to_cmy,
+    calculate_automatic_white,
 )
 
 _ = DMX_Lang._
@@ -1523,7 +1523,7 @@ class DMX(PropertyGroup):
             if fixture_.is_selected():
                 rgb = [int(255 * x) for x in self.programmer_color]
                 cmy = rgb_to_cmy(rgb)
-                automatic_white = self.calculate_automatic_white()
+                automatic_white = calculate_automatic_white(rgb[:3])
 
                 fixture_.setDMX(
                     {
@@ -1540,18 +1540,6 @@ class DMX(PropertyGroup):
                     }
                 )
         self.render()
-
-    def calculate_automatic_white(self):
-        rgb = [int(255 * x) for x in self.programmer_color]
-        if rgb[0] == rgb[1] == rgb[2]:
-            return rgb[0]
-        min_rgb = min(rgb)
-        if min_rgb == 0:
-            return 0
-        average_rgb = sum(rgb) / len(rgb)
-        automatic_white = int(average_rgb * (1 - (min_rgb / 255)))
-
-        return automatic_white
 
     def onProgrammerTilt(self, context):
         for fixture_ in self.fixtures:
@@ -1964,24 +1952,19 @@ class DMX(PropertyGroup):
             self.programmer_gobo_index2 = int(data["Gobo2PosRotate"])
         if "ColorAdd_R" in data and "ColorAdd_G" in data and "ColorAdd_B" in data:
             rgb = [data["ColorAdd_R"], data["ColorAdd_G"], data["ColorAdd_B"]]
-            self.programmer_color = (*flatten_color(rgb), 255)
+            self.programmer_color = (*[color / 255 for color in rgb], 255)
         if (
             "ColorRGB_Red" in data
             and "ColorRGB_Green" in data
             and "ColorRGB_Blue" in data
         ):
             rgb = [data["ColorRGB_Red"], data["ColorRGB_Green"], data["ColorRGB_Blue"]]
-            self.programmer_color = (*flatten_color(rgb), 255)
+            self.programmer_color = (*[color / 255 for color in rgb], 255)
         if "ColorSub_C" in data and "ColorSub_M" in data and "ColorSub_Y" in data:
             rgb = cmy_to_rgb(
                 [data["ColorSub_C"], data["ColorSub_M"], data["ColorSub_Y"]]
             )
-            self.programmer_color = (
-                1 / 256 * rgb[0],
-                1 / 256 * rgb[1],
-                1 / 256 * rgb[2],
-                255,
-            )
+            self.programmer_color = (*[color / 255 for color in rgb], 255)
         # if ('ColorAdd_C' in data and 'ColorAdd_M' in data and 'ColorAdd_Y' in data):
         #    rgb = cmy_to_rgb([data['ColorAdd_C'], data['ColorAdd_M'], data['ColorAdd_Y']])
         #    self.programmer_color = (1/256*rgb[0], 1/256*rgb[1], 1/256*rgb[2], 255)

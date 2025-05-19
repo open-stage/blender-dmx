@@ -43,12 +43,16 @@ def cmy_to_rgb(cmy):
     return [r, g, b]
 
 
-def flatten_color(colors):
-    """Remove precision to prevent color picker drifting"""
-    color_list = []
-    for color in colors:
-        color_list.append(round(1 / 256 * color, 2))
-    return color_list
+def calculate_automatic_white(rgb):
+    if rgb[0] == rgb[1] == rgb[2]:
+        return rgb[0]
+    min_rgb = min(rgb)
+    if min_rgb == 0:
+        return 0
+    average_rgb = sum(rgb) / len(rgb)
+    automatic_white = int(average_rgb * (1 - (min_rgb / 255)))
+
+    return automatic_white
 
 
 # https://stackoverflow.com/questions/6629798/whats-wrong-with-this-rgb-to-xyz-color-space-conversion-algorithm
