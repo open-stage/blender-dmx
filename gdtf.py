@@ -635,6 +635,9 @@ class DMX_GDTF:
             rotation = geometry_mtx.to_3x3().inverted()
             scale = geometry_mtx.to_scale()
             obj_child.matrix_local = Matrix.LocRotScale(translate, rotation, scale)
+            obj_child.rotation_mode = "XYZ"
+            obj_child["applied_rotation"] = obj_child.rotation_euler
+            # baking into the object did not work, we store the rotation and re-apply it on pan/tilt in render()
 
         def constraint_child_to_parent(parent_geometry, child_geometry):
             if sanitize_obj_name(parent_geometry) not in objs:

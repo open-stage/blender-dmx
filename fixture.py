@@ -2166,6 +2166,7 @@ class DMX_Fixture(PropertyGroup):
         else:
             geometry = self.get_object_by_geometry_name(geometry)
         if geometry:
+            value = value + geometry.get("applied_rotation", [0, 0])[offset]
             geometry.rotation_mode = "XYZ"
             geometry.rotation_euler[offset] = value
             if current_frame and self.dmx_cache_dirty:
