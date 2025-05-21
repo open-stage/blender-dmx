@@ -941,14 +941,26 @@ class DMX_Fixture(PropertyGroup):
 
         # create a link from channel function to a mode_master channel:
         for dmx_channel in channels:
+            modemasters_exist = False
             for ch_function in dmx_channel.channel_functions:
                 if ch_function.mode_master != "":
                     for ch in channels:
-                        # we might have to search in both dmx and virtual
                         if ch.name_ == ch_function.mode_master:
+                            modemasters_exist = True
                             ch_function.mm_dmx_break = ch.dmx_break
                             ch_function.mm_offsets = ch.offsets
                             ch_function.mm_offsets_bytes = ch.offsets_bytes
+            if not modemasters_exist:
+                # create some caching of dmx channel data
+                # we ignore channels with mode dependencies
+                # as checking for the cache and then finding that we need
+                # to re-calculate the value anyways is probably more expensive
+                dmx_channel["cached_channel"] = {
+                    "dmx_value": -1,
+                    "attribute": None,
+                    "value": -1,
+                    "index": -1,
+                }
 
     # Interface Methods #
 
@@ -1282,20 +1294,53 @@ class DMX_Fixture(PropertyGroup):
                 dmx_value_fine = dmx_data[channel.dmx_break][channel.offsets[1]]
                 dmx_value_final = (dmx_value_coarse << 8) | dmx_value_fine
 
-            DMX_Log.log.debug(
-                (
-                    "start function search",
-                    channel.name_,
-                    channel.offsets,
-                    channel.offsets_bytes,
-                )
-            )
+            skip_attr_search = False
+            if "cached_channel" in channel:
+                cached_dmx = channel["cached_channel"].get("dmx_value")
+                cached_attr = channel["cached_channel"].get("attribute", None)
+                cached_value = channel["cached_channel"].get("value")
+                cached_slot = channel["cached_channel"].get("index")
 
-            (
-                channel_function_attribute,
-                channel_function_physical_value,
-                channel_set_wheel_slot,
-            ) = channel.get_function_attribute_data(dmx_value_final, dmx_data)
+                if dmx_value_final == int(cached_dmx) and cached_attr is not None:
+                    skip_attr_search = True
+                    channel_function_attribute = cached_attr
+                    channel_function_physical_value = cached_value
+                    channel_set_wheel_slot = cached_slot
+                    DMX_Log.log.debug(
+                        (
+                            "use cached data",
+                            channel.name_,
+                            channel_function_attribute,
+                            channel_function_physical_value,
+                            channel_set_wheel_slot,
+                        )
+                    )
+
+            if not skip_attr_search and self.use_fixtures_channel_functions:
+                DMX_Log.log.debug(
+                    ("search for fresh attribute data", channel.attribute)
+                )
+                DMX_Log.log.debug(
+                    (
+                        "start function search",
+                        channel.name_,
+                        channel.offsets,
+                        channel.offsets_bytes,
+                    )
+                )
+
+                (
+                    channel_function_attribute,
+                    channel_function_physical_value,
+                    channel_set_wheel_slot,
+                ) = channel.get_function_attribute_data(dmx_value_final, dmx_data)
+
+                if "cached_channel" in channel:
+                    DMX_Log.log.debug(("set cached data", channel.attribute))
+                    channel["cached_channel"]["dmx_value"] = dmx_value_final
+                    channel["cached_channel"]["attribute"] = channel_function_attribute
+                    channel["cached_channel"]["value"] = channel_function_physical_value
+                    channel["cached_channel"]["index"] = channel_set_wheel_slot or -1
 
             if not self.use_fixtures_channel_functions:
                 channel_function = dmx.get_default_channel_function_by_attribute(
@@ -2121,7 +2166,7 @@ class DMX_Fixture(PropertyGroup):
                 )
 
     def updatePanTiltViaTarget(self, pan, tilt, current_frame):
-        DMX_Log.log.info("Updating pan tilt")
+        DMX_Log.log.info(("Updating pan tilt", pan, tilt))
 
         base = self.objects["Root"].object
         pan = pan + base.rotation_euler[2]  # take base z rotation into consideration
