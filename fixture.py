@@ -2087,7 +2087,7 @@ class DMX_Fixture(PropertyGroup):
                 material = self.gobo_materials[obj.name].material
                 gobo_rotation = material.node_tree.nodes.get(f"Gobo{n}Rotation")
                 gobo_rotation.inputs[3].driver_remove("default_value")
-                gobo_rotation.inputs[3].default_value = value * (math.pi / 360)
+                gobo_rotation.inputs[3].default_value = math.radians(value)
                 if current_frame and self.dmx_cache_dirty:
                     gobo_rotation.inputs[3].keyframe_insert(
                         data_path="default_value", frame=current_frame
@@ -2097,7 +2097,7 @@ class DMX_Fixture(PropertyGroup):
             light_obj = light.object
             gobo_rotation = light_obj.data.node_tree.nodes.get(f"Gobo{n}Rotation")
             gobo_rotation.inputs[3].driver_remove("default_value")
-            gobo_rotation.inputs[3].default_value = value * (math.pi / 360)
+            gobo_rotation.inputs[3].default_value = math.radians(value)
 
             if current_frame and self.dmx_cache_dirty:
                 gobo_rotation.inputs[3].keyframe_insert(
