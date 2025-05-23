@@ -1773,7 +1773,8 @@ class DMX_Fixture(PropertyGroup):
             for emitter_material in self.emitter_materials:
                 if geometry is not None:
                     if geometry in emitter_material.name or any(
-                        g in geometry for g in emitter_material["parent_geometries"]
+                        g in geometry
+                        for g in emitter_material.get("parent_geometries", [])
                     ):
                         DMX_Log.log.info(("matched emitter", geometry))
 
@@ -1817,7 +1818,8 @@ class DMX_Fixture(PropertyGroup):
 
                 if geometry is not None:
                     if geometry in light.object.data.name or any(
-                        g in geometry for g in light.object.data["parent_geometries"]
+                        g in geometry
+                        for g in light.object.data.get("parent_geometries", [])
                     ):
                         DMX_Log.log.info("matched emitter")
                         light.object.data.driver_remove("energy")
@@ -1879,12 +1881,13 @@ class DMX_Fixture(PropertyGroup):
                     (
                         "emitter:",
                         emitter_material.name,
-                        list(emitter_material["parent_geometries"]),
+                        list(emitter_material.get("parent_geometries", [])),
                     )
                 )
                 if geometry is not None:
                     if geometry in emitter_material.name or any(
-                        g in geometry for g in emitter_material["parent_geometries"]
+                        g in geometry
+                        for g in emitter_material.get("parent_geometries", [])
                     ):
                         DMX_Log.log.info("matched emitter")
                         emitter_material.material.node_tree.nodes[1].inputs[
@@ -1906,7 +1909,8 @@ class DMX_Fixture(PropertyGroup):
                         ("light:", light.object.data.name, "geometry:", geometry, rgb)
                     )
                     if geometry in light.object.data.name or any(
-                        g in geometry for g in light.object.data["parent_geometries"]
+                        g in geometry
+                        for g in light.object.data.get("parent_geometries", [])
                     ):
                         DMX_Log.log.info("matched light")
                         light.object.data.color = rgb
