@@ -1896,7 +1896,7 @@ class DMX(PropertyGroup):
             self.programmer_pan_rotate = 128
             self.programmer_tilt = 128
             self.programmer_tilt_rotate = 128
-            self.programmer_zoom = 25
+            self.programmer_zoom = 128
             self.programmer_shutter = 0
             self.programmer_color_wheel1 = 0
             self.programmer_color_wheel2 = 0
