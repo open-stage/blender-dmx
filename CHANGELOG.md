@@ -1,5 +1,14 @@
 ### Changelog
 
+### NEXT
+
+* Unify programmer defaults
+* Fix gobo indexing angle calculation
+* Update packaged fixture profiles
+* Add per-channel caching to render()
+* Save and apply XML provided offset to pan/tilt geometrie
+* Map pan, tilt, color picker to DMX RGB/CMY correctly and without drifting
+
 ### 2.0.0
 
 * Add support for ChannelFunctions and ChannelSets with their Physical From,
