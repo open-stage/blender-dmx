@@ -1,11 +1,16 @@
 ### Changelog
 
-### NEXT
+### 2.0.1
 
 * Improve migration from older blend files
 * Unify programmer defaults
 * Fix gobo indexing angle calculation
-* Update packaged fixture profiles
+* Update packaged fixture profiles:
+    - keep only BlenderDMX created profiles
+    - improve the default profiles with more data
+    - provide RGBW/RGBA versions
+    - REMOVED some files like rotating beam or source4, they exist in the GDTF
+      Share
 * Add per-channel caching to render()
 * Save and apply XML provided offset to pan/tilt geometrie
 * Map pan, tilt, color picker to DMX RGB/CMY correctly and without drifting
