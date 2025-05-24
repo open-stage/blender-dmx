@@ -890,8 +890,8 @@ class DMX(PropertyGroup):
             DMX_Log.log.info("Running migration 10→11")
             dmx = bpy.context.scene.dmx
             d = DMX_OT_ArrangeSelected()
-
-            for fixture_ in dmx.fixtures:
+            count = len(dmx.fixtures)
+            for fixture_idx, fixture_ in enumerate(dmx.fixtures):
                 fixture_.gobo_materials.clear()
                 for obj in fixture_.collection.objects:
                     if "gobo" in obj.get("geometry_type", ""):
@@ -909,12 +909,14 @@ class DMX(PropertyGroup):
                         )
                         obj.material_slots[0].material = gobo_material
                         material.material = gobo_material
-                        DMX_Log.log.info(f"Recreate gobo material {fixture_.name}")
+                        DMX_Log.log.info(
+                            f"Recreate gobo material {fixture_.name}, fixture {fixture_idx} of {count}"
+                        )
                 for light in fixture_.lights:
                     set_light_nodes(light)
 
                 if len(fixture_.images) > 0:
-                    old_gobos = fixture_.images["gobos"]
+                    old_gobos = fixture_.images.get("gobos", None)
                     if old_gobos is not None:
                         gobo1 = fixture_.images.add()
                         gobo1.name = "gobos1"

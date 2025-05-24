@@ -2,6 +2,7 @@
 
 ### NEXT
 
+* Improve migration from older blend files
 * Unify programmer defaults
 * Fix gobo indexing angle calculation
 * Update packaged fixture profiles

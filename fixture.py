@@ -484,6 +484,14 @@ class DMX_Fixture(PropertyGroup):
         max = 255,
         default = (255,255,255))
 
+    gel_color: FloatVectorProperty(
+        name = "Unused",
+        subtype = "COLOR",
+        size = 4,
+        min = 0.0,
+        max = 1.0,
+        default = (1.0,1.0,1.0,1.0))
+
     ignore_movement_dmx: BoolProperty(
         name = "Ignore movement DMX",
         description="Stay in position set by Target",
@@ -1280,7 +1288,7 @@ class DMX_Fixture(PropertyGroup):
             if dmx_value_coarse is None:
                 DMX_Log.log.error(
                     (
-                        "Address offset not in dmx data, skipping",
+                        "Address offset not in dmx data, skipping. You may have to re-insert or re-edit the GDTF fixture into the scene",
                         channel.attribute,
                         channel.dmx_break,
                         channel.offsets[0],
@@ -2215,7 +2223,7 @@ class DMX_Fixture(PropertyGroup):
         else:
             geometry = self.get_object_by_geometry_name(geometry)
         if geometry:
-            value = value + geometry.get("applied_rotation", [0, 0])[offset]
+            value = value + geometry.get("applied_rotation", [0, 0, 0])[offset]
             geometry.rotation_mode = "XYZ"
             geometry.rotation_euler[offset] = value
             if current_frame and self.dmx_cache_dirty:
