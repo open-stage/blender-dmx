@@ -213,6 +213,18 @@ class DMX_Fixture_AddEdit:
         default=True,
     )
 
+    modify_address: BoolProperty(
+        name=_("Modify DMX address"),
+        description=_("Modify DMX address"),
+        default=True,
+    )
+
+    modify_fixture_id: BoolProperty(
+        name=_("Modify Fixture ID"),
+        description=_("Modify Fixture ID"),
+        default=True,
+    )
+
     increment_fixture_id: BoolProperty(
         name=_("Increment Fixture ID"),
         description=_("Increment Fixture ID if numeric"),
@@ -295,27 +307,32 @@ class DMX_Fixture_AddEdit:
                 if dmx_break.dmx_break not in all_breaks:
                     self.dmx_breaks.remove(idx)
 
-            for dmx_break in self.dmx_breaks:
-                if len(self.dmx_breaks) > 1:
-                    col.label(
-                        text=f"DMX Break: {dmx_break.dmx_break}, {dmx_break.channels_count}ch:"
-                    )
-                col.prop(dmx_break, "universe")
-                col.prop(dmx_break, "address")
+            if self.modify_address:
+                for dmx_break in self.dmx_breaks:
+                    if len(self.dmx_breaks) > 1:
+                        col.label(
+                            text=f"DMX Break: {dmx_break.dmx_break}, {dmx_break.channels_count}ch:"
+                        )
+                    col.prop(dmx_break, "universe")
+                    col.prop(dmx_break, "address")
         else:
-            for dmx_break in self.dmx_breaks:
-                if len(self.dmx_breaks) > 1:
-                    col.label(
-                        text=f"DMX Break: {dmx_break.dmx_break}, {dmx_break.channels_count}ch:"
-                    )
-                col.prop(dmx_break, "universe")
-                col.prop(dmx_break, "address")
+            if self.modify_address:
+                for dmx_break in self.dmx_breaks:
+                    if len(self.dmx_breaks) > 1:
+                        col.label(
+                            text=f"DMX Break: {dmx_break.dmx_break}, {dmx_break.channels_count}ch:"
+                        )
+                    col.prop(dmx_break, "universe")
+                    col.prop(dmx_break, "address")
 
-        col.prop(self, "fixture_id")
+        if self.modify_fixture_id:
+            col.prop(self, "fixture_id")
         if self.units == 0:  # Edit fixtures:
             col.prop(
                 self, "advanced_edit"
             )  #     Be default, only change address, don't rebuild models (slow)
+            col.prop(self, "modify_address")
+            col.prop(self, "modify_fixture_id")
             if not self.advanced_edit:
                 col.operator("dmx.import_ies_file")
                 col.operator("dmx.remove_ies_files")
@@ -323,8 +340,13 @@ class DMX_Fixture_AddEdit:
                 col.prop(self, "use_target")
         else:  # Adding new fixtures:
             col.prop(self, "units")  #     Allow to define how many
-        col.prop(self, "increment_address")
-        col.prop(self, "increment_fixture_id")
+
+        if self.modify_address:
+            col.prop(self, "increment_address")
+
+        if self.modify_fixture_id:
+            col.prop(self, "increment_fixture_id")
+
         if self.advanced_edit:  # When adding and editing:
             col.prop(
                 self, "display_beams"
@@ -375,11 +397,10 @@ class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
             DMX_Log.log.debug(f"Added fixture {fixture}")
             if not fixture:
                 continue
-
-            if self.increment_fixture_id:
+            if self.modify_fixture_id and self.increment_fixture_id:
                 if fixture_id.isnumeric():
                     fixture_id = str(int(fixture_id) + 1)
-            if self.increment_address:
+            if self.modify_address and self.increment_address:
                 for dmx_break in dmx_breaks:
                     if (dmx_break.address + dmx_break.channels_count) > 512:
                         dmx_break.universe += 1
@@ -483,6 +504,19 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                 # fixture_id = f"{self.fixture_id}{i+1}" if (self.name != '*') else fixture.name
                 profile = self.profile if (self.profile != "") else fixture.profile
                 mode = self.mode if (self.mode != "") else fixture.mode
+                if not self.modify_address:
+                    self.dmx_breaks.clear()
+                    for item in fixture.dmx_breaks:
+                        new_break = self.dmx_breaks.add()
+                        new_break.dmx_break = item.dmx_break
+                        new_break.universe = item.universe
+                        new_break.address = item.address
+                        new_break.channels_count = item.channels_count
+
+                if self.modify_fixture_id:
+                    _fixture_id = fixture_id
+                else:
+                    _fixture_id = fixture.fixture_id
                 if self.advanced_edit:
                     fixture.build(
                         name,
@@ -493,26 +527,26 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                         self.display_beams,
                         self.add_target,
                         uuid=fixture.uuid,
-                        fixture_id=fixture_id,
+                        fixture_id=_fixture_id,
                     )
+                if self.modify_address:
+                    for fixture_break, edit_break in zip(
+                        fixture.dmx_breaks, dmx_breaks
+                    ):
+                        if edit_break:
+                            fixture_break.universe = edit_break.universe
+                            fixture_break.address = edit_break.address
 
-                for fixture_break, edit_break in zip(fixture.dmx_breaks, dmx_breaks):
-                    if edit_break:
-                        fixture_break.universe = edit_break.universe
-                        fixture_break.address = edit_break.address
-
-                fixture.fixture_id = fixture_id
+                fixture.fixture_id = _fixture_id
                 fixture.use_fixtures_channel_functions = (
                     self.use_fixtures_channel_functions
                 )
                 fixture.use_target = self.use_target
-
-                if self.increment_fixture_id:
+                if self.modify_fixture_id and self.increment_fixture_id:
                     if fixture_id.isnumeric():
                         fixture_id = str(int(fixture_id) + 1)
-
-                if self.increment_address:
-                    for dmx_break in self.dmx_breaks:
+                if self.modify_address and self.increment_address:
+                    for dmx_break in dmx_breaks:
                         if dmx_break.address + dmx_break.channels_count > 512:
                             dmx_break.universe += 1
                             dmx_break.address = 1
