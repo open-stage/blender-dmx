@@ -59,13 +59,29 @@ def calculate_automatic_white(rgb):
 # http://www.easyrgb.com/en/math.php
 
 
+def is_default_x(x):
+    return math.isclose(x, 0.3127, rel_tol=0.0001)
+
+
+def is_default_y(y):
+    return math.isclose(y, 0.3290, rel_tol=0.0001)
+
+
+def is_default_Y(Y):
+    return math.isclose(Y, 100.0, rel_tol=0.0001)
+
+
 def xyY2rgbaa(xyY):
     """As blender needs RGBA, which we later strip anyways, we just add 100 for Alpha"""
     x = xyY.x
     y = xyY.y
     Y = xyY.Y
     if y == 0:
-        return (0, 0, 0)
+        return (0, 0, 0, 1)
+
+    if is_default_x(x) and is_default_y(y) and is_default_Y(Y):
+        # if color is the GDTF defined default white or very close
+        return (255, 255, 255, 1)
 
     # Convert to XYZ
     X = x * (Y / y)
