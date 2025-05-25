@@ -532,6 +532,11 @@ class DMX_Fixture(PropertyGroup):
         unit_number=0,
         classing="",
     ):
+        bpy.ops.object.select_all(action="DESELECT")
+        for obj in bpy.data.objects:
+            obj.select_set(False)
+        # clear possible existing selections in Blender
+
         # (Edit) Store objects positions
         old_pos = {obj.name: obj.object.location.copy() for obj in self.objects}
         old_rot = {obj.name: obj.object.rotation_euler.copy() for obj in self.objects}
