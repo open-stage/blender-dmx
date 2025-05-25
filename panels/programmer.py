@@ -265,10 +265,10 @@ class DMX_OT_Programmer_Clear(Operator):
                     fixture.clear()
 
         scene.dmx.programmer_dimmer = 0
-        scene.dmx.programmer_color = (255, 255, 255, 255)
-        scene.dmx.programmer_pan = 128
+        scene.dmx.programmer_color = (1, 1, 1, 1)
+        scene.dmx.programmer_pan = 0
         scene.dmx.programmer_pan_rotate = 128
-        scene.dmx.programmer_tilt = 128
+        scene.dmx.programmer_tilt = 0
         scene.dmx.programmer_tilt_rotate = 128
         scene.dmx.programmer_zoom = 128
         scene.dmx.programmer_shutter = 0
