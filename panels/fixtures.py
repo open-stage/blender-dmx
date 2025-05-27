@@ -407,8 +407,6 @@ class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
                         dmx_break.universe += 1
                         dmx_break.address = 1
                         dmx.ensureUniverseExists(dmx_break.universe)
-                    else:
-                        dmx_break.address += dmx_break.channels_count
 
         context.window_manager.dmx.pause_render = False
         return {"FINISHED"}
@@ -552,8 +550,6 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                             dmx_break.universe += 1
                             dmx_break.address = 1
                             dmx.ensureUniverseExists(dmx_break.universe)
-                        else:
-                            dmx_break.address += dmx_break.channels_count
 
         context.window_manager.dmx.pause_render = False  # re-enable renderer
         return {"FINISHED"}
