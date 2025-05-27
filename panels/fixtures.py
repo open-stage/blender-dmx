@@ -402,6 +402,7 @@ class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
                     fixture_id = str(int(fixture_id) + 1)
             if self.modify_address and self.increment_address:
                 for dmx_break in dmx_breaks:
+                    dmx_break.address += dmx_break.channels_count
                     if (dmx_break.address + dmx_break.channels_count) > 512:
                         dmx_break.universe += 1
                         dmx_break.address = 1
@@ -482,11 +483,10 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                     self.use_fixtures_channel_functions
                 )
                 fixture.use_target = self.use_target
-        # Multiple fixtures
+        # Editing Multiple fixtures
         else:
             dmx_breaks = self.dmx_breaks
             fixture_id = self.fixture_id
-
             for i, fixture in enumerate(selected):
                 name = generate_fixture_name(self.name, i + 1)
                 if name != fixture.name and name in bpy.data.collections:
@@ -547,6 +547,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                         fixture_id = str(int(fixture_id) + 1)
                 if self.modify_address and self.increment_address:
                     for dmx_break in dmx_breaks:
+                        dmx_break.address += dmx_break.channels_count
                         if dmx_break.address + dmx_break.channels_count > 512:
                             dmx_break.universe += 1
                             dmx_break.address = 1
