@@ -2150,6 +2150,14 @@ class DMX(PropertyGroup):
                 return os.path.dirname(os.path.realpath(__file__))
         return os.path.dirname(os.path.realpath(__file__))
 
+    def is_there_universe_zero(self):
+        dmx = bpy.context.scene.dmx
+        for dmx_fixture in dmx.fixtures:
+            for dmx_break in dmx_fixture.dmx_breaks:
+                if dmx_break.universe < 1:
+                    return True
+        return False
+
     def export_mvr(self, file_name):
         start_time = time.time()
         bpy.context.window_manager.dmx.pause_render = (
@@ -2159,6 +2167,7 @@ class DMX(PropertyGroup):
 
         folder_path = self.get_addon_path()
         folder_path = os.path.join(folder_path, "assets", "profiles")
+        universe_add = self.is_there_universe_zero()
 
         try:
             fixtures_list = []
@@ -2169,7 +2178,7 @@ class DMX(PropertyGroup):
             layer = pymvr.Layer(name="DMX").to_xml(parent=layers)
             child_list = pymvr.ChildList().to_xml(parent=layer)
             for dmx_fixture in dmx.fixtures:
-                fixture_object = dmx_fixture.to_mvr_fixture()
+                fixture_object = dmx_fixture.to_mvr_fixture(universe_add=universe_add)
                 focus_point = dmx_fixture.focus_to_mvr_focus_point()
                 if focus_point is not None:
                     child_list.append(focus_point.to_xml())

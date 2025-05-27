@@ -2624,9 +2624,11 @@ class DMX_Fixture(PropertyGroup):
             if ies is not None:
                 light_obj.data.node_tree.nodes.remove(ies)
 
-    def to_mvr_fixture(self):
+    def to_mvr_fixture(self, universe_add=False):
         matrix = 0
         uuid_focus_point = None
+        add_to_universe = 1 if universe_add else 0
+
         for obj in self.objects:
             if obj.object.get("geometry_root", False):
                 m = obj.object.matrix_world
@@ -2646,11 +2648,11 @@ class DMX_Fixture(PropertyGroup):
             fixture_id=self.fixture_id,
             addresses=[
                 pymvr.Address(
-                    dmx_break=dmx_break.dmx_break,
-                    universe=dmx_break.universe,
+                    dmx_break=index,
+                    universe=dmx_break.universe + add_to_universe,
                     address=dmx_break.address,
                 )
-                for dmx_break in self.dmx_breaks
+                for index, dmx_break in enumerate(self.dmx_breaks)
             ],
             matrix=pymvr.Matrix(matrix),
             focus=uuid_focus_point,
