@@ -1778,7 +1778,12 @@ class DMX_Fixture(PropertyGroup):
         DMX_Log.log.info(
             ("set dimmer, shutter, strobe", dimmer, shutter, strobe, geometry)
         )
+        if strobe == 0:  # prevent division by zero
+            shutter = 0
+
         dimmer = dimmer * round(shutter)  # get a discreet value from channel function
+        if strobe == 0:
+            strobe = 0.1
         dmx = bpy.context.scene.dmx
         if geometry is not None:
             geometry = geometry.replace(" ", "_")
@@ -1797,7 +1802,7 @@ class DMX_Fixture(PropertyGroup):
                         strength_input.driver_remove("default_value")
                         if strobe is not None:
                             driver = strength_input.driver_add("default_value").driver
-                            driver.expression = f"(floor(frame * ({strobe} / {bpy.context.scene.render.fps})) % 2) * ({dimmer})"
+                            driver.expression = f"1 if (frame % ({bpy.context.scene.render.fps} / {strobe})) < 1 else 0 * {dimmer}"
                         else:
                             strength_input.default_value = dimmer
 
@@ -1808,7 +1813,7 @@ class DMX_Fixture(PropertyGroup):
                     strength_input.driver_remove("default_value")
                     if strobe is not None:
                         driver = strength_input.driver_add("default_value").driver
-                        driver.expression = f"(floor(frame * ({strobe} /  {bpy.context.scene.render.fps})) % 2) * ({dimmer})"
+                        driver.expression = f"1 if (frame % ({bpy.context.scene.render.fps} / {strobe})) < 1 else 0 * {dimmer}"
                     else:
                         strength_input.default_value = dimmer
 
@@ -1839,7 +1844,7 @@ class DMX_Fixture(PropertyGroup):
                         if strobe is not None:
                             driver = light.object.data.driver_add("energy").driver
                             DMX_Log.log.info("matched light")
-                            driver.expression = f"(floor(frame * ({strobe} /  {bpy.context.scene.render.fps})) % 2) * ({value})"
+                            driver.expression = f"(1 if (frame % ({bpy.context.scene.render.fps} / {strobe})) < 1 else 0) * {value}"
                         else:
                             light.object.data.energy = value
 
@@ -1848,7 +1853,7 @@ class DMX_Fixture(PropertyGroup):
                     if strobe is not None:
                         driver = light.object.data.driver_add("energy").driver
                         DMX_Log.log.info("matched light")
-                        driver.expression = f"(floor(frame * ({strobe} /  {bpy.context.scene.render.fps})) % 2) * ({value})"
+                        driver.expression = f"(1 if (frame % ({bpy.context.scene.render.fps} / {strobe})) < 1 else 0) * {value}"
                     else:
                         light.object.data.energy = value
 
