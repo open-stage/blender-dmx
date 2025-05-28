@@ -1713,6 +1713,7 @@ class DMX(PropertyGroup):
                 continue
             if fixture_.is_selected():
                 fixture_.setDMX({"Shutter1": int(self.programmer_shutter)})
+                fixture_.setDMX({"Shutter1Strobe": int(self.programmer_shutter)})
         self.render()
 
     def onProgrammerPanMode(self, context):
@@ -1921,7 +1922,9 @@ class DMX(PropertyGroup):
         if "Dimmer" in data:
             self.programmer_dimmer = data["Dimmer"] / 255.0
         if "Shutter1" in data:
-            self.programmer_shutter = int(data["Shutter1"] / 256.0)
+            self.programmer_shutter = int(data["Shutter1"])
+        if "Shutter1Strobe" in data:
+            self.programmer_shutter = int(data["Shutter1Strobe"])
         if "Zoom" in data:
             self.programmer_zoom = int(data["Zoom"])
         if "Color1" in data:
