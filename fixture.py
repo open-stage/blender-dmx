@@ -1779,11 +1779,10 @@ class DMX_Fixture(PropertyGroup):
             ("set dimmer, shutter, strobe", dimmer, shutter, strobe, geometry)
         )
         if strobe == 0:  # prevent division by zero
+            strobe = None
             shutter = 0
 
         dimmer = dimmer * round(shutter)  # get a discreet value from channel function
-        if strobe == 0:
-            strobe = 0.1
         dmx = bpy.context.scene.dmx
         if geometry is not None:
             geometry = geometry.replace(" ", "_")
