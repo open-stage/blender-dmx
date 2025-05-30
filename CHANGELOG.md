@@ -1,5 +1,18 @@
 ### Changelog
 
+### 2.0.2
+
+* Update pygdtf to 1.2.4
+* Sync Shutter1Strobe to the programmer
+* Make Shutter1Strobe flashing, not pulsing
+* Ensure that DMX breaks's address/universe are overflowing 512
+* Export MVR with breaks from 0, set universe 0 as 1
+* Fix programmer values after clear
+* Clear any selection prior to fixture edit/mvr import
+* Add option to not modify Fixture_ID and Address during Edit
+* Ensure that color defined close to GDTF default white is interpreted as full white
+* Remove and re-copy BlenderDMX provided files when Cleaning project data
+
 ### 2.0.1
 
 * Improve migration from older blend files
