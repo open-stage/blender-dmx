@@ -339,7 +339,8 @@ class DMX_GDTF:
 
             if isinstance(geometry, pygdtf.GeometryReference):
                 reference = profile.geometries.get_geometry_by_name(geometry.geometry)
-                geometry.model = reference.model
+                geometry.model = geometry.model or reference.model
+                # based on priority in the builder
 
                 if hasattr(reference, "geometries"):
                     for sub_geometry in reference.geometries:
