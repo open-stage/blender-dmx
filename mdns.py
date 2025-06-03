@@ -128,6 +128,7 @@ class DMX_Zeroconf:
 
     @staticmethod
     def enable_server(server_name=None, port=9999):
+        service_type = "_mvrxchange._tcp.local."
         host_name = f"{socket.gethostname()}-{pyuuid.uuid4().hex}"
         station_name = f"{defined_station_name} {socket.gethostname()}".replace(
             " ", "_"
@@ -150,17 +151,19 @@ class DMX_Zeroconf:
 
         dmx = bpy.context.scene.dmx
         if dmx.mvrx_hostname_in_service:
-            service_name = f"{station_name.replace(' ', '_')}.{server_name}._mvrxchange._tcp.local."
+            service_name = (
+                f"{station_name.replace(' ', '_')}.{server_name}.{service_type}"
+            )
         else:
-            service_name = f"{server_name}._mvrxchange._tcp.local."
+            service_name = f"{server_name}.{service_type}"
 
         DMX_Zeroconf._instance.info = ServiceInfo(
-            "_mvrxchange._tcp.local.",
-            name=service_name,
+            service_type,
+            service_name,
             addresses=addrs,
             port=port,
             properties=desc,
-            server=f"{host_name}.local.",
+            server=f"{station_name.replace(' ', '_')}.{server_name}.{service_type}",
         )
         DMX_Log.log.debug(DMX_Zeroconf._instance.info)
 
