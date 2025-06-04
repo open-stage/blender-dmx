@@ -726,27 +726,6 @@ class DMX(PropertyGroup):
 
         DMX_Log.log.info(f"Data version: {file_data_version}")
 
-        if file_data_version < 2:  # migration for sw. version 0.5 → 1.0
-            DMX_Log.log.info("Running migration 1→2")
-            dmx = bpy.context.scene.dmx
-
-            for fixture_ in dmx.fixtures:
-                for obj in fixture_.objects:
-                    if any(obj.name == name for name in ["Body", "Base"]):
-                        DMX_Log.log.info(f"updating {obj.name}")
-                        obj.name = "Root"
-
-                for light in fixture_.lights:
-                    DMX_Log.log.info(
-                        "Adding shutter and dimmer value fields to light object"
-                    )
-                    if "shutter_value" not in light.object.data:
-                        light.object.data["shutter_value"] = 0
-                    if "shutter_dimmer_value" not in light.object.data:
-                        light.object.data["shutter_dimmer_value"] = 0
-                    if "shutter_counter" not in light.object.data:
-                        light.object.data["shutter_counter"] = 0
-
         if file_data_version < 3:
             hide_gobo_message = True
             DMX_Log.log.info("Running migration 2→3")
@@ -1186,7 +1165,8 @@ class DMX(PropertyGroup):
 
     def onVolumeEnabled(self, context):
         if self.volume is not None:
-            self.volume.hide_set(not self.volume_enabled)
+            if "DMX_Volume" in bpy.context.view_layer:
+                self.volume.hide_set(not self.volume_enabled)
 
     volume_enabled: BoolProperty(
         name = _("Enable Volume Scatter"),
@@ -2447,17 +2427,20 @@ class DMX(PropertyGroup):
                 if fixture_.is_selected():
                     selected = True
                 for light in fixture_.lights:
-                    light.object.data.show_cone = selected
+                    if "show_cone" in light.object.data:
+                        light.object.data.show_cone = selected
 
         elif self.volume_preview == "ALL":
             self.disable_overlays = False  # overlay must be enabled
             for fixture_ in self.fixtures:
                 for light in fixture_.lights:
-                    light.object.data.show_cone = True
+                    if "show_cone" in light.object.data:
+                        light.object.data.show_cone = True
         else:
             for fixture_ in self.fixtures:
                 for light in fixture_.lights:
-                    light.object.data.show_cone = False
+                    if "show_cone" in light.object.data:
+                        light.object.data.show_cone = False
 
     # # Universes
 
