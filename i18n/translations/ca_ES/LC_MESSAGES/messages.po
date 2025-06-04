@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-04-21 17:11+0200\n"
-"PO-Revision-Date: 2025-06-04 16:47+0000\n"
+"PO-Revision-Date: 2025-06-05 17:01+0000\n"
 "Last-Translator: Bernat Rubiol Brusau <rubiolbernat@gmail.com>\n"
 "Language-Team: Catalan <https://hosted.weblate.org/projects/blenderdmx/main/"
 "ca/>\n"
@@ -51,180 +51,190 @@ msgid "Selected PSN Server"
 msgstr "Servidor PSN Seleccionat"
 
 msgid "The selected element on the PSN server list"
-msgstr ""
+msgstr "L'element seleccionat a la llista de servidors PSN"
 
 msgid "Class List i"
-msgstr ""
+msgstr "Llista de classes i"
 
 msgid "The selected element on the class list"
-msgstr ""
+msgstr "L'element seleccionat a la llista de classes"
 
 msgid "Universe"
-msgstr ""
+msgstr "Univers"
 
 msgid "Editable"
-msgstr ""
+msgstr "Editable"
 
 msgid "Display Pigtails"
-msgstr ""
+msgstr "Mostrar connectors"
 
 msgid "Display 2D View"
-msgstr ""
+msgstr "Visualitza vista 2D"
 
 msgid "Display Device Label"
-msgstr ""
+msgstr "Mostrar etiqueta del equip"
 
 msgid "Device Label"
-msgstr ""
+msgstr "Etiqueta del dispositiu"
 
 msgid "None"
-msgstr ""
+msgstr "Res"
 
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
 msgid "DMX"
-msgstr ""
+msgstr "DMX"
 
 msgid "Allow Selecting Geometries"
-msgstr ""
+msgstr "Permet la selecció de geometries"
 
 msgid "Logging Level"
-msgstr ""
+msgstr "Nivell de registre"
 
 msgid "Critical"
-msgstr ""
+msgstr "Crític"
 
 msgid "Error"
-msgstr ""
+msgstr "Error"
 
 msgid "Warning"
-msgstr ""
+msgstr "Avís"
 
 msgid "Info"
-msgstr ""
+msgstr "Info"
 
 msgid "Debug"
-msgstr ""
+msgstr "Trobar error"
 
 msgid "Simple beam"
-msgstr ""
+msgstr "Feix simple"
 
 msgid "Display 'fake' beam cone"
-msgstr ""
+msgstr "Mostra cons de llum simulats"
 
 msgid "Selected fixtures"
-msgstr ""
+msgstr "Dispositius seleccionats"
 
 msgid "All fixtures"
-msgstr ""
+msgstr "Tots els dispositius"
 
 msgid "Beam Lens Diameter in Cycles"
-msgstr ""
+msgstr "Diàmetre de la lent del feix a Cycles"
 
 msgid ""
 "Beam diameter is reduced to minimum when projecting gobos to prevent blur"
 " on gobo edge"
 msgstr ""
+"El diàmetre del feix es redueix al mínim quan es projecten gobos per evitar "
+"la borrositat a la vora del gobo"
 
 msgid "Reduced"
-msgstr ""
+msgstr "Reduït"
 
 msgid "Full width"
-msgstr ""
+msgstr "Amplada màxima"
 
 msgid "Custom per each beam"
-msgstr ""
+msgstr "Personalitzat per cada feix"
 
 msgid "Disable Beam Outlines"
-msgstr ""
+msgstr "Desactiva els contorns del feix"
 
 msgid "Enable Volume Scatter"
-msgstr ""
+msgstr "Activa la dispersió de volum"
 
 msgid "Noise Scale"
-msgstr ""
+msgstr "Escala de soroll"
 
 msgid "Volume Noise Scale"
-msgstr ""
+msgstr "Escala de soroll del volum"
 
 msgid "Density"
-msgstr ""
+msgstr "Densitat"
 
 msgid "Volume Scatter Density"
-msgstr ""
+msgstr "Densitat de dispersió volumètrica"
 
 msgid "Multiply beams intensity"
-msgstr ""
+msgstr "Multiplicar la intensitat dels feixos"
 
 msgid "Number of universes"
-msgstr ""
+msgstr "Nombre d'universos"
 
 msgid "The number of universes set on the panel"
-msgstr ""
+msgstr "El nombre d'universos establerts al panell"
 
 msgid "Universe List Item"
-msgstr ""
+msgstr "Element de la llista d'universos"
 
 msgid "The selected element on the universe list"
-msgstr ""
+msgstr "L'element seleccionat a la llista d'universos"
 
 msgid "IPv4 Address for ArtNet signal"
-msgstr ""
+msgstr "Adreça IPv4 per a la senyal ArtNet"
 
 msgid "The network card/interface to listen for ArtNet DMX data"
-msgstr ""
+msgstr "La targeta/interfície de xarxa per a rebre ArtNet DMX"
 
 msgid "Enable Art-Net Input"
-msgstr ""
+msgstr "Habilita l'entrada d'Art-Net"
 
 msgid ""
 "Enables the input of DMX data throught Art-Net on the selected network "
 "interface"
 msgstr ""
+"Habilita l'entrada de dades DMX a través d'Art-Net a la interfície de xarxa "
+"seleccionada"
 
 msgid "Enable sACN Input"
-msgstr ""
+msgstr "Habilita entrada sACN"
 
 msgid ""
 "Enables the input of DMX data throught sACN on all detected network "
 "interfaces"
 msgstr ""
+"Habilita l'entrada de dades DMX a través de sACN a totes les interfícies de "
+"xarxa detectades"
 
 msgid "Enable OSC Output"
-msgstr ""
+msgstr "Habilita entrada OSC"
 
 msgid "Enables Open Sound Control protocol to send fixture selection to a console"
 msgstr ""
+"Habilita el protocol Open Sound Control per enviar la selecció de fixacions "
+"a una consola"
 
 msgid "OSC Target address"
-msgstr ""
+msgstr "Direcció de la tarja d'OSC"
 
 msgid ""
 "Address of the host where you want to send the OSC signal. Address ending"
 " on .255 is a broadcast address to all hosts on the network"
 msgstr ""
+"Adreça de l'amfitrió on voleu enviar el senyal OSC. L'adreça que acaba en "
+".255 és una adreça de difusió a tots els amfitrions de la xarxa"
 
 msgid "OSC Target port"
-msgstr ""
+msgstr "Port de destí OSC"
 
 msgid "Port number of the host where you want to send the OSC signal"
-msgstr ""
+msgstr "Número de port de l'amfitrió on voleu enviar el senyal OSC"
 
 msgid "Enable Local MVR-xchange"
-msgstr ""
+msgstr "Habilita MVR-xchange Local"
 
 msgid "Enables MVR-xchange sharing and discovery"
-msgstr ""
+msgstr "Habilita la compartició i el descobriment de MVR-xchange"
 
 msgid "Connect to a selected station"
-msgstr ""
+msgstr "Connecta't a una estació seleccionada"
 
 msgid "Connects to an MVR-xchange station"
-msgstr ""
+msgstr "Es connectarà a una estació MVR-xchange"
 
 msgid "Enable Internet MVR-xchange"
-msgstr ""
+msgstr "Activa MVR-xchange per Internet"
 
 msgid "Enables Internet based MVR-xchange sharing and discovery"
 msgstr ""
@@ -254,7 +264,7 @@ msgid "The selected element on the group list"
 msgstr ""
 
 msgid "Order by"
-msgstr ""
+msgstr "Ordenar per"
 
 msgid "Fixture sorting order"
 msgstr ""
@@ -277,19 +287,19 @@ msgid "Pause renderer"
 msgstr ""
 
 msgid "Manufacturers"
-msgstr ""
+msgstr "Fabricants"
 
 msgid "Imports"
-msgstr ""
+msgstr "Importacions"
 
 msgid "Add to selection"
-msgstr ""
+msgstr "Afegir a la selecció"
 
 msgid "Remove from selection"
-msgstr ""
+msgstr "Elimina de la selecció"
 
 msgid "When selecting a group, remove from existing selection"
-msgstr ""
+msgstr "En seleccionar un grup, elimina de la selecció existent"
 
 msgid "Keyframe only selected fixtures (not for autokeying)"
 msgstr ""
@@ -339,22 +349,22 @@ msgid ""
 msgstr ""
 
 msgid "DMX Universe"
-msgstr ""
+msgstr "Univers DMX"
 
 msgid "Address"
-msgstr ""
+msgstr "Adreça"
 
 msgid "Gel Color"
-msgstr ""
+msgstr "Filtre de color"
 
 msgid "Display beams"
-msgstr ""
+msgstr "Mostrar feixos"
 
 msgid "Display beam projection and cone"
-msgstr ""
+msgstr "Projecció del feix de visualització i con"
 
 msgid "Add Target"
-msgstr ""
+msgstr "Afegeix un objectiu"
 
 msgid "Add target for beam to follow"
 msgstr ""
@@ -451,28 +461,28 @@ msgid "Profile"
 msgstr ""
 
 msgid "Fixture GDTF Profile"
-msgstr ""
+msgstr "Perfil GDTF del dispositiu"
 
 msgid "Mode"
-msgstr ""
+msgstr "Mode"
 
 msgid "Fixture GDTF Mode"
-msgstr ""
+msgstr "Mode GDTF del dispositiu"
 
 msgid "DMX Mode"
-msgstr ""
+msgstr "Mode DMX"
 
 msgid "Advanced edit"
-msgstr ""
+msgstr "Edició avaçada"
 
 msgid "GDTF Profile"
-msgstr ""
+msgstr "Perfil GDTF"
 
 msgid "DMX: Add Fixture"
-msgstr ""
+msgstr "DMX: Afegeix dispositiu"
 
 msgid "Add fixtures to the show"
-msgstr ""
+msgstr "Afegir dispositius al show"
 
 #, python-brace-format
 msgid "Fixture named {} already exists"
@@ -521,49 +531,49 @@ msgid "Select Fixture"
 msgstr ""
 
 msgid "Remove fixture"
-msgstr ""
+msgstr "Eliminar dispositius"
 
 msgid "Fixtures"
-msgstr ""
+msgstr "Dispositius"
 
 msgid "F ID"
-msgstr ""
+msgstr "F ID"
 
 msgid "Unit #"
-msgstr ""
+msgstr "Unitat #"
 
 msgid "F ID #"
-msgstr ""
+msgstr "F ID #"
 
 msgid "Cst ID"
-msgstr ""
+msgstr "Cst ID"
 
 msgid "Uni"
-msgstr ""
+msgstr "Uni"
 
 msgid "Addr"
-msgstr ""
+msgstr "Adr"
 
 msgid "Uni.Addr"
-msgstr ""
+msgstr "Uni.Adr"
 
 msgid "Foot"
-msgstr ""
+msgstr "Peu"
 
 msgid "DMX > Group Menu"
-msgstr ""
+msgstr "DMX>Menú de grups"
 
 msgid "Create"
-msgstr ""
+msgstr "Crear"
 
 msgid "Update"
-msgstr ""
+msgstr "Actualitza"
 
 msgid "Rename"
-msgstr ""
+msgstr "Renombrar"
 
 msgid "DMX > Group > Create"
-msgstr ""
+msgstr "DMX > Grups > Crear"
 
 msgid "Create DMX group from selected fixtures"
 msgstr ""
@@ -702,46 +712,46 @@ msgid "Camera"
 msgstr ""
 
 msgid "Dimmer"
-msgstr ""
+msgstr "Dimmer"
 
 msgid "Pan"
-msgstr ""
+msgstr "Pan"
 
 msgid "Tilt"
-msgstr ""
+msgstr "Tilt"
 
 msgid "Pan Rotation"
-msgstr ""
+msgstr "Rotació Pan"
 
 msgid "Tilt Rotation"
-msgstr ""
+msgstr "Rotació Tilt"
 
 msgid "Zoom"
-msgstr ""
+msgstr "Zoom"
 
 msgid "Color Wheel"
-msgstr ""
+msgstr "Roda de color"
 
 msgid "Color Temperature"
-msgstr ""
+msgstr "Temperatura de color"
 
 msgid "Iris"
-msgstr ""
+msgstr "Iris"
 
 msgid "Gobo1"
-msgstr ""
+msgstr "Gobo1"
 
 msgid "Gobo1 Rotation"
-msgstr ""
+msgstr "Rotació Gobo1"
 
 msgid "Gobo2"
-msgstr ""
+msgstr "Gobo2"
 
 msgid "Gobo2 Rotation"
-msgstr ""
+msgstr "Rotació Gobo2"
 
 msgid "Strobe"
-msgstr ""
+msgstr "Strobo"
 
 msgid "Clear All"
 msgstr ""
@@ -976,7 +986,7 @@ msgstr ""
 
 #, python-brace-format
 msgid "Downloading {}"
-msgstr ""
+msgstr "Descarregant {}"
 
 msgid "GDTF Share Download"
 msgstr ""
@@ -1030,10 +1040,10 @@ msgid "Filename"
 msgstr ""
 
 msgid "Mode name"
-msgstr ""
+msgstr "Nom del mode"
 
 msgid "DMX Footprint"
-msgstr ""
+msgstr "Petjada DMX"
 
 msgid "Fixture name"
 msgstr ""
@@ -1126,7 +1136,7 @@ msgid "Art-Net"
 msgstr ""
 
 msgid "IPv4"
-msgstr ""
+msgstr "IPv4"
 
 #, python-brace-format
 msgid "Art-Net set for {} universe(s)"
@@ -1139,10 +1149,10 @@ msgid "Live DMX"
 msgstr ""
 
 msgid "Refresh"
-msgstr ""
+msgstr "Actualitzar"
 
 msgid "Refresh connection"
-msgstr ""
+msgstr "Actualitza connexió"
 
 msgid "Request latest version"
 msgstr ""
@@ -1157,31 +1167,31 @@ msgid "Export MVR to MVR-xchange"
 msgstr ""
 
 msgid "Download"
-msgstr ""
+msgstr "Descarregar"
 
 msgid "Download commit"
-msgstr ""
+msgstr "Descarrega el commit"
 
 msgid "Websocket Download"
 msgstr ""
 
 msgid "Delete"
-msgstr ""
+msgstr "Esborrar"
 
 msgid "Remove Shared Commit"
 msgstr ""
 
 msgid "Shared by me:"
-msgstr ""
+msgstr "Compartit per mi:"
 
 msgid "Shared to me:"
-msgstr ""
+msgstr "Compartit amb mi:"
 
 msgid "OSC"
-msgstr ""
+msgstr "OSC"
 
 msgid "Protocols"
-msgstr ""
+msgstr "Protocols"
 
 msgid "Add Tracker"
 msgstr ""
@@ -1214,7 +1224,7 @@ msgid "Link followers to a tracker"
 msgstr ""
 
 msgid "PSN"
-msgstr ""
+msgstr "PSN"
 
 msgid "Add Tracking Target"
 msgstr ""
@@ -1232,7 +1242,7 @@ msgid "Add target"
 msgstr ""
 
 msgid "sACN"
-msgstr ""
+msgstr "sACN"
 
 #, python-brace-format
 msgid "sACN set for {} universe(s)"
@@ -1242,4 +1252,4 @@ msgid "DMX > Universe Menu"
 msgstr ""
 
 msgid "Universes"
-msgstr ""
+msgstr "Universos"
