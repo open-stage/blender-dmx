@@ -1824,9 +1824,11 @@ class DMX_Fixture(PropertyGroup):
             for light in self.lights:
                 flux = light.object.data["flux"] * dmx.beam_intensity_multiplier
                 if zoom is None:
-                    zoom = math.degrees(light.object.data.spot_size)
-                zoom_compensation = flux / (pow(max(zoom, 2), 0.1))
-                value = dimmer * zoom_compensation * 1.5
+                    value = flux * dimmer
+                else:
+                    # zoom = math.degrees(light.object.data.spot_size)
+                    zoom_compensation = flux / (pow(max(zoom, 2), 0.1))
+                    value = dimmer * zoom_compensation * 1.5
 
                 # we should improve this to get more Cycles/Eevee compatibility... add a driver which would adjust the intensity
                 # depending on the IES linking or not, adding drivers: https://blender.stackexchange.com/a/314329/176407
@@ -2012,6 +2014,8 @@ class DMX_Fixture(PropertyGroup):
                         )
 
             for light in self.lights:
+                if not hasattr(light.object.data, "spot_size"):
+                    continue
                 light.object.data.spot_size = spot_size
 
                 if current_frame and self.dmx_cache_dirty:
