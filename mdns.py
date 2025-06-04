@@ -163,7 +163,7 @@ class DMX_Zeroconf:
             addresses=addrs,
             port=port,
             properties=desc,
-            server=f"{server_name}.local.",
+            server=f"{station_name.replace(' ', '_')}.{server_name}.{service_type}",
         )
         DMX_Log.log.debug(DMX_Zeroconf._instance.info)
 
