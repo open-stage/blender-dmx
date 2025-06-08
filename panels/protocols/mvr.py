@@ -494,6 +494,7 @@ class DMX_PT_DMX_MVR_X(Panel):
 
             row = layout.row()
             row.prop(clients, "selected_mvr_client", text="")
+            row.prop(clients, "all_mvr_groups", text="")
             row.enabled = not dmx.mvrx_enabled
 
             if DMX_Log.log.isEnabledFor(logging.DEBUG):

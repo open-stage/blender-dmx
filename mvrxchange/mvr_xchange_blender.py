@@ -89,6 +89,22 @@ class DMX_MVR_Xchange_Client(PropertyGroup):
                 )
         return data
 
+    def get_groups(self, context):
+        clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
+        dmx = bpy.context.scene.dmx
+        data = []
+        services = [client.service_name for client in clients]
+
+        for index, service_name in enumerate(set(services)):
+            data.append(
+                (
+                    service_name,
+                    service_name,
+                    service_name,
+                )
+            )
+        return data
+
 
 class DMX_MVR_Xchange(PropertyGroup):
     selected_commit: IntProperty(default=0)
@@ -98,6 +114,9 @@ class DMX_MVR_Xchange(PropertyGroup):
     )
     selected_mvr_client: EnumProperty(
         name="Client", description="", items=DMX_MVR_Xchange_Client.get_clients
+    )
+    all_mvr_groups: EnumProperty(
+        name="Groups", description="", items=DMX_MVR_Xchange_Client.get_groups
     )
     shared_commits: CollectionProperty(name="Commits", type=DMX_MVR_Xchange_Commit)
     websocket_commits: CollectionProperty(
@@ -129,3 +148,5 @@ class DMX_MVR_Xchange(PropertyGroup):
     mvr_x_group: StringProperty(
         name="Group", description="Group", default="WorkGroup", update=edit_group
     )
+
+    join_mvr_x_group: BoolProperty(name="Join Group")
