@@ -25,7 +25,6 @@ from datetime import datetime
 from queue import Queue
 from threading import Thread
 from uuid import uuid4
-
 import bpy
 
 from ..logging_setup import DMX_Log
@@ -148,6 +147,7 @@ class server(Thread):
         DMX_Log.log.debug(f"Json message {json_data} {data}")
         if json_data["Type"] == "MVR_JOIN":
             shared_commits = bpy.context.window_manager.dmx.mvr_xchange.shared_commits
+            dmx = bpy.context.scene.dmx
             commits = []
             for commit in shared_commits:
                 commit_template = mvrx_message.commit_message.copy()
@@ -165,13 +165,22 @@ class server(Thread):
                     )
                 )
             )
-            # data.outb.append(mvr_message.create_message("MVR_JOIN_RET"))
+
+            dmx.toggle_join_MVR_Client(json_data["StationUUID"], True)
+            # NOTE: this is sending the JOIN/LEAVE 2x, because the subscribe
+            # event will trigger client side sending
+
         if json_data["Type"] == "MVR_LEAVE":
+            dmx = bpy.context.scene.dmx
             data.outb.append(
                 mvrx_message.craft_packet(
                     mvrx_message.create_message("MVR_LEAVE_RET", uuid=self.uuid)
                 )
             )
+            dmx.toggle_join_MVR_Client(json_data["FromStationUUID"], False)
+            # NOTE: this is sending the JOIN/LEAVE 2x, because the subscribe
+            # event will trigger client side sending
+
         if json_data["Type"] == "MVR_COMMIT":
             data.outb.append(
                 mvrx_message.craft_packet(

@@ -24,7 +24,6 @@ from bpy.props import (
     StringProperty,
 )
 from bpy.types import PropertyGroup
-
 from ..network import DMX_Network
 
 # MVR-xchange commit and client RNA structures
@@ -49,55 +48,91 @@ class DMX_MVR_Xchange_Commit(PropertyGroup):
 class DMX_MVR_Xchange_Client(PropertyGroup):
     def onUpdate(self, context):
         # empty callback just for automatic UI updates
+        icon = "DEFAULT_TEST"
+        if any("Production Assist" in x for x in [self.provider, self.station_name]):
+            self.icon_id = "PRODUCTION_ASSIST"
+        elif any("gMA3" in x for x in [self.provider, self.station_name]):
+            self.icon_id = "GMA3"
+        elif any("GrandMA3" in x for x in [self.provider, self.station_name]):
+            self.icon_id = "GMA3"
+        elif any("BlenderDMX" in x for x in [self.provider, self.station_name]):
+            self.icon_id = "BLENDER_DMX"
         return
+
+    def onSubscribe(self, context):
+        dmx = bpy.context.scene.dmx
+        dmx.onMVR_client_join(self, self.subscribed)
 
     ip_address: StringProperty(name="IP Address")
     port: IntProperty(name="Port")
-    subscribed: BoolProperty(name="Subscribed to")
+    subscribed: BoolProperty(name="Connected", default=False, update=onSubscribe)
     last_seen: IntProperty(name="Last Seen Time", update=onUpdate)
     station_name: StringProperty(name="Station Name")
     station_uuid: StringProperty(name="Station UUID")
     service_name: StringProperty(name="MVR-xchange group")
     provider: StringProperty(name="Provider")
     commits: CollectionProperty(name="Commits", type=DMX_MVR_Xchange_Commit)
+    icon_id: StringProperty(name="Icon ID", default="DEFAULT_TEST")
 
     def get_clients(self, context):
         clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
         dmx = bpy.context.scene.dmx
         data = []
         for index, client in enumerate(clients):
-            icon = "DEFAULT_TEST"
-            if any(
-                "Production Assist" in x for x in [client.provider, client.station_name]
-            ):
-                icon = "PRODUCTION_ASSIST"
-            elif any("gMA3" in x for x in [client.provider, client.station_name]):
-                icon = "GMA3"
-            elif any("GrandMA3" in x for x in [client.provider, client.station_name]):
-                icon = "GMA3"
-            elif any("BlenderDMX" in x for x in [client.provider, client.station_name]):
-                icon = "BLENDER_DMX"
             if client.station_uuid and client.station_name and client.service_name:
                 data.append(
                     (
                         client.station_uuid,
                         client.station_name,
                         client.station_uuid,
-                        dmx.custom_icons[icon].icon_id,
+                        dmx.custom_icons[client.icon_id].icon_id,
                         index,
                     )
                 )
         return data
 
+    def get_groups(self, context):
+        mvr_x = bpy.context.window_manager.dmx.mvr_xchange
+        clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
+        dmx = bpy.context.scene.dmx
+        data = []
+        services = [client.service_name for client in clients]
+
+        for service_name in set(services):
+            data.append(
+                (
+                    service_name,
+                    service_name,
+                    service_name,
+                )
+            )
+        if data:
+            mvr_x.existing_groups_exist = True
+        else:
+            mvr_x.existing_groups_exist = False
+        return data
+
 
 class DMX_MVR_Xchange(PropertyGroup):
+    def updateGroup(self, context):
+        if self.new_group_bool:
+            self.mvr_x_group = self.new_mvr_x_group_string
+        else:
+            self.mvr_x_group = self.all_mvr_groups
+
     selected_commit: IntProperty(default=0)
+    selected_group: IntProperty(default=0)
     selected_ws_commit: IntProperty(default=0)
+    existing_groups_exist: BoolProperty(default=False)
+    new_group_bool: BoolProperty(name="New Group:", update=updateGroup)
     mvr_xchange_clients: CollectionProperty(
         name="MVR-xchange Clients", type=DMX_MVR_Xchange_Client
     )
-    selected_mvr_client: EnumProperty(
-        name="Client", description="", items=DMX_MVR_Xchange_Client.get_clients
+    all_mvr_groups: EnumProperty(
+        name="Existing Groups",
+        description="",
+        items=DMX_MVR_Xchange_Client.get_groups,
+        update=updateGroup,
     )
     shared_commits: CollectionProperty(name="Commits", type=DMX_MVR_Xchange_Commit)
     websocket_commits: CollectionProperty(
@@ -121,11 +156,13 @@ class DMX_MVR_Xchange(PropertyGroup):
     )
 
     def edit_group(self, context):
-        if "." in self.mvr_x_group:
-            self.mvr_x_group = self.mvr_x_group.replace(".", "_")
-        if not self.mvr_x_group:
-            self.mvr_x_group = "WorkGroup"
+        if "." in self.new_mvr_x_group_string:
+            self.new_mvr_x_group_string = self.new_mvr_x_group_string.replace(".", "_")
+        if not self.new_mvr_x_group_string:
+            self.new_mvr_x_group_string = "WorkGroup"
 
-    mvr_x_group: StringProperty(
+    mvr_x_group: StringProperty(default="")
+
+    new_mvr_x_group_string: StringProperty(
         name="Group", description="Group", default="WorkGroup", update=edit_group
     )

@@ -30,6 +30,7 @@ from ...i18n import DMX_Lang
 from ...logging_setup import DMX_Log
 from ...mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_WS_Client
 from ...util import sizeof_fmt
+from ...mvrxchange.mvrx_message import defined_station_name
 
 _ = DMX_Lang._
 
@@ -62,20 +63,23 @@ class DMX_OP_MVR_Request(Operator):
     bl_idname = "dmx.mvr_request"
     bl_options = {"UNDO"}
 
-    station_uuid: StringProperty()
-
     def execute(self, context):
+        mvr_x = context.window_manager.dmx.mvr_xchange
+        all_clients = mvr_x.mvr_xchange_clients
+        client = None
+        if all_clients:
+            client = all_clients[mvr_x.selected_client]
         uuid = str(py_uuid.uuid4()).upper()
         mvr_commit = {
             "FileUUID": uuid,
-            "StationUUID": self.station_uuid,
+            "StationUUID": client.station_uuid,
             "Comment": datetime.now().strftime("%H:%M:%S %B %d, %Y"),
             "FileSize": 0,
         }
 
-        last_commit = DMX_MVR_X_Client.create_self_request_commit(mvr_commit)
+        last_commit = DMX_MVR_X_Client.create_self_request_commit(client, mvr_commit)
         if last_commit:
-            DMX_MVR_X_Client.request_file(last_commit)
+            DMX_MVR_X_Client.request_file(client, last_commit)
 
         return {"FINISHED"}
 
@@ -92,12 +96,12 @@ class DMX_OP_MVR_Import(Operator):
         scene = context.scene
         dmx = scene.dmx
         ADDON_PATH = dmx.get_addon_path()
-        clients = context.window_manager.dmx.mvr_xchange
-        all_clients = context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
-        selected = clients.selected_mvr_client
-        for client in all_clients:
-            if client.station_uuid == selected:
-                break
+        mvr_x = context.window_manager.dmx.mvr_xchange
+        all_clients = mvr_x.mvr_xchange_clients
+        client = None
+        if all_clients:
+            client = all_clients[mvr_x.selected_client]
+
         for commit in client.commits:
             if commit.commit_uuid == self.uuid:
                 DMX_Log.log.info(f"import {commit}")
@@ -179,18 +183,18 @@ class DMX_OP_MVR_Download(Operator):
     def execute(self, context):
         DMX_Log.log.info("downloading")
 
-        clients = context.window_manager.dmx.mvr_xchange
-        all_clients = clients.mvr_xchange_clients
-        selected = clients.selected_mvr_client
-        for client in all_clients:
-            if client.station_uuid == selected:
-                break
+        mvr_x = context.window_manager.dmx.mvr_xchange
+        all_clients = mvr_x.mvr_xchange_clients
+        client = None
+        if all_clients:
+            client = all_clients[mvr_x.selected_client]
+
         DMX_Log.log.info(f"got client {client.station_name}")
         for commit in client.commits:
             DMX_Log.log.info(commit.commit_uuid)
             if commit.commit_uuid == self.uuid:
                 DMX_Log.log.info(f"downloading {commit}")
-                DMX_MVR_X_Client.request_file(commit)
+                DMX_MVR_X_Client.request_file(client, commit)
                 break
 
         return {"FINISHED"}
@@ -377,30 +381,28 @@ class DMX_UL_MVR_Stations(UIList):
     def draw_item(
         self, context, layout, data, item, icon, active_data, active_propname, index
     ):
+        dmx = context.scene.dmx
+        icon = dmx.custom_icons[item.icon_id].icon_id
         # layout.context_pointer_set("mvr_xchange_clients", item)
         col = layout.column()
-        col.label(text=f"{item.ip_address}")
-        col = layout.column()
-        col.label(text=f"{item.port}")
-        col = layout.column()
-        col.label(text=f"{item.subscribed}")
-        col = layout.column()
-        col.label(text=f"{item.last_seen}")
-        col = layout.column()
-        col.label(text=f"{item.station_name}")
-        col.label(text=f"{item.station_uuid}")
-        col = layout.column()
-        col.label(text=f"{item.service_name}")
-        col = layout.column()
-        col.label(text=f"{item.provider}")
+        col.label(text=f"{item.station_name}", icon_value=icon)
+        col1 = layout.column()
+        col1.prop(item, "subscribed", text="")
+        col2 = layout.column()
+        col2.operator("dmx.mvr_request", text="", icon="IMPORT")
+        col1.enabled = col2.enabled = dmx.mvrx_enabled
 
     def filter_items(self, context, data, property):
         # Filter the items in the UIList
         flt_flags = []
         flt_name = self.filter_name.lower()  # Get the search string from the UIList
+        mvr_x = context.window_manager.dmx.mvr_xchange
 
         for item in data.mvr_xchange_clients:
-            if flt_name in item.service_name.lower():
+            if item.service_name != mvr_x.mvr_x_group:
+                flt_flags.append(0)
+                continue
+            if flt_name in item.station_name.lower():
                 flt_flags.append(self.bitflag_filter_item)
             else:
                 flt_flags.append(0)
@@ -442,14 +444,36 @@ class DMX_PT_DMX_MVR_X(Panel):
 
         row = layout.row()
         row.prop(dmx, "zeroconf_enabled")
+        if not dmx.zeroconf_enabled:
+            return
 
         row = layout.row()
         row.prop(mvr_x, "ip_address")
-        row.enabled = not dmx.zeroconf_enabled
+        row.enabled = not dmx.mvrx_enabled
 
         row = layout.row()
-        row.prop(mvr_x, "mvr_x_group")
-        row.enabled = not dmx.zeroconf_enabled
+        row.prop(dmx, "mvrx_enabled", text=f"Enable Group: {mvr_x.mvr_x_group}")
+
+        if not dmx.mvrx_enabled:
+            row.enabled = mvr_x.existing_groups_exist or mvr_x.new_group_bool
+            if (
+                mvr_x.existing_groups_exist
+                and not mvr_x.mvr_x_group
+                and not mvr_x.new_group_bool
+            ):
+                mvr_x.mvr_x_group = mvr_x.all_mvr_groups
+
+            row = layout.row()
+
+            col1 = row.column()
+            col2 = row.column()
+            col1.prop(mvr_x, "new_group_bool", text="New group:")
+            col2.prop(mvr_x, "new_mvr_x_group_string", text="")
+            col1.enabled = not dmx.mvrx_enabled
+            col2.enabled = not dmx.mvrx_enabled and mvr_x.new_group_bool
+            row = layout.row()
+            row.prop(mvr_x, "all_mvr_groups")
+            row.enabled = not dmx.mvrx_enabled and not mvr_x.new_group_bool
 
         # if not dmx.zeroconf_enabled:
         #    return
@@ -466,7 +490,11 @@ class DMX_PT_DMX_MVR_X(Panel):
         # row.enabled = dmx.zeroconf_enabled
 
         row = layout.row()
-        row.label(text=_("Shared by me:"))
+        row.label(
+            text=_("Shared by me ({defined_station_name}):").format(
+                defined_station_name=defined_station_name
+            )
+        )
 
         row = layout.row()
         row.template_list(
@@ -479,58 +507,29 @@ class DMX_PT_DMX_MVR_X(Panel):
             rows=4,
         )
         if dmx.zeroconf_enabled:
-            clients = context.window_manager.dmx.mvr_xchange
-            all_clients = clients.mvr_xchange_clients
-            if not all_clients:
-                selected = None
-            else:
-                selected = clients.selected_mvr_client
+            row = layout.row()
+            row.label(text=_("Stations in the group:"))
+
+            row = layout.row()
+            row.template_list(
+                "DMX_UL_MVR_Stations",
+                "",
+                mvr_x,
+                "mvr_xchange_clients",
+                mvr_x,
+                "selected_client",
+                rows=4,
+            )
+            all_clients = mvr_x.mvr_xchange_clients
             client = None
-
-            for client in all_clients:
-                if client.station_uuid == selected:
-                    # client should now be set
-                    break
-
-            row = layout.row()
-            row.prop(clients, "selected_mvr_client", text="")
-            row.enabled = not dmx.mvrx_enabled
-
-            if DMX_Log.log.isEnabledFor(logging.DEBUG):
-                row = layout.row()
-                row.template_list(
-                    "DMX_UL_MVR_Stations",
-                    "",
-                    mvr_x,
-                    "mvr_xchange_clients",
-                    mvr_x,
-                    "selected_client",
-                    rows=4,
-                )
-
-            row = layout.row()
-            row.prop(dmx, "mvrx_enabled")
-            row.enabled = client is not None
-            if client:  # need the client props here:
-                col1 = row.column()
-                col1.operator("dmx.mvr_refresh", text="", icon="FILE_REFRESH")
-                col2 = row.column()
-                col2.operator(
-                    "dmx.mvr_request", text="", icon="IMPORT"
-                ).station_uuid = client.station_uuid
-                col1.enabled = col2.enabled = dmx.mvrx_enabled
-
-            # row.operator("dmx.mvr_test", text="Test", icon="CANCEL")
+            if len(all_clients) > mvr_x.selected_client:
+                client = all_clients[mvr_x.selected_client]
 
             if client:
                 row = layout.row()
-                row.label(
-                    text=f"{client.station_name}",
-                    icon="LINKED" if dmx.mvrx_enabled else "UNLINKED",
-                )
-
-                row = layout.row()
                 row.label(text=_("Shared to me:"))
+                row = layout.row()
+                row.label(text=f"{client.ip_address}:{client.port}")
                 row = layout.row()
 
                 row.template_list(
@@ -538,7 +537,7 @@ class DMX_PT_DMX_MVR_X(Panel):
                     "",
                     client,
                     "commits",
-                    clients,
+                    mvr_x,
                     "selected_commit",
                     rows=4,
                 )
