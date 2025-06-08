@@ -1,5 +1,15 @@
 ### Changelog
 
+### 2.0.4
+
+* Translated using Weblate
+    * (Swedish) [Daniel Nylander]
+    * (Catalan) [Bernat Rubiol Brusau]
+    * (French) [CharlyTheSneaky]
+* Adjust mdns service name
+* Fix beam geometry reference processing
+
+
 ### 2.0.3
 
 * Add initial support for DMX controlled bulb light like devices
