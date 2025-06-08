@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-11-30 11:27+0100\n"
-"PO-Revision-Date: 2025-06-07 11:35+0000\n"
+"PO-Revision-Date: 2025-06-08 20:40+0000\n"
 "Last-Translator: Daniel Nylander <daniel@danielnylander.se>\n"
 "Language-Team: Swedish <https://hosted.weblate.org/projects/blenderdmx/main/"
 "sv/>\n"
@@ -21,343 +21,423 @@ msgstr ""
 "Generated-By: Babel 2.14.0\n"
 
 msgid "File doesn't exist"
-msgstr ""
+msgstr "Filen finns inte"
 
+#, fuzzy
 msgid "Fixture ID"
-msgstr ""
+msgstr "Fixtur"
 
 msgid "Unit Number"
-msgstr ""
+msgstr "Enhetsnummer"
 
 msgid "Custom ID"
-msgstr ""
+msgstr "Anpassat ID"
 
 msgid "DMX Address"
-msgstr ""
+msgstr "DMX-adress"
 
 msgid "Position"
-msgstr ""
+msgstr "Position"
 
 msgid "Rotation"
-msgstr ""
+msgstr "Rotation"
 
+#, fuzzy
 msgid "Footprint"
-msgstr ""
+msgstr "Fotavtryck"
 
 msgid "DMX Collection"
-msgstr ""
+msgstr "DMX-samling"
 
 msgid "Selected PSN Server"
-msgstr ""
+msgstr "Vald PSN-server"
 
+#, fuzzy
 msgid "The selected element on the PSN server list"
-msgstr ""
+msgstr "Det valda elementet på PSN-serverlistan"
 
+#, fuzzy
 msgid "Class List i"
-msgstr ""
+msgstr "Klasslista i"
 
+#, fuzzy
 msgid "The selected element on the class list"
-msgstr ""
+msgstr "Det valda elementet i klasslistan"
 
+#, fuzzy
 msgid "Universe"
-msgstr ""
+msgstr "Universum"
 
 msgid "Editable"
-msgstr ""
+msgstr "Redigerbar"
 
+#, fuzzy
 msgid "Display Pigtails"
-msgstr ""
+msgstr "Display Pigtails"
 
+#, fuzzy
 msgid "Display 2D View"
-msgstr ""
+msgstr "Visa 2D-vy"
 
+#, fuzzy
 msgid "Display Device Label"
-msgstr ""
+msgstr "Etikett för visningsenhet"
 
+#, fuzzy
 msgid "Device Label"
-msgstr ""
+msgstr "Enhetens etikett"
 
 msgid "None"
-msgstr ""
+msgstr "Ingen"
 
 msgid "Name"
-msgstr ""
+msgstr "Namn"
 
 msgid "DMX"
-msgstr ""
+msgstr "DMX"
 
+#, fuzzy
 msgid "Allow Selecting Geometries"
-msgstr ""
+msgstr "Tillåt val av geometrier"
 
 msgid "Logging Level"
-msgstr ""
+msgstr "Loggningsnivå"
 
 msgid "Critical"
-msgstr ""
+msgstr "Allvarligt"
 
 msgid "Error"
-msgstr ""
+msgstr "Fel"
 
 msgid "Warning"
-msgstr ""
+msgstr "Varning"
 
 msgid "Info"
-msgstr ""
+msgstr "Info"
 
 msgid "Debug"
-msgstr ""
+msgstr "Felsök"
 
+#, fuzzy
 msgid "Simple beam"
-msgstr ""
+msgstr "Enkel balk"
 
+#, fuzzy
 msgid "Display 'fake' beam cone"
-msgstr ""
+msgstr "Visa \"falsk\" strålkon"
 
+#, fuzzy
 msgid "Selected fixtures"
-msgstr ""
+msgstr "Utvalda matcher"
 
+#, fuzzy
 msgid "All fixtures"
-msgstr ""
+msgstr "Alla armaturer"
 
+#, fuzzy
 msgid "Beam Lens Diameter in Cycles"
-msgstr ""
+msgstr "Strållinsens diameter i cykler"
 
+#, fuzzy
 msgid ""
 "Beam diameter is reduced to minimum when projecting gobos to prevent blur"
 " on gobo edge"
 msgstr ""
+"Stråldiametern minskas till ett minimum när gobon projiceras för att "
+"förhindra oskärpa på gobons kant"
 
+#, fuzzy
 msgid "Reduced"
-msgstr ""
+msgstr "Nedsatt"
 
 msgid "Full width"
-msgstr ""
+msgstr "Full bredd"
 
+#, fuzzy
 msgid "Custom per each beam"
-msgstr ""
+msgstr "Anpassad för varje balk"
 
+#, fuzzy
 msgid "Disable Beam Outlines"
-msgstr ""
+msgstr "Inaktivera Beam Outlines"
 
+#, fuzzy
 msgid "Enable Volume Scatter"
-msgstr ""
+msgstr "Aktivera volymspridning"
 
+#, fuzzy
 msgid "Noise Scale"
-msgstr ""
+msgstr "Bullerskala"
 
+#, fuzzy
 msgid "Volume Noise Scale"
-msgstr ""
+msgstr "Volym Ljudskala"
 
 msgid "Density"
-msgstr ""
+msgstr "Densitet"
 
+#, fuzzy
 msgid "Volume Scatter Density"
-msgstr ""
+msgstr "Volym Spridningsdensitet"
 
+#, fuzzy
 msgid "Multiply beams intensity"
-msgstr ""
+msgstr "Multiplicera strålens intensitet"
 
+#, fuzzy
 msgid "Number of universes"
-msgstr ""
+msgstr "Antal universum"
 
+#, fuzzy
 msgid "The number of universes set on the panel"
-msgstr ""
+msgstr "Antalet universum som är placerade på panelen"
 
+#, fuzzy
 msgid "Universe List Item"
-msgstr ""
+msgstr "Universum Lista Objekt"
 
+#, fuzzy
 msgid "The selected element on the universe list"
-msgstr ""
+msgstr "Det valda elementet på universumlistan"
 
 msgid "IPv4 Address for ArtNet signal"
-msgstr ""
+msgstr "IPv4-adress för ArtNet-signal"
 
 msgid "The network card/interface to listen for ArtNet DMX data"
-msgstr ""
+msgstr "Nätverkskortet/gränssnittet som ska lyssna efter ArtNet DMX-data"
 
 msgid "Enable Art-Net Input"
-msgstr ""
+msgstr "Aktivera Art-Net-indata"
 
 msgid ""
 "Enables the input of DMX data throught Art-Net on the selected network "
 "interface"
 msgstr ""
+"Aktiverar inmatning av DMX-data via Art-Net på det valda nätverksgränssnittet"
 
 msgid "Enable sACN Input"
-msgstr ""
+msgstr "Aktivera sACN-indata"
 
 msgid ""
 "Enables the input of DMX data throught sACN on all detected network "
 "interfaces"
 msgstr ""
+"Aktiverar inmatning av DMX-data via sACN på alla detekterade "
+"nätverksgränssnitt"
 
 msgid "Enable OSC Output"
-msgstr ""
+msgstr "Aktivera OSC-utdata"
 
+#, fuzzy
 msgid "Enables Open Sound Control protocol to send fixture selection to a console"
 msgstr ""
+"Möjliggör Open Sound Control-protokoll för att skicka val av armatur till en "
+"konsol"
 
+#, fuzzy
 msgid "OSC Target address"
-msgstr ""
+msgstr "OSC Måladress"
 
+#, fuzzy
 msgid ""
 "Address of the host where you want to send the OSC signal. Address ending"
 " on .255 is a broadcast address to all hosts on the network"
 msgstr ""
+"Adress till den host där du vill skicka OSC-signalen. Adresser som slutar på "
+".255 är en broadcast-adress till alla värdar i nätverket"
 
+#, fuzzy
 msgid "OSC Target port"
-msgstr ""
+msgstr "OSC Målport"
 
+#, fuzzy
 msgid "Port number of the host where you want to send the OSC signal"
-msgstr ""
+msgstr "Portnummer för den host där du vill skicka OSC-signalen"
 
+#, fuzzy
 msgid "Enable MVR-xchange discovery"
-msgstr ""
+msgstr "Aktivera MVR-xchange upptäckt"
 
+#, fuzzy
 msgid "Enables MVR-xchange discovery"
-msgstr ""
+msgstr "Aktiverar upptäckt av MVR-utbyte"
 
+#, fuzzy
 msgid "Enable MVR-xchange connection"
-msgstr ""
+msgstr "Aktivera MVR-växelanslutning"
 
+#, fuzzy
 msgid "Connects to MVR-xchange client"
-msgstr ""
+msgstr "Ansluter till MVR-xchange-klient"
 
+#, fuzzy
 msgid "Art-Net Status"
-msgstr ""
+msgstr "Art-Net Status"
 
+#, fuzzy
 msgid "sACN Status"
-msgstr ""
+msgstr "sACN Status"
 
+#, fuzzy
 msgid "Group List i"
-msgstr ""
+msgstr "Grupplista i"
 
+#, fuzzy
 msgid "The selected element on the group list"
-msgstr ""
+msgstr "Det valda elementet i grupplistan"
 
 msgid "Order by"
-msgstr ""
+msgstr "Sortera efter"
 
+#, fuzzy
 msgid "Fixture sorting order"
-msgstr ""
+msgstr "Sorteringsordning för fixturer"
 
+#, fuzzy
 msgid "Laser collision collection"
-msgstr ""
+msgstr "Uppsamling av laserkollisioner"
 
+#, fuzzy
 msgid ""
 "Laser beams are projected onto objects in this collection. The beam stops"
 " at the first object colliding with the beam."
 msgstr ""
+"Laserstrålar projiceras på föremålen i denna samling. Strålen stannar vid "
+"det första objektet som kolliderar med strålen."
 
 msgid "Pause renderer"
-msgstr ""
+msgstr "Pausa rendering"
 
 msgid "Manufacturers"
-msgstr ""
+msgstr "Tillverkare"
 
+#, fuzzy
 msgid "Imports"
-msgstr ""
+msgstr "Importera"
 
+#, fuzzy
 msgid "Add to selection"
-msgstr ""
+msgstr "Lägg till i urval"
 
 msgid "Remove from selection"
-msgstr ""
+msgstr "Ta bort från urvalet"
 
+#, fuzzy
 msgid "Keyframe only selected fixtures (not for autokeying)"
-msgstr ""
+msgstr "Keyframe endast för utvalda armaturer (inte för autokeying)"
 
 msgid "MVR-xchange"
-msgstr ""
+msgstr "MVR-xchange"
 
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 msgid "DMX Data"
-msgstr ""
+msgstr "DMX-data"
 
+#, fuzzy
 msgid "Fixture"
-msgstr ""
+msgstr "Fixtur"
 
+#, fuzzy
 msgid "Subfixtures"
-msgstr ""
+msgstr "Underfixturer"
 
+#, fuzzy
 msgid "Active Subfixtures"
-msgstr ""
+msgstr "Aktiva underfixturer"
 
+#, fuzzy
 msgid "DMX Universe"
-msgstr ""
+msgstr "DMX Universum"
 
 msgid "Address"
-msgstr ""
+msgstr "Adress"
 
+#, fuzzy
 msgid "Gel Color"
-msgstr ""
+msgstr "Gel färg"
 
+#, fuzzy
 msgid "Display beams"
-msgstr ""
+msgstr "Visa balkar"
 
+#, fuzzy
 msgid "Display beam projection and cone"
-msgstr ""
+msgstr "Displaystråleprojektion och kon"
 
 msgid "Add Target"
-msgstr ""
+msgstr "Lägg till mål"
 
+#, fuzzy
 msgid "Add target for beam to follow"
-msgstr ""
+msgstr "Lägg till mål för strålen att följa"
 
+#, fuzzy
 msgid "Increment DMX address"
-msgstr ""
+msgstr "Öka DMX-adressen"
 
+#, fuzzy
 msgid "Increment Fixture ID"
-msgstr ""
+msgstr "Inkrement Fixtur ID"
 
+#, fuzzy
 msgid "Increment Fixture ID if numeric"
-msgstr ""
+msgstr "Inkrementera fixtur-ID om det är numeriskt"
 
+#, fuzzy
 msgid ""
 "The Fixture ID is an identifier of this fixture that can be used to "
 "activate / select them for programming."
 msgstr ""
+"Fixtur-ID är en identifierare för den här fixturen som kan användas för att "
+"aktivera/välja den för programmering."
 
 msgid "Units"
-msgstr ""
+msgstr "Enheter"
 
+#, fuzzy
 msgid "How many units of this light to add"
-msgstr ""
+msgstr "Hur många enheter av detta ljus ska läggas till"
 
+#, fuzzy
 msgid "Import Focus Points as Targets"
-msgstr ""
+msgstr "Importera fokuspunkter som mål"
 
+#, fuzzy
 msgid "Create Targets from MVR Focus Points"
-msgstr ""
+msgstr "Skapa mål från MVR-fokuspunkter"
 
 msgid "Enable PSN Input"
-msgstr ""
+msgstr "Aktivera PSN-indata"
 
 msgid "Enables PosiStageNet input"
-msgstr ""
+msgstr "Aktiverar PosiStageNet-indata"
 
 msgid "IPv4 Address for PSN signal"
-msgstr ""
+msgstr "IPv4-adress för PSN-signal"
 
 msgid "The network card/interface to listen for PSN data"
-msgstr ""
+msgstr "Nätverkskortet/gränssnittet som ska lyssna efter PSN-data"
 
+#, fuzzy
 msgid "PSN Target port"
-msgstr ""
+msgstr "PSN Målport"
 
+#, fuzzy
 msgid "Align and Distribute"
-msgstr ""
+msgstr "Rikta och fördela"
 
 msgid "Active object: {}"
-msgstr ""
+msgstr "Aktivt objekt: {}"
 
+#, fuzzy
 msgid "Selected fixtures: {}"
-msgstr ""
+msgstr "Valda fixturer: {}"
 
+#, fuzzy
 msgid "DMX > Fixture Menu"
-msgstr ""
+msgstr "DMX > Fixturmeny"
 
 msgid "Add"
 msgstr "Lägg till"
@@ -368,785 +448,972 @@ msgstr "Redigera"
 msgid "Remove"
 msgstr "Ta bort"
 
+#, fuzzy
 msgid "DMX > Fixture > Add > Manufacturers"
-msgstr ""
+msgstr "DMX > Armatur > Lägg till > Tillverkare"
 
+#, fuzzy
 msgid "DMX > Fixture > Add > Profiles"
-msgstr ""
+msgstr "DMX > Armatur > Lägg till > Profiler"
 
+#, fuzzy
 msgid "DMX > Fixture > Add > Mode"
-msgstr ""
+msgstr "DMX > Armatur > Lägg till > Läge"
 
+#, fuzzy
 msgid "DMX > Fixture > Add > Manufacturers > Profiles"
-msgstr ""
+msgstr "DMX > Armatur > Lägg till > Tillverkare > Profiler"
 
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
+#, fuzzy
 msgid "Fixture GDTF Profile"
-msgstr ""
+msgstr "Fixtur GDTF Profil"
 
 msgid "Mode"
-msgstr ""
+msgstr "Läge"
 
+#, fuzzy
 msgid "Fixture GDTF Mode"
-msgstr ""
+msgstr "Fixtur GDTF Läge"
 
+#, fuzzy
 msgid "DMX Mode"
-msgstr ""
+msgstr "DMX-läge"
 
 msgid "Advanced edit"
-msgstr ""
+msgstr "Avancerad redigering"
 
+#, fuzzy
 msgid "GDTF Profile"
-msgstr ""
+msgstr "GDTF-profil"
 
+#, fuzzy
 msgid "Unknown manufacturer"
-msgstr ""
+msgstr "Okänd tillverkare"
 
+#, fuzzy
 msgid "DMX: Add Fixture"
-msgstr ""
+msgstr "DMX: Lägg till armatur"
 
+#, fuzzy
 msgid "Add fixtures to the show"
-msgstr ""
+msgstr "Lägg till fixturer till showen"
 
+#, fuzzy
 msgid "Fixture named {} already exists"
-msgstr ""
+msgstr "Fixtur med namnet {} finns redan"
 
+#, fuzzy
 msgid "No GDTF Profile selected."
-msgstr ""
+msgstr "Ingen GDTF-profil vald."
 
+#, fuzzy
 msgid "No DMX Mode selected."
-msgstr ""
+msgstr "Inget DMX-läge har valts."
 
+#, fuzzy
 msgid "DMX: Edit Fixture"
-msgstr ""
+msgstr "DMX: Redigera armatur"
 
+#, fuzzy
 msgid "Edit selected fixtures"
-msgstr ""
+msgstr "Redigera valda armaturer"
 
+#, fuzzy
 msgid "DMX > Fixture > Remove"
-msgstr ""
+msgstr "DMX > Armatur > Ta bort"
 
+#, fuzzy
 msgid "Remove selected fixtures from Scene"
-msgstr ""
+msgstr "Ta bort valda armaturer från scenen"
 
+#, fuzzy
 msgid "Select Previous Fixture"
-msgstr ""
+msgstr "Välj föregående fixtur"
 
+#, fuzzy
 msgid "Select Next Fixture"
-msgstr ""
+msgstr "Välj nästa fixtur"
 
+#, fuzzy
 msgid "Select Previous Target"
-msgstr ""
+msgstr "Välj föregående mål"
 
+#, fuzzy
 msgid "Select Next Target"
-msgstr ""
+msgstr "Välj nästa mål"
 
+#, fuzzy
 msgid "DMX > Fixture > Item"
-msgstr ""
+msgstr "DMX > Armatur > Objekt"
 
+#, fuzzy
 msgid "Select Fixture"
-msgstr ""
+msgstr "Välj fixtur"
 
+#, fuzzy
 msgid "Remove fixture"
-msgstr ""
+msgstr "Ta bort fixturen"
 
+#, fuzzy
 msgid "Fixtures"
-msgstr ""
+msgstr "Fixturer"
 
 msgid "F ID"
-msgstr ""
+msgstr "F ID"
 
 msgid "Unit #"
-msgstr ""
+msgstr "Enhet #"
 
 msgid "F ID #"
-msgstr ""
+msgstr "F ID #"
 
 msgid "Cst ID"
-msgstr ""
+msgstr "Cst ID"
 
 msgid "Uni"
-msgstr ""
+msgstr "Uni"
 
 msgid "Addr"
-msgstr ""
+msgstr "Adress"
 
+#, fuzzy
 msgid "Uni.Addr"
-msgstr ""
+msgstr "Uni.addr"
 
+#, fuzzy
 msgid "Foot"
-msgstr ""
+msgstr "Fot"
 
+#, fuzzy
 msgid "DMX > Group Menu"
-msgstr ""
+msgstr "DMX > Gruppmeny"
 
 msgid "Create"
-msgstr ""
+msgstr "Skapa"
 
 msgid "Update"
-msgstr ""
+msgstr "Uppdatera"
 
 msgid "Rename"
-msgstr ""
+msgstr "Byt namn"
 
+#, fuzzy
 msgid "DMX > Group > Create"
-msgstr ""
+msgstr "DMX > Grupp > Skapa"
 
+#, fuzzy
 msgid "Create DMX group from selected fixtures"
-msgstr ""
+msgstr "Skapa DMX-grupp från valda armaturer"
 
 msgid "Group Name"
-msgstr ""
+msgstr "Gruppnamn"
 
 msgid "Reset Colors"
-msgstr ""
+msgstr "Återställ färger"
 
+#, fuzzy
 msgid "Lock Movement"
-msgstr ""
+msgstr "Låsrörelse"
 
+#, fuzzy
 msgid "Ignore pan/tilt DMX data"
-msgstr ""
+msgstr "Ignorera pan/tilt DMX-data"
 
+#, fuzzy
 msgid "Unlock Movement"
-msgstr ""
+msgstr "Lås upp rörelse"
 
+#, fuzzy
 msgid "Allow pan/tilt DMX data"
-msgstr ""
+msgstr "Tillåt DMX-data för panorering/tiltning"
 
+#, fuzzy
 msgid "Lock/Unlock Movement Rotation"
-msgstr ""
+msgstr "Låsa/låsa upp Rörelse Rotation"
 
 msgid "Deselect All"
-msgstr ""
+msgstr "Avmarkera alla"
 
+#, fuzzy
 msgid "Deselect every fixture in the Scene"
-msgstr ""
+msgstr "Avmarkera alla armaturer i scenen"
 
 msgid "Select All"
-msgstr ""
+msgstr "Välj alla"
 
+#, fuzzy
 msgid "Select every fixture in the Scene"
-msgstr ""
+msgstr "Välj varje armatur i scenen"
 
+#, fuzzy
 msgid "Select Visible (only filtered)"
-msgstr ""
+msgstr "Välj Synlig (endast filtrerad)"
 
+#, fuzzy
 msgid "Select every fixture which is visible in the fixtures list"
-msgstr ""
+msgstr "Välj varje armatur som är synlig i armaturlistan"
 
+#, fuzzy
 msgid "Invert selection"
-msgstr ""
+msgstr "Avmarkera alla"
 
 msgid "Invert the selection"
-msgstr ""
+msgstr "Invertera markering"
 
+#, fuzzy
 msgid "Select every other light"
-msgstr ""
+msgstr "Välj alla andra ljus"
 
 msgid "Clear"
-msgstr ""
+msgstr "Töm"
 
+#, fuzzy
 msgid "Clear all DMX values to default and update fixtures"
-msgstr ""
+msgstr "Återställ alla DMX-värden till standardvärden och uppdatera armaturerna"
 
 msgid "Apply"
-msgstr ""
+msgstr "Tillämpa"
 
+#, fuzzy
 msgid "Apply these values manually when render is paused"
-msgstr ""
+msgstr "Tillämpa dessa värden manuellt när renderingen pausas"
 
+#, fuzzy
 msgid "Targets to zero"
-msgstr ""
+msgstr "Mål till noll"
 
+#, fuzzy
 msgid "Set Targets' position to 0 of the Scene"
-msgstr ""
+msgstr "Ställ in Targets position till 0 i scenen"
 
+#, fuzzy
 msgid "Center View to Selected"
-msgstr ""
+msgstr "Centrerad vy till Selected"
 
+#, fuzzy
 msgid "Set View to center on selected objects"
-msgstr ""
+msgstr "Ställ in vyn så att den centreras på valda objekt"
 
 msgid "Reset targets"
-msgstr ""
+msgstr "Återställ mål"
 
+#, fuzzy
 msgid "Reset position of target of selected fixtures"
-msgstr ""
+msgstr "Återställ positionen för målet för valda armaturer"
 
+#, fuzzy
 msgid "Select Fixtures"
-msgstr ""
+msgstr "Välj armaturer"
 
+#, fuzzy
 msgid "Select base/body of every selected fixture"
-msgstr ""
+msgstr "Välj bas/kropp för varje utvald armatur"
 
+#, fuzzy
 msgid "Select Targets"
-msgstr ""
+msgstr "Välj mål"
 
+#, fuzzy
 msgid "Select target from every fixture element selected"
-msgstr ""
+msgstr "Välj mål från varje valt fixturelement"
 
 msgid "Select Camera"
-msgstr ""
+msgstr "Välj kamera"
 
+#, fuzzy
 msgid "Select camera of the selected fixture"
-msgstr ""
+msgstr "Välj kamera för den valda fixturen"
 
 msgid "Programmer"
-msgstr ""
+msgstr "Programmerare"
 
+#, fuzzy
 msgid "Nothing selected"
-msgstr ""
+msgstr "Inget valt"
 
+#, fuzzy
 msgid "{} selected"
-msgstr ""
+msgstr "{} vald"
 
+#, fuzzy
 msgid "Bodies"
-msgstr ""
+msgstr "Kroppar"
 
 msgid "Targets"
-msgstr ""
+msgstr "Mål"
 
 msgid "Camera"
-msgstr ""
+msgstr "Kamera"
 
+#, fuzzy
 msgid "Dimmer"
-msgstr ""
+msgstr "Dimmer"
 
+#, fuzzy
 msgid "Pan"
-msgstr ""
+msgstr "Panorera"
 
+#, fuzzy
 msgid "Tilt"
-msgstr ""
+msgstr "Luta"
 
+#, fuzzy
 msgid "Pan Rotation"
-msgstr ""
+msgstr "Panorering"
 
+#, fuzzy
 msgid "Tilt Rotation"
-msgstr ""
+msgstr "Lutning Rotation"
 
 msgid "Zoom"
-msgstr ""
+msgstr "Zooma"
 
 msgid "Color Wheel"
-msgstr ""
+msgstr "Färghjul"
 
 msgid "Color Temperature"
-msgstr ""
+msgstr "Färgtemperatur"
 
 msgid "Iris"
-msgstr ""
+msgstr "Iris"
 
 msgid "Gobo1"
-msgstr ""
+msgstr "Gobo1"
 
+#, fuzzy
 msgid "Gobo1 Rotation"
-msgstr ""
+msgstr "Gobo1 Rotation"
 
 msgid "Gobo2"
-msgstr ""
+msgstr "Gobo2"
 
+#, fuzzy
 msgid "Gobo2 Rotation"
-msgstr ""
+msgstr "Gobo2 Rotation"
 
+#, fuzzy
 msgid "Strobe"
-msgstr ""
+msgstr "Stroboskop"
 
 msgid "Clear All"
-msgstr ""
+msgstr "Töm allt"
 
+#, fuzzy
 msgid "DMX > Recorder > Add Keyframe"
-msgstr ""
+msgstr "DMX > Inspelare > Lägg till nyckelbild"
 
+#, fuzzy
 msgid "Add a Keyframe with the current DMX data"
-msgstr ""
+msgstr "Lägg till en Keyframe med aktuella DMX-data"
 
+#, fuzzy
 msgid "DMX > Recorder > Delete Keyframes for all fixtures"
-msgstr ""
+msgstr "DMX > Inspelare > Ta bort nyckelbilder för alla armaturer"
 
+#, fuzzy
 msgid "Deletes all keyframes from all fixtures"
-msgstr ""
+msgstr "Raderar alla keyframes från alla fixturer"
 
+#, fuzzy
 msgid "DMX > Recorder > Delete All Keyframes from selected fixtures"
-msgstr ""
+msgstr "DMX > Inspelare > Ta bort alla nyckelbilder från valda armaturer"
 
+#, fuzzy
 msgid "Deletes all keyframes from selected fixtures"
-msgstr ""
+msgstr "Raderar alla keyframes från valda armaturer"
 
+#, fuzzy
 msgid "Keyframe Recorder"
-msgstr ""
+msgstr "Keyframe-inspelare"
 
+#, fuzzy
 msgid "Add Keyframe"
-msgstr ""
+msgstr "Lägg till nyckelram"
 
+#, fuzzy
 msgid "Delete Keyframes"
-msgstr ""
+msgstr "Ta bort nyckelramar"
 
+#, fuzzy
 msgid "Delete from selected fixtures"
-msgstr ""
+msgstr "Ta bort från valda armaturer"
 
+#, fuzzy
 msgid "Delete from all fixtures"
-msgstr ""
+msgstr "Ta bort från alla armaturer"
 
+#, fuzzy
 msgid "Objects with #bdmx drivers"
-msgstr ""
+msgstr "Objekt med #bdmx drivrutiner"
 
+#, fuzzy
 msgid "Enable Keying - Disable Playback"
-msgstr ""
+msgstr "Aktivera knapptryckning - Avaktivera uppspelning"
 
+#, fuzzy
 msgid "Enable disabled bdmx drivers"
-msgstr ""
+msgstr "Aktivera inaktiverade bdmx-drivrutiner"
 
+#, fuzzy
 msgid "Disable Keying - Enable Playback"
-msgstr ""
+msgstr "Inaktivera Keying - Aktivera uppspelning"
 
+#, fuzzy
 msgid "Disable bdmx drivers"
-msgstr ""
+msgstr "Inaktivera bdmx drivrutiner"
 
+#, fuzzy
 msgid "DMX > Setup > New Show"
-msgstr ""
+msgstr "DMX > Inställningar > Ny show"
 
+#, fuzzy
 msgid "Clear any existing DMX data and create a new show."
-msgstr ""
+msgstr "Rensa alla befintliga DMX-data och skapa en ny show."
 
+#, fuzzy
 msgid "Really remove all fixtures and DMX from blend file?"
-msgstr ""
+msgstr "Tar du verkligen bort alla armaturer och DMX från blendfilen?"
 
+#, fuzzy
 msgid "Try to remove DMX from the Blender showfile"
-msgstr ""
+msgstr "Försök att ta bort DMX från Blender showfile"
 
+#, fuzzy
 msgid "Beam diameter small"
-msgstr ""
+msgstr "Liten stråldiameter"
 
+#, fuzzy
 msgid "Beam diameter normal"
-msgstr ""
+msgstr "Stråldiameter normal"
 
+#, fuzzy
 msgid "DMX > Setup > Create/Update Volume Box"
-msgstr ""
+msgstr "DMX > Inställningar > Skapa/uppdatera volymbox"
 
+#, fuzzy
 msgid "Create/Update a Box on the scene bounds with a Volume Scatter shader"
-msgstr ""
+msgstr "Skapa/uppdatera en box på scenens gränser med en Volume Scatter-shader"
 
+#, fuzzy
 msgid "Beam Volume"
-msgstr ""
+msgstr "Strålningsvolym"
 
+#, fuzzy
 msgid "Update Volume Box"
-msgstr ""
+msgstr "Uppdatera volymbox"
 
+#, fuzzy
 msgid "Create Volume Box"
-msgstr ""
+msgstr "Skapa volymbox"
 
+#, fuzzy
 msgid "Set on selected fixtures"
-msgstr ""
+msgstr "Ställ in på utvalda armaturer"
 
+#, fuzzy
 msgid "Viewport"
-msgstr ""
+msgstr "Visningsområde (Viewport)"
 
 msgid "Background Color"
-msgstr ""
+msgstr "Bakgrundsfärg"
 
+#, fuzzy
 msgid "Extras"
-msgstr ""
+msgstr "Extra"
 
+#, fuzzy
 msgid "Check for BlenderDMX updates"
-msgstr ""
+msgstr "Kontrollera för uppdateringar av BlenderDMX"
 
 msgid "Status: {}"
-msgstr ""
+msgstr "Status: {}"
 
+#, fuzzy
 msgid "Clear Project data"
-msgstr ""
+msgstr "Rensa projektdata"
 
+#, fuzzy
 msgid "Copy (import) old data from addon folder"
-msgstr ""
+msgstr "Kopiera (importera) gamla data från Addon-mappen"
 
 msgid "Remove DMX from blend file"
-msgstr ""
+msgstr "Ta bort DMX från blend-filen"
 
 msgid "Import"
-msgstr ""
+msgstr "Importera"
 
+#, fuzzy
 msgid "Import GDTF Profile"
-msgstr ""
+msgstr "Importera GDTF-profil"
 
+#, fuzzy
 msgid "Import MVR Scene"
-msgstr ""
+msgstr "Importera MVR-scen"
 
+#, fuzzy
 msgid "Import Project data"
-msgstr ""
+msgstr "Importera projektdata"
 
 msgid "Export"
-msgstr ""
+msgstr "Exportera"
 
 msgid "Export Project data"
-msgstr ""
+msgstr "Exportera projektdata"
 
 msgid "Export MVR"
-msgstr ""
+msgstr "Exportera MVR"
 
 msgid "Show logging directory"
-msgstr ""
+msgstr "Visa loggningskatalog"
 
 msgid "Logging"
-msgstr ""
+msgstr "Loggning"
 
 msgid "Log filter"
-msgstr ""
+msgstr "Loggfilter"
 
 msgid "Setup"
-msgstr ""
+msgstr "Konfigurera"
 
 msgid "Error! Blender 3.4 or higher required."
-msgstr ""
+msgstr "Fel! Blender 3.4 eller högre krävs."
 
+#, fuzzy
 msgid "Create New Show"
-msgstr ""
+msgstr "Skapa ny show"
 
 msgid "Check version"
-msgstr ""
+msgstr "Kontrollera version"
 
+#, fuzzy
 msgid "Check if there is new release of BlenderDMX"
-msgstr ""
+msgstr "Kontrollera om det finns en ny version av BlenderDMX"
 
+#, fuzzy
 msgid "Unknown version error"
-msgstr ""
+msgstr "Fel på okänd version"
 
+#, fuzzy
 msgid "New version {} available"
-msgstr ""
+msgstr "Ny version {} tillgänglig"
 
 msgid "You are using pre-release version"
-msgstr ""
+msgstr "Du använder en förutgåva"
 
 msgid "You are using latest version of BlenderDMX"
-msgstr ""
+msgstr "Du använder den senaste versionen av BlenderDMX"
 
 msgid "Checking..."
-msgstr ""
+msgstr "Kontrollerar..."
 
+#, fuzzy
 msgid "Import Custom Data"
-msgstr ""
+msgstr "Importera anpassade data"
 
+#, fuzzy
 msgid ""
 "Unzip previously exported custom data from a zip file. This will "
 "overwrite current data!"
 msgstr ""
+"Packa upp tidigare exporterade anpassade data från en zip-fil. Detta kommer "
+"att skriva över nuvarande data!"
 
+#, fuzzy
 msgid "File Path"
-msgstr ""
+msgstr "Filsökväg"
 
+#, fuzzy
 msgid "Files"
-msgstr ""
+msgstr "Filer"
 
+#, fuzzy
 msgid "Incorrect file name!"
-msgstr ""
+msgstr "Felaktigt filnamn!"
 
+#, fuzzy
 msgid "Data imported from: {}"
-msgstr ""
+msgstr "Data importerad från: {}"
 
 msgid "Export Custom Data"
-msgstr ""
+msgstr "Exportera anpassade data"
 
+#, fuzzy
 msgid "Zip and Export custom data from BlenderDMX addon directory."
-msgstr ""
+msgstr "Zip och exportera anpassade data från BlenderDMX addon-katalogen."
 
+#, fuzzy
 msgid "Data exported to: {}"
-msgstr ""
+msgstr "Data exporteras till: {}"
 
+#, fuzzy
 msgid "Clear Custom Data"
-msgstr ""
+msgstr "Rensa anpassade data"
 
+#, fuzzy
 msgid "Clear custom data from BlenderDMX addon directory."
-msgstr ""
+msgstr "Rensa anpassade data från BlenderDMX addon-katalogen."
 
 msgid "Data cleared"
-msgstr ""
+msgstr "Data tömdes"
 
+#, fuzzy
 msgid "Copy data from addon to user directory"
-msgstr ""
+msgstr "Kopiera data från addon till användarkatalog"
 
+#, fuzzy
 msgid ""
 "Copy custom data from BlenderDMX addon directory to BlenderDMX extension "
 "user directory."
 msgstr ""
+"Kopiera anpassade data från BlenderDMX addon-katalogen till BlenderDMX-"
+"tilläggets användarkatalog."
 
 msgid "Data copied"
-msgstr ""
+msgstr "Data kopierade"
 
+#, fuzzy
 msgid "Reload BlenderDMX addon"
-msgstr ""
+msgstr "Reload BlenderDMX tillägg"
 
+#, fuzzy
 msgid "Reload the addon, useful during development"
-msgstr ""
+msgstr "Ladda om tillägget, användbart under utveckling"
 
+#, fuzzy
 msgid "Addon reloaded"
-msgstr ""
+msgstr "Addon laddas om"
 
+#, fuzzy
 msgid "Select visible"
-msgstr ""
+msgstr "Välj synlig"
 
+#, fuzzy
 msgid "Select visible subfixtures"
-msgstr ""
+msgstr "Välj synliga underfixturer"
 
 msgid "Clear selection"
-msgstr ""
+msgstr "Töm markering"
 
+#, fuzzy
 msgid "Clear subfixture selection"
-msgstr ""
+msgstr "Rensa val av underfixtur"
 
+#, fuzzy
 msgid "Get GDTF Share account and fill it into BlenderDMX addon preferences."
-msgstr ""
+msgstr "Hämta GDTF Share-konto och fyll i det i BlenderDMX addon-preferenser."
 
+#, fuzzy
 msgid "GDTF Share API credentials missing"
-msgstr ""
+msgstr "GDTF Share API-autentiseringsuppgifter saknas"
 
 msgid "Downloading {}"
-msgstr ""
+msgstr "Hämtar ner {}"
 
+#, fuzzy
 msgid "GDTF Share Download"
-msgstr ""
+msgstr "GDTF Share Ladda ner"
 
+#, fuzzy
 msgid "Share index updated. Status code was: {}"
-msgstr ""
+msgstr "Aktieindex uppdaterat. Statuskoden var: {}"
 
+#, fuzzy
 msgid "GDTF Share updated"
-msgstr ""
+msgstr "GDTF-aktien uppdaterad"
 
+#, fuzzy
 msgid "Error while updating Share index. Error code was: {}"
-msgstr ""
+msgstr "Fel vid uppdatering av aktieindex. Felkoden var: {}"
 
+#, fuzzy
 msgid "GDTF Share update error"
-msgstr ""
+msgstr "Fel vid uppdatering av GDTF-aktien"
 
+#, fuzzy
 msgid "File downloaded correctly. Status code was: {}"
-msgstr ""
+msgstr "Filen laddades ner korrekt. Statuskoden var: {}"
 
+#, fuzzy
 msgid "GDTF file downloaded"
-msgstr ""
+msgstr "Fil GDTF hämtad"
 
+#, fuzzy
 msgid "Error downloading GDTF file. Error code was: {}"
-msgstr ""
+msgstr "Fel vid nedladdning av filen GDTF. Felkoden var: {}"
 
+#, fuzzy
 msgid "GDTF Share download error"
-msgstr ""
+msgstr "GDTF Share nedladdningsfel"
 
+#, fuzzy
 msgid "The name of the DMX profile."
-msgstr ""
+msgstr "Namnet på DMX-profilen."
 
+#, fuzzy
 msgid "Channel count"
-msgstr ""
+msgstr "Kanalantal"
 
+#, fuzzy
 msgid "Number of channels"
-msgstr ""
+msgstr "Antal kanaler"
 
 msgid "Short Name"
-msgstr ""
+msgstr "Kortnamn"
 
+#, fuzzy
 msgid ""
 "The short name of the DMX profile, all caps, used as suggestion for "
 "fixture names."
 msgstr ""
+"Det korta namnet på DMX-profilen, med versaler, används som förslag till "
+"armaturnamn."
 
+#, fuzzy
 msgid "Filename"
-msgstr ""
+msgstr "Filnamn"
 
+#, fuzzy
 msgid "Some fixtures could not be processed"
-msgstr ""
+msgstr "Vissa fixturer kunde inte bearbetas"
 
+#, fuzzy
 msgid "Mode name"
-msgstr ""
+msgstr "Lägets namn"
 
+#, fuzzy
 msgid "DMX Footprint"
-msgstr ""
+msgstr "DMX-fotavtryck"
 
+#, fuzzy
 msgid "Fixture name"
-msgstr ""
+msgstr "Fixturens namn"
 
+#, fuzzy
 msgid "Manufacturer and fixture name"
-msgstr ""
+msgstr "Tillverkarens och armaturens namn"
 
 msgid "Manufacturer"
-msgstr ""
+msgstr "Tillverkare"
 
 msgid "Manufacturer name"
-msgstr ""
+msgstr "Tillverkarens namn"
 
 msgid "Revision"
-msgstr ""
+msgstr "Revision"
 
+#, fuzzy
 msgid "Revision text"
-msgstr ""
+msgstr "Reviderad text"
 
 msgid "Uploaded by"
-msgstr ""
+msgstr "Uppladdad av"
 
+#, fuzzy
 msgid "File uploaded by"
-msgstr ""
+msgstr "Fil uppladdad av"
 
 msgid "Created by"
-msgstr ""
+msgstr "Skapat av"
 
 msgid "File created by"
-msgstr ""
+msgstr "Fil skapad av"
 
 msgid "Rating"
-msgstr ""
+msgstr "Betyg"
 
 msgid "Revision ID"
-msgstr ""
+msgstr "Revisions-ID"
 
+#, fuzzy
 msgid "File identifier in the GDTF Share"
-msgstr ""
+msgstr "Filidentifierare i GDTF Share"
 
+#, fuzzy
 msgid "DMX Modes"
-msgstr ""
+msgstr "DMX-lägen"
 
+#, fuzzy
 msgid "DMX Mode Name"
-msgstr ""
+msgstr "DMX-lägets namn"
 
+#, fuzzy
 msgid "Import from Share"
-msgstr ""
+msgstr "Importera från Share"
 
+#, fuzzy
 msgid "Import fixture from GDTF Share"
-msgstr ""
+msgstr "Importera fixtur från GDTF Share"
 
+#, fuzzy
 msgid "Update GDTF Share index"
-msgstr ""
+msgstr "Uppdatering GDTF Aktieindex"
 
+#, fuzzy
 msgid "Update data index of GDTF Share"
-msgstr ""
+msgstr "Uppdatera dataindex för GDTF-aktien"
 
+#, fuzzy
 msgid "Delete fixture"
-msgstr ""
+msgstr "Ta bort armatur"
 
+#, fuzzy
 msgid "Delete fixture from local filesystem"
-msgstr ""
+msgstr "Ta bort fixturen från det lokala filsystemet"
 
+#, fuzzy
 msgid "Refresh files listing"
-msgstr ""
+msgstr "Uppdatera listan över filer"
 
+#, fuzzy
 msgid "Update list of local files"
-msgstr ""
+msgstr "Uppdatera listan över lokala filer"
 
+#, fuzzy
 msgid "GDTF Share"
-msgstr ""
+msgstr "GDTF Aktie"
 
 msgid "You must Allow Online access for this to work:"
-msgstr ""
+msgstr "Du måste tillåta onlineåtkomst för att detta ska fungera:"
 
+#, fuzzy
 msgid "Fixture details"
-msgstr ""
+msgstr "Detaljer om fixturen"
 
+#, fuzzy
 msgid "Local Fixture files"
-msgstr ""
+msgstr "Lokala fixturfiler"
 
+#, fuzzy
 msgid "Local Fixture details"
-msgstr ""
+msgstr "Lokal matchinformation"
 
 msgid "Profiles"
-msgstr ""
+msgstr "Profiler"
 
 msgid "Art-Net"
-msgstr ""
+msgstr "Art-Net"
 
 msgid "IPv4"
-msgstr ""
+msgstr "IPv4"
 
+#, fuzzy
 msgid "Art-Net set for {} universe(s)"
-msgstr ""
+msgstr "Art-Net inställt för {} universum(er)"
 
+#, fuzzy
 msgid "Live DMX"
-msgstr ""
+msgstr "Live DMX"
 
 msgid "Source"
-msgstr ""
+msgstr "Källa"
 
 msgid "Refresh"
-msgstr ""
+msgstr "Uppdatera"
 
+#, fuzzy
 msgid "Refresh connection"
-msgstr ""
+msgstr "Uppdatera anslutningen"
 
 msgid "Request latest version"
-msgstr ""
+msgstr "Begär senaste versionen"
 
+#, fuzzy
 msgid "Sends the Request message"
-msgstr ""
+msgstr "Skickar meddelandet Request"
 
+#, fuzzy
 msgid "Import commit"
-msgstr ""
+msgstr "Importera åtagande"
 
 msgid "Download"
-msgstr ""
+msgstr "Hämta ner"
 
+#, fuzzy
 msgid "Download commit"
-msgstr ""
+msgstr "Nedladdningskommando"
 
 msgid "OSC"
-msgstr ""
+msgstr "OSC"
 
 msgid "Protocols"
-msgstr ""
+msgstr "Protokoll"
 
 msgid "Add Tracker"
-msgstr ""
+msgstr "Lägg till spårare"
 
+#, fuzzy
 msgid "Adding a tracker"
-msgstr ""
+msgstr "Lägga till en tracker"
 
 msgid "Remove Tracker"
-msgstr ""
+msgstr "Ta bort spårare"
 
 msgid "Removing a tracker"
-msgstr ""
+msgstr "Tar bort en spårare"
 
+#, fuzzy
 msgid "Link Fixture to Tracker"
-msgstr ""
+msgstr "Länka fixtur till spårare"
 
+#, fuzzy
 msgid "Link fixture to a tracker"
-msgstr ""
+msgstr "Länka fixturen till en tracker"
 
+#, fuzzy
 msgid "Unlink Fixture from Tracker"
-msgstr ""
+msgstr "Koppla loss fixturen från spåraren"
 
+#, fuzzy
 msgid "Unlink fixture from a tracker"
-msgstr ""
+msgstr "Koppla loss fixturen från en tracker"
 
+#, fuzzy
 msgid "Tracker Followers"
-msgstr ""
+msgstr "Tracker Följare"
 
+#, fuzzy
 msgid "Link followers to a tracker"
-msgstr ""
+msgstr "Länka följare till en tracker"
 
+#, fuzzy
 msgid "PSN"
-msgstr ""
+msgstr "PSN"
 
+#, fuzzy
 msgid "Add Tracking Target"
-msgstr ""
+msgstr "Lägg till mål för spårning"
 
+#, fuzzy
 msgid "Remove Followers Target"
-msgstr ""
+msgstr "Ta bort följare Mål"
 
 msgid "Remove target"
-msgstr ""
+msgstr "Ta bort mål"
 
+#, fuzzy
 msgid "Add Followers Target"
-msgstr ""
+msgstr "Lägg till följare Mål"
 
 msgid "Add target"
-msgstr ""
+msgstr "Lägg till mål"
 
 msgid "sACN"
-msgstr ""
+msgstr "sACN"
 
+#, fuzzy
 msgid "sACN set for {} universe(s)"
-msgstr ""
+msgstr "sACN inställd för {} universum(er)"
 
+#, fuzzy
 msgid "DMX > Universe Menu"
-msgstr ""
+msgstr "DMX > Universum Meny"
 
+#, fuzzy
 msgid "Universes"
-msgstr ""
+msgstr "Universum"
 
 #~ msgid ""
 #~ "Get API key from GDTF Share "
