@@ -1,5 +1,11 @@
 ### Changelog
 
+### 2.0.3
+
+* Add initial support for DMX controlled bulb light like devices
+* Use model of geometry reference if provided
+* Update pygdtf to 1.2.5
+
 ### 2.0.2
 
 * Update pygdtf to 1.2.4
