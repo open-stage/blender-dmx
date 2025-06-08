@@ -1,5 +1,39 @@
 ### Changelog
 
+### 2.0.3
+
+* Add initial support for DMX controlled bulb light like devices
+* Use model of geometry reference if provided
+* Update pygdtf to 1.2.5
+
+### 2.0.2
+
+* Update pygdtf to 1.2.4
+* Sync Shutter1Strobe to the programmer
+* Make Shutter1Strobe flashing, not pulsing
+* Ensure that DMX breaks's address/universe are overflowing 512
+* Export MVR with breaks from 0, set universe 0 as 1
+* Fix programmer values after clear
+* Clear any selection prior to fixture edit/mvr import
+* Add option to not modify Fixture_ID and Address during Edit
+* Ensure that color defined close to GDTF default white is interpreted as full white
+* Remove and re-copy BlenderDMX provided files when Cleaning project data
+
+### 2.0.1
+
+* Improve migration from older blend files
+* Unify programmer defaults
+* Fix gobo indexing angle calculation
+* Update packaged fixture profiles:
+    - keep only BlenderDMX created profiles
+    - improve the default profiles with more data
+    - provide RGBW/RGBA versions
+    - REMOVED some files like rotating beam or source4, they exist in the GDTF
+      Share
+* Add per-channel caching to render()
+* Save and apply XML provided offset to pan/tilt geometrie
+* Map pan, tilt, color picker to DMX RGB/CMY correctly and without drifting
+
 ### 2.0.0
 
 * Add support for ChannelFunctions and ChannelSets with their Physical From,

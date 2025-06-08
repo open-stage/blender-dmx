@@ -726,27 +726,6 @@ class DMX(PropertyGroup):
 
         DMX_Log.log.info(f"Data version: {file_data_version}")
 
-        if file_data_version < 2:  # migration for sw. version 0.5 → 1.0
-            DMX_Log.log.info("Running migration 1→2")
-            dmx = bpy.context.scene.dmx
-
-            for fixture_ in dmx.fixtures:
-                for obj in fixture_.objects:
-                    if any(obj.name == name for name in ["Body", "Base"]):
-                        DMX_Log.log.info(f"updating {obj.name}")
-                        obj.name = "Root"
-
-                for light in fixture_.lights:
-                    DMX_Log.log.info(
-                        "Adding shutter and dimmer value fields to light object"
-                    )
-                    if "shutter_value" not in light.object.data:
-                        light.object.data["shutter_value"] = 0
-                    if "shutter_dimmer_value" not in light.object.data:
-                        light.object.data["shutter_dimmer_value"] = 0
-                    if "shutter_counter" not in light.object.data:
-                        light.object.data["shutter_counter"] = 0
-
         if file_data_version < 3:
             hide_gobo_message = True
             DMX_Log.log.info("Running migration 2→3")
@@ -890,8 +869,8 @@ class DMX(PropertyGroup):
             DMX_Log.log.info("Running migration 10→11")
             dmx = bpy.context.scene.dmx
             d = DMX_OT_ArrangeSelected()
-
-            for fixture_ in dmx.fixtures:
+            count = len(dmx.fixtures)
+            for fixture_idx, fixture_ in enumerate(dmx.fixtures):
                 fixture_.gobo_materials.clear()
                 for obj in fixture_.collection.objects:
                     if "gobo" in obj.get("geometry_type", ""):
@@ -909,12 +888,14 @@ class DMX(PropertyGroup):
                         )
                         obj.material_slots[0].material = gobo_material
                         material.material = gobo_material
-                        DMX_Log.log.info(f"Recreate gobo material {fixture_.name}")
+                        DMX_Log.log.info(
+                            f"Recreate gobo material {fixture_.name}, fixture {fixture_idx} of {count}"
+                        )
                 for light in fixture_.lights:
                     set_light_nodes(light)
 
                 if len(fixture_.images) > 0:
-                    old_gobos = fixture_.images["gobos"]
+                    old_gobos = fixture_.images.get("gobos", None)
                     if old_gobos is not None:
                         gobo1 = fixture_.images.add()
                         gobo1.name = "gobos1"
@@ -1184,7 +1165,8 @@ class DMX(PropertyGroup):
 
     def onVolumeEnabled(self, context):
         if self.volume is not None:
-            self.volume.hide_set(not self.volume_enabled)
+            if "DMX_Volume" in bpy.context.view_layer:
+                self.volume.hide_set(not self.volume_enabled)
 
     volume_enabled: BoolProperty(
         name = _("Enable Volume Scatter"),
@@ -1711,6 +1693,7 @@ class DMX(PropertyGroup):
                 continue
             if fixture_.is_selected():
                 fixture_.setDMX({"Shutter1": int(self.programmer_shutter)})
+                fixture_.setDMX({"Shutter1Strobe": int(self.programmer_shutter)})
         self.render()
 
     def onProgrammerPanMode(self, context):
@@ -1891,12 +1874,12 @@ class DMX(PropertyGroup):
         n = len(selected)
         if n < 1:
             self.programmer_dimmer = 0
-            self.programmer_color = (255, 255, 255, 255)
-            self.programmer_pan = 128
+            self.programmer_color = (1, 1, 1, 1)
+            self.programmer_pan = 0
             self.programmer_pan_rotate = 128
-            self.programmer_tilt = 128
+            self.programmer_tilt = 0
             self.programmer_tilt_rotate = 128
-            self.programmer_zoom = 25
+            self.programmer_zoom = 128
             self.programmer_shutter = 0
             self.programmer_color_wheel1 = 0
             self.programmer_color_wheel2 = 0
@@ -1919,7 +1902,9 @@ class DMX(PropertyGroup):
         if "Dimmer" in data:
             self.programmer_dimmer = data["Dimmer"] / 255.0
         if "Shutter1" in data:
-            self.programmer_shutter = int(data["Shutter1"] / 256.0)
+            self.programmer_shutter = int(data["Shutter1"])
+        if "Shutter1Strobe" in data:
+            self.programmer_shutter = int(data["Shutter1Strobe"])
         if "Zoom" in data:
             self.programmer_zoom = int(data["Zoom"])
         if "Color1" in data:
@@ -1952,19 +1937,19 @@ class DMX(PropertyGroup):
             self.programmer_gobo_index2 = int(data["Gobo2PosRotate"])
         if "ColorAdd_R" in data and "ColorAdd_G" in data and "ColorAdd_B" in data:
             rgb = [data["ColorAdd_R"], data["ColorAdd_G"], data["ColorAdd_B"]]
-            self.programmer_color = (*[color / 255 for color in rgb], 255)
+            self.programmer_color = (*[color / 255 for color in rgb], 1)
         if (
             "ColorRGB_Red" in data
             and "ColorRGB_Green" in data
             and "ColorRGB_Blue" in data
         ):
             rgb = [data["ColorRGB_Red"], data["ColorRGB_Green"], data["ColorRGB_Blue"]]
-            self.programmer_color = (*[color / 255 for color in rgb], 255)
+            self.programmer_color = (*[color / 255 for color in rgb], 1)
         if "ColorSub_C" in data and "ColorSub_M" in data and "ColorSub_Y" in data:
             rgb = cmy_to_rgb(
                 [data["ColorSub_C"], data["ColorSub_M"], data["ColorSub_Y"]]
             )
-            self.programmer_color = (*[color / 255 for color in rgb], 255)
+            self.programmer_color = (*[color / 255 for color in rgb], 1)
         # if ('ColorAdd_C' in data and 'ColorAdd_M' in data and 'ColorAdd_Y' in data):
         #    rgb = cmy_to_rgb([data['ColorAdd_C'], data['ColorAdd_M'], data['ColorAdd_Y']])
         #    self.programmer_color = (1/256*rgb[0], 1/256*rgb[1], 1/256*rgb[2], 255)
@@ -2148,6 +2133,14 @@ class DMX(PropertyGroup):
                 return os.path.dirname(os.path.realpath(__file__))
         return os.path.dirname(os.path.realpath(__file__))
 
+    def is_there_universe_zero(self):
+        dmx = bpy.context.scene.dmx
+        for dmx_fixture in dmx.fixtures:
+            for dmx_break in dmx_fixture.dmx_breaks:
+                if dmx_break.universe < 1:
+                    return True
+        return False
+
     def export_mvr(self, file_name):
         start_time = time.time()
         bpy.context.window_manager.dmx.pause_render = (
@@ -2157,6 +2150,7 @@ class DMX(PropertyGroup):
 
         folder_path = self.get_addon_path()
         folder_path = os.path.join(folder_path, "assets", "profiles")
+        universe_add = self.is_there_universe_zero()
 
         try:
             fixtures_list = []
@@ -2167,7 +2161,7 @@ class DMX(PropertyGroup):
             layer = pymvr.Layer(name="DMX").to_xml(parent=layers)
             child_list = pymvr.ChildList().to_xml(parent=layer)
             for dmx_fixture in dmx.fixtures:
-                fixture_object = dmx_fixture.to_mvr_fixture()
+                fixture_object = dmx_fixture.to_mvr_fixture(universe_add=universe_add)
                 focus_point = dmx_fixture.focus_to_mvr_focus_point()
                 if focus_point is not None:
                     child_list.append(focus_point.to_xml())
@@ -2433,17 +2427,20 @@ class DMX(PropertyGroup):
                 if fixture_.is_selected():
                     selected = True
                 for light in fixture_.lights:
-                    light.object.data.show_cone = selected
+                    if "show_cone" in light.object.data:
+                        light.object.data.show_cone = selected
 
         elif self.volume_preview == "ALL":
             self.disable_overlays = False  # overlay must be enabled
             for fixture_ in self.fixtures:
                 for light in fixture_.lights:
-                    light.object.data.show_cone = True
+                    if "show_cone" in light.object.data:
+                        light.object.data.show_cone = True
         else:
             for fixture_ in self.fixtures:
                 for light in fixture_.lights:
-                    light.object.data.show_cone = False
+                    if "show_cone" in light.object.data:
+                        light.object.data.show_cone = False
 
     # # Universes
 

@@ -484,6 +484,14 @@ class DMX_Fixture(PropertyGroup):
         max = 255,
         default = (255,255,255))
 
+    gel_color: FloatVectorProperty(
+        name = "Unused",
+        subtype = "COLOR",
+        size = 4,
+        min = 0.0,
+        max = 1.0,
+        default = (1.0,1.0,1.0,1.0))
+
     ignore_movement_dmx: BoolProperty(
         name = "Ignore movement DMX",
         description="Stay in position set by Target",
@@ -524,6 +532,11 @@ class DMX_Fixture(PropertyGroup):
         unit_number=0,
         classing="",
     ):
+        bpy.ops.object.select_all(action="DESELECT")
+        for obj in bpy.data.objects:
+            obj.select_set(False)
+        # clear possible existing selections in Blender
+
         # (Edit) Store objects positions
         old_pos = {obj.name: obj.object.location.copy() for obj in self.objects}
         old_rot = {obj.name: obj.object.rotation_euler.copy() for obj in self.objects}
@@ -941,14 +954,26 @@ class DMX_Fixture(PropertyGroup):
 
         # create a link from channel function to a mode_master channel:
         for dmx_channel in channels:
+            modemasters_exist = False
             for ch_function in dmx_channel.channel_functions:
                 if ch_function.mode_master != "":
                     for ch in channels:
-                        # we might have to search in both dmx and virtual
                         if ch.name_ == ch_function.mode_master:
+                            modemasters_exist = True
                             ch_function.mm_dmx_break = ch.dmx_break
                             ch_function.mm_offsets = ch.offsets
                             ch_function.mm_offsets_bytes = ch.offsets_bytes
+            if not modemasters_exist:
+                # create some caching of dmx channel data
+                # we ignore channels with mode dependencies
+                # as checking for the cache and then finding that we need
+                # to re-calculate the value anyways is probably more expensive
+                dmx_channel["cached_channel"] = {
+                    "dmx_value": -1,
+                    "attribute": None,
+                    "value": -1,
+                    "index": -1,
+                }
 
     # Interface Methods #
 
@@ -1268,7 +1293,7 @@ class DMX_Fixture(PropertyGroup):
             if dmx_value_coarse is None:
                 DMX_Log.log.error(
                     (
-                        "Address offset not in dmx data, skipping",
+                        "Address offset not in dmx data, skipping. You may have to re-insert or re-edit the GDTF fixture into the scene",
                         channel.attribute,
                         channel.dmx_break,
                         channel.offsets[0],
@@ -1282,20 +1307,53 @@ class DMX_Fixture(PropertyGroup):
                 dmx_value_fine = dmx_data[channel.dmx_break][channel.offsets[1]]
                 dmx_value_final = (dmx_value_coarse << 8) | dmx_value_fine
 
-            DMX_Log.log.debug(
-                (
-                    "start function search",
-                    channel.name_,
-                    channel.offsets,
-                    channel.offsets_bytes,
-                )
-            )
+            skip_attr_search = False
+            if "cached_channel" in channel:
+                cached_dmx = channel["cached_channel"].get("dmx_value")
+                cached_attr = channel["cached_channel"].get("attribute", None)
+                cached_value = channel["cached_channel"].get("value")
+                cached_slot = channel["cached_channel"].get("index")
 
-            (
-                channel_function_attribute,
-                channel_function_physical_value,
-                channel_set_wheel_slot,
-            ) = channel.get_function_attribute_data(dmx_value_final, dmx_data)
+                if dmx_value_final == int(cached_dmx) and cached_attr is not None:
+                    skip_attr_search = True
+                    channel_function_attribute = cached_attr
+                    channel_function_physical_value = cached_value
+                    channel_set_wheel_slot = cached_slot
+                    DMX_Log.log.debug(
+                        (
+                            "use cached data",
+                            channel.name_,
+                            channel_function_attribute,
+                            channel_function_physical_value,
+                            channel_set_wheel_slot,
+                        )
+                    )
+
+            if not skip_attr_search and self.use_fixtures_channel_functions:
+                DMX_Log.log.debug(
+                    ("search for fresh attribute data", channel.attribute)
+                )
+                DMX_Log.log.debug(
+                    (
+                        "start function search",
+                        channel.name_,
+                        channel.offsets,
+                        channel.offsets_bytes,
+                    )
+                )
+
+                (
+                    channel_function_attribute,
+                    channel_function_physical_value,
+                    channel_set_wheel_slot,
+                ) = channel.get_function_attribute_data(dmx_value_final, dmx_data)
+
+                if "cached_channel" in channel:
+                    DMX_Log.log.debug(("set cached data", channel.attribute))
+                    channel["cached_channel"]["dmx_value"] = dmx_value_final
+                    channel["cached_channel"]["attribute"] = channel_function_attribute
+                    channel["cached_channel"]["value"] = channel_function_physical_value
+                    channel["cached_channel"]["index"] = channel_set_wheel_slot or -1
 
             if not self.use_fixtures_channel_functions:
                 channel_function = dmx.get_default_channel_function_by_attribute(
@@ -1720,6 +1778,10 @@ class DMX_Fixture(PropertyGroup):
         DMX_Log.log.info(
             ("set dimmer, shutter, strobe", dimmer, shutter, strobe, geometry)
         )
+        if strobe == 0:  # prevent division by zero
+            strobe = None
+            shutter = 0
+
         dimmer = dimmer * round(shutter)  # get a discreet value from channel function
         dmx = bpy.context.scene.dmx
         if geometry is not None:
@@ -1728,7 +1790,8 @@ class DMX_Fixture(PropertyGroup):
             for emitter_material in self.emitter_materials:
                 if geometry is not None:
                     if geometry in emitter_material.name or any(
-                        g in geometry for g in emitter_material["parent_geometries"]
+                        g in geometry
+                        for g in emitter_material.get("parent_geometries", [])
                     ):
                         DMX_Log.log.info(("matched emitter", geometry))
 
@@ -1738,7 +1801,7 @@ class DMX_Fixture(PropertyGroup):
                         strength_input.driver_remove("default_value")
                         if strobe is not None:
                             driver = strength_input.driver_add("default_value").driver
-                            driver.expression = f"(floor(frame * ({strobe} / {bpy.context.scene.render.fps})) % 2) * ({dimmer})"
+                            driver.expression = f"1 if (frame % ({bpy.context.scene.render.fps} / {strobe})) < 1 else 0 * {dimmer}"
                         else:
                             strength_input.default_value = dimmer
 
@@ -1749,7 +1812,7 @@ class DMX_Fixture(PropertyGroup):
                     strength_input.driver_remove("default_value")
                     if strobe is not None:
                         driver = strength_input.driver_add("default_value").driver
-                        driver.expression = f"(floor(frame * ({strobe} /  {bpy.context.scene.render.fps})) % 2) * ({dimmer})"
+                        driver.expression = f"1 if (frame % ({bpy.context.scene.render.fps} / {strobe})) < 1 else 0 * {dimmer}"
                     else:
                         strength_input.default_value = dimmer
 
@@ -1761,9 +1824,11 @@ class DMX_Fixture(PropertyGroup):
             for light in self.lights:
                 flux = light.object.data["flux"] * dmx.beam_intensity_multiplier
                 if zoom is None:
-                    zoom = math.degrees(light.object.data.spot_size)
-                zoom_compensation = flux / (pow(max(zoom, 2), 0.1))
-                value = dimmer * zoom_compensation * 1.5
+                    value = flux * dimmer
+                else:
+                    # zoom = math.degrees(light.object.data.spot_size)
+                    zoom_compensation = flux / (pow(max(zoom, 2), 0.1))
+                    value = dimmer * zoom_compensation * 1.5
 
                 # we should improve this to get more Cycles/Eevee compatibility... add a driver which would adjust the intensity
                 # depending on the IES linking or not, adding drivers: https://blender.stackexchange.com/a/314329/176407
@@ -1772,14 +1837,15 @@ class DMX_Fixture(PropertyGroup):
 
                 if geometry is not None:
                     if geometry in light.object.data.name or any(
-                        g in geometry for g in light.object.data["parent_geometries"]
+                        g in geometry
+                        for g in light.object.data.get("parent_geometries", [])
                     ):
                         DMX_Log.log.info("matched emitter")
                         light.object.data.driver_remove("energy")
                         if strobe is not None:
                             driver = light.object.data.driver_add("energy").driver
                             DMX_Log.log.info("matched light")
-                            driver.expression = f"(floor(frame * ({strobe} /  {bpy.context.scene.render.fps})) % 2) * ({value})"
+                            driver.expression = f"(1 if (frame % ({bpy.context.scene.render.fps} / {strobe})) < 1 else 0) * {value}"
                         else:
                             light.object.data.energy = value
 
@@ -1788,7 +1854,7 @@ class DMX_Fixture(PropertyGroup):
                     if strobe is not None:
                         driver = light.object.data.driver_add("energy").driver
                         DMX_Log.log.info("matched light")
-                        driver.expression = f"(floor(frame * ({strobe} /  {bpy.context.scene.render.fps})) % 2) * ({value})"
+                        driver.expression = f"(1 if (frame % ({bpy.context.scene.render.fps} / {strobe})) < 1 else 0) * {value}"
                     else:
                         light.object.data.energy = value
 
@@ -1834,12 +1900,13 @@ class DMX_Fixture(PropertyGroup):
                     (
                         "emitter:",
                         emitter_material.name,
-                        list(emitter_material["parent_geometries"]),
+                        list(emitter_material.get("parent_geometries", [])),
                     )
                 )
                 if geometry is not None:
                     if geometry in emitter_material.name or any(
-                        g in geometry for g in emitter_material["parent_geometries"]
+                        g in geometry
+                        for g in emitter_material.get("parent_geometries", [])
                     ):
                         DMX_Log.log.info("matched emitter")
                         emitter_material.material.node_tree.nodes[1].inputs[
@@ -1861,7 +1928,8 @@ class DMX_Fixture(PropertyGroup):
                         ("light:", light.object.data.name, "geometry:", geometry, rgb)
                     )
                     if geometry in light.object.data.name or any(
-                        g in geometry for g in light.object.data["parent_geometries"]
+                        g in geometry
+                        for g in light.object.data.get("parent_geometries", [])
                     ):
                         DMX_Log.log.info("matched light")
                         light.object.data.color = rgb
@@ -1946,6 +2014,8 @@ class DMX_Fixture(PropertyGroup):
                         )
 
             for light in self.lights:
+                if not hasattr(light.object.data, "spot_size"):
+                    continue
                 light.object.data.spot_size = spot_size
 
                 if current_frame and self.dmx_cache_dirty:
@@ -2042,7 +2112,7 @@ class DMX_Fixture(PropertyGroup):
                 material = self.gobo_materials[obj.name].material
                 gobo_rotation = material.node_tree.nodes.get(f"Gobo{n}Rotation")
                 gobo_rotation.inputs[3].driver_remove("default_value")
-                gobo_rotation.inputs[3].default_value = value * (math.pi / 360)
+                gobo_rotation.inputs[3].default_value = math.radians(value)
                 if current_frame and self.dmx_cache_dirty:
                     gobo_rotation.inputs[3].keyframe_insert(
                         data_path="default_value", frame=current_frame
@@ -2052,7 +2122,7 @@ class DMX_Fixture(PropertyGroup):
             light_obj = light.object
             gobo_rotation = light_obj.data.node_tree.nodes.get(f"Gobo{n}Rotation")
             gobo_rotation.inputs[3].driver_remove("default_value")
-            gobo_rotation.inputs[3].default_value = value * (math.pi / 360)
+            gobo_rotation.inputs[3].default_value = math.radians(value)
 
             if current_frame and self.dmx_cache_dirty:
                 gobo_rotation.inputs[3].keyframe_insert(
@@ -2121,7 +2191,7 @@ class DMX_Fixture(PropertyGroup):
                 )
 
     def updatePanTiltViaTarget(self, pan, tilt, current_frame):
-        DMX_Log.log.info("Updating pan tilt")
+        DMX_Log.log.info(("Updating pan tilt", pan, tilt))
 
         base = self.objects["Root"].object
         pan = pan + base.rotation_euler[2]  # take base z rotation into consideration
@@ -2166,6 +2236,7 @@ class DMX_Fixture(PropertyGroup):
         else:
             geometry = self.get_object_by_geometry_name(geometry)
         if geometry:
+            value = value + geometry.get("applied_rotation", [0, 0, 0])[offset]
             geometry.rotation_mode = "XYZ"
             geometry.rotation_euler[offset] = value
             if current_frame and self.dmx_cache_dirty:
@@ -2561,9 +2632,11 @@ class DMX_Fixture(PropertyGroup):
             if ies is not None:
                 light_obj.data.node_tree.nodes.remove(ies)
 
-    def to_mvr_fixture(self):
+    def to_mvr_fixture(self, universe_add=False):
         matrix = 0
         uuid_focus_point = None
+        add_to_universe = 1 if universe_add else 0
+
         for obj in self.objects:
             if obj.object.get("geometry_root", False):
                 m = obj.object.matrix_world
@@ -2583,11 +2656,11 @@ class DMX_Fixture(PropertyGroup):
             fixture_id=self.fixture_id,
             addresses=[
                 pymvr.Address(
-                    dmx_break=dmx_break.dmx_break,
-                    universe=dmx_break.universe,
+                    dmx_break=index,
+                    universe=dmx_break.universe + add_to_universe,
                     address=dmx_break.address,
                 )
-                for dmx_break in self.dmx_breaks
+                for index, dmx_break in enumerate(self.dmx_breaks)
             ],
             matrix=pymvr.Matrix(matrix),
             focus=uuid_focus_point,

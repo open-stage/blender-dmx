@@ -1,6 +1,6 @@
 schema_version = "1.0.0"
 id = "open_stage_blender_dmx"
-version = "2.0.0"
+version = "2.0.3"
 name = "DMX"
 tagline = "DMX visualization and programming with GDTF/MVR, and Networking"
 maintainer = "Open Stage"
@@ -14,7 +14,7 @@ license = [
 ]
 
 wheels = [
-  "wheels/pygdtf-1.2.3-py3-none-any.whl",
+  "wheels/pygdtf-1.2.5-py3-none-any.whl",
   "wheels/pymvr-0.5.0-py3-none-any.whl",
   "wheels/sacn-1.9.1-py3-none-any.whl",
   "wheels/oscpy-0.6.0-py2.py3-none-any.whl",
@@ -51,5 +51,13 @@ paths_exclude_pattern = [
   "DEPENDENCIES.md",
   "DEVELOPMENT.md",
   "pyproject.toml",
+  "licenserc.toml",
+  "gpl-header.txt",
+  "uv.lock",
+  "i18n/update.sh",
+  "i18n/__pycache__/",
+  "i18n/readme-i18n.txt",
+  "i18n/babel.cfg",
+  "i18n/messages.pot",
 ]
 

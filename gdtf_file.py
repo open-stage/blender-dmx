@@ -28,6 +28,8 @@ class DMX_GDTF_File:
     profiles_list = {}
     # filename: name, short_name, filename, modes
 
+    gdtf_fixtures = {}
+
     # manfacturer_name:  {profiles}
 
     def __init__(self):
@@ -114,6 +116,8 @@ class DMX_GDTF_File:
 
     @staticmethod
     def recreate_data(recreate_profiles=False):
+        if DMX_GDTF_File.instance is None:
+            DMX_GDTF_File.instance = DMX_GDTF_File()
         DMX_Log.log.info("Regenerating fixture profiles list...")
         if recreate_profiles:
             DMX_GDTF_File.profiles_list = {}
@@ -179,6 +183,12 @@ class DMX_GDTF_File:
 
     @staticmethod
     def load_gdtf_profile(file_name):
+        if DMX_GDTF_File.instance is None:
+            DMX_GDTF_File.instance = DMX_GDTF_File()
+        if file_name in DMX_GDTF_File.gdtf_fixtures:
+            return DMX_GDTF_File.gdtf_fixtures[file_name]
+
         path = os.path.join(DMX_GDTF_File.get_profiles_path(), file_name)
         profile = pygdtf.FixtureType(path)
+        DMX_GDTF_File.gdtf_fixtures[file_name] = profile
         return profile

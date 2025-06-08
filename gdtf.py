@@ -325,6 +325,7 @@ class DMX_GDTF:
 
         root_geometry = profile.geometries.get_geometry_by_name(dmx_mode.geometry)
         has_gobos = False
+        has_zoom = False
 
         dmx_channels_flattened = dmx_mode.dmx_channels
         virtual_channels = dmx_mode.virtual_channels
@@ -332,6 +333,8 @@ class DMX_GDTF:
         for ch in dmx_channels_flattened:
             if "Gobo" in ch.attribute.str_link:
                 has_gobos = True
+            if "Zoom" in ch.attribute.str_link:
+                has_zoom = True
 
         def load_geometries(geometry):
             """Load 3d models, primitives and shapes"""
@@ -339,7 +342,8 @@ class DMX_GDTF:
 
             if isinstance(geometry, pygdtf.GeometryReference):
                 reference = profile.geometries.get_geometry_by_name(geometry.geometry)
-                geometry.model = reference.model
+                geometry.model = geometry.model or reference.model
+                # based on priority in the builder
 
                 if hasattr(reference, "geometries"):
                     for sub_geometry in reference.geometries:
@@ -551,11 +555,6 @@ class DMX_GDTF:
             )
 
             light_data["flux"] = geometry.luminous_flux
-            light_data["shutter_value"] = (
-                0  # Here we will store values required for strobing
-            )
-            light_data["shutter_dimmer_value"] = 0
-            light_data["shutter_counter"] = 0
             light_data.energy = light_data[
                 "flux"
             ]  # set by default to full brightness for devices without dimmer
@@ -591,6 +590,48 @@ class DMX_GDTF:
             )
             if has_gobos:
                 create_gobo(geometry, goboGeometry)
+
+        def create_bulb(geometry):
+            if sanitize_obj_name(geometry) not in objs:
+                return
+            obj_child = objs[sanitize_obj_name(geometry)]
+            if "beam" not in obj_child.name.lower():
+                obj_child.name = f"Beam {obj_child.name}"
+
+            if not display_beams:  # Don't even create beam objects to save resources
+                return
+            if any(geometry.beam_type.value == x for x in ["None", "Glow"]):
+                return
+
+            obj_child.visible_shadow = False
+            light_data = bpy.data.lights.new(
+                name=f"Spot {obj_child.name}", type="POINT"
+            )
+
+            light_data["parent_geometries"] = list(
+                set(obj_child.get("parent_geometries", []))
+            )
+
+            light_data["flux"] = geometry.luminous_flux
+            light_data.energy = light_data[
+                "flux"
+            ]  # set by default to full brightness for devices without dimmer
+
+            light_data.shadow_soft_size = geometry.beam_radius
+            light_data["beam_radius"] = geometry.beam_radius  # save original beam size
+            light_data["beam_radius_pin_sized_for_gobos"] = True
+            # This allows the user to set this if wanted to prevent beam rendering differences
+            light_data.shadow_buffer_clip_start = 0.0001
+            if hasattr(
+                light_data, "use_soft_falloff"
+            ):  # ensure that beam has full diameter at the lense in Cycles for Blender 4.1 and up
+                light_data.use_soft_falloff = False
+
+            light_object = bpy.data.objects.new(name="Spot", object_data=light_data)
+            light_object.hide_select = True
+            light_object.parent = obj_child
+            obj_child.matrix_parent_inverse = light_object.matrix_world.inverted()
+            collection.objects.link(light_object)
 
         def create_laser(geometry):
             if sanitize_obj_name(geometry) not in objs:
@@ -635,6 +676,9 @@ class DMX_GDTF:
             rotation = geometry_mtx.to_3x3().inverted()
             scale = geometry_mtx.to_scale()
             obj_child.matrix_local = Matrix.LocRotScale(translate, rotation, scale)
+            obj_child.rotation_mode = "XYZ"
+            obj_child["applied_rotation"] = obj_child.rotation_euler
+            # baking into the object did not work, we store the rotation and re-apply it on pan/tilt in render()
 
         def constraint_child_to_parent(parent_geometry, child_geometry):
             if sanitize_obj_name(parent_geometry) not in objs:
@@ -658,7 +702,14 @@ class DMX_GDTF:
             if isinstance(geometry, pygdtf.GeometryBeam):
                 geometry.original_name = geometry.name
                 add_beam_controlling_parent_geometries(geometry)
-                create_beam(geometry)
+
+                if geometry.beam_angle == 360:
+                    create_bulb(geometry)
+                elif geometry.beam_angle > 180 and not has_zoom:
+                    create_bulb(geometry)
+                else:
+                    create_beam(geometry)
+
             if isinstance(geometry, pygdtf.GeometryLaser):
                 create_laser(geometry)
             elif isinstance(geometry, (pygdtf.GeometryMediaServerCamera)):
@@ -682,7 +733,13 @@ class DMX_GDTF:
 
                 if isinstance(reference, pygdtf.GeometryBeam):
                     add_beam_controlling_parent_geometries(geometry)
-                    create_beam(reference)
+                    if reference.beam_angle == 360:
+                        create_bulb(reference)
+                    elif reference.beam_angle > 180 and not has_zoom:
+                        create_bulb(reference)
+                    else:
+                        create_beam(reference)
+
                 if isinstance(reference, pygdtf.GeometryLaser):
                     create_laser(reference)
                 elif isinstance(reference, (pygdtf.GeometryMediaServerCamera)):

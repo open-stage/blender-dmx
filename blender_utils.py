@@ -122,9 +122,6 @@ def clear_custom_data():
     try:
         for rm_dir, name in rm_dirs:
             for file in glob.glob(rm_dir):
-                if name == "profiles":
-                    if "BlenderDMX" in file and file.endswith(".gdtf"):
-                        continue
                 if os.path.isdir(file):
                     shutil.rmtree(file)
                     continue

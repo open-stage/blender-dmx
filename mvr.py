@@ -577,6 +577,12 @@ def load_mvr(dmx, file_name, import_focus_points):
     import_globals = SimpleNamespace(
         extracted={}, import_focus_points=import_focus_points
     )
+
+    bpy.ops.object.select_all(action="DESELECT")
+    for obj in bpy.data.objects:
+        obj.select_set(False)
+    # clear possible existing selections in Blender
+
     imported_layers = []
     context = bpy.context
     start_time = time.time()
