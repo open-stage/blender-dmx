@@ -733,9 +733,9 @@ class DMX_GDTF:
 
                 if isinstance(reference, pygdtf.GeometryBeam):
                     add_beam_controlling_parent_geometries(geometry)
-                    if geometry.beam_angle == 360:
+                    if reference.beam_angle == 360:
                         create_bulb(reference)
-                    elif geometry.beam_angle > 180 and not has_zoom:
+                    elif reference.beam_angle > 180 and not has_zoom:
                         create_bulb(reference)
                     else:
                         create_beam(reference)
