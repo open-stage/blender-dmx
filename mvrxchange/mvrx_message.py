@@ -18,11 +18,13 @@
 import json
 import socket
 import struct
-
-# mvr message structures
+import time
+import socket
 
 defined_provider_name = "BlenderDMX"
-defined_station_name = "BlenderDMX station"
+defined_station_name = (
+    f"{defined_provider_name} station {socket.gethostname()}".replace(" ", "_")
+)
 
 
 class mvrx_message:
@@ -125,9 +127,7 @@ class mvrx_message:
     ):
         if message == "MVR_JOIN_RET":
             response = mvrx_message.join_message_ret.copy()
-            response["StationName"] = (
-                f"{defined_station_name} {socket.gethostname()}".replace(" ", "_")
-            )
+            response["StationName"] = f"{defined_station_name}"
             response["StationUUID"] = uuid
             if commits is not None:
                 response["Commits"] = commits
@@ -154,11 +154,14 @@ class mvrx_message:
         elif message == "MVR_REQUEST":
             response = mvrx_message.request_message.copy()
             response["FileUUID"] = file_uuid
-            # response["FromStationUUID"].append(uuid)
+            response[
+                "FromStationUUID"
+            ] = []  # the response seems to stay in memory, reset it
+            response["FromStationUUID"].append(uuid)
             return response
         elif message == "MVR_JOIN":
             response = mvrx_message.join_message.copy()
-            response["StationName"] = f"{defined_station_name} {socket.gethostname()}"
+            response["StationName"] = f"{defined_station_name}"
             response["StationUUID"] = uuid
             if commits is not None:
                 response["Commits"] = commits

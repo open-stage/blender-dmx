@@ -1259,17 +1259,6 @@ class DMX(PropertyGroup):
         if self.zeroconf_enabled:
             DMX_Log.log.info("Enable mdns discovery")
             DMX_Zeroconf.enable_discovery()
-
-            DMX_MVR_X_Server.enable()  # start the MVR-xchange TCP server for incoming connections
-            DMX_MVR_X_Server._instance.server.get_port()
-
-            mvr_x_group = (
-                bpy.context.window_manager.dmx.mvr_xchange.mvr_x_group or "WorkGroup"
-            )
-            DMX_Zeroconf.enable_server(
-                mvr_x_group, DMX_MVR_X_Server.get_port()
-            )  # start mdns server and advertise the TCP MVR server
-
         else:
             self.mvrx_enabled = False
             DMX_MVR_X_Server.disable()
@@ -1281,38 +1270,28 @@ class DMX(PropertyGroup):
 
     def onMVR_xchange_enable(self, context):
         if self.mvrx_enabled:
-            clients = context.window_manager.dmx.mvr_xchange
-            all_clients = context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
-            selected = clients.selected_mvr_client
-            selected_client = None
-            for selected_client in all_clients:
-                if selected_client.station_uuid == selected:
-                    break
-            if not selected_client:
-                return
-
-            bpy.context.window_manager.dmx.mvr_xchange.mvr_x_group = (
-                selected_client.service_name
-            )
-            DMX_Log.log.debug(
-                (selected_client.ip_address, selected_client.station_name)
-            )
             DMX_MVR_X_Server.enable()  # start the MVR-xchange TCP server for incoming connections
             DMX_MVR_X_Server._instance.server.get_port()
             DMX_Zeroconf.disable_server()
             DMX_Zeroconf.enable_server(
-                selected_client.service_name, DMX_MVR_X_Server.get_port()
+                bpy.context.window_manager.dmx.mvr_xchange.mvr_x_group,
+                DMX_MVR_X_Server.get_port(),
             )  # start mdns server and advertise the TCP MVR server
-            # except Exception as e:
-            #    DMX_Log.log.error("Error registering an mdns server")
-            DMX_MVR_X_Client.join(
-                selected_client
-            )  # start MVR-xchange client TCP connection and send MVR_JOIN message
         else:
             DMX_Log.log.info("leave client")
-            DMX_MVR_X_Client.leave()
-            DMX_Log.log.info("disable client")
-            DMX_MVR_X_Client.disable()
+            DMX_Zeroconf.disable_server()
+            clients = context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
+            service_name = bpy.context.window_manager.dmx.mvr_xchange.mvr_x_group
+            for client in clients:
+                if client.subscribed and client.service_name == service_name:
+                    client.subscribed = False
+            DMX_MVR_X_Server.disable()
+
+    def onMVR_client_join(self, client, join):
+        if join:
+            DMX_MVR_X_Client.join(client)
+        else:
+            DMX_MVR_X_Client.leave(client)
 
     def onMVR_xchange_socket_enable(self, context):
         shared_commits = bpy.context.window_manager.dmx.mvr_xchange.shared_commits
@@ -1406,8 +1385,8 @@ class DMX(PropertyGroup):
     )
 
     mvrx_enabled : BoolProperty(
-        name = _("Connect to a selected station"),
-        description=_("Connects to an MVR-xchange station"),
+        name = _("Enable Group Registration"),
+        description=_("Join or start the new group"),
         default = False,
         update = onMVR_xchange_enable
     )
@@ -1420,12 +1399,6 @@ class DMX(PropertyGroup):
     )
 
     mvr_x_ws_url: StringProperty(name="URL", description="URL", default="")
-
-    mvrx_hostname_in_service : BoolProperty(
-        name = _("Add hostname to MVR-xchange service"),
-        description=_("Add computer name as sub-sub service in mDNS"),
-        default = False,
-    )
 
     mvrx_per_project_station_uuid : BoolProperty(
         name = _("Use per-project Station UUID"),
@@ -2198,8 +2171,8 @@ class DMX(PropertyGroup):
 
     def createMVR_Client(
         self,
-        station_name="",
         station_uuid="",
+        station_name="",
         service_name="",
         ip_address="",
         port=0,
@@ -2214,11 +2187,10 @@ class DMX(PropertyGroup):
         application_uuid = application_uuid.upper()
 
         if application_uuid == station_uuid:
-            if not DMX_Log.log.isEnabledFor(logging.DEBUG):
-                DMX_Log.log.info(
-                    "This is myself, do not register as an MVR-xchange provider"
-                )
-                return
+            DMX_Log.log.info(
+                "This is myself, do not register as an MVR-xchange station"
+            )
+            return
 
         clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
         for client in clients:
@@ -2241,12 +2213,12 @@ class DMX(PropertyGroup):
             client.provider = provider
 
     def removeMVR_Client(
-        self, station_name, station_uuid, service_name, ip_addres, port
+        self, station_uuid, station_name, service_name, ip_addres, port
     ):
         clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
-        for client in clients:
+        for idx, client in enumerate(clients):
             if client.station_uuid == station_uuid:
-                clients.remove(client)
+                clients.remove(idx)
                 break
 
     def updateMVR_Client(
@@ -2279,8 +2251,21 @@ class DMX(PropertyGroup):
                 break
         if not updated:
             self.createMVR_Client(
-                station_name, station_uuid, service_name, ip_address, port
+                station_uuid, station_name, service_name, ip_address, port
             )
+
+    def toggle_join_MVR_Client(
+        self,
+        station_uuid,
+        event=True,
+    ):
+        clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
+
+        for client in clients:
+            if client.station_uuid == station_uuid:
+                if client.subscribed != event:
+                    client.subscribed = event
+                return
 
     def createMVR_Commits(self, commits, station_uuid):
         clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
@@ -2351,8 +2336,13 @@ class DMX(PropertyGroup):
         if DMX_MVR_X_WS_Client._instance is not None:
             DMX_MVR_X_WS_Client._instance.client.send_commit(new_commit)
 
-        if DMX_MVR_X_Client._instance is not None:
-            DMX_MVR_X_Client.send_commit(new_commit)
+        mvr_x = bpy.context.window_manager.dmx.mvr_xchange
+        service_name = mvr_x.mvr_x_group
+        clients = mvr_x.mvr_xchange_clients
+
+        for client in clients:
+            if client.subscribed and client.service_name == service_name:
+                DMX_MVR_X_Client.send_commit(client, new_commit)
 
     def fetched_mvr_downloaded_file(self, commit):
         clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients

@@ -56,22 +56,21 @@ class DMX_MVR_X_Client:
     @staticmethod
     def tcp_client_callback(data):
         # TODO: rework this from a keyword based parsing to message Type based parsing
+        dmx = bpy.context.scene.dmx
 
         station_uuid = ""
         if "StationUUID" in data:
             station_uuid = data["StationUUID"]
 
         if "Commits" in data and station_uuid != "":
-            DMX_MVR_X_Client._instance._dmx.createMVR_Commits(
-                data["Commits"], station_uuid
-            )
+            dmx.createMVR_Commits(data["Commits"], station_uuid)
 
         if "Type" in data and station_uuid != "":
             if data["Type"] == "MVR_COMMIT":
-                DMX_MVR_X_Client._instance._dmx.createMVR_Commits([data], station_uuid)
+                dmx.createMVR_Commits([data], station_uuid)
 
         if "FileUUID" in data and station_uuid != "":
-            DMX_MVR_X_Client._instance._dmx.createMVR_Commits([data], station_uuid)
+            dmx.createMVR_Commits([data], station_uuid)
 
         if "Provider" in data and station_uuid != "":
             provider = data["Provider"]
@@ -79,35 +78,36 @@ class DMX_MVR_X_Client:
 
             if "StationName" in data:
                 station_name = data["StationName"]
-            DMX_MVR_X_Client._instance._dmx.updateMVR_Client(
+            dmx.updateMVR_Client(
                 provider=provider, station_uuid=station_uuid, station_name=station_name
             )
 
         if "file_downloaded" in data:
-            DMX_MVR_X_Client._instance._dmx.fetched_mvr_downloaded_file(
-                data["file_downloaded"]
-            )
+            dmx.fetched_mvr_downloaded_file(data["file_downloaded"])
 
         msg_type = data.get("Type", "")
         msg_ok = data.get("OK", "")
         # msg_message = data.get("Message", "")
-        dmx = bpy.context.scene.dmx
         if msg_type == "MVR_JOIN_RET" and msg_ok is False:
             DMX_Log.log.error("MVR-xchange client refused our connection")
-            dmx.mvrx_enabled = False
+            dmx.toggle_join_MVR_Client(station_uuid, False)
 
         if msg_type == "MVR_REQUEST_RET" and msg_ok is False:
             DMX_Log.log.error("MVR-xchange file request declined")
             commit = DMX_MVR_X_Client._instance.client.commit
+            # TODO: this can create a race as the instance is now
+            # short lived. Perhaps we need to store the commit
+            # info in some other place
             if commit:
                 dmx.request_failed_mvr_downloaded_file(commit)
 
     @staticmethod
-    def create_self_request_commit(mvr_commit):
+    def create_self_request_commit(client, mvr_commit):
         """used when requesting commit ourselves just by mvr_request"""
+        dmx = bpy.context.scene.dmx
         uuid = mvr_commit["FileUUID"]
         station_uuid = mvr_commit["StationUUID"]
-        DMX_MVR_X_Client._instance._dmx.createMVR_Commits([mvr_commit], station_uuid)
+        dmx.createMVR_Commits([mvr_commit], station_uuid)
         clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
 
         for client in clients:
@@ -118,52 +118,38 @@ class DMX_MVR_X_Client:
                         return mvr_commit
 
     @staticmethod
-    def request_file(commit):
-        if not DMX_MVR_X_Client._instance:
+    def request_file(client, commit):
+        time.sleep(0.3)
+        DMX_MVR_X_Client.disable()
+        DMX_MVR_X_Client._instance = DMX_MVR_X_Client()
+        DMX_MVR_X_Client._instance.selected_client = client
+        DMX_MVR_X_Client.connect()
+        dmx = bpy.context.scene.dmx
+        ADDON_PATH = dmx.get_addon_path()
+        path = os.path.join(
+            ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid.upper()}.mvr"
+        )
+        DMX_Log.log.debug(f"path {path}")
+        try:
+            DMX_MVR_X_Client._instance.client.request_file(commit, path)
+        except Exception as e:
+            DMX_Log.log.debug(f"problem requesting file {e}")
             return
-        if DMX_MVR_X_Client._instance.client:
-            dmx = bpy.context.scene.dmx
-            ADDON_PATH = dmx.get_addon_path()
-            path = os.path.join(
-                ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid.upper()}.mvr"
-            )
-            DMX_Log.log.debug(f"path {path}")
-            try:
-                if not DMX_MVR_X_Client._instance.client.running:
-                    DMX_MVR_X_Client.connect()
-                DMX_MVR_X_Client._instance.client.request_file(commit, path)
-            except Exception as e:
-                DMX_Log.log.debug(f"problem requesting file {e}")
-                return
-            DMX_Log.log.info("Requesting file")
+        DMX_Log.log.info("Requesting file")
 
     @staticmethod
-    def send_commit(commit):
-        if not DMX_MVR_X_Client._instance:
-            return
-        if DMX_MVR_X_Client._instance.client:
-            try:
-                DMX_Log.log.debug("re-joining")
-                if not DMX_MVR_X_Client._instance.client.running:
-                    DMX_MVR_X_Client.connect()
-                DMX_MVR_X_Client._instance.client.send_commit(commit)
-            except Exception as e:
-                DMX_Log.log.debug(f"problem re_joining {e}")
-                return
+    def send_commit(client, commit):
+        time.sleep(0.3)
+        DMX_MVR_X_Client.disable()
+        DMX_MVR_X_Client._instance = DMX_MVR_X_Client()
+        DMX_MVR_X_Client._instance.selected_client = client
+        try:
+            DMX_MVR_X_Client.connect()
+            DMX_MVR_X_Client._instance.client.send_commit(commit)
 
-    @staticmethod
-    def re_join():
-        if not DMX_MVR_X_Client._instance:
+        except Exception as e:
+            DMX_Log.log.debug(f"problem re_joining {e}")
             return
-        if DMX_MVR_X_Client._instance.client:
-            try:
-                DMX_Log.log.debug("re-joining")
-                if not DMX_MVR_X_Client._instance.client.running:
-                    DMX_MVR_X_Client.connect()
-                DMX_MVR_X_Client._instance.client.join_mvr()
-            except Exception as e:
-                DMX_Log.log.debug(f"problem re_joining {e}")
-                return
 
     @staticmethod
     def connect():
@@ -190,6 +176,8 @@ class DMX_MVR_X_Client:
 
     @staticmethod
     def join(client):
+        time.sleep(0.3)
+        DMX_MVR_X_Client.disable()
         DMX_MVR_X_Client._instance = DMX_MVR_X_Client()
         DMX_MVR_X_Client._instance.selected_client = client
         DMX_MVR_X_Client.connect()
@@ -206,15 +194,14 @@ class DMX_MVR_X_Client:
             DMX_Log.log.info("Disabling MVR client")
 
     @staticmethod
-    def leave():
-        if DMX_MVR_X_Client._instance:
-            if DMX_MVR_X_Client._instance.client:
-                DMX_MVR_X_Client.connect()
-                DMX_MVR_X_Client._instance.client.leave_mvr()
-                time.sleep(0.3)
-                DMX_MVR_X_Client._instance.client.stop()
-            DMX_MVR_X_Client._instance = None
-            DMX_Log.log.info("Disabling MVR")
+    def leave(client):
+        time.sleep(0.3)
+        DMX_MVR_X_Client.disable()
+        DMX_MVR_X_Client._instance = DMX_MVR_X_Client()
+        DMX_MVR_X_Client._instance.selected_client = client
+        DMX_MVR_X_Client.connect()
+        DMX_MVR_X_Client._instance.client.leave_mvr()
+        DMX_Log.log.info("Disabling MVR")
 
 
 class DMX_MVR_X_Server:
@@ -363,7 +350,8 @@ class DMX_MVR_X_WS_Client:
         dmx = bpy.context.scene.dmx
         if msg_type == "MVR_JOIN_RET" and msg_ok is False:
             DMX_Log.log.error("MVR-xchange client refused our connection")
-            dmx.mvrx_enabled = False
+            # dmx.mvrx_enabled = False
+            # TODO: needs testing
 
         if msg_type == "MVR_REQUEST_RET" and msg_ok is False:
             DMX_Log.log.error("MVR-xchange file request declined")
