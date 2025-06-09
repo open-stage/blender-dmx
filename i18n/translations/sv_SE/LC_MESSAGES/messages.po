@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-11-30 11:27+0100\n"
-"PO-Revision-Date: 2025-06-09 07:09+0000\n"
+"PO-Revision-Date: 2025-06-10 11:01+0000\n"
 "Last-Translator: Daniel Nylander <daniel@danielnylander.se>\n"
 "Language-Team: Swedish <https://hosted.weblate.org/projects/blenderdmx/main/"
 "sv/>\n"
@@ -600,7 +600,6 @@ msgstr "Tillämpa"
 msgid "Apply these values manually when render is paused"
 msgstr "Tillämpa dessa värden manuellt när renderingen pausas"
 
-#, fuzzy
 msgid "Targets to zero"
 msgstr "Mål till noll"
 
