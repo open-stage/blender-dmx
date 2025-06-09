@@ -448,8 +448,13 @@ class DMX_PT_DMX_MVR_X(Panel):
         row.enabled = not dmx.zeroconf_enabled
 
         row = layout.row()
+        row.prop(dmx, "mvrx_enabled")
+        row = layout.row()
         row.prop(mvr_x, "mvr_x_group")
-        row.enabled = not dmx.zeroconf_enabled
+        row.enabled = not dmx.mvrx_enabled
+        row = layout.row()
+        row.prop(mvr_x, "all_mvr_groups")
+        row.enabled = not dmx.mvrx_enabled
 
         # if not dmx.zeroconf_enabled:
         #    return
@@ -494,8 +499,6 @@ class DMX_PT_DMX_MVR_X(Panel):
 
             row = layout.row()
             row.prop(clients, "selected_mvr_client", text="")
-            row.prop(clients, "all_mvr_groups", text="")
-            row.enabled = not dmx.mvrx_enabled
 
             if DMX_Log.log.isEnabledFor(logging.DEBUG):
                 row = layout.row()
@@ -509,8 +512,6 @@ class DMX_PT_DMX_MVR_X(Panel):
                     rows=4,
                 )
 
-            row = layout.row()
-            row.prop(dmx, "mvrx_enabled")
             row.enabled = client is not None
             if client:  # need the client props here:
                 col1 = row.column()

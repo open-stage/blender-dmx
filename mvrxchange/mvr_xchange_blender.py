@@ -148,5 +148,3 @@ class DMX_MVR_Xchange(PropertyGroup):
     mvr_x_group: StringProperty(
         name="Group", description="Group", default="WorkGroup", update=edit_group
     )
-
-    join_mvr_x_group: BoolProperty(name="Join Group")

@@ -119,10 +119,10 @@ class DMX_Zeroconf:
             if DMX_Zeroconf._instance.browser:
                 DMX_Zeroconf._instance.browser.cancel()
                 DMX_Log.log.info("closing mvrx discovery")
-            if DMX_Zeroconf._instance.info:
-                DMX_Zeroconf._instance.zeroconf.unregister_service(
-                    DMX_Zeroconf._instance.info
-                )
+            # if DMX_Zeroconf._instance.info:
+            #    DMX_Zeroconf._instance.zeroconf.unregister_service(
+            #        DMX_Zeroconf._instance.info
+            #    )
             DMX_Zeroconf._instance.zeroconf.close()
             DMX_Zeroconf._instance = None
 
