@@ -2041,14 +2041,16 @@ class DMX(PropertyGroup):
         except Exception as e:
             DMX_Log.log.error(f"Error while removing group {e}")
 
-        if fixture.collection.objects is not None:
-            for obj in fixture.collection.objects:
-                bpy.data.objects.remove(obj)
+        if fixture.collection is not None:
+            if fixture.collection.objects is not None:
+                for obj in fixture.collection.objects:
+                    bpy.data.objects.remove(obj)
         if fixture.objects is not None:
             for obj in fixture.objects:
                 if obj.object:
                     bpy.data.objects.remove(obj.object)
-        bpy.data.collections.remove(fixture.collection)
+        if fixture.collection is not None:
+            bpy.data.collections.remove(fixture.collection)
         self.fixtures.remove(self.fixtures.find(fixture.name))
 
     def getFixture(self, collection):
