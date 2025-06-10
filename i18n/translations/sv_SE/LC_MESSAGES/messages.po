@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-11-30 11:27+0100\n"
-"PO-Revision-Date: 2025-06-10 11:01+0000\n"
+"PO-Revision-Date: 2025-06-11 13:01+0000\n"
 "Last-Translator: Daniel Nylander <daniel@danielnylander.se>\n"
 "Language-Team: Swedish <https://hosted.weblate.org/projects/blenderdmx/main/"
 "sv/>\n"
@@ -50,14 +50,12 @@ msgstr "DMX-samling"
 msgid "Selected PSN Server"
 msgstr "Vald PSN-server"
 
-#, fuzzy
 msgid "The selected element on the PSN server list"
 msgstr "Det valda elementet på PSN-serverlistan"
 
 msgid "Class List i"
 msgstr "Klasslista i"
 
-#, fuzzy
 msgid "The selected element on the class list"
 msgstr "Det valda elementet i klasslistan"
 
@@ -67,9 +65,8 @@ msgstr "Universum"
 msgid "Editable"
 msgstr "Redigerbar"
 
-#, fuzzy
 msgid "Display Pigtails"
-msgstr "Display Pigtails"
+msgstr "Visa råttsvansar"
 
 msgid "Display 2D View"
 msgstr "Visa 2D-vy"
@@ -110,11 +107,9 @@ msgstr "Info"
 msgid "Debug"
 msgstr "Felsök"
 
-#, fuzzy
 msgid "Simple beam"
-msgstr "Enkel balk"
+msgstr "Enkel stråle"
 
-#, fuzzy
 msgid "Display 'fake' beam cone"
 msgstr "Visa \"falsk\" strålkon"
 
@@ -124,9 +119,8 @@ msgstr "Valda fixturer"
 msgid "All fixtures"
 msgstr "Alla fixturer"
 
-#, fuzzy
 msgid "Beam Lens Diameter in Cycles"
-msgstr "Strållinsens diameter i cykler"
+msgstr "Strållinsens diameter i Cycles"
 
 msgid ""
 "Beam diameter is reduced to minimum when projecting gobos to prevent blur"
@@ -144,11 +138,9 @@ msgstr "Full bredd"
 msgid "Custom per each beam"
 msgstr "Anpassad för varje stråle"
 
-#, fuzzy
 msgid "Disable Beam Outlines"
-msgstr "Inaktivera Beam Outlines"
+msgstr "Inaktivera strålkonturer"
 
-#, fuzzy
 msgid "Enable Volume Scatter"
 msgstr "Aktivera volymspridning"
 
@@ -174,7 +166,6 @@ msgstr "Multiplicera strålens intensitet"
 msgid "Number of universes"
 msgstr "Antal universum"
 
-#, fuzzy
 msgid "The number of universes set on the panel"
 msgstr "Antalet universum som är placerade på panelen"
 
@@ -182,7 +173,6 @@ msgstr "Antalet universum som är placerade på panelen"
 msgid "Universe List Item"
 msgstr "Universum Lista Objekt"
 
-#, fuzzy
 msgid "The selected element on the universe list"
 msgstr "Det valda elementet på universumlistan"
 
@@ -242,9 +232,8 @@ msgstr "Aktivera MVR-xchange upptäckt"
 msgid "Enables MVR-xchange discovery"
 msgstr "Aktiverar upptäckt av MVR-xchange"
 
-#, fuzzy
 msgid "Enable MVR-xchange connection"
-msgstr "Aktivera MVR-växelanslutning"
+msgstr "Aktivera anslutning till MVR-xchange"
 
 msgid "Connects to MVR-xchange client"
 msgstr "Ansluter till MVR-xchange-klient"
@@ -258,7 +247,6 @@ msgstr "sACN-status"
 msgid "Group List i"
 msgstr "Grupplista i"
 
-#, fuzzy
 msgid "The selected element on the group list"
 msgstr "Det valda elementet i grupplistan"
 
@@ -272,13 +260,12 @@ msgstr "Sorteringsordning för fixturer"
 msgid "Laser collision collection"
 msgstr "Uppsamling av laserkollisioner"
 
-#, fuzzy
 msgid ""
 "Laser beams are projected onto objects in this collection. The beam stops"
 " at the first object colliding with the beam."
 msgstr ""
-"Laserstrålar projiceras på föremålen i denna samling. Strålen stannar vid "
-"det första objektet som kolliderar med strålen."
+"Laserstrålar projiceras på objekten i denna samling. Strålen stannar vid det "
+"första objektet som kolliderar med strålen."
 
 msgid "Pause renderer"
 msgstr "Pausa rendering"
@@ -340,19 +327,16 @@ msgstr "Lägg till mål"
 msgid "Add target for beam to follow"
 msgstr "Lägg till mål för strålen att följa"
 
-#, fuzzy
 msgid "Increment DMX address"
-msgstr "Öka DMX-adressen"
+msgstr "Inkrement för DMX-adressen"
 
 #, fuzzy
 msgid "Increment Fixture ID"
 msgstr "Inkrement Fixtur ID"
 
-#, fuzzy
 msgid "Increment Fixture ID if numeric"
 msgstr "Inkrementera fixtur-ID om det är numeriskt"
 
-#, fuzzy
 msgid ""
 "The Fixture ID is an identifier of this fixture that can be used to "
 "activate / select them for programming."
@@ -557,9 +541,8 @@ msgstr "Lås upp rörelse"
 msgid "Allow pan/tilt DMX data"
 msgstr "Tillåt DMX-data för panorering/tiltning"
 
-#, fuzzy
 msgid "Lock/Unlock Movement Rotation"
-msgstr "Låsa/låsa upp Rörelse Rotation"
+msgstr "Lås/lås upp rörelserotation"
 
 msgid "Deselect All"
 msgstr "Avmarkera alla"
@@ -603,9 +586,8 @@ msgstr "Tillämpa dessa värden manuellt när renderingen pausas"
 msgid "Targets to zero"
 msgstr "Mål till noll"
 
-#, fuzzy
 msgid "Set Targets' position to 0 of the Scene"
-msgstr "Ställ in Targets position till 0 i scenen"
+msgstr "Ställ in målens position till 0 i scenen"
 
 msgid "Center View to Selected"
 msgstr "Centrerad vy till markerad"
@@ -663,7 +645,6 @@ msgstr "Dimmer"
 msgid "Pan"
 msgstr "Panorera"
 
-#, fuzzy
 msgid "Tilt"
 msgstr "Luta"
 
@@ -701,7 +682,6 @@ msgstr "Gobo2"
 msgid "Gobo2 Rotation"
 msgstr "Gobo2 Rotation"
 
-#, fuzzy
 msgid "Strobe"
 msgstr "Stroboskop"
 
@@ -749,17 +729,15 @@ msgstr "Objekt med #bdmx drivrutiner"
 msgid "Enable Keying - Disable Playback"
 msgstr "Aktivera knapptryckning - Avaktivera uppspelning"
 
-#, fuzzy
 msgid "Enable disabled bdmx drivers"
-msgstr "Aktivera inaktiverade bdmx-drivrutiner"
+msgstr "Aktivera inaktiverade bdmx-drivare"
 
 #, fuzzy
 msgid "Disable Keying - Enable Playback"
 msgstr "Inaktivera Keying - Aktivera uppspelning"
 
-#, fuzzy
 msgid "Disable bdmx drivers"
-msgstr "Inaktivera bdmx drivrutiner"
+msgstr "Inaktivera bdmx-drivare"
 
 msgid "DMX > Setup > New Show"
 msgstr "DMX > Konfigurera > Ny show"
@@ -1078,7 +1056,6 @@ msgstr "DMX-lägets namn"
 msgid "Import from Share"
 msgstr "Importera från utdelning"
 
-#, fuzzy
 msgid "Import fixture from GDTF Share"
 msgstr "Importera fixtur från GDTF Share"
 
@@ -1182,9 +1159,8 @@ msgstr "Länka fixtur till spårare"
 msgid "Link fixture to a tracker"
 msgstr "Länka fixturen till en spårare"
 
-#, fuzzy
 msgid "Unlink Fixture from Tracker"
-msgstr "Koppla loss fixturen från spåraren"
+msgstr "Avlänka fixtur från spårare"
 
 msgid "Unlink fixture from a tracker"
 msgstr "Koppla loss fixturen från en spårare"
