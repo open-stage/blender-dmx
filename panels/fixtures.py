@@ -49,6 +49,10 @@ class DMX_MT_Fixture(Menu):
 
         selected = False
         for fixture in dmx.fixtures:
+            if not hasattr(fixture, "collection"):
+                continue
+            if not hasattr(fixture.collection, "objects"):
+                continue
             for obj in fixture.collection.objects:
                 if obj in bpy.context.selected_objects:
                     selected = True

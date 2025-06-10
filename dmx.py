@@ -1481,6 +1481,10 @@ class DMX(PropertyGroup):
 
     def onProgrammerDimmer(self, context):
         for fixture_ in self.fixtures:
+            if not hasattr(fixture, "collection"):
+                continue
+            if not hasattr(fixture.collection, "objects"):
+                continue
             if fixture_.collection is None:
                 continue
             if fixture_.is_selected():
@@ -2041,16 +2045,22 @@ class DMX(PropertyGroup):
         except Exception as e:
             DMX_Log.log.error(f"Error while removing group {e}")
 
-        if fixture.collection is not None:
-            if fixture.collection.objects is not None:
+        if hasattr(fixture, "collection"):
+            if hasattr(fixture.collection, "objects"):
                 for obj in fixture.collection.objects:
                     bpy.data.objects.remove(obj)
-        if fixture.objects is not None:
-            for obj in fixture.objects:
-                if obj.object:
-                    bpy.data.objects.remove(obj.object)
-        if fixture.collection is not None:
+
+        if hasattr(fixture, "collection"):
+            if hasattr(fixture.collection, "objects"):
+                if fixture.objects is not None:
+                    for obj in fixture.objects:
+                        if obj.object:
+                            bpy.data.objects.remove(obj.object)
+
+        try:
             bpy.data.collections.remove(fixture.collection)
+        except Exception as e:
+            DMX_Log.log.error(f"Error while removing fixture {e}")
         self.fixtures.remove(self.fixtures.find(fixture.name))
 
     def getFixture(self, collection):
