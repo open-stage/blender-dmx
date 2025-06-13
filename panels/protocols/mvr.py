@@ -442,19 +442,36 @@ class DMX_PT_DMX_MVR_X(Panel):
 
         row = layout.row()
         row.prop(dmx, "zeroconf_enabled")
+        if not dmx.zeroconf_enabled:
+            return
 
         row = layout.row()
         row.prop(mvr_x, "ip_address")
-        row.enabled = not dmx.zeroconf_enabled
+        row.enabled = not dmx.mvrx_enabled
 
         row = layout.row()
-        row.prop(dmx, "mvrx_enabled")
-        row = layout.row()
-        row.prop(mvr_x, "mvr_x_group")
-        row.enabled = not dmx.mvrx_enabled
-        row = layout.row()
-        row.prop(mvr_x, "all_mvr_groups")
-        row.enabled = not dmx.mvrx_enabled
+        row.prop(dmx, "mvrx_enabled", text=f"Enable Group: {mvr_x.mvr_x_group}")
+
+        if not dmx.mvrx_enabled:
+            row.enabled = mvr_x.existing_groups_exist or mvr_x.new_group_bool
+            if (
+                mvr_x.existing_groups_exist
+                and not mvr_x.mvr_x_group
+                and not mvr_x.new_group_bool
+            ):
+                mvr_x.mvr_x_group = mvr_x.all_mvr_groups
+
+            row = layout.row()
+
+            col1 = row.column()
+            col2 = row.column()
+            col1.prop(mvr_x, "new_group_bool", text="New group:")
+            col2.prop(mvr_x, "new_mvr_x_group_string", text="")
+            col1.enabled = not dmx.mvrx_enabled
+            col2.enabled = not dmx.mvrx_enabled and mvr_x.new_group_bool
+            row = layout.row()
+            row.prop(mvr_x, "all_mvr_groups")
+            row.enabled = not dmx.mvrx_enabled and not mvr_x.new_group_bool
 
         # if not dmx.zeroconf_enabled:
         #    return
@@ -500,22 +517,22 @@ class DMX_PT_DMX_MVR_X(Panel):
             row = layout.row()
             row.prop(clients, "selected_mvr_client", text="")
 
-            if DMX_Log.log.isEnabledFor(logging.DEBUG):
-                row = layout.row()
-                row.template_list(
-                    "DMX_UL_MVR_Stations",
-                    "",
-                    mvr_x,
-                    "mvr_xchange_clients",
-                    mvr_x,
-                    "selected_client",
-                    rows=4,
-                )
-
-            row.enabled = client is not None
+            # if DMX_Log.log.isEnabledFor(logging.DEBUG):
+            #    row = layout.row()
+            #    row.template_list(
+            #        "DMX_UL_MVR_Stations",
+            #        "",
+            #        mvr_x,
+            #        "mvr_xchange_clients",
+            #        mvr_x,
+            #        "selected_client",
+            #        rows=4,
+            #    )
+            # row.enabled = client is not None
             if client:  # need the client props here:
                 col1 = row.column()
-                col1.operator("dmx.mvr_refresh", text="", icon="FILE_REFRESH")
+                # col1.operator("dmx.mvr_refresh", text="", icon="FILE_REFRESH")
+                col1.prop(client, "subscribed")
                 col2 = row.column()
                 col2.operator(
                     "dmx.mvr_request", text="", icon="IMPORT"

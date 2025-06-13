@@ -63,6 +63,7 @@ class DMX_Zeroconf:
         )
 
         info = zeroconf.get_service_info(service_type, name)
+        print(f"{info=}")
         service_name = name.replace(f".{service_type}", "").split(".")[-1]
         station_name = ""
         station_uuid = ""
@@ -88,15 +89,22 @@ class DMX_Zeroconf:
                     station_uuid = info.properties[b"StationUUID"].decode("utf-8")
         station_name = f"{station_name} ({service_name})"
         DMX_Log.log.info(info)
+        print(
+            f"{station_name=}, {station_uuid=}, {service_name=}, {ip_address=}, {port=}"
+        )
+        # TODO: we should perhaps check if the station really has StationName
+        # and StationUUID before we add it into the list
         if state_change is ServiceStateChange.Added:
             DMX_Zeroconf._instance._dmx.createMVR_Client(
-                station_name, station_uuid, service_name, ip_address, int(port)
+                station_uuid, station_name, service_name, ip_address, int(port)
             )
         elif state_change is ServiceStateChange.Updated:
             DMX_Zeroconf._instance._dmx.updateMVR_Client(
                 station_uuid, station_name, service_name, ip_address, int(port)
             )
-        else:  # removed
+        elif state_change is ServiceStateChange.Removed:
+            # TODO: this typically does NOT work, because the info is empty. mDNS does not
+            # provide us with this info, but in some strange cases it actually works.
             DMX_Zeroconf._instance._dmx.removeMVR_Client(
                 station_uuid, station_name, service_name, ip_address, int(port)
             )

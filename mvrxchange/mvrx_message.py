@@ -154,7 +154,7 @@ class mvrx_message:
         elif message == "MVR_REQUEST":
             response = mvrx_message.request_message.copy()
             response["FileUUID"] = file_uuid
-            # response["FromStationUUID"].append(uuid)
+            response["FromStationUUID"].append(uuid)
             return response
         elif message == "MVR_JOIN":
             response = mvrx_message.join_message.copy()

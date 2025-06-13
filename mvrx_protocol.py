@@ -152,20 +152,6 @@ class DMX_MVR_X_Client:
                 return
 
     @staticmethod
-    def re_join():
-        if not DMX_MVR_X_Client._instance:
-            return
-        if DMX_MVR_X_Client._instance.client:
-            try:
-                DMX_Log.log.debug("re-joining")
-                if not DMX_MVR_X_Client._instance.client.running:
-                    DMX_MVR_X_Client.connect()
-                DMX_MVR_X_Client._instance.client.join_mvr()
-            except Exception as e:
-                DMX_Log.log.debug(f"problem re_joining {e}")
-                return
-
-    @staticmethod
     def connect():
         if not DMX_MVR_X_Client._instance:
             return
@@ -206,15 +192,15 @@ class DMX_MVR_X_Client:
             DMX_Log.log.info("Disabling MVR client")
 
     @staticmethod
-    def leave():
-        if DMX_MVR_X_Client._instance:
-            if DMX_MVR_X_Client._instance.client:
-                DMX_MVR_X_Client.connect()
-                DMX_MVR_X_Client._instance.client.leave_mvr()
-                time.sleep(0.3)
-                DMX_MVR_X_Client._instance.client.stop()
-            DMX_MVR_X_Client._instance = None
-            DMX_Log.log.info("Disabling MVR")
+    def leave(client):
+        DMX_MVR_X_Client._instance = DMX_MVR_X_Client()
+        DMX_MVR_X_Client._instance.selected_client = client
+        DMX_MVR_X_Client.connect()
+        DMX_MVR_X_Client._instance.client.leave_mvr()
+        time.sleep(0.3)
+        DMX_MVR_X_Client._instance.client.stop()
+        DMX_MVR_X_Client._instance = None
+        DMX_Log.log.info("Disabling MVR")
 
 
 class DMX_MVR_X_Server:
