@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2024-11-30 11:27+0100\n"
-"PO-Revision-Date: 2025-06-11 13:01+0000\n"
+"PO-Revision-Date: 2025-06-14 07:01+0000\n"
 "Last-Translator: Daniel Nylander <daniel@danielnylander.se>\n"
 "Language-Team: Swedish <https://hosted.weblate.org/projects/blenderdmx/main/"
 "sv/>\n"
@@ -159,7 +159,6 @@ msgstr "Densitet"
 msgid "Volume Scatter Density"
 msgstr "Volym Spridningsdensitet"
 
-#, fuzzy
 msgid "Multiply beams intensity"
 msgstr "Multiplicera strålens intensitet"
 
@@ -225,9 +224,8 @@ msgstr "OSC-målport"
 msgid "Port number of the host where you want to send the OSC signal"
 msgstr "Portnummer för den värd där du vill skicka OSC-signalen"
 
-#, fuzzy
 msgid "Enable MVR-xchange discovery"
-msgstr "Aktivera MVR-xchange upptäckt"
+msgstr "Aktivera upptäckt av MVR-xchange"
 
 msgid "Enables MVR-xchange discovery"
 msgstr "Aktiverar upptäckt av MVR-xchange"
@@ -592,7 +590,6 @@ msgstr "Ställ in målens position till 0 i scenen"
 msgid "Center View to Selected"
 msgstr "Centrerad vy till markerad"
 
-#, fuzzy
 msgid "Set View to center on selected objects"
 msgstr "Ställ in vyn så att den centreras på valda objekt"
 
@@ -652,9 +649,8 @@ msgstr "Luta"
 msgid "Pan Rotation"
 msgstr "Panorering"
 
-#, fuzzy
 msgid "Tilt Rotation"
-msgstr "Lutning Rotation"
+msgstr "Lutad rotering"
 
 msgid "Zoom"
 msgstr "Zooma"
@@ -671,16 +667,14 @@ msgstr "Iris"
 msgid "Gobo1"
 msgstr "Gobo1"
 
-#, fuzzy
 msgid "Gobo1 Rotation"
-msgstr "Gobo1 Rotation"
+msgstr "Gobo1-rotation"
 
 msgid "Gobo2"
 msgstr "Gobo2"
 
-#, fuzzy
 msgid "Gobo2 Rotation"
-msgstr "Gobo2 Rotation"
+msgstr "Gobo2-rotation"
 
 msgid "Strobe"
 msgstr "Stroboskop"
@@ -721,9 +715,8 @@ msgstr "Ta bort från valda fixturer"
 msgid "Delete from all fixtures"
 msgstr "Ta bort från alla fixturer"
 
-#, fuzzy
 msgid "Objects with #bdmx drivers"
-msgstr "Objekt med #bdmx drivrutiner"
+msgstr "Objekt med #bdmx-drivare"
 
 #, fuzzy
 msgid "Enable Keying - Disable Playback"
@@ -748,9 +741,8 @@ msgstr "Töm alla befintliga DMX-data och skapa en ny show."
 msgid "Really remove all fixtures and DMX from blend file?"
 msgstr "Verkligen ta bort alla fixturer och DMX från blend-filen?"
 
-#, fuzzy
 msgid "Try to remove DMX from the Blender showfile"
-msgstr "Försök att ta bort DMX från Blender showfile"
+msgstr "Försök att ta bort DMX från Blenders scenfil"
 
 msgid "Beam diameter small"
 msgstr "Liten stråldiameter"
@@ -864,7 +856,6 @@ msgstr "Kontrollerar..."
 msgid "Import Custom Data"
 msgstr "Importera anpassade data"
 
-#, fuzzy
 msgid ""
 "Unzip previously exported custom data from a zip file. This will "
 "overwrite current data!"
@@ -940,9 +931,8 @@ msgstr "Töm val av underfixturer"
 msgid "Get GDTF Share account and fill it into BlenderDMX addon preferences."
 msgstr "Hämta GDTF Share-konto och fyll i det i BlenderDMX addon-preferenser."
 
-#, fuzzy
 msgid "GDTF Share API credentials missing"
-msgstr "GDTF Share API-autentiseringsuppgifter saknas"
+msgstr "API-autentiseringsuppgifter för GDTF Share saknas"
 
 msgid "Downloading {}"
 msgstr "Hämtar ner {}"
@@ -951,9 +941,8 @@ msgstr "Hämtar ner {}"
 msgid "GDTF Share Download"
 msgstr "GDTF Share Ladda ner"
 
-#, fuzzy
 msgid "Share index updated. Status code was: {}"
-msgstr "Aktieindex uppdaterat. Statuskoden var: {}"
+msgstr "Utdelningsindex uppdaterat. Statuskoden var: {}"
 
 msgid "GDTF Share updated"
 msgstr "GDTF-utdelning uppdaterad"
@@ -1120,20 +1109,17 @@ msgstr "Uppdatera anslutningen"
 msgid "Request latest version"
 msgstr "Begär senaste versionen"
 
-#, fuzzy
 msgid "Sends the Request message"
-msgstr "Skickar meddelandet Request"
+msgstr "Skickar Request-meddelandet"
 
-#, fuzzy
 msgid "Import commit"
-msgstr "Importera åtagande"
+msgstr "Importera commit"
 
 msgid "Download"
 msgstr "Hämta ner"
 
-#, fuzzy
 msgid "Download commit"
-msgstr "Nedladdningskommando"
+msgstr "Hämta ner commit"
 
 msgid "OSC"
 msgstr "OSC"
