@@ -18,11 +18,12 @@
 import json
 import socket
 import struct
+import time
 
 # mvr message structures
 
 defined_provider_name = "BlenderDMX"
-defined_station_name = "BlenderDMX station"
+defined_station_name = f"BlenderDMX station"
 
 
 class mvrx_message:
@@ -154,7 +155,7 @@ class mvrx_message:
         elif message == "MVR_REQUEST":
             response = mvrx_message.request_message.copy()
             response["FileUUID"] = file_uuid
-            # response["FromStationUUID"].append(uuid)
+            response["FromStationUUID"].append(uuid)
             return response
         elif message == "MVR_JOIN":
             response = mvrx_message.join_message.copy()

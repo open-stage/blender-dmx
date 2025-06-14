@@ -63,6 +63,7 @@ class DMX_Zeroconf:
         )
 
         info = zeroconf.get_service_info(service_type, name)
+        print(f"{info=}")
         service_name = name.replace(f".{service_type}", "").split(".")[-1]
         station_name = ""
         station_uuid = ""
@@ -88,15 +89,22 @@ class DMX_Zeroconf:
                     station_uuid = info.properties[b"StationUUID"].decode("utf-8")
         station_name = f"{station_name} ({service_name})"
         DMX_Log.log.info(info)
+        print(
+            f"{station_name=}, {station_uuid=}, {service_name=}, {ip_address=}, {port=}"
+        )
+        # TODO: we should perhaps check if the station really has StationName
+        # and StationUUID before we add it into the list
         if state_change is ServiceStateChange.Added:
             DMX_Zeroconf._instance._dmx.createMVR_Client(
-                station_name, station_uuid, service_name, ip_address, int(port)
+                station_uuid, station_name, service_name, ip_address, int(port)
             )
         elif state_change is ServiceStateChange.Updated:
             DMX_Zeroconf._instance._dmx.updateMVR_Client(
                 station_uuid, station_name, service_name, ip_address, int(port)
             )
-        else:  # removed
+        elif state_change is ServiceStateChange.Removed:
+            # TODO: this typically does NOT work, because the info is empty. mDNS does not
+            # provide us with this info, but in some strange cases it actually works.
             DMX_Zeroconf._instance._dmx.removeMVR_Client(
                 station_uuid, station_name, service_name, ip_address, int(port)
             )
@@ -119,10 +127,10 @@ class DMX_Zeroconf:
             if DMX_Zeroconf._instance.browser:
                 DMX_Zeroconf._instance.browser.cancel()
                 DMX_Log.log.info("closing mvrx discovery")
-            if DMX_Zeroconf._instance.info:
-                DMX_Zeroconf._instance.zeroconf.unregister_service(
-                    DMX_Zeroconf._instance.info
-                )
+            # if DMX_Zeroconf._instance.info:
+            #    DMX_Zeroconf._instance.zeroconf.unregister_service(
+            #        DMX_Zeroconf._instance.info
+            #    )
             DMX_Zeroconf._instance.zeroconf.close()
             DMX_Zeroconf._instance = None
 
@@ -136,6 +144,10 @@ class DMX_Zeroconf:
 
         if server_name is None or server_name == "":
             server_name = station_name
+        # This can allow to run multiple instances of BlenderDMX on one computer
+        # but it breaks avahi and is strange
+        # else:
+        #    server_name = f"{station_name}.{server_name}"
 
         if not DMX_Zeroconf._instance:
             DMX_Zeroconf._instance = DMX_Zeroconf()
@@ -149,13 +161,7 @@ class DMX_Zeroconf:
         addrs = [socket.inet_pton(socket.AF_INET, ip_address)]
         DMX_Log.log.debug(addrs)
 
-        dmx = bpy.context.scene.dmx
-        if dmx.mvrx_hostname_in_service:
-            service_name = (
-                f"{station_name.replace(' ', '_')}.{server_name}.{service_type}"
-            )
-        else:
-            service_name = f"{server_name}.{service_type}"
+        service_name = f"{server_name}.{service_type}"
 
         DMX_Zeroconf._instance.info = ServiceInfo(
             service_type,

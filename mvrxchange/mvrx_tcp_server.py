@@ -148,6 +148,8 @@ class server(Thread):
         DMX_Log.log.debug(f"Json message {json_data} {data}")
         if json_data["Type"] == "MVR_JOIN":
             shared_commits = bpy.context.window_manager.dmx.mvr_xchange.shared_commits
+            dmx = bpy.context.scene.dmx
+            dmx.toggle_join_MVR_Client(json_data["StationUUID"], True)
             commits = []
             for commit in shared_commits:
                 commit_template = mvrx_message.commit_message.copy()
@@ -167,6 +169,8 @@ class server(Thread):
             )
             # data.outb.append(mvr_message.create_message("MVR_JOIN_RET"))
         if json_data["Type"] == "MVR_LEAVE":
+            dmx = bpy.context.scene.dmx
+            dmx.toggle_join_MVR_Client(json_data["FromStationUUID"], False)
             data.outb.append(
                 mvrx_message.craft_packet(
                     mvrx_message.create_message("MVR_LEAVE_RET", uuid=self.uuid)
