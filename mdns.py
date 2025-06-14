@@ -144,6 +144,10 @@ class DMX_Zeroconf:
 
         if server_name is None or server_name == "":
             server_name = station_name
+        # This can allow to run multiple instances of BlenderDMX on one computer
+        # but it breaks avahi and is strange
+        # else:
+        #    server_name = f"{station_name}.{server_name}"
 
         if not DMX_Zeroconf._instance:
             DMX_Zeroconf._instance = DMX_Zeroconf()
@@ -157,13 +161,7 @@ class DMX_Zeroconf:
         addrs = [socket.inet_pton(socket.AF_INET, ip_address)]
         DMX_Log.log.debug(addrs)
 
-        dmx = bpy.context.scene.dmx
-        if dmx.mvrx_hostname_in_service:
-            service_name = (
-                f"{station_name.replace(' ', '_')}.{server_name}.{service_type}"
-            )
-        else:
-            service_name = f"{server_name}.{service_type}"
+        service_name = f"{server_name}.{service_type}"
 
         DMX_Zeroconf._instance.info = ServiceInfo(
             service_type,

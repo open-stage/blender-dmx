@@ -345,8 +345,6 @@ class DMX_PT_Setup_Extras(Panel):
             "wm.url_open", text="User Guide Online", icon="HELP"
         ).url = "https://blenderdmx.eu/docs/faq/"
         row = layout.row()
-        row.prop(dmx, "mvrx_hostname_in_service")
-        row = layout.row()
         row.prop(dmx, "mvrx_per_project_station_uuid")
 
 

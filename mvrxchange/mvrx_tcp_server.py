@@ -170,7 +170,7 @@ class server(Thread):
             # data.outb.append(mvr_message.create_message("MVR_JOIN_RET"))
         if json_data["Type"] == "MVR_LEAVE":
             dmx = bpy.context.scene.dmx
-            dmx.toggle_join_MVR_Client(json_data["StationUUID"], False)
+            dmx.toggle_join_MVR_Client(json_data["FromStationUUID"], False)
             data.outb.append(
                 mvrx_message.craft_packet(
                     mvrx_message.create_message("MVR_LEAVE_RET", uuid=self.uuid)

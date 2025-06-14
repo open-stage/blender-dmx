@@ -18,11 +18,12 @@
 import json
 import socket
 import struct
+import time
 
 # mvr message structures
 
 defined_provider_name = "BlenderDMX"
-defined_station_name = "BlenderDMX station"
+defined_station_name = f"BlenderDMX station"
 
 
 class mvrx_message:

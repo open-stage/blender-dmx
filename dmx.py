@@ -1296,11 +1296,11 @@ class DMX(PropertyGroup):
             # except Exception as e:
             #    DMX_Log.log.error("Error registering an mdns server")
 
-            clients = context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
-            group = bpy.context.window_manager.dmx.mvr_xchange.mvr_x_group
-            for client in clients:
-                if client.subscribed == True and client.service_name == group:
-                    DMX_MVR_X_Client.join(selected_client)
+            # clients = context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
+            # group = bpy.context.window_manager.dmx.mvr_xchange.mvr_x_group
+            # for client in clients:
+            #    if client.subscribed == True and client.service_name == group:
+            #        DMX_MVR_X_Client.join(selected_client)
         else:
             DMX_Log.log.info("leave client")
             DMX_Zeroconf.disable_server()
@@ -1309,8 +1309,10 @@ class DMX(PropertyGroup):
             for client in clients:
                 if client.subscribed == True and client.group == group:
                     DMX_MVR_X_Client.leave(client)
+            DMX_MVR_X_Server.disable()
 
     def onMVR_client_join(self, client, join):
+        print("join/leave", client.station_name, join)
         if join:
             DMX_MVR_X_Client.join(client)
         else:
@@ -1422,12 +1424,6 @@ class DMX(PropertyGroup):
     )
 
     mvr_x_ws_url: StringProperty(name="URL", description="URL", default="")
-
-    mvrx_hostname_in_service : BoolProperty(
-        name = _("Add hostname to MVR-xchange service"),
-        description=_("Add computer name as sub-sub service in mDNS"),
-        default = False,
-    )
 
     mvrx_per_project_station_uuid : BoolProperty(
         name = _("Use per-project Station UUID"),
@@ -2294,10 +2290,12 @@ class DMX(PropertyGroup):
         event=True,
     ):
         clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
+        print("client", station_uuid, event)
 
         for client in clients:
             if client.station_uuid == station_uuid:
-                client.connected = event
+                if client.subscribed != event:
+                    client.subscribed = event
                 return
 
     def createMVR_Commits(self, commits, station_uuid):
@@ -2369,8 +2367,11 @@ class DMX(PropertyGroup):
         if DMX_MVR_X_WS_Client._instance is not None:
             DMX_MVR_X_WS_Client._instance.client.send_commit(new_commit)
 
-        if DMX_MVR_X_Client._instance is not None:
-            DMX_MVR_X_Client.send_commit(new_commit)
+        clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
+        for client in clients:
+            if client.subscribed:
+                print("client subscribed")
+                DMX_MVR_X_Client.send_commit(client, new_commit)
 
     def fetched_mvr_downloaded_file(self, commit):
         clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
