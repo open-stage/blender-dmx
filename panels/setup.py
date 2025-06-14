@@ -220,6 +220,7 @@ class DMX_PT_Setup_Volume(Panel):
         box = layout.column().box()
         box.prop(dmx, "volume_preview")
         box.prop(dmx, "disable_overlays")
+        box.prop(context.scene.eevee, "use_taa_reprojection")
 
         box = layout.column().box()
         box.operator(
