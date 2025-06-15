@@ -613,18 +613,13 @@ class DMX(PropertyGroup):
 
         # Reset network status
         dmx = bpy.context.scene.dmx
-        if dmx.artnet_enabled and dmx.artnet_status != "online":
-            dmx.artnet_enabled = False
-            dmx.artnet_status = "offline"
-        if dmx.sacn_enabled and dmx.sacn_status != "online":
-            dmx.sacn_enabled = False
-            dmx.sacn_status = "offline"
-        if dmx.osc_enabled:
-            dmx.osc_enabled = False
-        if dmx.mvrx_enabled:
-            dmx.mvrx_enabled = False
-        if dmx.mvrx_socket_client_enabled:
-            dmx.mvrx_socket_client_enabled = False
+        dmx.artnet_enabled = False
+        dmx.artnet_status = "offline"
+        dmx.sacn_enabled = False
+        dmx.sacn_status = "offline"
+        dmx.osc_enabled = False
+        dmx.mvrx_enabled = False
+        dmx.mvrx_socket_client_enabled = False
 
         for tracker_item in dmx.trackers:
             tracker_item.enabled = False
