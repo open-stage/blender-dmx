@@ -22,7 +22,6 @@ import time
 from datetime import datetime
 from queue import Queue
 from threading import Thread
-
 import bpy
 
 from ..logging_setup import DMX_Log
@@ -112,6 +111,9 @@ class client(Thread):
     def request_file(self, commit, path):
         self.filepath = path
         self.commit = commit
+        # TODO: this can create a race as the instance is now
+        # short lived. Perhaps we need to store the commit
+        # info in some other place
         if commit.self_requested:  # we need to provide empty UUID in this case
             commit_uuid = ""
         else:
