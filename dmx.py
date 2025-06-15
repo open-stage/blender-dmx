@@ -1476,9 +1476,9 @@ class DMX(PropertyGroup):
 
     def onProgrammerDimmer(self, context):
         for fixture_ in self.fixtures:
-            if not hasattr(fixture, "collection"):
+            if not hasattr(fixture_, "collection"):
                 continue
-            if not hasattr(fixture.collection, "objects"):
+            if not hasattr(fixture_.collection, "objects"):
                 continue
             if fixture_.collection is None:
                 continue
