@@ -613,18 +613,13 @@ class DMX(PropertyGroup):
 
         # Reset network status
         dmx = bpy.context.scene.dmx
-        if dmx.artnet_enabled and dmx.artnet_status != "online":
-            dmx.artnet_enabled = False
-            dmx.artnet_status = "offline"
-        if dmx.sacn_enabled and dmx.sacn_status != "online":
-            dmx.sacn_enabled = False
-            dmx.sacn_status = "offline"
-        if dmx.osc_enabled:
-            dmx.osc_enabled = False
-        if dmx.mvrx_enabled:
-            dmx.mvrx_enabled = False
-        if dmx.mvrx_socket_client_enabled:
-            dmx.mvrx_socket_client_enabled = False
+        dmx.artnet_enabled = False
+        dmx.artnet_status = "offline"
+        dmx.sacn_enabled = False
+        dmx.sacn_status = "offline"
+        dmx.osc_enabled = False
+        dmx.mvrx_enabled = False
+        dmx.mvrx_socket_client_enabled = False
 
         for tracker_item in dmx.trackers:
             tracker_item.enabled = False
@@ -1481,6 +1476,10 @@ class DMX(PropertyGroup):
 
     def onProgrammerDimmer(self, context):
         for fixture_ in self.fixtures:
+            if not hasattr(fixture_, "collection"):
+                continue
+            if not hasattr(fixture_.collection, "objects"):
+                continue
             if fixture_.collection is None:
                 continue
             if fixture_.is_selected():
@@ -2041,14 +2040,22 @@ class DMX(PropertyGroup):
         except Exception as e:
             DMX_Log.log.error(f"Error while removing group {e}")
 
-        if fixture.collection.objects is not None:
-            for obj in fixture.collection.objects:
-                bpy.data.objects.remove(obj)
-        if fixture.objects is not None:
-            for obj in fixture.objects:
-                if obj.object:
-                    bpy.data.objects.remove(obj.object)
-        bpy.data.collections.remove(fixture.collection)
+        if hasattr(fixture, "collection"):
+            if hasattr(fixture.collection, "objects"):
+                for obj in fixture.collection.objects:
+                    bpy.data.objects.remove(obj)
+
+        if hasattr(fixture, "collection"):
+            if hasattr(fixture.collection, "objects"):
+                if fixture.objects is not None:
+                    for obj in fixture.objects:
+                        if obj.object:
+                            bpy.data.objects.remove(obj.object)
+
+        try:
+            bpy.data.collections.remove(fixture.collection)
+        except Exception as e:
+            DMX_Log.log.error(f"Error while removing fixture {e}")
         self.fixtures.remove(self.fixtures.find(fixture.name))
 
     def getFixture(self, collection):

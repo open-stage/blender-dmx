@@ -48,6 +48,10 @@ class DMX_OT_Programmer_Set_Ignore_Movement(Operator):
         dmx = context.scene.dmx
         selected = []
         for fixture in dmx.fixtures:
+            if not hasattr(fixture, "collection"):
+                continue
+            if not hasattr(fixture.collection, "objects"):
+                continue
             for obj in fixture.collection.objects:
                 if obj in bpy.context.selected_objects:
                     selected.append(fixture)
@@ -513,6 +517,10 @@ class DMX_PT_Programmer(Panel):
         locked = False
         selected_fixtures = []
         for fixture in dmx.fixtures:
+            if not hasattr(fixture, "collection"):
+                continue
+            if not hasattr(fixture.collection, "objects"):
+                continue
             for obj in fixture.collection.objects:
                 if obj in bpy.context.selected_objects:
                     selected_fixtures.append(fixture)

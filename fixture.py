@@ -2499,13 +2499,15 @@ class DMX_Fixture(PropertyGroup):
         if iris is not None:
             if iris != 0:
                 hide = False
-        for obj in self.collection.objects:
-            if "gobo" in obj.get("geometry_type", ""):
-                obj.hide_viewport = hide
-                obj.hide_render = hide
-                if current_frame and self.dmx_cache_dirty:
-                    obj.keyframe_insert("hide_viewport", frame=current_frame)
-                    obj.keyframe_insert("hide_render", frame=current_frame)
+        if hasattr(self, "collection"):
+            if hasattr(self.collection, "objects"):
+                for obj in self.collection.objects:
+                    if "gobo" in obj.get("geometry_type", ""):
+                        obj.hide_viewport = hide
+                        obj.hide_render = hide
+                        if current_frame and self.dmx_cache_dirty:
+                            obj.keyframe_insert("hide_viewport", frame=current_frame)
+                            obj.keyframe_insert("hide_render", frame=current_frame)
 
         for light in self.lights:  # CYCLES
             light_obj = light.object
