@@ -139,7 +139,10 @@ class server(Thread):
                 header = mvrx_message.parse_header(msg)
                 if not header["Error"]:
                     DMX_Log.log.debug("Reply" + str(msg))  # same here
-                sock.sendall(msg)  # Should be ready to write
+                try:
+                    sock.sendall(msg)  # Should be ready to write
+                except Exception as e:
+                    print("INFO", e)
                 # sent = sock.send(data.outb)  # Should be ready to write
                 # data.outb = data.outb[sent:]
 
@@ -242,6 +245,9 @@ class server(Thread):
                 else:
                     if data_to_send is not None:
                         key.data.outb.append(data_to_send)
-                    self.service_connection(key, mask)
+                    try:
+                        self.service_connection(key, mask)
+                    except Exception as e:
+                        print("INFO", e)
             data_to_send = None
         # self.sel.close()

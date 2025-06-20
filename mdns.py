@@ -26,6 +26,9 @@ from zeroconf import (
     ServiceInfo,
     ServiceStateChange,
     Zeroconf,
+    DNSOutgoing,
+    DNSQuestion,
+    const,
 )
 
 from .logging_setup import DMX_Log
@@ -41,7 +44,9 @@ class DMX_Zeroconf:
         super(DMX_Zeroconf, self).__init__()
         self.data = None
         self.zeroconf = Zeroconf(ip_version=IPVersion.V4Only)
+        self.zeroconf.start()
         self.browser = None
+        self.dns_out = None
         self.info = None
         self._dmx = bpy.context.scene.dmx
         prefs = bpy.context.preferences.addons[__package__].preferences
@@ -51,6 +56,45 @@ class DMX_Zeroconf:
         if self._dmx.mvrx_per_project_station_uuid:
             application_uuid = self._dmx.project_application_uuid
         self.application_uuid = application_uuid.upper()
+
+    @staticmethod
+    def mdns_ping():
+        DMX_Zeroconf._instance.zeroconf.send(DMX_Zeroconf._instance.dns_out)
+        return 10
+
+    @staticmethod
+    def enable_periodic_checker(enable):
+        if enable:
+            if bpy.app.timers.is_registered(DMX_Zeroconf._instance.mdns_ping):
+                return
+
+            if not DMX_Zeroconf._instance:
+                DMX_Zeroconf._instance = DMX_Zeroconf()
+
+            service_type = "_mvrxchange._tcp.local."
+            service_name = "Placeholder._mvrxchange._tcp.local."  # not used
+            port = 70000  # not used
+            properties = {}
+            server_name = f"{socket.gethostname()}.{service_type}"
+            addrs = [socket.inet_pton(socket.AF_INET, "127.0.0.1")]
+
+            info = ServiceInfo(
+                service_type,
+                service_name,
+                addresses=addrs,
+                port=port,
+                properties=properties,
+                server=server_name,
+            )
+
+            query = DNSOutgoing(const._FLAGS_QR_QUERY | const._FLAGS_AA)
+            query.add_question(DNSQuestion(info.type, const._TYPE_PTR, const._CLASS_IN))
+            DMX_Zeroconf._instance.dns_out = query
+
+            bpy.app.timers.register(DMX_Zeroconf._instance.mdns_ping)
+        else:
+            if bpy.app.timers.is_registered(DMX_Zeroconf._instance.mdns_ping):
+                bpy.app.timers.unregister(DMX_Zeroconf._instance.mdns_ping)
 
     def callback(
         zeroconf: Zeroconf,
@@ -114,12 +158,15 @@ class DMX_Zeroconf:
         DMX_Zeroconf._instance.browser = ServiceBrowser(
             DMX_Zeroconf._instance.zeroconf, services, handlers=[DMX_Zeroconf.callback]
         )
+
+        DMX_Zeroconf.enable_periodic_checker(True)
         DMX_Log.log.info("Enabling Zeroconf")
         DMX_Log.log.info("starting mvrx discovery")
 
     @staticmethod
     def close():
         if DMX_Zeroconf._instance:
+            DMX_Zeroconf._instance.enable_periodic_checker(False)
             if DMX_Zeroconf._instance.browser:
                 DMX_Zeroconf._instance.browser.cancel()
                 DMX_Log.log.info("closing mvrx discovery")

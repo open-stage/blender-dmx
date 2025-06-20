@@ -504,6 +504,7 @@ class DMX_PT_DMX_MVR_X(Panel):
             "shared_commits",
             mvr_x,
             "selected_shared_commit",
+            item_dyntip_propname="comment",
             rows=4,
         )
         if dmx.zeroconf_enabled:
@@ -518,6 +519,7 @@ class DMX_PT_DMX_MVR_X(Panel):
                 "mvr_xchange_clients",
                 mvr_x,
                 "selected_client",
+                item_dyntip_propname="station_name",
                 rows=4,
             )
             all_clients = mvr_x.mvr_xchange_clients
@@ -539,6 +541,7 @@ class DMX_PT_DMX_MVR_X(Panel):
                     "commits",
                     mvr_x,
                     "selected_commit",
+                    item_dyntip_propname="comment",
                     rows=4,
                 )
 
@@ -563,5 +566,6 @@ class DMX_PT_DMX_MVR_X(Panel):
                 "websocket_commits",
                 mvr_x,
                 "selected_ws_commit",
+                item_dyntip_propname="comment",
                 rows=4,
             )
