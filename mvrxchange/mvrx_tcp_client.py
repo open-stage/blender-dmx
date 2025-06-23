@@ -52,24 +52,6 @@ class client(Thread):
         # if timeout is not None and self.socket is not None:
         #    self.socket.settimeout(timeout)
 
-    def reconnect(self, sock):
-        DMX_Log.log.info("reconnecting")
-        self.sel.unregister(sock)
-        self.sel.close()
-        self.socket.close()
-        self.sel = selectors.DefaultSelector()
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.socket.connect_ex((self.ip_address, self.port))
-        events = selectors.EVENT_READ | selectors.EVENT_WRITE
-        self.sel.register(self.socket, events)
-
-    def disconnect(self, sock):
-        DMX_Log.log.info("disconnecting")
-        self.sel.unregister(sock)
-        self.stop()
-        # self.sel.close()
-        # self.socket.close()
-
     def join_mvr(self):
         shared_commits = bpy.context.window_manager.dmx.mvr_xchange.shared_commits
         commits = []
@@ -111,9 +93,6 @@ class client(Thread):
     def request_file(self, commit, path):
         self.filepath = path
         self.commit = commit
-        # TODO: this can create a race as the instance is now
-        # short lived. Perhaps we need to store the commit
-        # info in some other place
         if commit.self_requested:  # we need to provide empty UUID in this case
             commit_uuid = ""
         else:
@@ -125,17 +104,12 @@ class client(Thread):
                 )
             )
         )
-        # self.send(mvr_message.create_message("MVR_REQUEST", uuid=self.application_uuid, file_uuid=commit_uuid))
 
     def stop(self):
         self.running = False
         if self.socket is not None:
             self.sel.close()
             self.socket.close()
-        # try:
-        #    self.join()
-        # except Exception as e:
-        #    print(e)
 
     def send(self, message):
         DMX_Log.log.debug(f"Send message {message}")
@@ -207,3 +181,5 @@ class client(Thread):
                     "StationUUID": self.commit.station_uuid,
                 }
             )
+        # Automatically close thread after processing response
+        self.stop()

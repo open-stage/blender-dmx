@@ -235,7 +235,6 @@ class DMX(PropertyGroup):
         panels_mvr.DMX_PT_DMX_MVR_X,
         panels_mvr.DMX_UL_MVR_Commit,
         panels_mvr.DMX_UL_MVR_WS_Commit,
-        panels_mvr.DMX_OP_MVR_Refresh,
         panels_mvr.DMX_OP_MVR_Request,
         panels_mvr.DMX_OP_MVR_WS_Refresh,
         panels_mvr.DMX_OP_MVR_X_Export,
@@ -1288,10 +1287,11 @@ class DMX(PropertyGroup):
             DMX_MVR_X_Server.disable()
 
     def onMVR_client_join(self, client, join):
+        tcp_client = DMX_MVR_X_Client(client)
         if join:
-            DMX_MVR_X_Client.join(client)
+            tcp_client.join()
         else:
-            DMX_MVR_X_Client.leave(client)
+            tcp_client.leave()
 
     def onMVR_xchange_socket_enable(self, context):
         shared_commits = bpy.context.window_manager.dmx.mvr_xchange.shared_commits
@@ -2342,7 +2342,8 @@ class DMX(PropertyGroup):
 
         for client in clients:
             if client.subscribed and client.service_name == service_name:
-                DMX_MVR_X_Client.send_commit(client, new_commit)
+                tcp_client = DMX_MVR_X_Client(client)
+                tcp_client.send_commit(new_commit)
 
     def fetched_mvr_downloaded_file(self, commit):
         clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients

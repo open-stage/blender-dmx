@@ -35,17 +35,6 @@ from ...mvrxchange.mvrx_message import defined_station_name
 _ = DMX_Lang._
 
 
-class DMX_OP_MVR_Refresh(Operator):
-    bl_label = _("Refresh")
-    bl_description = _("Refresh connection")
-    bl_idname = "dmx.mvr_refresh"
-    bl_options = {"UNDO"}
-
-    def execute(self, context):
-        DMX_MVR_X_Client.re_join()
-        return {"FINISHED"}
-
-
 class DMX_OP_MVR_WS_Refresh(Operator):
     bl_label = _("Refresh")
     bl_description = _("Refresh connection")
@@ -76,10 +65,10 @@ class DMX_OP_MVR_Request(Operator):
             "Comment": datetime.now().strftime("%H:%M:%S %B %d, %Y"),
             "FileSize": 0,
         }
-
-        last_commit = DMX_MVR_X_Client.create_self_request_commit(client, mvr_commit)
+        tcp_client = DMX_MVR_X_Client(client)
+        last_commit = tcp_client.create_self_request_commit(mvr_commit)
         if last_commit:
-            DMX_MVR_X_Client.request_file(client, last_commit)
+            tcp_client.request_file(last_commit)
 
         return {"FINISHED"}
 
@@ -194,7 +183,8 @@ class DMX_OP_MVR_Download(Operator):
             DMX_Log.log.info(commit.commit_uuid)
             if commit.commit_uuid == self.uuid:
                 DMX_Log.log.info(f"downloading {commit}")
-                DMX_MVR_X_Client.request_file(client, commit)
+                tcp_client = DMX_MVR_X_Client(client)
+                tcp_client.request_file(commit)
                 break
 
         return {"FINISHED"}
