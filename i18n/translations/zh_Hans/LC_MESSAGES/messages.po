@@ -7,18 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-30 11:27+0100\n"
+"POT-Creation-Date: 2025-06-26 20:59+0200\n"
 "PO-Revision-Date: 2025-01-21 07:00+0000\n"
 "Last-Translator: 大学没毕业 <ziweidao@foxmail.com>\n"
-"Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
-"projects/blenderdmx/main/zh_Hans/>\n"
 "Language: zh_Hans\n"
+"Language-Team: Chinese (Simplified Han script) "
+"<https://hosted.weblate.org/projects/blenderdmx/main/zh_Hans/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10-dev\n"
-"Generated-By: Babel 2.14.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
 msgstr "文件不存在"
@@ -43,6 +42,9 @@ msgstr "旋转"
 
 msgid "Footprint"
 msgstr "脚注"
+
+msgid "Physical Properties"
+msgstr ""
 
 msgid "DMX Collection"
 msgstr "DMX 集合"
@@ -211,17 +213,33 @@ msgstr "OSC 目标端口"
 msgid "Port number of the host where you want to send the OSC signal"
 msgstr "要发送OSC信号的主机的端口号"
 
-msgid "Enable MVR-xchange discovery"
+#, fuzzy
+msgid "Enable Local MVR-xchange"
 msgstr "开启 MVR-xchange 发现"
 
-msgid "Enables MVR-xchange discovery"
+#, fuzzy
+msgid "Enables MVR-xchange sharing and discovery"
 msgstr "开启 MVR-xchange 发现"
 
-msgid "Enable MVR-xchange connection"
-msgstr "开启 MVR-xchange 连接"
+msgid "Enable Group Registration"
+msgstr ""
 
-msgid "Connects to MVR-xchange client"
-msgstr "连接到 MVR-xchange 客户端"
+msgid "Join or start the new group"
+msgstr ""
+
+#, fuzzy
+msgid "Enable Internet MVR-xchange"
+msgstr "开启 MVR-xchange 发现"
+
+#, fuzzy
+msgid "Enables Internet based MVR-xchange sharing and discovery"
+msgstr "开启 MVR-xchange 发现"
+
+msgid "Use per-project Station UUID"
+msgstr ""
+
+msgid "Generates a random UUID for every blend file"
+msgstr ""
 
 msgid "Art-Net Status"
 msgstr "Art-Net 状态"
@@ -249,6 +267,12 @@ msgid ""
 " at the first object colliding with the beam."
 msgstr "激光束被投射到这个集合中的物体上，光束会在第一个碰撞体的物体处停止。"
 
+msgid ""
+"The renderer is paused during MVR import and in 2D view. This checkbox "
+"allows to re-enable it in case of some failure during import, which would"
+" leave it paused"
+msgstr ""
+
 msgid "Pause renderer"
 msgstr "暂停渲染器"
 
@@ -264,14 +288,18 @@ msgstr "添加到选集"
 msgid "Remove from selection"
 msgstr "从选集删除"
 
+msgid "When selecting a group, remove from existing selection"
+msgstr ""
+
 msgid "Keyframe only selected fixtures (not for autokeying)"
 msgstr "仅给选定的灯具打关键帧(不适用于自动关键帧)"
 
+#, fuzzy
+msgid "Add keyframes with changes only for selected fixtures"
+msgstr "删除选定灯具的所有关键帧"
+
 msgid "MVR-xchange"
 msgstr "MVR-xchange"
-
-msgid "Status"
-msgstr "状态"
 
 msgid "DMX Data"
 msgstr "DMX 数据"
@@ -279,11 +307,47 @@ msgstr "DMX 数据"
 msgid "Fixture"
 msgstr "灯具"
 
+msgid "Gap"
+msgstr ""
+
+#, fuzzy
+msgid "Diameter"
+msgstr "调光器"
+
+#, fuzzy
+msgid "Rotate"
+msgstr "旋转"
+
+msgid "Source"
+msgstr "源"
+
 msgid "Subfixtures"
 msgstr "子灯具"
 
 msgid "Active Subfixtures"
 msgstr "活动的子灯具"
+
+#, fuzzy
+msgid "Pan Rotate"
+msgstr "平移旋转"
+
+#, fuzzy
+msgid "Tilt Rotate"
+msgstr "倾斜旋转"
+
+msgid "Custom Cutoff Distance"
+msgstr ""
+
+msgid ""
+"Distance at which the influence of the light will be set to 0. Value "
+"bigger then 23 will break gobo rendering in Eevee Next."
+msgstr ""
+
+msgid "Use Fixtures Physical Properties"
+msgstr ""
+
+msgid "Use Channel Functions of this fixture"
+msgstr ""
 
 msgid "DMX Universe"
 msgstr "DMX 域"
@@ -347,12 +411,127 @@ msgstr "用于监听 PSN 数据的网卡/接口"
 msgid "PSN Target port"
 msgstr "PSN目标端口"
 
+#, fuzzy
+msgid "File UUID"
+msgstr "灯具 ID"
+
+#, fuzzy
+msgid "Comment"
+msgstr "锁定移动"
+
+#, fuzzy
+msgid "File Name"
+msgstr "文件名"
+
+#, fuzzy
+msgid "Station UUID"
+msgstr "修改ID"
+
+#, fuzzy
+msgid "File Size"
+msgstr "文件"
+
+msgid "Time of info"
+msgstr ""
+
+msgid "Time of saving"
+msgstr ""
+
+msgid "Subscribed to"
+msgstr ""
+
+#, fuzzy
+msgid "We requested latest file without UUID"
+msgstr "请求最新版本"
+
+#, fuzzy
+msgid "IP Address"
+msgstr "地址"
+
+#, fuzzy
+msgid "Port"
+msgstr "导入"
+
+msgid "Connected"
+msgstr ""
+
+msgid "Last Seen Time"
+msgstr ""
+
+#, fuzzy
+msgid "Station Name"
+msgstr "缩写名称"
+
+#, fuzzy
+msgid "MVR-xchange group"
+msgstr "MVR-xchange"
+
+#, fuzzy
+msgid "Provider"
+msgstr "配置"
+
+#, fuzzy
+msgid "Commits"
+msgstr "导入确认"
+
+#, fuzzy
+msgid "Icon ID"
+msgstr "修改ID"
+
+#, fuzzy
+msgid "New Group:"
+msgstr "组列表 i"
+
+#, fuzzy
+msgid "MVR-xchange Clients"
+msgstr "MVR-xchange"
+
+msgid "Existing Groups"
+msgstr ""
+
+#, fuzzy
+msgid "Websocket Commits"
+msgstr "下载"
+
+msgid "Message"
+msgstr ""
+
+#, fuzzy
+msgid "IPv4 Address for MVR-xchange"
+msgstr "PSN 信号的 IPv4 地址"
+
+#, fuzzy
+msgid "The network card/interface for MVR-xchange"
+msgstr "用于监听 PSN 数据的网卡/接口"
+
+#, fuzzy
+msgid "Group"
+msgstr "组列表 i"
+
+#, fuzzy
+msgid "Classes"
+msgstr "类别列表 i"
+
+#, fuzzy
+msgid "Align selected fixtures to active fixture"
+msgstr "连接灯具至一个跟踪器"
+
+#, fuzzy
+msgid "Distribute selected fixtures evenly"
+msgstr "编辑选定的灯具"
+
+#, fuzzy
+msgid "Distribute selected fixtures with gap"
+msgstr "编辑选定的灯具"
+
 msgid "Align and Distribute"
 msgstr "对齐与分布"
 
+#, python-brace-format
 msgid "Active object: {}"
 msgstr "活动物体: {}"
 
+#, python-brace-format
 msgid "Selected fixtures: {}"
 msgstr "选定的灯具: {}"
 
@@ -398,11 +577,16 @@ msgstr "DMX 模式"
 msgid "Advanced edit"
 msgstr "高级编辑"
 
+#, fuzzy
+msgid "Modify DMX address"
+msgstr "DMX 地址"
+
+#, fuzzy
+msgid "Modify Fixture ID"
+msgstr "灯具 ID"
+
 msgid "GDTF Profile"
 msgstr "GDTF 配置"
-
-msgid "Unknown manufacturer"
-msgstr "未知生产商"
 
 msgid "DMX: Add Fixture"
 msgstr "DMX: 添加灯具"
@@ -410,6 +594,7 @@ msgstr "DMX: 添加灯具"
 msgid "Add fixtures to the show"
 msgstr "为演出添加灯具"
 
+#, python-brace-format
 msgid "Fixture named {} already exists"
 msgstr "灯具名称 {} 已存在"
 
@@ -430,6 +615,14 @@ msgstr "DMX > 灯具 > 移除"
 
 msgid "Remove selected fixtures from Scene"
 msgstr "从场景中删除选定的灯具"
+
+#, fuzzy
+msgid "Remove IES Files"
+msgstr "移除灯具"
+
+#, fuzzy
+msgid "Import IES File"
+msgstr "导入 GDTF 配置"
 
 msgid "Select Previous Fixture"
 msgstr "选择上一个灯具"
@@ -500,6 +693,30 @@ msgstr "从选定的灯具创建 DMX 组"
 msgid "Group Name"
 msgstr "组名称"
 
+#, fuzzy
+msgid "Replace DMX group fixtures with selected ones"
+msgstr "从选定的灯具创建 DMX 组"
+
+#, fuzzy
+msgid "DMX > Group > Rename"
+msgstr "DMX > 组 > 创建"
+
+#, fuzzy
+msgid "Rename selected DMX group"
+msgstr "从场景中删除选定的灯具"
+
+#, fuzzy
+msgid "DMX > Group > Remove"
+msgstr "DMX > 组 > 创建"
+
+#, fuzzy
+msgid "Remove selected DMX group"
+msgstr "从场景中删除选定的灯具"
+
+#, fuzzy
+msgid "Groups"
+msgstr "组列表 i"
+
 msgid "Reset Colors"
 msgstr "重置颜色"
 
@@ -515,8 +732,31 @@ msgstr "解锁移动"
 msgid "Allow pan/tilt DMX data"
 msgstr "允许平移/倾斜 DMX 数据"
 
-msgid "Lock/Unlock Movement Rotation"
-msgstr "锁定/解锁移动旋转"
+#, fuzzy
+msgid "Track Target"
+msgstr "添加跟踪目标"
+
+#, fuzzy
+msgid "Follow the target"
+msgstr "添加跟随者目标"
+
+#, fuzzy
+msgid "Do Not Track Target"
+msgstr "添加跟踪目标"
+
+#, fuzzy
+msgid "Do not follow the target"
+msgstr "添加跟随者目标"
+
+#, fuzzy
+msgid "Use Fixtures Channel Functions"
+msgstr "刷新连接"
+
+msgid "Do Not Use Fixtures Physical Properties"
+msgstr ""
+
+msgid "Do not use Fixtures Channel Functions"
+msgstr ""
 
 msgid "Deselect All"
 msgstr "全部取消选择"
@@ -599,6 +839,7 @@ msgstr "编程员"
 msgid "Nothing selected"
 msgstr "未选择任何内容"
 
+#, python-brace-format
 msgid "{} selected"
 msgstr "{} 选定"
 
@@ -629,8 +870,20 @@ msgstr "倾斜旋转"
 msgid "Zoom"
 msgstr "变焦"
 
-msgid "Color Wheel"
+#, fuzzy
+msgid "Color Wheel1"
 msgstr "色轮"
+
+#, fuzzy
+msgid "Color Wheel2"
+msgstr "色轮"
+
+#, fuzzy
+msgid "Color Wheel3"
+msgstr "色轮"
+
+msgid "Color Macro1"
+msgstr ""
 
 msgid "Color Temperature"
 msgstr "色温"
@@ -641,17 +894,28 @@ msgstr "虹膜"
 msgid "Gobo1"
 msgstr "图案片 1"
 
-msgid "Gobo1 Rotation"
-msgstr "图案片 1 旋转"
+msgid "Gobo1 Adjust"
+msgstr ""
 
 msgid "Gobo2"
 msgstr "图案片 2"
 
-msgid "Gobo2 Rotation"
-msgstr "图案片 2 旋转"
+msgid "Gobo2 Adjust"
+msgstr ""
 
 msgid "Strobe"
 msgstr "频闪"
+
+#, fuzzy
+msgid "PanMode"
+msgstr "模式"
+
+#, fuzzy
+msgid "TiltMode"
+msgstr "倾斜"
+
+msgid "PanTiltMode"
+msgstr ""
 
 msgid "Clear All"
 msgstr "清除全部"
@@ -710,6 +974,12 @@ msgstr "DMX > 设置 > 新建演出"
 msgid "Clear any existing DMX data and create a new show."
 msgstr "清除所有现有DMX数据并创建新演出。"
 
+msgid "Do at your own risk. Manual edits or deletes can cause issues"
+msgstr ""
+
+msgid "Manually editing or deleting geometries of GDTF devices may cause issues."
+msgstr ""
+
 msgid "Really remove all fixtures and DMX from blend file?"
 msgstr "的确要从 blend 文件中移除所有灯具和 DMX 吗？"
 
@@ -718,6 +988,10 @@ msgstr "尝试从 Blender 演出文件中删除 DMX"
 
 msgid "Beam diameter small"
 msgstr "光束直径小"
+
+#, fuzzy
+msgid "Set Eevee Cutoff distance on selected fixtures"
+msgstr "在选定的灯具上设置"
 
 msgid "Beam diameter normal"
 msgstr "光束直径常规"
@@ -748,12 +1022,6 @@ msgstr "背景颜色"
 
 msgid "Extras"
 msgstr "其它项"
-
-msgid "Check for BlenderDMX updates"
-msgstr "检查 BlenderDMX 更新"
-
-msgid "Status: {}"
-msgstr "状态: {}"
 
 msgid "Clear Project data"
 msgstr "清除项目数据"
@@ -803,27 +1071,6 @@ msgstr "错误！需要 Blender 3.4 或更高版本。"
 msgid "Create New Show"
 msgstr "创建新演出"
 
-msgid "Check version"
-msgstr "检查版本"
-
-msgid "Check if there is new release of BlenderDMX"
-msgstr "检查是否有新版 BlenderDMX"
-
-msgid "Unknown version error"
-msgstr "未知版本错误"
-
-msgid "New version {} available"
-msgstr "新版本 {} 已发布"
-
-msgid "You are using pre-release version"
-msgstr "您使用的是预发布版本"
-
-msgid "You are using latest version of BlenderDMX"
-msgstr "您使用的是最新版本的 BlenderDMX"
-
-msgid "Checking..."
-msgstr "正在检查..."
-
 msgid "Import Custom Data"
 msgstr "导入自定义数据"
 
@@ -841,6 +1088,7 @@ msgstr "文件"
 msgid "Incorrect file name!"
 msgstr "文件名不正确！"
 
+#, python-brace-format
 msgid "Data imported from: {}"
 msgstr "数据导入自: {}"
 
@@ -850,11 +1098,13 @@ msgstr "导出自定义数据"
 msgid "Zip and Export custom data from BlenderDMX addon directory."
 msgstr "从 BlenderDMX 插件目录中压缩并导出自定义数据。"
 
+#, python-brace-format
 msgid "Data exported to: {}"
 msgstr "数据导出到: {}"
 
-msgid "Clear Custom Data"
-msgstr "清除自定义数据"
+#, fuzzy
+msgid "Really delete all custom data from the addon directory?"
+msgstr "清除 BlenderDMX 插件目录中的自定义数据。"
 
 msgid "Clear custom data from BlenderDMX addon directory."
 msgstr "清除 BlenderDMX 插件目录中的自定义数据。"
@@ -900,30 +1150,35 @@ msgstr "获取 GDTF Share 帐户并将其填写到 BlenderDMX 插件首选项中
 msgid "GDTF Share API credentials missing"
 msgstr "GDTF Share API 凭据丢失"
 
+#, python-brace-format
 msgid "Downloading {}"
 msgstr "正在下载 {}"
 
 msgid "GDTF Share Download"
 msgstr "GDTF Share下载"
 
+#, python-brace-format
 msgid "Share index updated. Status code was: {}"
 msgstr "Share索引已更新。状态代码为：{}"
 
 msgid "GDTF Share updated"
 msgstr "GDTF Share已更新"
 
+#, python-brace-format
 msgid "Error while updating Share index. Error code was: {}"
 msgstr "在更新Share索引时发生错误，错误代码为：{}"
 
 msgid "GDTF Share update error"
 msgstr "GDTF Share更新出错"
 
+#, python-brace-format
 msgid "File downloaded correctly. Status code was: {}"
 msgstr "文件已被正确下载。状态代码为：{}"
 
 msgid "GDTF file downloaded"
 msgstr "GDTF文件已下载"
 
+#, python-brace-format
 msgid "Error downloading GDTF file. Error code was: {}"
 msgstr "下载GDTF文件时发生错误。错误代码为：{}"
 
@@ -949,9 +1204,6 @@ msgstr "DMX 配置文件的短名称，全部大写，用作灯具名称的建�
 
 msgid "Filename"
 msgstr "文件名"
-
-msgid "Some fixtures could not be processed"
-msgstr "某些灯具无法处理"
 
 msgid "Mode name"
 msgstr "模式名称"
@@ -1052,14 +1304,15 @@ msgstr "Art-Net"
 msgid "IPv4"
 msgstr "IPv4"
 
+#, python-brace-format
 msgid "Art-Net set for {} universe(s)"
 msgstr "{} 域 的 Art-Net 设置"
 
+msgid "Status"
+msgstr "状态"
+
 msgid "Live DMX"
 msgstr "直播 DMX"
-
-msgid "Source"
-msgstr "源"
 
 msgid "Refresh"
 msgstr "刷新"
@@ -1076,11 +1329,51 @@ msgstr "发送请求消息"
 msgid "Import commit"
 msgstr "导入确认"
 
+#, fuzzy
+msgid "Export MVR to MVR-xchange"
+msgstr "连接到 MVR-xchange 客户端"
+
 msgid "Download"
 msgstr "下载"
 
 msgid "Download commit"
 msgstr "下载提交"
+
+#, fuzzy
+msgid "Websocket Download"
+msgstr "下载"
+
+#, fuzzy
+msgid "Delete"
+msgstr "删除装置"
+
+#, fuzzy
+msgid "Remove Shared Commit"
+msgstr "移除目标"
+
+#, python-brace-format
+msgid "Enable Group: {group}"
+msgstr ""
+
+msgid "New group:"
+msgstr ""
+
+#, fuzzy
+msgid "Share current version"
+msgstr "请求最新版本"
+
+#, python-brace-format
+msgid "Shared by me ({defined_station_name}):"
+msgstr ""
+
+msgid "Stations in the group:"
+msgstr ""
+
+msgid "Shared by the station:"
+msgstr ""
+
+msgid "Shared by the server:"
+msgstr ""
 
 msgid "OSC"
 msgstr "OSC"
@@ -1139,6 +1432,7 @@ msgstr "添加目标"
 msgid "sACN"
 msgstr "sACN"
 
+#, python-brace-format
 msgid "sACN set for {} universe(s)"
 msgstr "{} 域的 sACN 设置"
 
@@ -1348,3 +1642,52 @@ msgstr "域"
 
 #~ msgid "For Blender 4.2 and up use the Extension"
 #~ msgstr ""
+
+#~ msgid "Enable MVR-xchange connection"
+#~ msgstr "开启 MVR-xchange 连接"
+
+#~ msgid "Unknown manufacturer"
+#~ msgstr "未知生产商"
+
+#~ msgid "Lock/Unlock Movement Rotation"
+#~ msgstr "锁定/解锁移动旋转"
+
+#~ msgid "Gobo1 Rotation"
+#~ msgstr "图案片 1 旋转"
+
+#~ msgid "Gobo2 Rotation"
+#~ msgstr "图案片 2 旋转"
+
+#~ msgid "Check for BlenderDMX updates"
+#~ msgstr "检查 BlenderDMX 更新"
+
+#~ msgid "Status: {}"
+#~ msgstr "状态: {}"
+
+#~ msgid "Check version"
+#~ msgstr "检查版本"
+
+#~ msgid "Check if there is new release of BlenderDMX"
+#~ msgstr "检查是否有新版 BlenderDMX"
+
+#~ msgid "Unknown version error"
+#~ msgstr "未知版本错误"
+
+#~ msgid "New version {} available"
+#~ msgstr "新版本 {} 已发布"
+
+#~ msgid "You are using pre-release version"
+#~ msgstr "您使用的是预发布版本"
+
+#~ msgid "You are using latest version of BlenderDMX"
+#~ msgstr "您使用的是最新版本的 BlenderDMX"
+
+#~ msgid "Checking..."
+#~ msgstr "正在检查..."
+
+#~ msgid "Clear Custom Data"
+#~ msgstr "清除自定义数据"
+
+#~ msgid "Some fixtures could not be processed"
+#~ msgstr "某些灯具无法处理"
+

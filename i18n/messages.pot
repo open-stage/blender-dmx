@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-04-21 17:11+0200\n"
+"POT-Creation-Date: 2025-06-26 20:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,6 +39,9 @@ msgid "Rotation"
 msgstr ""
 
 msgid "Footprint"
+msgstr ""
+
+msgid "Physical Properties"
 msgstr ""
 
 msgid "DMX Collection"
@@ -214,22 +217,16 @@ msgstr ""
 msgid "Enables MVR-xchange sharing and discovery"
 msgstr ""
 
-msgid "Connect to a selected station"
+msgid "Enable Group Registration"
 msgstr ""
 
-msgid "Connects to an MVR-xchange station"
+msgid "Join or start the new group"
 msgstr ""
 
 msgid "Enable Internet MVR-xchange"
 msgstr ""
 
 msgid "Enables Internet based MVR-xchange sharing and discovery"
-msgstr ""
-
-msgid "Add hostname to MVR-xchange service"
-msgstr ""
-
-msgid "Add computer name as sub-sub service in mDNS"
 msgstr ""
 
 msgid "Use per-project Station UUID"
@@ -335,6 +332,12 @@ msgid ""
 "bigger then 23 will break gobo rendering in Eevee Next."
 msgstr ""
 
+msgid "Use Fixtures Physical Properties"
+msgstr ""
+
+msgid "Use Channel Functions of this fixture"
+msgstr ""
+
 msgid "DMX Universe"
 msgstr ""
 
@@ -395,6 +398,84 @@ msgid "The network card/interface to listen for PSN data"
 msgstr ""
 
 msgid "PSN Target port"
+msgstr ""
+
+msgid "File UUID"
+msgstr ""
+
+msgid "Comment"
+msgstr ""
+
+msgid "File Name"
+msgstr ""
+
+msgid "Station UUID"
+msgstr ""
+
+msgid "File Size"
+msgstr ""
+
+msgid "Time of info"
+msgstr ""
+
+msgid "Time of saving"
+msgstr ""
+
+msgid "Subscribed to"
+msgstr ""
+
+msgid "We requested latest file without UUID"
+msgstr ""
+
+msgid "IP Address"
+msgstr ""
+
+msgid "Port"
+msgstr ""
+
+msgid "Connected"
+msgstr ""
+
+msgid "Last Seen Time"
+msgstr ""
+
+msgid "Station Name"
+msgstr ""
+
+msgid "MVR-xchange group"
+msgstr ""
+
+msgid "Provider"
+msgstr ""
+
+msgid "Commits"
+msgstr ""
+
+msgid "Icon ID"
+msgstr ""
+
+msgid "New Group:"
+msgstr ""
+
+msgid "MVR-xchange Clients"
+msgstr ""
+
+msgid "Existing Groups"
+msgstr ""
+
+msgid "Websocket Commits"
+msgstr ""
+
+msgid "Message"
+msgstr ""
+
+msgid "IPv4 Address for MVR-xchange"
+msgstr ""
+
+msgid "The network card/interface for MVR-xchange"
+msgstr ""
+
+msgid "Group"
 msgstr ""
 
 msgid "Classes"
@@ -460,6 +541,12 @@ msgid "DMX Mode"
 msgstr ""
 
 msgid "Advanced edit"
+msgstr ""
+
+msgid "Modify DMX address"
+msgstr ""
+
+msgid "Modify Fixture ID"
 msgstr ""
 
 msgid "GDTF Profile"
@@ -601,7 +688,25 @@ msgstr ""
 msgid "Allow pan/tilt DMX data"
 msgstr ""
 
-msgid "Lock/Unlock Movement Rotation"
+msgid "Track Target"
+msgstr ""
+
+msgid "Follow the target"
+msgstr ""
+
+msgid "Do Not Track Target"
+msgstr ""
+
+msgid "Do not follow the target"
+msgstr ""
+
+msgid "Use Fixtures Channel Functions"
+msgstr ""
+
+msgid "Do Not Use Fixtures Physical Properties"
+msgstr ""
+
+msgid "Do not use Fixtures Channel Functions"
 msgstr ""
 
 msgid "Deselect All"
@@ -716,7 +821,16 @@ msgstr ""
 msgid "Zoom"
 msgstr ""
 
-msgid "Color Wheel"
+msgid "Color Wheel1"
+msgstr ""
+
+msgid "Color Wheel2"
+msgstr ""
+
+msgid "Color Wheel3"
+msgstr ""
+
+msgid "Color Macro1"
 msgstr ""
 
 msgid "Color Temperature"
@@ -728,16 +842,25 @@ msgstr ""
 msgid "Gobo1"
 msgstr ""
 
-msgid "Gobo1 Rotation"
+msgid "Gobo1 Adjust"
 msgstr ""
 
 msgid "Gobo2"
 msgstr ""
 
-msgid "Gobo2 Rotation"
+msgid "Gobo2 Adjust"
 msgstr ""
 
 msgid "Strobe"
+msgstr ""
+
+msgid "PanMode"
+msgstr ""
+
+msgid "TiltMode"
+msgstr ""
+
+msgid "PanTiltMode"
 msgstr ""
 
 msgid "Clear All"
@@ -1168,10 +1291,27 @@ msgstr ""
 msgid "Remove Shared Commit"
 msgstr ""
 
-msgid "Shared by me:"
+#, python-brace-format
+msgid "Enable Group: {group}"
 msgstr ""
 
-msgid "Shared to me:"
+msgid "New group:"
+msgstr ""
+
+msgid "Share current version"
+msgstr ""
+
+#, python-brace-format
+msgid "Shared by me ({defined_station_name}):"
+msgstr ""
+
+msgid "Stations in the group:"
+msgstr ""
+
+msgid "Shared by the station:"
+msgstr ""
+
+msgid "Shared by the server:"
 msgstr ""
 
 msgid "OSC"
