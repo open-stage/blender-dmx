@@ -111,7 +111,7 @@ class DMX_MVR_X_Client:
 
         if msg_type == "MVR_REQUEST_RET" and msg_ok is False:
             DMX_Log.log.error("MVR-xchange file request declined")
-            commit = self.client.commit
+            commit = self.tcp_client.commit
             if commit:
                 dmx.request_failed_mvr_downloaded_file(commit)
 
