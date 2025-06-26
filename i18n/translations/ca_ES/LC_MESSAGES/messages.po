@@ -1,4 +1,4 @@
-# Catalan (Spain) translations for PROJECT.
+# Translations template for PROJECT.
 # Copyright (C) 2025 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
@@ -7,16 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-26 20:59+0200\n"
+"POT-Creation-Date: 2025-04-21 17:11+0200\n"
 "PO-Revision-Date: 2025-06-05 17:01+0000\n"
 "Last-Translator: Bernat Rubiol Brusau <rubiolbernat@gmail.com>\n"
+"Language-Team: Catalan <https://hosted.weblate.org/projects/blenderdmx/main/"
+"ca/>\n"
 "Language: ca_ES\n"
-"Language-Team: Catalan "
-"<https://hosted.weblate.org/projects/blenderdmx/main/ca/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.12-dev\n"
 "Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
@@ -42,9 +43,6 @@ msgstr "Rotació"
 
 msgid "Footprint"
 msgstr "Petjada"
-
-msgid "Physical Properties"
-msgstr ""
 
 msgid "DMX Collection"
 msgstr "Colecció DMX"
@@ -128,8 +126,8 @@ msgid ""
 "Beam diameter is reduced to minimum when projecting gobos to prevent blur"
 " on gobo edge"
 msgstr ""
-"El diàmetre del feix es redueix al mínim quan es projecten gobos per "
-"evitar la borrositat a la vora del gobo"
+"El diàmetre del feix es redueix al mínim quan es projecten gobos per evitar "
+"la borrositat a la vora del gobo"
 
 msgid "Reduced"
 msgstr "Reduït"
@@ -186,8 +184,8 @@ msgid ""
 "Enables the input of DMX data throught Art-Net on the selected network "
 "interface"
 msgstr ""
-"Habilita l'entrada de dades DMX a través d'Art-Net a la interfície de "
-"xarxa seleccionada"
+"Habilita l'entrada de dades DMX a través d'Art-Net a la interfície de xarxa "
+"seleccionada"
 
 msgid "Enable sACN Input"
 msgstr "Habilita entrada sACN"
@@ -196,16 +194,16 @@ msgid ""
 "Enables the input of DMX data throught sACN on all detected network "
 "interfaces"
 msgstr ""
-"Habilita l'entrada de dades DMX a través de sACN a totes les interfícies "
-"de xarxa detectades"
+"Habilita l'entrada de dades DMX a través de sACN a totes les interfícies de "
+"xarxa detectades"
 
 msgid "Enable OSC Output"
 msgstr "Habilita entrada OSC"
 
 msgid "Enables Open Sound Control protocol to send fixture selection to a console"
 msgstr ""
-"Habilita el protocol Open Sound Control per enviar la selecció de "
-"fixacions a una consola"
+"Habilita el protocol Open Sound Control per enviar la selecció de fixacions "
+"a una consola"
 
 msgid "OSC Target address"
 msgstr "Direcció de la tarja d'OSC"
@@ -214,8 +212,8 @@ msgid ""
 "Address of the host where you want to send the OSC signal. Address ending"
 " on .255 is a broadcast address to all hosts on the network"
 msgstr ""
-"Adreça de l'amfitrió on voleu enviar el senyal OSC. L'adreça que acaba en"
-" .255 és una adreça de difusió a tots els amfitrions de la xarxa"
+"Adreça de l'amfitrió on voleu enviar el senyal OSC. L'adreça que acaba en "
+".255 és una adreça de difusió a tots els amfitrions de la xarxa"
 
 msgid "OSC Target port"
 msgstr "Port de destí OSC"
@@ -229,16 +227,22 @@ msgstr "Habilita MVR-xchange Local"
 msgid "Enables MVR-xchange sharing and discovery"
 msgstr "Habilita la compartició i el descobriment de MVR-xchange"
 
-msgid "Enable Group Registration"
-msgstr ""
+msgid "Connect to a selected station"
+msgstr "Connecta't a una estació seleccionada"
 
-msgid "Join or start the new group"
-msgstr ""
+msgid "Connects to an MVR-xchange station"
+msgstr "Es connectarà a una estació MVR-xchange"
 
 msgid "Enable Internet MVR-xchange"
 msgstr "Activa MVR-xchange per Internet"
 
 msgid "Enables Internet based MVR-xchange sharing and discovery"
+msgstr ""
+
+msgid "Add hostname to MVR-xchange service"
+msgstr ""
+
+msgid "Add computer name as sub-sub service in mDNS"
 msgstr ""
 
 msgid "Use per-project Station UUID"
@@ -344,12 +348,6 @@ msgid ""
 "bigger then 23 will break gobo rendering in Eevee Next."
 msgstr ""
 
-msgid "Use Fixtures Physical Properties"
-msgstr ""
-
-msgid "Use Channel Functions of this fixture"
-msgstr ""
-
 msgid "DMX Universe"
 msgstr "Univers DMX"
 
@@ -410,93 +408,6 @@ msgid "The network card/interface to listen for PSN data"
 msgstr ""
 
 msgid "PSN Target port"
-msgstr ""
-
-#, fuzzy
-msgid "File UUID"
-msgstr "ID del Fixture"
-
-msgid "Comment"
-msgstr ""
-
-#, fuzzy
-msgid "File Name"
-msgstr "Renombrar"
-
-#, fuzzy
-msgid "Station UUID"
-msgstr "Rotació"
-
-msgid "File Size"
-msgstr ""
-
-msgid "Time of info"
-msgstr ""
-
-msgid "Time of saving"
-msgstr ""
-
-msgid "Subscribed to"
-msgstr ""
-
-msgid "We requested latest file without UUID"
-msgstr ""
-
-#, fuzzy
-msgid "IP Address"
-msgstr "Adreça"
-
-#, fuzzy
-msgid "Port"
-msgstr "Importacions"
-
-msgid "Connected"
-msgstr ""
-
-msgid "Last Seen Time"
-msgstr ""
-
-#, fuzzy
-msgid "Station Name"
-msgstr "Rotació"
-
-msgid "MVR-xchange group"
-msgstr ""
-
-msgid "Provider"
-msgstr ""
-
-msgid "Commits"
-msgstr ""
-
-#, fuzzy
-msgid "Icon ID"
-msgstr "ID Personalitzat"
-
-msgid "New Group:"
-msgstr ""
-
-msgid "MVR-xchange Clients"
-msgstr ""
-
-msgid "Existing Groups"
-msgstr ""
-
-msgid "Websocket Commits"
-msgstr ""
-
-msgid "Message"
-msgstr ""
-
-#, fuzzy
-msgid "IPv4 Address for MVR-xchange"
-msgstr "Adreça IPv4 per a la senyal ArtNet"
-
-#, fuzzy
-msgid "The network card/interface for MVR-xchange"
-msgstr "La targeta/interfície de xarxa per a rebre ArtNet DMX"
-
-msgid "Group"
 msgstr ""
 
 msgid "Classes"
@@ -563,14 +474,6 @@ msgstr "Mode DMX"
 
 msgid "Advanced edit"
 msgstr "Edició avaçada"
-
-#, fuzzy
-msgid "Modify DMX address"
-msgstr "Adreça DMX"
-
-#, fuzzy
-msgid "Modify Fixture ID"
-msgstr "ID del Fixture"
 
 msgid "GDTF Profile"
 msgstr "Perfil GDTF"
@@ -711,27 +614,7 @@ msgstr ""
 msgid "Allow pan/tilt DMX data"
 msgstr ""
 
-#, fuzzy
-msgid "Track Target"
-msgstr "Afegeix un objectiu"
-
-msgid "Follow the target"
-msgstr ""
-
-msgid "Do Not Track Target"
-msgstr ""
-
-msgid "Do not follow the target"
-msgstr ""
-
-#, fuzzy
-msgid "Use Fixtures Channel Functions"
-msgstr "Actualitza connexió"
-
-msgid "Do Not Use Fixtures Physical Properties"
-msgstr ""
-
-msgid "Do not use Fixtures Channel Functions"
+msgid "Lock/Unlock Movement Rotation"
 msgstr ""
 
 msgid "Deselect All"
@@ -846,20 +729,8 @@ msgstr "Rotació Tilt"
 msgid "Zoom"
 msgstr "Zoom"
 
-#, fuzzy
-msgid "Color Wheel1"
+msgid "Color Wheel"
 msgstr "Roda de color"
-
-#, fuzzy
-msgid "Color Wheel2"
-msgstr "Roda de color"
-
-#, fuzzy
-msgid "Color Wheel3"
-msgstr "Roda de color"
-
-msgid "Color Macro1"
-msgstr ""
 
 msgid "Color Temperature"
 msgstr "Temperatura de color"
@@ -870,28 +741,17 @@ msgstr "Iris"
 msgid "Gobo1"
 msgstr "Gobo1"
 
-msgid "Gobo1 Adjust"
-msgstr ""
+msgid "Gobo1 Rotation"
+msgstr "Rotació Gobo1"
 
 msgid "Gobo2"
 msgstr "Gobo2"
 
-msgid "Gobo2 Adjust"
-msgstr ""
+msgid "Gobo2 Rotation"
+msgstr "Rotació Gobo2"
 
 msgid "Strobe"
 msgstr "Strobo"
-
-#, fuzzy
-msgid "PanMode"
-msgstr "Mode"
-
-#, fuzzy
-msgid "TiltMode"
-msgstr "Tilt"
-
-msgid "PanTiltMode"
-msgstr ""
 
 msgid "Clear All"
 msgstr ""
@@ -1321,30 +1181,11 @@ msgstr "Esborrar"
 msgid "Remove Shared Commit"
 msgstr ""
 
-#, python-brace-format
-msgid "Enable Group: {group}"
-msgstr ""
-
-msgid "New group:"
-msgstr ""
-
-msgid "Share current version"
-msgstr ""
-
-#, python-brace-format
-msgid "Shared by me ({defined_station_name}):"
-msgstr ""
-
-msgid "Stations in the group:"
-msgstr ""
-
-#, fuzzy
-msgid "Shared by the station:"
+msgid "Shared by me:"
 msgstr "Compartit per mi:"
 
-#, fuzzy
-msgid "Shared by the server:"
-msgstr "Compartit per mi:"
+msgid "Shared to me:"
+msgstr "Compartit amb mi:"
 
 msgid "OSC"
 msgstr "OSC"
@@ -1412,28 +1253,3 @@ msgstr ""
 
 msgid "Universes"
 msgstr "Universos"
-
-#~ msgid "Connect to a selected station"
-#~ msgstr "Connecta't a una estació seleccionada"
-
-#~ msgid "Connects to an MVR-xchange station"
-#~ msgstr "Es connectarà a una estació MVR-xchange"
-
-#~ msgid "Add hostname to MVR-xchange service"
-#~ msgstr ""
-
-#~ msgid "Add computer name as sub-sub service in mDNS"
-#~ msgstr ""
-
-#~ msgid "Lock/Unlock Movement Rotation"
-#~ msgstr ""
-
-#~ msgid "Gobo1 Rotation"
-#~ msgstr "Rotació Gobo1"
-
-#~ msgid "Gobo2 Rotation"
-#~ msgstr "Rotació Gobo2"
-
-#~ msgid "Shared to me:"
-#~ msgstr "Compartit amb mi:"
-

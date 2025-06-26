@@ -7,17 +7,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-26 20:59+0200\n"
+"POT-Creation-Date: 2024-11-30 11:27+0100\n"
 "PO-Revision-Date: 2024-12-17 21:00+0000\n"
 "Last-Translator: Fede Pre <fede0379@live.com>\n"
+"Language-Team: Italian <https://hosted.weblate.org/projects/blenderdmx/main/"
+"it/>\n"
 "Language: it_IT\n"
-"Language-Team: Italian "
-"<https://hosted.weblate.org/projects/blenderdmx/main/it/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.9.2-dev\n"
+"Generated-By: Babel 2.14.0\n"
 
 msgid "File doesn't exist"
 msgstr "Il file non esiste"
@@ -42,9 +43,6 @@ msgstr "Rotazione"
 
 msgid "Footprint"
 msgstr "Traccia"
-
-msgid "Physical Properties"
-msgstr ""
 
 msgid "DMX Collection"
 msgstr "Collezione DMX"
@@ -224,33 +222,17 @@ msgstr "Porta di destinazione OSC"
 msgid "Port number of the host where you want to send the OSC signal"
 msgstr "Numero di porta dell'host a cui si desidera inviare il segnale OSC"
 
-#, fuzzy
-msgid "Enable Local MVR-xchange"
+msgid "Enable MVR-xchange discovery"
 msgstr "Abilita il rilevamento MVR-xchange"
 
-#, fuzzy
-msgid "Enables MVR-xchange sharing and discovery"
+msgid "Enables MVR-xchange discovery"
 msgstr "Abilita rilevamento MVR-xchange"
 
-msgid "Enable Group Registration"
-msgstr ""
+msgid "Enable MVR-xchange connection"
+msgstr "Abilita la connessione MVR-xchange"
 
-msgid "Join or start the new group"
-msgstr ""
-
-#, fuzzy
-msgid "Enable Internet MVR-xchange"
-msgstr "Abilita il rilevamento MVR-xchange"
-
-#, fuzzy
-msgid "Enables Internet based MVR-xchange sharing and discovery"
-msgstr "Abilita rilevamento MVR-xchange"
-
-msgid "Use per-project Station UUID"
-msgstr ""
-
-msgid "Generates a random UUID for every blend file"
-msgstr ""
+msgid "Connects to MVR-xchange client"
+msgstr "Connetti al client MVR-xchange"
 
 msgid "Art-Net Status"
 msgstr "Stato Art-Net"
@@ -280,12 +262,6 @@ msgstr ""
 "I fasci laser vengono proiettati sugli oggetti di questa collezione. Il "
 "fascio si ferma al primo oggetto che entra in collisione con il fascio."
 
-msgid ""
-"The renderer is paused during MVR import and in 2D view. This checkbox "
-"allows to re-enable it in case of some failure during import, which would"
-" leave it paused"
-msgstr ""
-
 msgid "Pause renderer"
 msgstr "Pausa rendering"
 
@@ -301,18 +277,14 @@ msgstr "Aggiungi alla selezione"
 msgid "Remove from selection"
 msgstr "Rimuovi dalla selezione"
 
-msgid "When selecting a group, remove from existing selection"
-msgstr ""
-
 msgid "Keyframe only selected fixtures (not for autokeying)"
 msgstr "Aggiungi keyframe solo per le luci selezionate (non per auto keyframe)"
 
-#, fuzzy
-msgid "Add keyframes with changes only for selected fixtures"
-msgstr "Elimina tutti i fotogrammi chiave dai dispositivi selezionati"
-
 msgid "MVR-xchange"
 msgstr "MVR-xchange"
+
+msgid "Status"
+msgstr "Stato"
 
 msgid "DMX Data"
 msgstr "Dati DMX"
@@ -320,47 +292,11 @@ msgstr "Dati DMX"
 msgid "Fixture"
 msgstr "Dispositivo"
 
-msgid "Gap"
-msgstr ""
-
-#, fuzzy
-msgid "Diameter"
-msgstr "Dimmer"
-
-#, fuzzy
-msgid "Rotate"
-msgstr "Rotazione"
-
-msgid "Source"
-msgstr "Sorgente"
-
 msgid "Subfixtures"
 msgstr "Sotto Dispositivi"
 
 msgid "Active Subfixtures"
 msgstr "Attiva Sotto Dispositivi"
-
-#, fuzzy
-msgid "Pan Rotate"
-msgstr "Rotazione Pan"
-
-#, fuzzy
-msgid "Tilt Rotate"
-msgstr "Rotazione Tilt"
-
-msgid "Custom Cutoff Distance"
-msgstr ""
-
-msgid ""
-"Distance at which the influence of the light will be set to 0. Value "
-"bigger then 23 will break gobo rendering in Eevee Next."
-msgstr ""
-
-msgid "Use Fixtures Physical Properties"
-msgstr ""
-
-msgid "Use Channel Functions of this fixture"
-msgstr ""
 
 msgid "DMX Universe"
 msgstr "Universo DMX"
@@ -426,127 +362,12 @@ msgstr "La scheda/interfaccia di rete per ascoltare i dati PSN"
 msgid "PSN Target port"
 msgstr "Porta di destinazione PSN"
 
-#, fuzzy
-msgid "File UUID"
-msgstr "ID Dispositivo"
-
-#, fuzzy
-msgid "Comment"
-msgstr "Blocca Movimento"
-
-#, fuzzy
-msgid "File Name"
-msgstr "Nome del file"
-
-#, fuzzy
-msgid "Station UUID"
-msgstr "ID Revisione"
-
-#, fuzzy
-msgid "File Size"
-msgstr "Files"
-
-msgid "Time of info"
-msgstr ""
-
-msgid "Time of saving"
-msgstr ""
-
-msgid "Subscribed to"
-msgstr ""
-
-#, fuzzy
-msgid "We requested latest file without UUID"
-msgstr "Richiedi l'ultima versione"
-
-#, fuzzy
-msgid "IP Address"
-msgstr "Indirizzo"
-
-#, fuzzy
-msgid "Port"
-msgstr "Importa"
-
-msgid "Connected"
-msgstr ""
-
-msgid "Last Seen Time"
-msgstr ""
-
-#, fuzzy
-msgid "Station Name"
-msgstr "Nome corto"
-
-#, fuzzy
-msgid "MVR-xchange group"
-msgstr "MVR-xchange"
-
-#, fuzzy
-msgid "Provider"
-msgstr "Profilo"
-
-#, fuzzy
-msgid "Commits"
-msgstr "Importa commit"
-
-#, fuzzy
-msgid "Icon ID"
-msgstr "ID Revisione"
-
-#, fuzzy
-msgid "New Group:"
-msgstr "Elenco dei gruppi"
-
-#, fuzzy
-msgid "MVR-xchange Clients"
-msgstr "MVR-xchange"
-
-msgid "Existing Groups"
-msgstr ""
-
-#, fuzzy
-msgid "Websocket Commits"
-msgstr "Scaricamento"
-
-msgid "Message"
-msgstr ""
-
-#, fuzzy
-msgid "IPv4 Address for MVR-xchange"
-msgstr "Indirizzo IPv4 per il segnale PSN"
-
-#, fuzzy
-msgid "The network card/interface for MVR-xchange"
-msgstr "La scheda/interfaccia di rete per ascoltare i dati PSN"
-
-#, fuzzy
-msgid "Group"
-msgstr "Elenco dei gruppi"
-
-#, fuzzy
-msgid "Classes"
-msgstr "Elenco Classe i"
-
-#, fuzzy
-msgid "Align selected fixtures to active fixture"
-msgstr "Collega dispositivo ad un tracciatore"
-
-#, fuzzy
-msgid "Distribute selected fixtures evenly"
-msgstr "Elimina dispositivi selezionati"
-
-#, fuzzy
-msgid "Distribute selected fixtures with gap"
-msgstr "Elimina dispositivi selezionati"
-
 msgid "Align and Distribute"
 msgstr "Allinea e distribuisci"
 
-#, python-brace-format
 msgid "Active object: {}"
 msgstr "Oggetto attivo: {}"
 
-#, python-brace-format
 msgid "Selected fixtures: {}"
 msgstr "Dispositivi Selezionati: {}"
 
@@ -592,16 +413,11 @@ msgstr "Modalità DMX"
 msgid "Advanced edit"
 msgstr "Editing avanzato"
 
-#, fuzzy
-msgid "Modify DMX address"
-msgstr "Indirizzo DMX"
-
-#, fuzzy
-msgid "Modify Fixture ID"
-msgstr "ID Dispositivo"
-
 msgid "GDTF Profile"
 msgstr "Profilo GDTF"
+
+msgid "Unknown manufacturer"
+msgstr "Costruttore sconosciuto"
 
 msgid "DMX: Add Fixture"
 msgstr "DMX: Aggiungi Dispositivo"
@@ -609,7 +425,6 @@ msgstr "DMX: Aggiungi Dispositivo"
 msgid "Add fixtures to the show"
 msgstr "Aggiungi Dispositivi allo spettacolo"
 
-#, python-brace-format
 msgid "Fixture named {} already exists"
 msgstr "Il dispositivo denominato {} esiste già"
 
@@ -630,14 +445,6 @@ msgstr "DMX > Dispositivo > Rimuovi"
 
 msgid "Remove selected fixtures from Scene"
 msgstr "Rimuovi i dispositivi selezionati dalla Scena"
-
-#, fuzzy
-msgid "Remove IES Files"
-msgstr "Rimuovi Dispositivo"
-
-#, fuzzy
-msgid "Import IES File"
-msgstr "Importa Profilo GDTF"
 
 msgid "Select Previous Fixture"
 msgstr "Seleziona dispositivo precedente"
@@ -708,30 +515,6 @@ msgstr "Crea gruppo DMX dai dispositivi selezionati"
 msgid "Group Name"
 msgstr "Nome Gruppo"
 
-#, fuzzy
-msgid "Replace DMX group fixtures with selected ones"
-msgstr "Crea gruppo DMX dai dispositivi selezionati"
-
-#, fuzzy
-msgid "DMX > Group > Rename"
-msgstr "DMX > Gruppo > Crea"
-
-#, fuzzy
-msgid "Rename selected DMX group"
-msgstr "Rimuovi i dispositivi selezionati dalla Scena"
-
-#, fuzzy
-msgid "DMX > Group > Remove"
-msgstr "DMX > Gruppo > Crea"
-
-#, fuzzy
-msgid "Remove selected DMX group"
-msgstr "Rimuovi i dispositivi selezionati dalla Scena"
-
-#, fuzzy
-msgid "Groups"
-msgstr "Elenco dei gruppi"
-
 msgid "Reset Colors"
 msgstr "Resetta Colori"
 
@@ -747,31 +530,8 @@ msgstr "Sblocca Movimento"
 msgid "Allow pan/tilt DMX data"
 msgstr "Consenti dati DMX pan/tilt"
 
-#, fuzzy
-msgid "Track Target"
-msgstr "Aggiungi obiettivo Tracciante"
-
-#, fuzzy
-msgid "Follow the target"
-msgstr "Aggiungi Followers obiettivo"
-
-#, fuzzy
-msgid "Do Not Track Target"
-msgstr "Aggiungi obiettivo Tracciante"
-
-#, fuzzy
-msgid "Do not follow the target"
-msgstr "Aggiungi Followers obiettivo"
-
-#, fuzzy
-msgid "Use Fixtures Channel Functions"
-msgstr "Aggiorna connessione"
-
-msgid "Do Not Use Fixtures Physical Properties"
-msgstr ""
-
-msgid "Do not use Fixtures Channel Functions"
-msgstr ""
+msgid "Lock/Unlock Movement Rotation"
+msgstr "Blocca/Sblocca Movimento di rotazione"
 
 msgid "Deselect All"
 msgstr "Deseleziona Tutti"
@@ -856,7 +616,6 @@ msgstr "Programmatore"
 msgid "Nothing selected"
 msgstr "Niente selezionato"
 
-#, python-brace-format
 msgid "{} selected"
 msgstr "{} selezionato"
 
@@ -887,20 +646,8 @@ msgstr "Rotazione Tilt"
 msgid "Zoom"
 msgstr "Zoom"
 
-#, fuzzy
-msgid "Color Wheel1"
+msgid "Color Wheel"
 msgstr "Ruota colori"
-
-#, fuzzy
-msgid "Color Wheel2"
-msgstr "Ruota colori"
-
-#, fuzzy
-msgid "Color Wheel3"
-msgstr "Ruota colori"
-
-msgid "Color Macro1"
-msgstr ""
 
 msgid "Color Temperature"
 msgstr "Temperatura Colore"
@@ -911,28 +658,17 @@ msgstr "Iride"
 msgid "Gobo1"
 msgstr "Gobo 1"
 
-msgid "Gobo1 Adjust"
-msgstr ""
+msgid "Gobo1 Rotation"
+msgstr "Rotazione Gobo 1"
 
 msgid "Gobo2"
 msgstr "Gobo 2"
 
-msgid "Gobo2 Adjust"
-msgstr ""
+msgid "Gobo2 Rotation"
+msgstr "Rotazione Gobo 2"
 
 msgid "Strobe"
 msgstr "Strobo"
-
-#, fuzzy
-msgid "PanMode"
-msgstr "Modalità"
-
-#, fuzzy
-msgid "TiltMode"
-msgstr "Tilt"
-
-msgid "PanTiltMode"
-msgstr ""
 
 msgid "Clear All"
 msgstr "Pulisci Tutto"
@@ -993,12 +729,6 @@ msgstr "DMX > Configurazione > Nuovo spettacolo"
 msgid "Clear any existing DMX data and create a new show."
 msgstr "Cancella tutti i dati DMX esistenti e crea un nuovo spettacolo."
 
-msgid "Do at your own risk. Manual edits or deletes can cause issues"
-msgstr ""
-
-msgid "Manually editing or deleting geometries of GDTF devices may cause issues."
-msgstr ""
-
 msgid "Really remove all fixtures and DMX from blend file?"
 msgstr "Vuoi realmente rimuovere tutti i dispositivi DMX dal file blend?"
 
@@ -1007,10 +737,6 @@ msgstr "Prova a rimuovere DMX dal file dello Show di Blender"
 
 msgid "Beam diameter small"
 msgstr "Diametro del fascio piccolo"
-
-#, fuzzy
-msgid "Set Eevee Cutoff distance on selected fixtures"
-msgstr "Imposta sui dispositivi selezionati"
 
 msgid "Beam diameter normal"
 msgstr "Diametro del fascio normale"
@@ -1041,6 +767,12 @@ msgstr "Colore Sfondo"
 
 msgid "Extras"
 msgstr "Extra"
+
+msgid "Check for BlenderDMX updates"
+msgstr "Controlla gli aggiornamenti di BlenderDMX"
+
+msgid "Status: {}"
+msgstr "Stato: {}"
 
 msgid "Clear Project data"
 msgstr "Azzera dati del progetto"
@@ -1090,6 +822,27 @@ msgstr "Errore! È richiesto Blender 3.4 o versione successiva."
 msgid "Create New Show"
 msgstr "Crea Nuovo Spettacolo"
 
+msgid "Check version"
+msgstr "Controlla versione"
+
+msgid "Check if there is new release of BlenderDMX"
+msgstr "Controlla se è disponibile una nuova versione di BlenderDMX"
+
+msgid "Unknown version error"
+msgstr "Errore di versione sconosciuta"
+
+msgid "New version {} available"
+msgstr "Nuova versione {} disponibile"
+
+msgid "You are using pre-release version"
+msgstr "Stai utilizzando la versione pre-release"
+
+msgid "You are using latest version of BlenderDMX"
+msgstr "Stai utilizzando l'ultima versione di BlenderDMX"
+
+msgid "Checking..."
+msgstr "Controllo..."
+
 msgid "Import Custom Data"
 msgstr "Importa dati personalizzati"
 
@@ -1109,7 +862,6 @@ msgstr "Files"
 msgid "Incorrect file name!"
 msgstr "Nome del file errato!"
 
-#, python-brace-format
 msgid "Data imported from: {}"
 msgstr "Dati importati da: {}"
 
@@ -1121,13 +873,11 @@ msgstr ""
 "Comprimi ed esporta i dati personalizzati dalla cartella addon di "
 "BlenderDMX."
 
-#, python-brace-format
 msgid "Data exported to: {}"
 msgstr "Dati salvati su: {}"
 
-#, fuzzy
-msgid "Really delete all custom data from the addon directory?"
-msgstr "Cancella i dati personalizzati dalla cartella addon di BlenderDMX."
+msgid "Clear Custom Data"
+msgstr "Cancella Dati Personalizzati"
 
 msgid "Clear custom data from BlenderDMX addon directory."
 msgstr "Cancella i dati personalizzati dalla cartella addon di BlenderDMX."
@@ -1142,8 +892,8 @@ msgid ""
 "Copy custom data from BlenderDMX addon directory to BlenderDMX extension "
 "user directory."
 msgstr ""
-"Copia i dati personalizzati dalla cartella addon di BlenderDMX alla "
-"cartella delle estensioni utente di BlenderDMX."
+"Copia i dati personalizzati dalla cartella addon di BlenderDMX alla cartella "
+"delle estensioni utente di BlenderDMX."
 
 msgid "Data copied"
 msgstr "Dati copiati"
@@ -1177,21 +927,18 @@ msgstr ""
 msgid "GDTF Share API credentials missing"
 msgstr "Credenziali API di GDTF Share mancanti"
 
-#, python-brace-format
 msgid "Downloading {}"
 msgstr "Download di {}"
 
 msgid "GDTF Share Download"
 msgstr "GDTF Share Scaricamento"
 
-#, python-brace-format
 msgid "Share index updated. Status code was: {}"
 msgstr "Indice Share aggiornato. Il codice di stato era: {}"
 
 msgid "GDTF Share updated"
 msgstr "GDTF Share aggiornato"
 
-#, python-brace-format
 msgid "Error while updating Share index. Error code was: {}"
 msgstr ""
 "Errore durante l'aggiornamento dell'indice Share. Il codice di errore "
@@ -1200,14 +947,12 @@ msgstr ""
 msgid "GDTF Share update error"
 msgstr "Errore di aggiornamento di GDTF Share"
 
-#, python-brace-format
 msgid "File downloaded correctly. Status code was: {}"
 msgstr "File scaricato correttamente. Il codice di stato era: {}"
 
 msgid "GDTF file downloaded"
 msgstr "File GDTF scaricato"
 
-#, python-brace-format
 msgid "Error downloading GDTF file. Error code was: {}"
 msgstr "Errore durante il download del file GDTF. Il codice di errore era: {}"
 
@@ -1235,6 +980,9 @@ msgstr ""
 
 msgid "Filename"
 msgstr "Nome del file"
+
+msgid "Some fixtures could not be processed"
+msgstr "Impossibile elaborare alcuni dispositivi"
 
 msgid "Mode name"
 msgstr "Nome della modalità"
@@ -1335,15 +1083,14 @@ msgstr "Art-Net"
 msgid "IPv4"
 msgstr "IPv4"
 
-#, python-brace-format
 msgid "Art-Net set for {} universe(s)"
 msgstr "Imposta Art-Net per {} universo(i)"
 
-msgid "Status"
-msgstr "Stato"
-
 msgid "Live DMX"
 msgstr "DMX attuale"
+
+msgid "Source"
+msgstr "Sorgente"
 
 msgid "Refresh"
 msgstr "Aggiorna"
@@ -1360,51 +1107,11 @@ msgstr "Invia il messaggio di richiesta"
 msgid "Import commit"
 msgstr "Importa commit"
 
-#, fuzzy
-msgid "Export MVR to MVR-xchange"
-msgstr "Connetti al client MVR-xchange"
-
 msgid "Download"
 msgstr "Scaricamento"
 
 msgid "Download commit"
 msgstr "Scarica commit"
-
-#, fuzzy
-msgid "Websocket Download"
-msgstr "Scaricamento"
-
-#, fuzzy
-msgid "Delete"
-msgstr "Elimina dispositivo"
-
-#, fuzzy
-msgid "Remove Shared Commit"
-msgstr "Rimuovi Obiettivo"
-
-#, python-brace-format
-msgid "Enable Group: {group}"
-msgstr ""
-
-msgid "New group:"
-msgstr ""
-
-#, fuzzy
-msgid "Share current version"
-msgstr "Richiedi l'ultima versione"
-
-#, python-brace-format
-msgid "Shared by me ({defined_station_name}):"
-msgstr ""
-
-msgid "Stations in the group:"
-msgstr ""
-
-msgid "Shared by the station:"
-msgstr ""
-
-msgid "Shared by the server:"
-msgstr ""
 
 msgid "OSC"
 msgstr "OSC"
@@ -1463,7 +1170,6 @@ msgstr "Aggiungi obiettivo"
 msgid "sACN"
 msgstr "sACN"
 
-#, python-brace-format
 msgid "sACN set for {} universe(s)"
 msgstr "Imposta sACN per {} universo(i)"
 
@@ -1679,52 +1385,3 @@ msgstr "Universi"
 
 #~ msgid "For Blender 4.2 and up use the Extension"
 #~ msgstr "Su Blender 4.2 e superiori utilizzate l'estensione"
-
-#~ msgid "Enable MVR-xchange connection"
-#~ msgstr "Abilita la connessione MVR-xchange"
-
-#~ msgid "Unknown manufacturer"
-#~ msgstr "Costruttore sconosciuto"
-
-#~ msgid "Lock/Unlock Movement Rotation"
-#~ msgstr "Blocca/Sblocca Movimento di rotazione"
-
-#~ msgid "Gobo1 Rotation"
-#~ msgstr "Rotazione Gobo 1"
-
-#~ msgid "Gobo2 Rotation"
-#~ msgstr "Rotazione Gobo 2"
-
-#~ msgid "Check for BlenderDMX updates"
-#~ msgstr "Controlla gli aggiornamenti di BlenderDMX"
-
-#~ msgid "Status: {}"
-#~ msgstr "Stato: {}"
-
-#~ msgid "Check version"
-#~ msgstr "Controlla versione"
-
-#~ msgid "Check if there is new release of BlenderDMX"
-#~ msgstr "Controlla se è disponibile una nuova versione di BlenderDMX"
-
-#~ msgid "Unknown version error"
-#~ msgstr "Errore di versione sconosciuta"
-
-#~ msgid "New version {} available"
-#~ msgstr "Nuova versione {} disponibile"
-
-#~ msgid "You are using pre-release version"
-#~ msgstr "Stai utilizzando la versione pre-release"
-
-#~ msgid "You are using latest version of BlenderDMX"
-#~ msgstr "Stai utilizzando l'ultima versione di BlenderDMX"
-
-#~ msgid "Checking..."
-#~ msgstr "Controllo..."
-
-#~ msgid "Clear Custom Data"
-#~ msgstr "Cancella Dati Personalizzati"
-
-#~ msgid "Some fixtures could not be processed"
-#~ msgstr "Impossibile elaborare alcuni dispositivi"
-
