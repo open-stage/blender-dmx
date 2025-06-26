@@ -434,69 +434,69 @@ class DMX_PT_DMX_MVR_X(Panel):
 
         row = layout.row()
         row.prop(dmx, "zeroconf_enabled")
-        if not dmx.zeroconf_enabled:
-            return
 
-        row = layout.row()
-        row.prop(mvr_x, "ip_address")
-        row.enabled = not dmx.mvrx_enabled
-
-        row = layout.row()
-        row.prop(dmx, "mvrx_enabled", text=f"Enable Group: {mvr_x.mvr_x_group}")
-
-        if not dmx.mvrx_enabled:
-            row.enabled = mvr_x.existing_groups_exist or mvr_x.new_group_bool
-            if (
-                mvr_x.existing_groups_exist
-                and not mvr_x.mvr_x_group
-                and not mvr_x.new_group_bool
-            ):
-                mvr_x.mvr_x_group = mvr_x.all_mvr_groups
+        if dmx.zeroconf_enabled:
+            row = layout.row()
+            row.prop(mvr_x, "ip_address")
+            row.enabled = not dmx.mvrx_enabled
 
             row = layout.row()
-
-            col1 = row.column()
-            col2 = row.column()
-            col1.prop(mvr_x, "new_group_bool", text="New group:")
-            col2.prop(mvr_x, "new_mvr_x_group_string", text="")
-            col1.enabled = not dmx.mvrx_enabled
-            col2.enabled = not dmx.mvrx_enabled and mvr_x.new_group_bool
-            row = layout.row()
-            row.prop(mvr_x, "all_mvr_groups")
-            row.enabled = not dmx.mvrx_enabled and not mvr_x.new_group_bool
-
-        # if not dmx.zeroconf_enabled:
-        #    return
-
-        row = layout.row()
-        row.operator("dmx.mvr_x_export", text="Share current version", icon="EXPORT")
-        # row.enabled = dmx.zeroconf_enabled
-
-        row = layout.row()
-        row.prop(mvr_x, "commit_message")
-        # row.enabled = dmx.zeroconf_enabled
-
-        row = layout.row()
-        # row.enabled = dmx.zeroconf_enabled
-
-        row = layout.row()
-        row.label(
-            text=_("Shared by me ({defined_station_name}):").format(
-                defined_station_name=defined_station_name
+            row.prop(
+                dmx,
+                "mvrx_enabled",
+                text=_("Enable Group: {group}").format(group=mvr_x.mvr_x_group),
             )
-        )
 
-        row = layout.row()
-        row.template_list(
-            "DMX_UL_MVR_Shared_Commit",
-            "",
-            mvr_x,
-            "shared_commits",
-            mvr_x,
-            "selected_shared_commit",
-            item_dyntip_propname="comment",
-            rows=4,
-        )
+            if not dmx.mvrx_enabled:
+                row.enabled = mvr_x.existing_groups_exist or mvr_x.new_group_bool
+                if (
+                    mvr_x.existing_groups_exist
+                    and not mvr_x.mvr_x_group
+                    and not mvr_x.new_group_bool
+                ):
+                    mvr_x.mvr_x_group = mvr_x.all_mvr_groups
+
+                row = layout.row()
+
+                col1 = row.column()
+                col2 = row.column()
+                col1.prop(mvr_x, "new_group_bool", text=_("New group:"))
+                col2.prop(mvr_x, "new_mvr_x_group_string", text="")
+                col1.enabled = not dmx.mvrx_enabled
+                col2.enabled = not dmx.mvrx_enabled and mvr_x.new_group_bool
+                row = layout.row()
+                row.prop(mvr_x, "all_mvr_groups")
+                row.enabled = not dmx.mvrx_enabled and not mvr_x.new_group_bool
+
+        if dmx.mvrx_enabled or dmx.mvrx_socket_client_enabled:
+            row = layout.row()
+            row.operator(
+                "dmx.mvr_x_export", text=_("Share current version"), icon="EXPORT"
+            )
+
+            row = layout.row()
+            row.prop(mvr_x, "commit_message")
+
+            row = layout.row()
+
+            row = layout.row()
+            row.label(
+                text=_("Shared by me ({defined_station_name}):").format(
+                    defined_station_name=defined_station_name
+                )
+            )
+
+            row = layout.row()
+            row.template_list(
+                "DMX_UL_MVR_Shared_Commit",
+                "",
+                mvr_x,
+                "shared_commits",
+                mvr_x,
+                "selected_shared_commit",
+                item_dyntip_propname="comment",
+                rows=4,
+            )
         if dmx.zeroconf_enabled:
             row = layout.row()
             row.label(text=_("Stations in the group:"))
@@ -519,7 +519,7 @@ class DMX_PT_DMX_MVR_X(Panel):
 
             if client:
                 row = layout.row()
-                row.label(text=_("Shared to me:"))
+                row.label(text=_("Shared by the station:"))
                 row = layout.row()
                 row.label(text=f"{client.ip_address}:{client.port}")
                 row = layout.row()
@@ -546,7 +546,7 @@ class DMX_PT_DMX_MVR_X(Panel):
             col1 = row.column()
             col1.operator("dmx.mvr_ws_refresh", text="", icon="FILE_REFRESH")
             row = layout.row()
-            row.label(text=_("Shared to me:"))
+            row.label(text=_("Shared by the server:"))
             row = layout.row()
 
             row.template_list(
