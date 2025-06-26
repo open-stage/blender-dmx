@@ -7,18 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-30 11:27+0100\n"
+"POT-Creation-Date: 2025-06-26 21:36+0200\n"
 "PO-Revision-Date: 2024-12-27 19:00+0000\n"
 "Last-Translator: vanous <petr+weblate@linuks.cz>\n"
-"Language-Team: Czech <https://hosted.weblate.org/projects/blenderdmx/main/cs/"
-">\n"
 "Language: cs_CZ\n"
+"Language-Team: Czech "
+"<https://hosted.weblate.org/projects/blenderdmx/main/cs/>\n"
+"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
-"X-Generator: Weblate 5.10-dev\n"
-"Generated-By: Babel 2.14.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
 msgstr "Soubor neexistuje"
@@ -43,6 +42,9 @@ msgstr "Rotace"
 
 msgid "Footprint"
 msgstr "Stopa"
+
+msgid "Physical Properties"
+msgstr ""
 
 msgid "DMX Collection"
 msgstr "DMX Kolekce"
@@ -217,17 +219,33 @@ msgstr "Port cílového OSC zařízení"
 msgid "Port number of the host where you want to send the OSC signal"
 msgstr "Číslo portu zařízení kam chcete posílat OSC signál"
 
-msgid "Enable MVR-xchange discovery"
+#, fuzzy
+msgid "Enable Local MVR-xchange"
 msgstr "Povolit vyhledávání MVR-xchange"
 
-msgid "Enables MVR-xchange discovery"
+#, fuzzy
+msgid "Enables MVR-xchange sharing and discovery"
 msgstr "Povolí vyhledání MVR-xchange"
 
-msgid "Enable MVR-xchange connection"
-msgstr "Povolit MVR-xchange spojení"
+msgid "Enable Group Registration"
+msgstr ""
 
-msgid "Connects to MVR-xchange client"
-msgstr "Připojí se k MVR-xchange klientu"
+msgid "Join or start the new group"
+msgstr ""
+
+#, fuzzy
+msgid "Enable Internet MVR-xchange"
+msgstr "Povolit vyhledávání MVR-xchange"
+
+#, fuzzy
+msgid "Enables Internet based MVR-xchange sharing and discovery"
+msgstr "Povolí vyhledání MVR-xchange"
+
+msgid "Use per-project Station UUID"
+msgstr ""
+
+msgid "Generates a random UUID for every blend file"
+msgstr ""
 
 msgid "Art-Net Status"
 msgstr "Stav Art-Netu"
@@ -257,6 +275,12 @@ msgstr ""
 "Laserové paprsky jsou promítány na objekty v této kolekci. Paprsek se "
 "zastaví na prvním objektu, na který narazí."
 
+msgid ""
+"The renderer is paused during MVR import and in 2D view. This checkbox "
+"allows to re-enable it in case of some failure during import, which would"
+" leave it paused"
+msgstr ""
+
 msgid "Pause renderer"
 msgstr "Zapauzovat renderování"
 
@@ -272,14 +296,18 @@ msgstr "Přidat k výběru"
 msgid "Remove from selection"
 msgstr "Odebrat z výběru"
 
+msgid "When selecting a group, remove from existing selection"
+msgstr ""
+
 msgid "Keyframe only selected fixtures (not for autokeying)"
 msgstr "Keyframe pouze vybraná svítidla (ne při autokeying)"
 
+#, fuzzy
+msgid "Add keyframes with changes only for selected fixtures"
+msgstr "Odstraní všechny snímky z vybraných svítidel"
+
 msgid "MVR-xchange"
 msgstr "MVR-xchange"
-
-msgid "Status"
-msgstr "Stav"
 
 msgid "DMX Data"
 msgstr "DMX Data"
@@ -287,11 +315,47 @@ msgstr "DMX Data"
 msgid "Fixture"
 msgstr "Svítidlo"
 
+msgid "Gap"
+msgstr ""
+
+#, fuzzy
+msgid "Diameter"
+msgstr "Dimr"
+
+#, fuzzy
+msgid "Rotate"
+msgstr "Rotace"
+
+msgid "Source"
+msgstr "Zdroj"
+
 msgid "Subfixtures"
 msgstr "PodSvítidla"
 
 msgid "Active Subfixtures"
 msgstr "Vybraná podsvítidla"
+
+#, fuzzy
+msgid "Pan Rotate"
+msgstr "Pan Rotace"
+
+#, fuzzy
+msgid "Tilt Rotate"
+msgstr "Tilt Rotace"
+
+msgid "Custom Cutoff Distance"
+msgstr ""
+
+msgid ""
+"Distance at which the influence of the light will be set to 0. Value "
+"bigger then 23 will break gobo rendering in Eevee Next."
+msgstr ""
+
+msgid "Use Fixtures Physical Properties"
+msgstr ""
+
+msgid "Use Channel Functions of this fixture"
+msgstr ""
 
 msgid "DMX Universe"
 msgstr "DMX Univers"
@@ -357,12 +421,126 @@ msgstr "Síťová karta/rozhraní pro příjem PSN dat"
 msgid "PSN Target port"
 msgstr "Port PSN serveru"
 
+#, fuzzy
+msgid "File UUID"
+msgstr "ID Svítidla"
+
+#, fuzzy
+msgid "Comment"
+msgstr "Uzamknout Pohyb"
+
+#, fuzzy
+msgid "File Name"
+msgstr "Jméno souboru"
+
+#, fuzzy
+msgid "Station UUID"
+msgstr "ID revize"
+
+#, fuzzy
+msgid "File Size"
+msgstr "Soubory"
+
+msgid "Time of info"
+msgstr ""
+
+msgid "Time of saving"
+msgstr ""
+
+msgid "Subscribed to"
+msgstr ""
+
+#, fuzzy
+msgid "We requested latest file without UUID"
+msgstr "Žádost o nejnovější verzi"
+
+#, fuzzy
+msgid "IP Address"
+msgstr "Adresa"
+
+#, fuzzy
+msgid "Port"
+msgstr "Import"
+
+msgid "Connected"
+msgstr ""
+
+msgid "Last Seen Time"
+msgstr ""
+
+#, fuzzy
+msgid "Station Name"
+msgstr "Krátký název"
+
+#, fuzzy
+msgid "MVR-xchange group"
+msgstr "MVR-xchange"
+
+#, fuzzy
+msgid "Provider"
+msgstr "Profil"
+
+#, fuzzy
+msgid "Commits"
+msgstr "Importovat"
+
+#, fuzzy
+msgid "Icon ID"
+msgstr "ID revize"
+
+msgid "New Group:"
+msgstr ""
+
+#, fuzzy
+msgid "MVR-xchange Clients"
+msgstr "Připojí se k MVR-xchange klientu"
+
+msgid "Existing Groups"
+msgstr ""
+
+#, fuzzy
+msgid "Websocket Commits"
+msgstr "Importovat"
+
+msgid "Message"
+msgstr ""
+
+#, fuzzy
+msgid "IPv4 Address for MVR-xchange"
+msgstr "IPv4 Adresa pro PSN signál"
+
+#, fuzzy
+msgid "The network card/interface for MVR-xchange"
+msgstr "Síťová karta/rozhraní pro příjem PSN dat"
+
+#, fuzzy
+msgid "Group"
+msgstr "Název Skupiny"
+
+#, fuzzy
+msgid "Classes"
+msgstr "Položka seznamu tříd"
+
+#, fuzzy
+msgid "Align selected fixtures to active fixture"
+msgstr "Linkovat svítidlo na tracker"
+
+#, fuzzy
+msgid "Distribute selected fixtures evenly"
+msgstr "Editovat vybraná svítidla"
+
+#, fuzzy
+msgid "Distribute selected fixtures with gap"
+msgstr "Editovat vybraná svítidla"
+
 msgid "Align and Distribute"
 msgstr "Rozdělit a Seřadit"
 
+#, python-brace-format
 msgid "Active object: {}"
 msgstr "Aktivní objekt: {}"
 
+#, python-brace-format
 msgid "Selected fixtures: {}"
 msgstr "Vybraná svítidla: {}"
 
@@ -408,11 +586,16 @@ msgstr "DMX Mód"
 msgid "Advanced edit"
 msgstr "Pokročilé úpravy"
 
+#, fuzzy
+msgid "Modify DMX address"
+msgstr "Adresa DMX"
+
+#, fuzzy
+msgid "Modify Fixture ID"
+msgstr "ID Svítidla"
+
 msgid "GDTF Profile"
 msgstr "GDTF Profil"
-
-msgid "Unknown manufacturer"
-msgstr "Neznámý výrobce"
 
 msgid "DMX: Add Fixture"
 msgstr "Menu Přidat Svítidlo"
@@ -420,6 +603,7 @@ msgstr "Menu Přidat Svítidlo"
 msgid "Add fixtures to the show"
 msgstr "Přidat svítidlo do show"
 
+#, python-brace-format
 msgid "Fixture named {} already exists"
 msgstr "Svítidlo s názvem {} již existuje"
 
@@ -440,6 +624,14 @@ msgstr "Menu Odebrat svítidlo"
 
 msgid "Remove selected fixtures from Scene"
 msgstr "Odebrat vybraná svítidla ze scény"
+
+#, fuzzy
+msgid "Remove IES Files"
+msgstr "Odebrat svítidlo"
+
+#, fuzzy
+msgid "Import IES File"
+msgstr "Importovat GDTF soubor"
 
 msgid "Select Previous Fixture"
 msgstr "Vybrat Předchozí Svítidlo"
@@ -510,6 +702,30 @@ msgstr "Vytvořit DMX skupinu z vybraných svítidel"
 msgid "Group Name"
 msgstr "Název Skupiny"
 
+#, fuzzy
+msgid "Replace DMX group fixtures with selected ones"
+msgstr "Vytvořit DMX skupinu z vybraných svítidel"
+
+#, fuzzy
+msgid "DMX > Group > Rename"
+msgstr "Menu Vytvořit"
+
+#, fuzzy
+msgid "Rename selected DMX group"
+msgstr "Odebrat vybraná svítidla ze scény"
+
+#, fuzzy
+msgid "DMX > Group > Remove"
+msgstr "Menu Vytvořit"
+
+#, fuzzy
+msgid "Remove selected DMX group"
+msgstr "Odebrat vybraná svítidla ze scény"
+
+#, fuzzy
+msgid "Groups"
+msgstr "Seznam skupiny"
+
 msgid "Reset Colors"
 msgstr "Resetovat Barvy"
 
@@ -525,8 +741,31 @@ msgstr "Odemknout Pohyb"
 msgid "Allow pan/tilt DMX data"
 msgstr "Povolit pan/tilt data z DMX"
 
-msgid "Lock/Unlock Movement Rotation"
-msgstr "Zamknout/Odemknout Rotační Pohyb"
+#, fuzzy
+msgid "Track Target"
+msgstr "Přidat Cíl Trackování"
+
+#, fuzzy
+msgid "Follow the target"
+msgstr "Přidat Cíl Následovníků"
+
+#, fuzzy
+msgid "Do Not Track Target"
+msgstr "Přidat Cíl Trackování"
+
+#, fuzzy
+msgid "Do not follow the target"
+msgstr "Přidat Cíl Následovníků"
+
+#, fuzzy
+msgid "Use Fixtures Channel Functions"
+msgstr "Obnovit připojení"
+
+msgid "Do Not Use Fixtures Physical Properties"
+msgstr ""
+
+msgid "Do not use Fixtures Channel Functions"
+msgstr ""
 
 msgid "Deselect All"
 msgstr "Odznačit Vše"
@@ -609,6 +848,7 @@ msgstr "Programátor"
 msgid "Nothing selected"
 msgstr "Není vybráno žádné svítidlo"
 
+#, python-brace-format
 msgid "{} selected"
 msgstr "{} vybraných"
 
@@ -639,8 +879,20 @@ msgstr "Tilt Rotace"
 msgid "Zoom"
 msgstr "Zoom"
 
-msgid "Color Wheel"
+#, fuzzy
+msgid "Color Wheel1"
 msgstr "Kolorový Kotouč"
+
+#, fuzzy
+msgid "Color Wheel2"
+msgstr "Kolorový Kotouč"
+
+#, fuzzy
+msgid "Color Wheel3"
+msgstr "Kolorový Kotouč"
+
+msgid "Color Macro1"
+msgstr ""
 
 msgid "Color Temperature"
 msgstr "Barevná Teplota"
@@ -651,17 +903,28 @@ msgstr "Iriska"
 msgid "Gobo1"
 msgstr "Gobo1"
 
-msgid "Gobo1 Rotation"
-msgstr "Rotace Goba 1"
+msgid "Gobo1 Adjust"
+msgstr ""
 
 msgid "Gobo2"
 msgstr "Gobo2"
 
-msgid "Gobo2 Rotation"
-msgstr "Rotace Goba 2"
+msgid "Gobo2 Adjust"
+msgstr ""
 
 msgid "Strobe"
 msgstr "Strobo"
+
+#, fuzzy
+msgid "PanMode"
+msgstr "Mód"
+
+#, fuzzy
+msgid "TiltMode"
+msgstr "Tilt"
+
+msgid "PanTiltMode"
+msgstr ""
 
 msgid "Clear All"
 msgstr "Vyčistit vše"
@@ -720,6 +983,12 @@ msgstr "Menu Nová show"
 msgid "Clear any existing DMX data and create a new show."
 msgstr "Vyčistí existující DMX data a vytvoří novou show."
 
+msgid "Do at your own risk. Manual edits or deletes can cause issues"
+msgstr ""
+
+msgid "Manually editing or deleting geometries of GDTF devices may cause issues."
+msgstr ""
+
 msgid "Really remove all fixtures and DMX from blend file?"
 msgstr "Opravdu odebrat všechna svítidla a DMX z blend souboru?"
 
@@ -728,6 +997,10 @@ msgstr "Odebrání DMX z Blender souboru"
 
 msgid "Beam diameter small"
 msgstr "Malý průměr paprsku"
+
+#, fuzzy
+msgid "Set Eevee Cutoff distance on selected fixtures"
+msgstr "Nastavit na vybraných svítidlech"
 
 msgid "Beam diameter normal"
 msgstr "Normální průměr paprsku"
@@ -758,12 +1031,6 @@ msgstr "Barva Pozadí"
 
 msgid "Extras"
 msgstr "Doplňky"
-
-msgid "Check for BlenderDMX updates"
-msgstr "Kontrola aktualizace BlenderDMX"
-
-msgid "Status: {}"
-msgstr "Stav: {}"
 
 msgid "Clear Project data"
 msgstr "Vyčistit Projektová data"
@@ -813,27 +1080,6 @@ msgstr "Chyba! Blender 3.4 nebo vyšší je vyžadován."
 msgid "Create New Show"
 msgstr "Vytvořit Novou Show"
 
-msgid "Check version"
-msgstr "Kontrola verze"
-
-msgid "Check if there is new release of BlenderDMX"
-msgstr "Zkontrolujte, zda je nová verze BlenderDMX"
-
-msgid "Unknown version error"
-msgstr "Neznámá chyba verze"
-
-msgid "New version {} available"
-msgstr "Nová verze {} k dispozici"
-
-msgid "You are using pre-release version"
-msgstr "Používáte pre-release verzi"
-
-msgid "You are using latest version of BlenderDMX"
-msgstr "Používáte nejnovější verzi BlenderDMX"
-
-msgid "Checking..."
-msgstr "Kontrola..."
-
 msgid "Import Custom Data"
 msgstr "Importovat vlastní data"
 
@@ -853,6 +1099,7 @@ msgstr "Soubory"
 msgid "Incorrect file name!"
 msgstr "Nesprávné jméno souboru!"
 
+#, python-brace-format
 msgid "Data imported from: {}"
 msgstr "Data importována z: {}"
 
@@ -862,11 +1109,13 @@ msgstr "Exportovat vlastní data"
 msgid "Zip and Export custom data from BlenderDMX addon directory."
 msgstr "Zazipovat a Exportovat vlastní data z adresáře BlenderDMX rozšíření."
 
+#, python-brace-format
 msgid "Data exported to: {}"
 msgstr "Data exportována do: {}"
 
-msgid "Clear Custom Data"
-msgstr "Vyčistit vlastní data"
+#, fuzzy
+msgid "Really delete all custom data from the addon directory?"
+msgstr "Vyčistit vlastní data z adresáře BlenderDMX rozšíření."
 
 msgid "Clear custom data from BlenderDMX addon directory."
 msgstr "Vyčistit vlastní data z adresáře BlenderDMX rozšíření."
@@ -914,30 +1163,35 @@ msgstr "Získejte GDTF Share účet a zadejte jej do předvoleb rozšíření Bl
 msgid "GDTF Share API credentials missing"
 msgstr "Chybí data účtu pro přihlášení k GDTF Share"
 
+#, python-brace-format
 msgid "Downloading {}"
 msgstr "Stahování {}"
 
 msgid "GDTF Share Download"
 msgstr "Stahování z GDTF Share"
 
+#, python-brace-format
 msgid "Share index updated. Status code was: {}"
 msgstr "Share index aktualizován. Stavový kód byl: {}"
 
 msgid "GDTF Share updated"
 msgstr "GDTF Share aktualizován"
 
+#, python-brace-format
 msgid "Error while updating Share index. Error code was: {}"
 msgstr "Chyba při aktualizaci GDTF dat. Kód chyby byl: {}"
 
 msgid "GDTF Share update error"
 msgstr "Chyba aktualizace GDTF Share"
 
+#, python-brace-format
 msgid "File downloaded correctly. Status code was: {}"
 msgstr "Soubor stažen správně. Stavový kód byl: {}"
 
 msgid "GDTF file downloaded"
 msgstr "GDTF soubor stažen"
 
+#, python-brace-format
 msgid "Error downloading GDTF file. Error code was: {}"
 msgstr "Chyba stahování souboru GDTF. Chybový kód byl: {}"
 
@@ -965,9 +1219,6 @@ msgstr ""
 
 msgid "Filename"
 msgstr "Jméno souboru"
-
-msgid "Some fixtures could not be processed"
-msgstr "Některá svítidla se nepodařilo zpracovat"
 
 msgid "Mode name"
 msgstr "Název módu"
@@ -1068,14 +1319,15 @@ msgstr "Art-Net"
 msgid "IPv4"
 msgstr "IPv4"
 
+#, python-brace-format
 msgid "Art-Net set for {} universe(s)"
 msgstr "Art-Net nastaven pro {} univers(y)"
 
+msgid "Status"
+msgstr "Stav"
+
 msgid "Live DMX"
 msgstr "Aktuální DMX"
-
-msgid "Source"
-msgstr "Zdroj"
 
 msgid "Refresh"
 msgstr "Obnovit"
@@ -1092,11 +1344,51 @@ msgstr "Odeslat žádost"
 msgid "Import commit"
 msgstr "Importovat"
 
+#, fuzzy
+msgid "Export MVR to MVR-xchange"
+msgstr "Připojí se k MVR-xchange klientu"
+
 msgid "Download"
 msgstr "Stáhnout"
 
 msgid "Download commit"
 msgstr "Stáhnout verzi"
+
+#, fuzzy
+msgid "Websocket Download"
+msgstr "Stáhnout"
+
+#, fuzzy
+msgid "Delete"
+msgstr "Smazat zařízení"
+
+#, fuzzy
+msgid "Remove Shared Commit"
+msgstr "Resetovat Cíl"
+
+#, python-brace-format
+msgid "Enable Group: {group}"
+msgstr ""
+
+msgid "New group:"
+msgstr ""
+
+#, fuzzy
+msgid "Share current version"
+msgstr "Žádost o nejnovější verzi"
+
+#, python-brace-format
+msgid "Shared by me ({defined_station_name}):"
+msgstr ""
+
+msgid "Stations in the group:"
+msgstr ""
+
+msgid "Shared by the station:"
+msgstr ""
+
+msgid "Shared by the server:"
+msgstr ""
 
 msgid "OSC"
 msgstr "OSC"
@@ -1155,6 +1447,7 @@ msgstr "Přidat cíl"
 msgid "sACN"
 msgstr "sACN"
 
+#, python-brace-format
 msgid "sACN set for {} universe(s)"
 msgstr "sACN nastaveno pro {} univers(y)"
 
@@ -1354,3 +1647,52 @@ msgstr "DMX Universe"
 
 #~ msgid "For Blender 4.2 and up use the Extension"
 #~ msgstr "Pro Blender 4.2 a výše použíjte Extension"
+
+#~ msgid "Enable MVR-xchange connection"
+#~ msgstr "Povolit MVR-xchange spojení"
+
+#~ msgid "Unknown manufacturer"
+#~ msgstr "Neznámý výrobce"
+
+#~ msgid "Lock/Unlock Movement Rotation"
+#~ msgstr "Zamknout/Odemknout Rotační Pohyb"
+
+#~ msgid "Gobo1 Rotation"
+#~ msgstr "Rotace Goba 1"
+
+#~ msgid "Gobo2 Rotation"
+#~ msgstr "Rotace Goba 2"
+
+#~ msgid "Check for BlenderDMX updates"
+#~ msgstr "Kontrola aktualizace BlenderDMX"
+
+#~ msgid "Status: {}"
+#~ msgstr "Stav: {}"
+
+#~ msgid "Check version"
+#~ msgstr "Kontrola verze"
+
+#~ msgid "Check if there is new release of BlenderDMX"
+#~ msgstr "Zkontrolujte, zda je nová verze BlenderDMX"
+
+#~ msgid "Unknown version error"
+#~ msgstr "Neznámá chyba verze"
+
+#~ msgid "New version {} available"
+#~ msgstr "Nová verze {} k dispozici"
+
+#~ msgid "You are using pre-release version"
+#~ msgstr "Používáte pre-release verzi"
+
+#~ msgid "You are using latest version of BlenderDMX"
+#~ msgstr "Používáte nejnovější verzi BlenderDMX"
+
+#~ msgid "Checking..."
+#~ msgstr "Kontrola..."
+
+#~ msgid "Clear Custom Data"
+#~ msgstr "Vyčistit vlastní data"
+
+#~ msgid "Some fixtures could not be processed"
+#~ msgstr "Některá svítidla se nepodařilo zpracovat"
+

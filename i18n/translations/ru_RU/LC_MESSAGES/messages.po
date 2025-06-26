@@ -1,4 +1,4 @@
-# Translations template for PROJECT.
+# Russian (Russia) translations for PROJECT.
 # Copyright (C) 2025 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
@@ -7,18 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-04-21 17:11+0200\n"
+"POT-Creation-Date: 2025-06-26 21:36+0200\n"
 "PO-Revision-Date: 2025-06-22 13:01+0000\n"
 "Last-Translator: Yurt Page <yurtpage@gmail.com>\n"
-"Language-Team: Russian <https://hosted.weblate.org/projects/blenderdmx/main/"
-"ru/>\n"
 "Language: ru_RU\n"
+"Language-Team: Russian "
+"<https://hosted.weblate.org/projects/blenderdmx/main/ru/>\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.13-dev\n"
 "Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
@@ -44,6 +43,9 @@ msgstr "Вращение"
 
 msgid "Footprint"
 msgstr "Планшет"
+
+msgid "Physical Properties"
+msgstr ""
 
 msgid "DMX Collection"
 msgstr "Коллекция DMX"
@@ -193,7 +195,8 @@ msgid ""
 "Enables the input of DMX data throught sACN on all detected network "
 "interfaces"
 msgstr ""
-"Включает ввод данных DMX через sACN на всех обнаруженных сетевых интерфейсах"
+"Включает ввод данных DMX через sACN на всех обнаруженных сетевых "
+"интерфейсах"
 
 msgid "Enable OSC Output"
 msgstr "Включить выход OSC"
@@ -211,8 +214,8 @@ msgid ""
 " on .255 is a broadcast address to all hosts on the network"
 msgstr ""
 "Адрес хоста, на который вы хотите отправить сигнал OSC. Адрес, "
-"заканчивающийся на .255, является широковещательным адресом для всех хостов "
-"в сети"
+"заканчивающийся на .255, является широковещательным адресом для всех "
+"хостов в сети"
 
 msgid "OSC Target port"
 msgstr "Порт назначения OSC"
@@ -226,23 +229,17 @@ msgstr "Включить локальный MVR-xchange"
 msgid "Enables MVR-xchange sharing and discovery"
 msgstr "Включает общий доступ и обнаружение MVR-xchange"
 
-msgid "Connect to a selected station"
-msgstr "Подключение к выбранной станции"
+msgid "Enable Group Registration"
+msgstr ""
 
-msgid "Connects to an MVR-xchange station"
-msgstr "Подключение к станции MVR-xchange"
+msgid "Join or start the new group"
+msgstr ""
 
 msgid "Enable Internet MVR-xchange"
 msgstr "Включить интернет-MVR-xchange"
 
 msgid "Enables Internet based MVR-xchange sharing and discovery"
 msgstr "Включает общий доступ и обнаружение MVR-xchange через Интернет"
-
-msgid "Add hostname to MVR-xchange service"
-msgstr "Добавить имя хоста в службу MVR-xchange"
-
-msgid "Add computer name as sub-sub service in mDNS"
-msgstr "Добавить имя компьютера как подслужбу в mDNS"
 
 msgid "Use per-project Station UUID"
 msgstr "Использовать UUID станции для каждого проекта"
@@ -275,8 +272,8 @@ msgid ""
 "Laser beams are projected onto objects in this collection. The beam stops"
 " at the first object colliding with the beam."
 msgstr ""
-"Лазерные лучи проецируются на объекты в этой коллекции. Луч останавливается "
-"на первом объекте, сталкивающемся с лучом."
+"Лазерные лучи проецируются на объекты в этой коллекции. Луч "
+"останавливается на первом объекте, сталкивающемся с лучом."
 
 msgid ""
 "The renderer is paused during MVR import and in 2D view. This checkbox "
@@ -351,8 +348,14 @@ msgid ""
 "Distance at which the influence of the light will be set to 0. Value "
 "bigger then 23 will break gobo rendering in Eevee Next."
 msgstr ""
-"Расстояние, на котором влияние света будет установлено на 0. Значение больше "
-"23 нарушит рендеринг гобо в Eevee Next."
+"Расстояние, на котором влияние света будет установлено на 0. Значение "
+"больше 23 нарушит рендеринг гобо в Eevee Next."
+
+msgid "Use Fixtures Physical Properties"
+msgstr ""
+
+msgid "Use Channel Functions of this fixture"
+msgstr ""
 
 msgid "DMX Universe"
 msgstr "Вселенная DMX"
@@ -418,6 +421,103 @@ msgstr "Сетевая карта/интерфейс для прослушива
 msgid "PSN Target port"
 msgstr "Порт цели PSN"
 
+#, fuzzy
+msgid "File UUID"
+msgstr "ID прибора"
+
+#, fuzzy
+msgid "Comment"
+msgstr "Блокировать движение"
+
+#, fuzzy
+msgid "File Name"
+msgstr "Имя файла"
+
+#, fuzzy
+msgid "Station UUID"
+msgstr "ID ревизии"
+
+#, fuzzy
+msgid "File Size"
+msgstr "Файлы"
+
+msgid "Time of info"
+msgstr ""
+
+msgid "Time of saving"
+msgstr ""
+
+msgid "Subscribed to"
+msgstr ""
+
+#, fuzzy
+msgid "We requested latest file without UUID"
+msgstr "Запросить последнюю версию"
+
+#, fuzzy
+msgid "IP Address"
+msgstr "Адрес"
+
+#, fuzzy
+msgid "Port"
+msgstr "Импорт"
+
+msgid "Connected"
+msgstr ""
+
+msgid "Last Seen Time"
+msgstr ""
+
+#, fuzzy
+msgid "Station Name"
+msgstr "Короткое имя"
+
+#, fuzzy
+msgid "MVR-xchange group"
+msgstr "MVR-xchange"
+
+#, fuzzy
+msgid "Provider"
+msgstr "Профиль"
+
+#, fuzzy
+msgid "Commits"
+msgstr "Импортировать коммит"
+
+#, fuzzy
+msgid "Icon ID"
+msgstr "ID ревизии"
+
+#, fuzzy
+msgid "New Group:"
+msgstr "Группы"
+
+#, fuzzy
+msgid "MVR-xchange Clients"
+msgstr "MVR-xchange"
+
+msgid "Existing Groups"
+msgstr ""
+
+#, fuzzy
+msgid "Websocket Commits"
+msgstr "Скачать WebSocket"
+
+msgid "Message"
+msgstr ""
+
+#, fuzzy
+msgid "IPv4 Address for MVR-xchange"
+msgstr "Адрес IPv4 для сигнала PSN"
+
+#, fuzzy
+msgid "The network card/interface for MVR-xchange"
+msgstr "Сетевая карта/интерфейс для прослушивания данных PSN"
+
+#, fuzzy
+msgid "Group"
+msgstr "Группы"
+
 msgid "Classes"
 msgstr "Классы"
 
@@ -482,6 +582,14 @@ msgstr "Режим DMX"
 
 msgid "Advanced edit"
 msgstr "Расширенное редактирование"
+
+#, fuzzy
+msgid "Modify DMX address"
+msgstr "Адрес DMX"
+
+#, fuzzy
+msgid "Modify Fixture ID"
+msgstr "ID прибора"
 
 msgid "GDTF Profile"
 msgstr "Профиль GDTF"
@@ -622,8 +730,31 @@ msgstr "Разблокировать движение"
 msgid "Allow pan/tilt DMX data"
 msgstr "Разрешить данные DMX панорамирования/наклона"
 
-msgid "Lock/Unlock Movement Rotation"
-msgstr "Блокировать/разблокировать вращение движения"
+#, fuzzy
+msgid "Track Target"
+msgstr "Добавить цель отслеживания"
+
+#, fuzzy
+msgid "Follow the target"
+msgstr "Добавить цель подписчиков"
+
+#, fuzzy
+msgid "Do Not Track Target"
+msgstr "Добавить цель отслеживания"
+
+#, fuzzy
+msgid "Do not follow the target"
+msgstr "Добавить цель подписчиков"
+
+#, fuzzy
+msgid "Use Fixtures Channel Functions"
+msgstr "Обновить соединение"
+
+msgid "Do Not Use Fixtures Physical Properties"
+msgstr ""
+
+msgid "Do not use Fixtures Channel Functions"
+msgstr ""
 
 msgid "Deselect All"
 msgstr "Снять выделение со всех"
@@ -737,8 +868,20 @@ msgstr "Наклон Вращение"
 msgid "Zoom"
 msgstr "Масштабирование"
 
-msgid "Color Wheel"
+#, fuzzy
+msgid "Color Wheel1"
 msgstr "Цветовое колесо"
+
+#, fuzzy
+msgid "Color Wheel2"
+msgstr "Цветовое колесо"
+
+#, fuzzy
+msgid "Color Wheel3"
+msgstr "Цветовое колесо"
+
+msgid "Color Macro1"
+msgstr ""
 
 msgid "Color Temperature"
 msgstr "Цветовая температура"
@@ -749,16 +892,27 @@ msgstr ""
 msgid "Gobo1"
 msgstr ""
 
-msgid "Gobo1 Rotation"
+msgid "Gobo1 Adjust"
 msgstr ""
 
 msgid "Gobo2"
 msgstr ""
 
-msgid "Gobo2 Rotation"
+msgid "Gobo2 Adjust"
 msgstr ""
 
 msgid "Strobe"
+msgstr ""
+
+#, fuzzy
+msgid "PanMode"
+msgstr "Режим"
+
+#, fuzzy
+msgid "TiltMode"
+msgstr "Наклон"
+
+msgid "PanTiltMode"
 msgstr ""
 
 msgid "Clear All"
@@ -820,13 +974,13 @@ msgstr "Очистите все существующие данные DMX и с�
 
 msgid "Do at your own risk. Manual edits or deletes can cause issues"
 msgstr ""
-"Действуйте на свой страх и риск. Ручное редактирование или удаление может "
-"вызвать проблемы"
+"Действуйте на свой страх и риск. Ручное редактирование или удаление может"
+" вызвать проблемы"
 
 msgid "Manually editing or deleting geometries of GDTF devices may cause issues."
 msgstr ""
-"Ручное редактирование или удаление геометрии устройств GDTF может вызвать "
-"проблемы."
+"Ручное редактирование или удаление геометрии устройств GDTF может вызвать"
+" проблемы."
 
 msgid "Really remove all fixtures and DMX from blend file?"
 msgstr "Действительно удалить все приборы и DMX из файла смешивания?"
@@ -847,8 +1001,7 @@ msgid "DMX > Setup > Create/Update Volume Box"
 msgstr "DMX > Настройка > Создать/обновить поле объёма"
 
 msgid "Create/Update a Box on the scene bounds with a Volume Scatter shader"
-msgstr ""
-"Создать/обновить поле на границах сцены с помощью шейдера Volume Scatter"
+msgstr "Создать/обновить поле на границах сцены с помощью шейдера Volume Scatter"
 
 msgid "Beam Volume"
 msgstr "Объем луча"
@@ -926,8 +1079,8 @@ msgid ""
 "Unzip previously exported custom data from a zip file. This will "
 "overwrite current data!"
 msgstr ""
-"Распаковать ранее экспортированные пользовательские данные из zip-файла. Это "
-"перезапишет текуще данные!"
+"Распаковать ранее экспортированные пользовательские данные из zip-файла. "
+"Это перезапишет текуще данные!"
 
 msgid "File Path"
 msgstr "Путь к файлу"
@@ -947,16 +1100,15 @@ msgstr "Экспорт пользовательских данных"
 
 msgid "Zip and Export custom data from BlenderDMX addon directory."
 msgstr ""
-"Упаковать и экспортировать пользовательские данные из каталога дополнений "
-"BlenderDMX."
+"Упаковать и экспортировать пользовательские данные из каталога дополнений"
+" BlenderDMX."
 
 #, python-brace-format
 msgid "Data exported to: {}"
 msgstr "Данные экспортированы в: {}"
 
 msgid "Really delete all custom data from the addon directory?"
-msgstr ""
-"Действительно удалить все пользовательские данные из каталога дополнений?"
+msgstr "Действительно удалить все пользовательские данные из каталога дополнений?"
 
 msgid "Clear custom data from BlenderDMX addon directory."
 msgstr "Очистить пользовательские данные из каталога дополнений BlenderDMX."
@@ -1205,11 +1357,32 @@ msgstr "Удалить"
 msgid "Remove Shared Commit"
 msgstr "Удалить общий коммит"
 
-msgid "Shared by me:"
+#, python-brace-format
+msgid "Enable Group: {group}"
+msgstr ""
+
+#, fuzzy
+msgid "New group:"
+msgstr "Группы"
+
+#, fuzzy
+msgid "Share current version"
+msgstr "Запросить последнюю версию"
+
+#, python-brace-format
+msgid "Shared by me ({defined_station_name}):"
+msgstr ""
+
+msgid "Stations in the group:"
+msgstr ""
+
+#, fuzzy
+msgid "Shared by the station:"
 msgstr "Предоставлено мной:"
 
-msgid "Shared to me:"
-msgstr "Предоставлено мне:"
+#, fuzzy
+msgid "Shared by the server:"
+msgstr "Предоставлено мной:"
 
 msgid "OSC"
 msgstr "OSC"
@@ -1279,3 +1452,28 @@ msgstr "DMX > Меню вселенной"
 
 msgid "Universes"
 msgstr "Вселенные"
+
+#~ msgid "Connect to a selected station"
+#~ msgstr "Подключение к выбранной станции"
+
+#~ msgid "Connects to an MVR-xchange station"
+#~ msgstr "Подключение к станции MVR-xchange"
+
+#~ msgid "Add hostname to MVR-xchange service"
+#~ msgstr "Добавить имя хоста в службу MVR-xchange"
+
+#~ msgid "Add computer name as sub-sub service in mDNS"
+#~ msgstr "Добавить имя компьютера как подслужбу в mDNS"
+
+#~ msgid "Lock/Unlock Movement Rotation"
+#~ msgstr "Блокировать/разблокировать вращение движения"
+
+#~ msgid "Gobo1 Rotation"
+#~ msgstr ""
+
+#~ msgid "Gobo2 Rotation"
+#~ msgstr ""
+
+#~ msgid "Shared to me:"
+#~ msgstr "Предоставлено мне:"
+

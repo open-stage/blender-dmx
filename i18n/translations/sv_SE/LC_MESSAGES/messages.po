@@ -7,18 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2024-11-30 11:27+0100\n"
+"POT-Creation-Date: 2025-06-26 21:36+0200\n"
 "PO-Revision-Date: 2025-06-14 07:01+0000\n"
 "Last-Translator: Daniel Nylander <daniel@danielnylander.se>\n"
-"Language-Team: Swedish <https://hosted.weblate.org/projects/blenderdmx/main/"
-"sv/>\n"
 "Language: sv_SE\n"
+"Language-Team: Swedish "
+"<https://hosted.weblate.org/projects/blenderdmx/main/sv/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.12-dev\n"
-"Generated-By: Babel 2.14.0\n"
+"Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
 msgstr "Filen finns inte"
@@ -43,6 +42,9 @@ msgstr "Rotation"
 
 msgid "Footprint"
 msgstr "Fotavtryck"
+
+msgid "Physical Properties"
+msgstr ""
 
 msgid "DMX Collection"
 msgstr "DMX-samling"
@@ -188,7 +190,8 @@ msgid ""
 "Enables the input of DMX data throught Art-Net on the selected network "
 "interface"
 msgstr ""
-"Aktiverar inmatning av DMX-data via Art-Net på det valda nätverksgränssnittet"
+"Aktiverar inmatning av DMX-data via Art-Net på det valda "
+"nätverksgränssnittet"
 
 msgid "Enable sACN Input"
 msgstr "Aktivera sACN-indata"
@@ -205,8 +208,8 @@ msgstr "Aktivera OSC-utdata"
 
 msgid "Enables Open Sound Control protocol to send fixture selection to a console"
 msgstr ""
-"Aktiverar Open Sound Control-protokoll för att skicka val av fixturer till "
-"en konsol"
+"Aktiverar Open Sound Control-protokoll för att skicka val av fixturer "
+"till en konsol"
 
 msgid "OSC Target address"
 msgstr "OSC-måladress"
@@ -215,8 +218,8 @@ msgid ""
 "Address of the host where you want to send the OSC signal. Address ending"
 " on .255 is a broadcast address to all hosts on the network"
 msgstr ""
-"Adress till den värd där du vill skicka OSC-signalen. Adresser som slutar på "
-".255 är en broadcast-adress till alla värdar i nätverket"
+"Adress till den värd där du vill skicka OSC-signalen. Adresser som slutar"
+" på .255 är en broadcast-adress till alla värdar i nätverket"
 
 msgid "OSC Target port"
 msgstr "OSC-målport"
@@ -224,17 +227,33 @@ msgstr "OSC-målport"
 msgid "Port number of the host where you want to send the OSC signal"
 msgstr "Portnummer för den värd där du vill skicka OSC-signalen"
 
-msgid "Enable MVR-xchange discovery"
+#, fuzzy
+msgid "Enable Local MVR-xchange"
 msgstr "Aktivera upptäckt av MVR-xchange"
 
-msgid "Enables MVR-xchange discovery"
+#, fuzzy
+msgid "Enables MVR-xchange sharing and discovery"
 msgstr "Aktiverar upptäckt av MVR-xchange"
 
-msgid "Enable MVR-xchange connection"
-msgstr "Aktivera anslutning till MVR-xchange"
+msgid "Enable Group Registration"
+msgstr ""
 
-msgid "Connects to MVR-xchange client"
-msgstr "Ansluter till MVR-xchange-klient"
+msgid "Join or start the new group"
+msgstr ""
+
+#, fuzzy
+msgid "Enable Internet MVR-xchange"
+msgstr "Aktivera upptäckt av MVR-xchange"
+
+#, fuzzy
+msgid "Enables Internet based MVR-xchange sharing and discovery"
+msgstr "Aktiverar upptäckt av MVR-xchange"
+
+msgid "Use per-project Station UUID"
+msgstr ""
+
+msgid "Generates a random UUID for every blend file"
+msgstr ""
 
 msgid "Art-Net Status"
 msgstr "Art-Net-status"
@@ -262,8 +281,14 @@ msgid ""
 "Laser beams are projected onto objects in this collection. The beam stops"
 " at the first object colliding with the beam."
 msgstr ""
-"Laserstrålar projiceras på objekten i denna samling. Strålen stannar vid det "
-"första objektet som kolliderar med strålen."
+"Laserstrålar projiceras på objekten i denna samling. Strålen stannar vid "
+"det första objektet som kolliderar med strålen."
+
+msgid ""
+"The renderer is paused during MVR import and in 2D view. This checkbox "
+"allows to re-enable it in case of some failure during import, which would"
+" leave it paused"
+msgstr ""
 
 msgid "Pause renderer"
 msgstr "Pausa rendering"
@@ -280,15 +305,19 @@ msgstr "Lägg till i urval"
 msgid "Remove from selection"
 msgstr "Ta bort från urvalet"
 
+msgid "When selecting a group, remove from existing selection"
+msgstr ""
+
 #, fuzzy
 msgid "Keyframe only selected fixtures (not for autokeying)"
 msgstr "Keyframe endast för utvalda armaturer (inte för autokeying)"
 
+#, fuzzy
+msgid "Add keyframes with changes only for selected fixtures"
+msgstr "Tar bort alla nyckelbilder från valda fixturer"
+
 msgid "MVR-xchange"
 msgstr "MVR-xchange"
-
-msgid "Status"
-msgstr "Status"
 
 msgid "DMX Data"
 msgstr "DMX-data"
@@ -296,11 +325,47 @@ msgstr "DMX-data"
 msgid "Fixture"
 msgstr "Fixtur"
 
+msgid "Gap"
+msgstr ""
+
+#, fuzzy
+msgid "Diameter"
+msgstr "Dimmer"
+
+#, fuzzy
+msgid "Rotate"
+msgstr "Rotation"
+
+msgid "Source"
+msgstr "Källa"
+
 msgid "Subfixtures"
 msgstr "Underfixturer"
 
 msgid "Active Subfixtures"
 msgstr "Aktiva underfixturer"
+
+#, fuzzy
+msgid "Pan Rotate"
+msgstr "Panorering"
+
+#, fuzzy
+msgid "Tilt Rotate"
+msgstr "Lutad rotering"
+
+msgid "Custom Cutoff Distance"
+msgstr ""
+
+msgid ""
+"Distance at which the influence of the light will be set to 0. Value "
+"bigger then 23 will break gobo rendering in Eevee Next."
+msgstr ""
+
+msgid "Use Fixtures Physical Properties"
+msgstr ""
+
+msgid "Use Channel Functions of this fixture"
+msgstr ""
 
 msgid "DMX Universe"
 msgstr "DMX-universum"
@@ -339,8 +404,8 @@ msgid ""
 "The Fixture ID is an identifier of this fixture that can be used to "
 "activate / select them for programming."
 msgstr ""
-"Fixtur-ID är en identifierare för den här fixturen som kan användas för att "
-"aktivera/välja den för programmering."
+"Fixtur-ID är en identifierare för den här fixturen som kan användas för "
+"att aktivera/välja den för programmering."
 
 msgid "Units"
 msgstr "Enheter"
@@ -369,12 +434,126 @@ msgstr "Nätverkskortet/gränssnittet som ska lyssna efter PSN-data"
 msgid "PSN Target port"
 msgstr "PSN-målport"
 
+#, fuzzy
+msgid "File UUID"
+msgstr "Fixtur-id"
+
+#, fuzzy
+msgid "Comment"
+msgstr "Lås rörelse"
+
+#, fuzzy
+msgid "File Name"
+msgstr "Filnamn"
+
+#, fuzzy
+msgid "Station UUID"
+msgstr "Revisions-ID"
+
+#, fuzzy
+msgid "File Size"
+msgstr "Filer"
+
+msgid "Time of info"
+msgstr ""
+
+msgid "Time of saving"
+msgstr ""
+
+msgid "Subscribed to"
+msgstr ""
+
+#, fuzzy
+msgid "We requested latest file without UUID"
+msgstr "Begär senaste versionen"
+
+#, fuzzy
+msgid "IP Address"
+msgstr "Adress"
+
+#, fuzzy
+msgid "Port"
+msgstr "Importera"
+
+msgid "Connected"
+msgstr ""
+
+msgid "Last Seen Time"
+msgstr ""
+
+#, fuzzy
+msgid "Station Name"
+msgstr "Kortnamn"
+
+#, fuzzy
+msgid "MVR-xchange group"
+msgstr "MVR-xchange"
+
+#, fuzzy
+msgid "Provider"
+msgstr "Profil"
+
+#, fuzzy
+msgid "Commits"
+msgstr "Importera commit"
+
+#, fuzzy
+msgid "Icon ID"
+msgstr "Revisions-ID"
+
+msgid "New Group:"
+msgstr ""
+
+#, fuzzy
+msgid "MVR-xchange Clients"
+msgstr "Ansluter till MVR-xchange-klient"
+
+msgid "Existing Groups"
+msgstr ""
+
+#, fuzzy
+msgid "Websocket Commits"
+msgstr "Importera commit"
+
+msgid "Message"
+msgstr ""
+
+#, fuzzy
+msgid "IPv4 Address for MVR-xchange"
+msgstr "IPv4-adress för PSN-signal"
+
+#, fuzzy
+msgid "The network card/interface for MVR-xchange"
+msgstr "Nätverkskortet/gränssnittet som ska lyssna efter PSN-data"
+
+#, fuzzy
+msgid "Group"
+msgstr "Gruppnamn"
+
+#, fuzzy
+msgid "Classes"
+msgstr "Klasslista i"
+
+#, fuzzy
+msgid "Align selected fixtures to active fixture"
+msgstr "Länka fixturen till en spårare"
+
+#, fuzzy
+msgid "Distribute selected fixtures evenly"
+msgstr "Redigera valda fixturer"
+
+#, fuzzy
+msgid "Distribute selected fixtures with gap"
+msgstr "Redigera valda fixturer"
+
 msgid "Align and Distribute"
 msgstr "Justera och distribuera"
 
+#, python-brace-format
 msgid "Active object: {}"
 msgstr "Aktivt objekt: {}"
 
+#, python-brace-format
 msgid "Selected fixtures: {}"
 msgstr "Valda fixturer: {}"
 
@@ -420,11 +599,16 @@ msgstr "DMX-läge"
 msgid "Advanced edit"
 msgstr "Avancerad redigering"
 
+#, fuzzy
+msgid "Modify DMX address"
+msgstr "DMX-adress"
+
+#, fuzzy
+msgid "Modify Fixture ID"
+msgstr "Fixtur-id"
+
 msgid "GDTF Profile"
 msgstr "GDTF-profil"
-
-msgid "Unknown manufacturer"
-msgstr "Okänd tillverkare"
 
 msgid "DMX: Add Fixture"
 msgstr "DMX: Lägg till fixtur"
@@ -432,6 +616,7 @@ msgstr "DMX: Lägg till fixtur"
 msgid "Add fixtures to the show"
 msgstr "Lägg till fixturer till showen"
 
+#, python-brace-format
 msgid "Fixture named {} already exists"
 msgstr "Fixtur med namnet {} finns redan"
 
@@ -452,6 +637,14 @@ msgstr "DMX > Fixtur > Ta bort"
 
 msgid "Remove selected fixtures from Scene"
 msgstr "Ta bort valda fixturer från scenen"
+
+#, fuzzy
+msgid "Remove IES Files"
+msgstr "Ta bort fixtur"
+
+#, fuzzy
+msgid "Import IES File"
+msgstr "Importera GDTF-profil"
 
 msgid "Select Previous Fixture"
 msgstr "Välj föregående fixtur"
@@ -523,6 +716,30 @@ msgstr "Skapa DMX-grupp från valda fixturer"
 msgid "Group Name"
 msgstr "Gruppnamn"
 
+#, fuzzy
+msgid "Replace DMX group fixtures with selected ones"
+msgstr "Skapa DMX-grupp från valda fixturer"
+
+#, fuzzy
+msgid "DMX > Group > Rename"
+msgstr "DMX > Grupp > Skapa"
+
+#, fuzzy
+msgid "Rename selected DMX group"
+msgstr "Ta bort valda fixturer från scenen"
+
+#, fuzzy
+msgid "DMX > Group > Remove"
+msgstr "DMX > Grupp > Skapa"
+
+#, fuzzy
+msgid "Remove selected DMX group"
+msgstr "Ta bort valda fixturer från scenen"
+
+#, fuzzy
+msgid "Groups"
+msgstr "Grupplista i"
+
 msgid "Reset Colors"
 msgstr "Återställ färger"
 
@@ -539,8 +756,31 @@ msgstr "Lås upp rörelse"
 msgid "Allow pan/tilt DMX data"
 msgstr "Tillåt DMX-data för panorering/tiltning"
 
-msgid "Lock/Unlock Movement Rotation"
-msgstr "Lås/lås upp rörelserotation"
+#, fuzzy
+msgid "Track Target"
+msgstr "Lägg till mål för spårning"
+
+#, fuzzy
+msgid "Follow the target"
+msgstr "Lägg till följarnas mål"
+
+#, fuzzy
+msgid "Do Not Track Target"
+msgstr "Lägg till mål för spårning"
+
+#, fuzzy
+msgid "Do not follow the target"
+msgstr "Lägg till följarnas mål"
+
+#, fuzzy
+msgid "Use Fixtures Channel Functions"
+msgstr "Uppdatera anslutningen"
+
+msgid "Do Not Use Fixtures Physical Properties"
+msgstr ""
+
+msgid "Do not use Fixtures Channel Functions"
+msgstr ""
 
 msgid "Deselect All"
 msgstr "Avmarkera alla"
@@ -624,6 +864,7 @@ msgstr "Programmerare"
 msgid "Nothing selected"
 msgstr "Ingenting valt"
 
+#, python-brace-format
 msgid "{} selected"
 msgstr "{} markerad"
 
@@ -655,8 +896,20 @@ msgstr "Lutad rotering"
 msgid "Zoom"
 msgstr "Zooma"
 
-msgid "Color Wheel"
+#, fuzzy
+msgid "Color Wheel1"
 msgstr "Färghjul"
+
+#, fuzzy
+msgid "Color Wheel2"
+msgstr "Färghjul"
+
+#, fuzzy
+msgid "Color Wheel3"
+msgstr "Färghjul"
+
+msgid "Color Macro1"
+msgstr ""
 
 msgid "Color Temperature"
 msgstr "Färgtemperatur"
@@ -667,17 +920,28 @@ msgstr "Iris"
 msgid "Gobo1"
 msgstr "Gobo1"
 
-msgid "Gobo1 Rotation"
-msgstr "Gobo1-rotation"
+msgid "Gobo1 Adjust"
+msgstr ""
 
 msgid "Gobo2"
 msgstr "Gobo2"
 
-msgid "Gobo2 Rotation"
-msgstr "Gobo2-rotation"
+msgid "Gobo2 Adjust"
+msgstr ""
 
 msgid "Strobe"
 msgstr "Stroboskop"
+
+#, fuzzy
+msgid "PanMode"
+msgstr "Läge"
+
+#, fuzzy
+msgid "TiltMode"
+msgstr "Luta"
+
+msgid "PanTiltMode"
+msgstr ""
 
 msgid "Clear All"
 msgstr "Töm allt"
@@ -738,6 +1002,12 @@ msgstr "DMX > Konfigurera > Ny show"
 msgid "Clear any existing DMX data and create a new show."
 msgstr "Töm alla befintliga DMX-data och skapa en ny show."
 
+msgid "Do at your own risk. Manual edits or deletes can cause issues"
+msgstr ""
+
+msgid "Manually editing or deleting geometries of GDTF devices may cause issues."
+msgstr ""
+
 msgid "Really remove all fixtures and DMX from blend file?"
 msgstr "Verkligen ta bort alla fixturer och DMX från blend-filen?"
 
@@ -746,6 +1016,10 @@ msgstr "Försök att ta bort DMX från Blenders scenfil"
 
 msgid "Beam diameter small"
 msgstr "Liten stråldiameter"
+
+#, fuzzy
+msgid "Set Eevee Cutoff distance on selected fixtures"
+msgstr "Ställ in på utvalda fixturer"
 
 msgid "Beam diameter normal"
 msgstr "Normal stråldiameter"
@@ -777,12 +1051,6 @@ msgstr "Bakgrundsfärg"
 
 msgid "Extras"
 msgstr "Extra"
-
-msgid "Check for BlenderDMX updates"
-msgstr "Leta efter uppdateringar av BlenderDMX"
-
-msgid "Status: {}"
-msgstr "Status: {}"
 
 msgid "Clear Project data"
 msgstr "Töm projektdata"
@@ -832,27 +1100,6 @@ msgstr "Fel! Blender 3.4 eller högre krävs."
 msgid "Create New Show"
 msgstr "Skapa ny show"
 
-msgid "Check version"
-msgstr "Kontrollera version"
-
-msgid "Check if there is new release of BlenderDMX"
-msgstr "Kontrollera om det finns en ny version av BlenderDMX"
-
-msgid "Unknown version error"
-msgstr "Okänt versionsfel"
-
-msgid "New version {} available"
-msgstr "Ny version {} tillgänglig"
-
-msgid "You are using pre-release version"
-msgstr "Du använder en förutgåva"
-
-msgid "You are using latest version of BlenderDMX"
-msgstr "Du använder den senaste versionen av BlenderDMX"
-
-msgid "Checking..."
-msgstr "Kontrollerar..."
-
 msgid "Import Custom Data"
 msgstr "Importera anpassade data"
 
@@ -860,8 +1107,8 @@ msgid ""
 "Unzip previously exported custom data from a zip file. This will "
 "overwrite current data!"
 msgstr ""
-"Packa upp tidigare exporterade anpassade data från en zip-fil. Detta kommer "
-"att skriva över nuvarande data!"
+"Packa upp tidigare exporterade anpassade data från en zip-fil. Detta "
+"kommer att skriva över nuvarande data!"
 
 msgid "File Path"
 msgstr "Filsökväg"
@@ -872,6 +1119,7 @@ msgstr "Filer"
 msgid "Incorrect file name!"
 msgstr "Felaktigt filnamn!"
 
+#, python-brace-format
 msgid "Data imported from: {}"
 msgstr "Data importerad från: {}"
 
@@ -881,11 +1129,13 @@ msgstr "Exportera anpassade data"
 msgid "Zip and Export custom data from BlenderDMX addon directory."
 msgstr "Zippa och exportera anpassade data från BlenderDMXs tilläggskatalog."
 
+#, python-brace-format
 msgid "Data exported to: {}"
 msgstr "Data exporterad till: {}"
 
-msgid "Clear Custom Data"
-msgstr "Töm anpassade data"
+#, fuzzy
+msgid "Really delete all custom data from the addon directory?"
+msgstr "Töm anpassade data från BlenderDMXs tilläggskatalog."
 
 msgid "Clear custom data from BlenderDMX addon directory."
 msgstr "Töm anpassade data från BlenderDMXs tilläggskatalog."
@@ -934,6 +1184,7 @@ msgstr "Hämta GDTF Share-konto och fyll i det i BlenderDMX addon-preferenser."
 msgid "GDTF Share API credentials missing"
 msgstr "API-autentiseringsuppgifter för GDTF Share saknas"
 
+#, python-brace-format
 msgid "Downloading {}"
 msgstr "Hämtar ner {}"
 
@@ -941,24 +1192,28 @@ msgstr "Hämtar ner {}"
 msgid "GDTF Share Download"
 msgstr "GDTF Share Ladda ner"
 
+#, python-brace-format
 msgid "Share index updated. Status code was: {}"
 msgstr "Utdelningsindex uppdaterat. Statuskoden var: {}"
 
 msgid "GDTF Share updated"
 msgstr "GDTF-utdelning uppdaterad"
 
+#, python-brace-format
 msgid "Error while updating Share index. Error code was: {}"
 msgstr "Fel vid uppdatering av utdelningsindex. Felkoden var: {}"
 
 msgid "GDTF Share update error"
 msgstr "Fel vid uppdatering av GDTF-utdelning"
 
+#, python-brace-format
 msgid "File downloaded correctly. Status code was: {}"
 msgstr "Filen hämtades ner korrekt. Statuskoden var: {}"
 
 msgid "GDTF file downloaded"
 msgstr "GDTF-filen hämtades"
 
+#, python-brace-format
 msgid "Error downloading GDTF file. Error code was: {}"
 msgstr "Fel vid hämtning av GDTF-filen. Felkoden var: {}"
 
@@ -987,9 +1242,6 @@ msgstr ""
 
 msgid "Filename"
 msgstr "Filnamn"
-
-msgid "Some fixtures could not be processed"
-msgstr "Vissa fixturer kunde inte bearbetas"
 
 msgid "Mode name"
 msgstr "Lägesnamn"
@@ -1090,15 +1342,16 @@ msgstr "Art-Net"
 msgid "IPv4"
 msgstr "IPv4"
 
+#, python-brace-format
 msgid "Art-Net set for {} universe(s)"
 msgstr "Art-Net inställt för {} universum"
+
+msgid "Status"
+msgstr "Status"
 
 #, fuzzy
 msgid "Live DMX"
 msgstr "Live DMX"
-
-msgid "Source"
-msgstr "Källa"
 
 msgid "Refresh"
 msgstr "Uppdatera"
@@ -1115,11 +1368,51 @@ msgstr "Skickar Request-meddelandet"
 msgid "Import commit"
 msgstr "Importera commit"
 
+#, fuzzy
+msgid "Export MVR to MVR-xchange"
+msgstr "Ansluter till MVR-xchange-klient"
+
 msgid "Download"
 msgstr "Hämta ner"
 
 msgid "Download commit"
 msgstr "Hämta ner commit"
+
+#, fuzzy
+msgid "Websocket Download"
+msgstr "Hämta ner"
+
+#, fuzzy
+msgid "Delete"
+msgstr "Ta bort fixtur"
+
+#, fuzzy
+msgid "Remove Shared Commit"
+msgstr "Ta bort mål"
+
+#, python-brace-format
+msgid "Enable Group: {group}"
+msgstr ""
+
+msgid "New group:"
+msgstr ""
+
+#, fuzzy
+msgid "Share current version"
+msgstr "Begär senaste versionen"
+
+#, python-brace-format
+msgid "Shared by me ({defined_station_name}):"
+msgstr ""
+
+msgid "Stations in the group:"
+msgstr ""
+
+msgid "Shared by the station:"
+msgstr ""
+
+msgid "Shared by the server:"
+msgstr ""
 
 msgid "OSC"
 msgstr "OSC"
@@ -1179,6 +1472,7 @@ msgstr "Lägg till mål"
 msgid "sACN"
 msgstr "sACN"
 
+#, python-brace-format
 msgid "sACN set for {} universe(s)"
 msgstr "sACN inställd för {} universum"
 
@@ -1430,3 +1724,52 @@ msgstr "Universum"
 
 #~ msgid "For Blender 4.2 and up use the Extension"
 #~ msgstr ""
+
+#~ msgid "Enable MVR-xchange connection"
+#~ msgstr "Aktivera anslutning till MVR-xchange"
+
+#~ msgid "Unknown manufacturer"
+#~ msgstr "Okänd tillverkare"
+
+#~ msgid "Lock/Unlock Movement Rotation"
+#~ msgstr "Lås/lås upp rörelserotation"
+
+#~ msgid "Gobo1 Rotation"
+#~ msgstr "Gobo1-rotation"
+
+#~ msgid "Gobo2 Rotation"
+#~ msgstr "Gobo2-rotation"
+
+#~ msgid "Check for BlenderDMX updates"
+#~ msgstr "Leta efter uppdateringar av BlenderDMX"
+
+#~ msgid "Status: {}"
+#~ msgstr "Status: {}"
+
+#~ msgid "Check version"
+#~ msgstr "Kontrollera version"
+
+#~ msgid "Check if there is new release of BlenderDMX"
+#~ msgstr "Kontrollera om det finns en ny version av BlenderDMX"
+
+#~ msgid "Unknown version error"
+#~ msgstr "Okänt versionsfel"
+
+#~ msgid "New version {} available"
+#~ msgstr "Ny version {} tillgänglig"
+
+#~ msgid "You are using pre-release version"
+#~ msgstr "Du använder en förutgåva"
+
+#~ msgid "You are using latest version of BlenderDMX"
+#~ msgstr "Du använder den senaste versionen av BlenderDMX"
+
+#~ msgid "Checking..."
+#~ msgstr "Kontrollerar..."
+
+#~ msgid "Clear Custom Data"
+#~ msgstr "Töm anpassade data"
+
+#~ msgid "Some fixtures could not be processed"
+#~ msgstr "Vissa fixturer kunde inte bearbetas"
+
