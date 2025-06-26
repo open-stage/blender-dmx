@@ -1,5 +1,14 @@
 ### Changelog
 
+### 2.0.5
+
+* MVR-xchange - initial support for multiple connections
+* Progress of Swedish translation by Daniel Nylander
+* Set all protocols as disabled when a blender file is being open
+* Add option to Beam setting to disable Temporal Reprojection in Eevee
+* Ensure that fixture can always be removed from the list of fixtures even if
+  the fixture had been damaged by manual edits
+
 ### 2.0.4
 
 * Translated using Weblate
@@ -8,7 +17,6 @@
     * (French) [CharlyTheSneaky]
 * Adjust mdns service name
 * Fix beam geometry reference processing
-
 
 ### 2.0.3
 

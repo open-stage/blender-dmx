@@ -26,6 +26,9 @@ from zeroconf import (
     ServiceInfo,
     ServiceStateChange,
     Zeroconf,
+    DNSOutgoing,
+    DNSQuestion,
+    const,
 )
 
 from .logging_setup import DMX_Log
@@ -41,7 +44,9 @@ class DMX_Zeroconf:
         super(DMX_Zeroconf, self).__init__()
         self.data = None
         self.zeroconf = Zeroconf(ip_version=IPVersion.V4Only)
+        self.zeroconf.start()
         self.browser = None
+        self.dns_out = None
         self.info = None
         self._dmx = bpy.context.scene.dmx
         prefs = bpy.context.preferences.addons[__package__].preferences
@@ -51,6 +56,45 @@ class DMX_Zeroconf:
         if self._dmx.mvrx_per_project_station_uuid:
             application_uuid = self._dmx.project_application_uuid
         self.application_uuid = application_uuid.upper()
+
+    @staticmethod
+    def mdns_ping():
+        DMX_Zeroconf._instance.zeroconf.send(DMX_Zeroconf._instance.dns_out)
+        return 10
+
+    @staticmethod
+    def enable_periodic_checker(enable):
+        if enable:
+            if bpy.app.timers.is_registered(DMX_Zeroconf._instance.mdns_ping):
+                return
+
+            if not DMX_Zeroconf._instance:
+                DMX_Zeroconf._instance = DMX_Zeroconf()
+
+            service_type = "_mvrxchange._tcp.local."
+            service_name = "Placeholder._mvrxchange._tcp.local."  # not used
+            port = 70000  # not used
+            properties = {}
+            server_name = f"{socket.gethostname()}.{service_type}"
+            addrs = [socket.inet_pton(socket.AF_INET, "127.0.0.1")]
+
+            info = ServiceInfo(
+                service_type,
+                service_name,
+                addresses=addrs,
+                port=port,
+                properties=properties,
+                server=server_name,
+            )
+
+            query = DNSOutgoing(const._FLAGS_QR_QUERY | const._FLAGS_AA)
+            query.add_question(DNSQuestion(info.type, const._TYPE_PTR, const._CLASS_IN))
+            DMX_Zeroconf._instance.dns_out = query
+
+            bpy.app.timers.register(DMX_Zeroconf._instance.mdns_ping)
+        else:
+            if bpy.app.timers.is_registered(DMX_Zeroconf._instance.mdns_ping):
+                bpy.app.timers.unregister(DMX_Zeroconf._instance.mdns_ping)
 
     def callback(
         zeroconf: Zeroconf,
@@ -88,15 +132,19 @@ class DMX_Zeroconf:
                     station_uuid = info.properties[b"StationUUID"].decode("utf-8")
         station_name = f"{station_name} ({service_name})"
         DMX_Log.log.info(info)
+        # TODO: we should perhaps check if the station really has StationName
+        # and StationUUID before we add it into the list
         if state_change is ServiceStateChange.Added:
             DMX_Zeroconf._instance._dmx.createMVR_Client(
-                station_name, station_uuid, service_name, ip_address, int(port)
+                station_uuid, station_name, service_name, ip_address, int(port)
             )
         elif state_change is ServiceStateChange.Updated:
             DMX_Zeroconf._instance._dmx.updateMVR_Client(
                 station_uuid, station_name, service_name, ip_address, int(port)
             )
-        else:  # removed
+        elif state_change is ServiceStateChange.Removed:
+            # TODO: this typically does NOT work, because the info is empty. mDNS does not
+            # provide us with this info, but in some strange cases it actually works.
             DMX_Zeroconf._instance._dmx.removeMVR_Client(
                 station_uuid, station_name, service_name, ip_address, int(port)
             )
@@ -110,35 +158,36 @@ class DMX_Zeroconf:
         DMX_Zeroconf._instance.browser = ServiceBrowser(
             DMX_Zeroconf._instance.zeroconf, services, handlers=[DMX_Zeroconf.callback]
         )
+
+        DMX_Zeroconf.enable_periodic_checker(True)
         DMX_Log.log.info("Enabling Zeroconf")
         DMX_Log.log.info("starting mvrx discovery")
 
     @staticmethod
     def close():
         if DMX_Zeroconf._instance:
+            DMX_Zeroconf._instance.enable_periodic_checker(False)
             if DMX_Zeroconf._instance.browser:
                 DMX_Zeroconf._instance.browser.cancel()
                 DMX_Log.log.info("closing mvrx discovery")
-            if DMX_Zeroconf._instance.info:
-                DMX_Zeroconf._instance.zeroconf.unregister_service(
-                    DMX_Zeroconf._instance.info
-                )
+            # if DMX_Zeroconf._instance.info:
+            #    DMX_Zeroconf._instance.zeroconf.unregister_service(
+            #        DMX_Zeroconf._instance.info
+            #    )
             DMX_Zeroconf._instance.zeroconf.close()
             DMX_Zeroconf._instance = None
 
     @staticmethod
-    def enable_server(server_name=None, port=9999):
-        service_type = "_mvrxchange._tcp.local."
-        host_name = f"{socket.gethostname()}-{pyuuid.uuid4().hex}"
-        station_name = f"{defined_station_name} {socket.gethostname()}".replace(
-            " ", "_"
-        )
-
-        if server_name is None or server_name == "":
-            server_name = station_name
-
+    def enable_server(group_name=None, port=9999):
         if not DMX_Zeroconf._instance:
             DMX_Zeroconf._instance = DMX_Zeroconf()
+
+        dmx = bpy.context.scene.dmx
+        service_type = "_mvrxchange._tcp.local."
+        station_name = defined_station_name
+
+        if group_name is None or group_name == "":
+            group_name = station_name
 
         desc = {
             "StationUUID": DMX_Zeroconf._instance.application_uuid,
@@ -149,13 +198,7 @@ class DMX_Zeroconf:
         addrs = [socket.inet_pton(socket.AF_INET, ip_address)]
         DMX_Log.log.debug(addrs)
 
-        dmx = bpy.context.scene.dmx
-        if dmx.mvrx_hostname_in_service:
-            service_name = (
-                f"{station_name.replace(' ', '_')}.{server_name}.{service_type}"
-            )
-        else:
-            service_name = f"{server_name}.{service_type}"
+        service_name = f"{group_name}.{service_type}"
 
         DMX_Zeroconf._instance.info = ServiceInfo(
             service_type,
@@ -163,7 +206,7 @@ class DMX_Zeroconf:
             addresses=addrs,
             port=port,
             properties=desc,
-            server=f"{station_name.replace(' ', '_')}.{server_name}.{service_type}",
+            server=f"{station_name}.{group_name}.{service_type}",
         )
         DMX_Log.log.debug(DMX_Zeroconf._instance.info)
 

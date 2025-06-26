@@ -20,7 +20,6 @@ import logging
 import threading
 import time
 from queue import Queue
-
 import bpy
 import websocket
 
