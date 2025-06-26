@@ -25,6 +25,9 @@ from bpy.props import (
 )
 from bpy.types import PropertyGroup
 from ..network import DMX_Network
+from ..i18n import DMX_Lang
+
+_ = DMX_Lang._
 
 # MVR-xchange commit and client RNA structures
 
@@ -34,15 +37,15 @@ class DMX_MVR_Xchange_Commit(PropertyGroup):
         # empty callback just for automatic UI updates
         return
 
-    commit_uuid: StringProperty(name="File UUID", update=onUpdate)
-    comment: StringProperty(name="Comment")
-    file_name: StringProperty(name="File Name")
-    station_uuid: StringProperty(name="Station UUID")
-    file_size: IntProperty(name="File Size")
-    timestamp: IntProperty(name="Time of info")
-    timestamp_saved: IntProperty(name="Time of saving", default=0)
-    subscribed: BoolProperty(name="Subscribed to")
-    self_requested: BoolProperty(name="We requested latest file without UUID")
+    commit_uuid: StringProperty(name=_("File UUID"), update=onUpdate)
+    comment: StringProperty(name=_("Comment"))
+    file_name: StringProperty(name=_("File Name"))
+    station_uuid: StringProperty(name=_("Station UUID"))
+    file_size: IntProperty(name=_("File Size"))
+    timestamp: IntProperty(name=_("Time of info"))
+    timestamp_saved: IntProperty(name=_("Time of saving"), default=0)
+    subscribed: BoolProperty(name=_("Subscribed to"))
+    self_requested: BoolProperty(name=_("We requested latest file without UUID"))
 
 
 class DMX_MVR_Xchange_Client(PropertyGroup):
@@ -63,16 +66,16 @@ class DMX_MVR_Xchange_Client(PropertyGroup):
         dmx = bpy.context.scene.dmx
         dmx.onMVR_client_join(self, self.subscribed)
 
-    ip_address: StringProperty(name="IP Address")
-    port: IntProperty(name="Port")
-    subscribed: BoolProperty(name="Connected", default=False, update=onSubscribe)
-    last_seen: IntProperty(name="Last Seen Time", update=onUpdate)
-    station_name: StringProperty(name="Station Name")
-    station_uuid: StringProperty(name="Station UUID")
-    service_name: StringProperty(name="MVR-xchange group")
-    provider: StringProperty(name="Provider")
-    commits: CollectionProperty(name="Commits", type=DMX_MVR_Xchange_Commit)
-    icon_id: StringProperty(name="Icon ID", default="DEFAULT_TEST")
+    ip_address: StringProperty(name=_("IP Address"))
+    port: IntProperty(name=_("Port"))
+    subscribed: BoolProperty(name=_("Connected"), default=False, update=onSubscribe)
+    last_seen: IntProperty(name=_("Last Seen Time"), update=onUpdate)
+    station_name: StringProperty(name=_("Station Name"))
+    station_uuid: StringProperty(name=_("Station UUID"))
+    service_name: StringProperty(name=_("MVR-xchange group"))
+    provider: StringProperty(name=_("Provider"))
+    commits: CollectionProperty(name=_("Commits"), type=DMX_MVR_Xchange_Commit)
+    icon_id: StringProperty(name=_("Icon ID"), default="DEFAULT_TEST")
 
     def get_clients(self, context):
         clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
@@ -124,23 +127,25 @@ class DMX_MVR_Xchange(PropertyGroup):
     selected_group: IntProperty(default=0)
     selected_ws_commit: IntProperty(default=0)
     existing_groups_exist: BoolProperty(default=False)
-    new_group_bool: BoolProperty(name="New Group:", update=updateGroup)
+    new_group_bool: BoolProperty(name=_("New Group:"), update=updateGroup)
     mvr_xchange_clients: CollectionProperty(
-        name="MVR-xchange Clients", type=DMX_MVR_Xchange_Client
+        name=_("MVR-xchange Clients"), type=DMX_MVR_Xchange_Client
     )
     all_mvr_groups: EnumProperty(
-        name="Existing Groups",
+        name=_("Existing Groups"),
         description="",
         items=DMX_MVR_Xchange_Client.get_groups,
         update=updateGroup,
     )
-    shared_commits: CollectionProperty(name="Commits", type=DMX_MVR_Xchange_Commit)
+    shared_commits: CollectionProperty(name=_("Commits"), type=DMX_MVR_Xchange_Commit)
     websocket_commits: CollectionProperty(
-        name="Websocket Commits", type=DMX_MVR_Xchange_Commit
+        name=_("Websocket Commits"), type=DMX_MVR_Xchange_Commit
     )
     selected_shared_commit: IntProperty(default=0)
     selected_client: IntProperty(default=0)
-    commit_message: StringProperty(name="Message", description="Message", default="")
+    commit_message: StringProperty(
+        name=_("Message"), description=_("Message"), default=""
+    )
 
     def get_addresses(self, context):
         addresses = DMX_Network.cards(None, None)
@@ -150,8 +155,8 @@ class DMX_MVR_Xchange(PropertyGroup):
             return addresses
 
     ip_address: EnumProperty(
-        name="IPv4 Address for MVR-xchange",
-        description="The network card/interface for MVR-xchange",
+        name=_("IPv4 Address for MVR-xchange"),
+        description=_("The network card/interface for MVR-xchange"),
         items=get_addresses,
     )
 
@@ -164,5 +169,5 @@ class DMX_MVR_Xchange(PropertyGroup):
     mvr_x_group: StringProperty(default="")
 
     new_mvr_x_group_string: StringProperty(
-        name="Group", description="Group", default="WorkGroup", update=edit_group
+        name=_("Group"), description=_("Group"), default="WorkGroup", update=edit_group
     )
