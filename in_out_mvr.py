@@ -16,6 +16,10 @@
 # with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import os
+import shutil
+from types import SimpleNamespace
+import uuid as py_uuid
+from pathlib import Path
 
 import bpy
 from bpy_extras.io_utils import ExportHelper, ImportHelper
@@ -39,6 +43,41 @@ def createDMXcollection():
     dmx = bpy.context.scene.dmx
     if not dmx.collection:
         bpy.context.scene.dmx.new()
+
+
+class DMX_OT_LoadShare_MVR(Operator, ImportHelper):
+    """Load and Share My Virtual Rig file via MVR-xchange"""
+
+    bl_idname = "dmx.load_and_share_mvr"
+    bl_label = "Select MVR to Share"
+    bl_options = {"PRESET", "UNDO"}
+
+    filename_ext = ".mvr"
+    filter_glob: StringProperty(default="*.mvr", options={"HIDDEN"})
+
+    def execute(self, context):
+        scene = context.scene
+        dmx = scene.dmx
+        if self.filepath:
+            print("INFO", f"Processing MVR file: {self.filepath}")
+            ADDON_PATH = dmx.get_addon_path()
+            uuid = str(py_uuid.uuid4()).upper()
+            new_file = os.path.join(ADDON_PATH, "assets", "mvrs", f"{uuid}.mvr")
+            shutil.copy(self.filepath, new_file)
+
+            mvr_x = context.window_manager.dmx.mvr_xchange
+            comment = mvr_x.commit_message
+            if comment == "":
+                comment = "File shared"
+            file = Path(self.filepath)
+            commit = SimpleNamespace(
+                file_size=file.stat().st_size,
+                file_uuid=uuid,
+                file_name=file.stem,
+                comment=comment,
+            )
+            dmx.createMVR_Shared_Commit(commit)
+        return {"FINISHED"}
 
 
 class DMX_OT_Import_MVR(Operator, ImportHelper):
@@ -140,6 +179,7 @@ def menu_func_import(self, context):
 
 
 def register():
+    bpy.utils.register_class(DMX_OT_LoadShare_MVR)
     bpy.utils.register_class(DMX_OT_Import_MVR)
     bpy.utils.register_class(DMX_OT_Export_MVR)
     bpy.types.TOPBAR_MT_file_import.append(menu_func_import)
@@ -154,4 +194,5 @@ def unregister():
     if bpy.app.version >= (4, 1):
         bpy.utils.unregister_class(DMX_IO_FH_MVR)
     bpy.utils.unregister_class(DMX_OT_Import_MVR)
+    bpy.utils.unregister_class(DMX_OT_LoadShare_MVR)
     bpy.utils.unregister_class(DMX_OT_Export_MVR)

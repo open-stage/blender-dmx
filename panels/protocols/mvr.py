@@ -473,6 +473,10 @@ class DMX_PT_DMX_MVR_X(Panel):
             row.operator(
                 "dmx.mvr_x_export", text=_("Share current version"), icon="EXPORT"
             )
+            row = layout.row()
+            row.operator(
+                "dmx.load_and_share_mvr", text=_("Pick and Share MVR"), icon="FILE"
+            )
 
             row = layout.row()
             row.prop(mvr_x, "commit_message")
