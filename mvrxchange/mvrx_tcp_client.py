@@ -126,7 +126,7 @@ class client(Thread):
                     sock = key.fileobj
                     if mask & selectors.EVENT_READ:
                         try:
-                            recv_data = sock.recv(1024)  # Should be ready to read
+                            recv_data = sock.recv(16384)  # Should be ready to read
                         except BlockingIOError:
                             pass
                         else:
