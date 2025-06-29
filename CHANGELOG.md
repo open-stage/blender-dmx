@@ -1,5 +1,16 @@
 ### Changelog
 
+### 2.0.6
+
+* Update translations
+* Update MVR-xchange:
+    * Add periodic mDNS ticker
+    * Ensure that Blender DMX's mDNS reponds to queries
+    * Add the possibility to share any MVR file
+    * Add the possibility to save an MVR Commit as a file
+    * Increase speed of network transmission
+    * Show filename in the tooltip of commits lists
+
 ### 2.0.5
 
 * MVR-xchange - initial support for multiple connections
