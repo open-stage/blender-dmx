@@ -503,7 +503,7 @@ class DMX_PT_DMX_MVR_X(Panel):
                 "shared_commits",
                 mvr_x,
                 "selected_shared_commit",
-                item_dyntip_propname="comment",
+                item_dyntip_propname="file_name",
                 rows=4,
             )
         if dmx.zeroconf_enabled:
@@ -565,6 +565,6 @@ class DMX_PT_DMX_MVR_X(Panel):
                 "websocket_commits",
                 mvr_x,
                 "selected_ws_commit",
-                item_dyntip_propname="comment",
+                item_dyntip_propname="file_name",
                 rows=4,
             )
