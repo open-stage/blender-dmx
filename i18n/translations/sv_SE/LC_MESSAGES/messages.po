@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-06-26 21:36+0200\n"
-"PO-Revision-Date: 2025-06-30 18:01+0000\n"
+"PO-Revision-Date: 2025-07-01 20:02+0000\n"
 "Last-Translator: Daniel Nylander <daniel@danielnylander.se>\n"
 "Language-Team: Swedish <https://hosted.weblate.org/projects/blenderdmx/main/"
 "sv/>\n"
@@ -228,33 +228,33 @@ msgstr "OSC-målport"
 msgid "Port number of the host where you want to send the OSC signal"
 msgstr "Portnummer för den värd där du vill skicka OSC-signalen"
 
-#, fuzzy
 msgid "Enable Local MVR-xchange"
-msgstr "Aktivera upptäckt av MVR-xchange"
+msgstr "Aktivera lokal MVR-xchange"
 
 #, fuzzy
 msgid "Enables MVR-xchange sharing and discovery"
 msgstr "Aktiverar upptäckt av MVR-xchange"
 
 msgid "Enable Group Registration"
-msgstr ""
+msgstr "Aktivera gruppregistrering"
 
 msgid "Join or start the new group"
-msgstr ""
+msgstr "Gå med i eller starta nya gruppen"
 
-#, fuzzy
 msgid "Enable Internet MVR-xchange"
-msgstr "Aktivera upptäckt av MVR-xchange"
+msgstr "Aktivera Internet MVR-xchange"
 
 #, fuzzy
 msgid "Enables Internet based MVR-xchange sharing and discovery"
 msgstr "Aktiverar upptäckt av MVR-xchange"
 
+#, fuzzy
 msgid "Use per-project Station UUID"
-msgstr ""
+msgstr "Använd UUID för station per projekt"
 
+#, fuzzy
 msgid "Generates a random UUID for every blend file"
-msgstr ""
+msgstr "Genererar ett slumpmässigt UUID för varje blend-fil"
 
 msgid "Art-Net Status"
 msgstr "Art-Net-status"
@@ -285,11 +285,15 @@ msgstr ""
 "Laserstrålar projiceras på objekten i denna samling. Strålen stannar vid "
 "det första objektet som kolliderar med strålen."
 
+#, fuzzy
 msgid ""
 "The renderer is paused during MVR import and in 2D view. This checkbox "
 "allows to re-enable it in case of some failure during import, which would"
 " leave it paused"
 msgstr ""
+"Renderingsprogrammet pausas under MVR-importen och i 2D-vyn. Denna kryssruta "
+"gör det möjligt att återaktivera den om något fel uppstår under importen, "
+"vilket skulle innebära att den pausas"
 
 msgid "Pause renderer"
 msgstr "Pausa rendering"
@@ -306,16 +310,16 @@ msgstr "Lägg till i urval"
 msgid "Remove from selection"
 msgstr "Ta bort från urvalet"
 
+#, fuzzy
 msgid "When selecting a group, remove from existing selection"
-msgstr ""
+msgstr "När du väljer en grupp, ta bort den från det befintliga urvalet"
 
 #, fuzzy
 msgid "Keyframe only selected fixtures (not for autokeying)"
 msgstr "Keyframe endast för utvalda armaturer (inte för autokeying)"
 
-#, fuzzy
 msgid "Add keyframes with changes only for selected fixtures"
-msgstr "Tar bort alla nyckelbilder från valda fixturer"
+msgstr "Lägg till nyckelbilder med ändringar endast för valda fixturer"
 
 msgid "MVR-xchange"
 msgstr "MVR-xchange"
@@ -327,15 +331,13 @@ msgid "Fixture"
 msgstr "Fixtur"
 
 msgid "Gap"
-msgstr ""
+msgstr "Avstånd"
 
-#, fuzzy
 msgid "Diameter"
-msgstr "Dimmer"
+msgstr "Diameter"
 
-#, fuzzy
 msgid "Rotate"
-msgstr "Rotation"
+msgstr "Rotera"
 
 msgid "Source"
 msgstr "Källa"
@@ -354,19 +356,25 @@ msgstr "Panorering"
 msgid "Tilt Rotate"
 msgstr "Lutad rotering"
 
+#, fuzzy
 msgid "Custom Cutoff Distance"
-msgstr ""
+msgstr "Anpassat avgränsningsavstånd"
 
+#, fuzzy
 msgid ""
 "Distance at which the influence of the light will be set to 0. Value "
 "bigger then 23 will break gobo rendering in Eevee Next."
 msgstr ""
+"Avstånd där ljusets påverkan kommer att sättas till 0. Värde större än 23 "
+"kommer att bryta gobo-rendering i Eevee Next."
 
+#, fuzzy
 msgid "Use Fixtures Physical Properties"
-msgstr ""
+msgstr "Använd fixturer Fysiska egenskaper"
 
+#, fuzzy
 msgid "Use Channel Functions of this fixture"
-msgstr ""
+msgstr "Använd kanalfunktionerna för denna fixtur"
 
 msgid "DMX Universe"
 msgstr "DMX-universum"
@@ -435,15 +443,12 @@ msgstr "Nätverkskortet/gränssnittet som ska lyssna efter PSN-data"
 msgid "PSN Target port"
 msgstr "PSN-målport"
 
-#, fuzzy
 msgid "File UUID"
-msgstr "Fixtur-id"
+msgstr "Filens UUID"
 
-#, fuzzy
 msgid "Comment"
-msgstr "Lås rörelse"
+msgstr "Kommentar"
 
-#, fuzzy
 msgid "File Name"
 msgstr "Filnamn"
 
@@ -451,36 +456,36 @@ msgstr "Filnamn"
 msgid "Station UUID"
 msgstr "Revisions-ID"
 
-#, fuzzy
 msgid "File Size"
-msgstr "Filer"
+msgstr "Filstorlek"
 
+#, fuzzy
 msgid "Time of info"
-msgstr ""
+msgstr "Tidpunkt för information"
 
+#, fuzzy
 msgid "Time of saving"
-msgstr ""
+msgstr "Tidpunkt för sparande"
 
 msgid "Subscribed to"
-msgstr ""
+msgstr "Prenumererar på"
 
 #, fuzzy
 msgid "We requested latest file without UUID"
 msgstr "Begär senaste versionen"
 
-#, fuzzy
 msgid "IP Address"
-msgstr "Adress"
+msgstr "IP-adress"
 
-#, fuzzy
 msgid "Port"
-msgstr "Importera"
+msgstr "Port"
 
 msgid "Connected"
-msgstr ""
+msgstr "Ansluten"
 
+#, fuzzy
 msgid "Last Seen Time"
-msgstr ""
+msgstr "Senast sedda tid"
 
 #, fuzzy
 msgid "Station Name"
@@ -490,9 +495,8 @@ msgstr "Kortnamn"
 msgid "MVR-xchange group"
 msgstr "MVR-xchange"
 
-#, fuzzy
 msgid "Provider"
-msgstr "Profil"
+msgstr "Leverantör"
 
 #, fuzzy
 msgid "Commits"
@@ -503,41 +507,37 @@ msgid "Icon ID"
 msgstr "Revisions-ID"
 
 msgid "New Group:"
-msgstr ""
+msgstr "Ny grupp:"
 
 #, fuzzy
 msgid "MVR-xchange Clients"
 msgstr "Ansluter till MVR-xchange-klient"
 
 msgid "Existing Groups"
-msgstr ""
+msgstr "Befintliga grupper"
 
 #, fuzzy
 msgid "Websocket Commits"
 msgstr "Importera commit"
 
 msgid "Message"
-msgstr ""
+msgstr "Meddelande"
 
-#, fuzzy
 msgid "IPv4 Address for MVR-xchange"
-msgstr "IPv4-adress för PSN-signal"
+msgstr "IPv4-adress för MVR-xchange"
 
 #, fuzzy
 msgid "The network card/interface for MVR-xchange"
 msgstr "Nätverkskortet/gränssnittet som ska lyssna efter PSN-data"
 
-#, fuzzy
 msgid "Group"
-msgstr "Gruppnamn"
+msgstr "Grupp"
 
-#, fuzzy
 msgid "Classes"
-msgstr "Klasslista i"
+msgstr "Klasser"
 
-#, fuzzy
 msgid "Align selected fixtures to active fixture"
-msgstr "Länka fixturen till en spårare"
+msgstr "Justera valda fixturer till aktiv fixtur"
 
 #, fuzzy
 msgid "Distribute selected fixtures evenly"
@@ -721,25 +721,22 @@ msgstr "Gruppnamn"
 msgid "Replace DMX group fixtures with selected ones"
 msgstr "Skapa DMX-grupp från valda fixturer"
 
-#, fuzzy
 msgid "DMX > Group > Rename"
-msgstr "DMX > Grupp > Skapa"
+msgstr "DMX > Grupp > Byt namn"
 
 #, fuzzy
 msgid "Rename selected DMX group"
 msgstr "Ta bort valda fixturer från scenen"
 
-#, fuzzy
 msgid "DMX > Group > Remove"
-msgstr "DMX > Grupp > Skapa"
+msgstr "DMX > Grupp > Ta bort"
 
 #, fuzzy
 msgid "Remove selected DMX group"
 msgstr "Ta bort valda fixturer från scenen"
 
-#, fuzzy
 msgid "Groups"
-msgstr "Grupplista i"
+msgstr "Grupper"
 
 msgid "Reset Colors"
 msgstr "Återställ färger"
@@ -761,27 +758,26 @@ msgstr "Tillåt DMX-data för panorering/tiltning"
 msgid "Track Target"
 msgstr "Lägg till mål för spårning"
 
-#, fuzzy
 msgid "Follow the target"
-msgstr "Lägg till följarnas mål"
+msgstr "Följ målet"
 
-#, fuzzy
 msgid "Do Not Track Target"
-msgstr "Lägg till mål för spårning"
+msgstr "Spåra inte målet"
 
-#, fuzzy
 msgid "Do not follow the target"
-msgstr "Lägg till följarnas mål"
+msgstr "Följ inte målet"
 
 #, fuzzy
 msgid "Use Fixtures Channel Functions"
 msgstr "Uppdatera anslutningen"
 
+#, fuzzy
 msgid "Do Not Use Fixtures Physical Properties"
-msgstr ""
+msgstr "Använd inte fixturer Fysikaliska egenskaper"
 
+#, fuzzy
 msgid "Do not use Fixtures Channel Functions"
-msgstr ""
+msgstr "Använd inte Fixtures Channel Functions"
 
 msgid "Deselect All"
 msgstr "Avmarkera alla"
@@ -909,8 +905,9 @@ msgstr "Färghjul"
 msgid "Color Wheel3"
 msgstr "Färghjul"
 
+#, fuzzy
 msgid "Color Macro1"
-msgstr ""
+msgstr "Färg Makro1"
 
 msgid "Color Temperature"
 msgstr "Färgtemperatur"
@@ -921,14 +918,16 @@ msgstr "Iris"
 msgid "Gobo1"
 msgstr "Gobo1"
 
+#, fuzzy
 msgid "Gobo1 Adjust"
-msgstr ""
+msgstr "Gobo1 Justera"
 
 msgid "Gobo2"
 msgstr "Gobo2"
 
+#, fuzzy
 msgid "Gobo2 Adjust"
-msgstr ""
+msgstr "Gobo2 Justera"
 
 msgid "Strobe"
 msgstr "Stroboskop"
@@ -941,8 +940,9 @@ msgstr "Läge"
 msgid "TiltMode"
 msgstr "Luta"
 
+#, fuzzy
 msgid "PanTiltMode"
-msgstr ""
+msgstr "PanTiltMode"
 
 msgid "Clear All"
 msgstr "Töm allt"
@@ -1005,9 +1005,14 @@ msgstr "Töm alla befintliga DMX-data och skapa en ny show."
 
 msgid "Do at your own risk. Manual edits or deletes can cause issues"
 msgstr ""
+"Gör det på egen risk. Manuella redigeringar eller borttagningar kan orsaka "
+"problem"
 
+#, fuzzy
 msgid "Manually editing or deleting geometries of GDTF devices may cause issues."
 msgstr ""
+"Manuell redigering eller borttagning av geometrier för GDTF-enheter kan "
+"orsaka problem."
 
 msgid "Really remove all fixtures and DMX from blend file?"
 msgstr "Verkligen ta bort alla fixturer och DMX från blend-filen?"
@@ -1369,9 +1374,8 @@ msgstr "Skickar Request-meddelandet"
 msgid "Import commit"
 msgstr "Importera commit"
 
-#, fuzzy
 msgid "Export MVR to MVR-xchange"
-msgstr "Ansluter till MVR-xchange-klient"
+msgstr "Exportera MVR till MVR-xchange"
 
 msgid "Download"
 msgstr "Hämta ner"
@@ -1383,9 +1387,8 @@ msgstr "Hämta ner commit"
 msgid "Websocket Download"
 msgstr "Hämta ner"
 
-#, fuzzy
 msgid "Delete"
-msgstr "Ta bort fixtur"
+msgstr "Ta bort"
 
 #, fuzzy
 msgid "Remove Shared Commit"
@@ -1393,27 +1396,29 @@ msgstr "Ta bort mål"
 
 #, python-brace-format
 msgid "Enable Group: {group}"
-msgstr ""
+msgstr "Aktivera grupp: {group}"
 
 msgid "New group:"
-msgstr ""
+msgstr "Ny grupp:"
 
 #, fuzzy
 msgid "Share current version"
 msgstr "Begär senaste versionen"
 
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "Shared by me ({defined_station_name}):"
-msgstr ""
+msgstr "Delad av mig ({defined_station_name}):"
 
 msgid "Stations in the group:"
-msgstr ""
+msgstr "Stationer i gruppen:"
 
+#, fuzzy
 msgid "Shared by the station:"
-msgstr ""
+msgstr "Delas av stationen:"
 
+#, fuzzy
 msgid "Shared by the server:"
-msgstr ""
+msgstr "Delas av servern:"
 
 msgid "OSC"
 msgstr "OSC"
