@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-06-26 21:36+0200\n"
-"PO-Revision-Date: 2025-01-21 07:00+0000\n"
-"Last-Translator: 大学没毕业 <ziweidao@foxmail.com>\n"
+"PO-Revision-Date: 2025-06-30 18:01+0000\n"
+"Last-Translator: HuangHai <deathblood@qq.com>\n"
+"Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
+"projects/blenderdmx/main/zh_Hans/>\n"
 "Language: zh_Hans\n"
-"Language-Team: Chinese (Simplified Han script) "
-"<https://hosted.weblate.org/projects/blenderdmx/main/zh_Hans/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.13-dev\n"
 "Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
@@ -44,7 +45,7 @@ msgid "Footprint"
 msgstr "脚注"
 
 msgid "Physical Properties"
-msgstr ""
+msgstr "物理属性"
 
 msgid "DMX Collection"
 msgstr "DMX 集合"
@@ -213,33 +214,29 @@ msgstr "OSC 目标端口"
 msgid "Port number of the host where you want to send the OSC signal"
 msgstr "要发送OSC信号的主机的端口号"
 
-#, fuzzy
 msgid "Enable Local MVR-xchange"
-msgstr "开启 MVR-xchange 发现"
+msgstr "开启本地 MVR-xchange"
 
-#, fuzzy
 msgid "Enables MVR-xchange sharing and discovery"
-msgstr "开启 MVR-xchange 发现"
+msgstr "开启 MVR-xchange 共享和发现"
 
 msgid "Enable Group Registration"
-msgstr ""
+msgstr "启用组注册"
 
 msgid "Join or start the new group"
-msgstr ""
+msgstr "加入或启动新组"
 
-#, fuzzy
 msgid "Enable Internet MVR-xchange"
-msgstr "开启 MVR-xchange 发现"
+msgstr "开启互联网 MVR-xchange"
 
-#, fuzzy
 msgid "Enables Internet based MVR-xchange sharing and discovery"
-msgstr "开启 MVR-xchange 发现"
+msgstr "开启基于互联网的 MVR-xchange 共享和发现"
 
 msgid "Use per-project Station UUID"
-msgstr ""
+msgstr "按项目分配站点 UUID"
 
 msgid "Generates a random UUID for every blend file"
-msgstr ""
+msgstr "为每个 blend 文件生成随机 UUID"
 
 msgid "Art-Net Status"
 msgstr "Art-Net 状态"
@@ -271,7 +268,8 @@ msgid ""
 "The renderer is paused during MVR import and in 2D view. This checkbox "
 "allows to re-enable it in case of some failure during import, which would"
 " leave it paused"
-msgstr ""
+msgstr "MVR 导入至 2D "
+"视图中时渲染暂停。此复选框允许在导入过程中出现故障时重新启用它，这将使其暂停"
 
 msgid "Pause renderer"
 msgstr "暂停渲染器"
@@ -289,14 +287,13 @@ msgid "Remove from selection"
 msgstr "从选集删除"
 
 msgid "When selecting a group, remove from existing selection"
-msgstr ""
+msgstr "选择一个组时，从现有选择中移除"
 
 msgid "Keyframe only selected fixtures (not for autokeying)"
 msgstr "仅给选定的灯具打关键帧(不适用于自动关键帧)"
 
-#, fuzzy
 msgid "Add keyframes with changes only for selected fixtures"
-msgstr "删除选定灯具的所有关键帧"
+msgstr "添加关键帧，仅对选定灯具进行更改"
 
 msgid "MVR-xchange"
 msgstr "MVR-xchange"
@@ -308,13 +305,11 @@ msgid "Fixture"
 msgstr "灯具"
 
 msgid "Gap"
-msgstr ""
+msgstr "间隙"
 
-#, fuzzy
 msgid "Diameter"
-msgstr "调光器"
+msgstr "直径"
 
-#, fuzzy
 msgid "Rotate"
 msgstr "旋转"
 
@@ -327,16 +322,14 @@ msgstr "子灯具"
 msgid "Active Subfixtures"
 msgstr "活动的子灯具"
 
-#, fuzzy
 msgid "Pan Rotate"
 msgstr "平移旋转"
 
-#, fuzzy
 msgid "Tilt Rotate"
-msgstr "倾斜旋转"
+msgstr "俯仰旋转"
 
 msgid "Custom Cutoff Distance"
-msgstr ""
+msgstr "自定义截止距离"
 
 msgid ""
 "Distance at which the influence of the light will be set to 0. Value "
@@ -900,7 +893,7 @@ msgid "Gobo2"
 msgstr "图案片 2"
 
 msgid "Gobo2 Adjust"
-msgstr ""
+msgstr "Gobo2 调整"
 
 msgid "Strobe"
 msgstr "频闪"
@@ -914,7 +907,7 @@ msgid "TiltMode"
 msgstr "倾斜"
 
 msgid "PanTiltMode"
-msgstr ""
+msgstr "平移俯仰模式"
 
 msgid "Clear All"
 msgstr "清除全部"
@@ -974,10 +967,10 @@ msgid "Clear any existing DMX data and create a new show."
 msgstr "清除所有现有DMX数据并创建新演出。"
 
 msgid "Do at your own risk. Manual edits or deletes can cause issues"
-msgstr ""
+msgstr "自行承担风险。手动编辑或删除可能导致问题出现"
 
 msgid "Manually editing or deleting geometries of GDTF devices may cause issues."
-msgstr ""
+msgstr "手动编辑或删除 GDTF 设备的几何图形可能会导致问题。"
 
 msgid "Really remove all fixtures and DMX from blend file?"
 msgstr "的确要从 blend 文件中移除所有灯具和 DMX 吗？"
@@ -1101,9 +1094,8 @@ msgstr "从 BlenderDMX 插件目录中压缩并导出自定义数据。"
 msgid "Data exported to: {}"
 msgstr "数据导出到: {}"
 
-#, fuzzy
 msgid "Really delete all custom data from the addon directory?"
-msgstr "清除 BlenderDMX 插件目录中的自定义数据。"
+msgstr "真的要从插件目录中删除所有自定义数据吗？"
 
 msgid "Clear custom data from BlenderDMX addon directory."
 msgstr "清除 BlenderDMX 插件目录中的自定义数据。"
@@ -1352,10 +1344,10 @@ msgstr "移除目标"
 
 #, python-brace-format
 msgid "Enable Group: {group}"
-msgstr ""
+msgstr "启用群组： {group}"
 
 msgid "New group:"
-msgstr ""
+msgstr "新组："
 
 #, fuzzy
 msgid "Share current version"
@@ -1363,10 +1355,10 @@ msgstr "请求最新版本"
 
 #, python-brace-format
 msgid "Shared by me ({defined_station_name}):"
-msgstr ""
+msgstr "由我分享 ({defined_station_name}):"
 
 msgid "Stations in the group:"
-msgstr ""
+msgstr "该组中的站点："
 
 msgid "Shared by the station:"
 msgstr ""
@@ -1689,4 +1681,3 @@ msgstr "域"
 
 #~ msgid "Some fixtures could not be processed"
 #~ msgstr "某些灯具无法处理"
-
