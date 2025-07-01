@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-06-26 21:36+0200\n"
-"PO-Revision-Date: 2025-06-30 18:01+0000\n"
-"Last-Translator: HuangHai <deathblood@qq.com>\n"
+"PO-Revision-Date: 2025-07-01 20:02+0000\n"
+"Last-Translator: 大学没毕业 <ziweidao@foxmail.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/blenderdmx/main/zh_Hans/>\n"
 "Language: zh_Hans\n"
@@ -404,25 +404,21 @@ msgstr "用于监听 PSN 数据的网卡/接口"
 msgid "PSN Target port"
 msgstr "PSN目标端口"
 
-#, fuzzy
 msgid "File UUID"
-msgstr "灯具 ID"
+msgstr "文件 UUID"
 
 #, fuzzy
 msgid "Comment"
 msgstr "锁定移动"
 
-#, fuzzy
 msgid "File Name"
 msgstr "文件名"
 
-#, fuzzy
 msgid "Station UUID"
-msgstr "修改ID"
+msgstr "站点 UUID"
 
-#, fuzzy
 msgid "File Size"
-msgstr "文件"
+msgstr "文件大小"
 
 msgid "Time of info"
 msgstr ""
@@ -437,9 +433,8 @@ msgstr ""
 msgid "We requested latest file without UUID"
 msgstr "请求最新版本"
 
-#, fuzzy
 msgid "IP Address"
-msgstr "地址"
+msgstr "IP 地址"
 
 #, fuzzy
 msgid "Port"
@@ -451,13 +446,11 @@ msgstr ""
 msgid "Last Seen Time"
 msgstr ""
 
-#, fuzzy
 msgid "Station Name"
-msgstr "缩写名称"
+msgstr "站点名称"
 
-#, fuzzy
 msgid "MVR-xchange group"
-msgstr "MVR-xchange"
+msgstr "MVR-xchange 组"
 
 #, fuzzy
 msgid "Provider"
@@ -472,41 +465,36 @@ msgid "Icon ID"
 msgstr "修改ID"
 
 msgid "New Group:"
-msgstr ""
+msgstr "新组："
 
-#, fuzzy
 msgid "MVR-xchange Clients"
-msgstr "连接到 MVR-xchange 客户端"
+msgstr "MVR-xchange 客户端"
 
 msgid "Existing Groups"
-msgstr ""
+msgstr "离开组"
 
 #, fuzzy
 msgid "Websocket Commits"
 msgstr "导入确认"
 
 msgid "Message"
-msgstr ""
+msgstr "消息"
 
-#, fuzzy
 msgid "IPv4 Address for MVR-xchange"
-msgstr "PSN 信号的 IPv4 地址"
+msgstr "MVR-xchange 的 IPv4 地址"
 
-#, fuzzy
 msgid "The network card/interface for MVR-xchange"
-msgstr "用于监听 PSN 数据的网卡/接口"
+msgstr "用于 MVR-xchange 的网卡/接口"
 
-#, fuzzy
 msgid "Group"
-msgstr "组名称"
+msgstr "组"
 
 #, fuzzy
 msgid "Classes"
 msgstr "类别列表 i"
 
-#, fuzzy
 msgid "Align selected fixtures to active fixture"
-msgstr "连接灯具至一个跟踪器"
+msgstr "对齐所选灯具到活动灯具"
 
 #, fuzzy
 msgid "Distribute selected fixtures evenly"
@@ -569,13 +557,11 @@ msgstr "DMX 模式"
 msgid "Advanced edit"
 msgstr "高级编辑"
 
-#, fuzzy
 msgid "Modify DMX address"
-msgstr "DMX 地址"
+msgstr "修改 DMX 地址"
 
-#, fuzzy
 msgid "Modify Fixture ID"
-msgstr "灯具 ID"
+msgstr "修改灯具 ID"
 
 msgid "GDTF Profile"
 msgstr "GDTF 配置"
@@ -608,13 +594,11 @@ msgstr "DMX > 灯具 > 移除"
 msgid "Remove selected fixtures from Scene"
 msgstr "从场景中删除选定的灯具"
 
-#, fuzzy
 msgid "Remove IES Files"
-msgstr "移除灯具"
+msgstr "移除 IES 文件"
 
-#, fuzzy
 msgid "Import IES File"
-msgstr "导入 GDTF 配置"
+msgstr "导入 IES 文件"
 
 msgid "Select Previous Fixture"
 msgstr "选择上一个灯具"
@@ -689,25 +673,20 @@ msgstr "组名称"
 msgid "Replace DMX group fixtures with selected ones"
 msgstr "从选定的灯具创建 DMX 组"
 
-#, fuzzy
 msgid "DMX > Group > Rename"
-msgstr "DMX > 组 > 创建"
+msgstr "DMX > 组 > 重命名"
 
-#, fuzzy
 msgid "Rename selected DMX group"
-msgstr "从场景中删除选定的灯具"
+msgstr "重命名选定的 DMX 组"
 
-#, fuzzy
 msgid "DMX > Group > Remove"
-msgstr "DMX > 组 > 创建"
+msgstr "DMX > 组 > 移除"
 
-#, fuzzy
 msgid "Remove selected DMX group"
-msgstr "从场景中删除选定的灯具"
+msgstr "移除选定的 DMX 组"
 
-#, fuzzy
 msgid "Groups"
-msgstr "组列表 i"
+msgstr "组"
 
 msgid "Reset Colors"
 msgstr "重置颜色"
@@ -724,21 +703,17 @@ msgstr "解锁移动"
 msgid "Allow pan/tilt DMX data"
 msgstr "允许平移/倾斜 DMX 数据"
 
-#, fuzzy
 msgid "Track Target"
-msgstr "添加跟踪目标"
+msgstr "跟踪目标"
 
-#, fuzzy
 msgid "Follow the target"
-msgstr "添加跟随者目标"
+msgstr "跟随目标"
 
-#, fuzzy
 msgid "Do Not Track Target"
-msgstr "添加跟踪目标"
+msgstr "不跟踪目标"
 
-#, fuzzy
 msgid "Do not follow the target"
-msgstr "添加跟随者目标"
+msgstr "不跟随目标"
 
 #, fuzzy
 msgid "Use Fixtures Channel Functions"
@@ -862,17 +837,14 @@ msgstr "倾斜旋转"
 msgid "Zoom"
 msgstr "变焦"
 
-#, fuzzy
 msgid "Color Wheel1"
-msgstr "色轮"
+msgstr "色轮1"
 
-#, fuzzy
 msgid "Color Wheel2"
-msgstr "色轮"
+msgstr "色轮2"
 
-#, fuzzy
 msgid "Color Wheel3"
-msgstr "色轮"
+msgstr "色轮3"
 
 msgid "Color Macro1"
 msgstr ""
@@ -1334,9 +1306,8 @@ msgstr "下载提交"
 msgid "Websocket Download"
 msgstr "下载"
 
-#, fuzzy
 msgid "Delete"
-msgstr "删除装置"
+msgstr "删除"
 
 #, fuzzy
 msgid "Remove Shared Commit"
