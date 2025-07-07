@@ -932,8 +932,12 @@ class DMX_Fixture(PropertyGroup):
                     else:
                         new_channel_function.dmx_to = channel_function.dmx_to.value
 
-                    new_channel_function.physical_from = channel_function.physical_from
-                    new_channel_function.physical_to = channel_function.physical_to
+                    new_channel_function.physical_from = (
+                        channel_function.physical_from.value
+                    )
+                    new_channel_function.physical_to = (
+                        channel_function.physical_to.value
+                    )
 
                     for channel_set in channel_function.channel_sets:
                         new_channel_set = new_channel_function.channel_sets.add()
@@ -948,8 +952,8 @@ class DMX_Fixture(PropertyGroup):
                         else:
                             new_channel_set.dmx_to = channel_set.dmx_to.value
 
-                        new_channel_set.physical_from = channel_set.physical_from
-                        new_channel_set.physical_to = channel_set.physical_to
+                        new_channel_set.physical_from = channel_set.physical_from.value
+                        new_channel_set.physical_to = channel_set.physical_to.value
                         new_channel_set.wheel_slot = channel_set.wheel_slot_index
 
         # create a link from channel function to a mode_master channel:
