@@ -379,6 +379,11 @@ class DMX_GDTF:
 
             # 'Undefined' of 'File': load from file
             # Prefer File first, as some GDTFs have both File and PrimitiveType
+            # FIXME: if the file has both primitive_type and file and the file
+            # does not exist, do load the primitive type
+            # <Model File="Head" Height="0.162000" Length="0.221000" Name="Model" PrimitiveType="Cylinder"
+            # SVGFrontOffsetX="0.000000" SVGFrontOffsetY="0.000000" SVGOffsetX="0.000000" SVGOffsetY="0.000000"
+            # SVGSideOffsetX="0.000000" SVGSideOffsetY="0.000000" Width="0.221000"/>
             if (str(model.primitive_type) == "Undefined") or (
                 model.file is not None
                 and model.file.name != ""
