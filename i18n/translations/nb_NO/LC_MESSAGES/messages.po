@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-26 21:36+0200\n"
+"POT-Creation-Date: 2025-07-12 15:31+0200\n"
 "PO-Revision-Date: 2023-04-02 13:37+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language: nb_NO\n"
@@ -1331,6 +1331,10 @@ msgid "Sends the Request message"
 msgstr ""
 
 #, fuzzy
+msgid "Import commit into active scene"
+msgstr "Importer fra deling"
+
+#, fuzzy
 msgid "Import commit"
 msgstr "Importer fra deling"
 
@@ -1340,10 +1344,14 @@ msgstr ""
 msgid "Download"
 msgstr ""
 
-msgid "Download commit"
-msgstr ""
+#, fuzzy
+msgid "Fetch commit"
+msgstr "Importer fra deling"
 
 msgid "Websocket Download"
+msgstr ""
+
+msgid "Download commit"
 msgstr ""
 
 msgid "Delete"
@@ -1361,6 +1369,9 @@ msgid "New group:"
 msgstr ""
 
 msgid "Share current version"
+msgstr ""
+
+msgid "Pick and Share MVR"
 msgstr ""
 
 #, python-brace-format

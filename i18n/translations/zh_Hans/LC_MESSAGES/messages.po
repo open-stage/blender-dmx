@@ -7,17 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-26 21:36+0200\n"
+"POT-Creation-Date: 2025-07-12 15:31+0200\n"
 "PO-Revision-Date: 2025-07-05 16:01+0000\n"
 "Last-Translator: 大学没毕业 <ziweidao@foxmail.com>\n"
-"Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
-"projects/blenderdmx/main/zh_Hans/>\n"
 "Language: zh_Hans\n"
+"Language-Team: Chinese (Simplified Han script) "
+"<https://hosted.weblate.org/projects/blenderdmx/main/zh_Hans/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.13-dev\n"
 "Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
@@ -268,8 +267,7 @@ msgid ""
 "The renderer is paused during MVR import and in 2D view. This checkbox "
 "allows to re-enable it in case of some failure during import, which would"
 " leave it paused"
-msgstr "MVR 导入至 2D "
-"视图中时渲染暂停。此复选框允许在导入过程中出现故障时重新启用它，这将使其暂停"
+msgstr "MVR 导入至 2D 视图中时渲染暂停。此复选框允许在导入过程中出现故障时重新启用它，这将使其暂停"
 
 msgid "Pause renderer"
 msgstr "暂停渲染器"
@@ -1289,6 +1287,10 @@ msgstr "请求最新版本"
 msgid "Sends the Request message"
 msgstr "发送请求消息"
 
+#, fuzzy
+msgid "Import commit into active scene"
+msgstr "导入 MVR 场景"
+
 msgid "Import commit"
 msgstr "导入确认"
 
@@ -1298,12 +1300,16 @@ msgstr "导出 MVR 到 MVR-xchange"
 msgid "Download"
 msgstr "下载"
 
-msgid "Download commit"
-msgstr "下载提交"
+#, fuzzy
+msgid "Fetch commit"
+msgstr "导入确认"
 
 #, fuzzy
 msgid "Websocket Download"
 msgstr "下载"
+
+msgid "Download commit"
+msgstr "下载提交"
 
 msgid "Delete"
 msgstr "删除"
@@ -1322,6 +1328,9 @@ msgstr "新组："
 #, fuzzy
 msgid "Share current version"
 msgstr "请求最新版本"
+
+msgid "Pick and Share MVR"
+msgstr ""
 
 #, python-brace-format
 msgid "Shared by me ({defined_station_name}):"
@@ -1651,3 +1660,4 @@ msgstr "域"
 
 #~ msgid "Some fixtures could not be processed"
 #~ msgstr "某些灯具无法处理"
+

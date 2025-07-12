@@ -7,17 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-26 21:36+0200\n"
+"POT-Creation-Date: 2025-07-12 15:31+0200\n"
 "PO-Revision-Date: 2025-07-04 08:03+0000\n"
 "Last-Translator: Daniel Nylander <daniel@danielnylander.se>\n"
-"Language-Team: Swedish <https://hosted.weblate.org/projects/blenderdmx/main/"
-"sv/>\n"
 "Language: sv_SE\n"
+"Language-Team: Swedish "
+"<https://hosted.weblate.org/projects/blenderdmx/main/sv/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13-dev\n"
 "Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
@@ -291,9 +290,9 @@ msgid ""
 "allows to re-enable it in case of some failure during import, which would"
 " leave it paused"
 msgstr ""
-"Renderingsprogrammet pausas under MVR-importen och i 2D-vyn. Denna kryssruta "
-"gör det möjligt att återaktivera den om något fel uppstår under importen, "
-"vilket skulle innebära att den pausas"
+"Renderingsprogrammet pausas under MVR-importen och i 2D-vyn. Denna "
+"kryssruta gör det möjligt att återaktivera den om något fel uppstår under"
+" importen, vilket skulle innebära att den pausas"
 
 msgid "Pause renderer"
 msgstr "Pausa rendering"
@@ -365,8 +364,8 @@ msgid ""
 "Distance at which the influence of the light will be set to 0. Value "
 "bigger then 23 will break gobo rendering in Eevee Next."
 msgstr ""
-"Avstånd där ljusets påverkan kommer att sättas till 0. Värde större än 23 "
-"kommer att bryta gobo-rendering i Eevee Next."
+"Avstånd där ljusets påverkan kommer att sättas till 0. Värde större än 23"
+" kommer att bryta gobo-rendering i Eevee Next."
 
 #, fuzzy
 msgid "Use Fixtures Physical Properties"
@@ -1005,8 +1004,8 @@ msgstr "Töm alla befintliga DMX-data och skapa en ny show."
 
 msgid "Do at your own risk. Manual edits or deletes can cause issues"
 msgstr ""
-"Gör det på egen risk. Manuella redigeringar eller borttagningar kan orsaka "
-"problem"
+"Gör det på egen risk. Manuella redigeringar eller borttagningar kan "
+"orsaka problem"
 
 #, fuzzy
 msgid "Manually editing or deleting geometries of GDTF devices may cause issues."
@@ -1370,6 +1369,10 @@ msgstr "Begär senaste versionen"
 msgid "Sends the Request message"
 msgstr "Skickar Request-meddelandet"
 
+#, fuzzy
+msgid "Import commit into active scene"
+msgstr "Importera MVR-scen"
+
 msgid "Import commit"
 msgstr "Importera commit"
 
@@ -1379,12 +1382,16 @@ msgstr "Exportera MVR till MVR-xchange"
 msgid "Download"
 msgstr "Hämta ner"
 
-msgid "Download commit"
-msgstr "Hämta ner commit"
+#, fuzzy
+msgid "Fetch commit"
+msgstr "Importera commit"
 
 #, fuzzy
 msgid "Websocket Download"
 msgstr "Hämta ner"
+
+msgid "Download commit"
+msgstr "Hämta ner commit"
 
 msgid "Delete"
 msgstr "Ta bort"
@@ -1403,6 +1410,9 @@ msgstr "Ny grupp:"
 #, fuzzy
 msgid "Share current version"
 msgstr "Begär senaste versionen"
+
+msgid "Pick and Share MVR"
+msgstr ""
 
 #, fuzzy, python-brace-format
 msgid "Shared by me ({defined_station_name}):"
@@ -1777,3 +1787,4 @@ msgstr "Universum"
 
 #~ msgid "Some fixtures could not be processed"
 #~ msgstr "Vissa fixturer kunde inte bearbetas"
+

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-26 21:36+0200\n"
+"POT-Creation-Date: 2025-07-12 15:31+0200\n"
 "PO-Revision-Date: 2025-06-22 13:01+0000\n"
 "Last-Translator: Yurt Page <yurtpage@gmail.com>\n"
 "Language: ru_RU\n"
@@ -1336,6 +1336,10 @@ msgstr "Запросить последнюю версию"
 msgid "Sends the Request message"
 msgstr "Отправляет сообщение Request"
 
+#, fuzzy
+msgid "Import commit into active scene"
+msgstr "Импорт сцены MVR"
+
 msgid "Import commit"
 msgstr "Импортировать коммит"
 
@@ -1345,11 +1349,15 @@ msgstr "Экспортировать MVR в MVR-xchange"
 msgid "Download"
 msgstr "Скачать"
 
-msgid "Download commit"
-msgstr "Скачать коммит"
+#, fuzzy
+msgid "Fetch commit"
+msgstr "Импортировать коммит"
 
 msgid "Websocket Download"
 msgstr "Скачать WebSocket"
+
+msgid "Download commit"
+msgstr "Скачать коммит"
 
 msgid "Delete"
 msgstr "Удалить"
@@ -1368,6 +1376,9 @@ msgstr "Группы"
 #, fuzzy
 msgid "Share current version"
 msgstr "Запросить последнюю версию"
+
+msgid "Pick and Share MVR"
+msgstr ""
 
 #, python-brace-format
 msgid "Shared by me ({defined_station_name}):"

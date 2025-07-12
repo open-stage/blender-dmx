@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-26 21:36+0200\n"
+"POT-Creation-Date: 2025-07-12 15:31+0200\n"
 "PO-Revision-Date: 2025-03-09 11:08+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language: de_DE\n"
@@ -1376,6 +1376,10 @@ msgstr "Neueste Version anfordern"
 msgid "Sends the Request message"
 msgstr "Sendet die Anforderungsnachricht"
 
+#, fuzzy
+msgid "Import commit into active scene"
+msgstr "MVR-Szene importieren"
+
 msgid "Import commit"
 msgstr ""
 
@@ -1386,12 +1390,15 @@ msgstr "Verbindet sich mit dem MVR-xchange-Client"
 msgid "Download"
 msgstr "Herunterladen"
 
-msgid "Download commit"
+msgid "Fetch commit"
 msgstr ""
 
 #, fuzzy
 msgid "Websocket Download"
 msgstr "Herunterladen"
+
+msgid "Download commit"
+msgstr ""
 
 #, fuzzy
 msgid "Delete"
@@ -1411,6 +1418,9 @@ msgstr ""
 #, fuzzy
 msgid "Share current version"
 msgstr "Neueste Version anfordern"
+
+msgid "Pick and Share MVR"
+msgstr ""
 
 #, python-brace-format
 msgid "Shared by me ({defined_station_name}):"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-26 21:36+0200\n"
+"POT-Creation-Date: 2025-07-12 15:31+0200\n"
 "PO-Revision-Date: 2025-06-05 17:01+0000\n"
 "Last-Translator: Bernat Rubiol Brusau <rubiolbernat@gmail.com>\n"
 "Language: ca_ES\n"
@@ -1300,6 +1300,9 @@ msgstr ""
 msgid "Sends the Request message"
 msgstr ""
 
+msgid "Import commit into active scene"
+msgstr ""
+
 msgid "Import commit"
 msgstr ""
 
@@ -1309,11 +1312,14 @@ msgstr ""
 msgid "Download"
 msgstr "Descarregar"
 
-msgid "Download commit"
-msgstr "Descarrega el commit"
+msgid "Fetch commit"
+msgstr ""
 
 msgid "Websocket Download"
 msgstr ""
+
+msgid "Download commit"
+msgstr "Descarrega el commit"
 
 msgid "Delete"
 msgstr "Esborrar"
@@ -1329,6 +1335,9 @@ msgid "New group:"
 msgstr ""
 
 msgid "Share current version"
+msgstr ""
+
+msgid "Pick and Share MVR"
 msgstr ""
 
 #, python-brace-format
