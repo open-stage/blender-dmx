@@ -75,7 +75,7 @@ class DMX_OP_MVR_Request(Operator):
 
 class DMX_OP_MVR_Import(Operator):
     bl_label = _("Import")
-    bl_description = _("Import commit")
+    bl_description = _("Import commit into active scene")
     bl_idname = "dmx.mvr_import"
     bl_options = {"UNDO"}
 
@@ -163,7 +163,7 @@ class DMX_OP_MVR_X_Export(Operator):
 
 class DMX_OP_MVR_Download(Operator):
     bl_label = _("Download")
-    bl_description = _("Download commit")
+    bl_description = _("Fetch commit")
     bl_idname = "dmx.mvr_download"
     bl_options = {"UNDO"}
 
@@ -263,11 +263,16 @@ class DMX_UL_MVR_Commit(UIList):
         col = layout.column()
         col.operator("dmx.mvr_download", text="", icon="IMPORT").uuid = item.commit_uuid
         col.enabled = dmx.mvrx_enabled
-        col = layout.column()
-        col.operator(
+        col1 = layout.column()
+        col1.operator(
             "dmx.mvr_import", text="", icon="CHECKBOX_HLT"
         ).uuid = item.commit_uuid
-        col.enabled = item.timestamp_saved > 0
+        col2 = layout.column()
+
+        op = col2.operator("dmx.mvr_save_file", text="", icon="EXPORT")
+        op.uuid = item.commit_uuid
+        op.filepath = item.file_name
+        col1.enabled = col2.enabled = item.timestamp_saved > 0
 
     def filter_items(self, context, data, property):
         # Filter the items in the UIList
@@ -473,6 +478,10 @@ class DMX_PT_DMX_MVR_X(Panel):
             row.operator(
                 "dmx.mvr_x_export", text=_("Share current version"), icon="EXPORT"
             )
+            row = layout.row()
+            row.operator(
+                "dmx.load_and_share_mvr", text=_("Pick and Share MVR"), icon="FILE"
+            )
 
             row = layout.row()
             row.prop(mvr_x, "commit_message")
@@ -494,7 +503,7 @@ class DMX_PT_DMX_MVR_X(Panel):
                 "shared_commits",
                 mvr_x,
                 "selected_shared_commit",
-                item_dyntip_propname="comment",
+                item_dyntip_propname="file_name",
                 rows=4,
             )
         if dmx.zeroconf_enabled:
@@ -531,7 +540,7 @@ class DMX_PT_DMX_MVR_X(Panel):
                     "commits",
                     mvr_x,
                     "selected_commit",
-                    item_dyntip_propname="comment",
+                    item_dyntip_propname="file_name",
                     rows=4,
                 )
 
@@ -556,6 +565,6 @@ class DMX_PT_DMX_MVR_X(Panel):
                 "websocket_commits",
                 mvr_x,
                 "selected_ws_commit",
-                item_dyntip_propname="comment",
+                item_dyntip_propname="file_name",
                 rows=4,
             )

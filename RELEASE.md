@@ -18,3 +18,8 @@ blender --command extension build
 This will download the latest wheel locally:
 
 python -m pip wheel pygdtf
+
+* Tag and push
+
+git tag vX.Y.Z
+git push vX.Y.Z

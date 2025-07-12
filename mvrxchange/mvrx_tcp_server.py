@@ -108,7 +108,7 @@ class server(Thread):
         sock = key.fileobj
         data = key.data
         if mask & selectors.EVENT_READ:
-            recv_data = sock.recv(1024)  # Should be ready to read
+            recv_data = sock.recv(16384)  # Should be ready to read
             if recv_data:
                 data.inb += recv_data
                 DMX_Log.log.debug(
@@ -223,12 +223,12 @@ class server(Thread):
 
             file_size = os.path.getsize(file_path)
             file_object = open(file_path, "br")
-            buffer = file_object.read(1024)
+            buffer = file_object.read(16384)
             data.outb.append(mvrx_message.craft_packet(None, file_size, buffer, 1))
-            buffer = file_object.read(1024)
+            buffer = file_object.read(16384)
             while buffer:
                 data.outb.append(buffer)
-                buffer = file_object.read(1024)
+                buffer = file_object.read(16384)
             file_object.close()
 
         self.callback(json_data, data)

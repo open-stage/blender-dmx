@@ -41,7 +41,7 @@ class DMX_GDTF:
 
     @staticmethod
     def load_blender_primitive(model):
-        primitive = str(model.primitive_type)
+        primitive = model.primitive_type.value
 
         if primitive == "Cube":
             bpy.ops.mesh.primitive_cube_add(size=1.0)
@@ -63,7 +63,7 @@ class DMX_GDTF:
 
     @staticmethod
     def load_gdtf_primitive(model):
-        primitive = str(model.primitive_type)
+        primitive = model.primitive_type.value
         path = os.path.join(DMX_GDTF.getPrimitivesPath(), f"{primitive}.glb")
         bpy.ops.import_scene.gltf(filepath=path)
         obj = bpy.context.view_layer.objects.selected[0]
@@ -358,7 +358,7 @@ class DMX_GDTF:
                     length=0.0001,
                     width=0.0001,
                     height=0.0001,
-                    primitive_type="Cube",
+                    primitive_type=pygdtf.PrimitiveType("Cube"),
                 )
             else:
                 # Deepcopy the model because GeometryReference will modify the name
@@ -370,31 +370,39 @@ class DMX_GDTF:
                 model.name = f"{sanitize_obj_name(geometry)}"
 
             obj = None
-            primitive = str(model.primitive_type)
+            primitive = model.primitive_type.value
             # Normalize 1.1 PrimitiveTypes
             # (From GDTF v1.1 on, the 1_1 was added to the end of primitive names, we just ignore them and use the same primitives)
             if primitive[-3:] == "1_1":
                 primitive = primitive[:-3]
                 model.primitive_type = pygdtf.PrimitiveType(primitive)
 
-            # 'Undefined' of 'File': load from file
-            # Prefer File first, as some GDTFs have both File and PrimitiveType
-            if (str(model.primitive_type) == "Undefined") or (
+            if (model.primitive_type.value == "Undefined") or (
                 model.file is not None
                 and model.file.name != ""
-                and (str(model.primitive_type) != "Pigtail")
+                and model.primitive_type.value != "Pigtail"
             ):
                 try:
                     obj = DMX_GDTF.loadModel(profile, model)
                 except Exception as e:
                     DMX_Log.log.error(f"Error importing 3D model: {profile.name} {e}")
                     DMX_Log.log.exception(e)
-                    model.primitive_type = "Cube"
-                    obj = DMX_GDTF.load_blender_primitive(model)
+                    if model.primitive_type.value == "Undefined":
+                        model.primitive_type.value = "Cube"
+                    if model.primitive_type.value in [
+                        "Base",
+                        "Conventional",
+                        "Head",
+                        "Yoke",
+                    ]:
+                        obj = DMX_GDTF.load_gdtf_primitive(model)
+                    else:
+                        obj = DMX_GDTF.load_blender_primitive(model)
+
             # BlenderDMX primitives
-            elif str(model.primitive_type) in ["Base", "Conventional", "Head", "Yoke"]:
+            elif model.primitive_type.value in ["Base", "Conventional", "Head", "Yoke"]:
                 obj = DMX_GDTF.load_gdtf_primitive(model)
-            # Blender primitives
+            # Blender primitives and a Pigtail
             else:
                 obj = DMX_GDTF.load_blender_primitive(model)
 
@@ -410,8 +418,7 @@ class DMX_GDTF:
                 obj["original_name"] = geometry.name
                 if isinstance(geometry, pygdtf.GeometryReference):
                     obj["referenced_geometry"] = str(geometry.geometry)
-                if str(model.primitive_type) == "Pigtail":
-                    # This is a bit ugly because of PrimitiveType (in model) and not Geometry type (in geometry)
+                if model.primitive_type.value == "Pigtail":
                     obj["geometry_type"] = "pigtail"
                 objs[sanitize_obj_name(geometry)] = obj
 
@@ -580,12 +587,14 @@ class DMX_GDTF:
             collection.objects.link(light_object)
 
             gobo_radius = 2.2 * 0.01 * math.tan(math.radians(geometry.beam_angle / 2))
+            primitive_type = pygdtf.PrimitiveType("")
+            primitive_type.value = "Plane"  # a small hack here
             goboGeometry = SimpleNamespace(
                 name=f"gobo {sanitize_obj_name(geometry)}",
                 length=gobo_radius,
                 width=gobo_radius,
                 height=0,
-                primitive_type="Plane",
+                primitive_type=primitive_type,
                 beam_radius=geometry.beam_radius,
             )
             if has_gobos:
