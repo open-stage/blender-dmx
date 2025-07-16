@@ -873,6 +873,7 @@ class DMX_Fixture(PropertyGroup):
             light_obj = light.object
             ntree = light_obj.data.node_tree
             d.process_tree(ntree)
+        self.clear()
 
         self.render()
 

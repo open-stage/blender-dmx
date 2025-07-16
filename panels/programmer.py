@@ -268,28 +268,7 @@ class DMX_OT_Programmer_Clear(Operator):
                 if fixture.is_selected():
                     fixture.clear()
 
-        scene.dmx.programmer_dimmer = 0
-        scene.dmx.programmer_color = (1, 1, 1, 1)
-        scene.dmx.programmer_pan = 0
-        scene.dmx.programmer_pan_rotate = 128
-        scene.dmx.programmer_tilt = 0
-        scene.dmx.programmer_tilt_rotate = 128
-        scene.dmx.programmer_zoom = 128
-        scene.dmx.programmer_shutter = 0
-        scene.dmx.programmer_color_wheel1 = 0
-        scene.dmx.programmer_color_wheel2 = 0
-        scene.dmx.programmer_color_wheel3 = 0
-        scene.dmx.programmer_color_wheel4 = 0
-        scene.dmx.programmer_color_temperature = 0
-        scene.dmx.programmer_iris = 0
-        scene.dmx.programmer_gobo1 = 0
-        scene.dmx.programmer_gobo_index1 = 128
-        scene.dmx.programmer_gobo2 = 0
-        scene.dmx.programmer_gobo_index2 = 128
-        scene.dmx.programmer_tilt_mode = 0
-        scene.dmx.programmer_pan_mode = 0
-        scene.dmx.programmer_pan_tilt_mode = 0
-
+        scene.dmx.syncProgrammer()
         return {"FINISHED"}
 
 
