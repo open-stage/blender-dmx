@@ -413,6 +413,7 @@ class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
                         dmx.ensureUniverseExists(dmx_break.universe)
 
         context.window_manager.dmx.pause_render = False
+        dmx.syncProgrammer()
         return {"FINISHED"}
 
     def invoke(self, context, event):
