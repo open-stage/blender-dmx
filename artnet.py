@@ -158,6 +158,8 @@ class DMX_ArtNet(threading.Thread):
 
     def handleArtNet(self, data):
         packet = ArtnetPacket.build(data)
+        if not packet:
+            return
 
         try:
             if self._dmx.artnet_status != "online":
