@@ -1,5 +1,14 @@
 ### Changelog
 
+### 2.0.8
+
+* Prevent MVR persistence during export, to eliminate duplication during export
+* Update to latest pygdtf and pymvr libraries
+* Improvements to Art-Net 4 compatibility, thanks to Michael Wigard
+* Ensure that Programmer Clear sets the fixtures to default values
+* Ensure that fixture is set to default and rendered after being added to the
+  scene
+
 ### 2.0.7
 
 * Translated using Weblate:
