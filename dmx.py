@@ -2140,6 +2140,8 @@ class DMX(PropertyGroup):
 
             layer = pymvr.Layer(name="DMX")
             child_list = pymvr.ChildList()
+            child_list.fixtures.clear()
+            child_list.focus_points.clear()
             layer.child_list = child_list
 
             for dmx_fixture in dmx.fixtures:
@@ -2153,6 +2155,7 @@ class DMX(PropertyGroup):
                     fixtures_list.append((file_path, fixture_object.gdtf_spec))
 
             layers = pymvr.Layers()
+            layers.clear()
             layers.append(layer)
             scene = pymvr.Scene(layers=layers, aux_data=pymvr.AUXData())
             scene.to_xml(parent=mvr.xml_root)
