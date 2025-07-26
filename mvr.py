@@ -516,6 +516,9 @@ def add_mvr_fixture(
         # TODO: we should not rename the fixture on import unless if the user wants it
         # but we must ensure that the name is unique in the collection
         unique_name = create_unique_fixture_name(fixture.name)
+        if isinstance(fixture.color, str):
+            fixture.color = pymvr.Color(str_repr=fixture.color)
+
         color_rgb = xyY2rgbaa(fixture.color)
         gel_color = [c / 255 for c in color_rgb] + [1]
         existing_fixture.build(
@@ -538,8 +541,8 @@ def add_mvr_fixture(
     else:
         unique_name = f"{fixture.name} {layer_idx}-{fixture_idx}"
         unique_name = create_unique_fixture_name(unique_name)
-        # breakpoint()
-        # print(type(fixture.color), fixture.gdtf_spec)
+        if isinstance(fixture.color, str):
+            fixture.color = pymvr.Color(str_repr=fixture.color)
         color_rgb = xyY2rgbaa(fixture.color)
         gel_color = [c / 255 for c in color_rgb] + [1]
         dmx.addFixture(
@@ -742,4 +745,9 @@ def load_mvr(dmx, file_name, import_focus_points):
     objectData.clear()
     viewlayer.update()
     imported_layers.clear()
+    if mvr_scene is not None:
+        if hasattr(mvr_scene, "_package"):
+            if mvr_scene._package is not None:
+                mvr_scene._package.close()
+
     DMX_Log.log.info(f"MVR scene loaded in {time.time() - start_time}.4f sec.")
