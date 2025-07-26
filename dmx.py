@@ -2135,21 +2135,28 @@ class DMX(PropertyGroup):
         try:
             fixtures_list = []
             mvr = pymvr.GeneralSceneDescriptionWriter()
+
             pymvr.UserData().to_xml(parent=mvr.xml_root)
-            scene = pymvr.SceneElement().to_xml(parent=mvr.xml_root)
-            layers = pymvr.LayersElement().to_xml(parent=scene)
-            layer = pymvr.Layer(name="DMX").to_xml(parent=layers)
-            child_list = pymvr.ChildList().to_xml(parent=layer)
+
+            layer = pymvr.Layer(name="DMX")
+            child_list = pymvr.ChildList()
+            layer.child_list = child_list
+
             for dmx_fixture in dmx.fixtures:
                 fixture_object = dmx_fixture.to_mvr_fixture(universe_add=universe_add)
                 focus_point = dmx_fixture.focus_to_mvr_focus_point()
                 if focus_point is not None:
-                    child_list.append(focus_point.to_xml())
-                child_list.append(fixture_object.to_xml())
-                file_path = os.path.join(folder_path, fixture_object.gdtf_spec)
-                fixtures_list.append((file_path, fixture_object.gdtf_spec))
+                    child_list.focus_points.append(focus_point)
+                child_list.fixtures.append(fixture_object)
+                if fixture_object.gdtf_spec:
+                    file_path = os.path.join(folder_path, fixture_object.gdtf_spec)
+                    fixtures_list.append((file_path, fixture_object.gdtf_spec))
 
-            pymvr.AUXData().to_xml(parent=scene)
+            layers = pymvr.Layers()
+            layers.append(layer)
+            scene = pymvr.Scene(layers=layers, aux_data=pymvr.AUXData())
+            scene.to_xml(parent=mvr.xml_root)
+
             mvr.files_list = list(set(fixtures_list))
             mvr.write_mvr(file_name)
             file_size = Path(file_name).stat().st_size
