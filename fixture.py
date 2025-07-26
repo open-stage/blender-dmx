@@ -873,6 +873,7 @@ class DMX_Fixture(PropertyGroup):
             light_obj = light.object
             ntree = light_obj.data.node_tree
             d.process_tree(ntree)
+        self.clear()
 
         self.render()
 
@@ -2654,20 +2655,22 @@ class DMX_Fixture(PropertyGroup):
         x, y, z = rgb2xyY(r, g, b)
         color = f"{x},{y},{z}"
 
+        new_addresses = [
+            pymvr.Address(
+                dmx_break=index,
+                universe=dmx_break.universe + add_to_universe,
+                address=dmx_break.address,
+            )
+            for index, dmx_break in enumerate(self.dmx_breaks)
+        ]
+
         return pymvr.Fixture(
             name=self.name,
             uuid=self.uuid,
             gdtf_spec=self.profile,
             gdtf_mode=self.mode,
             fixture_id=self.fixture_id,
-            addresses=[
-                pymvr.Address(
-                    dmx_break=index,
-                    universe=dmx_break.universe + add_to_universe,
-                    address=dmx_break.address,
-                )
-                for index, dmx_break in enumerate(self.dmx_breaks)
-            ],
+            addresses=pymvr.Addresses(address=new_addresses),
             matrix=pymvr.Matrix(matrix),
             focus=uuid_focus_point,
             color=color,

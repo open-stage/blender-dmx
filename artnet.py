@@ -50,6 +50,8 @@ class ArtnetPacket:
         self.ver = None
         self.sequence = None
         self.physical = None
+        self.net = None
+        self.subnet = None
         self.universe = None
         self.length = None
         self.data = None
@@ -64,7 +66,7 @@ class ArtnetPacket:
             self.ver,
             self.sequence,
             self.physical,
-            self.universe,
+            f"{self.net}.{self.subnet}.{self.universe}",
             self.length,
             [c for c in self.data],
         )
@@ -80,10 +82,11 @@ class ArtnetPacket:
             packet.ver,
             packet.sequence,
             packet.physical,
-            packet.universe,
+            sub_uni,
+            packet.net,
             packet.length,
-        ) = struct.unpack("!HHBBHH", udp_data[8:18])
-        (packet.universe,) = struct.unpack("<H", udp_data[14:16])
+        ) = struct.unpack("!HHBBBBH", udp_data[8:18])
+        (packet.subnet, packet.universe) = sub_uni >> 4, sub_uni & 0x0F
 
         packet.data = struct.unpack(
             "{0}s".format(int(packet.length)), udp_data[18 : 18 + int(packet.length)]
@@ -111,6 +114,9 @@ class DMX_ArtNet(threading.Thread):
 
         # self._socket.settimeout(30)
         self._stopped = False
+        # Used with the universe number to determine the Art-Net Port-Address
+        self.net = 0
+        self.subnet = 0
 
     def stop(self):
         try:
@@ -152,6 +158,8 @@ class DMX_ArtNet(threading.Thread):
 
     def handleArtNet(self, data):
         packet = ArtnetPacket.build(data)
+        if not packet:
+            return
 
         try:
             if self._dmx.artnet_status != "online":
@@ -159,6 +167,11 @@ class DMX_ArtNet(threading.Thread):
         except Exception as e:
             DMX_Log.log.error(f"Error when setting status {e}")
 
+        if not (packet.net == self.net and packet.subnet == self.subnet):
+            DMX_Log.log.info("rejected {packet}")
+            return
+        # we are not checking if we are actually subscribed to the universe
+        # so all packets with matching net and subnet will be accepted
         if packet.universe >= len(self._dmx.universes):
             return
         if not self._dmx.universes[packet.universe]:
@@ -171,7 +184,7 @@ class DMX_ArtNet(threading.Thread):
         """Builds an ArtPollReply message."""
         content = []
         # Name, 7byte + 0x00
-        content.append(b"Art-Net\x00")
+        content.append(ArtnetPacket.ARTNET_HEADER)
         # OpCode ArtPollReply -> 0x2100, Low Byte first
         content.append(struct.pack("<H", 0x2100))
         # Protocol Version 14, High Byte first
@@ -188,8 +201,8 @@ class DMX_ArtNet(threading.Thread):
         # Firmware Version
         content.append(struct.pack("!H", 1))
         # Net and subnet of this node
-        content.append(struct.pack("B", ip[1]))
-        content.append(struct.pack("B", ip[0]))
+        content.append(struct.pack("B", self.net))  # NetSwitch
+        content.append(struct.pack("B", self.subnet))  # SubSwitch
 
         # BlenderDMX OEM registered code, do not reuse if copying this code.
         # Programmers: do not copy for other Art-Net implementations,
@@ -210,9 +223,48 @@ class DMX_ArtNet(threading.Thread):
         description = b"#0001 [0000] BlenderDMX. All your GDTFs are belong to us."
         content.append(struct.pack("64s", description))
         # ports
-        content.append(struct.pack(">H", 8))  # 0000
-        content.append(struct.pack(">L", 0))  # 0000
-        content.append(struct.pack("46s", b""))  # 0000
+        num_ports = 0  # how many universes do we want to subscribe to
+        subscribed_universes = []
+        for idx, universe in enumerate(self._dmx.universes):
+            if universe.input == "ARTNET":
+                num_ports += 1
+                subscribed_universes.append(idx)
+
+            # the spec limits this to a max of 4 per ArtPollReply
+            # for more than 4 ports, we would need to send multiple replies
+            # and set BindIndex
+            if num_ports == 4:
+                break
+
+        # NumPortsLo/Hi, may be ignored by nodes
+        content.append(struct.pack(">H", num_ports))
+        for i in range(4):  # PortTypes
+            if i < num_ports:
+                content.append(struct.pack("B", 0b1000_0000))  # Output DMX
+            else:
+                content.append(struct.pack("B", 0))
+        content.append(struct.pack(">L", 0))  # GoodInput
+
+        for i in range(4):  # GoodOutputA
+            if self._dmx.artnet_status == "online":
+                # confirm we are receiving DMX data. ideally we would check this for every universe individually
+                content.append(struct.pack("B", 0b1000_0000))
+            else:
+                content.append(struct.pack("B", 0))  # not receiving any data
+
+        for i in range(4):  # SwIn
+            content.append(struct.pack("B", 5))
+
+        for i in range(4):  # SwOut
+            if i < num_ports:
+                content.append(struct.pack("B", subscribed_universes[i]))
+            else:
+                content.append(struct.pack("B", 0))
+
+        # AcnPriority, SwMacro, SwRemote, Spare[3]
+        content.append(struct.pack("6s", b""))
+        content.append(struct.pack("B", 0x06))  # Style: StVisual, a visualiser
+        content.append(struct.pack("27s", b""))  # 0000
 
         # stitch together
         return b"".join(content)

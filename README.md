@@ -13,7 +13,7 @@ A DMX visualization tool inside <a href="https://blender.org">Blender</a>, desig
 ## Installation
 
 Make sure you have [Blender](https://www.blender.org/download/) 4.x installed,
-minimal working version is 3.4 or 4.1 (via older addon), latest tested is 4.3
+minimal working version is 3.4 or 4.1 (via older addon), latest tested is 4.5
 via Extension.
 
 Go to [DOWNLOAD PAGE](https://blenderdmx.eu/download).
@@ -33,6 +33,22 @@ Having an open source visualizer in Python provides many opportunities to learn
 and understand how stuff works under the hood. Check out how each component
 works and make improvements or modifications as required. [Read
 more](https://blenderdmx.eu/community/#development) about development.
+
+
+## Contributors
+
+This project exists thanks to
+[all the people who contribute](https://github.com/open-stage/blender-dmx/graphs/contributors).
+
+You can contribute to the project by many ways:
+
+- Sharing visuals of your projects in the <a href="https://discord.gg/FQVVyc45T9">Gallery on Discord</a>
+- Posting visuals of your projects on social media of your choice
+- [Writing code](DEVELOPMENT.md)
+- <a href="https://github.com/open-stage/blender-dmx-web/tree/main/content/docs">Improving documentation</a>
+- <a href="https://hosted.weblate.org/projects/blenderdmx/main/">Helping with translation</a>
+
+<img src="https://contrib.nn.ci/api?repo=open-stage/blender-dmx&pages=5&no_bot=true&radius=22&cols=18">
 
 ## Donations
 
