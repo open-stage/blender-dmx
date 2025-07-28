@@ -102,117 +102,120 @@ def get_child_list(
     if viewport is not None:
         viewlayer.active_layer_collection = viewport
 
-    for truss_idx, truss_obj in enumerate(child_list.trusses):
-        existing = check_existing(truss_obj, layer_collection)
+    if hasattr(child_list, "trusses") and child_list.trusses:
+        for truss_idx, truss_obj in enumerate(child_list.trusses):
+            existing = check_existing(truss_obj, layer_collection)
 
-        if fixture_group is None:
-            group_name = truss_obj.name or "Truss"
-            fixture_group = FixtureGroup(group_name, truss_obj.uuid)
+            if fixture_group is None:
+                group_name = truss_obj.name or "Truss"
+                fixture_group = FixtureGroup(group_name, truss_obj.uuid)
 
-        if not existing:
-            process_mvr_object(
-                context,
-                mvr_scene,
-                truss_obj,
-                truss_idx,
-                mscale,
-                import_globals,
-                layer_collection,
-            )
+            if not existing:
+                process_mvr_object(
+                    context,
+                    mvr_scene,
+                    truss_obj,
+                    truss_idx,
+                    mscale,
+                    import_globals,
+                    layer_collection,
+                )
 
-        if hasattr(truss_obj, "child_list") and truss_obj.child_list:
-            get_child_list(
+            if hasattr(truss_obj, "child_list") and truss_obj.child_list:
+                get_child_list(
+                    dmx,
+                    mscale,
+                    mvr_scene,
+                    truss_obj.child_list,
+                    layer_index,
+                    folder_path,
+                    import_globals,
+                    layer_collection,
+                    fixture_group,
+                )
+    if hasattr(child_list, "scene_objects") and child_list.scene_objects:
+        for scene_idx, scene_obj in enumerate(child_list.scene_objects):
+            existing = check_existing(scene_obj, layer_collection)
+
+            if not existing:
+                process_mvr_object(
+                    context,
+                    mvr_scene,
+                    scene_obj,
+                    scene_idx,
+                    mscale,
+                    import_globals,
+                    layer_collection,
+                )
+
+            if hasattr(scene_obj, "child_list") and scene_obj.child_list:
+                get_child_list(
+                    dmx,
+                    mscale,
+                    mvr_scene,
+                    scene_obj.child_list,
+                    layer_index,
+                    folder_path,
+                    import_globals,
+                    layer_collection,
+                    fixture_group,
+                )
+
+    if hasattr(child_list, "fixtures") and child_list.fixtures:
+        for fixture_idx, fixture in enumerate(child_list.fixtures):
+            focus_point = mscale
+            if fixture.focus is not None:
+                focus_points = [
+                    fp for fp in child_list.focus_points if fp.uuid == fixture.focus
+                ]
+                if len(focus_points):
+                    focus_point = get_matrix(focus_points[0], mscale)
+
+            add_mvr_fixture(
                 dmx,
-                mscale,
                 mvr_scene,
-                truss_obj.child_list,
+                folder_path,
+                fixture,
+                fixture_idx,
                 layer_index,
-                folder_path,
+                focus_point,
                 import_globals,
-                layer_collection,
                 fixture_group,
             )
 
-    for scene_idx, scene_obj in enumerate(child_list.scene_objects):
-        existing = check_existing(scene_obj, layer_collection)
+            if hasattr(fixture, "child_list") and fixture.child_list:
+                get_child_list(
+                    dmx,
+                    mscale,
+                    mvr_scene,
+                    fixture.child_list,
+                    layer_index,
+                    folder_path,
+                    import_globals,
+                    layer_collection,
+                    fixture_group,
+                )
 
-        if not existing:
-            process_mvr_object(
-                context,
-                mvr_scene,
-                scene_obj,
-                scene_idx,
-                mscale,
-                import_globals,
-                layer_collection,
-            )
-
-        if hasattr(scene_obj, "child_list") and scene_obj.child_list:
-            get_child_list(
-                dmx,
-                mscale,
-                mvr_scene,
-                scene_obj.child_list,
-                layer_index,
-                folder_path,
-                import_globals,
-                layer_collection,
-                fixture_group,
-            )
-
-    for fixture_idx, fixture in enumerate(child_list.fixtures):
-        focus_point = mscale
-        if fixture.focus is not None:
-            focus_points = [
-                fp for fp in child_list.focus_points if fp.uuid == fixture.focus
-            ]
-            if len(focus_points):
-                focus_point = get_matrix(focus_points[0], mscale)
-
-        add_mvr_fixture(
-            dmx,
-            mvr_scene,
-            folder_path,
-            fixture,
-            fixture_idx,
-            layer_index,
-            focus_point,
-            import_globals,
-            fixture_group,
-        )
-
-        if hasattr(fixture, "child_list") and fixture.child_list:
-            get_child_list(
-                dmx,
-                mscale,
-                mvr_scene,
-                fixture.child_list,
-                layer_index,
-                folder_path,
-                import_globals,
-                layer_collection,
-                fixture_group,
-            )
-
-    for group_idx, group in enumerate(child_list.group_objects):
-        if hasattr(group, "child_list") and group.child_list:
-            layergroup_idx = f"{layer_index}-{group_idx}"
-            group_name = group.name or "Group"
-            group_name = (
-                "%s %d" % (group_name, group_idx) if group_idx >= 1 else group_name
-            )
-            fixture_group = FixtureGroup(group_name, group.uuid)
-            get_child_list(
-                dmx,
-                mscale,
-                mvr_scene,
-                group.child_list,
-                layergroup_idx,
-                folder_path,
-                import_globals,
-                layer_collection,
-                fixture_group,
-            )
+    if hasattr(child_list, "group_objects") and child_list.group_objects:
+        for group_idx, group in enumerate(child_list.group_objects):
+            if hasattr(group, "child_list") and group.child_list:
+                layergroup_idx = f"{layer_index}-{group_idx}"
+                group_name = group.name or "Group"
+                group_name = (
+                    "%s %d" % (group_name, group_idx) if group_idx >= 1 else group_name
+                )
+                fixture_group = FixtureGroup(group_name, group.uuid)
+                get_child_list(
+                    dmx,
+                    mscale,
+                    mvr_scene,
+                    group.child_list,
+                    layergroup_idx,
+                    folder_path,
+                    import_globals,
+                    layer_collection,
+                    fixture_group,
+                )
 
     for obj in viewlayer.active_layer_collection.collection.all_objects:
         obj.select_set(True)
