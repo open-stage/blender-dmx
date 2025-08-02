@@ -527,7 +527,7 @@ def add_mvr_fixture(
         existing_fixture.build(
             unique_name,
             fixture.gdtf_spec,
-            fixture.gdtf_mode,
+            fixture.gdtf_mode or "",
             addresses,
             gel_color,
             True,
@@ -551,7 +551,7 @@ def add_mvr_fixture(
         dmx.addFixture(
             unique_name,
             fixture.gdtf_spec,
-            fixture.gdtf_mode,
+            fixture.gdtf_mode or "",
             addresses,
             gel_color,
             True,
