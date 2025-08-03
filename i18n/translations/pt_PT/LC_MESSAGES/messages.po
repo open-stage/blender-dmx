@@ -8,63 +8,65 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-07-12 15:31+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
-"Language: pt\n"
+"PO-Revision-Date: 2025-08-04 20:02+0000\n"
+"Last-Translator: ssantos <ssantos@web.de>\n"
+"Language-Team: Portuguese (Portugal) <https://hosted.weblate.org/projects/"
+"blenderdmx/main/pt_PT/>\n"
+"Language: pt_PT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.13-dev\n"
 "Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
-msgstr ""
+msgstr "O ficheiro não existe"
 
 msgid "Fixture ID"
 msgstr ""
 
 msgid "Unit Number"
-msgstr ""
+msgstr "Número de unidade"
 
 msgid "Custom ID"
-msgstr ""
+msgstr "ID personalizado"
 
 msgid "DMX Address"
-msgstr ""
+msgstr "Endereço DMX"
 
 msgid "Position"
-msgstr ""
+msgstr "Posição"
 
 msgid "Rotation"
-msgstr ""
+msgstr "Rotação"
 
 msgid "Footprint"
-msgstr ""
+msgstr "Rastro"
 
 msgid "Physical Properties"
-msgstr ""
+msgstr "Propriedades físicas"
 
 msgid "DMX Collection"
-msgstr ""
+msgstr "Coleção DMX"
 
 msgid "Selected PSN Server"
 msgstr ""
 
 msgid "The selected element on the PSN server list"
-msgstr ""
+msgstr "O elemento selecionado na lista de servidores PSN"
 
 msgid "Class List i"
 msgstr ""
 
 msgid "The selected element on the class list"
-msgstr ""
+msgstr "O elemento selecionado na lista de classes"
 
 msgid "Universe"
-msgstr ""
+msgstr "Universo"
 
 msgid "Editable"
-msgstr ""
+msgstr "Editável"
 
 msgid "Display Pigtails"
 msgstr ""
@@ -79,13 +81,13 @@ msgid "Device Label"
 msgstr ""
 
 msgid "None"
-msgstr ""
+msgstr "Nenhum"
 
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
 msgid "DMX"
-msgstr ""
+msgstr "DMX"
 
 msgid "Allow Selecting Geometries"
 msgstr ""
@@ -94,19 +96,19 @@ msgid "Logging Level"
 msgstr ""
 
 msgid "Critical"
-msgstr ""
+msgstr "Crítico"
 
 msgid "Error"
-msgstr ""
+msgstr "Erro"
 
 msgid "Warning"
 msgstr ""
 
 msgid "Info"
-msgstr ""
+msgstr "Informação"
 
 msgid "Debug"
-msgstr ""
+msgstr "Depuração"
 
 msgid "Simple beam"
 msgstr ""
@@ -269,7 +271,7 @@ msgid ""
 msgstr ""
 
 msgid "Pause renderer"
-msgstr ""
+msgstr "Pausar renderização"
 
 msgid "Manufacturers"
 msgstr ""
@@ -278,7 +280,7 @@ msgid "Imports"
 msgstr ""
 
 msgid "Add to selection"
-msgstr ""
+msgstr "Adicionar para seleção"
 
 msgid "Remove from selection"
 msgstr ""
@@ -340,13 +342,13 @@ msgid "Use Channel Functions of this fixture"
 msgstr ""
 
 msgid "DMX Universe"
-msgstr ""
+msgstr "Universo DMX"
 
 msgid "Address"
 msgstr ""
 
 msgid "Gel Color"
-msgstr ""
+msgstr "Cor do gel"
 
 msgid "Display beams"
 msgstr ""
@@ -375,7 +377,7 @@ msgid ""
 msgstr ""
 
 msgid "Units"
-msgstr ""
+msgstr "Unidades"
 
 msgid "How many units of this light to add"
 msgstr ""
@@ -551,7 +553,7 @@ msgid "Modify Fixture ID"
 msgstr ""
 
 msgid "GDTF Profile"
-msgstr ""
+msgstr "Perfil GDTF"
 
 msgid "DMX: Add Fixture"
 msgstr ""
@@ -609,7 +611,7 @@ msgid "Remove fixture"
 msgstr ""
 
 msgid "Fixtures"
-msgstr ""
+msgstr "Dispositivos elétricos"
 
 msgid "F ID"
 msgstr ""
@@ -786,7 +788,7 @@ msgid "Select camera of the selected fixture"
 msgstr ""
 
 msgid "Programmer"
-msgstr ""
+msgstr "Programador"
 
 msgid "Nothing selected"
 msgstr ""
@@ -1026,10 +1028,10 @@ msgid ""
 msgstr ""
 
 msgid "File Path"
-msgstr ""
+msgstr "Diretório do ficheiro"
 
 msgid "Files"
-msgstr ""
+msgstr "Ficheiros"
 
 msgid "Incorrect file name!"
 msgstr ""
@@ -1104,34 +1106,34 @@ msgstr ""
 
 #, python-brace-format
 msgid "Share index updated. Status code was: {}"
-msgstr ""
+msgstr "Indexação Share atualizada. Estado do código: {}"
 
 msgid "GDTF Share updated"
-msgstr ""
+msgstr "GDTF Share enviado"
 
 #, python-brace-format
 msgid "Error while updating Share index. Error code was: {}"
-msgstr ""
+msgstr "Erro ao atualizar a indexação Share. Código do erro: {}"
 
 msgid "GDTF Share update error"
-msgstr ""
+msgstr "Erro ao enviar o GDTF Share"
 
 #, python-brace-format
 msgid "File downloaded correctly. Status code was: {}"
-msgstr ""
+msgstr "Ficheiro descarregado corretamente. O código de estado era : {}"
 
 msgid "GDTF file downloaded"
-msgstr ""
+msgstr "Ficheiro GDTF descarregado"
 
 #, python-brace-format
 msgid "Error downloading GDTF file. Error code was: {}"
-msgstr ""
+msgstr "Erro ao descarregar o ficheiro GDTF. Código do erro: {}"
 
 msgid "GDTF Share download error"
-msgstr ""
+msgstr "Erro ao descarregar o GDTF Share"
 
 msgid "The name of the DMX profile."
-msgstr ""
+msgstr "O nome do perfil DMX."
 
 msgid "Channel count"
 msgstr ""
@@ -1140,7 +1142,7 @@ msgid "Number of channels"
 msgstr ""
 
 msgid "Short Name"
-msgstr ""
+msgstr "Nome curto"
 
 msgid ""
 "The short name of the DMX profile, all caps, used as suggestion for "
@@ -1148,82 +1150,82 @@ msgid ""
 msgstr ""
 
 msgid "Filename"
-msgstr ""
+msgstr "Nome do ficheiro"
 
 msgid "Mode name"
-msgstr ""
+msgstr "Nome do modo"
 
 msgid "DMX Footprint"
-msgstr ""
+msgstr "Rastro DMX"
 
 msgid "Fixture name"
-msgstr ""
+msgstr "Nome do dispositivo elétrico"
 
 msgid "Manufacturer and fixture name"
-msgstr ""
+msgstr "Nome do fabricante e do dispositivo elétrico"
 
 msgid "Manufacturer"
-msgstr ""
+msgstr "Fabricante"
 
 msgid "Manufacturer name"
-msgstr ""
+msgstr "Nome do fabricante"
 
 msgid "Revision"
-msgstr ""
+msgstr "Revisão"
 
 msgid "Revision text"
-msgstr ""
+msgstr "Texto de revisão"
 
 msgid "Uploaded by"
-msgstr ""
+msgstr "Carregado por"
 
 msgid "File uploaded by"
-msgstr ""
+msgstr "Ficheiro carregado por"
 
 msgid "Created by"
-msgstr ""
+msgstr "Criado por"
 
 msgid "File created by"
-msgstr ""
+msgstr "Ficheiro criado por"
 
 msgid "Rating"
-msgstr ""
+msgstr "Avaliação"
 
 msgid "Revision ID"
-msgstr ""
+msgstr "ID de revisão"
 
 msgid "File identifier in the GDTF Share"
-msgstr ""
+msgstr "Identificador de ficheiro no GDTF Share"
 
 msgid "DMX Modes"
-msgstr ""
+msgstr "Modos DMX"
 
 msgid "DMX Mode Name"
-msgstr ""
+msgstr "Nome do modo DMX"
 
 msgid "Import from Share"
-msgstr ""
+msgstr "Importar para Share"
 
 msgid "Import fixture from GDTF Share"
-msgstr ""
+msgstr "Importar dispositivo elétrico do GDTF Share"
 
 msgid "Update GDTF Share index"
-msgstr ""
+msgstr "Atualizar indexação do GDTF Share"
 
 msgid "Update data index of GDTF Share"
-msgstr ""
+msgstr "Atualizar dado de indexação do GDTF Share"
 
 msgid "Delete fixture"
-msgstr ""
+msgstr "Apagar dispositivo elétrico"
 
 msgid "Delete fixture from local filesystem"
-msgstr ""
+msgstr "Apagar dispositivo elétrico do ficheiro local do sistema"
 
 msgid "Refresh files listing"
-msgstr ""
+msgstr "Atualizar a listagem de ficheiros"
 
 msgid "Update list of local files"
-msgstr ""
+msgstr "Atualizar a lista dos ficheiros locais"
 
 msgid "GDTF Share"
 msgstr ""
@@ -1232,13 +1234,13 @@ msgid "You must Allow Online access for this to work:"
 msgstr ""
 
 msgid "Fixture details"
-msgstr ""
+msgstr "Pormenores do dispositivo elétrico"
 
 msgid "Local Fixture files"
 msgstr ""
 
 msgid "Local Fixture details"
-msgstr ""
+msgstr "Pormenores do dispositivo local"
 
 msgid "Profiles"
 msgstr ""
@@ -1254,7 +1256,7 @@ msgid "Art-Net set for {} universe(s)"
 msgstr ""
 
 msgid "Status"
-msgstr ""
+msgstr "Estado"
 
 msgid "Live DMX"
 msgstr ""
@@ -1389,4 +1391,4 @@ msgid "DMX > Universe Menu"
 msgstr ""
 
 msgid "Universes"
-msgstr ""
+msgstr "Universos"
