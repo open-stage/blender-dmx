@@ -73,7 +73,7 @@ class mvrx_message:
     join_message_ret = {
         "Commits": [],
         "Message": "",
-        "OK": "true",
+        "OK": True,
         "Provider": defined_provider_name,
         "StationName": defined_station_name,
         "StationUUID": "",
@@ -82,9 +82,9 @@ class mvrx_message:
         "verMinor": 6,
     }
 
-    leave_message_ret = {"Type": "MVR_LEAVE_RET", "OK": "true", "Message": ""}
+    leave_message_ret = {"Type": "MVR_LEAVE_RET", "OK": True, "Message": ""}
 
-    commit_message_ret = {"Type": "MVR_COMMIT_RET", "OK": "true", "Message": ""}
+    commit_message_ret = {"Type": "MVR_COMMIT_RET", "OK": True, "Message": ""}
 
     request_message = {
         "Type": "MVR_REQUEST",
@@ -92,7 +92,7 @@ class mvrx_message:
         "FromStationUUID": [],
     }
 
-    request_message_ret = {"Type": "MVR_REQUEST_RET", "OK": "false", "Message": ""}
+    request_message_ret = {"Type": "MVR_REQUEST_RET", "OK": False, "Message": ""}
 
     join_message = {
         "Type": "MVR_JOIN",
