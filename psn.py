@@ -57,11 +57,9 @@ class DMX_PSN:
         DMX_PSN._data[uuid] = [
             [],
         ] * 10  # hardcoded to 10 slots
-        if bpy.app.timers.is_registered(DMX_PSN.run_render):
-            # we are already rendering
-            pass
-        else:
-            bpy.app.timers.register(DMX_PSN.run_render)
+
+        dmx = bpy.context.scene.dmx
+        dmx.register_render_toggle(True)
 
     @staticmethod
     def disable(tracker):
@@ -75,12 +73,9 @@ class DMX_PSN:
             DMX_PSN._instances.pop(uuid, None)
             DMX_PSN._data.pop(uuid, None)
             DMX_Log.log.info(f"Disabled PSN {uuid}")
-        if bpy.app.timers.is_registered(DMX_PSN.run_render):
-            if len(DMX_PSN._instances) > 0:
-                # we still need the render
-                pass
-            else:
-                bpy.app.timers.unregister(DMX_PSN.run_render)
+
+        dmx = bpy.context.scene.dmx
+        dmx.register_render_toggle(False)
 
     @staticmethod
     def get_data(tracker_uuid):
@@ -91,8 +86,3 @@ class DMX_PSN:
     @staticmethod
     def set_data(tracker_uuid, slot, data):
         DMX_PSN._data[tracker_uuid][slot] = data
-
-    @staticmethod
-    def run_render():
-        bpy.context.scene.dmx.render()
-        return 1.0 / 60.0
