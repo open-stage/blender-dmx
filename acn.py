@@ -71,7 +71,6 @@ class DMX_sACN:
             )
             DMX_Log.log.info(("Joining sACN universe:", universe))
             DMX_sACN._instance.receiver.join_multicast(universe)
-        bpy.app.timers.register(DMX_sACN.run_render)
         dmx.sacn_status = "listen"
 
     @staticmethod
@@ -86,11 +85,3 @@ class DMX_sACN:
             DMX_sACN._instance.data = None
             DMX_sACN._instance = None
         dmx.set_acn_status = "offline"
-
-        if bpy.app.timers.is_registered(DMX_sACN.run_render):
-            bpy.app.timers.unregister(DMX_sACN.run_render)
-
-    @staticmethod
-    def run_render():
-        bpy.context.scene.dmx.render()
-        return 1.0 / 60.0

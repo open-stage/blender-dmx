@@ -270,11 +270,6 @@ class DMX_ArtNet(threading.Thread):
         return b"".join(content)
 
     @staticmethod
-    def run_render():
-        bpy.context.scene.dmx.render()
-        return 1.0 / 60.0
-
-    @staticmethod
     def enable():
         if DMX_ArtNet._thread:
             DMX_Log.log.warning("ArtNet client was already started before.")
@@ -293,16 +288,11 @@ class DMX_ArtNet(threading.Thread):
             return
         DMX_ArtNet._thread.start()
 
-        bpy.app.timers.register(DMX_ArtNet.run_render)
-
         dmx.artnet_status = "listen"
         DMX_Log.log.info("ArtNet client started.")
 
     @staticmethod
     def disable():
-        if bpy.app.timers.is_registered(DMX_ArtNet.run_render):
-            bpy.app.timers.unregister(DMX_ArtNet.run_render)
-
         dmx = bpy.context.scene.dmx
 
         if DMX_ArtNet._thread:

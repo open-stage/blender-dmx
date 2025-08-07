@@ -47,6 +47,7 @@ from . import fixture
 from . import param as param
 from . import tracker as tracker
 from .acn import DMX_sACN
+from .psn import DMX_PSN
 from .artnet import DMX_ArtNet
 from .blender_utils import copy_blender_profiles, get_application_version
 from .data import DMX_Data, DMX_Value
@@ -1325,8 +1326,9 @@ class DMX(PropertyGroup):
     def onsACNEnable(self, context):
         if self.sacn_enabled:
             DMX_sACN.enable()
-
+            self.register_render_toggle(True)
         else:
+            self.register_render_toggle(False)
             DMX_sACN.disable()
 
     # # DMX > ArtNet > Enable
@@ -1334,7 +1336,9 @@ class DMX(PropertyGroup):
     def onArtNetEnable(self, context):
         if self.artnet_enabled:
             DMX_ArtNet.enable()
+            self.register_render_toggle(True)
         else:
+            self.register_render_toggle(False)
             DMX_ArtNet.disable()
 
     # fmt: off
@@ -2513,3 +2517,30 @@ class DMX(PropertyGroup):
                 collection_info = nodes.node.nodes["Collection Info"]
                 collection = bpy.context.window_manager.dmx.collections_list
                 collection_info.inputs[0].default_value = collection
+
+    def register_render_toggle(self, enable):
+        is_running = bpy.context.window_manager.dmx.render_running
+        if enable:
+            if is_running:
+                return
+            bpy.context.window_manager.dmx.render_running = True
+            bpy.app.timers.register(self.run_render)
+        else:
+            if len(DMX_PSN._instances) > 0:
+                return
+            if self.artnet_enabled:
+                return
+            if self.sacn_enabled:
+                return
+            if is_running:
+                bpy.context.window_manager.dmx.render_running = False
+                try:
+                    bpy.app.timers.unregister(self.run_render)
+                except:
+                    pass
+
+    def run_render(self):
+        if not bpy.context.window_manager.dmx.render_running:
+            return None
+        self.render()
+        return 1.0 / 44.0  # run at the same speed as maximum DMX framerate
