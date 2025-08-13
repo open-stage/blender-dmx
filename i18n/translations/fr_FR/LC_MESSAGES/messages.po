@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-07-12 15:31+0200\n"
-"PO-Revision-Date: 2025-06-04 16:47+0000\n"
-"Last-Translator: CharlyTheSneaky <charlescoubronne06102002@gmail.com>\n"
+"PO-Revision-Date: 2025-08-14 19:02+0000\n"
+"Last-Translator: Antoine <101528392+Antoine489@users.noreply.github.com>\n"
+"Language-Team: French <https://hosted.weblate.org/projects/blenderdmx/main/"
+"fr/>\n"
 "Language: fr_FR\n"
-"Language-Team: French "
-"<https://hosted.weblate.org/projects/blenderdmx/main/fr/>\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.13-dev\n"
 "Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
@@ -46,7 +47,7 @@ msgid "Footprint"
 msgstr ""
 
 msgid "Physical Properties"
-msgstr ""
+msgstr "Propriétés Physiques"
 
 msgid "DMX Collection"
 msgstr ""
@@ -55,27 +56,28 @@ msgstr ""
 msgid "Selected PSN Server"
 msgstr "Supprimer projecteur"
 
+#, fuzzy
 msgid "The selected element on the PSN server list"
-msgstr ""
+msgstr "L'élément sélectionné sur la liste du serveur PSN"
 
 msgid "Class List i"
 msgstr ""
 
 msgid "The selected element on the class list"
-msgstr ""
+msgstr "L'élément sélectionné sur la liste des classes"
 
 #, fuzzy
 msgid "Universe"
 msgstr "Univers"
 
 msgid "Editable"
-msgstr ""
+msgstr "Modifiable"
 
 msgid "Display Pigtails"
 msgstr ""
 
 msgid "Display 2D View"
-msgstr ""
+msgstr "Afficher Vue 2D"
 
 msgid "Display Device Label"
 msgstr ""
@@ -84,35 +86,37 @@ msgid "Device Label"
 msgstr ""
 
 msgid "None"
-msgstr ""
+msgstr "Aucun"
 
 msgid "Name"
 msgstr "Nom"
 
 msgid "DMX"
-msgstr ""
+msgstr "DMX"
 
 msgid "Allow Selecting Geometries"
 msgstr ""
 
+#, fuzzy
 msgid "Logging Level"
-msgstr ""
+msgstr "Niveau de journalisation"
 
+#, fuzzy
 msgid "Critical"
-msgstr ""
+msgstr "Critique"
 
 msgid "Error"
-msgstr ""
+msgstr "Erreur"
 
 #, fuzzy
 msgid "Warning"
 msgstr "évaluation"
 
 msgid "Info"
-msgstr ""
+msgstr "Info"
 
 msgid "Debug"
-msgstr ""
+msgstr "Debug"
 
 msgid "Simple beam"
 msgstr ""
@@ -137,13 +141,13 @@ msgid ""
 msgstr ""
 
 msgid "Reduced"
-msgstr ""
+msgstr "Réduit"
 
 msgid "Full width"
-msgstr ""
+msgstr "Largeur complète"
 
 msgid "Custom per each beam"
-msgstr ""
+msgstr "Personnalisé pour chaque faisceau"
 
 msgid "Disable Beam Outlines"
 msgstr ""
@@ -158,7 +162,7 @@ msgid "Volume Noise Scale"
 msgstr ""
 
 msgid "Density"
-msgstr ""
+msgstr "Densité"
 
 msgid "Volume Scatter Density"
 msgstr ""
@@ -1806,4 +1810,3 @@ msgstr "Univers"
 
 #~ msgid "Some fixtures could not be processed"
 #~ msgstr ""
-
