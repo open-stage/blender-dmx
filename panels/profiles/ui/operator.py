@@ -73,8 +73,10 @@ class DMX_OP_Update_Local_Fixtures(Operator):
     bl_options = {"UNDO"}
 
     def execute(self, context):
+        context.window.cursor_set("WAIT")
         Profiles.DMX_Fixtures_Local_Profile.loadLocal(
             recreate_profiles=True, write_cache=True
         )
         DMX_GDTF_File.get_manufacturers_list()
+        context.window.cursor_set("DEFAULT")
         return {"FINISHED"}

@@ -34,6 +34,7 @@ from .color_utils import xyY2rgbaa
 
 auxData = {}
 objectData = {}
+direct_fixture_children = []
 
 
 def create_mvr_props(mvr_obj, cls, name="", uid=False, ref=None, classing=None):
@@ -95,6 +96,7 @@ def get_child_list(
     import_globals,
     layer_collection,
     fixture_group=None,
+    parent_object=None,
 ):
     context = bpy.context
     viewlayer = context.view_layer
@@ -132,6 +134,7 @@ def get_child_list(
                     import_globals,
                     layer_collection,
                     fixture_group,
+                    truss_obj,
                 )
     if hasattr(child_list, "scene_objects") and child_list.scene_objects:
         for scene_idx, scene_obj in enumerate(child_list.scene_objects):
@@ -159,6 +162,7 @@ def get_child_list(
                     import_globals,
                     layer_collection,
                     fixture_group,
+                    scene_obj,
                 )
 
     if hasattr(child_list, "fixtures") and child_list.fixtures:
@@ -181,6 +185,7 @@ def get_child_list(
                 focus_point,
                 import_globals,
                 fixture_group,
+                parent_object,
             )
 
             if hasattr(fixture, "child_list") and fixture.child_list:
@@ -194,6 +199,7 @@ def get_child_list(
                     import_globals,
                     layer_collection,
                     fixture_group,
+                    fixture,
                 )
 
     if hasattr(child_list, "group_objects") and child_list.group_objects:
@@ -215,6 +221,7 @@ def get_child_list(
                     import_globals,
                     layer_collection,
                     fixture_group,
+                    group,
                 )
 
     for obj in viewlayer.active_layer_collection.collection.all_objects:
@@ -479,6 +486,7 @@ def add_mvr_fixture(
     focus_point,
     import_globals,
     fixture_group=None,
+    parent_object=None,
 ):
     """Add fixture to the scene"""
 
@@ -566,6 +574,14 @@ def add_mvr_fixture(
             classing=fixture.classing,
         )
 
+    if parent_object is not None:
+        direct_fixture_children.append(
+            SimpleNamespace(
+                child_uuid=fixture.uuid,
+                parent_uuid=parent_object.uuid,
+            )
+        )
+
     if fixture_group is not None:
         if fixture_group.name in dmx.groups:
             group = dmx.groups[fixture_group.name]
@@ -579,6 +595,29 @@ def add_mvr_fixture(
             dump = []
         dump.append(fixture.uuid)
         group.dump = json.dumps(dump)
+
+
+def perform_direct_parenting(dmx):
+    for item in direct_fixture_children:
+        child_object = None
+        parent_object = None
+        child_fixture = dmx.findFixtureByUUID(item.child_uuid)
+        if child_fixture:
+            try:
+                child_object = child_fixture.objects["Root"].object
+            except:
+                ...
+        parent_object = next(
+            (
+                obj
+                for obj in bpy.data.objects
+                if obj.get("UUID", "") == item.parent_uuid
+            ),
+            None,
+        )
+        if child_object is not None and parent_object is not None:
+            child_object.parent = parent_object
+            child_object.matrix_parent_inverse = parent_object.matrix_world.inverted()
 
 
 def load_mvr(dmx, file_name, import_focus_points):
@@ -677,6 +716,7 @@ def load_mvr(dmx, file_name, import_focus_points):
             import_globals,
             layer_collection,
             fixture_group,
+            layer,
         )
 
         if (
@@ -686,6 +726,7 @@ def load_mvr(dmx, file_name, import_focus_points):
             layer_collect.children.unlink(layer_collection)
 
     transform_objects(layers, mscale)
+    perform_direct_parenting(dmx)
 
     if auxData.items():
         aux_type = auxdata.__class__.__name__
@@ -746,6 +787,7 @@ def load_mvr(dmx, file_name, import_focus_points):
 
     auxData.clear()
     objectData.clear()
+    direct_fixture_children.clear()
     viewlayer.update()
     imported_layers.clear()
     if mvr_scene is not None:

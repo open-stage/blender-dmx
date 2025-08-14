@@ -100,6 +100,7 @@ class DMX_Fixtures_Manager:
 
     def update_share_index(self):
         prefs = bpy.context.preferences.addons[base_package].preferences
+        bpy.context.window.cursor_set("WAIT")
         api_username = prefs.get("share_api_username", None)
         api_password = prefs.get("share_api_password", None)
         dmx = bpy.context.scene.dmx

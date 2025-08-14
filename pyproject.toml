@@ -11,3 +11,8 @@ dependencies = [
     "pre-commit>=4.1.0",
     "ruff>=0.9.3",
 ]
+
+[dependency-groups]
+dev = [
+    "pymvr>=1.0.0",
+]
