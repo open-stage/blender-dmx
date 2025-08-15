@@ -186,6 +186,7 @@ def get_child_list(
                 import_globals,
                 fixture_group,
                 parent_object,
+                layer_collection,
             )
 
             if hasattr(fixture, "child_list") and fixture.child_list:
@@ -487,6 +488,7 @@ def add_mvr_fixture(
     import_globals,
     fixture_group=None,
     parent_object=None,
+    layer_collection=None,
 ):
     """Add fixture to the scene"""
 
@@ -595,6 +597,11 @@ def add_mvr_fixture(
             dump = []
         dump.append(fixture.uuid)
         group.dump = json.dumps(dump)
+
+        added_fixture = dmx.findFixtureByUUID(fixture.uuid)
+        if added_fixture:
+            added_fixture["layer_name"] = layer_collection.name
+            added_fixture["layer_uuid"] = layer_collection.get("UUID", None)
 
 
 def perform_direct_parenting(dmx):

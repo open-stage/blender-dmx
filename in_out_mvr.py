@@ -156,6 +156,12 @@ class DMX_OT_Export_MVR(Operator, ExportHelper):
 
     filename_ext = ".mvr"
 
+    export_focus_points: BoolProperty(
+        name=_("Export Focus Points as Targets"),
+        description=_("Export Targets as MVR Focus Points"),
+        default=True,
+    )
+
     def draw(self, context):
         dmx = context.scene.dmx
         if not dmx.collection:
@@ -163,11 +169,15 @@ class DMX_OT_Export_MVR(Operator, ExportHelper):
         layout = self.layout
         layout.use_property_split = True
         layout.use_property_decorate = False
+        box = layout.column().box()
+        box.prop(self, "export_focus_points")
 
     def execute(self, context):
         dmx = context.scene.dmx
         DMX_Log.log.info(self.filepath)
-        result = dmx.export_mvr(self.filepath)
+        result = dmx.export_mvr(
+            self.filepath, export_focus_points=self.export_focus_points
+        )
 
         if result.ok:
             self.report({"INFO"}, "Data exported to: {}".format(self.filepath))

@@ -2125,7 +2125,7 @@ class DMX(PropertyGroup):
                     return True
         return False
 
-    def export_mvr(self, file_name):
+    def export_mvr(self, file_name, export_focus_points=True):
         start_time = time.time()
         bpy.context.window_manager.dmx.pause_render = (
             True  # this stops the render loop, to prevent slowness and crashes
@@ -2142,25 +2142,54 @@ class DMX(PropertyGroup):
 
             pymvr.UserData().to_xml(parent=mvr.xml_root)
 
-            layer = pymvr.Layer(name="DMX")
-            child_list = pymvr.ChildList()
-            child_list.fixtures.clear()
-            child_list.focus_points.clear()
-            layer.child_list = child_list
+            layers = pymvr.Layers()
+            layers.clear()
+
+            dmx_layer = pymvr.Layer(name="DMX")
+            dmx_child_list = pymvr.ChildList()
+            dmx_child_list.fixtures.clear()
+            dmx_child_list.focus_points.clear()
+            dmx_layer.child_list = dmx_child_list
 
             for dmx_fixture in dmx.fixtures:
+                fixture_layer_name = dmx_fixture.get("layer_name", None)
+                fixture_layer_uuid = dmx_fixture.get("layer_uuid", None)
+                existing_layer = None
+                if fixture_layer_uuid is not None:
+                    existing_layer_list = [
+                        layer_ for layer_ in layers if layer_.uuid == fixture_layer_uuid
+                    ]
+                    if len(existing_layer_list):
+                        existing_layer = existing_layer_list[0]
+                        layer = existing_layer
+                        child_list = layer.child_list
+                    else:
+                        new_layer = pymvr.Layer(
+                            name=fixture_layer_name, uuid=fixture_layer_uuid
+                        )
+                        new_child_list = pymvr.ChildList()
+                        new_child_list.fixtures.clear()
+                        new_child_list.focus_points.clear()
+                        new_layer.child_list = new_child_list
+                        layers.append(new_layer)
+                        layer = new_layer
+                        child_list = layer.child_list
+
+                else:
+                    layer = dmx_layer
+                    child_list = layer.child_list
+
                 fixture_object = dmx_fixture.to_mvr_fixture(universe_add=universe_add)
                 focus_point = dmx_fixture.focus_to_mvr_focus_point()
-                if focus_point is not None:
+                if export_focus_points and focus_point is not None:
                     child_list.focus_points.append(focus_point)
                 child_list.fixtures.append(fixture_object)
                 if fixture_object.gdtf_spec:
                     file_path = os.path.join(folder_path, fixture_object.gdtf_spec)
                     fixtures_list.append((file_path, fixture_object.gdtf_spec))
 
-            layers = pymvr.Layers()
-            layers.clear()
-            layers.append(layer)
+            if dmx_layer.child_list.fixtures and len(dmx_layer.child_list.fixtures):
+                layers.append(dmx_layer)
             scene = pymvr.Scene(layers=layers, aux_data=pymvr.AUXData())
             scene.to_xml(parent=mvr.xml_root)
 
