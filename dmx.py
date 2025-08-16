@@ -2093,12 +2093,26 @@ class DMX(PropertyGroup):
 
         return fixtures
 
-    def addMVR(self, file_name, import_focus_points=True):
+    def addMVR(
+        self,
+        file_name,
+        import_focus_points=True,
+        import_fixtures=True,
+        import_trusses=True,
+        import_scene_objects=True,
+    ):
         bpy.context.window_manager.dmx.pause_render = (
             True  # this stops the render loop, to prevent slowness and crashes
         )
 
-        load_mvr(self, file_name, import_focus_points=import_focus_points)
+        load_mvr(
+            self,
+            file_name,
+            import_focus_points=import_focus_points,
+            import_fixtures=import_fixtures,
+            import_trusses=import_trusses,
+            import_scene_objects=import_scene_objects,
+        )
 
         bpy.context.window_manager.dmx.pause_render = False  # re-enable render loop
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
@@ -2125,7 +2139,9 @@ class DMX(PropertyGroup):
                     return True
         return False
 
-    def export_mvr(self, file_name, export_focus_points=True):
+    def export_mvr(
+        self, file_name, export_focus_points=True, selected_fixtures_only=False
+    ):
         start_time = time.time()
         bpy.context.window_manager.dmx.pause_render = (
             True  # this stops the render loop, to prevent slowness and crashes

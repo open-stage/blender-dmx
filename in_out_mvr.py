@@ -26,8 +26,7 @@ from bpy_extras.io_utils import ExportHelper, ImportHelper
 
 from .logging_setup import DMX_Log
 
-if bpy.app.version >= (4, 2):
-    from bpy_extras.io_utils import poll_file_object_drop
+from bpy_extras.io_utils import poll_file_object_drop
 
 from threading import Timer
 
@@ -126,6 +125,24 @@ class DMX_OT_Import_MVR(Operator, ImportHelper):
         default=True,
     )
 
+    import_fixtures: BoolProperty(
+        name=_("Import Fixtures"),
+        description=_("Import Fixtures"),
+        default=True,
+    )
+
+    import_trusses: BoolProperty(
+        name=_("Import Trusses"),
+        description=_("Import Trusses"),
+        default=True,
+    )
+
+    import_scene_objects: BoolProperty(
+        name=_("Import Scene Objects"),
+        description=_("Import Scene Objects"),
+        default=True,
+    )
+
     def draw(self, context):
         dmx = context.scene.dmx
         if not dmx.collection:
@@ -134,7 +151,14 @@ class DMX_OT_Import_MVR(Operator, ImportHelper):
         layout.use_property_split = True
         layout.use_property_decorate = False
         box = layout.column().box()
-        box.prop(self, "import_focus_points")
+        row1 = box.row()
+        row1.prop(self, "import_fixtures")
+        row2 = box.row()
+        row2.prop(self, "import_focus_points")
+        row2.enabled = self.import_fixtures
+        row3 = box.row()
+        row3.prop(self, "import_trusses")
+        # box.prop(self, "import_scene_objects")
 
     def execute(self, context):
         dmx = context.scene.dmx
@@ -143,7 +167,13 @@ class DMX_OT_Import_MVR(Operator, ImportHelper):
                 continue
             file_path = os.path.join(self.directory, file.name)
             print("INFO", f"Processing MVR file: {file_path}")
-            dmx.addMVR(file_path, import_focus_points=self.import_focus_points)
+            dmx.addMVR(
+                file_path,
+                import_focus_points=self.import_focus_points,
+                import_fixtures=self.import_fixtures,
+                import_trusses=self.import_trusses,
+                import_scene_objects=self.import_scene_objects,
+            )
         return {"FINISHED"}
 
 
@@ -162,6 +192,12 @@ class DMX_OT_Export_MVR(Operator, ExportHelper):
         default=True,
     )
 
+    selected_fixtures_only: BoolProperty(
+        name=_("Export only selected fixtures"),
+        description=_("Export only selected fixtures"),
+        default=False,
+    )
+
     def draw(self, context):
         dmx = context.scene.dmx
         if not dmx.collection:
@@ -171,12 +207,15 @@ class DMX_OT_Export_MVR(Operator, ExportHelper):
         layout.use_property_decorate = False
         box = layout.column().box()
         box.prop(self, "export_focus_points")
+        box.prop(self, "selected_fixtures_only")
 
     def execute(self, context):
         dmx = context.scene.dmx
         DMX_Log.log.info(self.filepath)
         result = dmx.export_mvr(
-            self.filepath, export_focus_points=self.export_focus_points
+            self.filepath,
+            export_focus_points=self.export_focus_points,
+            selected_fixtures_only=self.selected_fixtures_only,
         )
 
         if result.ok:
@@ -187,19 +226,16 @@ class DMX_OT_Export_MVR(Operator, ExportHelper):
         return {"FINISHED"}
 
 
-if bpy.app.version >= (4, 1):
+class DMX_IO_FH_MVR(bpy.types.FileHandler):
+    bl_idname = "IO_FH_mvr"
+    bl_label = "MVR"
+    bl_import_operator = "dmx.import_mvr_into_scene"
+    bl_export_operator = "dmx.export_mvr_from_scene"
+    bl_file_extensions = ".mvr"
 
-    class DMX_IO_FH_MVR(bpy.types.FileHandler):
-        bl_idname = "IO_FH_mvr"
-        bl_label = "MVR"
-        bl_import_operator = "dmx.import_mvr_into_scene"
-        bl_export_operator = "dmx.export_mvr_from_scene"
-        bl_file_extensions = ".mvr"
-
-        @classmethod
-        def poll_drop(cls, context):
-            if bpy.app.version >= (4, 2):
-                return poll_file_object_drop(context)
+    @classmethod
+    def poll_drop(cls, context):
+        return poll_file_object_drop(context)
 
 
 def menu_func_export(self, context):
@@ -221,15 +257,13 @@ def register():
     bpy.utils.register_class(DMX_OT_Export_MVR)
     bpy.types.TOPBAR_MT_file_import.append(menu_func_import)
     bpy.types.TOPBAR_MT_file_export.append(menu_func_export)
-    if bpy.app.version >= (4, 1):
-        bpy.utils.register_class(DMX_IO_FH_MVR)
+    bpy.utils.register_class(DMX_IO_FH_MVR)
 
 
 def unregister():
     bpy.types.TOPBAR_MT_file_import.remove(menu_func_import)
     bpy.types.TOPBAR_MT_file_export.remove(menu_func_export)
-    if bpy.app.version >= (4, 1):
-        bpy.utils.unregister_class(DMX_IO_FH_MVR)
+    bpy.utils.unregister_class(DMX_IO_FH_MVR)
     bpy.utils.unregister_class(DMX_OT_Import_MVR)
     bpy.utils.unregister_class(DMX_OT_LoadShare_MVR)
     bpy.utils.unregister_class(DMX_OT_SaveShared_MVR)

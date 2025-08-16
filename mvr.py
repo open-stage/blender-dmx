@@ -112,7 +112,7 @@ def get_child_list(
                 group_name = truss_obj.name or "Truss"
                 fixture_group = FixtureGroup(group_name, truss_obj.uuid)
 
-            if not existing:
+            if not existing and import_globals.import_trusses:
                 process_mvr_object(
                     context,
                     mvr_scene,
@@ -140,7 +140,7 @@ def get_child_list(
         for scene_idx, scene_obj in enumerate(child_list.scene_objects):
             existing = check_existing(scene_obj, layer_collection)
 
-            if not existing:
+            if not existing and import_globals.import_scene_objects:
                 process_mvr_object(
                     context,
                     mvr_scene,
@@ -174,20 +174,20 @@ def get_child_list(
                 ]
                 if len(focus_points):
                     focus_point = get_matrix(focus_points[0], mscale)
-
-            add_mvr_fixture(
-                dmx,
-                mvr_scene,
-                folder_path,
-                fixture,
-                fixture_idx,
-                layer_index,
-                focus_point,
-                import_globals,
-                fixture_group,
-                parent_object,
-                layer_collection,
-            )
+            if import_globals.import_fixtures:
+                add_mvr_fixture(
+                    dmx,
+                    mvr_scene,
+                    folder_path,
+                    fixture,
+                    fixture_idx,
+                    layer_index,
+                    focus_point,
+                    import_globals,
+                    fixture_group,
+                    parent_object,
+                    layer_collection,
+                )
 
             if hasattr(fixture, "child_list") and fixture.child_list:
                 get_child_list(
@@ -341,8 +341,10 @@ def process_mvr_object(
         geometrys += mvr_object.geometries.geometry3d
     else:
         try:
-            symbols += mvr_object.symbol
-            geometrys += mvr_object.geometry3d
+            if hasattr(mvr_object, "symbol"):
+                symbols += mvr_object.symbol
+            if hasattr(mvr_object, "geometry3d"):
+                geometrys += mvr_object.geometry3d
         except Exception as e:
             # TODO: handle this
             traceback.print_exception(e)
@@ -624,12 +626,28 @@ def perform_direct_parenting(dmx):
         )
         if child_object is not None and parent_object is not None:
             child_object.parent = parent_object
-            child_object.matrix_parent_inverse = parent_object.matrix_world.inverted()
+            try:
+                child_object.matrix_parent_inverse = (
+                    parent_object.matrix_world.inverted()
+                )
+            except:
+                ...
 
 
-def load_mvr(dmx, file_name, import_focus_points):
+def load_mvr(
+    dmx,
+    file_name,
+    import_focus_points,
+    import_fixtures,
+    import_trusses,
+    import_scene_objects,
+):
     import_globals = SimpleNamespace(
-        extracted={}, import_focus_points=import_focus_points
+        extracted={},
+        import_focus_points=import_focus_points,
+        import_fixtures=import_fixtures,
+        import_trusses=import_trusses,
+        import_scene_objects=import_scene_objects,
     )
 
     bpy.ops.object.select_all(action="DESELECT")
@@ -745,7 +763,7 @@ def load_mvr(dmx, file_name, import_focus_points):
             layer_collect.children.link(aux_directory)
         for uid, auxcollect in auxData.items():
             try:
-                if auxcollect.name not in aux_directory.children:
+                if auxcollect and auxcollect.name not in aux_directory.children:
                     aux_directory.children.link(auxcollect)
             except Exception as e:
                 traceback.print_exception(e)
