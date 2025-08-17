@@ -583,6 +583,8 @@ class DMX_Fixture(PropertyGroup):
 
         # Custom python data storage, outside of bpy.props. So called ID props
         self["dmx_values"] = []
+        self["layer_name"] = None
+        self["layer_uuid"] = None
 
         # Create clean Collection
         # (Blender creates the collection with selected objects/collections)

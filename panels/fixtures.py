@@ -370,6 +370,7 @@ class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
     def execute(self, context):
         scene = context.scene
         dmx = scene.dmx
+        context.window.cursor_set("WAIT")
         context.window_manager.dmx.pause_render = True  # pause renderer as partially imported fixture can cause issues during updates
         if self.name in bpy.data.collections:
             self.report(
@@ -414,6 +415,7 @@ class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
 
         context.window_manager.dmx.pause_render = False
         dmx.syncProgrammer()
+        context.window.cursor_set("DEFAULT")
         return {"FINISHED"}
 
     def invoke(self, context, event):
@@ -435,6 +437,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
     def execute(self, context):
         scene = context.scene
         dmx = scene.dmx
+        context.window.cursor_set("WAIT")
         selected = scene.dmx.selectedFixtures()
         context.window_manager.dmx.pause_render = True  # pause renderer as partially imported fixture can cause issues during updates
         # Single fixture
@@ -557,6 +560,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                             dmx.ensureUniverseExists(dmx_break.universe)
 
         context.window_manager.dmx.pause_render = False  # re-enable renderer
+        context.window.cursor_set("DEFAULT")
         return {"FINISHED"}
 
     def invoke(self, context, event):

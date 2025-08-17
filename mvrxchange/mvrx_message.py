@@ -31,13 +31,14 @@ class mvrx_message:
     @staticmethod
     def parse_header(data):
         header = {"Error": True}
-        if len(data) > 4:
-            if struct.unpack("!l", data[0:4])[0] == 778682:
-                msg_version = struct.unpack("!l", data[4:8])[0]
-                msg_number = struct.unpack("!l", data[8:12])[0]
-                msg_count = struct.unpack("!l", data[12:16])[0]
-                msg_type = struct.unpack("!l", data[16:20])[0]
-                msg_len = struct.unpack("!q", data[20:28])[0]
+
+        if len(data) >= 28:  # Ensure we have enough bytes for the full header
+            magic = struct.unpack("!I", data[0:4])[0]
+            if magic == 778682:
+                # Unpack version, number, count, type, length
+                msg_version, msg_number, msg_count, msg_type, msg_len = struct.unpack(
+                    "!IIIIQ", data[4:28]
+                )
                 header = {
                     "Version": msg_version,
                     "Number": msg_number,
@@ -47,6 +48,7 @@ class mvrx_message:
                     "Total_len": msg_len + 28,
                     "Error": False,
                 }
+
         return header
 
     @staticmethod
@@ -59,21 +61,23 @@ class mvrx_message:
         MVR_PAYLOAD_BUFFER = buffer or json.dumps(message).encode("utf-8")
         MVR_PAYLOAD_LENGTH = length or len(MVR_PAYLOAD_BUFFER)
 
-        output = (
-            struct.pack("!l", MVR_PACKAGE_HEADER)
-            + struct.pack("!l", MVR_PACKAGE_VERSION)
-            + struct.pack("!l", MVR_PACKAGE_NUMBER)
-            + struct.pack("!l", MVR_PACKAGE_COUNT)
-            + struct.pack("!l", MVR_PACKAGE_TYPE)
-            + struct.pack("!q", MVR_PAYLOAD_LENGTH)
-            + MVR_PAYLOAD_BUFFER
+        # Pack entire header in one call (5x uint32 + 1x uint64)
+        header = struct.pack(
+            "!IIIIIQ",
+            MVR_PACKAGE_HEADER,
+            MVR_PACKAGE_VERSION,
+            MVR_PACKAGE_NUMBER,
+            MVR_PACKAGE_COUNT,
+            MVR_PACKAGE_TYPE,
+            MVR_PAYLOAD_LENGTH,
         )
-        return output
+
+        return header + MVR_PAYLOAD_BUFFER
 
     join_message_ret = {
         "Commits": [],
         "Message": "",
-        "OK": "true",
+        "OK": True,
         "Provider": defined_provider_name,
         "StationName": defined_station_name,
         "StationUUID": "",
@@ -82,9 +86,9 @@ class mvrx_message:
         "verMinor": 6,
     }
 
-    leave_message_ret = {"Type": "MVR_LEAVE_RET", "OK": "true", "Message": ""}
+    leave_message_ret = {"Type": "MVR_LEAVE_RET", "OK": True, "Message": ""}
 
-    commit_message_ret = {"Type": "MVR_COMMIT_RET", "OK": "true", "Message": ""}
+    commit_message_ret = {"Type": "MVR_COMMIT_RET", "OK": True, "Message": ""}
 
     request_message = {
         "Type": "MVR_REQUEST",
@@ -92,7 +96,7 @@ class mvrx_message:
         "FromStationUUID": [],
     }
 
-    request_message_ret = {"Type": "MVR_REQUEST_RET", "OK": "false", "Message": ""}
+    request_message_ret = {"Type": "MVR_REQUEST_RET", "OK": False, "Message": ""}
 
     join_message = {
         "Type": "MVR_JOIN",

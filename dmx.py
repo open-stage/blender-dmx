@@ -47,6 +47,7 @@ from . import fixture
 from . import param as param
 from . import tracker as tracker
 from .acn import DMX_sACN
+from .psn import DMX_PSN
 from .artnet import DMX_ArtNet
 from .blender_utils import copy_blender_profiles, get_application_version
 from .data import DMX_Data, DMX_Value
@@ -1325,8 +1326,9 @@ class DMX(PropertyGroup):
     def onsACNEnable(self, context):
         if self.sacn_enabled:
             DMX_sACN.enable()
-
+            self.register_render_toggle(True)
         else:
+            self.register_render_toggle(False)
             DMX_sACN.disable()
 
     # # DMX > ArtNet > Enable
@@ -1334,7 +1336,9 @@ class DMX(PropertyGroup):
     def onArtNetEnable(self, context):
         if self.artnet_enabled:
             DMX_ArtNet.enable()
+            self.register_render_toggle(True)
         else:
+            self.register_render_toggle(False)
             DMX_ArtNet.disable()
 
     # fmt: off
@@ -2089,12 +2093,26 @@ class DMX(PropertyGroup):
 
         return fixtures
 
-    def addMVR(self, file_name, import_focus_points=True):
+    def addMVR(
+        self,
+        file_name,
+        import_focus_points=True,
+        import_fixtures=True,
+        import_trusses=True,
+        import_scene_objects=True,
+    ):
         bpy.context.window_manager.dmx.pause_render = (
             True  # this stops the render loop, to prevent slowness and crashes
         )
 
-        load_mvr(self, file_name, import_focus_points=import_focus_points)
+        load_mvr(
+            self,
+            file_name,
+            import_focus_points=import_focus_points,
+            import_fixtures=import_fixtures,
+            import_trusses=import_trusses,
+            import_scene_objects=import_scene_objects,
+        )
 
         bpy.context.window_manager.dmx.pause_render = False  # re-enable render loop
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
@@ -2121,7 +2139,9 @@ class DMX(PropertyGroup):
                     return True
         return False
 
-    def export_mvr(self, file_name):
+    def export_mvr(
+        self, file_name, export_focus_points=True, selected_fixtures_only=False
+    ):
         start_time = time.time()
         bpy.context.window_manager.dmx.pause_render = (
             True  # this stops the render loop, to prevent slowness and crashes
@@ -2138,25 +2158,45 @@ class DMX(PropertyGroup):
 
             pymvr.UserData().to_xml(parent=mvr.xml_root)
 
-            layer = pymvr.Layer(name="DMX")
-            child_list = pymvr.ChildList()
-            child_list.fixtures.clear()
-            child_list.focus_points.clear()
-            layer.child_list = child_list
+            layers = pymvr.Layers()
 
             for dmx_fixture in dmx.fixtures:
+                if selected_fixtures_only and not dmx_fixture.is_selected():
+                    continue
+                fixture_layer_name = dmx_fixture.get("layer_name", "DMX")
+                fixture_layer_uuid = dmx_fixture.get("layer_uuid", None)
+                if fixture_layer_uuid is not None:
+                    use_layer = next(
+                        (l for l in layers if l.uuid == fixture_layer_uuid), None
+                    )
+                    if not use_layer:
+                        use_layer = pymvr.Layer(
+                            name=fixture_layer_name, uuid=fixture_layer_uuid
+                        )
+                        new_child_list = pymvr.ChildList()
+                        use_layer.child_list = new_child_list
+                        layers.append(use_layer)
+                else:  # no layer in fixture
+                    use_layer = next(
+                        (l for l in layers if l.name == fixture_layer_name), None
+                    )  # we should get "DMX" layer if exists
+                    if not use_layer:  # create new DMX layer
+                        use_layer = pymvr.Layer(name="DMX", uuid=py_uuid.uuid4())
+                        new_child_list = pymvr.ChildList()
+                        use_layer.child_list = new_child_list
+                        layers.append(use_layer)
+
+                child_list = use_layer.child_list
+
                 fixture_object = dmx_fixture.to_mvr_fixture(universe_add=universe_add)
                 focus_point = dmx_fixture.focus_to_mvr_focus_point()
-                if focus_point is not None:
+                if export_focus_points and focus_point is not None:
                     child_list.focus_points.append(focus_point)
                 child_list.fixtures.append(fixture_object)
                 if fixture_object.gdtf_spec:
                     file_path = os.path.join(folder_path, fixture_object.gdtf_spec)
                     fixtures_list.append((file_path, fixture_object.gdtf_spec))
 
-            layers = pymvr.Layers()
-            layers.clear()
-            layers.append(layer)
             scene = pymvr.Scene(layers=layers, aux_data=pymvr.AUXData())
             scene.to_xml(parent=mvr.xml_root)
 
@@ -2513,3 +2553,30 @@ class DMX(PropertyGroup):
                 collection_info = nodes.node.nodes["Collection Info"]
                 collection = bpy.context.window_manager.dmx.collections_list
                 collection_info.inputs[0].default_value = collection
+
+    def register_render_toggle(self, enable):
+        is_running = bpy.context.window_manager.dmx.render_running
+        if enable:
+            if is_running:
+                return
+            bpy.context.window_manager.dmx.render_running = True
+            bpy.app.timers.register(self.run_render)
+        else:
+            if len(DMX_PSN._instances) > 0:
+                return
+            if self.artnet_enabled:
+                return
+            if self.sacn_enabled:
+                return
+            if is_running:
+                bpy.context.window_manager.dmx.render_running = False
+                try:
+                    bpy.app.timers.unregister(self.run_render)
+                except:
+                    pass
+
+    def run_render(self):
+        if not bpy.context.window_manager.dmx.render_running:
+            return None
+        self.render()
+        return 1.0 / 44.0  # run at the same speed as maximum DMX framerate

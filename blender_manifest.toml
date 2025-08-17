@@ -1,6 +1,6 @@
 schema_version = "1.0.0"
 id = "open_stage_blender_dmx"
-version = "2.0.7"
+version = "2.0.8"
 name = "DMX"
 tagline = "DMX visualization and programming with GDTF/MVR, and Networking"
 maintainer = "Open Stage"
@@ -15,7 +15,7 @@ license = [
 
 wheels = [
   "wheels/pygdtf-1.3.0-py3-none-any.whl",
-  "wheels/pymvr-1.0.0.dev0-py3-none-any.whl",
+  "wheels/pymvr-1.0.1-py3-none-any.whl",
   "wheels/sacn-1.9.1-py3-none-any.whl",
   "wheels/oscpy-0.6.0-py2.py3-none-any.whl",
   "wheels/ifaddr-0.2.0-py3-none-any.whl",

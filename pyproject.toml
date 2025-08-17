@@ -1,6 +1,6 @@
 [project]
 name = "blender-dmx"
-version = "2.0.7"
+version = "2.0.8"
 description = ""
 readme = "README.md"
 requires-python = ">=3.13"
@@ -10,4 +10,9 @@ dependencies = [
     "pip>=25.0",
     "pre-commit>=4.1.0",
     "ruff>=0.9.3",
+]
+
+[dependency-groups]
+dev = [
+    "pymvr>=1.0.0",
 ]

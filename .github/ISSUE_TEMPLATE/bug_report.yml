@@ -23,8 +23,17 @@ body:
       label: What is your Blender version?
       description: |
         This can be found in "Menu > Blender logo > About Blender" in Blender.
-        Do note that Blender 3.4 and higher (4.x is also supported) is required for BlenderDMX.
-      placeholder: e.g. "3.6.7" or "4.0.2"
+        Do note that Blender 4.2 and higher is required for BlenderDMX Extension.
+      placeholder: e.g. "4.2.0"
+    validations:
+      required: true
+  - type: input
+    id: blender_dmx_version
+    attributes:
+      label: What is your BlenderDMX version?
+      description: |
+        This can be found in "Menu > Preferences > Get Extensions > Installed > DMX > View details > Version
+      placeholder: e.g. "2.0.8"
     validations:
       required: true
   - type: dropdown

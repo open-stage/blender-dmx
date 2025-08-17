@@ -151,3 +151,5 @@ class DMX_TempData(PropertyGroup):
             "Distance at which the influence of the light will be set to 0. Value bigger then 23 will break gobo rendering in Eevee Next."
         ),
     )
+
+    render_running: BoolProperty(default=False)
