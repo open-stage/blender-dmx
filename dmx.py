@@ -2100,6 +2100,9 @@ class DMX(PropertyGroup):
         import_fixtures=True,
         import_trusses=True,
         import_scene_objects=True,
+        import_projectors=True,
+        import_supports=True,
+        import_video_screens=True,
     ):
         bpy.context.window_manager.dmx.pause_render = (
             True  # this stops the render loop, to prevent slowness and crashes
@@ -2112,6 +2115,9 @@ class DMX(PropertyGroup):
             import_fixtures=import_fixtures,
             import_trusses=import_trusses,
             import_scene_objects=import_scene_objects,
+            import_projectors=import_projectors,
+            import_supports=import_supports,
+            import_video_screens=import_video_screens,
         )
 
         bpy.context.window_manager.dmx.pause_render = False  # re-enable render loop

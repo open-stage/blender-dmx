@@ -142,6 +142,23 @@ class DMX_OT_Import_MVR(Operator, ImportHelper):
         description=_("Import Scene Objects"),
         default=True,
     )
+    import_projectors: BoolProperty(
+        name=_("Import Projectors"),
+        description=_("Import Projectors"),
+        default=True,
+    )
+
+    import_video_screens: BoolProperty(
+        name=_("Import Video Screens"),
+        description=_("Import Video Screens"),
+        default=True,
+    )
+
+    import_supports: BoolProperty(
+        name=_("Import Supports"),
+        description=_("Import Supports"),
+        default=True,
+    )
 
     def draw(self, context):
         dmx = context.scene.dmx
@@ -159,6 +176,12 @@ class DMX_OT_Import_MVR(Operator, ImportHelper):
         row3 = box.row()
         row3.prop(self, "import_trusses")
         # box.prop(self, "import_scene_objects")
+        row4 = box.row()
+        row4.prop(self, "import_projectors")
+        row5 = box.row()
+        row5.prop(self, "import_video_screens")
+        row6 = box.row()
+        row6.prop(self, "import_supports")
 
     def execute(self, context):
         dmx = context.scene.dmx
@@ -173,6 +196,9 @@ class DMX_OT_Import_MVR(Operator, ImportHelper):
                 import_fixtures=self.import_fixtures,
                 import_trusses=self.import_trusses,
                 import_scene_objects=self.import_scene_objects,
+                import_supports=self.import_supports,
+                import_projectors=self.import_projectors,
+                import_video_screens=self.import_video_screens,
             )
         return {"FINISHED"}
 

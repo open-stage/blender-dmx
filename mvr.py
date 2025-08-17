@@ -136,33 +136,121 @@ def get_child_list(
                     fixture_group,
                     truss_obj,
                 )
-    if hasattr(child_list, "scene_objects") and child_list.scene_objects:
-        for scene_idx, scene_obj in enumerate(child_list.scene_objects):
-            existing = check_existing(scene_obj, layer_collection)
 
-            if not existing and import_globals.import_scene_objects:
+    # TODO: reuse
+    if hasattr(child_list, "projectors") and child_list.projectors:
+        for projector_idx, projector_obj in enumerate(child_list.projectors):
+            existing = check_existing(projector_obj, layer_collection)
+
+            if not existing and import_globals.import_projectors:
                 process_mvr_object(
                     context,
                     mvr_scene,
-                    scene_obj,
-                    scene_idx,
+                    projector_obj,
+                    projector_idx,
                     mscale,
                     import_globals,
                     layer_collection,
                 )
 
-            if hasattr(scene_obj, "child_list") and scene_obj.child_list:
+            if hasattr(projector_obj, "child_list") and projector_obj.child_list:
                 get_child_list(
                     dmx,
                     mscale,
                     mvr_scene,
-                    scene_obj.child_list,
+                    projector_obj.child_list,
                     layer_index,
                     folder_path,
                     import_globals,
                     layer_collection,
                     fixture_group,
-                    scene_obj,
+                    projector_obj,
+                )
+    if hasattr(child_list, "supports") and child_list.supports:
+        for projector_idx, projector_obj in enumerate(child_list.supports):
+            existing = check_existing(projector_obj, layer_collection)
+
+            if not existing and import_globals.import_supports:
+                process_mvr_object(
+                    context,
+                    mvr_scene,
+                    projector_obj,
+                    projector_idx,
+                    mscale,
+                    import_globals,
+                    layer_collection,
+                )
+
+            if hasattr(projector_obj, "child_list") and projector_obj.child_list:
+                get_child_list(
+                    dmx,
+                    mscale,
+                    mvr_scene,
+                    projector_obj.child_list,
+                    layer_index,
+                    folder_path,
+                    import_globals,
+                    layer_collection,
+                    fixture_group,
+                    projector_obj,
+                )
+
+    if hasattr(child_list, "video_screens") and child_list.video_screens:
+        for projector_idx, projector_obj in enumerate(child_list.video_screens):
+            existing = check_existing(projector_obj, layer_collection)
+
+            if not existing and import_globals.import_video_screens:
+                process_mvr_object(
+                    context,
+                    mvr_scene,
+                    projector_obj,
+                    projector_idx,
+                    mscale,
+                    import_globals,
+                    layer_collection,
+                )
+
+            if hasattr(projector_obj, "child_list") and projector_obj.child_list:
+                get_child_list(
+                    dmx,
+                    mscale,
+                    mvr_scene,
+                    projector_obj.child_list,
+                    layer_index,
+                    folder_path,
+                    import_globals,
+                    layer_collection,
+                    fixture_group,
+                    projector_obj,
+                )
+
+    if hasattr(child_list, "scene_objects") and child_list.scene_objects:
+        for projector_idx, projector_obj in enumerate(child_list.scene_objects):
+            existing = check_existing(projector_obj, layer_collection)
+
+            if not existing and import_globals.import_scene_objects:
+                process_mvr_object(
+                    context,
+                    mvr_scene,
+                    projector_obj,
+                    projector_idx,
+                    mscale,
+                    import_globals,
+                    layer_collection,
+                )
+
+            if hasattr(projector_obj, "child_list") and projector_obj.child_list:
+                get_child_list(
+                    dmx,
+                    mscale,
+                    mvr_scene,
+                    projector_obj.child_list,
+                    layer_index,
+                    folder_path,
+                    import_globals,
+                    layer_collection,
+                    fixture_group,
+                    projector_obj,
                 )
 
     if hasattr(child_list, "fixtures") and child_list.fixtures:
@@ -449,6 +537,12 @@ def transform_objects(layers, mscale):
                 create_transform_property(obj)
 
     def collect_objects(childlist):
+        for video_screen in childlist.video_screens:
+            transform_matrix(video_screen)
+        for projector in childlist.projectors:
+            transform_matrix(projector)
+        for support in childlist.supports:
+            transform_matrix(support)
         for truss in childlist.trusses:
             transform_matrix(truss)
         for sceneobject in childlist.scene_objects:
@@ -527,6 +621,11 @@ def add_mvr_fixture(
         for address in fixture.addresses.address
         if address.address > 0
     ]
+    null_matrix = pymvr.Matrix([[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]])
+    # ensure that fixture is not scaled to 0
+    if fixture.matrix == null_matrix:
+        fixture.matrix = pymvr.Matrix(0)
+
     if existing_fixture is not None:
         # TODO: we should not rename the fixture on import unless if the user wants it
         # but we must ensure that the name is unique in the collection
@@ -641,6 +740,9 @@ def load_mvr(
     import_fixtures,
     import_trusses,
     import_scene_objects,
+    import_projectors,
+    import_supports,
+    import_video_screens,
 ):
     import_globals = SimpleNamespace(
         extracted={},
@@ -648,6 +750,9 @@ def load_mvr(
         import_fixtures=import_fixtures,
         import_trusses=import_trusses,
         import_scene_objects=import_scene_objects,
+        import_projectors=import_projectors,
+        import_supports=import_supports,
+        import_video_screens=import_video_screens,
     )
 
     bpy.ops.object.select_all(action="DESELECT")
