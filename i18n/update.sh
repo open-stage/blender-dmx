@@ -19,5 +19,5 @@
 #
 #
 uv run pybabel extract -F babel.cfg --no-location -o messages.pot ../
-uv run pybabel update -i messages.pot -d translations
+#uv run pybabel update -i messages.pot -d translations
 # pybabel compile -d translations # DO NOT RUN, creates binary merge weblate conflicts
