@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-18 21:32+0200\n"
+"POT-Creation-Date: 2025-08-18 21:37+0200\n"
 "PO-Revision-Date: 2023-12-02 14:06+0000\n"
 "Last-Translator: bass python <pythonbass@gmail.com>\n"
 "Language: ar_AA\n"
@@ -435,10 +435,6 @@ msgstr "استيراد من المشاركة"
 
 #, fuzzy
 msgid "Import Supports"
-msgstr "استيراد من ملف"
-
-#, fuzzy
-msgid "Export Focus Points as Targets"
 msgstr "استيراد من ملف"
 
 msgid "Export Targets as MVR Focus Points"
@@ -1835,4 +1831,7 @@ msgstr "الأكوان"
 
 #~ msgid "Some fixtures could not be processed"
 #~ msgstr ""
+
+#~ msgid "Export Focus Points as Targets"
+#~ msgstr "استيراد من ملف"
 

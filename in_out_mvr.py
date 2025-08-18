@@ -213,7 +213,7 @@ class DMX_OT_Export_MVR(Operator, ExportHelper):
     filename_ext = ".mvr"
 
     export_focus_points: BoolProperty(
-        name=_("Export Focus Points as Targets"),
+        name=_("Export Targets as MVR Focus Points"),
         description=_("Export Targets as MVR Focus Points"),
         default=True,
     )

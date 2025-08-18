@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-18 21:32+0200\n"
+"POT-Creation-Date: 2025-08-18 21:37+0200\n"
 "PO-Revision-Date: 2025-06-22 13:01+0000\n"
 "Last-Translator: Yurt Page <yurtpage@gmail.com>\n"
 "Language: ru_RU\n"
@@ -429,10 +429,6 @@ msgstr "Импорт сцены MVR"
 #, fuzzy
 msgid "Import Supports"
 msgstr "Импортировать коммит"
-
-#, fuzzy
-msgid "Export Focus Points as Targets"
-msgstr "Импортировать точки фокусировки в качестве целей"
 
 #, fuzzy
 msgid "Export Targets as MVR Focus Points"
@@ -1523,4 +1519,7 @@ msgstr "Вселенные"
 
 #~ msgid "Shared to me:"
 #~ msgstr "Предоставлено мне:"
+
+#~ msgid "Export Focus Points as Targets"
+#~ msgstr "Импортировать точки фокусировки в качестве целей"
 

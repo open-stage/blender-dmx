@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-18 21:32+0200\n"
+"POT-Creation-Date: 2025-08-18 21:37+0200\n"
 "PO-Revision-Date: 2023-04-02 13:37+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language: nb_NO\n"
@@ -423,10 +423,6 @@ msgstr "Importer fra deling"
 
 #, fuzzy
 msgid "Import Supports"
-msgstr "Importer fra deling"
-
-#, fuzzy
-msgid "Export Focus Points as Targets"
 msgstr "Importer fra deling"
 
 msgid "Export Targets as MVR Focus Points"
@@ -1780,4 +1776,7 @@ msgstr ""
 
 #~ msgid "Some fixtures could not be processed"
 #~ msgstr ""
+
+#~ msgid "Export Focus Points as Targets"
+#~ msgstr "Importer fra deling"
 

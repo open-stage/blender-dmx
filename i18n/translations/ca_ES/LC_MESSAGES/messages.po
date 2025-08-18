@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-18 21:32+0200\n"
+"POT-Creation-Date: 2025-08-18 21:37+0200\n"
 "PO-Revision-Date: 2025-06-05 17:01+0000\n"
 "Last-Translator: Bernat Rubiol Brusau <rubiolbernat@gmail.com>\n"
 "Language: ca_ES\n"
@@ -417,9 +417,6 @@ msgstr ""
 #, fuzzy
 msgid "Import Supports"
 msgstr "Importacions"
-
-msgid "Export Focus Points as Targets"
-msgstr ""
 
 msgid "Export Targets as MVR Focus Points"
 msgstr ""
@@ -1476,4 +1473,7 @@ msgstr "Universos"
 
 #~ msgid "Shared to me:"
 #~ msgstr "Compartit amb mi:"
+
+#~ msgid "Export Focus Points as Targets"
+#~ msgstr ""
 

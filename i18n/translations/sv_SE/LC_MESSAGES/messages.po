@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-18 21:32+0200\n"
+"POT-Creation-Date: 2025-08-18 21:37+0200\n"
 "PO-Revision-Date: 2025-07-04 08:03+0000\n"
 "Last-Translator: Daniel Nylander <daniel@danielnylander.se>\n"
 "Language: sv_SE\n"
@@ -450,10 +450,6 @@ msgstr "Importera MVR-scen"
 #, fuzzy
 msgid "Import Supports"
 msgstr "Importera commit"
-
-#, fuzzy
-msgid "Export Focus Points as Targets"
-msgstr "Importera fokuspunkter som mål"
 
 #, fuzzy
 msgid "Export Targets as MVR Focus Points"
@@ -1823,4 +1819,7 @@ msgstr "Universum"
 
 #~ msgid "Some fixtures could not be processed"
 #~ msgstr "Vissa fixturer kunde inte bearbetas"
+
+#~ msgid "Export Focus Points as Targets"
+#~ msgstr "Importera fokuspunkter som mål"
 

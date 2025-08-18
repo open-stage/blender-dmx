@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-18 21:32+0200\n"
+"POT-Creation-Date: 2025-08-18 21:37+0200\n"
 "PO-Revision-Date: 2025-07-05 16:01+0000\n"
 "Last-Translator: 大学没毕业 <ziweidao@foxmail.com>\n"
 "Language: zh_Hans\n"
@@ -410,10 +410,6 @@ msgstr "导入 MVR 场景"
 #, fuzzy
 msgid "Import Supports"
 msgstr "导入确认"
-
-#, fuzzy
-msgid "Export Focus Points as Targets"
-msgstr "导入焦点作为目标"
 
 #, fuzzy
 msgid "Export Targets as MVR Focus Points"
@@ -1696,4 +1692,7 @@ msgstr "域"
 
 #~ msgid "Some fixtures could not be processed"
 #~ msgstr "某些灯具无法处理"
+
+#~ msgid "Export Focus Points as Targets"
+#~ msgstr "导入焦点作为目标"
 

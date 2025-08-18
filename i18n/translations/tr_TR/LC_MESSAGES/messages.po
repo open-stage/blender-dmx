@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-18 21:32+0200\n"
+"POT-Creation-Date: 2025-08-18 21:37+0200\n"
 "PO-Revision-Date: 2025-04-16 06:01+0000\n"
 "Last-Translator: polarwood <polarwood@users.noreply.hosted.weblate.org>\n"
 "Language: tr_TR\n"
@@ -432,10 +432,6 @@ msgstr "İçe Aktarılanlar"
 #, fuzzy
 msgid "Import Supports"
 msgstr "İçe Aktarılanlar"
-
-#, fuzzy
-msgid "Export Focus Points as Targets"
-msgstr "Odak Noktalarını Hedef Olarak İçeri Aktar"
 
 #, fuzzy
 msgid "Export Targets as MVR Focus Points"
@@ -1778,4 +1774,7 @@ msgstr ""
 
 #~ msgid "Some fixtures could not be processed"
 #~ msgstr ""
+
+#~ msgid "Export Focus Points as Targets"
+#~ msgstr "Odak Noktalarını Hedef Olarak İçeri Aktar"
 

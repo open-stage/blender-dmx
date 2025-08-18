@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-18 21:32+0200\n"
+"POT-Creation-Date: 2025-08-18 21:37+0200\n"
 "PO-Revision-Date: 2024-12-17 21:00+0000\n"
 "Last-Translator: Fede Pre <fede0379@live.com>\n"
 "Language: it_IT\n"
@@ -434,10 +434,6 @@ msgstr "Importa Scena MVR"
 #, fuzzy
 msgid "Import Supports"
 msgstr "Importa commit"
-
-#, fuzzy
-msgid "Export Focus Points as Targets"
-msgstr "Importa Punti Focus come Obiettivi"
 
 #, fuzzy
 msgid "Export Targets as MVR Focus Points"
@@ -1773,4 +1769,7 @@ msgstr "Universi"
 
 #~ msgid "Some fixtures could not be processed"
 #~ msgstr "Impossibile elaborare alcuni dispositivi"
+
+#~ msgid "Export Focus Points as Targets"
+#~ msgstr "Importa Punti Focus come Obiettivi"
 

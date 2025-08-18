@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-18 21:32+0200\n"
+"POT-Creation-Date: 2025-08-18 21:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language: kk\n"
@@ -402,9 +402,6 @@ msgid "Import Video Screens"
 msgstr ""
 
 msgid "Import Supports"
-msgstr ""
-
-msgid "Export Focus Points as Targets"
 msgstr ""
 
 msgid "Export Targets as MVR Focus Points"
@@ -1719,5 +1716,8 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid "Some fixtures could not be processed"
+#~ msgstr ""
+
+#~ msgid "Export Focus Points as Targets"
 #~ msgstr ""
 

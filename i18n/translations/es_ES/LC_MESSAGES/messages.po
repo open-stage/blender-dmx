@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-18 21:32+0200\n"
+"POT-Creation-Date: 2025-08-18 21:37+0200\n"
 "PO-Revision-Date: 2025-02-13 16:42+0000\n"
 "Last-Translator: Yllen Fernandez <yllenfernandez@gmail.com>\n"
 "Language: es_ES\n"
@@ -414,9 +414,6 @@ msgstr "Importar desde compartir"
 #, fuzzy
 msgid "Import Supports"
 msgstr "Importaciones"
-
-msgid "Export Focus Points as Targets"
-msgstr ""
 
 msgid "Export Targets as MVR Focus Points"
 msgstr ""
@@ -1547,4 +1544,7 @@ msgstr ""
 
 #~ msgid "Some fixtures could not be processed"
 #~ msgstr "No se pudieron procesar algunos accesorios"
+
+#~ msgid "Export Focus Points as Targets"
+#~ msgstr ""
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-18 21:32+0200\n"
+"POT-Creation-Date: 2025-08-18 21:37+0200\n"
 "PO-Revision-Date: 2024-05-05 19:08+0000\n"
 "Last-Translator: Iago Emanuel <iagoemanuel@live.com>\n"
 "Language: pt_BR\n"
@@ -434,10 +434,6 @@ msgstr "Importar para Share"
 
 #, fuzzy
 msgid "Import Supports"
-msgstr "Importar arquivo de"
-
-#, fuzzy
-msgid "Export Focus Points as Targets"
 msgstr "Importar arquivo de"
 
 msgid "Export Targets as MVR Focus Points"
@@ -1857,4 +1853,7 @@ msgstr "Universos"
 
 #~ msgid "Some fixtures could not be processed"
 #~ msgstr ""
+
+#~ msgid "Export Focus Points as Targets"
+#~ msgstr "Importar arquivo de"
 
