@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-07-12 15:31+0200\n"
+"POT-Creation-Date: 2025-08-18 21:32+0200\n"
 "PO-Revision-Date: 2023-04-02 13:37+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language: nb_NO\n"
@@ -399,6 +399,40 @@ msgid "Import Focus Points as Targets"
 msgstr "Importer fra deling"
 
 msgid "Create Targets from MVR Focus Points"
+msgstr ""
+
+#, fuzzy
+msgid "Import Fixtures"
+msgstr "GDTF-profil"
+
+#, fuzzy
+msgid "Import Trusses"
+msgstr "Importer fra deling"
+
+#, fuzzy
+msgid "Import Scene Objects"
+msgstr "Importer fra deling"
+
+#, fuzzy
+msgid "Import Projectors"
+msgstr "Importer fra deling"
+
+#, fuzzy
+msgid "Import Video Screens"
+msgstr "Importer fra deling"
+
+#, fuzzy
+msgid "Import Supports"
+msgstr "Importer fra deling"
+
+#, fuzzy
+msgid "Export Focus Points as Targets"
+msgstr "Importer fra deling"
+
+msgid "Export Targets as MVR Focus Points"
+msgstr ""
+
+msgid "Export only selected fixtures"
 msgstr ""
 
 msgid "Enable PSN Input"

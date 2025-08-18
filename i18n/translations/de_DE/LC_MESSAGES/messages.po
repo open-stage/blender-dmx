@@ -7,17 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-07-12 15:31+0200\n"
+"POT-Creation-Date: 2025-08-18 21:32+0200\n"
 "PO-Revision-Date: 2025-08-15 20:01+0000\n"
 "Last-Translator: \"Mirko P.\" <michoo@outlook.de>\n"
-"Language-Team: German <https://hosted.weblate.org/projects/blenderdmx/main/"
-"de/>\n"
 "Language: de_DE\n"
+"Language-Team: German "
+"<https://hosted.weblate.org/projects/blenderdmx/main/de/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.13\n"
 "Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
@@ -205,8 +204,8 @@ msgstr "OSC-Input aktivieren"
 
 msgid "Enables Open Sound Control protocol to send fixture selection to a console"
 msgstr ""
-"Ermöglicht dem Open Sound Control-Protokoll, die Auswahl von Geräten an eine "
-"Konsole zu senden"
+"Ermöglicht dem Open Sound Control-Protokoll, die Auswahl von Geräten an "
+"eine Konsole zu senden"
 
 msgid "OSC Target address"
 msgstr "OSC-Zieladresse"
@@ -284,9 +283,9 @@ msgid ""
 "allows to re-enable it in case of some failure during import, which would"
 " leave it paused"
 msgstr ""
-"Der Renderer wird während des MVR-Imports und in der 2D-Ansicht angehalten. "
-"Mit diesem Kontrollkästchen können Sie ihn im Falle eines Fehlers während "
-"des Imports, der ihn angehalten hätte, wieder aktivieren"
+"Der Renderer wird während des MVR-Imports und in der 2D-Ansicht "
+"angehalten. Mit diesem Kontrollkästchen können Sie ihn im Falle eines "
+"Fehlers während des Imports, der ihn angehalten hätte, wieder aktivieren"
 
 msgid "Pause renderer"
 msgstr "Render pausieren"
@@ -352,8 +351,8 @@ msgid ""
 "Distance at which the influence of the light will be set to 0. Value "
 "bigger then 23 will break gobo rendering in Eevee Next."
 msgstr ""
-"\"Entfernung, bei dem der Lichteinfluss auf 0 gesetzt wird. Ein Wert über 23 "
-"unterbricht das Gobo-Rendering in Eevee Next.\""
+"\"Entfernung, bei dem der Lichteinfluss auf 0 gesetzt wird. Ein Wert über"
+" 23 unterbricht das Gobo-Rendering in Eevee Next.\""
 
 msgid "Use Fixtures Physical Properties"
 msgstr "Verwendung von Vorrichtungen Physikalische Eigenschaften"
@@ -409,6 +408,42 @@ msgstr "Importieren Sie Fokuspunkte als Ziele"
 
 msgid "Create Targets from MVR Focus Points"
 msgstr "Ziele aus MVR-Fokuspunkten erstellen"
+
+#, fuzzy
+msgid "Import Fixtures"
+msgstr "Vorrichtung"
+
+#, fuzzy
+msgid "Import Trusses"
+msgstr "Importe"
+
+#, fuzzy
+msgid "Import Scene Objects"
+msgstr "MVR-Szene importieren"
+
+#, fuzzy
+msgid "Import Projectors"
+msgstr "Projektdaten importieren"
+
+#, fuzzy
+msgid "Import Video Screens"
+msgstr "MVR-Szene importieren"
+
+#, fuzzy
+msgid "Import Supports"
+msgstr "Importieren von Commits"
+
+#, fuzzy
+msgid "Export Focus Points as Targets"
+msgstr "Importieren Sie Fokuspunkte als Ziele"
+
+#, fuzzy
+msgid "Export Targets as MVR Focus Points"
+msgstr "Ziele aus MVR-Fokuspunkten erstellen"
+
+#, fuzzy
+msgid "Export only selected fixtures"
+msgstr "Auf ausgewählten Leuchten einstellen"
 
 msgid "Enable PSN Input"
 msgstr "PSN Eingabe aktivieren"
@@ -751,8 +786,7 @@ msgid "Select Visible (only filtered)"
 msgstr "Sichtbar auswählen (nur gefiltert)"
 
 msgid "Select every fixture which is visible in the fixtures list"
-msgstr ""
-"Wählen Sie alle Leuchten aus, die in der Leuchtenliste angezeigt werden."
+msgstr "Wählen Sie alle Leuchten aus, die in der Leuchtenliste angezeigt werden."
 
 msgid "Invert selection"
 msgstr "Auswahl umkehren"
@@ -953,13 +987,13 @@ msgstr "Entfernt alle DMX-Daten und erstellt eine neue Show"
 
 msgid "Do at your own risk. Manual edits or deletes can cause issues"
 msgstr ""
-"Auf eigene Gefahr. Manuelle Änderungen oder Löschungen können zu Problemen "
-"führen"
+"Auf eigene Gefahr. Manuelle Änderungen oder Löschungen können zu "
+"Problemen führen"
 
 msgid "Manually editing or deleting geometries of GDTF devices may cause issues."
 msgstr ""
-"Das manuelle Bearbeiten oder Löschen von Geometrien von GDTF-Geräten kann zu "
-"Problemen führen."
+"Das manuelle Bearbeiten oder Löschen von Geometrien von GDTF-Geräten kann"
+" zu Problemen führen."
 
 msgid "Really remove all fixtures and DMX from blend file?"
 msgstr "Wirklich alle Fixtures und DMX aus der Blend-Datei entfernen?"
@@ -981,8 +1015,8 @@ msgstr "DMX > Einrichtung > Lautstärkeregler erstellen/aktualisieren"
 
 msgid "Create/Update a Box on the scene bounds with a Volume Scatter shader"
 msgstr ""
-"Erstellen/Aktualisieren Sie eine Box innerhalb der Szenengrenzen mit einem "
-"Volume Scatter Shader"
+"Erstellen/Aktualisieren Sie eine Box innerhalb der Szenengrenzen mit "
+"einem Volume Scatter Shader"
 
 msgid "Beam Volume"
 msgstr "Strahlvolumen"
@@ -1083,8 +1117,8 @@ msgstr "Benutzerdefinierte Daten exportieren"
 
 msgid "Zip and Export custom data from BlenderDMX addon directory."
 msgstr ""
-"Zip-Datei erstellen und benutzerdefinierte Daten aus dem BlenderDMX-Addon-"
-"Verzeichnis exportieren."
+"Zip-Datei erstellen und benutzerdefinierte Daten aus dem BlenderDMX-"
+"Addon-Verzeichnis exportieren."
 
 #, python-brace-format
 msgid "Data exported to: {}"
@@ -1097,8 +1131,8 @@ msgstr ""
 
 msgid "Clear custom data from BlenderDMX addon directory."
 msgstr ""
-"Löschen Sie benutzerdefinierte Daten aus dem Verzeichnis des BlenderDMX-Add-"
-"ons."
+"Löschen Sie benutzerdefinierte Daten aus dem Verzeichnis des BlenderDMX-"
+"Add-ons."
 
 msgid "Data cleared"
 msgstr "Daten geleert"
@@ -1110,8 +1144,8 @@ msgid ""
 "Copy custom data from BlenderDMX addon directory to BlenderDMX extension "
 "user directory."
 msgstr ""
-"Kopieren Sie benutzerdefinierte Daten aus dem Verzeichnis des BlenderDMX-Add-"
-"ons in das Benutzerverzeichnis der BlenderDMX-Erweiterung."
+"Kopieren Sie benutzerdefinierte Daten aus dem Verzeichnis des BlenderDMX-"
+"Add-ons in das Benutzerverzeichnis der BlenderDMX-Erweiterung."
 
 msgid "Data copied"
 msgstr "Daten kopiert"
@@ -1200,8 +1234,8 @@ msgid ""
 "The short name of the DMX profile, all caps, used as suggestion for "
 "fixture names."
 msgstr ""
-"Der Kurzname des DMX-Profils, in Großbuchstaben, wird als Vorschlag für die "
-"Namen der Leuchten verwendet."
+"Der Kurzname des DMX-Profils, in Großbuchstaben, wird als Vorschlag für "
+"die Namen der Leuchten verwendet."
 
 msgid "Filename"
 msgstr "Dateiname"
@@ -1690,3 +1724,4 @@ msgstr "Universen"
 
 #~ msgid "Some fixtures could not be processed"
 #~ msgstr "Einige Fixtures konnten nicht bearbeitet werden"
+

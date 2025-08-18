@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-07-12 15:31+0200\n"
+"POT-Creation-Date: 2025-08-18 21:32+0200\n"
 "PO-Revision-Date: 2025-07-04 08:03+0000\n"
 "Last-Translator: Franciszek Libera <tacoenjoyer@tutamail.com>\n"
 "Language: pl_PL\n"
@@ -422,6 +422,41 @@ msgstr "Importuj z pliku"
 
 msgid "Create Targets from MVR Focus Points"
 msgstr ""
+
+#, fuzzy
+msgid "Import Fixtures"
+msgstr "Oprawy"
+
+#, fuzzy
+msgid "Import Trusses"
+msgstr "Importuj"
+
+#, fuzzy
+msgid "Import Scene Objects"
+msgstr "Importuj z Share"
+
+#, fuzzy
+msgid "Import Projectors"
+msgstr "Importuj z Share"
+
+#, fuzzy
+msgid "Import Video Screens"
+msgstr "Importuj z Share"
+
+#, fuzzy
+msgid "Import Supports"
+msgstr "Importuj z pliku"
+
+#, fuzzy
+msgid "Export Focus Points as Targets"
+msgstr "Importuj z pliku"
+
+msgid "Export Targets as MVR Focus Points"
+msgstr ""
+
+#, fuzzy
+msgid "Export only selected fixtures"
+msgstr "Usuń oprawę"
 
 msgid "Enable PSN Input"
 msgstr ""

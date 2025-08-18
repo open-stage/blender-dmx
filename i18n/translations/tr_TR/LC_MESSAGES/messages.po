@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-07-12 15:31+0200\n"
+"POT-Creation-Date: 2025-08-18 21:32+0200\n"
 "PO-Revision-Date: 2025-04-16 06:01+0000\n"
 "Last-Translator: polarwood <polarwood@users.noreply.hosted.weblate.org>\n"
 "Language: tr_TR\n"
@@ -410,6 +410,40 @@ msgstr "Odak Noktalarını Hedef Olarak İçeri Aktar"
 
 msgid "Create Targets from MVR Focus Points"
 msgstr "MVR Odak Noktalarından Hedef Oluştur"
+
+#, fuzzy
+msgid "Import Fixtures"
+msgstr "Fikstürler"
+
+#, fuzzy
+msgid "Import Trusses"
+msgstr "İçe Aktarılanlar"
+
+msgid "Import Scene Objects"
+msgstr ""
+
+msgid "Import Projectors"
+msgstr ""
+
+#, fuzzy
+msgid "Import Video Screens"
+msgstr "İçe Aktarılanlar"
+
+#, fuzzy
+msgid "Import Supports"
+msgstr "İçe Aktarılanlar"
+
+#, fuzzy
+msgid "Export Focus Points as Targets"
+msgstr "Odak Noktalarını Hedef Olarak İçeri Aktar"
+
+#, fuzzy
+msgid "Export Targets as MVR Focus Points"
+msgstr "MVR Odak Noktalarından Hedef Oluştur"
+
+#, fuzzy
+msgid "Export only selected fixtures"
+msgstr "Seçili fikstürleri düzenle"
 
 msgid "Enable PSN Input"
 msgstr "PSN Girişini Etkinleştir"

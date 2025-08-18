@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-07-12 15:31+0200\n"
+"POT-Creation-Date: 2025-08-18 21:32+0200\n"
 "PO-Revision-Date: 2023-12-02 14:06+0000\n"
 "Last-Translator: bass python <pythonbass@gmail.com>\n"
 "Language: ar_AA\n"
@@ -412,6 +412,41 @@ msgstr "استيراد من ملف"
 
 msgid "Create Targets from MVR Focus Points"
 msgstr ""
+
+#, fuzzy
+msgid "Import Fixtures"
+msgstr "مباراة قادمة"
+
+#, fuzzy
+msgid "Import Trusses"
+msgstr "استيراد من المشاركة"
+
+#, fuzzy
+msgid "Import Scene Objects"
+msgstr "استيراد من المشاركة"
+
+#, fuzzy
+msgid "Import Projectors"
+msgstr "استيراد من المشاركة"
+
+#, fuzzy
+msgid "Import Video Screens"
+msgstr "استيراد من المشاركة"
+
+#, fuzzy
+msgid "Import Supports"
+msgstr "استيراد من ملف"
+
+#, fuzzy
+msgid "Export Focus Points as Targets"
+msgstr "استيراد من ملف"
+
+msgid "Export Targets as MVR Focus Points"
+msgstr ""
+
+#, fuzzy
+msgid "Export only selected fixtures"
+msgstr "حذف لاعبا اساسيا"
 
 msgid "Enable PSN Input"
 msgstr ""

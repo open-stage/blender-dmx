@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-07-12 15:31+0200\n"
+"POT-Creation-Date: 2025-08-18 21:32+0200\n"
 "PO-Revision-Date: 2025-07-04 08:03+0000\n"
 "Last-Translator: Daniel Nylander <daniel@danielnylander.se>\n"
 "Language: sv_SE\n"
@@ -426,6 +426,42 @@ msgstr "Importera fokuspunkter som mål"
 
 msgid "Create Targets from MVR Focus Points"
 msgstr "Skapa mål från MVR-fokuspunkter"
+
+#, fuzzy
+msgid "Import Fixtures"
+msgstr "Fixturer"
+
+#, fuzzy
+msgid "Import Trusses"
+msgstr "Importer"
+
+#, fuzzy
+msgid "Import Scene Objects"
+msgstr "Importera MVR-scen"
+
+#, fuzzy
+msgid "Import Projectors"
+msgstr "Importera projektdata"
+
+#, fuzzy
+msgid "Import Video Screens"
+msgstr "Importera MVR-scen"
+
+#, fuzzy
+msgid "Import Supports"
+msgstr "Importera commit"
+
+#, fuzzy
+msgid "Export Focus Points as Targets"
+msgstr "Importera fokuspunkter som mål"
+
+#, fuzzy
+msgid "Export Targets as MVR Focus Points"
+msgstr "Skapa mål från MVR-fokuspunkter"
+
+#, fuzzy
+msgid "Export only selected fixtures"
+msgstr "Ställ in på utvalda fixturer"
 
 msgid "Enable PSN Input"
 msgstr "Aktivera PSN-indata"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-07-12 15:31+0200\n"
+"POT-Creation-Date: 2025-08-18 21:32+0200\n"
 "PO-Revision-Date: 2025-06-22 13:01+0000\n"
 "Last-Translator: Yurt Page <yurtpage@gmail.com>\n"
 "Language: ru_RU\n"
@@ -405,6 +405,42 @@ msgstr "Импортировать точки фокусировки в каче
 
 msgid "Create Targets from MVR Focus Points"
 msgstr "Создать цели из точек фокусировки MVR"
+
+#, fuzzy
+msgid "Import Fixtures"
+msgstr "Приспособления"
+
+#, fuzzy
+msgid "Import Trusses"
+msgstr "Импорты"
+
+#, fuzzy
+msgid "Import Scene Objects"
+msgstr "Импорт сцены MVR"
+
+#, fuzzy
+msgid "Import Projectors"
+msgstr "Импорт данных проекта"
+
+#, fuzzy
+msgid "Import Video Screens"
+msgstr "Импорт сцены MVR"
+
+#, fuzzy
+msgid "Import Supports"
+msgstr "Импортировать коммит"
+
+#, fuzzy
+msgid "Export Focus Points as Targets"
+msgstr "Импортировать точки фокусировки в качестве целей"
+
+#, fuzzy
+msgid "Export Targets as MVR Focus Points"
+msgstr "Создать цели из точек фокусировки MVR"
+
+#, fuzzy
+msgid "Export only selected fixtures"
+msgstr "Установить на выбранных приборах"
 
 msgid "Enable PSN Input"
 msgstr "Включить вход PSN"

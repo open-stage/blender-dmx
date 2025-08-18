@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-07-12 15:31+0200\n"
+"POT-Creation-Date: 2025-08-18 21:32+0200\n"
 "PO-Revision-Date: 2025-07-05 16:01+0000\n"
 "Last-Translator: 大学没毕业 <ziweidao@foxmail.com>\n"
 "Language: zh_Hans\n"
@@ -386,6 +386,42 @@ msgstr "导入焦点作为目标"
 
 msgid "Create Targets from MVR Focus Points"
 msgstr "从 MVR 焦点创建目标"
+
+#, fuzzy
+msgid "Import Fixtures"
+msgstr "灯具"
+
+#, fuzzy
+msgid "Import Trusses"
+msgstr "导入"
+
+#, fuzzy
+msgid "Import Scene Objects"
+msgstr "导入 MVR 场景"
+
+#, fuzzy
+msgid "Import Projectors"
+msgstr "导入项目数据"
+
+#, fuzzy
+msgid "Import Video Screens"
+msgstr "导入 MVR 场景"
+
+#, fuzzy
+msgid "Import Supports"
+msgstr "导入确认"
+
+#, fuzzy
+msgid "Export Focus Points as Targets"
+msgstr "导入焦点作为目标"
+
+#, fuzzy
+msgid "Export Targets as MVR Focus Points"
+msgstr "从 MVR 焦点创建目标"
+
+#, fuzzy
+msgid "Export only selected fixtures"
+msgstr "在选定的灯具上设置"
 
 msgid "Enable PSN Input"
 msgstr "开启 PSN 输入"
