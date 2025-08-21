@@ -109,7 +109,7 @@ class DMX_OT_Import_MVR(Operator, ImportHelper):
     """Import My Virtual Rig"""
 
     bl_idname = "dmx.import_mvr_into_scene"
-    bl_label = "Import MVR (.mvr)"
+    bl_label = "Import MVR (.mvr) into BlenderDMX"
     bl_options = {"PRESET", "UNDO"}
 
     filename_ext = ".mvr"
@@ -202,12 +202,15 @@ class DMX_OT_Import_MVR(Operator, ImportHelper):
             )
         return {"FINISHED"}
 
+    def invoke(self, context, event):
+        return self.invoke_popup(context)
+
 
 class DMX_OT_Export_MVR(Operator, ExportHelper):
     """Export My Virtual Rig"""
 
     bl_idname = "dmx.export_mvr_from_scene"
-    bl_label = "Export MVR (.mvr)"
+    bl_label = "Export MVR (.mvr) from BlenderDMX"
     bl_options = {"PRESET", "UNDO"}
 
     filename_ext = ".mvr"
