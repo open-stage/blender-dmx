@@ -8,22 +8,23 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-18 21:37+0200\n"
-"PO-Revision-Date: 2025-08-15 20:01+0000\n"
-"Last-Translator: \"Mirko P.\" <michoo@outlook.de>\n"
+"PO-Revision-Date: 2025-08-23 04:02+0000\n"
+"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
+"Language-Team: German <https://hosted.weblate.org/projects/blenderdmx/main/"
+"de/>\n"
 "Language: de_DE\n"
-"Language-Team: German "
-"<https://hosted.weblate.org/projects/blenderdmx/main/de/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.13\n"
 "Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
 msgstr "Datei existiert nicht"
 
 msgid "Fixture ID"
-msgstr "Vorrichtungs-ID"
+msgstr "Leuchtenkennung"
 
 msgid "Unit Number"
 msgstr "Nummer der Einheit"
@@ -116,10 +117,10 @@ msgid "Display 'fake' beam cone"
 msgstr "‚Falsche‘ Strahlenkegel anzeigen"
 
 msgid "Selected fixtures"
-msgstr "Ausgewählte Fixtures"
+msgstr "Ausgewählte Leuchten"
 
 msgid "All fixtures"
-msgstr "Alle Fixtures"
+msgstr "Alle Leuchten"
 
 msgid "Beam Lens Diameter in Cycles"
 msgstr "Strahllinsendurchmesser in Zyklen"
@@ -204,7 +205,7 @@ msgstr "OSC-Input aktivieren"
 
 msgid "Enables Open Sound Control protocol to send fixture selection to a console"
 msgstr ""
-"Ermöglicht dem Open Sound Control-Protokoll, die Auswahl von Geräten an "
+"Ermöglicht dem Open Sound Control-Protokoll, die Auswahl von Leuchten an "
 "eine Konsole zu senden"
 
 msgid "OSC Target address"
@@ -266,7 +267,7 @@ msgid "Order by"
 msgstr "Bestellung nach"
 
 msgid "Fixture sorting order"
-msgstr "Sortierreihenfolge der Spielgeräte"
+msgstr "Sortierreihenfolge der Leuchten"
 
 msgid "Laser collision collection"
 msgstr "Laser-Kollisionserfassung"
@@ -306,10 +307,10 @@ msgid "When selecting a group, remove from existing selection"
 msgstr "Bei Auswahl einer Gruppe aus der bestehenden Auswahl entfernen"
 
 msgid "Keyframe only selected fixtures (not for autokeying)"
-msgstr "Nur ausgewählte Fixtures als Keyframes verwenden (nicht für Autokeying)"
+msgstr "Nur ausgewählte Leuchten als Keyframes verwenden (nicht für Autokeying)"
 
 msgid "Add keyframes with changes only for selected fixtures"
-msgstr "Fügt Keyframes mit Änderungen nur für ausgewählte Fixtures hinzu"
+msgstr "Fügt Keyframes mit Änderungen nur für ausgewählte Leuchten hinzu"
 
 msgid "MVR-xchange"
 msgstr "MVR‐xchange"
@@ -318,7 +319,7 @@ msgid "DMX Data"
 msgstr "DMX-Daten"
 
 msgid "Fixture"
-msgstr "Fixture"
+msgstr "Leuchte"
 
 msgid "Gap"
 msgstr "Lücke"
@@ -333,10 +334,10 @@ msgid "Source"
 msgstr "Quelle"
 
 msgid "Subfixtures"
-msgstr "Untervorrichtungen"
+msgstr "Unterleuchten"
 
 msgid "Active Subfixtures"
-msgstr "Aktive Untereinheiten"
+msgstr "Aktive Unterleuchten"
 
 msgid "Pan Rotate"
 msgstr "Schwenkfunktion"
@@ -351,14 +352,14 @@ msgid ""
 "Distance at which the influence of the light will be set to 0. Value "
 "bigger then 23 will break gobo rendering in Eevee Next."
 msgstr ""
-"\"Entfernung, bei dem der Lichteinfluss auf 0 gesetzt wird. Ein Wert über"
-" 23 unterbricht das Gobo-Rendering in Eevee Next.\""
+"Entfernung, bei dem der Lichteinfluss auf 0 gesetzt wird. Ein Wert über 23 "
+"unterbricht das Gobo-Rendering in Eevee Next."
 
 msgid "Use Fixtures Physical Properties"
-msgstr "Verwendung von Vorrichtungen Physikalische Eigenschaften"
+msgstr "Verwendung von Leuchten Physikalische Eigenschaften"
 
 msgid "Use Channel Functions of this fixture"
-msgstr "Verwenden Sie die Kanalfunktionen dieses Geräts"
+msgstr "Kanalfunktionen dieser Leuchte verwenden"
 
 msgid "DMX Universe"
 msgstr "DMX-Universum"
@@ -385,61 +386,53 @@ msgid "Increment DMX address"
 msgstr "DMX-Adresse inkrementieren"
 
 msgid "Increment Fixture ID"
-msgstr "Inkrement-Befestigungs-ID"
+msgstr "Leuchtenkennung erhöhen"
 
 msgid "Increment Fixture ID if numeric"
-msgstr "Fixture-ID erhöhen, wenn numerisch"
+msgstr "Leuchtenkennung erhöhen, falls numerisch"
 
 msgid ""
 "The Fixture ID is an identifier of this fixture that can be used to "
 "activate / select them for programming."
 msgstr ""
-"Die Fixture-ID ist eine Kennung dieser Fixture, mit der sie für die "
+"Die Leuchtenkennung ist eine Kennung dieser Leuchte, mit der sie für die "
 "Programmierung aktiviert/ausgewählt werden kann."
 
 msgid "Units"
 msgstr "Anzahl"
 
 msgid "How many units of this light to add"
-msgstr "Anzahl der hinzuzufügenden Fixtures"
+msgstr "Wie viele Einheiten dieser Leuchte sollen hinzugefügt werden"
 
 msgid "Import Focus Points as Targets"
-msgstr "Importieren Sie Fokuspunkte als Ziele"
+msgstr "Fokuspunkte als Ziele importieren"
 
 msgid "Create Targets from MVR Focus Points"
 msgstr "Ziele aus MVR-Fokuspunkten erstellen"
 
-#, fuzzy
 msgid "Import Fixtures"
-msgstr "Vorrichtung"
+msgstr "Leuchten importieren"
 
-#, fuzzy
 msgid "Import Trusses"
-msgstr "Importe"
+msgstr "Traversen importieren"
 
-#, fuzzy
 msgid "Import Scene Objects"
-msgstr "MVR-Szene importieren"
+msgstr "Szenenobjekte importieren"
 
-#, fuzzy
 msgid "Import Projectors"
-msgstr "Projektdaten importieren"
+msgstr "Projektoren importieren"
 
-#, fuzzy
 msgid "Import Video Screens"
-msgstr "MVR-Szene importieren"
+msgstr "Videobildschirme importieren"
 
-#, fuzzy
 msgid "Import Supports"
-msgstr "Importieren von Commits"
+msgstr "Stützen importieren"
 
-#, fuzzy
 msgid "Export Targets as MVR Focus Points"
-msgstr "Ziele aus MVR-Fokuspunkten erstellen"
+msgstr "Ziele als MVR-Fokuspunkte exportieren"
 
-#, fuzzy
 msgid "Export only selected fixtures"
-msgstr "Auf ausgewählten Leuchten einstellen"
+msgstr "Nur ausgewählte Leuchten exportieren"
 
 msgid "Enable PSN Input"
 msgstr "PSN Eingabe aktivieren"
@@ -496,7 +489,7 @@ msgid "Last Seen Time"
 msgstr "Zuletzt gesehen"
 
 msgid "Station Name"
-msgstr "Station Name"
+msgstr "Stationsname"
 
 msgid "MVR-xchange group"
 msgstr "MVR-Xchange-Gruppe"
@@ -541,7 +534,7 @@ msgid "Align selected fixtures to active fixture"
 msgstr "Ausgewählte Leuchten an aktive Leuchte ausrichten"
 
 msgid "Distribute selected fixtures evenly"
-msgstr "Verteilen Sie die ausgewählten Leuchten gleichmäßig"
+msgstr "Ausgewählte Leuuchten gleichmäßig verteilen"
 
 msgid "Distribute selected fixtures with gap"
 msgstr "Ausgewählte Leuchten mit Abstand verteilen"
@@ -558,7 +551,7 @@ msgid "Selected fixtures: {}"
 msgstr "Ausgewählte Leuchten: {}"
 
 msgid "DMX > Fixture Menu"
-msgstr "DMX > Fixtures"
+msgstr "DMX > Leuchtenmenü"
 
 msgid "Add"
 msgstr "Hinzufügen"
@@ -570,28 +563,28 @@ msgid "Remove"
 msgstr "Entfernen"
 
 msgid "DMX > Fixture > Add > Manufacturers"
-msgstr "DMX > Fixtures > Hinzufügen > Hersteller"
+msgstr "DMX > Leuchte > Hinzufügen > Hersteller"
 
 msgid "DMX > Fixture > Add > Profiles"
-msgstr "DMX > Fixtures > Hinzufügen > Profile"
+msgstr "DMX > Leuchte > Hinzufügen > Profile"
 
 msgid "DMX > Fixture > Add > Mode"
-msgstr "DMX > Fixtures > Hinzufügen > Modus"
+msgstr "DMX > Leuchte > Hinzufügen > Modus"
 
 msgid "DMX > Fixture > Add > Manufacturers > Profiles"
-msgstr "DMX > Fixtures > Hinzufügen > Hersteller > Profile"
+msgstr "DMX > Leuchte > Hinzufügen > Hersteller > Profile"
 
 msgid "Profile"
 msgstr "Profil"
 
 msgid "Fixture GDTF Profile"
-msgstr "GDTF-Datei"
+msgstr "GDTF-Profil der Leuchte"
 
 msgid "Mode"
 msgstr "Modus"
 
 msgid "Fixture GDTF Mode"
-msgstr "Befestigung GDTF-Modus"
+msgstr "GDTF-Modus der Leuchte"
 
 msgid "DMX Mode"
 msgstr "DMX-Modus"
@@ -603,20 +596,20 @@ msgid "Modify DMX address"
 msgstr "DMX-Adresse ändern"
 
 msgid "Modify Fixture ID"
-msgstr "Modul-ID ändern"
+msgstr "Leuchtenkennung ändern"
 
 msgid "GDTF Profile"
 msgstr "GDTF-Profil"
 
 msgid "DMX: Add Fixture"
-msgstr "DMX: Fixture hinzufügen"
+msgstr "DMX: Leuchte hinzufügen"
 
 msgid "Add fixtures to the show"
-msgstr "Fintures hinzufügen"
+msgstr "Leuchten zur Show hinzufügen"
 
 #, python-brace-format
 msgid "Fixture named {} already exists"
-msgstr "Fixture mit dem Namen {} existiert bereits"
+msgstr "Leuchte mit dem Namen {} existiert bereits"
 
 msgid "No GDTF Profile selected."
 msgstr "Kein GDTF-Profil ausgewählt."
@@ -625,16 +618,16 @@ msgid "No DMX Mode selected."
 msgstr "Keinen Modus ausgewählt."
 
 msgid "DMX: Edit Fixture"
-msgstr "DMX: Fixture bearbeiten"
+msgstr "DMX: Leuchte bearbeiten"
 
 msgid "Edit selected fixtures"
-msgstr "Ausgewählte Fixtures bearbeiten"
+msgstr "Ausgewählte Leuchten bearbeiten"
 
 msgid "DMX > Fixture > Remove"
-msgstr "DMX > Fixtures > Entfernen"
+msgstr "DMX > Leuchte > Entfernen"
 
 msgid "Remove selected fixtures from Scene"
-msgstr "Fixture aus der Szene entfernen"
+msgstr "Ausgewählte Leuchten aus der Szene entfernen"
 
 msgid "Remove IES Files"
 msgstr "IES-Dateien entfernen"
@@ -643,10 +636,10 @@ msgid "Import IES File"
 msgstr "IES-Datei importieren"
 
 msgid "Select Previous Fixture"
-msgstr "Vorherige Begegnung auswählen"
+msgstr "Vorherige Leuchte auswählen"
 
 msgid "Select Next Fixture"
-msgstr "Nächste Modul auswählen"
+msgstr "Nächste Leuchte auswählen"
 
 msgid "Select Previous Target"
 msgstr "Vorheriges Ziel auswählen"
@@ -655,16 +648,16 @@ msgid "Select Next Target"
 msgstr "Nächstes Ziel auswählen"
 
 msgid "DMX > Fixture > Item"
-msgstr "DMX > Modul > Artikel"
+msgstr "DMX > Leuchte > Artikel"
 
 msgid "Select Fixture"
-msgstr "Fixture auswählen"
+msgstr "Leuchte auswählen"
 
 msgid "Remove fixture"
-msgstr "Befestigung entfernen"
+msgstr "Leuchte entfernen"
 
 msgid "Fixtures"
-msgstr "Vorrichtung"
+msgstr "Leuchten"
 
 msgid "F ID"
 msgstr "FID"
@@ -672,7 +665,6 @@ msgstr "FID"
 msgid "Unit #"
 msgstr "Einheit #"
 
-#, fuzzy
 msgid "F ID #"
 msgstr "F ID #"
 
@@ -707,13 +699,13 @@ msgid "DMX > Group > Create"
 msgstr "DMX > Gruppe > Erstellen"
 
 msgid "Create DMX group from selected fixtures"
-msgstr "Erstellt eine Gruppe aus den ausgewählten Fixtures"
+msgstr "DMX-Gruppe aus ausgewählten Leuchten erstellen"
 
 msgid "Group Name"
 msgstr "Gruppenname"
 
 msgid "Replace DMX group fixtures with selected ones"
-msgstr "DMX-Gruppen-Geräte durch ausgewählte Geräte ersetzen"
+msgstr "DMX-Gruppen-Leuchten durch ausgewählte Leuchten ersetzen"
 
 msgid "DMX > Group > Rename"
 msgstr "DMX > Gruppe > Umbenennen"
@@ -758,31 +750,31 @@ msgid "Do not follow the target"
 msgstr "Folgen Sie dem Ziel nicht"
 
 msgid "Use Fixtures Channel Functions"
-msgstr "Verwenden Sie die Funktionen des Fixtures-Kanals"
+msgstr "Leuchtenkanalfunktionen verwenden"
 
 msgid "Do Not Use Fixtures Physical Properties"
-msgstr "Nicht verwende Leuchten der Physikalische Eigenschaften"
+msgstr "Physikalische Eigenschaften der Leuchen nicht verwenden"
 
 msgid "Do not use Fixtures Channel Functions"
-msgstr "Verwenden Sie keine Leuchtkanalfunktionen"
+msgstr "Leuchtenkanalfunktionen nicht verwenden"
 
 msgid "Deselect All"
 msgstr "Alles abwählen"
 
 msgid "Deselect every fixture in the Scene"
-msgstr "Alle Elemente in der Szene abwählen"
+msgstr "Jede Leuchte in der Szene abwählen"
 
 msgid "Select All"
 msgstr "Alles auswählen"
 
 msgid "Select every fixture in the Scene"
-msgstr "Wählen Sie alle Module in der Szene aus"
+msgstr "Jede Leuchte in der Szene auswählen"
 
 msgid "Select Visible (only filtered)"
 msgstr "Sichtbar auswählen (nur gefiltert)"
 
 msgid "Select every fixture which is visible in the fixtures list"
-msgstr "Wählen Sie alle Leuchten aus, die in der Leuchtenliste angezeigt werden."
+msgstr "Jede Leuchte auswählen, die in der Leuchtenliste sichtbar ist"
 
 msgid "Invert selection"
 msgstr "Auswahl umkehren"
@@ -794,12 +786,12 @@ msgid "Select every other light"
 msgstr "Jedes andere Licht auswählen"
 
 msgid "Clear"
-msgstr "Clear"
+msgstr "Leeren"
 
 msgid "Clear all DMX values to default and update fixtures"
 msgstr ""
-"Setzt alle DMX-Daten auf die Standartwerte zurück und aktualisiert alle "
-"Fixtures"
+"Alle DMX-Werte auf die Standardeinstellungen zurücksetzen und Leuchten "
+"aktualisieren"
 
 msgid "Apply"
 msgstr "Anwenden"
@@ -826,16 +818,16 @@ msgid "Reset position of target of selected fixtures"
 msgstr "Position des Ziels der ausgewählten Leuchten zurücksetzen"
 
 msgid "Select Fixtures"
-msgstr "Auswahl der Leuchten"
+msgstr "Leuchten auswählen"
 
 msgid "Select base/body of every selected fixture"
-msgstr "Wählen Sie die Basis/den Körper jedes ausgewählten Bauteils aus"
+msgstr "Basis/Körper jeder ausgewählten Leuchte auswählen"
 
 msgid "Select Targets"
 msgstr "Ziele auswählen"
 
 msgid "Select target from every fixture element selected"
-msgstr "Wählen Sie das Ziel aus jedem ausgewählten Befestigungselement aus"
+msgstr "Ziel aus jedem ausgewählten Leuchtenelement auswählen"
 
 msgid "Select Camera"
 msgstr "Kamera auswählen"
@@ -844,7 +836,7 @@ msgid "Select camera of the selected fixture"
 msgstr "Kamera der ausgewählten Leuchte auswählen"
 
 msgid "Programmer"
-msgstr "Programmer"
+msgstr "Programmierer"
 
 msgid "Nothing selected"
 msgstr "Nichts ausgewählt"
@@ -872,7 +864,7 @@ msgid "Tilt"
 msgstr "Tilt"
 
 msgid "Pan Rotation"
-msgstr "Schwenk Drehung"
+msgstr "Schwenkdrehung"
 
 msgid "Tilt Rotation"
 msgstr "Neigungsdrehung"
@@ -881,21 +873,20 @@ msgid "Zoom"
 msgstr "Zoom"
 
 msgid "Color Wheel1"
-msgstr "Farbenrad1"
+msgstr "Farbrad1"
 
 msgid "Color Wheel2"
-msgstr "Farbenrad2"
+msgstr "Farbrad2"
 
 msgid "Color Wheel3"
-msgstr "Farbenrad3"
+msgstr "Farbrad3"
 
 msgid "Color Macro1"
-msgstr "Farbe Makro1"
+msgstr "Farbmakro1"
 
 msgid "Color Temperature"
 msgstr "Farbtemperatur"
 
-#, fuzzy
 msgid "Iris"
 msgstr "Iris"
 
@@ -912,11 +903,10 @@ msgid "Gobo2 Adjust"
 msgstr "Blendenschirm2 Anpassen"
 
 msgid "Strobe"
-msgstr "Strobe"
+msgstr "Stroboskopisch"
 
-#, fuzzy
 msgid "PanMode"
-msgstr "PanMode"
+msgstr "SchwenkModus"
 
 msgid "TiltMode"
 msgstr "Neigungsmodus"
@@ -934,16 +924,16 @@ msgid "Add a Keyframe with the current DMX data"
 msgstr "Ein Schlüsselbild mit den aktuellen DMX-Daten hinzufügen"
 
 msgid "DMX > Recorder > Delete Keyframes for all fixtures"
-msgstr "DMX > Recorder > Keyframes für alle Fixtures löschen"
+msgstr "DMX > Rekorder > Keyframes für alle Leuchten löschen"
 
 msgid "Deletes all keyframes from all fixtures"
-msgstr "Löscht alle Keyframes aller Fixtures"
+msgstr "Löscht alle Keyframes aus allen Leuchten"
 
 msgid "DMX > Recorder > Delete All Keyframes from selected fixtures"
-msgstr "DMX > Recorder > Keyframes ausgewählter Fixtures löschen"
+msgstr "DMX > Rekorder > Alle Keyframes aus ausgewählten Leuchten löschen"
 
 msgid "Deletes all keyframes from selected fixtures"
-msgstr "Löscht alle Keyframes der ausgewählten Fixtures"
+msgstr "Löscht alle Keyframes der ausgewählten Leuchten"
 
 msgid "Keyframe Recorder"
 msgstr "Schlüsselbild-Rekorder"
@@ -958,7 +948,7 @@ msgid "Delete from selected fixtures"
 msgstr "Aus ausgewählten Leuchten löschen"
 
 msgid "Delete from all fixtures"
-msgstr "Aus allen Vorrichtungen löschen"
+msgstr "Aus allen Leuchten löschen"
 
 msgid "Objects with #bdmx drivers"
 msgstr "Objekte mit #bdmx-Treibern"
@@ -979,7 +969,7 @@ msgid "DMX > Setup > New Show"
 msgstr "DMX > Setup > Neue Show"
 
 msgid "Clear any existing DMX data and create a new show."
-msgstr "Entfernt alle DMX-Daten und erstellt eine neue Show"
+msgstr "Entfernt alle DMX-Daten und erstellt eine neue Show."
 
 msgid "Do at your own risk. Manual edits or deletes can cause issues"
 msgstr ""
@@ -992,7 +982,7 @@ msgstr ""
 " zu Problemen führen."
 
 msgid "Really remove all fixtures and DMX from blend file?"
-msgstr "Wirklich alle Fixtures und DMX aus der Blend-Datei entfernen?"
+msgstr "Wirklich alle Leuchten und DMX aus der Blend-Datei entfernen?"
 
 msgid "Try to remove DMX from the Blender showfile"
 msgstr "Versuchen Sie, DMX aus der Blender-Showdatei zu entfernen"
@@ -1078,9 +1068,7 @@ msgid "Setup"
 msgstr "Einstellungen"
 
 msgid "Error! Blender 3.4 or higher required."
-msgstr ""
-"Ein Fehler ist aufgetreten!\n"
-"Es wird mindestens Blender 3.4 oder höher benötigt."
+msgstr "Fehler! Blender 3.4 oder höher erforderlich."
 
 msgid "Create New Show"
 msgstr "Neue Show erstellen"
@@ -1159,18 +1147,18 @@ msgid "Select visible"
 msgstr "Sichtbare auswählen"
 
 msgid "Select visible subfixtures"
-msgstr "Sichtbare Untereinheiten auswählen"
+msgstr "Sichtbare Unterleuchten auswählen"
 
 msgid "Clear selection"
 msgstr "Auswahl löschen"
 
 msgid "Clear subfixture selection"
-msgstr "Auswahl der Untervorrichtung löschen"
+msgstr "Unterleuchtenauswahl löschen"
 
 msgid "Get GDTF Share account and fill it into BlenderDMX addon preferences."
 msgstr ""
-"Bitte fügen sie ihren GDTF-Share API-Schlüssel in den BlenderDMX-"
-"Einstellungen ein"
+"Erstellen Sie ein GDTF-Share-Konto und geben Sie es in den Einstellungen des "
+"BlenderDMX-Add-ons ein."
 
 msgid "GDTF Share API credentials missing"
 msgstr "GDTF-Freigabe-API-Anmeldedaten fehlen"
@@ -1205,14 +1193,10 @@ msgstr "GDTF-Profil heruntergeladen"
 
 #, python-brace-format
 msgid "Error downloading GDTF file. Error code was: {}"
-msgstr ""
-"Beim Herunterladen des GDTF-Profils ist ein Fehler aufgetreten!\n"
-"Fehlercode: {}"
+msgstr "Fehler beim Herunterladen der GDTF-Datei. Der Fehlercode lautete: {}"
 
 msgid "GDTF Share download error"
-msgstr ""
-"Bein Herunterladen des GDTF-Profils ist ein Fehler aufgetreten!\n"
-"Es konnte kein Fehlercode indentifiziert werden."
+msgstr "Fehler beim Herunterladen der GDTF-Freigabe"
 
 msgid "The name of the DMX profile."
 msgstr "Name des DMX-Profils"
@@ -1243,10 +1227,10 @@ msgid "DMX Footprint"
 msgstr "DMX-Footprint"
 
 msgid "Fixture name"
-msgstr "Name"
+msgstr "Leuchtenname"
 
 msgid "Manufacturer and fixture name"
-msgstr "Hersteller und Bezeichnung"
+msgstr "Hersteller und Leuchtenname"
 
 msgid "Manufacturer"
 msgstr "Hersteller"
@@ -1291,7 +1275,7 @@ msgid "Import from Share"
 msgstr "Aus GDTF-Share importieren"
 
 msgid "Import fixture from GDTF Share"
-msgstr "Fixture aus GDTF-Share importieren"
+msgstr "Leuchte aus GDTF-Share importieren"
 
 msgid "Update GDTF Share index"
 msgstr "GDTF-Share-Index aktualisieren"
@@ -1300,10 +1284,10 @@ msgid "Update data index of GDTF Share"
 msgstr "Datenindex von GDTF Share aktualisieren"
 
 msgid "Delete fixture"
-msgstr "Fixture löschen"
+msgstr "Leuchte löschen"
 
 msgid "Delete fixture from local filesystem"
-msgstr "Fixture aus lokalen Dateien löschen"
+msgstr "Leuchte aus lokalem Dateisystem löschen"
 
 msgid "Refresh files listing"
 msgstr "Dateiliste aktualisieren"
@@ -1318,13 +1302,13 @@ msgid "You must Allow Online access for this to work:"
 msgstr "Sie müssen den Online-Zugriff zulassen, damit dies funktioniert:"
 
 msgid "Fixture details"
-msgstr "Fixture-Details"
+msgstr "Leuchtendetails"
 
 msgid "Local Fixture files"
-msgstr "Lokale Fixture-Dateien"
+msgstr "Lokale Leuchtendateien"
 
 msgid "Local Fixture details"
-msgstr "Lokale Fixture-Details"
+msgstr "Lokale Leuchtendetails"
 
 msgid "Profiles"
 msgstr "Profile"
@@ -1429,16 +1413,16 @@ msgid "Removing a tracker"
 msgstr "Entfernen eines Trackers"
 
 msgid "Link Fixture to Tracker"
-msgstr "Link-Befestigung an Tracker"
+msgstr "Leuchte mit Tracker verknüpfen"
 
 msgid "Link fixture to a tracker"
-msgstr "Befestigung eines Links an einem Tracker"
+msgstr "Leuchte mit einem Tracker verknüpfen"
 
 msgid "Unlink Fixture from Tracker"
-msgstr "Fixture vom Tracker trennen"
+msgstr "Leuchte vom Tracker trennen"
 
 msgid "Unlink fixture from a tracker"
-msgstr "Fixture von einem Tracker trennen"
+msgstr "Leuchte von einem Tracker trennen"
 
 msgid "Tracker Followers"
 msgstr "Tracker-Follower"
@@ -1446,7 +1430,6 @@ msgstr "Tracker-Follower"
 msgid "Link followers to a tracker"
 msgstr "Follower mit einem Tracker verknüpfen"
 
-#, fuzzy
 msgid "PSN"
 msgstr "PSN"
 
@@ -1723,4 +1706,3 @@ msgstr "Universen"
 
 #~ msgid "Export Focus Points as Targets"
 #~ msgstr "Importieren Sie Fokuspunkte als Ziele"
-
