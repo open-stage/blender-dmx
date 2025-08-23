@@ -170,6 +170,12 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
         layout = self.layout
         layout.use_property_split = True
         layout.use_property_decorate = False
+        box = layout.column().box()
+        row = box.row()
+        row.template_icon_view(
+            context.scene, "gdtf_logo_enum", show_labels=False, scale=10
+        )
+        row.enabled = False
         layout.prop(self, "patch")
         box = layout.column().box()
         box.enabled = self.patch

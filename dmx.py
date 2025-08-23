@@ -288,7 +288,32 @@ class DMX(PropertyGroup):
         DMX.custom_icons.load(
             "MVR_FILE", os.path.join(path, "mvr_file_icon_small.png"), "IMAGE"
         )
+        DMX.custom_icons.load(
+            "GDTF_LOGO", os.path.join(path, "gdtf-logo-color-inverted.png"), "IMAGE"
+        )
+        DMX.custom_icons.load(
+            "MVR_LOGO", os.path.join(path, "mvr-logo-color-inverted.png"), "IMAGE"
+        )
+        gdtf_items = [
+            ("dmx_icon", "DMX Icon", "", DMX.custom_icons["GDTF_LOGO"].icon_id, 0),
+        ]
+        mvr_items = [
+            ("dmx_icon", "DMX Icon", "", DMX.custom_icons["MVR_LOGO"].icon_id, 0),
+        ]
 
+        blender_dmx_items = [
+            ("dmx_icon", "DMX Icon", "", DMX.custom_icons["BLENDER_DMX"].icon_id, 0),
+        ]
+
+        bpy.types.Scene.gdtf_logo_enum = bpy.props.EnumProperty(
+            name="gdtf_logo", items=gdtf_items
+        )
+        bpy.types.Scene.mvr_logo_enum = bpy.props.EnumProperty(
+            name="mvr_logo", items=mvr_items
+        )
+        bpy.types.Scene.blender_dmx_logo_enum = bpy.props.EnumProperty(
+            name="blender_dmx_logo", items=blender_dmx_items
+        )
         for cls in DMX.classes_setup:
             bpy.utils.register_class(cls)
 

@@ -168,6 +168,12 @@ class DMX_OT_Import_MVR(Operator, ImportHelper):
         layout.use_property_split = True
         layout.use_property_decorate = False
         box = layout.column().box()
+        row = box.row()
+        row.template_icon_view(
+            context.scene, "mvr_logo_enum", show_labels=False, scale=10
+        )
+        row.enabled = False
+        box = layout.column().box()
         row1 = box.row()
         row1.prop(self, "import_fixtures")
         row2 = box.row()
@@ -234,6 +240,12 @@ class DMX_OT_Export_MVR(Operator, ExportHelper):
         layout = self.layout
         layout.use_property_split = True
         layout.use_property_decorate = False
+        box = layout.column().box()
+        row = box.row()
+        row.template_icon_view(
+            context.scene, "mvr_logo_enum", show_labels=False, scale=10
+        )
+        row.enabled = False
         box = layout.column().box()
         box.prop(self, "export_focus_points")
         box.prop(self, "selected_fixtures_only")
