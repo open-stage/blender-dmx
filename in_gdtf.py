@@ -86,7 +86,7 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
     """Import GDTF"""
 
     bl_idname = "dmx.import_gdtf_into_scene"
-    bl_label = "Import GDTF (.gdtf)"
+    bl_label = "Import GDTF (.gdtf) into BlenderDMX"
     bl_options = {"PRESET", "UNDO"}
 
     filename_ext = ".gdtf"
@@ -170,6 +170,12 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
         layout = self.layout
         layout.use_property_split = True
         layout.use_property_decorate = False
+        box = layout.column().box()
+        row = box.row()
+        row.template_icon_view(
+            context.scene, "gdtf_logo_enum", show_labels=False, scale=10
+        )
+        row.enabled = False
         layout.prop(self, "patch")
         box = layout.column().box()
         box.enabled = self.patch
@@ -261,6 +267,9 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
         DMX_GDTF_File.get_manufacturers_list()
         return {"FINISHED"}
+
+    def invoke(self, context, event):
+        return self.invoke_popup(context)
 
 
 class DMX_IO_FH_GDTF(bpy.types.FileHandler):

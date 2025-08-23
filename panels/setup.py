@@ -455,7 +455,6 @@ class DMX_PT_Setup(Panel):
     bl_region_type = "UI"
     bl_category = "DMX"
     bl_context = "objectmode"
-    bl_options = {"DEFAULT_CLOSED"}
 
     def draw(self, context):
         layout = self.layout
@@ -480,6 +479,10 @@ class DMX_PT_Setup(Panel):
             layout.operator(
                 "wm.url_open", text="User Guide Online", icon="HELP"
             ).url = "https://blenderdmx.eu/docs/faq/"
+            row = layout.row()
+            row.template_icon_view(
+                context.scene, "blender_dmx_logo_enum", show_labels=False, scale=10
+            )
 
 
 class DMX_OT_Import_Custom_Data(Operator):
