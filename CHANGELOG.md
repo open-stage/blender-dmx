@@ -1,5 +1,11 @@
 ### Changelog
 
+### 2.0.10
+
+* Ensure distinct menu names during Drag&Drop even if there are other
+  Extensions with Import for same file extensions
+* Update German translation
+
 ### 2.0.9
 
 * MVR:
