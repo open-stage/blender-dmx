@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-18 21:37+0200\n"
-"PO-Revision-Date: 2025-08-14 19:02+0000\n"
-"Last-Translator: Antoine <101528392+Antoine489@users.noreply.github.com>\n"
+"PO-Revision-Date: 2025-08-27 21:02+0000\n"
+"Last-Translator: \"David D.\" <dadu042@users.noreply.hosted.weblate.org>\n"
+"Language-Team: French <https://hosted.weblate.org/projects/blenderdmx/main/"
+"fr/>\n"
 "Language: fr_FR\n"
-"Language-Team: French "
-"<https://hosted.weblate.org/projects/blenderdmx/main/fr/>\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.13\n"
 "Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
@@ -38,24 +39,21 @@ msgstr "Adresse DMX"
 msgid "Position"
 msgstr "Position"
 
-#, fuzzy
 msgid "Rotation"
-msgstr "évaluation"
+msgstr "Rotation"
 
 msgid "Footprint"
-msgstr ""
+msgstr "Empreinte"
 
 msgid "Physical Properties"
 msgstr "Propriétés Physiques"
 
 msgid "DMX Collection"
-msgstr ""
+msgstr "Collection DMX"
 
-#, fuzzy
 msgid "Selected PSN Server"
-msgstr "Supprimer projecteur"
+msgstr "Serveur PSN sélectionné"
 
-#, fuzzy
 msgid "The selected element on the PSN server list"
 msgstr "L'élément sélectionné sur la liste du serveur PSN"
 
@@ -107,9 +105,8 @@ msgstr "Critique"
 msgid "Error"
 msgstr "Erreur"
 
-#, fuzzy
 msgid "Warning"
-msgstr "évaluation"
+msgstr "Avertissement"
 
 msgid "Info"
 msgstr "Info"
@@ -118,18 +115,16 @@ msgid "Debug"
 msgstr "Debug"
 
 msgid "Simple beam"
-msgstr ""
+msgstr "Simple rayon"
 
 msgid "Display 'fake' beam cone"
-msgstr ""
+msgstr "Afficher 'faux' cône de rayon"
 
-#, fuzzy
 msgid "Selected fixtures"
-msgstr "Supprimer projecteur"
+msgstr "Projecteurs sélectionnés"
 
-#, fuzzy
 msgid "All fixtures"
-msgstr "Projecteurs"
+msgstr "Tous projecteurs"
 
 msgid "Beam Lens Diameter in Cycles"
 msgstr ""
@@ -138,6 +133,8 @@ msgid ""
 "Beam diameter is reduced to minimum when projecting gobos to prevent blur"
 " on gobo edge"
 msgstr ""
+"Le diamètre du faisceau est réduit au minimum lors de la projection des "
+"gobos pour éviter le flou sur le bord du gobo"
 
 msgid "Reduced"
 msgstr "Réduit"
@@ -149,7 +146,7 @@ msgid "Custom per each beam"
 msgstr "Personnalisé pour chaque faisceau"
 
 msgid "Disable Beam Outlines"
-msgstr ""
+msgstr "Désactiver contours de faisceau"
 
 msgid "Enable Volume Scatter"
 msgstr ""
@@ -169,51 +166,53 @@ msgstr ""
 msgid "Multiply beams intensity"
 msgstr ""
 
-#, fuzzy
 msgid "Number of universes"
-msgstr "Nombre de canaux"
+msgstr "Nombre d'univers"
 
 msgid "The number of universes set on the panel"
-msgstr ""
+msgstr "Le nombre d’univers définis sur le panneau"
 
 #, fuzzy
 msgid "Universe List Item"
 msgstr "Univers"
 
 msgid "The selected element on the universe list"
-msgstr ""
+msgstr "L’élément sélectionné sur la liste univers"
 
 msgid "IPv4 Address for ArtNet signal"
-msgstr ""
+msgstr "Adresse IPv4 pour le signal ArtNet"
 
 msgid "The network card/interface to listen for ArtNet DMX data"
-msgstr ""
+msgstr "La carte/interface réseau pour écouter les données ArtNet DMX"
 
 msgid "Enable Art-Net Input"
-msgstr ""
+msgstr "Activer l’entrée Art-Net"
 
 msgid ""
 "Enables the input of DMX data throught Art-Net on the selected network "
 "interface"
 msgstr ""
+"Permet l’entrée de données DMX via Art-Net sur l’interface réseau "
+"sélectionnée"
 
 msgid "Enable sACN Input"
-msgstr ""
+msgstr "Activer l’entrée sACN"
 
 msgid ""
 "Enables the input of DMX data throught sACN on all detected network "
 "interfaces"
 msgstr ""
+"Permet l’entrée de données DMX via sACN sur toutes les interfaces réseau "
+"détectées"
 
 msgid "Enable OSC Output"
-msgstr ""
+msgstr "Activer la sortie OSC"
 
 msgid "Enables Open Sound Control protocol to send fixture selection to a console"
 msgstr ""
 
-#, fuzzy
 msgid "OSC Target address"
-msgstr "Adresse DMX"
+msgstr "Adresse cible OSC"
 
 msgid ""
 "Address of the host where you want to send the OSC signal. Address ending"
@@ -221,22 +220,23 @@ msgid ""
 msgstr ""
 
 msgid "OSC Target port"
-msgstr ""
+msgstr "Port cible OSC"
 
 msgid "Port number of the host where you want to send the OSC signal"
 msgstr ""
+"Numéro de port de l’hôte vers lequel vous souhaitez envoyer le signal OSC"
 
 msgid "Enable Local MVR-xchange"
-msgstr ""
+msgstr "Activer MVR-xchange local"
 
 msgid "Enables MVR-xchange sharing and discovery"
-msgstr ""
+msgstr "Permet le partage et la découverte de MVR-xchange"
 
 msgid "Enable Group Registration"
-msgstr ""
+msgstr "Activer l’enregistrement de groupe"
 
 msgid "Join or start the new group"
-msgstr ""
+msgstr "Rejoindre ou commencer le nouveau groupe"
 
 msgid "Enable Internet MVR-xchange"
 msgstr ""
@@ -248,30 +248,28 @@ msgid "Use per-project Station UUID"
 msgstr ""
 
 msgid "Generates a random UUID for every blend file"
-msgstr ""
+msgstr "Génère un UUID aléatoire pour chaque fichier Blend"
 
 msgid "Art-Net Status"
-msgstr ""
+msgstr "Statut Art-Net"
 
 msgid "sACN Status"
-msgstr ""
+msgstr "Statut sACN"
 
 msgid "Group List i"
 msgstr ""
 
 msgid "The selected element on the group list"
-msgstr ""
+msgstr "L’élément sélectionné dans la liste de groupe"
 
-#, fuzzy
 msgid "Order by"
-msgstr "Mise a jour par"
+msgstr "Ordre par"
 
-#, fuzzy
 msgid "Fixture sorting order"
-msgstr "Mode GDTF"
+msgstr "Ordre de tri projecteurs"
 
 msgid "Laser collision collection"
-msgstr ""
+msgstr "Collecte collision laser"
 
 msgid ""
 "Laser beams are projected onto objects in this collection. The beam stops"
@@ -283,27 +281,27 @@ msgid ""
 "allows to re-enable it in case of some failure during import, which would"
 " leave it paused"
 msgstr ""
+"Le moteur de rendu est mis en pause pendant l’importation MVR et en vue 2D. "
+"Cette case à cocher permet de le réactiver en cas d’échec lors de l’"
+"importation, ce qui le laisserait en pause"
 
 msgid "Pause renderer"
 msgstr ""
 
-#, fuzzy
 msgid "Manufacturers"
-msgstr "Constructeur"
+msgstr "Constructeurs"
 
-#, fuzzy
 msgid "Imports"
-msgstr "Importer du fichier"
+msgstr "importations"
 
 msgid "Add to selection"
-msgstr ""
+msgstr "Ajouter à sélection"
 
-#, fuzzy
 msgid "Remove from selection"
-msgstr "Supprimer projecteur"
+msgstr "Retirer de sélection"
 
 msgid "When selecting a group, remove from existing selection"
-msgstr ""
+msgstr "Lors de la sélection d’un groupe, retirer de la sélection existante"
 
 #, fuzzy
 msgid "Keyframe only selected fixtures (not for autokeying)"
@@ -315,42 +313,35 @@ msgstr ""
 msgid "MVR-xchange"
 msgstr ""
 
-#, fuzzy
 msgid "DMX Data"
-msgstr "Mode DMX"
+msgstr "Données DMX"
 
-#, fuzzy
 msgid "Fixture"
-msgstr "Projecteurs"
+msgstr "Projecteur"
 
 msgid "Gap"
 msgstr ""
 
 msgid "Diameter"
-msgstr ""
+msgstr "Diamètre"
 
-#, fuzzy
 msgid "Rotate"
-msgstr "évaluation"
+msgstr "Rotation"
 
 msgid "Source"
-msgstr ""
+msgstr "Source"
 
-#, fuzzy
 msgid "Subfixtures"
-msgstr "Projecteurs"
+msgstr "Sous-projecteurs"
 
-#, fuzzy
 msgid "Active Subfixtures"
-msgstr "Supprimer projecteur"
+msgstr "Activer sous-projecteurs"
 
-#, fuzzy
 msgid "Pan Rotate"
-msgstr "évaluation"
+msgstr "Rotation pan"
 
-#, fuzzy
 msgid "Tilt Rotate"
-msgstr "évaluation"
+msgstr "Incliner rotation"
 
 msgid "Custom Cutoff Distance"
 msgstr ""
@@ -369,32 +360,29 @@ msgstr ""
 msgid "DMX Universe"
 msgstr "Univers DMX"
 
-#, fuzzy
 msgid "Address"
-msgstr "Adresse DMX"
+msgstr "Adresse"
 
 msgid "Gel Color"
 msgstr "Couleur de Gelat"
 
 msgid "Display beams"
-msgstr ""
+msgstr "Afficher faisceaux"
 
 msgid "Display beam projection and cone"
-msgstr ""
+msgstr "Afficher projection du faisceau et cône"
 
 msgid "Add Target"
-msgstr ""
+msgstr "Ajouter cible"
 
 msgid "Add target for beam to follow"
-msgstr ""
+msgstr "Ajouter une cible pour le faisceau à suivre"
 
-#, fuzzy
 msgid "Increment DMX address"
-msgstr "Adresse DMX"
+msgstr "Incrémenter l’adresse DMX"
 
-#, fuzzy
 msgid "Increment Fixture ID"
-msgstr "Supprimer projecteur"
+msgstr "Incrémenter l’ID fixation"
 
 msgid "Increment Fixture ID if numeric"
 msgstr ""
@@ -408,151 +396,134 @@ msgid "Units"
 msgstr "Unité"
 
 msgid "How many units of this light to add"
-msgstr ""
+msgstr "Combien d’unités de cette lumière à ajouter"
 
-#, fuzzy
 msgid "Import Focus Points as Targets"
-msgstr "Importer du fichier"
+msgstr "Importer points de focalisation en tant que cibles"
 
 msgid "Create Targets from MVR Focus Points"
-msgstr ""
+msgstr "Créer cibles à partir de points de focalisation MVR"
 
-#, fuzzy
 msgid "Import Fixtures"
-msgstr "Projecteurs"
+msgstr "Importer projecteurs"
 
 #, fuzzy
 msgid "Import Trusses"
 msgstr "Importer du fichier"
 
-#, fuzzy
 msgid "Import Scene Objects"
-msgstr "Importer du fichier"
+msgstr "Importer objets de scène"
 
-#, fuzzy
 msgid "Import Projectors"
-msgstr "Importer du fichier"
+msgstr "Importer projecteurs"
 
-#, fuzzy
 msgid "Import Video Screens"
-msgstr "Importer du fichier"
+msgstr "Importer écrans vidéo"
 
-#, fuzzy
 msgid "Import Supports"
-msgstr "Importer du fichier"
+msgstr "Importer supports"
 
 msgid "Export Targets as MVR Focus Points"
-msgstr ""
+msgstr "Exporter cibles en tant que points de focalisation MVR"
 
 #, fuzzy
 msgid "Export only selected fixtures"
 msgstr "Supprimer projecteur"
 
 msgid "Enable PSN Input"
-msgstr ""
+msgstr "Activer l’entrée PSN"
 
 msgid "Enables PosiStageNet input"
-msgstr ""
+msgstr "Activer l'entrée PosiStageNet"
 
 msgid "IPv4 Address for PSN signal"
-msgstr ""
+msgstr "Adresse IPv4 pour signal PSN"
 
 msgid "The network card/interface to listen for PSN data"
-msgstr ""
+msgstr "La carte/interface réseau pour écouter les données PSN"
 
-#, fuzzy
 msgid "PSN Target port"
-msgstr "Adresse DMX"
+msgstr "Port cible PSN"
 
-#, fuzzy
 msgid "File UUID"
-msgstr "ID du luminaire"
+msgstr "UUID fichier"
 
 msgid "Comment"
-msgstr ""
+msgstr "Commentaire"
 
-#, fuzzy
 msgid "File Name"
-msgstr "Nom du fichier"
+msgstr "Nom fichier"
 
-#, fuzzy
 msgid "Station UUID"
-msgstr "évaluation"
+msgstr "UUID station"
 
-#, fuzzy
 msgid "File Size"
-msgstr "Fichier"
+msgstr "Taille fichier"
 
 msgid "Time of info"
-msgstr ""
+msgstr "Heure d’info"
 
 msgid "Time of saving"
-msgstr ""
+msgstr "Heure de sauvegarde"
 
 msgid "Subscribed to"
-msgstr ""
+msgstr "Abonné à"
 
 msgid "We requested latest file without UUID"
-msgstr ""
+msgstr "Nous avons demandé le dernier fichier sans UUID"
 
-#, fuzzy
 msgid "IP Address"
-msgstr "Adresse DMX"
+msgstr "Adresse IP"
 
-#, fuzzy
 msgid "Port"
-msgstr "Importer du fichier"
+msgstr "Port"
 
 msgid "Connected"
-msgstr ""
+msgstr "Connecté"
 
 msgid "Last Seen Time"
-msgstr ""
+msgstr "Heure dernière visite"
 
-#, fuzzy
 msgid "Station Name"
-msgstr "évaluation"
+msgstr "Nom station"
 
 msgid "MVR-xchange group"
-msgstr ""
+msgstr "Groupe MVR-xchange"
 
-#, fuzzy
 msgid "Provider"
-msgstr "Profile GDTF"
+msgstr "Fournisseur"
 
 #, fuzzy
 msgid "Commits"
 msgstr "Importer du fichier"
 
-#, fuzzy
 msgid "Icon ID"
-msgstr "ID personnalisée"
+msgstr "ID d’icône"
 
 msgid "New Group:"
-msgstr ""
+msgstr "Nouveau groupe :"
 
 msgid "MVR-xchange Clients"
-msgstr ""
+msgstr "Clients MVR-xchange"
 
 msgid "Existing Groups"
-msgstr ""
+msgstr "Groupes existants"
 
 #, fuzzy
 msgid "Websocket Commits"
 msgstr "Importer du fichier"
 
 msgid "Message"
-msgstr ""
+msgstr "Message"
 
 msgid "IPv4 Address for MVR-xchange"
-msgstr ""
+msgstr "Adresse IPv4 pour MVR-xchange"
 
 msgid "The network card/interface for MVR-xchange"
-msgstr ""
+msgstr "La carte/interface réseau pour MVR-xchange"
 
-#, fuzzy
 msgid "Group"
-msgstr "nom du mode"
+msgstr "Groupe"
 
 msgid "Classes"
 msgstr ""
@@ -570,11 +541,11 @@ msgid "Distribute selected fixtures with gap"
 msgstr "Supprimer projecteur"
 
 msgid "Align and Distribute"
-msgstr ""
+msgstr "Aligner et distribuer"
 
 #, python-brace-format
 msgid "Active object: {}"
-msgstr ""
+msgstr "Objet actif : {}"
 
 #, fuzzy, python-brace-format
 msgid "Selected fixtures: {}"
@@ -584,15 +555,14 @@ msgstr "Supprimer projecteur"
 msgid "DMX > Fixture Menu"
 msgstr "Projecteurs DMX importés"
 
-#, fuzzy
 msgid "Add"
-msgstr "Adresse DMX"
+msgstr "Ajouter"
 
 msgid "Edit"
-msgstr ""
+msgstr "Éditer"
 
 msgid "Remove"
-msgstr ""
+msgstr "Retirer"
 
 msgid "DMX > Fixture > Add > Manufacturers"
 msgstr ""
@@ -607,32 +577,28 @@ msgstr "Projecteurs DMX importés"
 msgid "DMX > Fixture > Add > Manufacturers > Profiles"
 msgstr ""
 
-#, fuzzy
 msgid "Profile"
-msgstr "Profile GDTF"
+msgstr "Profil"
 
 #, fuzzy
 msgid "Fixture GDTF Profile"
 msgstr "Profile GDTF"
 
-#, fuzzy
 msgid "Mode"
-msgstr "nom du mode"
+msgstr "Mode"
 
 #, fuzzy
 msgid "Fixture GDTF Mode"
 msgstr "Mode GDTF"
 
-#, fuzzy
 msgid "DMX Mode"
 msgstr "Mode DMX"
 
 msgid "Advanced edit"
-msgstr ""
+msgstr "Édition avancée"
 
-#, fuzzy
 msgid "Modify DMX address"
-msgstr "Adresse DMX"
+msgstr "Modifier adresse DMX"
 
 #, fuzzy
 msgid "Modify Fixture ID"
@@ -653,13 +619,11 @@ msgstr "Projecteurs DMX importés"
 msgid "Fixture named {} already exists"
 msgstr ""
 
-#, fuzzy
 msgid "No GDTF Profile selected."
-msgstr "Profile GDTF"
+msgstr "Pas de profil GDTF sélectionné."
 
-#, fuzzy
 msgid "No DMX Mode selected."
-msgstr "Mode DMX"
+msgstr "Pas de mode DMX sélectionné."
 
 #, fuzzy
 msgid "DMX: Edit Fixture"
@@ -677,13 +641,11 @@ msgstr "Projecteurs DMX importés"
 msgid "Remove selected fixtures from Scene"
 msgstr "Supprimer projecteur d'un fichier local"
 
-#, fuzzy
 msgid "Remove IES Files"
-msgstr "Supprimer projecteur"
+msgstr "Retirer fichiers IES"
 
-#, fuzzy
 msgid "Import IES File"
-msgstr "Importer du fichier"
+msgstr "Importer fichiers IES"
 
 #, fuzzy
 msgid "Select Previous Fixture"
@@ -693,13 +655,11 @@ msgstr "Supprimer projecteur"
 msgid "Select Next Fixture"
 msgstr "Supprimer projecteur"
 
-#, fuzzy
 msgid "Select Previous Target"
-msgstr "Séquenceur"
+msgstr "Sélection cible précédente"
 
-#, fuzzy
 msgid "Select Next Target"
-msgstr "Supprimer projecteur"
+msgstr "Sélection cible suivante"
 
 #, fuzzy
 msgid "DMX > Fixture > Item"
@@ -719,23 +679,21 @@ msgstr "Projecteurs"
 msgid "F ID"
 msgstr ""
 
-#, fuzzy
 msgid "Unit #"
-msgstr "Unité"
+msgstr "Unité n°"
 
 msgid "F ID #"
 msgstr ""
 
 msgid "Cst ID"
-msgstr ""
+msgstr "ID Cst"
 
 #, fuzzy
 msgid "Uni"
 msgstr "Unité"
 
-#, fuzzy
 msgid "Addr"
-msgstr "Adresse DMX"
+msgstr "Adr"
 
 msgid "Uni.Addr"
 msgstr ""
@@ -744,81 +702,70 @@ msgid "Foot"
 msgstr ""
 
 msgid "DMX > Group Menu"
-msgstr ""
+msgstr "DMX > Menu Groupe"
 
-#, fuzzy
 msgid "Create"
-msgstr "Crée par"
+msgstr "Créer"
 
 msgid "Update"
-msgstr ""
+msgstr "Mettre à jour"
 
-#, fuzzy
 msgid "Rename"
-msgstr "Nom"
+msgstr "Renommer"
 
 msgid "DMX > Group > Create"
-msgstr ""
+msgstr "DMX > Groupe > Créer"
 
 msgid "Create DMX group from selected fixtures"
 msgstr ""
 
-#, fuzzy
 msgid "Group Name"
-msgstr "nom du mode"
+msgstr "Nom groupe"
 
 msgid "Replace DMX group fixtures with selected ones"
 msgstr ""
 
-#, fuzzy
 msgid "DMX > Group > Rename"
-msgstr "nom du mode"
+msgstr "DMX > Groupe > Renommer"
 
-#, fuzzy
 msgid "Rename selected DMX group"
-msgstr "Supprimer projecteur d'un fichier local"
+msgstr "Renommer groupe DMX sélectionné"
 
-#, fuzzy
 msgid "DMX > Group > Remove"
-msgstr "Projecteurs DMX importés"
+msgstr "DMX > Groupe > Retirer"
 
-#, fuzzy
 msgid "Remove selected DMX group"
-msgstr "Supprimer projecteur d'un fichier local"
+msgstr "Supprimer le groupe DMX sélectionné"
 
-#, fuzzy
 msgid "Groups"
-msgstr "nom du mode"
+msgstr "Groupes"
 
-#, fuzzy
 msgid "Reset Colors"
-msgstr "Couleur de Gelat"
+msgstr "Reset couleurs"
 
 msgid "Lock Movement"
-msgstr ""
+msgstr "Verrou mouvement"
 
 msgid "Ignore pan/tilt DMX data"
-msgstr ""
+msgstr "Ignorer données DMX pan/incli"
 
 msgid "Unlock Movement"
-msgstr ""
+msgstr "Déverouiller mouvement"
 
 msgid "Allow pan/tilt DMX data"
+msgstr "Autoriser données DMX pan/incli"
+
+msgid "Track Target"
 msgstr ""
 
-#, fuzzy
-msgid "Track Target"
-msgstr "Supprimer projecteur"
-
-#, fuzzy
 msgid "Follow the target"
-msgstr "Supprimer projecteur"
+msgstr "Suivre la cible"
 
 msgid "Do Not Track Target"
 msgstr ""
 
 msgid "Do not follow the target"
-msgstr ""
+msgstr "Ne pas suivre la cible"
 
 #, fuzzy
 msgid "Use Fixtures Channel Functions"
@@ -831,15 +778,14 @@ msgid "Do not use Fixtures Channel Functions"
 msgstr ""
 
 msgid "Deselect All"
-msgstr ""
+msgstr "Désélectionner tout"
 
 #, fuzzy
 msgid "Deselect every fixture in the Scene"
 msgstr "Supprimer projecteur d'un fichier local"
 
-#, fuzzy
 msgid "Select All"
-msgstr "Séquenceur"
+msgstr "Sélectionner tout"
 
 #, fuzzy
 msgid "Select every fixture in the Scene"
@@ -852,40 +798,40 @@ msgid "Select every fixture which is visible in the fixtures list"
 msgstr ""
 
 msgid "Invert selection"
-msgstr ""
+msgstr "Inverser sélection"
 
 msgid "Invert the selection"
-msgstr ""
+msgstr "Inverser la sélection"
 
 msgid "Select every other light"
 msgstr ""
 
 msgid "Clear"
-msgstr ""
+msgstr "Vider"
 
 msgid "Clear all DMX values to default and update fixtures"
 msgstr ""
 
 msgid "Apply"
-msgstr ""
+msgstr "Appliquer"
 
 msgid "Apply these values manually when render is paused"
-msgstr ""
+msgstr "Appliquer ces valeurs manuellement lorsque le rendu est mis en pause"
 
 msgid "Targets to zero"
-msgstr ""
+msgstr "Cibles à zéro"
 
 msgid "Set Targets' position to 0 of the Scene"
-msgstr ""
+msgstr "Fixer la position des cibles à 0 de la scène"
 
 msgid "Center View to Selected"
-msgstr ""
+msgstr "Centrez la vue sur sélectionné(e)"
 
 msgid "Set View to center on selected objects"
-msgstr ""
+msgstr "Définir la vue pour se centrer sur les objets sélectionnés"
 
 msgid "Reset targets"
-msgstr ""
+msgstr "Reset cibles"
 
 #, fuzzy
 msgid "Reset position of target of selected fixtures"
@@ -900,58 +846,53 @@ msgid "Select base/body of every selected fixture"
 msgstr "Supprimer projecteur"
 
 msgid "Select Targets"
-msgstr ""
+msgstr "Sélectionner cibles"
 
 msgid "Select target from every fixture element selected"
 msgstr ""
 
 msgid "Select Camera"
-msgstr ""
+msgstr "Sélectionner caméra"
 
 msgid "Select camera of the selected fixture"
 msgstr ""
 
 msgid "Programmer"
-msgstr ""
+msgstr "Programmateur"
 
 msgid "Nothing selected"
-msgstr ""
+msgstr "Rien de sélectionné"
 
 #, python-brace-format
 msgid "{} selected"
-msgstr ""
+msgstr "{} sélectionné"
 
-#, fuzzy
 msgid "Bodies"
-msgstr "nom du mode"
+msgstr ""
 
 msgid "Targets"
-msgstr ""
+msgstr "Cibles"
 
-#, fuzzy
 msgid "Camera"
-msgstr "Nom"
+msgstr "Caméra"
 
 msgid "Dimmer"
 msgstr ""
 
-#, fuzzy
 msgid "Pan"
-msgstr "Déplier"
+msgstr ""
 
 msgid "Tilt"
 msgstr ""
 
-#, fuzzy
 msgid "Pan Rotation"
-msgstr "évaluation"
+msgstr ""
 
-#, fuzzy
 msgid "Tilt Rotation"
-msgstr "évaluation"
+msgstr ""
 
 msgid "Zoom"
-msgstr ""
+msgstr "Zoom"
 
 msgid "Color Wheel1"
 msgstr ""
@@ -969,7 +910,7 @@ msgid "Color Temperature"
 msgstr ""
 
 msgid "Iris"
-msgstr ""
+msgstr "Iris"
 
 msgid "Gobo1"
 msgstr ""
@@ -986,19 +927,17 @@ msgstr ""
 msgid "Strobe"
 msgstr ""
 
-#, fuzzy
 msgid "PanMode"
-msgstr "nom du mode"
+msgstr "ModePan"
 
-#, fuzzy
 msgid "TiltMode"
-msgstr "nom du mode"
+msgstr ""
 
 msgid "PanTiltMode"
 msgstr ""
 
 msgid "Clear All"
-msgstr ""
+msgstr "Vider tout"
 
 msgid "DMX > Recorder > Add Keyframe"
 msgstr ""
@@ -1032,24 +971,23 @@ msgstr "Supprimer projecteur"
 msgid "Delete from selected fixtures"
 msgstr "Supprimer projecteur"
 
-#, fuzzy
 msgid "Delete from all fixtures"
-msgstr "Supprimer projecteur"
+msgstr ""
 
 msgid "Objects with #bdmx drivers"
-msgstr ""
+msgstr "Objets avec pilotes #bdmx"
 
 msgid "Enable Keying - Disable Playback"
 msgstr ""
 
 msgid "Enable disabled bdmx drivers"
-msgstr ""
+msgstr "Activer pilotes bdmx désactivés"
 
 msgid "Disable Keying - Enable Playback"
 msgstr ""
 
 msgid "Disable bdmx drivers"
-msgstr ""
+msgstr "Désactiver pilotes bdmx"
 
 msgid "DMX > Setup > New Show"
 msgstr ""
@@ -1059,6 +997,8 @@ msgstr ""
 
 msgid "Do at your own risk. Manual edits or deletes can cause issues"
 msgstr ""
+"Faites à vos propres risques. Les modifications ou suppressions manuelles "
+"peuvent causer des problèmes"
 
 msgid "Manually editing or deleting geometries of GDTF devices may cause issues."
 msgstr ""
@@ -1071,14 +1011,14 @@ msgid "Try to remove DMX from the Blender showfile"
 msgstr ""
 
 msgid "Beam diameter small"
-msgstr ""
+msgstr "Diamètre faisceau petit"
 
 #, fuzzy
 msgid "Set Eevee Cutoff distance on selected fixtures"
 msgstr "Supprimer projecteur"
 
 msgid "Beam diameter normal"
-msgstr ""
+msgstr "Diamètre faisceau normal"
 
 msgid "DMX > Setup > Create/Update Volume Box"
 msgstr ""
@@ -1087,13 +1027,13 @@ msgid "Create/Update a Box on the scene bounds with a Volume Scatter shader"
 msgstr ""
 
 msgid "Beam Volume"
-msgstr ""
+msgstr "Volume faisceau"
 
 msgid "Update Volume Box"
-msgstr ""
+msgstr "Mettre à jour boîte volume"
 
 msgid "Create Volume Box"
-msgstr ""
+msgstr "Créer boîte volume"
 
 #, fuzzy
 msgid "Set on selected fixtures"
@@ -1103,72 +1043,69 @@ msgid "Viewport"
 msgstr ""
 
 msgid "Background Color"
-msgstr ""
+msgstr "Couleur d'arrière-plan"
 
 msgid "Extras"
 msgstr ""
 
 msgid "Clear Project data"
-msgstr ""
+msgstr "Vider données projet"
 
 msgid "Copy (import) old data from addon folder"
-msgstr ""
+msgstr "Copier (importer) les anciennes données du dossier d’addon"
 
 #, fuzzy
 msgid "Remove DMX from blend file"
 msgstr "Supprimer projecteur"
 
 msgid "Import"
-msgstr ""
+msgstr "Importer"
 
-#, fuzzy
 msgid "Import GDTF Profile"
-msgstr "Importer du fichier"
+msgstr "Importer profil GDTF"
 
-#, fuzzy
 msgid "Import MVR Scene"
-msgstr "Importer du fichier"
+msgstr "Importer scene MVR"
 
 msgid "Import Project data"
-msgstr ""
+msgstr "Importer données projet"
 
-#, fuzzy
 msgid "Export"
-msgstr "Importer du fichier"
+msgstr "Exporter"
 
 msgid "Export Project data"
-msgstr ""
+msgstr "Exporter données projet"
 
-#, fuzzy
 msgid "Export MVR"
-msgstr "Importer du fichier"
+msgstr "Exporter MVR"
 
 msgid "Show logging directory"
-msgstr ""
+msgstr "Montrer répertoire journalisation"
 
 msgid "Logging"
-msgstr ""
+msgstr "Journalisation"
 
 msgid "Log filter"
-msgstr ""
+msgstr "Filtre journalisation"
 
 msgid "Setup"
 msgstr ""
 
 msgid "Error! Blender 3.4 or higher required."
-msgstr ""
+msgstr "Erreur ! Blender 3.4 ou supérieur requis."
 
 msgid "Create New Show"
 msgstr ""
 
-#, fuzzy
 msgid "Import Custom Data"
-msgstr "Importer du fichier"
+msgstr "Importer données perso"
 
 msgid ""
 "Unzip previously exported custom data from a zip file. This will "
 "overwrite current data!"
 msgstr ""
+"Décompresse les données personnalisées précédemment exportées à partir d’un "
+"fichier zip. Cela écrasera les données actuelles !"
 
 msgid "File Path"
 msgstr "Chemin d'accès"
@@ -1177,62 +1114,64 @@ msgid "Files"
 msgstr "Fichier"
 
 msgid "Incorrect file name!"
-msgstr ""
+msgstr "Nom de fichier incorrect !"
 
 #, python-brace-format
 msgid "Data imported from: {}"
-msgstr ""
+msgstr "Données importées de : {}"
 
 msgid "Export Custom Data"
-msgstr ""
+msgstr "Exporter données perso"
 
 msgid "Zip and Export custom data from BlenderDMX addon directory."
 msgstr ""
+"Compresse (ZIP) et exporte des données personnalisées à partir du répertoire "
+"d’addons BlenderDMX."
 
 #, python-brace-format
 msgid "Data exported to: {}"
-msgstr ""
+msgstr "Données exportées vers : {}"
 
 msgid "Really delete all custom data from the addon directory?"
 msgstr ""
+"Vraiment supprimer toutes les données personnalisées du répertoire addon ?"
 
 msgid "Clear custom data from BlenderDMX addon directory."
-msgstr ""
+msgstr "Effacer les données personnalisées du répertoire d’addon BlenderDMX."
 
 msgid "Data cleared"
-msgstr ""
+msgstr "Données effacées"
 
 msgid "Copy data from addon to user directory"
-msgstr ""
+msgstr "Copiez les données de l’addon dans le répertoire utilisateur"
 
 msgid ""
 "Copy custom data from BlenderDMX addon directory to BlenderDMX extension "
 "user directory."
 msgstr ""
+"Copier les données personnalisées du répertoire d’addon BlenderDMX vers le "
+"répertoire utilisateur de l’extension BlenderDMX."
 
 msgid "Data copied"
-msgstr ""
+msgstr "Données copiées"
 
 msgid "Reload BlenderDMX addon"
-msgstr ""
+msgstr "Recharger l’extension BlenderDMX"
 
 msgid "Reload the addon, useful during development"
-msgstr ""
+msgstr "Recharger l’addon, utile pendant le développement"
 
 msgid "Addon reloaded"
+msgstr "Addon rechargé"
+
+msgid "Select visible"
+msgstr "Sélectionner visible"
+
+msgid "Select visible subfixtures"
 msgstr ""
 
-#, fuzzy
-msgid "Select visible"
-msgstr "Séquenceur"
-
-#, fuzzy
-msgid "Select visible subfixtures"
-msgstr "Supprimer projecteur"
-
-#, fuzzy
 msgid "Clear selection"
-msgstr "Supprimer projecteur"
+msgstr "Vider sélection"
 
 msgid "Clear subfixture selection"
 msgstr ""
@@ -1245,7 +1184,7 @@ msgstr ""
 
 #, python-brace-format
 msgid "Downloading {}"
-msgstr ""
+msgstr "Téléchargement {}"
 
 #, fuzzy
 msgid "GDTF Share Download"
@@ -1267,7 +1206,7 @@ msgstr ""
 
 #, python-brace-format
 msgid "File downloaded correctly. Status code was: {}"
-msgstr ""
+msgstr "Fichier téléchargé correctement. Le code d’état était : {}"
 
 msgid "GDTF file downloaded"
 msgstr "Fichier GDTF téléchargé"
@@ -1280,7 +1219,7 @@ msgid "GDTF Share download error"
 msgstr ""
 
 msgid "The name of the DMX profile."
-msgstr ""
+msgstr "Le nom du profil DMX."
 
 msgid "Channel count"
 msgstr ""
@@ -1319,10 +1258,10 @@ msgid "Manufacturer name"
 msgstr "Nom du constructeur"
 
 msgid "Revision"
-msgstr ""
+msgstr "Révision"
 
 msgid "Revision text"
-msgstr ""
+msgstr "Texte révision"
 
 msgid "Uploaded by"
 msgstr "Mise a jour par"
@@ -1340,14 +1279,13 @@ msgid "Rating"
 msgstr "évaluation"
 
 msgid "Revision ID"
-msgstr ""
+msgstr "ID révision"
 
 msgid "File identifier in the GDTF Share"
 msgstr ""
 
-#, fuzzy
 msgid "DMX Modes"
-msgstr "Mode DMX"
+msgstr "Modes DMX"
 
 msgid "DMX Mode Name"
 msgstr "Nom du mode DMX"
@@ -1376,26 +1314,23 @@ msgstr "Rafraichir la liste de fichier"
 msgid "Update list of local files"
 msgstr "Mise à jour de la liste des fichiers locaux"
 
-#, fuzzy
 msgid "GDTF Share"
-msgstr "Profile GDTF"
+msgstr "Partage GDTF"
 
 msgid "You must Allow Online access for this to work:"
-msgstr ""
+msgstr "Vous devez autoriser l’accès en ligne pour que cela fonctionne :"
 
 msgid "Fixture details"
 msgstr "Détail du projecteur"
 
-#, fuzzy
 msgid "Local Fixture files"
-msgstr "Détail du projecteur"
+msgstr ""
 
 msgid "Local Fixture details"
 msgstr ""
 
-#, fuzzy
 msgid "Profiles"
-msgstr "Fichier"
+msgstr "Profils"
 
 msgid "Art-Net"
 msgstr ""
@@ -1408,23 +1343,22 @@ msgid "Art-Net set for {} universe(s)"
 msgstr ""
 
 msgid "Status"
-msgstr ""
+msgstr "Statut"
 
 msgid "Live DMX"
 msgstr ""
 
 msgid "Refresh"
-msgstr ""
+msgstr "Rafraichir"
 
-#, fuzzy
 msgid "Refresh connection"
-msgstr "Rafraichir la liste de fichier"
+msgstr "Rafraichir connexion"
 
 msgid "Request latest version"
-msgstr ""
+msgstr "Demander la dernière version"
 
 msgid "Sends the Request message"
-msgstr ""
+msgstr "Envoyer le message de requête"
 
 #, fuzzy
 msgid "Import commit into active scene"
@@ -1435,10 +1369,10 @@ msgid "Import commit"
 msgstr "Importer du fichier"
 
 msgid "Export MVR to MVR-xchange"
-msgstr ""
+msgstr "Exporter MVR vers MVR-xchange"
 
 msgid "Download"
-msgstr ""
+msgstr "Télécharger"
 
 #, fuzzy
 msgid "Fetch commit"
@@ -1450,23 +1384,21 @@ msgstr ""
 msgid "Download commit"
 msgstr ""
 
-#, fuzzy
 msgid "Delete"
-msgstr "Supprimer projecteur"
+msgstr "Supprimer"
 
-#, fuzzy
 msgid "Remove Shared Commit"
-msgstr "Supprimer projecteur"
+msgstr ""
 
 #, python-brace-format
 msgid "Enable Group: {group}"
-msgstr ""
+msgstr "Activer groupe : {group}"
 
 msgid "New group:"
-msgstr ""
+msgstr "Nouveau groupe :"
 
 msgid "Share current version"
-msgstr ""
+msgstr "Partager version actuelle"
 
 msgid "Pick and Share MVR"
 msgstr ""
@@ -1476,19 +1408,19 @@ msgid "Shared by me ({defined_station_name}):"
 msgstr ""
 
 msgid "Stations in the group:"
-msgstr ""
+msgstr "Stations dans le groupe :"
 
 msgid "Shared by the station:"
-msgstr ""
+msgstr "Partagé par la station :"
 
 msgid "Shared by the server:"
-msgstr ""
+msgstr "Partagé par le serveur :"
 
 msgid "OSC"
 msgstr ""
 
 msgid "Protocols"
-msgstr ""
+msgstr "Protocoles"
 
 msgid "Add Tracker"
 msgstr ""
@@ -1522,9 +1454,8 @@ msgstr ""
 msgid "Link followers to a tracker"
 msgstr ""
 
-#, fuzzy
 msgid "PSN"
-msgstr "Déplier"
+msgstr "PSN"
 
 msgid "Add Tracking Target"
 msgstr ""
@@ -1540,7 +1471,7 @@ msgid "Add Followers Target"
 msgstr ""
 
 msgid "Add target"
-msgstr ""
+msgstr "Ajouter cible"
 
 msgid "sACN"
 msgstr ""
@@ -1549,9 +1480,8 @@ msgstr ""
 msgid "sACN set for {} universe(s)"
 msgstr ""
 
-#, fuzzy
 msgid "DMX > Universe Menu"
-msgstr "Univers DMX"
+msgstr "DMX > Menu Univers"
 
 msgid "Universes"
 msgstr "Univers"
@@ -1843,4 +1773,3 @@ msgstr "Univers"
 
 #~ msgid "Export Focus Points as Targets"
 #~ msgstr "Importer du fichier"
-
