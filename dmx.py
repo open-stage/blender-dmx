@@ -2212,7 +2212,7 @@ class DMX(PropertyGroup):
                         (l for l in layers if l.name == fixture_layer_name), None
                     )  # we should get "DMX" layer if exists
                     if not use_layer:  # create new DMX layer
-                        use_layer = pymvr.Layer(name="DMX", uuid=py_uuid.uuid4())
+                        use_layer = pymvr.Layer(name="DMX", uuid=str(py_uuid.uuid4()))
                         new_child_list = pymvr.ChildList()
                         use_layer.child_list = new_child_list
                         layers.append(use_layer)
