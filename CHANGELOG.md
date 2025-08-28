@@ -1,5 +1,12 @@
 ### Changelog
 
+### 2.0.11
+
+* Translation progress (French, Chinese)
+* Update pymvr to 1.0.2
+* Fix MVR export
+* Handle gracefully simple GDTF devices
+
 ### 2.0.10
 
 * Ensure distinct menu names during Drag&Drop even if there are other
