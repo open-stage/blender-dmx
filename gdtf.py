@@ -338,6 +338,8 @@ class DMX_GDTF:
 
         def load_geometries(geometry):
             """Load 3d models, primitives and shapes"""
+            if geometry is None:
+                return
             DMX_Log.log.info(f"loading geometry {geometry.name}")
 
             if isinstance(geometry, pygdtf.GeometryReference):
@@ -704,6 +706,9 @@ class DMX_GDTF:
             and define parent/child constraints. References are new
             sub-trees that must be processed and their root marked."""
 
+            if geometry is None:
+                return
+
             if not isinstance(geometry, pygdtf.GeometryReference):
                 # geometry reference will have different geometry
                 add_child_position(geometry)
@@ -805,7 +810,10 @@ class DMX_GDTF:
 
         yokes = get_axis("Pan")
         heads = get_axis("Tilt")
-        base = next(ob for ob in objs.values() if ob.get("geometry_root", False))
+        base = None
+        if len(objs):
+            base = next(ob for ob in objs.values() if ob.get("geometry_root", False))
+
         moving_parts = [ob for ob in objs.values() if ob.get("geometry_type") == "axis"]
         DMX_Log.log.info(f"Heads: {heads}, Yokes: {yokes}, Base: {base}")
 
@@ -843,7 +851,13 @@ class DMX_GDTF:
                     constraint.track_axis = "TRACK_NEGATIVE_Y"
                 constraint.lock_axis = "LOCK_X" if check_tilt else "LOCK_Z"
                 constraint.target = target
-            if not yokes and not heads and not len(base.constraints):
+
+            if (
+                not yokes
+                and not heads
+                and base is not None
+                and not len(base.constraints)
+            ):
                 constraint = base.constraints.new("TRACK_TO")
                 constraint.name = "FollowTarget"
                 constraint.target = target

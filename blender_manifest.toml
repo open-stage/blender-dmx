@@ -1,6 +1,6 @@
 schema_version = "1.0.0"
 id = "open_stage_blender_dmx"
-version = "2.0.9"
+version = "2.0.10"
 name = "DMX"
 tagline = "DMX visualization and programming with GDTF/MVR, and Networking"
 maintainer = "Open Stage"
@@ -8,6 +8,7 @@ type = "add-on"
 website = "https://blenderdmx.eu/"
 tags = ["Lighting", "Animation", "Scene", "Import-Export", "Rigging", "Tracking", "Sequencer", "3D View", "Camera"]
 blender_version_min = "4.2.0"
+copyright = ["2021 Open Stage"]
 
 license = [
   "SPDX:GPL-3.0-or-later",
@@ -15,7 +16,7 @@ license = [
 
 wheels = [
   "wheels/pygdtf-1.3.0-py3-none-any.whl",
-  "wheels/pymvr-1.0.1-py3-none-any.whl",
+  "wheels/pymvr-1.0.2-py3-none-any.whl",
   "wheels/sacn-1.9.1-py3-none-any.whl",
   "wheels/oscpy-0.6.0-py2.py3-none-any.whl",
   "wheels/ifaddr-0.2.0-py3-none-any.whl",
