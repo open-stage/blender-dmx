@@ -286,7 +286,7 @@ def process_mvr_object(
                     ob.users_collection[0].objects.unlink(ob)
                 elif ob.name in layer_collect.collection.objects:
                     active_layer.collection.objects.unlink(ob)
-                if ob.data is not None:  # only gltf files can be pre transformed
+                if ob.data and ob.parent is None:  # only gltf files can be pre transformed
                     ob.matrix_world = (
                         world_matrix @ ob.matrix_world.copy() if gltf else world_matrix
                     )
@@ -435,7 +435,8 @@ def transform_objects(layers, mscale):
         if obj_collect is not None:
             global_mtx = get_matrix(mvr, mscale)
             for obj in obj_collect.objects:
-                obj.matrix_world = global_mtx @ obj.matrix_world.copy()
+                if obj.parent is None:
+                    obj.matrix_world = global_mtx @ obj.matrix_world.copy()
                 create_transform_property(obj)
 
     def collect_objects(childlist):
