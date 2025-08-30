@@ -381,7 +381,7 @@ def process_mvr_object(
                 elif ob.name in layer_collect.collection.objects:
                     active_layer.collection.objects.unlink(ob)
                 if ob.parent is None:  # only gltf files can be pre transformed
-                    if gltf or ob.type != 'MESH':
+                    if gltf or ob.type != "MESH":
                         ob.matrix_world = world_matrix @ ob.matrix_world.copy()
                     else:
                         ob.matrix_world = world_matrix
@@ -528,14 +528,16 @@ def process_mvr_object(
             )
 
     if focus_id:
-        target = next((ob for ob in group_collect.objects if
-                       ob.data is None and ob.get("uuid")), None)
+        target = next(
+            (ob for ob in group_collect.objects if ob.data is None and ob.get("uuid")),
+            None,
+        )
         if target:
             target_mtx = target.matrix_world.copy()
             for ob in group_collect.objects:
                 if (
-                    ob.parent is None and
-                    ob.get("MVR Class") == "FocusPoint"
+                    ob.parent is None
+                    and ob.get("MVR Class") == "FocusPoint"
                     and ob.get("UUID") == mvr_object.uuid
                 ):
                     ob.parent = target
@@ -726,13 +728,19 @@ def add_mvr_fixture(
             added_fixture["layer_name"] = layer_collection.name
             added_fixture["layer_uuid"] = layer_collection.get("UUID", None)
 
-
     if len(focus_points) and focus_points[0].geometries:
         focus_fixture = dmx.findFixtureByUUID(fixture.uuid)
         if focus_fixture:
             DMX_Log.log.info(f"importing FocusPoint geometry... {fixture.name}")
-            process_mvr_object(bpy.context, mvr_scene, focus_points[0], fixture_idx,
-                               Matrix(), import_globals, focus_fixture.collection)
+            process_mvr_object(
+                bpy.context,
+                mvr_scene,
+                focus_points[0],
+                fixture_idx,
+                Matrix(),
+                import_globals,
+                focus_fixture.collection,
+            )
 
 
 def perform_direct_parenting(dmx):
