@@ -1,5 +1,38 @@
 ### Changelog
 
+### 2.0.11
+
+* Translation progress (French, Chinese)
+* Update pymvr to 1.0.2
+* Fix MVR export
+* Handle gracefully simple GDTF devices
+
+### 2.0.10
+
+* Ensure distinct menu names during Drag&Drop even if there are other
+  Extensions with Import for same file extensions
+* Update German translation
+
+### 2.0.9
+
+* MVR:
+    - Initial support more MVR objects during import, like VideoScreens,
+      Projectors, and Support
+    - Add some MVR import/export filter options
+    - Improve layers import and export, to keep original fixture layer
+      assignment and layer names, especially useful for round-trip cooperation
+    - Initial support for fixture direct parenting - direct MVR parent is now
+      set as a Blender parent
+    - Handle MVRs with empty fixture GDTF mode
+    - Handle some occasionally missing structures in MVR
+    - MVR-xchange:
+        - Speed up packets packing/unpacking
+        - Fix header unpacking to unsigned int values
+    - Improvements to the pymvr library, update BlenderDMX to use the latest
+      version 1.0.1
+* Optimize rendering for incoming signals (PSN, sACN, Art-Net)
+* Added more translated strings (German, French, Portuguese, Czech)
+
 ### 2.0.8
 
 * Prevent MVR persistence during export, to eliminate duplication during export

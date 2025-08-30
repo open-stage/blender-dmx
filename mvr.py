@@ -34,6 +34,7 @@ from .color_utils import xyY2rgbaa
 
 auxData = {}
 objectData = {}
+direct_fixture_children = []
 
 
 def create_mvr_props(mvr_obj, cls, name="", uid=False, ref=None, classing=None):
@@ -95,6 +96,7 @@ def get_child_list(
     import_globals,
     layer_collection,
     fixture_group=None,
+    parent_object=None,
 ):
     context = bpy.context
     viewlayer = context.view_layer
@@ -110,7 +112,7 @@ def get_child_list(
                 group_name = truss_obj.name or "Truss"
                 fixture_group = FixtureGroup(group_name, truss_obj.uuid)
 
-            if not existing:
+            if not existing and import_globals.import_trusses:
                 process_mvr_object(
                     context,
                     mvr_scene,
@@ -132,33 +134,123 @@ def get_child_list(
                     import_globals,
                     layer_collection,
                     fixture_group,
+                    truss_obj,
                 )
-    if hasattr(child_list, "scene_objects") and child_list.scene_objects:
-        for scene_idx, scene_obj in enumerate(child_list.scene_objects):
-            existing = check_existing(scene_obj, layer_collection)
 
-            if not existing:
+    # TODO: reuse
+    if hasattr(child_list, "projectors") and child_list.projectors:
+        for projector_idx, projector_obj in enumerate(child_list.projectors):
+            existing = check_existing(projector_obj, layer_collection)
+
+            if not existing and import_globals.import_projectors:
                 process_mvr_object(
                     context,
                     mvr_scene,
-                    scene_obj,
-                    scene_idx,
+                    projector_obj,
+                    projector_idx,
                     mscale,
                     import_globals,
                     layer_collection,
                 )
 
-            if hasattr(scene_obj, "child_list") and scene_obj.child_list:
+            if hasattr(projector_obj, "child_list") and projector_obj.child_list:
                 get_child_list(
                     dmx,
                     mscale,
                     mvr_scene,
-                    scene_obj.child_list,
+                    projector_obj.child_list,
                     layer_index,
                     folder_path,
                     import_globals,
                     layer_collection,
                     fixture_group,
+                    projector_obj,
+                )
+    if hasattr(child_list, "supports") and child_list.supports:
+        for projector_idx, projector_obj in enumerate(child_list.supports):
+            existing = check_existing(projector_obj, layer_collection)
+
+            if not existing and import_globals.import_supports:
+                process_mvr_object(
+                    context,
+                    mvr_scene,
+                    projector_obj,
+                    projector_idx,
+                    mscale,
+                    import_globals,
+                    layer_collection,
+                )
+
+            if hasattr(projector_obj, "child_list") and projector_obj.child_list:
+                get_child_list(
+                    dmx,
+                    mscale,
+                    mvr_scene,
+                    projector_obj.child_list,
+                    layer_index,
+                    folder_path,
+                    import_globals,
+                    layer_collection,
+                    fixture_group,
+                    projector_obj,
+                )
+
+    if hasattr(child_list, "video_screens") and child_list.video_screens:
+        for projector_idx, projector_obj in enumerate(child_list.video_screens):
+            existing = check_existing(projector_obj, layer_collection)
+
+            if not existing and import_globals.import_video_screens:
+                process_mvr_object(
+                    context,
+                    mvr_scene,
+                    projector_obj,
+                    projector_idx,
+                    mscale,
+                    import_globals,
+                    layer_collection,
+                )
+
+            if hasattr(projector_obj, "child_list") and projector_obj.child_list:
+                get_child_list(
+                    dmx,
+                    mscale,
+                    mvr_scene,
+                    projector_obj.child_list,
+                    layer_index,
+                    folder_path,
+                    import_globals,
+                    layer_collection,
+                    fixture_group,
+                    projector_obj,
+                )
+
+    if hasattr(child_list, "scene_objects") and child_list.scene_objects:
+        for projector_idx, projector_obj in enumerate(child_list.scene_objects):
+            existing = check_existing(projector_obj, layer_collection)
+
+            if not existing and import_globals.import_scene_objects:
+                process_mvr_object(
+                    context,
+                    mvr_scene,
+                    projector_obj,
+                    projector_idx,
+                    mscale,
+                    import_globals,
+                    layer_collection,
+                )
+
+            if hasattr(projector_obj, "child_list") and projector_obj.child_list:
+                get_child_list(
+                    dmx,
+                    mscale,
+                    mvr_scene,
+                    projector_obj.child_list,
+                    layer_index,
+                    folder_path,
+                    import_globals,
+                    layer_collection,
+                    fixture_group,
+                    projector_obj,
                 )
 
     if hasattr(child_list, "fixtures") and child_list.fixtures:
@@ -170,18 +262,20 @@ def get_child_list(
                 ]
                 if len(focus_points):
                     focus_point = get_matrix(focus_points[0], mscale)
-
-            add_mvr_fixture(
-                dmx,
-                mvr_scene,
-                folder_path,
-                fixture,
-                fixture_idx,
-                layer_index,
-                focus_point,
-                import_globals,
-                fixture_group,
-            )
+            if import_globals.import_fixtures:
+                add_mvr_fixture(
+                    dmx,
+                    mvr_scene,
+                    folder_path,
+                    fixture,
+                    fixture_idx,
+                    layer_index,
+                    focus_point,
+                    import_globals,
+                    fixture_group,
+                    parent_object,
+                    layer_collection,
+                )
 
             if hasattr(fixture, "child_list") and fixture.child_list:
                 get_child_list(
@@ -194,6 +288,7 @@ def get_child_list(
                     import_globals,
                     layer_collection,
                     fixture_group,
+                    fixture,
                 )
 
     if hasattr(child_list, "group_objects") and child_list.group_objects:
@@ -215,6 +310,7 @@ def get_child_list(
                     import_globals,
                     layer_collection,
                     fixture_group,
+                    group,
                 )
 
     for obj in viewlayer.active_layer_collection.collection.all_objects:
@@ -333,8 +429,10 @@ def process_mvr_object(
         geometrys += mvr_object.geometries.geometry3d
     else:
         try:
-            symbols += mvr_object.symbol
-            geometrys += mvr_object.geometry3d
+            if hasattr(mvr_object, "symbol"):
+                symbols += mvr_object.symbol
+            if hasattr(mvr_object, "geometry3d"):
+                geometrys += mvr_object.geometry3d
         except Exception as e:
             # TODO: handle this
             traceback.print_exception(e)
@@ -440,6 +538,12 @@ def transform_objects(layers, mscale):
                 create_transform_property(obj)
 
     def collect_objects(childlist):
+        for video_screen in childlist.video_screens:
+            transform_matrix(video_screen)
+        for projector in childlist.projectors:
+            transform_matrix(projector)
+        for support in childlist.supports:
+            transform_matrix(support)
         for truss in childlist.trusses:
             transform_matrix(truss)
         for sceneobject in childlist.scene_objects:
@@ -480,6 +584,8 @@ def add_mvr_fixture(
     focus_point,
     import_globals,
     fixture_group=None,
+    parent_object=None,
+    layer_collection=None,
 ):
     """Add fixture to the scene"""
 
@@ -516,6 +622,11 @@ def add_mvr_fixture(
         for address in fixture.addresses.address
         if address.address > 0
     ]
+    null_matrix = pymvr.Matrix([[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]])
+    # ensure that fixture is not scaled to 0
+    if fixture.matrix == null_matrix:
+        fixture.matrix = pymvr.Matrix(0)
+
     if existing_fixture is not None:
         # TODO: we should not rename the fixture on import unless if the user wants it
         # but we must ensure that the name is unique in the collection
@@ -567,6 +678,14 @@ def add_mvr_fixture(
             classing=fixture.classing,
         )
 
+    if parent_object is not None:
+        direct_fixture_children.append(
+            SimpleNamespace(
+                child_uuid=fixture.uuid,
+                parent_uuid=parent_object.uuid,
+            )
+        )
+
     if fixture_group is not None:
         if fixture_group.name in dmx.groups:
             group = dmx.groups[fixture_group.name]
@@ -581,10 +700,60 @@ def add_mvr_fixture(
         dump.append(fixture.uuid)
         group.dump = json.dumps(dump)
 
+        added_fixture = dmx.findFixtureByUUID(fixture.uuid)
+        if added_fixture:
+            added_fixture["layer_name"] = layer_collection.name
+            added_fixture["layer_uuid"] = layer_collection.get("UUID", None)
 
-def load_mvr(dmx, file_name, import_focus_points):
+
+def perform_direct_parenting(dmx):
+    for item in direct_fixture_children:
+        child_object = None
+        parent_object = None
+        child_fixture = dmx.findFixtureByUUID(item.child_uuid)
+        if child_fixture:
+            try:
+                child_object = child_fixture.objects["Root"].object
+            except:
+                ...
+        parent_object = next(
+            (
+                obj
+                for obj in bpy.data.objects
+                if obj.get("UUID", "") == item.parent_uuid
+            ),
+            None,
+        )
+        if child_object is not None and parent_object is not None:
+            child_object.parent = parent_object
+            try:
+                child_object.matrix_parent_inverse = (
+                    parent_object.matrix_world.inverted()
+                )
+            except:
+                ...
+
+
+def load_mvr(
+    dmx,
+    file_name,
+    import_focus_points,
+    import_fixtures,
+    import_trusses,
+    import_scene_objects,
+    import_projectors,
+    import_supports,
+    import_video_screens,
+):
     import_globals = SimpleNamespace(
-        extracted={}, import_focus_points=import_focus_points
+        extracted={},
+        import_focus_points=import_focus_points,
+        import_fixtures=import_fixtures,
+        import_trusses=import_trusses,
+        import_scene_objects=import_scene_objects,
+        import_projectors=import_projectors,
+        import_supports=import_supports,
+        import_video_screens=import_video_screens,
     )
 
     bpy.ops.object.select_all(action="DESELECT")
@@ -678,6 +847,7 @@ def load_mvr(dmx, file_name, import_focus_points):
             import_globals,
             layer_collection,
             fixture_group,
+            layer,
         )
 
         if (
@@ -687,6 +857,7 @@ def load_mvr(dmx, file_name, import_focus_points):
             layer_collect.children.unlink(layer_collection)
 
     transform_objects(layers, mscale)
+    perform_direct_parenting(dmx)
 
     if auxData.items():
         aux_type = auxdata.__class__.__name__
@@ -698,7 +869,7 @@ def load_mvr(dmx, file_name, import_focus_points):
             layer_collect.children.link(aux_directory)
         for uid, auxcollect in auxData.items():
             try:
-                if auxcollect.name not in aux_directory.children:
+                if auxcollect and auxcollect.name not in aux_directory.children:
                     aux_directory.children.link(auxcollect)
             except Exception as e:
                 traceback.print_exception(e)
@@ -747,6 +918,7 @@ def load_mvr(dmx, file_name, import_focus_points):
 
     auxData.clear()
     objectData.clear()
+    direct_fixture_children.clear()
     viewlayer.update()
     imported_layers.clear()
     if mvr_scene is not None:

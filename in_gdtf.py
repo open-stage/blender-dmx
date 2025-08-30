@@ -23,8 +23,7 @@ from threading import Timer
 import bpy
 from bpy_extras.io_utils import ImportHelper
 
-if bpy.app.version >= (4, 2):
-    from bpy_extras.io_utils import poll_file_object_drop
+from bpy_extras.io_utils import poll_file_object_drop
 
 from bpy.props import (
     BoolProperty,
@@ -87,7 +86,7 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
     """Import GDTF"""
 
     bl_idname = "dmx.import_gdtf_into_scene"
-    bl_label = "Import GDTF (.gdtf)"
+    bl_label = "Import GDTF (.gdtf) into BlenderDMX"
     bl_options = {"PRESET", "UNDO"}
 
     filename_ext = ".gdtf"
@@ -171,6 +170,12 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
         layout = self.layout
         layout.use_property_split = True
         layout.use_property_decorate = False
+        box = layout.column().box()
+        row = box.row()
+        row.template_icon_view(
+            context.scene, "gdtf_logo_enum", show_labels=False, scale=10
+        )
+        row.enabled = False
         layout.prop(self, "patch")
         box = layout.column().box()
         box.enabled = self.patch
@@ -263,19 +268,19 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
         DMX_GDTF_File.get_manufacturers_list()
         return {"FINISHED"}
 
+    def invoke(self, context, event):
+        return self.invoke_popup(context)
 
-if bpy.app.version >= (4, 1):
 
-    class DMX_IO_FH_GDTF(bpy.types.FileHandler):
-        bl_idname = "IO_FH_gdtf"
-        bl_label = "GDTF"
-        bl_import_operator = "dmx.import_gdtf_into_scene"
-        bl_file_extensions = ".gdtf"
+class DMX_IO_FH_GDTF(bpy.types.FileHandler):
+    bl_idname = "IO_FH_gdtf"
+    bl_label = "GDTF"
+    bl_import_operator = "dmx.import_gdtf_into_scene"
+    bl_file_extensions = ".gdtf"
 
-        @classmethod
-        def poll_drop(cls, context):
-            if bpy.app.version >= (4, 2):
-                return poll_file_object_drop(context)
+    @classmethod
+    def poll_drop(cls, context):
+        return poll_file_object_drop(context)
 
 
 def menu_func_import(self, context):
@@ -289,12 +294,10 @@ def register():
     bpy.utils.register_class(DMX_Break_Import)
     bpy.utils.register_class(DMX_OT_Import_GDTF)
     bpy.types.TOPBAR_MT_file_import.append(menu_func_import)
-    if bpy.app.version >= (4, 1):
-        bpy.utils.register_class(DMX_IO_FH_GDTF)
+    bpy.utils.register_class(DMX_IO_FH_GDTF)
 
 
 def unregister():
     bpy.types.TOPBAR_MT_file_import.remove(menu_func_import)
-    if bpy.app.version >= (4, 1):
-        bpy.utils.unregister_class(DMX_IO_FH_GDTF)
+    bpy.utils.unregister_class(DMX_IO_FH_GDTF)
     bpy.utils.unregister_class(DMX_OT_Import_GDTF)

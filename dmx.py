@@ -288,7 +288,32 @@ class DMX(PropertyGroup):
         DMX.custom_icons.load(
             "MVR_FILE", os.path.join(path, "mvr_file_icon_small.png"), "IMAGE"
         )
+        DMX.custom_icons.load(
+            "GDTF_LOGO", os.path.join(path, "gdtf-logo-color-inverted.png"), "IMAGE"
+        )
+        DMX.custom_icons.load(
+            "MVR_LOGO", os.path.join(path, "mvr-logo-color-inverted.png"), "IMAGE"
+        )
+        gdtf_items = [
+            ("dmx_icon", "DMX Icon", "", DMX.custom_icons["GDTF_LOGO"].icon_id, 0),
+        ]
+        mvr_items = [
+            ("dmx_icon", "DMX Icon", "", DMX.custom_icons["MVR_LOGO"].icon_id, 0),
+        ]
 
+        blender_dmx_items = [
+            ("dmx_icon", "DMX Icon", "", DMX.custom_icons["BLENDER_DMX"].icon_id, 0),
+        ]
+
+        bpy.types.Scene.gdtf_logo_enum = bpy.props.EnumProperty(
+            name="gdtf_logo", items=gdtf_items
+        )
+        bpy.types.Scene.mvr_logo_enum = bpy.props.EnumProperty(
+            name="mvr_logo", items=mvr_items
+        )
+        bpy.types.Scene.blender_dmx_logo_enum = bpy.props.EnumProperty(
+            name="blender_dmx_logo", items=blender_dmx_items
+        )
         for cls in DMX.classes_setup:
             bpy.utils.register_class(cls)
 
@@ -2093,12 +2118,32 @@ class DMX(PropertyGroup):
 
         return fixtures
 
-    def addMVR(self, file_name, import_focus_points=True):
+    def addMVR(
+        self,
+        file_name,
+        import_focus_points=True,
+        import_fixtures=True,
+        import_trusses=True,
+        import_scene_objects=True,
+        import_projectors=True,
+        import_supports=True,
+        import_video_screens=True,
+    ):
         bpy.context.window_manager.dmx.pause_render = (
             True  # this stops the render loop, to prevent slowness and crashes
         )
 
-        load_mvr(self, file_name, import_focus_points=import_focus_points)
+        load_mvr(
+            self,
+            file_name,
+            import_focus_points=import_focus_points,
+            import_fixtures=import_fixtures,
+            import_trusses=import_trusses,
+            import_scene_objects=import_scene_objects,
+            import_projectors=import_projectors,
+            import_supports=import_supports,
+            import_video_screens=import_video_screens,
+        )
 
         bpy.context.window_manager.dmx.pause_render = False  # re-enable render loop
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
@@ -2125,7 +2170,9 @@ class DMX(PropertyGroup):
                     return True
         return False
 
-    def export_mvr(self, file_name):
+    def export_mvr(
+        self, file_name, export_focus_points=True, selected_fixtures_only=False
+    ):
         start_time = time.time()
         bpy.context.window_manager.dmx.pause_render = (
             True  # this stops the render loop, to prevent slowness and crashes
@@ -2142,25 +2189,45 @@ class DMX(PropertyGroup):
 
             pymvr.UserData().to_xml(parent=mvr.xml_root)
 
-            layer = pymvr.Layer(name="DMX")
-            child_list = pymvr.ChildList()
-            child_list.fixtures.clear()
-            child_list.focus_points.clear()
-            layer.child_list = child_list
+            layers = pymvr.Layers()
 
             for dmx_fixture in dmx.fixtures:
+                if selected_fixtures_only and not dmx_fixture.is_selected():
+                    continue
+                fixture_layer_name = dmx_fixture.get("layer_name", "DMX")
+                fixture_layer_uuid = dmx_fixture.get("layer_uuid", None)
+                if fixture_layer_uuid is not None:
+                    use_layer = next(
+                        (l for l in layers if l.uuid == fixture_layer_uuid), None
+                    )
+                    if not use_layer:
+                        use_layer = pymvr.Layer(
+                            name=fixture_layer_name, uuid=fixture_layer_uuid
+                        )
+                        new_child_list = pymvr.ChildList()
+                        use_layer.child_list = new_child_list
+                        layers.append(use_layer)
+                else:  # no layer in fixture
+                    use_layer = next(
+                        (l for l in layers if l.name == fixture_layer_name), None
+                    )  # we should get "DMX" layer if exists
+                    if not use_layer:  # create new DMX layer
+                        use_layer = pymvr.Layer(name="DMX", uuid=str(py_uuid.uuid4()))
+                        new_child_list = pymvr.ChildList()
+                        use_layer.child_list = new_child_list
+                        layers.append(use_layer)
+
+                child_list = use_layer.child_list
+
                 fixture_object = dmx_fixture.to_mvr_fixture(universe_add=universe_add)
                 focus_point = dmx_fixture.focus_to_mvr_focus_point()
-                if focus_point is not None:
+                if export_focus_points and focus_point is not None:
                     child_list.focus_points.append(focus_point)
                 child_list.fixtures.append(fixture_object)
                 if fixture_object.gdtf_spec:
                     file_path = os.path.join(folder_path, fixture_object.gdtf_spec)
                     fixtures_list.append((file_path, fixture_object.gdtf_spec))
 
-            layers = pymvr.Layers()
-            layers.clear()
-            layers.append(layer)
             scene = pymvr.Scene(layers=layers, aux_data=pymvr.AUXData())
             scene.to_xml(parent=mvr.xml_root)
 

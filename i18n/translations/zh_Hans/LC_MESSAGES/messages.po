@@ -7,16 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-07-12 15:31+0200\n"
-"PO-Revision-Date: 2025-07-05 16:01+0000\n"
+"POT-Creation-Date: 2025-08-18 21:37+0200\n"
+"PO-Revision-Date: 2025-08-26 03:02+0000\n"
 "Last-Translator: 大学没毕业 <ziweidao@foxmail.com>\n"
+"Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
+"projects/blenderdmx/main/zh_Hans/>\n"
 "Language: zh_Hans\n"
-"Language-Team: Chinese (Simplified Han script) "
-"<https://hosted.weblate.org/projects/blenderdmx/main/zh_Hans/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.13\n"
 "Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
@@ -386,6 +387,35 @@ msgstr "导入焦点作为目标"
 
 msgid "Create Targets from MVR Focus Points"
 msgstr "从 MVR 焦点创建目标"
+
+msgid "Import Fixtures"
+msgstr "导入灯具"
+
+#, fuzzy
+msgid "Import Trusses"
+msgstr "导入"
+
+#, fuzzy
+msgid "Import Scene Objects"
+msgstr "导入 MVR 场景"
+
+#, fuzzy
+msgid "Import Projectors"
+msgstr "导入项目数据"
+
+#, fuzzy
+msgid "Import Video Screens"
+msgstr "导入 MVR 场景"
+
+#, fuzzy
+msgid "Import Supports"
+msgstr "导入确认"
+
+msgid "Export Targets as MVR Focus Points"
+msgstr "导出目标作为 MVR 焦点"
+
+msgid "Export only selected fixtures"
+msgstr "仅导出选定的灯具"
 
 msgid "Enable PSN Input"
 msgstr "开启 PSN 输入"
@@ -1661,3 +1691,5 @@ msgstr "域"
 #~ msgid "Some fixtures could not be processed"
 #~ msgstr "某些灯具无法处理"
 
+#~ msgid "Export Focus Points as Targets"
+#~ msgstr "导入焦点作为目标"

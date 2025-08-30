@@ -62,3 +62,49 @@ coding](https://github.com/open-stage/blender-dmx/), or [help to improve the
 documentation](https://github.com/open-stage/blender-dmx-web).
 
 Thank you.
+
+## References
+
+
+```bibtex
+@software{pygdtf2025,
+  title        = {pyGDTF: Python Library for General Device Type Format},
+  author       = {{OpenStage}},
+  year         = {2025},
+  version      = {1.3.0},
+  url          = {https://github.com/open-stage/python-gdtf}
+}
+
+@software{pymvr2025,
+  title        = {pyMVR: Python Library for My Virtual Rig},
+  author       = {{OpenStage}},
+  year         = {2025},
+  version      = {1.0.1},
+  url          = {https://github.com/open-stage/python-mvr}
+}
+
+@software{pypsn2025,
+  title        = {pyPSN: Python Library for PosiStageNet},
+  author       = {{OpenStage}},
+  year         = {2025},
+  version      = {0.2.3},
+  url          = {https://github.com/open-stage/python-psn}
+}
+```
+
+## Citation
+
+If you use BlenderDMX in your research, publication, or software project,
+please cite it as follows:
+
+
+```bibtex
+@software{blenderdmx2025,
+  title        = {BlenderDMX: Open Source Visualization and Programming with GDTF/MVR, and Networking for Blender},
+  author       = {{OpenStage}},
+  year         = {2025},
+  version      = {2.0.9},
+  url          = {https://blenderdmx.eu/},
+  note         = {Source Code: https://github.com/open-stage/blender-dmx}
+}
+```

@@ -583,6 +583,8 @@ class DMX_Fixture(PropertyGroup):
 
         # Custom python data storage, outside of bpy.props. So called ID props
         self["dmx_values"] = []
+        self["layer_name"] = None
+        self["layer_uuid"] = None
 
         # Create clean Collection
         # (Blender creates the collection with selected objects/collections)
@@ -725,7 +727,7 @@ class DMX_Fixture(PropertyGroup):
                 self.objects[-1].name = "Target"
                 self.objects["Target"].object = links[obj.name]
                 self.objects["Target"].object["uuid"] = str(py_uuid.uuid4())
-            elif base.name == obj.name:
+            elif base is not None and base.name == obj.name:
                 self.objects.add()
                 self.objects[-1].name = "Root"
                 self.objects["Root"].object = links[obj.name]
@@ -745,10 +747,12 @@ class DMX_Fixture(PropertyGroup):
             for child in obj.children:
                 if child.name in links:
                     links[child.name].parent = links[obj.name]
+
         # Relink constraints
         for obj in self.collection.objects:
             for constraint in obj.constraints:
-                constraint.target = links[constraint.target.name]
+                if hasattr(constraint.target, "name"):
+                    constraint.target = links[constraint.target.name]
 
         # (Edit) Reload old positions and rotations
         bpy.context.view_layer.update()

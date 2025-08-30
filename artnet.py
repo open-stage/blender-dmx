@@ -1,4 +1,4 @@
-# Copyright (C) 2020 Hugo Aboud, Kaspars Jaudzems, vanous
+# Copyright (C) 2020 Hugo Aboud, Kaspars Jaudzems, Michael Wigard, vanous
 #
 # This file is part of BlenderDMX.
 #

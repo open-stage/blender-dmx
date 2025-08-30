@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-07-12 15:31+0200\n"
-"PO-Revision-Date: 2025-07-21 08:03+0000\n"
+"POT-Creation-Date: 2025-08-18 21:37+0200\n"
+"PO-Revision-Date: 2025-08-18 19:44+0000\n"
 "Last-Translator: vanous <petr+weblate@linuks.cz>\n"
 "Language-Team: Czech <https://hosted.weblate.org/projects/blenderdmx/main/cs/"
 ">\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
-"X-Generator: Weblate 5.13-dev\n"
+"X-Generator: Weblate 5.13\n"
 "Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
@@ -401,6 +401,30 @@ msgstr "Importovat Fokusovací Body jako Cíle"
 
 msgid "Create Targets from MVR Focus Points"
 msgstr "Vytvořit Cíle z MVR Fokusovacích Bodů"
+
+msgid "Import Fixtures"
+msgstr "Importovat Svítidla"
+
+msgid "Import Trusses"
+msgstr "Importovat Konstrukce"
+
+msgid "Import Scene Objects"
+msgstr "Importovat Objekty Scény"
+
+msgid "Import Projectors"
+msgstr "Importovat Projektory"
+
+msgid "Import Video Screens"
+msgstr "Importovat Projekční Plochy"
+
+msgid "Import Supports"
+msgstr "Importovat Nosiče Konstrukcí"
+
+msgid "Export Targets as MVR Focus Points"
+msgstr "Exportovat Cíle jako MVR Fokusovací Body"
+
+msgid "Export only selected fixtures"
+msgstr "Exportovat pouze označená svítidla"
 
 msgid "Enable PSN Input"
 msgstr "Povolit PSN Vstup"
@@ -1651,3 +1675,6 @@ msgstr "DMX Universe"
 
 #~ msgid "Some fixtures could not be processed"
 #~ msgstr "Některá svítidla se nepodařilo zpracovat"
+
+#~ msgid "Export Focus Points as Targets"
+#~ msgstr "Importovat Fokusovací Body jako Cíle"
