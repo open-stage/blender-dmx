@@ -255,13 +255,10 @@ def get_child_list(
 
     if hasattr(child_list, "fixtures") and child_list.fixtures:
         for fixture_idx, fixture in enumerate(child_list.fixtures):
-            focus_point = mscale
             if fixture.focus is not None:
                 focus_points = [
                     fp for fp in child_list.focus_points if fp.uuid == fixture.focus
                 ]
-                if len(focus_points):
-                    focus_point = get_matrix(focus_points[0], mscale)
             if import_globals.import_fixtures:
                 add_mvr_fixture(
                     dmx,
@@ -270,7 +267,7 @@ def get_child_list(
                     fixture,
                     fixture_idx,
                     layer_index,
-                    focus_point,
+                    focus_points,
                     import_globals,
                     fixture_group,
                     parent_object,
@@ -329,6 +326,7 @@ def process_mvr_object(
     layer_collect = viewlayer.layer_collection
     active_layer = viewlayer.active_layer_collection
     symdef_id = isinstance(mvr_object, pymvr.Symdef)
+    focus_id = isinstance(mvr_object, pymvr.FocusPoint)
     classing = mvr_object.classing if hasattr(mvr_object, "classing") else None
     dmx = bpy.context.scene.dmx
     current_path = dmx.get_addon_path()
@@ -382,10 +380,11 @@ def process_mvr_object(
                     ob.users_collection[0].objects.unlink(ob)
                 elif ob.name in layer_collect.collection.objects:
                     active_layer.collection.objects.unlink(ob)
-                if ob.data is not None:  # only gltf files can be pre transformed
-                    ob.matrix_world = (
-                        world_matrix @ ob.matrix_world.copy() if gltf else world_matrix
-                    )
+                if ob.parent is None:  # only gltf files can be pre transformed
+                    if gltf or ob.type != "MESH":
+                        ob.matrix_world = world_matrix @ ob.matrix_world.copy()
+                    else:
+                        ob.matrix_world = world_matrix
                 create_transform_property(ob)
                 if ob.name not in collect.objects:
                     collect.objects.link(ob)
@@ -420,6 +419,8 @@ def process_mvr_object(
         dmx_mvr_object.object_type = mvr_object.__class__.__name__
         dmx_mvr_object.collection = bpy.data.collections.new(mvr_object.uuid)
 
+    if focus_id:
+        active_collect = group_collect
     if isinstance(mvr_object, pymvr.Symbol):
         symbols.append(mvr_object)
     elif isinstance(mvr_object, pymvr.Geometry3D):
@@ -451,7 +452,7 @@ def process_mvr_object(
         if active_collect.get("MVR Class") is None:
             create_mvr_props(active_collect, class_name, uid=uid, classing=classing)
         active_collect.hide_render = True
-    elif (len(geometrys) + len(symbols)) > 1:
+    elif not focus_id and (len(geometrys) + len(symbols)) > 1:
         if mvr_object.name is not None and len(mvr_object.name):
             obj_name = "%s - %s %d" % (class_name, mvr_object.name, mvr_idx)
         else:
@@ -526,6 +527,23 @@ def process_mvr_object(
                 classing=classing,
             )
 
+    if focus_id:
+        target = next(
+            (ob for ob in group_collect.objects if ob.data is None and ob.get("uuid")),
+            None,
+        )
+        if target:
+            target_mtx = target.matrix_world.copy()
+            for ob in group_collect.objects:
+                if (
+                    ob.parent is None
+                    and ob.get("MVR Class") == "FocusPoint"
+                    and ob.get("UUID") == mvr_object.uuid
+                ):
+                    ob.parent = target
+                    ob.matrix_parent_inverse = target.matrix_world.inverted()
+            viewlayer.update()
+
 
 def transform_objects(layers, mscale):
     def transform_matrix(mvr):
@@ -533,7 +551,8 @@ def transform_objects(layers, mscale):
         if obj_collect is not None:
             global_mtx = get_matrix(mvr, mscale)
             for obj in obj_collect.objects:
-                obj.matrix_world = global_mtx @ obj.matrix_world.copy()
+                if obj.parent is None:
+                    obj.matrix_world = global_mtx @ obj.matrix_world.copy()
                 create_transform_property(obj)
 
     def collect_objects(childlist):
@@ -580,7 +599,7 @@ def add_mvr_fixture(
     fixture,
     fixture_idx,
     layer_idx,
-    focus_point,
+    focus_points,
     import_globals,
     fixture_group=None,
     parent_object=None,
@@ -625,6 +644,11 @@ def add_mvr_fixture(
     # ensure that fixture is not scaled to 0
     if fixture.matrix == null_matrix:
         fixture.matrix = pymvr.Matrix(0)
+
+    """Get Focuspoints."""
+    focus_point = Matrix()
+    if len(focus_points):
+        focus_point = get_matrix(focus_points[0], Matrix())
 
     if existing_fixture is not None:
         # TODO: we should not rename the fixture on import unless if the user wants it
@@ -703,6 +727,20 @@ def add_mvr_fixture(
         if added_fixture:
             added_fixture["layer_name"] = layer_collection.name
             added_fixture["layer_uuid"] = layer_collection.get("UUID", None)
+
+    if len(focus_points) and focus_points[0].geometries:
+        focus_fixture = dmx.findFixtureByUUID(fixture.uuid)
+        if focus_fixture:
+            DMX_Log.log.info(f"importing FocusPoint geometry... {fixture.name}")
+            process_mvr_object(
+                bpy.context,
+                mvr_scene,
+                focus_points[0],
+                fixture_idx,
+                Matrix(),
+                import_globals,
+                focus_fixture.collection,
+            )
 
 
 def perform_direct_parenting(dmx):
