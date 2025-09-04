@@ -255,13 +255,15 @@ def get_child_list(
 
     if hasattr(child_list, "fixtures") and child_list.fixtures:
         for fixture_idx, fixture in enumerate(child_list.fixtures):
+            focus_points = []
             if fixture.focus is not None:
-                focus_points = [
-                    fp for fp in child_list.focus_points if fp.uuid == fixture.focus
-                ]
+                focus_points.extend(
+                    [fp for fp in child_list.focus_points if fp.uuid == fixture.focus]
+                )
             if import_globals.import_fixtures:
                 add_mvr_fixture(
                     dmx,
+                    mscale,
                     mvr_scene,
                     folder_path,
                     fixture,
@@ -419,8 +421,6 @@ def process_mvr_object(
         dmx_mvr_object.object_type = mvr_object.__class__.__name__
         dmx_mvr_object.collection = bpy.data.collections.new(mvr_object.uuid)
 
-    if focus_id:
-        active_collect = group_collect
     if isinstance(mvr_object, pymvr.Symbol):
         symbols.append(mvr_object)
     elif isinstance(mvr_object, pymvr.Geometry3D):
@@ -438,7 +438,9 @@ def process_mvr_object(
             # TODO: handle this
             traceback.print_exception(e)
 
-    if symdef_id:
+    if focus_id:
+        active_collect = group_collect
+    elif symdef_id:
         create_mvr_props(
             group_collect, class_name, name=name, uid=uid, classing=classing
         )
@@ -483,8 +485,10 @@ def process_mvr_object(
 
     for idx, geometry in enumerate(geometrys):
         file = geometry.file_name
-        obj_mtx = get_matrix(geometry, mscale)
         extract_mvr_object(file, mvr_scene, folder, import_globals)
+        obj_mtx = (
+            get_matrix(mvr_object, mscale) if focus_id else get_matrix(geometry, mscale)
+        )
         object_collect = add_mvr_object(idx, geometry, obj_mtx, active_collect, file)
         if (
             object_collect
@@ -529,7 +533,11 @@ def process_mvr_object(
 
     if focus_id:
         target = next(
-            (ob for ob in group_collect.objects if ob.data is None and ob.get("uuid")),
+            (
+                ob
+                for ob in group_collect.objects
+                if ob.data is None and ob.get("Target ID") == mvr_object.uuid
+            ),
             None,
         )
         if target:
@@ -542,7 +550,6 @@ def process_mvr_object(
                 ):
                     ob.parent = target
                     ob.matrix_parent_inverse = target.matrix_world.inverted()
-            viewlayer.update()
 
 
 def transform_objects(layers, mscale):
@@ -594,6 +601,7 @@ def extract_mvr_textures(mvr_scene, folder):
 
 def add_mvr_fixture(
     dmx,
+    mscale,
     mvr_scene,
     folder_path,
     fixture,
@@ -646,9 +654,9 @@ def add_mvr_fixture(
         fixture.matrix = pymvr.Matrix(0)
 
     """Get Focuspoints."""
-    focus_point = Matrix()
+    focus_point = mscale
     if len(focus_points):
-        focus_point = get_matrix(focus_points[0], Matrix())
+        focus_point = get_matrix(focus_points[0], mscale)
 
     if existing_fixture is not None:
         # TODO: we should not rename the fixture on import unless if the user wants it
@@ -732,6 +740,12 @@ def add_mvr_fixture(
         focus_fixture = dmx.findFixtureByUUID(fixture.uuid)
         if focus_fixture:
             DMX_Log.log.info(f"importing FocusPoint geometry... {fixture.name}")
+            focus_target = next(
+                (tg.object for tg in focus_fixture.objects if tg.name == "Target"), None
+            )
+            if focus_target:
+                focus_target["Geometry Type"] = "Target"
+                focus_target["Target ID"] = fixture.focus
             process_mvr_object(
                 bpy.context,
                 mvr_scene,
