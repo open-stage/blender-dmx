@@ -751,7 +751,7 @@ def add_mvr_fixture(
                 mvr_scene,
                 focus_points[0],
                 fixture_idx,
-                Matrix(),
+                mscale,
                 import_globals,
                 focus_fixture.collection,
             )
