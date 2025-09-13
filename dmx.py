@@ -747,6 +747,14 @@ class DMX(PropertyGroup):
 
         DMX_Log.log.info(f"Data version: {file_data_version}")
 
+        if file_data_version < 2:
+            # skip migrations, this is a new file
+            self.collection["DMX_DataVersion"] = (
+                self.data_version
+            )  # set data version to current
+            DMX_Log.log.info("Skipping migrations on new file")
+            return
+
         if file_data_version < 3:
             hide_gobo_message = True
             DMX_Log.log.info("Running migration 2→3")
