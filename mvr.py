@@ -428,15 +428,11 @@ def process_mvr_object(
     elif not symdef_id and mvr_object.geometries:
         symbols += mvr_object.geometries.symbol
         geometrys += mvr_object.geometries.geometry3d
+    elif isinstance(mvr_object, pymvr.Symdef):
+        symbols += mvr_object.child_list.symbol
+        geometrys += mvr_object.child_list.geometry3d
     else:
-        try:
-            if hasattr(mvr_object, "symbol"):
-                symbols += mvr_object.symbol
-            if hasattr(mvr_object, "geometry3d"):
-                geometrys += mvr_object.geometry3d
-        except Exception as e:
-            # TODO: handle this
-            traceback.print_exception(e)
+        DMX_Log.log.info(f"Handle this in the future")
 
     if focus_id:
         active_collect = group_collect
