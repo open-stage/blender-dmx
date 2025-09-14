@@ -1,4 +1,4 @@
-# Copyright (C) 2023 Sebastian, vanous
+# Copyright (C) 2023 NRG Sille, Sebastian, vanous
 #
 # This file is part of BlenderDMX.
 #
