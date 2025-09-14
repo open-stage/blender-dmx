@@ -425,12 +425,12 @@ def process_mvr_object(
         symbols.append(mvr_object)
     elif isinstance(mvr_object, pymvr.Geometry3D):
         geometrys.append(mvr_object)
-    elif not symdef_id and mvr_object.geometries:
-        symbols += mvr_object.geometries.symbol
-        geometrys += mvr_object.geometries.geometry3d
-    elif isinstance(mvr_object, pymvr.Symdef):
+    elif symdef_id:
         symbols += mvr_object.child_list.symbol
         geometrys += mvr_object.child_list.geometry3d
+    elif mvr_object.geometries:
+        symbols += mvr_object.geometries.symbol
+        geometrys += mvr_object.geometries.geometry3d
     else:
         DMX_Log.log.info(f"Handle this in the future")
 
@@ -515,15 +515,15 @@ def process_mvr_object(
                 symbol_type,
                 name=name,
                 uid=uid,
-                ref=symbol.uuid,
+                ref=symbol.symdef,
                 classing=classing,
             )
             create_mvr_props(
                 symbol_collect,
                 symbol_type,
                 name=name,
-                uid=symbol.uuid,
-                ref=symbol.symdef,
+                uid=symbol.symdef,
+                ref=symbol.uuid,
                 classing=classing,
             )
 
