@@ -24,6 +24,7 @@ import traceback
 
 import bpy
 import pymvr
+import uuid as py_uuid
 from io_scene_3ds.import_3ds import load_3ds
 from mathutils import Matrix
 
@@ -537,6 +538,7 @@ def process_mvr_object(
             None,
         )
         if target:
+            all_focus_points_geo_uuid = dmx.find_class_by_name("Focus Points")
             target_mtx = target.matrix_world.copy()
             for ob in group_collect.objects:
                 if (
@@ -544,6 +546,7 @@ def process_mvr_object(
                     and ob.get("MVR Class") == "FocusPoint"
                     and ob.get("UUID") == mvr_object.uuid
                 ):
+                    ob["classing"] = all_focus_points_geo_uuid
                     ob.parent = target
                     ob.matrix_parent_inverse = target.matrix_world.inverted()
 
@@ -846,6 +849,11 @@ def load_mvr(
             new_class = dmx.classing.add()
             new_class.name = _class.name
             new_class.uuid = _class.uuid
+
+    if "Focus Points" not in dmx.classing:
+        new_class = dmx.classing.add()
+        new_class.name = "Focus Points"
+        new_class.uuid = str(py_uuid.uuid4())
 
     for aux_idx, symdef in enumerate(symdefs):
         if aux_dir and symdef.name in aux_dir.children:

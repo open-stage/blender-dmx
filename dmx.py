@@ -2127,6 +2127,12 @@ class DMX(PropertyGroup):
 
         return fixtures
 
+    def find_class_by_name(self, name):
+        for class_ in self.classing:
+            if class_.name == name:
+                return class_.uuid
+        return None
+
     def addMVR(
         self,
         file_name,
