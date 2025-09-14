@@ -632,7 +632,7 @@ def add_mvr_fixture(
         DMX_Log.log.error(
             f"{fixture.gdtf_spec} not in mvr_scene._package.namelist, using a generic PAR"
         )
-        fixture.gdtf_spec = "BlenderDMX@LED_PAR_64@ver5.gdtf"
+        fixture.gdtf_spec = "BlenderDMX@LED_PAR_64@ver6.gdtf"
     for address in fixture.addresses.address:
         dmx.ensureUniverseExists(address.universe)
 
