@@ -840,6 +840,17 @@ class DMX_Fixture(PropertyGroup):
         for light in self.lights:
             set_light_nodes(light)
 
+        # Set collection custom properties
+        patch = self.dmx_breaks[0]
+        self.collection["Fixture ID"] = self.fixture_id_numeric
+        self.collection["Fixture Name"] = self.name
+        self.collection["Fixture Mode"] = self.mode
+        self.collection["GDTF Spec"] = self.profile
+        self.collection["Patch Address"] = patch.address
+        self.collection["Patch Break"] = patch.dmx_break
+        self.collection["Patch Universe"] = patch.universe
+        self.collection["UUID"] = self.uuid
+
         # Link collection to DMX collection
         bpy.context.scene.dmx.collection.children.link(self.collection)
 
