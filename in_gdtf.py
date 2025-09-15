@@ -301,3 +301,4 @@ def unregister():
     bpy.types.TOPBAR_MT_file_import.remove(menu_func_import)
     bpy.utils.unregister_class(DMX_IO_FH_GDTF)
     bpy.utils.unregister_class(DMX_OT_Import_GDTF)
+    bpy.utils.unregister_class(DMX_Break_Import)
