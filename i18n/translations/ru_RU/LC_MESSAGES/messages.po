@@ -8,16 +8,17 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-18 21:37+0200\n"
-"PO-Revision-Date: 2025-06-22 13:01+0000\n"
-"Last-Translator: Yurt Page <yurtpage@gmail.com>\n"
+"PO-Revision-Date: 2025-09-08 22:01+0000\n"
+"Last-Translator: Alex Nadzharov <anadjarov@gmail.com>\n"
+"Language-Team: Russian <https://hosted.weblate.org/projects/blenderdmx/main/"
+"ru/>\n"
 "Language: ru_RU\n"
-"Language-Team: Russian "
-"<https://hosted.weblate.org/projects/blenderdmx/main/ru/>\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
-"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Weblate 5.14-dev\n"
 "Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
@@ -45,7 +46,7 @@ msgid "Footprint"
 msgstr "Планшет"
 
 msgid "Physical Properties"
-msgstr ""
+msgstr "Физические свойства"
 
 msgid "DMX Collection"
 msgstr "Коллекция DMX"
@@ -230,10 +231,10 @@ msgid "Enables MVR-xchange sharing and discovery"
 msgstr "Включает общий доступ и обнаружение MVR-xchange"
 
 msgid "Enable Group Registration"
-msgstr ""
+msgstr "Включить регистрацию групп"
 
 msgid "Join or start the new group"
-msgstr ""
+msgstr "Добавить в группу или создать новую"
 
 msgid "Enable Internet MVR-xchange"
 msgstr "Включить интернет-MVR-xchange"
@@ -352,10 +353,10 @@ msgstr ""
 "больше 23 нарушит рендеринг гобо в Eevee Next."
 
 msgid "Use Fixtures Physical Properties"
-msgstr ""
+msgstr "Использовать физические свойства приборов"
 
 msgid "Use Channel Functions of this fixture"
-msgstr ""
+msgstr "Использовать функции каналов этого прибора"
 
 msgid "DMX Universe"
 msgstr "Вселенная DMX"
@@ -474,13 +475,13 @@ msgid "File Size"
 msgstr "Файлы"
 
 msgid "Time of info"
-msgstr ""
+msgstr "Время инфо"
 
 msgid "Time of saving"
-msgstr ""
+msgstr "Время сохранения"
 
 msgid "Subscribed to"
-msgstr ""
+msgstr "Подписан на"
 
 #, fuzzy
 msgid "We requested latest file without UUID"
@@ -495,10 +496,10 @@ msgid "Port"
 msgstr "Импорт"
 
 msgid "Connected"
-msgstr ""
+msgstr "Соединен"
 
 msgid "Last Seen Time"
-msgstr ""
+msgstr "Последний раз онлайн"
 
 #, fuzzy
 msgid "Station Name"
@@ -529,14 +530,14 @@ msgid "MVR-xchange Clients"
 msgstr "MVR-xchange"
 
 msgid "Existing Groups"
-msgstr ""
+msgstr "Существующие группы"
 
 #, fuzzy
 msgid "Websocket Commits"
 msgstr "Скачать WebSocket"
 
 msgid "Message"
-msgstr ""
+msgstr "Сообщение"
 
 #, fuzzy
 msgid "IPv4 Address for MVR-xchange"
@@ -685,28 +686,28 @@ msgid "Fixtures"
 msgstr "Приспособления"
 
 msgid "F ID"
-msgstr ""
+msgstr "Идентификатор F"
 
 msgid "Unit #"
-msgstr ""
+msgstr "Номер юнита"
 
 msgid "F ID #"
-msgstr ""
+msgstr "Номер идентификатора F"
 
 msgid "Cst ID"
-msgstr ""
+msgstr "Идентификатор Cst"
 
 msgid "Uni"
-msgstr ""
+msgstr "Вс."
 
 msgid "Addr"
-msgstr ""
+msgstr "Адр."
 
 msgid "Uni.Addr"
-msgstr ""
+msgstr "Вс.Адр"
 
 msgid "Foot"
-msgstr ""
+msgstr "Фут"
 
 msgid "DMX > Group Menu"
 msgstr "DMX > Меню группы"
@@ -783,7 +784,7 @@ msgid "Use Fixtures Channel Functions"
 msgstr "Обновить соединение"
 
 msgid "Do Not Use Fixtures Physical Properties"
-msgstr ""
+msgstr "Не использовать физические свойства приборов"
 
 msgid "Do not use Fixtures Channel Functions"
 msgstr ""
@@ -913,28 +914,28 @@ msgid "Color Wheel3"
 msgstr "Цветовое колесо"
 
 msgid "Color Macro1"
-msgstr ""
+msgstr "Цветовое Макро1"
 
 msgid "Color Temperature"
 msgstr "Цветовая температура"
 
 msgid "Iris"
-msgstr ""
+msgstr "Диафрагма"
 
 msgid "Gobo1"
-msgstr ""
+msgstr "Гобо1"
 
 msgid "Gobo1 Adjust"
-msgstr ""
+msgstr "Настройка гобо1"
 
 msgid "Gobo2"
-msgstr ""
+msgstr "Гобо2"
 
 msgid "Gobo2 Adjust"
-msgstr ""
+msgstr "Настройка гобо2"
 
 msgid "Strobe"
-msgstr ""
+msgstr "Строб"
 
 #, fuzzy
 msgid "PanMode"
@@ -945,7 +946,7 @@ msgid "TiltMode"
 msgstr "Наклон"
 
 msgid "PanTiltMode"
-msgstr ""
+msgstr "Режим PanTilt"
 
 msgid "Clear All"
 msgstr "Очисть всё"
@@ -1417,7 +1418,7 @@ msgid "Shared by me ({defined_station_name}):"
 msgstr ""
 
 msgid "Stations in the group:"
-msgstr ""
+msgstr "Станции в группе:"
 
 #, fuzzy
 msgid "Shared by the station:"
@@ -1522,4 +1523,3 @@ msgstr "Вселенные"
 
 #~ msgid "Export Focus Points as Targets"
 #~ msgstr "Импортировать точки фокусировки в качестве целей"
-

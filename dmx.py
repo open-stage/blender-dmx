@@ -279,6 +279,7 @@ class DMX(PropertyGroup):
             "PRODUCTION_ASSIST", os.path.join(path, "pa.png"), "IMAGE"
         )
         DMX.custom_icons.load("GMA3", os.path.join(path, "ma.png"), "IMAGE")
+        DMX.custom_icons.load("VW", os.path.join(path, "vw.png"), "IMAGE")
         DMX.custom_icons.load(
             "GDTF_FILE", os.path.join(path, "gdtf_file_icon_small.png"), "IMAGE"
         )
@@ -745,6 +746,14 @@ class DMX(PropertyGroup):
             file_data_version = self.collection["DMX_DataVersion"]
 
         DMX_Log.log.info(f"Data version: {file_data_version}")
+
+        if file_data_version < 2:
+            # skip migrations, this is a new file
+            self.collection["DMX_DataVersion"] = (
+                self.data_version
+            )  # set data version to current
+            DMX_Log.log.info("Skipping migrations on new file")
+            return
 
         if file_data_version < 3:
             hide_gobo_message = True
