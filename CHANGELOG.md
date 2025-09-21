@@ -1,5 +1,11 @@
 ### Changelog
 
+### 2.0.13
+
+* Add CTO to MovingBeam
+* Store Programmer values (last DMX frame) to .blend file
+* Ensure clean class unregistration
+
 ### 2.0.12
 
 * Skip migrations when creating a new scene for less verbose console output
