@@ -16,6 +16,8 @@
 # with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import bpy
+import base64
+from pathlib import Path
 from bpy.props import IntProperty
 from bpy.types import PropertyGroup
 
@@ -39,6 +41,41 @@ class DMX_Data:
     _virtuals = {}  # Virtual channels. These are per fixture and have an attribute and a value
     _dmx = None  # Cache access to the context.scene
     _live_view_data = [0] * 512
+
+    @staticmethod
+    def save_data():
+        name = "DMX_Data"
+        try:
+            dmx_data = DMX_Data._universes
+            combined_data = b"".join(dmx_data)
+            encoded = base64.b64encode(combined_data).decode("ascii")
+            if name in bpy.data.texts:
+                text_block = bpy.data.texts[name]
+                text_block.clear()
+            else:
+                text_block = bpy.data.texts.new(name)
+
+            text_block.write(encoded)
+        except Exception as e:
+            print("INFO", e)
+
+    @staticmethod
+    def load_data():
+        name = "DMX_Data"
+        data_length = 512
+
+        if name not in bpy.data.texts:
+            return
+        try:
+            encoded = bpy.data.texts[name].as_string()
+            binary_data = base64.b64decode(encoded)
+
+            DMX_Data._universes = [
+                bytearray(binary_data[i : i + data_length])
+                for i in range(0, len(binary_data), data_length)
+            ]
+        except Exception as e:
+            print("INFO", e)
 
     @staticmethod
     def prepare_empty_buffer():

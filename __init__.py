@@ -87,6 +87,13 @@ def onLoadFile(scene):
     # for example: #bdmx(1,1) , #bdmx(1,1,2)
     bpy.app.driver_namespace["bdmx"] = DMX_Data.get_value
 
+    DMX_Data.load_data()  # load the dmx buffer to preload the programmer with current values
+
+
+@bpy.app.handlers.persistent
+def onSavePre(scene):
+    DMX_Data.save_data()  # save the programmer dmx values
+
 
 @bpy.app.handlers.persistent
 def onUndo(scene):
@@ -164,6 +171,7 @@ def register():
 
     # Append handlers
     bpy.app.handlers.load_post.append(onLoadFile)
+    bpy.app.handlers.save_pre.append(onSavePre)
     bpy.app.handlers.undo_post.append(onUndo)
 
     Timer(1, onRegister, ()).start()
