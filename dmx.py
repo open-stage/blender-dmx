@@ -2148,6 +2148,10 @@ class DMX(PropertyGroup):
             True  # this stops the render loop, to prevent slowness and crashes
         )
 
+        # reset 3D cursor to eliminate offset issues
+        bpy.context.scene.cursor.location = (0.0, 0.0, 0.0)
+        bpy.context.scene.cursor.rotation_euler = (0.0, 0.0, 0.0)
+
         load_mvr(
             self,
             file_name,
@@ -2193,6 +2197,9 @@ class DMX(PropertyGroup):
             True  # this stops the render loop, to prevent slowness and crashes
         )
         dmx = bpy.context.scene.dmx
+        # reset 3D cursor to eliminate offset issues
+        bpy.context.scene.cursor.location = (0.0, 0.0, 0.0)
+        bpy.context.scene.cursor.rotation_euler = (0.0, 0.0, 0.0)
 
         folder_path = self.get_addon_path()
         folder_path = os.path.join(folder_path, "assets", "profiles")
