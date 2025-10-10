@@ -2127,6 +2127,12 @@ class DMX(PropertyGroup):
 
         return fixtures
 
+    def find_class_by_name(self, name):
+        for class_ in self.classing:
+            if class_.name == name:
+                return class_.uuid
+        return None
+
     def addMVR(
         self,
         file_name,
@@ -2141,6 +2147,10 @@ class DMX(PropertyGroup):
         bpy.context.window_manager.dmx.pause_render = (
             True  # this stops the render loop, to prevent slowness and crashes
         )
+
+        # reset 3D cursor to eliminate offset issues
+        bpy.context.scene.cursor.location = (0.0, 0.0, 0.0)
+        bpy.context.scene.cursor.rotation_euler = (0.0, 0.0, 0.0)
 
         load_mvr(
             self,
@@ -2187,6 +2197,9 @@ class DMX(PropertyGroup):
             True  # this stops the render loop, to prevent slowness and crashes
         )
         dmx = bpy.context.scene.dmx
+        # reset 3D cursor to eliminate offset issues
+        bpy.context.scene.cursor.location = (0.0, 0.0, 0.0)
+        bpy.context.scene.cursor.rotation_euler = (0.0, 0.0, 0.0)
 
         folder_path = self.get_addon_path()
         folder_path = os.path.join(folder_path, "assets", "profiles")

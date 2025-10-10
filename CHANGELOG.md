@@ -1,5 +1,24 @@
 ### Changelog
 
+### 2.0.13
+
+* Add CTO to MovingBeam
+* Store Programmer values (last DMX frame) to .blend file
+* Ensure clean class unregistration
+
+### 2.0.12
+
+* Skip migrations when creating a new scene for less verbose console output
+* Added Vwx logo to MVR-xchange UI
+* Updated pymvr library to 1.0.4
+* Improved FocusPoint import from MVR:
+    - import geometries attached to Focus Points
+    - ensure correct position
+    - add classing to be able to hide these geometries
+* Uploaded 3DS wheel version 2.8.0
+* Updated BlenderDMX@LED_PAR_64 to fix strobing
+* Russian translation update (Alex Nadzharov and Yurt Page)
+
 ### 2.0.11
 
 * Translation progress (French, Chinese)

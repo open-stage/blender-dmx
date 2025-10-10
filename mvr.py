@@ -1,4 +1,4 @@
-# Copyright (C) 2023 Sebastian, vanous
+# Copyright (C) 2023 NRG Sille, Sebastian, vanous
 #
 # This file is part of BlenderDMX.
 #
@@ -24,6 +24,7 @@ import traceback
 
 import bpy
 import pymvr
+import uuid as py_uuid
 from io_scene_3ds.import_3ds import load_3ds
 from mathutils import Matrix
 
@@ -425,12 +426,12 @@ def process_mvr_object(
         symbols.append(mvr_object)
     elif isinstance(mvr_object, pymvr.Geometry3D):
         geometrys.append(mvr_object)
-    elif not symdef_id and mvr_object.geometries:
-        symbols += mvr_object.geometries.symbol
-        geometrys += mvr_object.geometries.geometry3d
-    elif isinstance(mvr_object, pymvr.Symdef):
+    elif symdef_id:
         symbols += mvr_object.child_list.symbol
         geometrys += mvr_object.child_list.geometry3d
+    elif mvr_object.geometries:
+        symbols += mvr_object.geometries.symbol
+        geometrys += mvr_object.geometries.geometry3d
     else:
         DMX_Log.log.info(f"Handle this in the future")
 
@@ -515,15 +516,15 @@ def process_mvr_object(
                 symbol_type,
                 name=name,
                 uid=uid,
-                ref=symbol.uuid,
+                ref=symbol.symdef,
                 classing=classing,
             )
             create_mvr_props(
                 symbol_collect,
                 symbol_type,
                 name=name,
-                uid=symbol.uuid,
-                ref=symbol.symdef,
+                uid=symbol.symdef,
+                ref=symbol.uuid,
                 classing=classing,
             )
 
@@ -537,6 +538,7 @@ def process_mvr_object(
             None,
         )
         if target:
+            all_focus_points_geo_uuid = dmx.find_class_by_name("Focus Points")
             target_mtx = target.matrix_world.copy()
             for ob in group_collect.objects:
                 if (
@@ -544,6 +546,7 @@ def process_mvr_object(
                     and ob.get("MVR Class") == "FocusPoint"
                     and ob.get("UUID") == mvr_object.uuid
                 ):
+                    ob["classing"] = all_focus_points_geo_uuid
                     ob.parent = target
                     ob.matrix_parent_inverse = target.matrix_world.inverted()
 
@@ -629,7 +632,7 @@ def add_mvr_fixture(
         DMX_Log.log.error(
             f"{fixture.gdtf_spec} not in mvr_scene._package.namelist, using a generic PAR"
         )
-        fixture.gdtf_spec = "BlenderDMX@LED_PAR_64@ver5.gdtf"
+        fixture.gdtf_spec = "BlenderDMX@LED_PAR_64@ver6.gdtf"
     for address in fixture.addresses.address:
         dmx.ensureUniverseExists(address.universe)
 
@@ -846,6 +849,11 @@ def load_mvr(
             new_class = dmx.classing.add()
             new_class.name = _class.name
             new_class.uuid = _class.uuid
+
+    if "Focus Points" not in dmx.classing:
+        new_class = dmx.classing.add()
+        new_class.name = "Focus Points"
+        new_class.uuid = str(py_uuid.uuid4())
 
     for aux_idx, symdef in enumerate(symdefs):
         if aux_dir and symdef.name in aux_dir.children:

@@ -372,6 +372,11 @@ class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
         dmx = scene.dmx
         context.window.cursor_set("WAIT")
         context.window_manager.dmx.pause_render = True  # pause renderer as partially imported fixture can cause issues during updates
+
+        # reset 3D cursor to eliminate offset issues
+        bpy.context.scene.cursor.location = (0.0, 0.0, 0.0)
+        bpy.context.scene.cursor.rotation_euler = (0.0, 0.0, 0.0)
+
         if self.name in bpy.data.collections:
             self.report(
                 {"ERROR"}, _("Fixture named {} already exists").format(self.name)
@@ -440,6 +445,11 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
         context.window.cursor_set("WAIT")
         selected = scene.dmx.selectedFixtures()
         context.window_manager.dmx.pause_render = True  # pause renderer as partially imported fixture can cause issues during updates
+
+        # reset 3D cursor to eliminate offset issues
+        bpy.context.scene.cursor.location = (0.0, 0.0, 0.0)
+        bpy.context.scene.cursor.rotation_euler = (0.0, 0.0, 0.0)
+
         # Single fixture
         if len(selected) == 1:
             fixture = selected[0]
