@@ -1,6 +1,6 @@
 schema_version = "1.0.0"
 id = "open_stage_blender_dmx"
-version = "2.0.13"
+version = "2.0.14"
 name = "DMX"
 tagline = "Visualization & programming with GDTF&MVR, OSC, PSN, Networking"
 maintainer = "Open Stage"

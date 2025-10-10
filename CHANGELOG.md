@@ -1,5 +1,11 @@
 ### Changelog
 
+### 2.0.14
+
+* Update 3DS wheel to 2.8.6
+* Add Scanner 1.0 primitive type
+* Reset 3D cursor position before GDTF and MVR imports
+
 ### 2.0.13
 
 * Add CTO to MovingBeam
