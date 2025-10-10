@@ -403,7 +403,13 @@ class DMX_GDTF:
                         obj = DMX_GDTF.load_blender_primitive(model)
 
             # BlenderDMX primitives
-            elif model.primitive_type.value in ["Base", "Conventional", "Head", "Yoke", "Scanner"]:
+            elif model.primitive_type.value in [
+                "Base",
+                "Conventional",
+                "Head",
+                "Yoke",
+                "Scanner",
+            ]:
                 obj = DMX_GDTF.load_gdtf_primitive(model)
             # Blender primitives and a Pigtail
             else:
