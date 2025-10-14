@@ -20,14 +20,14 @@ msgstr ""
 "Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
-msgstr ""
+msgstr "Arquivo não existe"
 
 #, fuzzy
 msgid "Fixture ID"
 msgstr "Dispositivos elétricos"
 
 msgid "Unit Number"
-msgstr ""
+msgstr "Número de unidade"
 
 msgid "Custom ID"
 msgstr "ID personalizado"
@@ -45,7 +45,7 @@ msgid "Footprint"
 msgstr "Rastro"
 
 msgid "Physical Properties"
-msgstr ""
+msgstr "Propriedades Físicas"
 
 msgid "DMX Collection"
 msgstr "Coleção DMX"
@@ -55,31 +55,31 @@ msgid "Selected PSN Server"
 msgstr "Excluir dispositivo elétrico"
 
 msgid "The selected element on the PSN server list"
-msgstr ""
+msgstr "O elemento selecionado na lista de servidores PSN"
 
 msgid "Class List i"
-msgstr ""
+msgstr "Lista de categoria i"
 
 msgid "The selected element on the class list"
-msgstr ""
+msgstr "O elemento selecionado está na lista de categoria"
 
 msgid "Universe"
 msgstr "Universo"
 
 msgid "Editable"
-msgstr ""
+msgstr "Editável"
 
 msgid "Display Pigtails"
-msgstr ""
+msgstr "Mostrar tranças"
 
 msgid "Display 2D View"
-msgstr ""
+msgstr "Mostrar visão 2D"
 
 msgid "Display Device Label"
-msgstr ""
+msgstr "Mostrar classificação do dispositivo"
 
 msgid "Device Label"
-msgstr ""
+msgstr "Classificação do dispositivo"
 
 msgid "None"
 msgstr "Nenhum"
@@ -91,10 +91,10 @@ msgid "DMX"
 msgstr "DMX"
 
 msgid "Allow Selecting Geometries"
-msgstr ""
+msgstr "Permitir geometrias selecionadas"
 
 msgid "Logging Level"
-msgstr ""
+msgstr "Registro de nível"
 
 msgid "Critical"
 msgstr "Crítico"
@@ -113,21 +113,21 @@ msgid "Debug"
 msgstr "Depuração"
 
 msgid "Simple beam"
-msgstr ""
+msgstr "Raio simples"
 
 msgid "Display 'fake' beam cone"
-msgstr ""
+msgstr "Mostrar falso feixe de cone"
 
 #, fuzzy
 msgid "Selected fixtures"
-msgstr "Excluir dispositivo elétrico"
+msgstr "Objetos selecionados"
 
 #, fuzzy
 msgid "All fixtures"
-msgstr "Dispositivos elétricos"
+msgstr "Todos os objetos"
 
 msgid "Beam Lens Diameter in Cycles"
-msgstr ""
+msgstr "Diâmetro da lente do feixe em ciclos"
 
 msgid ""
 "Beam diameter is reduced to minimum when projecting gobos to prevent blur"
@@ -135,34 +135,34 @@ msgid ""
 msgstr ""
 
 msgid "Reduced"
-msgstr ""
+msgstr "Reduzido"
 
 msgid "Full width"
-msgstr ""
+msgstr "Largura Total"
 
 msgid "Custom per each beam"
-msgstr ""
+msgstr "Personalização por cada feixe"
 
 msgid "Disable Beam Outlines"
-msgstr ""
+msgstr "Desativar o traçado de raios"
 
 msgid "Enable Volume Scatter"
-msgstr ""
+msgstr "Ativar volume espalhado"
 
 msgid "Noise Scale"
-msgstr ""
+msgstr "Escala de ruído"
 
 msgid "Volume Noise Scale"
-msgstr ""
+msgstr "Escala de ruído do volume"
 
 msgid "Density"
-msgstr ""
+msgstr "Densidade"
 
 msgid "Volume Scatter Density"
-msgstr ""
+msgstr "Densidade de volume espalhada"
 
 msgid "Multiply beams intensity"
-msgstr ""
+msgstr "Multiplicar a intensidade dos raios"
 
 #, fuzzy
 msgid "Number of universes"
