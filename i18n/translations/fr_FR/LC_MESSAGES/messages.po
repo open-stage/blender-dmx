@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-18 21:37+0200\n"
-"PO-Revision-Date: 2025-08-27 21:02+0000\n"
+"PO-Revision-Date: 2025-10-24 19:02+0000\n"
 "Last-Translator: \"David D.\" <dadu042@users.noreply.hosted.weblate.org>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/blenderdmx/main/"
 "fr/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.13\n"
+"X-Generator: Weblate 5.14.1-dev\n"
 "Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
@@ -98,7 +98,6 @@ msgstr ""
 msgid "Logging Level"
 msgstr "Niveau de journalisation"
 
-#, fuzzy
 msgid "Critical"
 msgstr "Critique"
 
@@ -127,7 +126,7 @@ msgid "All fixtures"
 msgstr "Tous projecteurs"
 
 msgid "Beam Lens Diameter in Cycles"
-msgstr ""
+msgstr "Diamètre lentille du faisceau en cycles"
 
 msgid ""
 "Beam diameter is reduced to minimum when projecting gobos to prevent blur"
@@ -149,19 +148,19 @@ msgid "Disable Beam Outlines"
 msgstr "Désactiver contours de faisceau"
 
 msgid "Enable Volume Scatter"
-msgstr ""
+msgstr "Activer dispersion volume"
 
 msgid "Noise Scale"
-msgstr ""
+msgstr "Échelle bruit"
 
 msgid "Volume Noise Scale"
-msgstr ""
+msgstr "Volume échelle bruit"
 
 msgid "Density"
 msgstr "Densité"
 
 msgid "Volume Scatter Density"
-msgstr ""
+msgstr "Densité diffusion volume"
 
 msgid "Multiply beams intensity"
 msgstr ""
@@ -210,6 +209,8 @@ msgstr "Activer la sortie OSC"
 
 msgid "Enables Open Sound Control protocol to send fixture selection to a console"
 msgstr ""
+"Active le protocole Open Sound Control pour envoyer la sélection du "
+"projecteur à une console"
 
 msgid "OSC Target address"
 msgstr "Adresse cible OSC"
@@ -218,6 +219,9 @@ msgid ""
 "Address of the host where you want to send the OSC signal. Address ending"
 " on .255 is a broadcast address to all hosts on the network"
 msgstr ""
+"Adresse de l’hôte vers lequel vous souhaitez envoyer le signal OSC. "
+"L'adresse se terminant par .255 est une adresse de diffusion à tous les "
+"hôtes sur le réseau"
 
 msgid "OSC Target port"
 msgstr "Port cible OSC"
@@ -275,6 +279,8 @@ msgid ""
 "Laser beams are projected onto objects in this collection. The beam stops"
 " at the first object colliding with the beam."
 msgstr ""
+"Les faisceaux laser sont projetés sur des objets dans cette collection. Le "
+"faisceau s’arrête au premier objet entrant en collision avec le faisceau."
 
 msgid ""
 "The renderer is paused during MVR import and in 2D view. This checkbox "
@@ -286,7 +292,7 @@ msgstr ""
 "importation, ce qui le laisserait en pause"
 
 msgid "Pause renderer"
-msgstr ""
+msgstr "Suspendre moteur de rendu"
 
 msgid "Manufacturers"
 msgstr "Constructeurs"
@@ -600,16 +606,14 @@ msgstr "Édition avancée"
 msgid "Modify DMX address"
 msgstr "Modifier adresse DMX"
 
-#, fuzzy
 msgid "Modify Fixture ID"
-msgstr "ID du luminaire"
+msgstr "Modifier ID du luminaire"
 
 msgid "GDTF Profile"
 msgstr "Profile GDTF"
 
-#, fuzzy
 msgid "DMX: Add Fixture"
-msgstr "Adresse DMX"
+msgstr "DMX : ajout luminaire"
 
 #, fuzzy
 msgid "Add fixtures to the show"
@@ -625,21 +629,18 @@ msgstr "Pas de profil GDTF sélectionné."
 msgid "No DMX Mode selected."
 msgstr "Pas de mode DMX sélectionné."
 
-#, fuzzy
 msgid "DMX: Edit Fixture"
-msgstr "Supprimer projecteur"
+msgstr "DMX : éditer projecteur"
 
 #, fuzzy
 msgid "Edit selected fixtures"
 msgstr "Supprimer projecteur"
 
-#, fuzzy
 msgid "DMX > Fixture > Remove"
-msgstr "Projecteurs DMX importés"
+msgstr "DMX > Projecteur > Retirer"
 
-#, fuzzy
 msgid "Remove selected fixtures from Scene"
-msgstr "Supprimer projecteur d'un fichier local"
+msgstr "Supprimer le projecteur sélectionné d'une scène"
 
 msgid "Remove IES Files"
 msgstr "Retirer fichiers IES"
@@ -647,13 +648,11 @@ msgstr "Retirer fichiers IES"
 msgid "Import IES File"
 msgstr "Importer fichiers IES"
 
-#, fuzzy
 msgid "Select Previous Fixture"
-msgstr "Supprimer projecteur"
+msgstr "Sélectionner projecteur précédent"
 
-#, fuzzy
 msgid "Select Next Fixture"
-msgstr "Supprimer projecteur"
+msgstr "Sélectionner projecteur suivant"
 
 msgid "Select Previous Target"
 msgstr "Sélection cible précédente"
@@ -661,13 +660,11 @@ msgstr "Sélection cible précédente"
 msgid "Select Next Target"
 msgstr "Sélection cible suivante"
 
-#, fuzzy
 msgid "DMX > Fixture > Item"
-msgstr "Projecteurs DMX importés"
+msgstr "DMX > Projecteur > Élément"
 
-#, fuzzy
 msgid "Select Fixture"
-msgstr "Supprimer projecteur"
+msgstr "Sélection projecteur"
 
 #, fuzzy
 msgid "Remove fixture"
@@ -943,7 +940,7 @@ msgid "DMX > Recorder > Add Keyframe"
 msgstr ""
 
 msgid "Add a Keyframe with the current DMX data"
-msgstr ""
+msgstr "Ajouter une image clé avec les données DMX actuelles"
 
 msgid "DMX > Recorder > Delete Keyframes for all fixtures"
 msgstr ""
@@ -958,10 +955,10 @@ msgid "Deletes all keyframes from selected fixtures"
 msgstr ""
 
 msgid "Keyframe Recorder"
-msgstr ""
+msgstr "Enregistreur d’images clés"
 
 msgid "Add Keyframe"
-msgstr ""
+msgstr "Ajouter image clé"
 
 #, fuzzy
 msgid "Delete Keyframes"
@@ -1002,13 +999,15 @@ msgstr ""
 
 msgid "Manually editing or deleting geometries of GDTF devices may cause issues."
 msgstr ""
+"La modification ou la suppression manuelle de géométries des périphériques "
+"GDTF peut causer des problèmes."
 
 #, fuzzy
 msgid "Really remove all fixtures and DMX from blend file?"
 msgstr "Supprimer projecteur d'un fichier local"
 
 msgid "Try to remove DMX from the Blender showfile"
-msgstr ""
+msgstr "Essayez de supprimer DMX du fichier showfile de Blender"
 
 msgid "Beam diameter small"
 msgstr "Diamètre faisceau petit"
@@ -1229,12 +1228,14 @@ msgid "Number of channels"
 msgstr "Nombre de canaux"
 
 msgid "Short Name"
-msgstr ""
+msgstr "Nom abrégé"
 
 msgid ""
 "The short name of the DMX profile, all caps, used as suggestion for "
 "fixture names."
 msgstr ""
+"Le nom abrégé du profil DMX, tout en majuscules, utilisé comme suggestion "
+"pour les noms de fixture."
 
 msgid "Filename"
 msgstr "Nom du fichier"
@@ -1405,7 +1406,7 @@ msgstr ""
 
 #, python-brace-format
 msgid "Shared by me ({defined_station_name}):"
-msgstr ""
+msgstr "Partagé par moi ({defined_station_name}) :"
 
 msgid "Stations in the group:"
 msgstr "Stations dans le groupe :"
@@ -1478,7 +1479,7 @@ msgstr ""
 
 #, python-brace-format
 msgid "sACN set for {} universe(s)"
-msgstr ""
+msgstr "sACN défini pour {} univer(s)"
 
 msgid "DMX > Universe Menu"
 msgstr "DMX > Menu Univers"
