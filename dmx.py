@@ -1006,7 +1006,7 @@ class DMX(PropertyGroup):
                         obj.name = f"{fixture_.name}"
                         obj.show_name = self.enable_device_label
                     elif self.display_device_label == "DMX":
-                        obj.name = f"{fixture_.universe}.{fixture_.address}"
+                        obj.name = f"{fixture_.dmx_breaks[0].universe}.{fixture_.dmx_breaks[0].address}"
                         obj.show_name = self.enable_device_label
                     elif self.display_device_label == "FIXTURE_ID":
                         if fixture_.fixture_id:
@@ -1059,7 +1059,7 @@ class DMX(PropertyGroup):
                         obj.name = f"{fixture_.name}"
                         obj.show_name = True
                     elif self.display_device_label == "DMX":
-                        obj.name = f"{fixture_.universe}.{fixture_.address}"
+                        obj.name = f"{fixture_.dmx_breaks[0].universe}.{fixture_.dmx_breaks[0].address}"
                         obj.show_name = True
                     elif self.display_device_label == "FIXTURE_ID":
                         if fixture_.fixture_id:
