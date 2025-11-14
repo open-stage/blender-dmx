@@ -702,6 +702,23 @@ class DMX_PT_Programmer(Panel):
                     slider=True,
                 )
 
+            if selected_fixtures[0].has_attributes(["Playmode"]):
+                box.prop(
+                    scene.dmx,
+                    "programmer_playmode",
+                    text=_("Playmode"),
+                    translate=False,
+                    slider=True,
+                )
+
+            if selected_fixtures[0].has_attributes(["Recording"]):
+                box.prop(
+                    scene.dmx,
+                    "programmer_recording",
+                    text=_("Recording"),
+                    translate=False,
+                    slider=True,
+                )
             if selected_fixtures[0].has_attributes(["Color1"]):
                 box.prop(
                     scene.dmx,
@@ -844,6 +861,20 @@ class DMX_PT_Programmer(Panel):
                 scene.dmx,
                 "programmer_zoom",
                 text=_("Zoom"),
+                translate=False,
+                slider=True,
+            )
+            box.prop(
+                scene.dmx,
+                "programmer_playmode",
+                text=_("Playmode"),
+                translate=False,
+                slider=True,
+            )
+            box.prop(
+                scene.dmx,
+                "programmer_recording",
+                text=_("Recording"),
                 translate=False,
                 slider=True,
             )
