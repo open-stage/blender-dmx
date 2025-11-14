@@ -585,6 +585,8 @@ class DMX_Fixture(PropertyGroup):
         self["dmx_values"] = []
         self["layer_name"] = None
         self["layer_uuid"] = None
+        self["blender_control_playmode"] = None
+        self["blender_control_recording"] = None
 
         # Create clean Collection
         # (Blender creates the collection with selected objects/collections)
@@ -1087,6 +1089,8 @@ class DMX_Fixture(PropertyGroup):
         panTilt = [None, None]
         cmy = [None, None, None]
         zoom = None
+        playmode = 0
+        recording = 0
         color1 = None
         color2 = None
         color3 = None
@@ -1233,6 +1237,10 @@ class DMX_Fixture(PropertyGroup):
 
                 elif channel_function_attribute == "Zoom":
                     zoom = channel_function_physical_value
+                elif channel_function_attribute == "Playmode":
+                    playmode = channel_function_physical_value
+                elif channel_function_attribute == "Recording":
+                    recording = channel_function_physical_value
 
                 elif channel_function_attribute == "CTC":
                     ctc = channel_function_physical_value, dmx_value_virtual
@@ -1472,6 +1480,10 @@ class DMX_Fixture(PropertyGroup):
                 )
             elif channel_function_attribute == "Zoom":
                 zoom = channel_function_physical_value
+            elif channel_function_attribute == "Playmode":
+                playmode = channel_function_physical_value
+            elif channel_function_attribute == "Recording":
+                recording = channel_function_physical_value
             elif channel_function_attribute == "Color1":
                 color1 = channel_set_wheel_slot
             elif channel_function_attribute == "Color2":
@@ -1549,6 +1561,36 @@ class DMX_Fixture(PropertyGroup):
         self.remove_unset_geometries_from_multigeometry_attributes_1(
             tilt_cont_rotating_geometries
         )
+
+        if "BlenderControl" in self.name:
+            # special fixture to control Blender itself
+            # behavior is not defined by DMX channels offset
+
+            rgb = [0, 0, 0]
+            dimmer = 0
+
+            if "Background" in rgb_mixing_geometries:
+                rgb = rgb_mixing_geometries["Background"][0:3]
+                dimmer = shutter_dimmer_geometries["Background"][0]
+
+            r, g, b = [c / 255.0 for c in rgb]
+            last_playmode = self["blender_control_playmode"]
+            last_recording = self["blender_control_recording"]
+            recording = round(recording, 2)
+            playmode = round(playmode, 2)
+            use_playmode = None
+            use_recording = None
+            if playmode and last_playmode and last_playmode != playmode:
+                use_playmode = playmode
+            if playmode:
+                self["blender_control_playmode"] = playmode
+            if recording and last_recording and last_recording != recording:
+                use_recording = recording
+            if recording:
+                self["blender_control_recording"] = recording
+            self.update_blender_control_properties(
+                r, g, b, dimmer, use_playmode, use_recording, current_frame
+            )
 
         colorwheel_color = None
 
@@ -1780,6 +1822,53 @@ class DMX_Fixture(PropertyGroup):
         for channel in self.channels:
             if channel.attribute == attribute:
                 return channel
+
+    def update_blender_control_properties(
+        self, r, g, b, d, playmode, recording, current_frame
+    ):
+        """Controlling Blender itself"""
+
+        dmx = bpy.context.scene.dmx
+        world = bpy.context.scene.world
+        if any(c > 0 for c in (r, g, b)):
+            dmx.background_color = (r, g, b, 1)
+
+        # we need to set dimmer here, color is set via dmx property
+        background_dimmer = world.node_tree.nodes["Background"].inputs[1]
+        if d > 0:
+            background_dimmer.default_value = d
+
+        if playmode:
+            if playmode >= 0.1 and playmode <= 0.2:  # pause
+                if bpy.context.screen.is_animation_playing:
+                    bpy.ops.screen.animation_play()
+
+            if playmode >= 0.5 and playmode <= 0.6:  # rewind play
+                if not bpy.context.screen.is_animation_playing:
+                    bpy.context.scene.frame_current = 1
+                    bpy.ops.screen.animation_play()
+            elif playmode >= 0.8 and playmode <= 0.9:
+                if not bpy.context.screen.is_animation_playing:
+                    bpy.ops.screen.animation_play(reverse=True)
+            elif playmode == 1:
+                if not bpy.context.screen.is_animation_playing:
+                    bpy.ops.screen.animation_play()
+        if recording:
+            if recording > 0 and recording < 0.5:
+                bpy.context.scene.tool_settings.use_keyframe_insert_auto = False
+            if recording > 0.5:
+                bpy.context.scene.tool_settings.use_keyframe_insert_auto = True
+
+        if current_frame and self.dmx_cache_dirty:
+            background_color = world.node_tree.nodes["Background"].inputs[0]
+            background_dimmer = world.node_tree.nodes["Background"].inputs[1]
+
+            background_color.default_value = dmx.background_color
+            if any(c > 0 for c in (r, g, b)):
+                background_color.keyframe_insert("default_value", frame=current_frame)
+            if d > 0:
+                background_dimmer.keyframe_insert("default_value", frame=current_frame)
+        return
 
     def update_shutter_dimmer(
         self, dimmer, shutter, strobe, geometry, zoom, current_frame

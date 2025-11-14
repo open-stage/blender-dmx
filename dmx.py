@@ -1482,6 +1482,8 @@ class DMX(PropertyGroup):
         self.onProgrammerGoboIndex2(context)
         self.onProgrammerShutter(context)
         self.onProgrammerZoom(context)
+        self.onProgrammerPlaymode(context)
+        self.onProgrammerRecorging(context)
 
     # # Programmer > Dimmer
 
@@ -1571,6 +1573,22 @@ class DMX(PropertyGroup):
                 continue
             if fixture_.is_selected():
                 fixture_.setDMX({"Zoom": int(self.programmer_zoom)})
+        self.render()
+
+    def onProgrammerPlaymode(self, context):
+        for fixture_ in self.fixtures:
+            if fixture_.collection is None:
+                continue
+            if fixture_.is_selected():
+                fixture_.setDMX({"Playmode": int(self.programmer_playmode)})
+        self.render()
+
+    def onProgrammerRecording(self, context):
+        for fixture_ in self.fixtures:
+            if fixture_.collection is None:
+                continue
+            if fixture_.is_selected():
+                fixture_.setDMX({"Recording": int(self.programmer_recording)})
         self.render()
 
     def onProgrammerColorTemperature(self, context):
@@ -1776,6 +1794,20 @@ class DMX(PropertyGroup):
         default = 128,
         update = onProgrammerZoom)
 
+    programmer_playmode: IntProperty(
+        name = "Programmer Playmode",
+        min = 0,
+        max = 255,
+        default = 0,
+        update = onProgrammerPlaymode)
+
+    programmer_recording: IntProperty(
+        name = "Programmer Recording",
+        min = 0,
+        max = 255,
+        default = 0,
+        update = onProgrammerRecording)
+
     programmer_color_wheel1: IntProperty(
         name = "Programmer Color Wheel1",
         min = 0,
@@ -1917,6 +1949,10 @@ class DMX(PropertyGroup):
             self.programmer_shutter = int(data["Shutter1Strobe"])
         if "Zoom" in data:
             self.programmer_zoom = int(data["Zoom"])
+        if "Playmode" in data:
+            self.programmer_playmode = int(data["Playmode"])
+        if "Recording" in data:
+            self.programmer_recording = int(data["Recording"])
         if "Color1" in data:
             self.programmer_color_wheel1 = int(data["Color1"])
         if "Color2" in data:
@@ -2559,6 +2595,8 @@ class DMX(PropertyGroup):
         self.default_channel_functions.clear()
         defaults = [
             ["Zoom", 0, 120],
+            ["Playmode", 0, 0],
+            ["Recording", 0, 0],
             ["Pan", 270, -270],
             ["Tilt", -135, 135],
             ["PanRotate", 500, -500],
