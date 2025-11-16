@@ -2133,7 +2133,7 @@ class DMX_Fixture(PropertyGroup):
 
         colors = self["slot_colors"][attribute]
 
-        if len(colors) > color:
+        if len(colors) >= color:
             return list(colors[color - 1])
 
     def get_color_temperature(self, ctc, dmx_value):
