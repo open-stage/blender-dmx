@@ -1,6 +1,6 @@
 [project]
 name = "blender-dmx"
-version = "2.0.14"
+version = "2.0.15"
 description = ""
 readme = "README.md"
 requires-python = ">=3.13"

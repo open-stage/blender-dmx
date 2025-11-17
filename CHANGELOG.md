@@ -1,5 +1,12 @@
 ### Changelog
 
+### 2.0.15
+
+* Add initial support to control Blender controls via DMX
+* Update pygdtf
+* Translated using Weblate (French) [David D]
+* Fix device label - use first dmx_break for uni.addr
+
 ### 2.0.14
 
 * Update 3DS wheel to 2.8.6
