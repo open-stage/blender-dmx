@@ -52,8 +52,8 @@ class DMX_Fixtures_Manager:
 
     def import_from_share(self, index: int):
         prefs = bpy.context.preferences.addons[base_package].preferences
-        api_username = prefs.get("share_api_username", None)
-        api_password = prefs.get("share_api_password", None)
+        api_username = prefs.share_api_username
+        api_password = prefs.share_api_password
         imports = bpy.context.window_manager.dmx.imports
         dmx = bpy.context.scene.dmx
         ADDON_PATH = dmx.get_addon_path()
@@ -101,8 +101,8 @@ class DMX_Fixtures_Manager:
     def update_share_index(self):
         prefs = bpy.context.preferences.addons[base_package].preferences
         bpy.context.window.cursor_set("WAIT")
-        api_username = prefs.get("share_api_username", None)
-        api_password = prefs.get("share_api_password", None)
+        api_username = prefs.share_api_username
+        api_password = prefs.share_api_password
         dmx = bpy.context.scene.dmx
         ADDON_PATH = dmx.get_addon_path()
         data_file = os.path.join(ADDON_PATH, "data.json")

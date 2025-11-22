@@ -43,9 +43,7 @@ class DMX_MVR_X_Client:
         self.tcp_client = None
 
         prefs = bpy.context.preferences.addons[__package__].preferences
-        application_uuid = prefs.get(
-            "application_uuid", str(py_uuid.uuid4())
-        )  # must never be 0
+        application_uuid = prefs.application_uuid  # must never be 0
         if self._dmx.mvrx_per_project_station_uuid:
             application_uuid = self._dmx.project_application_uuid
         self.application_uuid = application_uuid.upper()
@@ -177,9 +175,7 @@ class DMX_MVR_X_Server:
         self.server = None
 
         prefs = bpy.context.preferences.addons[__package__].preferences
-        application_uuid = prefs.get(
-            "application_uuid", str(py_uuid.uuid4())
-        )  # must never be 0
+        application_uuid = prefs.application_uuid  # must never be 0
         if self._dmx.mvrx_per_project_station_uuid:
             application_uuid = self._dmx.project_application_uuid
         self.application_uuid = application_uuid.upper()
@@ -253,9 +249,7 @@ class DMX_MVR_X_WS_Client:
         self.server_url = None
 
         prefs = bpy.context.preferences.addons[__package__].preferences
-        application_uuid = prefs.get(
-            "application_uuid", str(py_uuid.uuid4())
-        )  # must never be 0
+        application_uuid = prefs.application_uuid  # must never be 0
         if self._dmx.mvrx_per_project_station_uuid:
             application_uuid = self._dmx.project_application_uuid
         self.application_uuid = application_uuid.upper()

@@ -733,9 +733,9 @@ class DMX(PropertyGroup):
 
     def ensure_application_uuid(self):
         prefs = bpy.context.preferences.addons[__package__].preferences
-        application_uuid = prefs.get("application_uuid", 0)
+        application_uuid = prefs.application_uuid
         if application_uuid == 0:
-            prefs["application_uuid"] = str(py_uuid.uuid4())  # must never be 0
+            prefs.application_uuid = str(py_uuid.uuid4())  # must never be 0
 
     def migrations(self):
         """Provide migration scripts when bumping the data_version"""
@@ -2318,9 +2318,7 @@ class DMX(PropertyGroup):
         provider="",
     ):
         prefs = bpy.context.preferences.addons[__package__].preferences
-        application_uuid = prefs.get(
-            "application_uuid", str(py_uuid.uuid4())
-        )  # must never be 0
+        application_uuid = prefs.application_uuid  # must never be 0
         if self.mvrx_per_project_station_uuid:
             application_uuid = self.project_application_uuid
         application_uuid = application_uuid.upper()
