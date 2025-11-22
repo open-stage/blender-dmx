@@ -1603,6 +1603,11 @@ class DMX_Fixture(PropertyGroup):
         if color4 is not None and color4 != 1:
             colorwheel_color = self.get_colorwheel_color(color4, "ColorMacro1")
 
+        DMX_Log.log.debug(
+            (
+                f"Color wheel, slot: {color1=}, {color2=}, {color3=}, {color4=} {colorwheel_color=}"
+            )
+        )
         color_temperature = None
         if ctc[0] is not None:
             color_temperature = self.get_color_temperature(*ctc)
@@ -1615,14 +1620,9 @@ class DMX_Fixture(PropertyGroup):
             )
 
         if not len(rgb_mixing_geometries):  # handle units without mixing
-            if (
-                not all([c == 255 for c in self.gel_color_rgb])
-                or colorwheel_color is not None
-                or color_temperature is not None
-            ):  # gel color is set and has priority or there is a color wheel or color_temperature
-                self.updateRGB(
-                    [255] * 12, None, colorwheel_color, color_temperature, current_frame
-                )
+            self.updateRGB(
+                [255] * 12, None, colorwheel_color, color_temperature, current_frame
+            )
 
         if cmy[0] is not None and cmy[1] is not None and cmy[2] is not None:
             self.updateCMY(cmy, colorwheel_color, color_temperature, current_frame)
