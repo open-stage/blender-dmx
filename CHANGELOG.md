@@ -1,5 +1,11 @@
 ### Changelog
 
+### 2.0.17
+
+* Avoid using IDProperties for Preferences, this is required in Blender 5
+* Remove optimisation for color updates to fix mixing for fixtures with only
+  color wheel and without CMY/RGB/CTO
+
 ### 2.0.16
 
 * Translated using Weblate (Spanish) [Francisco Serrador]
