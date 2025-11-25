@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-08-18 21:37+0200\n"
-"PO-Revision-Date: 2025-11-17 10:51+0000\n"
+"PO-Revision-Date: 2025-11-27 05:02+0000\n"
 "Last-Translator: Francisco Serrador <fserrador@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/blenderdmx/main/"
 "es/>\n"
@@ -69,7 +69,7 @@ msgid "Editable"
 msgstr "Editable"
 
 msgid "Display Pigtails"
-msgstr ""
+msgstr "Exhibir Coletas"
 
 msgid "Display 2D View"
 msgstr "Mostrar vista en 2D"
@@ -123,12 +123,14 @@ msgid "All fixtures"
 msgstr "Todos los accesorios"
 
 msgid "Beam Lens Diameter in Cycles"
-msgstr ""
+msgstr "Diámetro de la lente del haz en ciclos"
 
 msgid ""
 "Beam diameter is reduced to minimum when projecting gobos to prevent blur"
 " on gobo edge"
 msgstr ""
+"El diámetro del haz se reduce al mínimo al proyectar gobos para evitar que "
+"el borde del gobo se vea borroso."
 
 msgid "Reduced"
 msgstr "Reducido"
@@ -137,13 +139,13 @@ msgid "Full width"
 msgstr "Anchura completa"
 
 msgid "Custom per each beam"
-msgstr ""
+msgstr "Personalizado por cada viga"
 
 msgid "Disable Beam Outlines"
-msgstr ""
+msgstr "Desactivar contornos de haz"
 
 msgid "Enable Volume Scatter"
-msgstr ""
+msgstr "Habilitar dispersión de volumen"
 
 msgid "Noise Scale"
 msgstr "Escalado de ruido"
@@ -158,7 +160,7 @@ msgid "Volume Scatter Density"
 msgstr "Densidad de escalada de volumen"
 
 msgid "Multiply beams intensity"
-msgstr ""
+msgstr "Multiplicar la intensidad de los haces"
 
 msgid "Number of universes"
 msgstr "Número de universos"
@@ -176,10 +178,10 @@ msgid "IPv4 Address for ArtNet signal"
 msgstr "Dirección IPv4 para señal ArtNet"
 
 msgid "The network card/interface to listen for ArtNet DMX data"
-msgstr ""
+msgstr "La tarjeta/interfaz de red para escuchar datos ArtNet DMX"
 
 msgid "Enable Art-Net Input"
-msgstr ""
+msgstr "Habilitar entrada Art-Net"
 
 msgid ""
 "Enables the input of DMX data throught Art-Net on the selected network "
@@ -189,15 +191,17 @@ msgstr ""
 "seleccionado"
 
 msgid "Enable sACN Input"
-msgstr ""
+msgstr "Habilitar entrada sACN"
 
 msgid ""
 "Enables the input of DMX data throught sACN on all detected network "
 "interfaces"
 msgstr ""
+"Habilita la entrada de datos DMX a través de sACN en todas las interfaces de "
+"red detectadas"
 
 msgid "Enable OSC Output"
-msgstr ""
+msgstr "Habilita Salida OSC"
 
 msgid "Enables Open Sound Control protocol to send fixture selection to a console"
 msgstr ""
@@ -222,10 +226,10 @@ msgid "Port number of the host where you want to send the OSC signal"
 msgstr "Número de puerto del host donde desea enviar la señal OSC"
 
 msgid "Enable Local MVR-xchange"
-msgstr ""
+msgstr "Habilita MVR-xchange Local"
 
 msgid "Enables MVR-xchange sharing and discovery"
-msgstr ""
+msgstr "Habilita compartición MVR-xchange y descubrimiento"
 
 msgid "Enable Group Registration"
 msgstr "Habilitar Registro de Grupo"
@@ -234,7 +238,7 @@ msgid "Join or start the new group"
 msgstr "Unir o iniciar el grupo nuevo"
 
 msgid "Enable Internet MVR-xchange"
-msgstr ""
+msgstr "Habilitar MVR-xchange de Internet"
 
 msgid "Enables Internet based MVR-xchange sharing and discovery"
 msgstr ""
@@ -262,10 +266,10 @@ msgid "Order by"
 msgstr "Ordenar por"
 
 msgid "Fixture sorting order"
-msgstr "Ordenación de accesorio"
+msgstr "Orden de clasificación de los accesorios"
 
 msgid "Laser collision collection"
-msgstr "Colección de colisiones láser"
+msgstr "Recopilación de colisiones láser"
 
 msgid ""
 "Laser beams are projected onto objects in this collection. The beam stops"
@@ -279,9 +283,12 @@ msgid ""
 "allows to re-enable it in case of some failure during import, which would"
 " leave it paused"
 msgstr ""
+"El renderizador se pausa durante la importación de MVR y en la vista 2D. "
+"Esta casilla permite reactivarlo en caso de algún fallo durante la "
+"importación que lo dejaría en pausa"
 
 msgid "Pause renderer"
-msgstr "Pausar renderizador"
+msgstr "Pausa el renderizador"
 
 msgid "Manufacturers"
 msgstr "Fabricantes"
@@ -293,7 +300,7 @@ msgid "Add to selection"
 msgstr "Añadir a la selección"
 
 msgid "Remove from selection"
-msgstr "Remover de la selección"
+msgstr "Retirar desde selección"
 
 msgid "When selecting a group, remove from existing selection"
 msgstr "Cuando seleccione un grupo, retire desde selección existente"
@@ -303,12 +310,11 @@ msgstr ""
 "Accesorios seleccionados solo para fotogramas clave "
 "(no para clave automática)"
 
-#, fuzzy
 msgid "Add keyframes with changes only for selected fixtures"
-msgstr "Agregar .. con cambios solo para accesorios seleccionados"
+msgstr "Agregar fotogramas clave con cambios solo para accesorios seleccionados"
 
 msgid "MVR-xchange"
-msgstr ""
+msgstr "MVR-xchange"
 
 msgid "DMX Data"
 msgstr "Datos DMX"
@@ -317,7 +323,7 @@ msgid "Fixture"
 msgstr "Accesorio"
 
 msgid "Gap"
-msgstr ""
+msgstr "Hueco"
 
 msgid "Diameter"
 msgstr "Diámetro"
@@ -329,27 +335,26 @@ msgid "Source"
 msgstr "Origen"
 
 msgid "Subfixtures"
-msgstr "Subaccesorio"
+msgstr "Sub-accesorio"
 
 msgid "Active Subfixtures"
-msgstr "Activar Subaccesorio"
+msgstr "Activar Sub-accesorio"
 
 msgid "Pan Rotate"
-msgstr ""
+msgstr "Panorámica y rotación"
 
 msgid "Tilt Rotate"
-msgstr ""
+msgstr "Inclinación y rotación"
 
 msgid "Custom Cutoff Distance"
-msgstr ""
+msgstr "Distancia de corte personalizada"
 
-#, fuzzy
 msgid ""
 "Distance at which the influence of the light will be set to 0. Value "
 "bigger then 23 will break gobo rendering in Eevee Next."
 msgstr ""
 "Distancia en la cual la influencia de la luz será fijada a 0. El valor más "
-"grande entonces 23 romperá renderizado gobb en Siguiente Eevee."
+"grande entonces 23 Romperá la representación de gobos en Eevee Next."
 
 msgid "Use Fixtures Physical Properties"
 msgstr "Utiliza Propiedades Físicas de Accesorios"
@@ -395,16 +400,16 @@ msgstr ""
 "utilizado para activarlos / seleccionarlos para programación."
 
 msgid "Units"
-msgstr ""
+msgstr "Unidades"
 
 msgid "How many units of this light to add"
-msgstr ""
+msgstr "Cuántas unidades de esta luz a añadir"
 
 msgid "Import Focus Points as Targets"
-msgstr ""
+msgstr "Importar Puntos de Foco como Destinos"
 
 msgid "Create Targets from MVR Focus Points"
-msgstr ""
+msgstr "Crea Destinos desde Puntos de Foco MVR"
 
 msgid "Import Fixtures"
 msgstr "Importar Accesorios"
@@ -414,10 +419,10 @@ msgid "Import Trusses"
 msgstr "Importaciones"
 
 msgid "Import Scene Objects"
-msgstr ""
+msgstr "Importar Objetos de Escena"
 
 msgid "Import Projectors"
-msgstr ""
+msgstr "Importar Proyectores"
 
 #, fuzzy
 msgid "Import Video Screens"
@@ -428,32 +433,32 @@ msgid "Import Supports"
 msgstr "Importaciones"
 
 msgid "Export Targets as MVR Focus Points"
-msgstr ""
+msgstr "Exportar Destinos como Puntos de Foco MVR"
 
 msgid "Export only selected fixtures"
 msgstr "Exportar solo accesorios seleccionados"
 
 msgid "Enable PSN Input"
-msgstr ""
+msgstr "Habilitar Entrada PSN"
 
 msgid "Enables PosiStageNet input"
-msgstr ""
+msgstr "Habilita entrada de PosiStageNet"
 
 msgid "IPv4 Address for PSN signal"
-msgstr ""
+msgstr "Dirección IPv4 para señal PSN"
 
 msgid "The network card/interface to listen for PSN data"
-msgstr ""
+msgstr "La tarjeta de red/interfaz para escuchar datos de PSN"
 
 msgid "PSN Target port"
-msgstr ""
+msgstr "Puerto destino PSN"
 
 #, fuzzy
 msgid "File UUID"
 msgstr "Identificación del accesorio"
 
 msgid "Comment"
-msgstr ""
+msgstr "Comentario"
 
 #, fuzzy
 msgid "File Name"
@@ -464,19 +469,19 @@ msgid "Station UUID"
 msgstr "ID de la revisión"
 
 msgid "File Size"
-msgstr ""
+msgstr "Tamaño de Archivo"
 
 msgid "Time of info"
-msgstr ""
+msgstr "Hora del informe"
 
 msgid "Time of saving"
-msgstr ""
+msgstr "Tiempo de guardado"
 
 msgid "Subscribed to"
-msgstr ""
+msgstr "Suscrito a"
 
 msgid "We requested latest file without UUID"
-msgstr ""
+msgstr "Solicitamos el último archivo sin UUID"
 
 #, fuzzy
 msgid "IP Address"
@@ -501,7 +506,7 @@ msgid "Provider"
 msgstr "Proveedor"
 
 msgid "Commits"
-msgstr ""
+msgstr "Efectuaciones"
 
 msgid "Icon ID"
 msgstr "ID de icono"
@@ -516,7 +521,7 @@ msgid "Existing Groups"
 msgstr "Grupos Existentes"
 
 msgid "Websocket Commits"
-msgstr ""
+msgstr "Efectuaciones de Websocker"
 
 msgid "Message"
 msgstr "Mensaje"
@@ -664,25 +669,27 @@ msgid "Fixtures"
 msgstr "Accesorios"
 
 msgid "F ID"
-msgstr ""
+msgstr "F ID"
 
 msgid "Unit #"
 msgstr "Unidad nº"
 
 msgid "F ID #"
-msgstr ""
+msgstr "F ID #"
 
+#, fuzzy
 msgid "Cst ID"
-msgstr ""
+msgstr "Cst ID"
 
 msgid "Uni"
-msgstr ""
+msgstr "Uni"
 
 msgid "Addr"
 msgstr "Direc"
 
+#, fuzzy
 msgid "Uni.Addr"
-msgstr ""
+msgstr "Uni.Addr"
 
 msgid "Foot"
 msgstr "Pie"
@@ -716,23 +723,23 @@ msgid "DMX > Group > Rename"
 msgstr "Nombre del modo DMX"
 
 msgid "Rename selected DMX group"
-msgstr ""
+msgstr "Renombra grupo DMX seleccionado"
 
 msgid "DMX > Group > Remove"
-msgstr ""
+msgstr "DMX > Grupo > Retirar"
 
 #, fuzzy
 msgid "Remove selected DMX group"
 msgstr "Remover de la selección"
 
 msgid "Groups"
-msgstr ""
+msgstr "Grupos"
 
 msgid "Reset Colors"
-msgstr ""
+msgstr "Restablecer Colores"
 
 msgid "Lock Movement"
-msgstr ""
+msgstr "Bloquear Movimiento"
 
 msgid "Ignore pan/tilt DMX data"
 msgstr ""
@@ -803,16 +810,16 @@ msgid "Apply"
 msgstr ""
 
 msgid "Apply these values manually when render is paused"
-msgstr ""
+msgstr "Aplica estos valores manualmente cuando analizador esté pausado"
 
 msgid "Targets to zero"
-msgstr ""
+msgstr "Destinos a cero"
 
 msgid "Set Targets' position to 0 of the Scene"
 msgstr ""
 
 msgid "Center View to Selected"
-msgstr ""
+msgstr "Vista Central para Seleccionado"
 
 msgid "Set View to center on selected objects"
 msgstr ""
@@ -842,38 +849,38 @@ msgid "Select camera of the selected fixture"
 msgstr "Selecciona cámara del accesorio seleccionado"
 
 msgid "Programmer"
-msgstr ""
+msgstr "Programador"
 
 msgid "Nothing selected"
-msgstr ""
+msgstr "Nada seleccionado"
 
 #, python-brace-format
 msgid "{} selected"
-msgstr ""
+msgstr "{} seleccionado"
 
 msgid "Bodies"
-msgstr ""
+msgstr "Cuerpos"
 
 msgid "Targets"
-msgstr ""
+msgstr "Destinos"
 
 msgid "Camera"
-msgstr ""
+msgstr "Cámara"
 
 msgid "Dimmer"
-msgstr ""
+msgstr "Regulador de intensidad"
 
 msgid "Pan"
 msgstr ""
 
 msgid "Tilt"
-msgstr ""
+msgstr "Inclinación"
 
 msgid "Pan Rotation"
-msgstr ""
+msgstr "Rotación panorámica"
 
 msgid "Tilt Rotation"
-msgstr ""
+msgstr "Rotación de inclinación"
 
 msgid "Zoom"
 msgstr ""
@@ -909,7 +916,7 @@ msgid "Gobo2 Adjust"
 msgstr ""
 
 msgid "Strobe"
-msgstr ""
+msgstr "Estroboscópico"
 
 msgid "PanMode"
 msgstr ""
@@ -921,7 +928,7 @@ msgid "PanTiltMode"
 msgstr ""
 
 msgid "Clear All"
-msgstr ""
+msgstr "Vaciar todo"
 
 msgid "DMX > Recorder > Add Keyframe"
 msgstr ""
