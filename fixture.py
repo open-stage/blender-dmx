@@ -2763,7 +2763,7 @@ class DMX_Fixture(PropertyGroup):
             gdtf_spec=self.profile,
             gdtf_mode=self.mode,
             fixture_id=self.fixture_id,
-            addresses=pymvr.Addresses(address=new_addresses),
+            addresses=pymvr.Addresses(addresses=new_addresses),
             matrix=pymvr.Matrix(matrix),
             focus=uuid_focus_point,
             color=color,
