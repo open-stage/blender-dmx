@@ -2244,8 +2244,7 @@ class DMX(PropertyGroup):
         try:
             fixtures_list = []
             mvr = pymvr.GeneralSceneDescriptionWriter()
-
-            pymvr.UserData().to_xml(parent=mvr.xml_root)
+            mvr.serialize_user_data(pymvr.UserData())
 
             layers = pymvr.Layers()
 
@@ -2287,8 +2286,7 @@ class DMX(PropertyGroup):
                     fixtures_list.append((file_path, fixture_object.gdtf_spec))
 
             scene = pymvr.Scene(layers=layers, aux_data=pymvr.AUXData())
-            scene.to_xml(parent=mvr.xml_root)
-
+            mvr.serialize_scene(scene)
             mvr.files_list = list(set(fixtures_list))
             mvr.write_mvr(file_name)
             file_size = Path(file_name).stat().st_size

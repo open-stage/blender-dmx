@@ -633,7 +633,7 @@ def add_mvr_fixture(
             f"{fixture.gdtf_spec} not in mvr_scene._package.namelist, using a generic PAR"
         )
         fixture.gdtf_spec = "BlenderDMX@LED_PAR_64@ver6.gdtf"
-    for address in fixture.addresses.address:
+    for address in fixture.addresses.addresses:
         dmx.ensureUniverseExists(address.universe)
 
     add_target = import_globals.import_focus_points
@@ -644,7 +644,7 @@ def add_mvr_fixture(
             address=address.address,
             universe=address.universe,
         )
-        for address in fixture.addresses.address
+        for address in fixture.addresses.addresses
         if address.address > 0
     ]
     null_matrix = pymvr.Matrix([[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]])
