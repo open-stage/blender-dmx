@@ -1,5 +1,11 @@
 ### Changelog
 
+### 2.0.18
+
+* Update translation strings (HEAD -> release_v2.0.18) [vanous]
+* Translated using Weblate (Spanish) [Francisco Serrador]
+* Update to match pymvr v1.0.5 addresses update
+
 ### 2.0.17
 
 * Avoid using IDProperties for Preferences, this is required in Blender 5

@@ -12,9 +12,8 @@ A DMX visualization tool inside <a href="https://blender.org">Blender</a>, desig
 
 ## Installation
 
-Make sure you have [Blender](https://www.blender.org/download/) 4.x installed,
-minimal working version is 3.4 or 4.1 (via older addon), latest tested is 4.5
-via Extension.
+Make sure you have [Blender](https://www.blender.org/download/) 4.2 or higher
+installed, latest tested is 5.0 via [Extension](https://blenderdmx.eu/download).
 
 Go to [DOWNLOAD PAGE](https://blenderdmx.eu/download).
 
@@ -79,7 +78,7 @@ Thank you.
   title        = {pyMVR: Python Library for My Virtual Rig},
   author       = {{OpenStage}},
   year         = {2025},
-  version      = {1.0.1},
+  version      = {1.0.5},
   url          = {https://github.com/open-stage/python-mvr}
 }
 
