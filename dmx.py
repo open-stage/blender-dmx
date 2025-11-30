@@ -733,9 +733,9 @@ class DMX(PropertyGroup):
 
     def ensure_application_uuid(self):
         prefs = bpy.context.preferences.addons[__package__].preferences
-        application_uuid = prefs.get("application_uuid", 0)
+        application_uuid = prefs.application_uuid
         if application_uuid == 0:
-            prefs["application_uuid"] = str(py_uuid.uuid4())  # must never be 0
+            prefs.application_uuid = str(py_uuid.uuid4())  # must never be 0
 
     def migrations(self):
         """Provide migration scripts when bumping the data_version"""
@@ -2244,8 +2244,7 @@ class DMX(PropertyGroup):
         try:
             fixtures_list = []
             mvr = pymvr.GeneralSceneDescriptionWriter()
-
-            pymvr.UserData().to_xml(parent=mvr.xml_root)
+            mvr.serialize_user_data(pymvr.UserData())
 
             layers = pymvr.Layers()
 
@@ -2287,8 +2286,7 @@ class DMX(PropertyGroup):
                     fixtures_list.append((file_path, fixture_object.gdtf_spec))
 
             scene = pymvr.Scene(layers=layers, aux_data=pymvr.AUXData())
-            scene.to_xml(parent=mvr.xml_root)
-
+            mvr.serialize_scene(scene)
             mvr.files_list = list(set(fixtures_list))
             mvr.write_mvr(file_name)
             file_size = Path(file_name).stat().st_size
@@ -2318,9 +2316,7 @@ class DMX(PropertyGroup):
         provider="",
     ):
         prefs = bpy.context.preferences.addons[__package__].preferences
-        application_uuid = prefs.get(
-            "application_uuid", str(py_uuid.uuid4())
-        )  # must never be 0
+        application_uuid = prefs.application_uuid  # must never be 0
         if self.mvrx_per_project_station_uuid:
             application_uuid = self.project_application_uuid
         application_uuid = application_uuid.upper()

@@ -50,9 +50,7 @@ class DMX_Zeroconf:
         self.info = None
         self._dmx = bpy.context.scene.dmx
         prefs = bpy.context.preferences.addons[__package__].preferences
-        application_uuid = prefs.get(
-            "application_uuid", str(pyuuid.uuid4())
-        )  # must never be 0
+        application_uuid = prefs.application_uuid  # must never be 0
         if self._dmx.mvrx_per_project_station_uuid:
             application_uuid = self._dmx.project_application_uuid
         self.application_uuid = application_uuid.upper()
