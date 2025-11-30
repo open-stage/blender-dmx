@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-18 21:37+0200\n"
+"POT-Creation-Date: 2025-11-30 11:56+0100\n"
 "PO-Revision-Date: 2024-05-05 19:08+0000\n"
 "Last-Translator: Iago Emanuel <iagoemanuel@live.com>\n"
 "Language: pt_BR\n"
@@ -949,6 +949,13 @@ msgid "Tilt Rotation"
 msgstr "Rotação"
 
 msgid "Zoom"
+msgstr ""
+
+#, fuzzy
+msgid "Playmode"
+msgstr "Nome do modo"
+
+msgid "Recording"
 msgstr ""
 
 msgid "Color Wheel1"

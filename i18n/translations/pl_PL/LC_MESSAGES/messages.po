@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-18 21:37+0200\n"
+"POT-Creation-Date: 2025-11-30 11:56+0100\n"
 "PO-Revision-Date: 2025-07-04 08:03+0000\n"
 "Last-Translator: Franciszek Libera <tacoenjoyer@tutamail.com>\n"
 "Language: pl_PL\n"
@@ -956,6 +956,13 @@ msgid "Tilt Rotation"
 msgstr "Obrót"
 
 msgid "Zoom"
+msgstr ""
+
+#, fuzzy
+msgid "Playmode"
+msgstr "Nazwa trybu"
+
+msgid "Recording"
 msgstr ""
 
 msgid "Color Wheel1"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-18 21:37+0200\n"
+"POT-Creation-Date: 2025-11-30 11:56+0100\n"
 "PO-Revision-Date: 2025-06-26 20:08+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language: ta_IN\n"
@@ -923,6 +923,13 @@ msgstr "சாய்வு சுழற்சி"
 
 msgid "Zoom"
 msgstr "பெரிதாக்கு"
+
+#, fuzzy
+msgid "Playmode"
+msgstr "பயன்முறை"
+
+msgid "Recording"
+msgstr ""
 
 #, fuzzy
 msgid "Color Wheel1"

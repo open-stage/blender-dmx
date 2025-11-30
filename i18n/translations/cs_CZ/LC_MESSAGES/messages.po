@@ -7,17 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-18 21:37+0200\n"
+"POT-Creation-Date: 2025-11-30 11:56+0100\n"
 "PO-Revision-Date: 2025-08-18 19:44+0000\n"
 "Last-Translator: vanous <petr+weblate@linuks.cz>\n"
-"Language-Team: Czech <https://hosted.weblate.org/projects/blenderdmx/main/cs/"
-">\n"
 "Language: cs_CZ\n"
+"Language-Team: Czech "
+"<https://hosted.weblate.org/projects/blenderdmx/main/cs/>\n"
+"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
-"X-Generator: Weblate 5.13\n"
 "Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
@@ -862,6 +861,13 @@ msgstr "Tilt Rotace"
 msgid "Zoom"
 msgstr "Zoom"
 
+#, fuzzy
+msgid "Playmode"
+msgstr "PanMód"
+
+msgid "Recording"
+msgstr ""
+
 msgid "Color Wheel1"
 msgstr "Kolorový Kotouč1"
 
@@ -1678,3 +1684,4 @@ msgstr "DMX Universe"
 
 #~ msgid "Export Focus Points as Targets"
 #~ msgstr "Importovat Fokusovací Body jako Cíle"
+

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-08-18 21:37+0200\n"
+"POT-Creation-Date: 2025-11-30 11:56+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language: kk\n"
@@ -844,6 +844,12 @@ msgid "Tilt Rotation"
 msgstr ""
 
 msgid "Zoom"
+msgstr ""
+
+msgid "Playmode"
+msgstr ""
+
+msgid "Recording"
 msgstr ""
 
 msgid "Color Wheel1"
