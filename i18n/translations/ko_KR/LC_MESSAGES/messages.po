@@ -8,120 +8,122 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-11-30 11:56+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
-"Language: ko\n"
+"PO-Revision-Date: 2025-12-13 06:00+0000\n"
+"Last-Translator: Hwanyong Lee <hwan@ajou.ac.kr>\n"
+"Language-Team: Korean <https://hosted.weblate.org/projects/blenderdmx/main/"
+"ko/>\n"
+"Language: ko_KR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.15-dev\n"
 "Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
-msgstr ""
+msgstr "파일이 존재하지 않음"
 
 msgid "Fixture ID"
-msgstr ""
+msgstr "Fixture ID"
 
 msgid "Unit Number"
-msgstr ""
+msgstr "유닛 번호"
 
 msgid "Custom ID"
-msgstr ""
+msgstr "커스텀 ID"
 
 msgid "DMX Address"
-msgstr ""
+msgstr "DMX 주소"
 
 msgid "Position"
-msgstr ""
+msgstr "위치"
 
 msgid "Rotation"
-msgstr ""
+msgstr "회전"
 
 msgid "Footprint"
-msgstr ""
+msgstr "풋프린트"
 
 msgid "Physical Properties"
 msgstr ""
 
 msgid "DMX Collection"
-msgstr ""
+msgstr "물리적 성질"
 
 msgid "Selected PSN Server"
-msgstr ""
+msgstr "선택된 PSN 서버"
 
 msgid "The selected element on the PSN server list"
-msgstr ""
+msgstr "PSN 서버 목록에서 선택된 항목"
 
 msgid "Class List i"
-msgstr ""
+msgstr "클래스 목록 i"
 
 msgid "The selected element on the class list"
-msgstr ""
+msgstr "클래스 목록에서 선택된 항목"
 
 msgid "Universe"
-msgstr ""
+msgstr "유니버스"
 
 msgid "Editable"
-msgstr ""
+msgstr "수정가능"
 
 msgid "Display Pigtails"
-msgstr ""
+msgstr "꼬리표 표시"
 
 msgid "Display 2D View"
-msgstr ""
+msgstr "2D 보기 표시"
 
 msgid "Display Device Label"
-msgstr ""
+msgstr "장치 레이블 보기"
 
 msgid "Device Label"
-msgstr ""
+msgstr "장치 레이블"
 
 msgid "None"
-msgstr ""
+msgstr "없음"
 
 msgid "Name"
-msgstr ""
+msgstr "이름"
 
 msgid "DMX"
-msgstr ""
+msgstr "DMX"
 
 msgid "Allow Selecting Geometries"
-msgstr ""
+msgstr "형상 선택 허용"
 
 msgid "Logging Level"
-msgstr ""
+msgstr "로그 수준"
 
 msgid "Critical"
-msgstr ""
+msgstr "심각"
 
 msgid "Error"
-msgstr ""
+msgstr "오류"
 
 msgid "Warning"
-msgstr ""
+msgstr "경고"
 
 msgid "Info"
-msgstr ""
+msgstr "정보"
 
 msgid "Debug"
-msgstr ""
+msgstr "디버그"
 
 msgid "Simple beam"
-msgstr ""
+msgstr "단순 빔"
 
 msgid "Display 'fake' beam cone"
-msgstr ""
+msgstr "'가상' 빔 원뿔 표시"
 
 msgid "Selected fixtures"
-msgstr ""
+msgstr "선택된 픽스처"
 
 msgid "All fixtures"
-msgstr ""
+msgstr "모든 픽스처"
 
 msgid "Beam Lens Diameter in Cycles"
-msgstr ""
+msgstr "사이클의 빔 렌즈 지름"
 
 msgid ""
 "Beam diameter is reduced to minimum when projecting gobos to prevent blur"
