@@ -1,5 +1,11 @@
 ### Changelog
 
+### 2.0.19
+
+* Added translation using Weblate (Korean) [Hwanyong Lee]
+* Translated using Weblate (Czech) [vanous]
+* Update pygdtf to 1.4.1
+
 ### 2.0.18
 
 * Update translation strings (HEAD -> release_v2.0.18) [vanous]
