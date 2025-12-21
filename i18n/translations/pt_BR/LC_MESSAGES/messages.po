@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-11-30 11:56+0100\n"
-"PO-Revision-Date: 2024-05-05 19:08+0000\n"
-"Last-Translator: Iago Emanuel <iagoemanuel@live.com>\n"
+"PO-Revision-Date: 2025-12-22 06:00+0000\n"
+"Last-Translator: soldado-do-wolfenstein <luigi.rebelato1234@gmail.com>\n"
+"Language-Team: Portuguese (Brazil) <https://hosted.weblate.org/projects/"
+"blenderdmx/main/pt_BR/>\n"
 "Language: pt_BR\n"
-"Language-Team: Portuguese (Brazil) "
-"<https://hosted.weblate.org/projects/blenderdmx/main/pt_BR/>\n"
-"Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.15.1\n"
 "Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
@@ -169,42 +170,48 @@ msgid "Number of universes"
 msgstr "Número de canais"
 
 msgid "The number of universes set on the panel"
-msgstr ""
+msgstr "O número de universos configurados no painel"
 
 #, fuzzy
 msgid "Universe List Item"
 msgstr "Universos"
 
 msgid "The selected element on the universe list"
-msgstr ""
+msgstr "Os elementos selecionados na lista de universos"
 
 msgid "IPv4 Address for ArtNet signal"
-msgstr ""
+msgstr "endereço IPv4 para conexão com ArtNet"
 
 msgid "The network card/interface to listen for ArtNet DMX data"
-msgstr ""
+msgstr "A aba/menu para listar a data DMX para ArtNet"
 
 msgid "Enable Art-Net Input"
-msgstr ""
+msgstr "Habilitar a entrada de Art-Net"
 
 msgid ""
 "Enables the input of DMX data throught Art-Net on the selected network "
 "interface"
 msgstr ""
+"Habilitar a entrada de data DMX através da Art-Net na interface de rede "
+"selecionada"
 
 msgid "Enable sACN Input"
-msgstr ""
+msgstr "habilitar entrada de sACN"
 
 msgid ""
 "Enables the input of DMX data throught sACN on all detected network "
 "interfaces"
 msgstr ""
+"habilitar entrada da data DMX através da sACN em todas as interfaces de rede "
+"detectadas"
 
 msgid "Enable OSC Output"
-msgstr ""
+msgstr "habitar a saída OSC"
 
 msgid "Enables Open Sound Control protocol to send fixture selection to a console"
 msgstr ""
+"Habilitar o protocolo Open Sound Control para enviar a seleção de acessórios "
+"para o console"
 
 #, fuzzy
 msgid "OSC Target address"
@@ -1863,4 +1870,3 @@ msgstr "Universos"
 
 #~ msgid "Export Focus Points as Targets"
 #~ msgstr "Importar arquivo de"
-
