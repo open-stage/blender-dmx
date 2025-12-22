@@ -17,6 +17,7 @@
 
 import json
 import os
+import tempfile
 import time
 from pathlib import Path
 from types import SimpleNamespace
@@ -36,6 +37,7 @@ from .color_utils import xyY2rgbaa
 auxData = {}
 objectData = {}
 direct_fixture_children = []
+MVR_UNIT_SCALE = 0.001
 
 
 def create_mvr_props(mvr_obj, cls, name="", uid=False, ref=None, classing=None):
@@ -58,11 +60,27 @@ def create_transform_property(obj):
     obj["Transform"] = trans_mtx
 
 
+def create_local_transform_property(obj):
+    mtx_copy = obj.matrix_world.copy()
+    translate = mtx_copy.to_translation()
+    rotate = mtx_copy.transposed().to_3x3()
+    trans_mtx = rotate[0][:] + rotate[1][:] + rotate[2][:] + translate[:]
+    obj["MVR Local Transform"] = trans_mtx
+
+
 def get_matrix(obj, mtx):
     mtx_data = obj.matrix.matrix
-    obj_mtx = Matrix(mtx_data).transposed()
     check_float = any(isinstance(i, float) for i in set().union(sum(mtx_data, [])))
-    global_matrix = obj_mtx @ mtx if check_float else mtx
+    if check_float:
+        scaled = [row[:] for row in mtx_data]
+        if len(scaled) >= 4 and len(scaled[3]) >= 3:
+            scaled[3][0] *= MVR_UNIT_SCALE
+            scaled[3][1] *= MVR_UNIT_SCALE
+            scaled[3][2] *= MVR_UNIT_SCALE
+        obj_mtx = Matrix(scaled).transposed()
+        global_matrix = obj_mtx @ mtx
+    else:
+        global_matrix = mtx
     return global_matrix
 
 
@@ -74,17 +92,52 @@ def trans_matrix(trans_mtx):
     return trans_matrix
 
 
-def check_existing(node, collection):
+def check_existing(node, collection, mscale):
     cls_name = node.__class__.__name__
     existing = any(col.get("UUID") == node.uuid for col in collection.children)
     if existing:
+        node_mtx = get_matrix(node, mscale)
         for collect in collection.children:
-            if collect.get("MVR Class") == cls_name:
-                for obj in collect.all_objects:
-                    transform = obj.get("Transform")
-                    if transform is not None:
-                        obj.matrix_world = trans_matrix(transform)
-    return existing
+            if collect.get("UUID") != node.uuid or collect.get("MVR Class") != cls_name:
+                continue
+            for obj in collect.all_objects:
+                transform = obj.get("Transform")
+                local_transform = obj.get("MVR Local Transform")
+                if obj.parent is None and transform is not None:
+                    obj.matrix_world = trans_matrix(transform)
+                    continue
+                if local_transform is not None:
+                    obj.matrix_world = node_mtx @ trans_matrix(local_transform)
+                    create_transform_property(obj)
+        return True
+    for collect in bpy.data.collections:
+        if collect.get("UUID") == node.uuid:
+            node_mtx = get_matrix(node, mscale)
+            for obj in collect.all_objects:
+                transform = obj.get("Transform")
+                local_transform = obj.get("MVR Local Transform")
+                if obj.parent is None and transform is not None:
+                    obj.matrix_world = trans_matrix(transform)
+                    continue
+                if local_transform is not None:
+                    obj.matrix_world = node_mtx @ trans_matrix(local_transform)
+                    create_transform_property(obj)
+            return True
+    # Fallback: match existing objects by UUID even if collection is missing.
+    for obj in collection.all_objects:
+        if obj.get("UUID") == node.uuid:
+            transform = obj.get("Transform")
+            local_transform = obj.get("MVR Local Transform")
+            if obj.parent is None and transform is not None:
+                obj.matrix_world = trans_matrix(transform)
+                return True
+            if local_transform is not None:
+                obj.matrix_world = get_matrix(node, mscale) @ trans_matrix(
+                    local_transform
+                )
+                create_transform_property(obj)
+            return True
+    return False
 
 
 def get_child_list(
@@ -98,6 +151,7 @@ def get_child_list(
     layer_collection,
     fixture_group=None,
     parent_object=None,
+    parent_blender_object=None,
 ):
     context = bpy.context
     viewlayer = context.view_layer
@@ -107,7 +161,7 @@ def get_child_list(
 
     if hasattr(child_list, "trusses") and child_list.trusses:
         for truss_idx, truss_obj in enumerate(child_list.trusses):
-            existing = check_existing(truss_obj, layer_collection)
+            existing = check_existing(truss_obj, layer_collection, mscale)
 
             if fixture_group is None:
                 group_name = truss_obj.name or "Truss"
@@ -122,6 +176,7 @@ def get_child_list(
                     mscale,
                     import_globals,
                     layer_collection,
+                    parent_blender_object,
                 )
 
             if hasattr(truss_obj, "child_list") and truss_obj.child_list:
@@ -136,12 +191,13 @@ def get_child_list(
                     layer_collection,
                     fixture_group,
                     truss_obj,
+                    parent_blender_object,
                 )
 
     # TODO: reuse
     if hasattr(child_list, "projectors") and child_list.projectors:
         for projector_idx, projector_obj in enumerate(child_list.projectors):
-            existing = check_existing(projector_obj, layer_collection)
+            existing = check_existing(projector_obj, layer_collection, mscale)
 
             if not existing and import_globals.import_projectors:
                 process_mvr_object(
@@ -152,6 +208,7 @@ def get_child_list(
                     mscale,
                     import_globals,
                     layer_collection,
+                    parent_blender_object,
                 )
 
             if hasattr(projector_obj, "child_list") and projector_obj.child_list:
@@ -166,10 +223,11 @@ def get_child_list(
                     layer_collection,
                     fixture_group,
                     projector_obj,
+                    parent_blender_object,
                 )
     if hasattr(child_list, "supports") and child_list.supports:
         for projector_idx, projector_obj in enumerate(child_list.supports):
-            existing = check_existing(projector_obj, layer_collection)
+            existing = check_existing(projector_obj, layer_collection, mscale)
 
             if not existing and import_globals.import_supports:
                 process_mvr_object(
@@ -180,6 +238,7 @@ def get_child_list(
                     mscale,
                     import_globals,
                     layer_collection,
+                    parent_blender_object,
                 )
 
             if hasattr(projector_obj, "child_list") and projector_obj.child_list:
@@ -194,11 +253,12 @@ def get_child_list(
                     layer_collection,
                     fixture_group,
                     projector_obj,
+                    parent_blender_object,
                 )
 
     if hasattr(child_list, "video_screens") and child_list.video_screens:
         for projector_idx, projector_obj in enumerate(child_list.video_screens):
-            existing = check_existing(projector_obj, layer_collection)
+            existing = check_existing(projector_obj, layer_collection, mscale)
 
             if not existing and import_globals.import_video_screens:
                 process_mvr_object(
@@ -209,6 +269,7 @@ def get_child_list(
                     mscale,
                     import_globals,
                     layer_collection,
+                    parent_blender_object,
                 )
 
             if hasattr(projector_obj, "child_list") and projector_obj.child_list:
@@ -223,11 +284,12 @@ def get_child_list(
                     layer_collection,
                     fixture_group,
                     projector_obj,
+                    parent_blender_object,
                 )
 
     if hasattr(child_list, "scene_objects") and child_list.scene_objects:
         for projector_idx, projector_obj in enumerate(child_list.scene_objects):
-            existing = check_existing(projector_obj, layer_collection)
+            existing = check_existing(projector_obj, layer_collection, mscale)
 
             if not existing and import_globals.import_scene_objects:
                 process_mvr_object(
@@ -238,6 +300,7 @@ def get_child_list(
                     mscale,
                     import_globals,
                     layer_collection,
+                    parent_blender_object,
                 )
 
             if hasattr(projector_obj, "child_list") and projector_obj.child_list:
@@ -252,6 +315,7 @@ def get_child_list(
                     layer_collection,
                     fixture_group,
                     projector_obj,
+                    parent_blender_object,
                 )
 
     if hasattr(child_list, "fixtures") and child_list.fixtures:
@@ -289,6 +353,7 @@ def get_child_list(
                     layer_collection,
                     fixture_group,
                     fixture,
+                    parent_blender_object,
                 )
 
     if hasattr(child_list, "group_objects") and child_list.group_objects:
@@ -300,6 +365,31 @@ def get_child_list(
                     "%s %d" % (group_name, group_idx) if group_idx >= 1 else group_name
                 )
                 fixture_group = FixtureGroup(group_name, group.uuid)
+                group_collection = bpy.data.collections.new(group_name)
+                create_mvr_props(
+                    group_collection,
+                    "GroupObject",
+                    name=group.name,
+                    uid=group.uuid,
+                    classing=group.classing if hasattr(group, "classing") else None,
+                )
+                layer_collection.children.link(group_collection)
+                group_empty = bpy.data.objects.new(group_name, None)
+                create_mvr_props(
+                    group_empty,
+                    "GroupObject",
+                    name=group.name,
+                    uid=group.uuid,
+                    classing=group.classing if hasattr(group, "classing") else None,
+                )
+                group_empty.matrix_world = get_matrix(group, mscale)
+                create_transform_property(group_empty)
+                if parent_blender_object is not None:
+                    group_empty.parent = parent_blender_object
+                    group_empty.matrix_parent_inverse = (
+                        parent_blender_object.matrix_world.inverted()
+                    )
+                group_collection.objects.link(group_empty)
                 get_child_list(
                     dmx,
                     mscale,
@@ -308,9 +398,10 @@ def get_child_list(
                     layergroup_idx,
                     folder_path,
                     import_globals,
-                    layer_collection,
+                    group_collection,
                     fixture_group,
                     group,
+                    group_empty,
                 )
 
     for obj in viewlayer.active_layer_collection.collection.all_objects:
@@ -318,7 +409,14 @@ def get_child_list(
 
 
 def process_mvr_object(
-    context, mvr_scene, mvr_object, mvr_idx, mscale, import_globals, group_collect
+    context,
+    mvr_scene,
+    mvr_object,
+    mvr_idx,
+    mscale,
+    import_globals,
+    group_collect,
+    parent_blender_object=None,
 ):
     uid = mvr_object.uuid
     name = mvr_object.name
@@ -365,7 +463,14 @@ def process_mvr_object(
             for ob in imported_objects:
                 ob.rotation_mode = "XYZ"
                 obname = ob.name.split(".")[0]
-                create_mvr_props(ob, class_name, obname, uid=uid, classing=classing)
+                create_mvr_props(
+                    ob,
+                    class_name,
+                    obname,
+                    uid=uid,
+                    ref=item_name,
+                    classing=classing,
+                )
                 if ob.data:
                     ob.data.name = mesh_name
                     create_mvr_props(
@@ -388,6 +493,7 @@ def process_mvr_object(
                         ob.matrix_world = world_matrix @ ob.matrix_world.copy()
                     else:
                         ob.matrix_world = world_matrix
+                create_local_transform_property(ob)
                 create_transform_property(ob)
                 if ob.name not in collect.objects:
                     collect.objects.link(ob)
@@ -468,7 +574,7 @@ def process_mvr_object(
         active_collect = next(
             (col for col in data_collect if col.get("UUID") == uid), False
         )
-        if not active_collect and not len(symbols):
+        if not active_collect:
             reference = collection.get("UUID")
             active_collect = data_collect.new(name)
             create_mvr_props(
@@ -479,6 +585,12 @@ def process_mvr_object(
                 ref=reference,
                 classing=classing,
             )
+            if (
+                collection is not None
+                and active_collect != collection
+                and active_collect.name not in collection.children
+            ):
+                collection.children.link(active_collect)
 
     for idx, geometry in enumerate(geometrys):
         file = geometry.file_name
@@ -504,7 +616,9 @@ def process_mvr_object(
             if not len(name):
                 name = "%s %d" % (class_name, idx) if idx >= 1 else class_name
             symbol_object = object_data.new(name, None)
-            collection.objects.link(symbol_object)
+            symbol_target_collect = active_collect or collection
+            if symbol_target_collect is not None:
+                symbol_target_collect.objects.link(symbol_object)
             symbol_object.matrix_world = symbol_mtx
             create_transform_property(symbol_object)
             symbol_object.empty_display_size = 0.001
@@ -527,6 +641,14 @@ def process_mvr_object(
                 ref=symbol.uuid,
                 classing=classing,
             )
+
+    if parent_blender_object is not None and active_collect is not None:
+        for obj in active_collect.all_objects:
+            if obj.parent is None and obj != parent_blender_object:
+                obj.parent = parent_blender_object
+                obj.matrix_parent_inverse = (
+                    parent_blender_object.matrix_world.inverted()
+                )
 
     if focus_id:
         target = next(
@@ -552,35 +674,36 @@ def process_mvr_object(
 
 
 def transform_objects(layers, mscale):
-    def transform_matrix(mvr):
+    def transform_matrix(mvr, parent_mtx):
         obj_collect = objectData.get(mvr.uuid)
         if obj_collect is not None:
-            global_mtx = get_matrix(mvr, mscale)
+            global_mtx = get_matrix(mvr, parent_mtx)
             for obj in obj_collect.objects:
                 if obj.parent is None:
                     obj.matrix_world = global_mtx @ obj.matrix_world.copy()
                 create_transform_property(obj)
 
-    def collect_objects(childlist):
+    def collect_objects(childlist, parent_mtx):
         for video_screen in childlist.video_screens:
-            transform_matrix(video_screen)
+            transform_matrix(video_screen, parent_mtx)
         for projector in childlist.projectors:
-            transform_matrix(projector)
+            transform_matrix(projector, parent_mtx)
         for support in childlist.supports:
-            transform_matrix(support)
+            transform_matrix(support, parent_mtx)
         for truss in childlist.trusses:
-            transform_matrix(truss)
+            transform_matrix(truss, parent_mtx)
         for sceneobject in childlist.scene_objects:
-            transform_matrix(sceneobject)
+            transform_matrix(sceneobject, parent_mtx)
         for fixture in childlist.fixtures:
-            transform_matrix(fixture)
+            transform_matrix(fixture, parent_mtx)
         for group in childlist.group_objects:
             if hasattr(group, "child_list") and group.child_list:
-                collect_objects(group.child_list)
+                collect_objects(group.child_list, parent_mtx)
 
     for layer in layers:
         if hasattr(layer, "child_list") and layer.child_list:
-            collect_objects(layer.child_list)
+            layer_mtx = get_matrix(layer, mscale)
+            collect_objects(layer.child_list, layer_mtx)
 
 
 def extract_mvr_object(file, mvr_scene, folder, import_globals):
@@ -656,6 +779,7 @@ def add_mvr_fixture(
     focus_point = mscale
     if len(focus_points):
         focus_point = get_matrix(focus_points[0], mscale)
+    fixture_matrix = get_matrix(fixture, mscale)
 
     if existing_fixture is not None:
         # TODO: we should not rename the fixture on import unless if the user wants it
@@ -674,7 +798,7 @@ def add_mvr_fixture(
             gel_color,
             True,
             add_target,
-            mvr_position=fixture.matrix.matrix,
+            mvr_position=fixture_matrix,
             focus_point=focus_point,
             uuid=fixture.uuid,
             fixture_id=fixture.fixture_id,
@@ -698,7 +822,7 @@ def add_mvr_fixture(
             gel_color,
             True,
             add_target,
-            position=fixture.matrix.matrix,
+            position=fixture_matrix,
             focus_point=focus_point,
             uuid=fixture.uuid,
             fixture_id=fixture.fixture_id,
@@ -982,3 +1106,520 @@ def load_mvr(
                 mvr_scene._package.close()
 
     DMX_Log.log.info(f"MVR scene loaded in {time.time() - start_time}.4f sec.")
+
+
+def export_mvr(
+    dmx,
+    file_name,
+    export_focus_points=True,
+    selected_fixtures_only=False,
+    export_fixtures_only=False,
+):
+    start_time = time.time()
+    bpy.context.window_manager.dmx.pause_render = (
+        True  # this stops the render loop, to prevent slowness and crashes
+    )
+    # reset 3D cursor to eliminate offset issues
+    bpy.context.scene.cursor.location = (0.0, 0.0, 0.0)
+    bpy.context.scene.cursor.rotation_euler = (0.0, 0.0, 0.0)
+
+    addon_path = dmx.get_addon_path()
+    folder_path = os.path.join(addon_path, "assets", "profiles")
+    universe_add = dmx.is_there_universe_zero()
+
+    try:
+        assets_list = []
+        mvr_layers = pymvr.Layers()
+        mvr = pymvr.GeneralSceneDescriptionWriter()
+        mvr.serialize_user_data(pymvr.UserData())
+
+        def matrix_world_to_mvr(matrix_world):
+            matrix = [list(col) for col in matrix_world.col]
+            if len(matrix) >= 4 and len(matrix[3]) >= 3:
+                matrix[3][0] *= 1000.0
+                matrix[3][1] *= 1000.0
+                matrix[3][2] *= 1000.0
+            return matrix
+
+        def set_local_transform(obj):
+            mtx_copy = obj.matrix_world.copy()
+            translate = mtx_copy.to_translation()
+            rotate = mtx_copy.transposed().to_3x3()
+            trans_mtx = rotate[0][:] + rotate[1][:] + rotate[2][:] + translate[:]
+            obj["MVR Local Transform"] = trans_mtx
+
+        def export_glb_object(obj, file_path):
+            if obj.type != "MESH":
+                return
+            context = bpy.context
+            selected = list(context.selected_objects)
+            active = context.view_layer.objects.active
+            bpy.ops.object.select_all(action="DESELECT")
+            obj.select_set(True)
+            context.view_layer.objects.active = obj
+            try:
+                bpy.ops.export_scene.gltf(
+                    filepath=file_path,
+                    export_format="GLB",
+                    export_selected=True,
+                )
+            except TypeError:
+                bpy.ops.export_scene.gltf(
+                    filepath=file_path,
+                    export_format="GLB",
+                    use_selection=True,
+                )
+            bpy.ops.object.select_all(action="DESELECT")
+            for item in selected:
+                item.select_set(True)
+            context.view_layer.objects.active = active
+
+        def resolve_geometry_file(obj, temp_dir, used_names):
+            file_name = obj.get("Reference", None)
+            if not file_name and obj.data is not None:
+                file_name = obj.data.get("Reference", None)
+            if file_name:
+                base_name = Path(file_name).stem
+            else:
+                obj_uuid = obj.get("UUID", None)
+                base_name = obj_uuid or obj.name
+            safe_name = base_name.replace(" ", "_")
+            file_name = f"{safe_name}.glb"
+            if file_name in used_names:
+                used_names[file_name] += 1
+                file_name = f"{safe_name}_{used_names[file_name]}.glb"
+            else:
+                used_names[file_name] = 0
+            file_path = os.path.join(temp_dir, file_name)
+            export_glb_object(obj, file_path)
+            return file_name, file_path
+
+        def build_geometries(collection, files_list, temp_dir, used_names):
+            geometries = pymvr.Geometries()
+            geometry_objects = list({obj for obj in collection.all_objects})
+            for obj in geometry_objects:
+                if obj.get("MVR Class") == "GroupObject":
+                    continue
+                if obj.get("geometry_root") or obj.get("geometry_type"):
+                    continue
+                if obj.type == "EMPTY" and obj.data is None:
+                    symdef_uuid = obj.get("Reference")
+                    if not symdef_uuid and obj.instance_collection:
+                        symdef_uuid = obj.instance_collection.get("UUID")
+                    if symdef_uuid:
+                        geometries.symbol.append(
+                            pymvr.Symbol(
+                                uuid=obj.get("UUID", str(py_uuid.uuid4())),
+                                symdef=symdef_uuid,
+                                matrix=pymvr.Matrix(
+                                    matrix_world_to_mvr(obj.matrix_world)
+                                ),
+                            )
+                        )
+                        continue
+                if obj.type == "MESH":
+                    set_local_transform(obj)
+                    file_name, file_path = resolve_geometry_file(
+                        obj, temp_dir, used_names
+                    )
+                    if file_name:
+                        geometries.geometry3d.append(
+                            pymvr.Geometry3D(
+                                file_name=file_name,
+                                matrix=pymvr.Matrix(0),
+                            )
+                        )
+                        files_list.append((file_path, file_name))
+                elif obj.type == "EMPTY" and obj.get("MVR Class") == "Symbol":
+                    symdef_uuid = obj.get("Reference", None)
+                    if symdef_uuid:
+                        geometries.symbol.append(
+                            pymvr.Symbol(
+                                uuid=obj.get("UUID", str(py_uuid.uuid4())),
+                                symdef=symdef_uuid,
+                                matrix=pymvr.Matrix(
+                                    matrix_world_to_mvr(obj.matrix_world)
+                                ),
+                            )
+                        )
+            return geometries
+
+        def extend_geometries_from_uuid(
+            uuid_value, geometries, files_list, temp_dir, used_names
+        ):
+            if not uuid_value:
+                return
+            for obj in bpy.data.objects:
+                if obj.get("UUID") != uuid_value:
+                    continue
+                if obj.get("MVR Class") == "GroupObject":
+                    continue
+                if obj.get("geometry_root") or obj.get("geometry_type"):
+                    continue
+                if obj.type == "EMPTY" and obj.data is None:
+                    symdef_uuid = obj.get("Reference")
+                    if not symdef_uuid and obj.instance_collection:
+                        symdef_uuid = obj.instance_collection.get("UUID")
+                    if symdef_uuid:
+                        geometries.symbol.append(
+                            pymvr.Symbol(
+                                uuid=obj.get("UUID", str(py_uuid.uuid4())),
+                                symdef=symdef_uuid,
+                                matrix=pymvr.Matrix(
+                                    matrix_world_to_mvr(obj.matrix_world)
+                                ),
+                            )
+                        )
+                    continue
+                if obj.type == "MESH":
+                    file_name, file_path = resolve_geometry_file(
+                        obj, temp_dir, used_names
+                    )
+                    if file_name:
+                        geometries.geometry3d.append(
+                            pymvr.Geometry3D(
+                                file_name=file_name,
+                                matrix=pymvr.Matrix(0),
+                            )
+                        )
+                        files_list.append((file_path, file_name))
+
+        def build_symdef_child_list(collection, files_list, temp_dir, used_names):
+            child_list = pymvr.SymdefChildList()
+            symdef_objects = list({obj for obj in collection.all_objects})
+            for obj in symdef_objects:
+                if obj.get("MVR Class") == "GroupObject":
+                    continue
+                if obj.get("geometry_root") or obj.get("geometry_type"):
+                    continue
+                if obj.type == "MESH":
+                    set_local_transform(obj)
+                    file_name, file_path = resolve_geometry_file(
+                        obj, temp_dir, used_names
+                    )
+                    if file_name:
+                        child_list.geometry3d.append(
+                            pymvr.Geometry3D(
+                                file_name=file_name,
+                                matrix=pymvr.Matrix(0),
+                            )
+                        )
+                        files_list.append((file_path, file_name))
+                elif obj.type == "EMPTY" and obj.get("MVR Class") == "Symbol":
+                    symdef_uuid = obj.get("Reference", None)
+                    if symdef_uuid:
+                        child_list.symbol.append(
+                            pymvr.Symbol(
+                                uuid=obj.get("UUID", str(py_uuid.uuid4())),
+                                symdef=symdef_uuid,
+                                matrix=pymvr.Matrix(
+                                    matrix_world_to_mvr(obj.matrix_world)
+                                ),
+                            )
+                        )
+            return child_list
+
+        def get_or_create_layer(name, uuid_):
+            for layer in mvr_layers:
+                if uuid_ and layer.uuid == uuid_:
+                    return layer
+                if not uuid_ and layer.name == name:
+                    return layer
+            layer = pymvr.Layer(name=name, uuid=uuid_)
+            layer.child_list = pymvr.ChildList()
+            mvr_layers.append(layer)
+            return layer
+
+        def iter_layer_collections():
+            for collection in bpy.context.scene.collection.children:
+                if collection.get("MVR Class") == "Layer":
+                    yield collection
+
+        layer_collections = list(iter_layer_collections())
+        if not layer_collections:
+            root_collection = bpy.context.scene.collection
+            if not root_collection.get("UUID"):
+                root_collection["UUID"] = str(py_uuid.uuid4())
+            if not root_collection.get("MVR Class"):
+                root_collection["MVR Class"] = "Layer"
+            if not root_collection.get("MVR Name"):
+                root_collection["MVR Name"] = root_collection.name
+            layer_collections = [root_collection]
+        for collection in layer_collections:
+            get_or_create_layer(
+                collection.get("MVR Name", collection.name),
+                collection.get("UUID", None),
+            )
+
+        for dmx_fixture in dmx.fixtures:
+            if selected_fixtures_only and not dmx_fixture.is_selected():
+                continue
+            fixture_layer_name = dmx_fixture.get("layer_name", "DMX")
+            fixture_layer_uuid = dmx_fixture.get("layer_uuid", None)
+            if fixture_layer_uuid is not None:
+                use_layer = next(
+                    (l for l in mvr_layers if l.uuid == fixture_layer_uuid), None
+                )
+                if not use_layer:
+                    use_layer = get_or_create_layer(
+                        fixture_layer_name, fixture_layer_uuid
+                    )
+            else:  # no layer in fixture
+                use_layer = next(
+                    (l for l in mvr_layers if l.name == fixture_layer_name), None
+                )  # we should get "DMX" layer if exists
+                if not use_layer:  # create new DMX layer
+                    use_layer = get_or_create_layer("DMX", str(py_uuid.uuid4()))
+
+            child_list = use_layer.child_list
+
+            fixture_object = dmx_fixture.to_mvr_fixture(universe_add=universe_add)
+            focus_point = dmx_fixture.focus_to_mvr_focus_point()
+            if export_focus_points and focus_point is not None:
+                child_list.focus_points.append(focus_point)
+            child_list.fixtures.append(fixture_object)
+            if fixture_object.gdtf_spec:
+                file_path = os.path.join(folder_path, fixture_object.gdtf_spec)
+                assets_list.append((file_path, fixture_object.gdtf_spec))
+
+        mvr_class_map = {
+            "SceneObject": pymvr.SceneObject,
+            "Truss": pymvr.Truss,
+            "Support": pymvr.Support,
+            "Projector": pymvr.Projector,
+            "VideoScreen": pymvr.VideoScreen,
+        }
+
+        def is_fixture_collection(collection):
+            if collection.get("Company"):
+                return True
+            return any(
+                obj.get("geometry_root") or obj.get("geometry_type")
+                for obj in collection.objects
+            )
+
+        def add_objects_from_collection(
+            layer, collection, temp_dir, used_names, export_objects=True
+        ):
+            for child in collection.children:
+                child_class = child.get("MVR Class")
+                if child_class == "GroupObject":
+                    group_matrix = pymvr.Matrix(0)
+                    group_empty = next(
+                        (
+                            obj
+                            for obj in child.objects
+                            if obj.get("MVR Class") == "GroupObject"
+                            and obj.type == "EMPTY"
+                        ),
+                        None,
+                    )
+                    if not child.get("UUID"):
+                        child["UUID"] = str(py_uuid.uuid4())
+                    if not child.get("MVR Class"):
+                        child["MVR Class"] = "GroupObject"
+                    if not child.get("MVR Name"):
+                        child["MVR Name"] = child.name
+                    if group_empty is not None:
+                        if not group_empty.get("UUID"):
+                            group_empty["UUID"] = child["UUID"]
+                        if not group_empty.get("MVR Class"):
+                            group_empty["MVR Class"] = "GroupObject"
+                        if not group_empty.get("MVR Name"):
+                            group_empty["MVR Name"] = child["MVR Name"]
+                        group_matrix = pymvr.Matrix(
+                            matrix_world_to_mvr(group_empty.matrix_world)
+                        )
+                    group = pymvr.GroupObject(
+                        name=child["MVR Name"],
+                        uuid=child["UUID"],
+                        matrix=group_matrix,
+                        classing=child.get("classing", None),
+                    )
+                    group.child_list = pymvr.ChildList()
+                    layer.child_list.group_objects.append(group)
+                    add_objects_from_collection(
+                        group, child, temp_dir, used_names, export_objects=False
+                    )
+                    continue
+                if child_class in mvr_class_map:
+                    mvr_cls = mvr_class_map[child_class]
+                    if not child.get("UUID"):
+                        child["UUID"] = str(py_uuid.uuid4())
+                    if not child.get("MVR Class"):
+                        child["MVR Class"] = child_class
+                    if not child.get("MVR Name"):
+                        child["MVR Name"] = child.name
+                    child_list = layer.child_list
+                    geometries = build_geometries(
+                        child, assets_list, temp_dir, used_names
+                    )
+                    if (
+                        not geometries.geometry3d
+                        and not geometries.symbol
+                        and child.get("UUID")
+                    ):
+                        extend_geometries_from_uuid(
+                            child.get("UUID"),
+                            geometries,
+                            assets_list,
+                            temp_dir,
+                            used_names,
+                        )
+                    mvr_object = mvr_cls(
+                        name=child.get("MVR Name", child.name),
+                        uuid=child.get("UUID", str(py_uuid.uuid4())),
+                        matrix=pymvr.Matrix(0),
+                        classing=child.get("classing", None),
+                        geometries=geometries,
+                    )
+                    if child_class == "SceneObject":
+                        child_list.scene_objects.append(mvr_object)
+                    elif child_class == "Truss":
+                        child_list.trusses.append(mvr_object)
+                    elif child_class == "Support":
+                        child_list.supports.append(mvr_object)
+                    elif child_class == "Projector":
+                        child_list.projectors.append(mvr_object)
+                    elif child_class == "VideoScreen":
+                        child_list.video_screens.append(mvr_object)
+
+                    add_objects_from_collection(
+                        layer, child, temp_dir, used_names, export_objects=False
+                    )
+                    continue
+
+                if child_class is None and child.objects:
+                    if is_fixture_collection(child):
+                        add_objects_from_collection(layer, child, temp_dir, used_names)
+                        continue
+                    if not child.get("UUID"):
+                        child["UUID"] = str(py_uuid.uuid4())
+                    if not child.get("MVR Class"):
+                        child["MVR Class"] = "SceneObject"
+                    if not child.get("MVR Name"):
+                        child["MVR Name"] = child.name
+                    geometries = build_geometries(
+                        child, assets_list, temp_dir, used_names
+                    )
+                    mvr_object = pymvr.SceneObject(
+                        name=child["MVR Name"],
+                        uuid=child["UUID"],
+                        matrix=pymvr.Matrix(0),
+                        geometries=geometries,
+                    )
+                    layer.child_list.scene_objects.append(mvr_object)
+
+                    add_objects_from_collection(
+                        layer, child, temp_dir, used_names, export_objects=False
+                    )
+                    continue
+
+                add_objects_from_collection(
+                    layer, child, temp_dir, used_names, export_objects=True
+                )
+
+            if not export_objects:
+                return
+
+            for obj in collection.objects:
+                if obj.get("MVR Class") or obj.get("geometry_root"):
+                    continue
+                if obj.get("geometry_type"):
+                    continue
+                if obj.type == "EMPTY" and obj.get("MVR Class") == "GroupObject":
+                    continue
+                if obj.type != "MESH":
+                    continue
+                set_local_transform(obj)
+                if not obj.get("UUID"):
+                    obj["UUID"] = str(py_uuid.uuid4())
+                if not obj.get("MVR Class"):
+                    obj["MVR Class"] = "SceneObject"
+                if not obj.get("MVR Name"):
+                    obj["MVR Name"] = obj.name
+                obj_uuid = obj["UUID"]
+                obj_collection = next(
+                    (
+                        col
+                        for col in bpy.data.collections
+                        if col.get("UUID") == obj_uuid
+                    ),
+                    None,
+                )
+                if obj_collection is None:
+                    obj_collection = bpy.data.collections.new(obj["MVR Name"])
+                    obj_collection["UUID"] = obj_uuid
+                    obj_collection["MVR Class"] = "SceneObject"
+                    obj_collection["MVR Name"] = obj["MVR Name"]
+                    if obj_collection.name not in collection.children:
+                        collection.children.link(obj_collection)
+                if obj.name not in obj_collection.objects:
+                    obj_collection.objects.link(obj)
+                file_name, file_path = resolve_geometry_file(obj, temp_dir, used_names)
+                if file_name:
+                    geometries = pymvr.Geometries(
+                        geometry3d=[
+                            pymvr.Geometry3D(
+                                file_name=file_name,
+                                matrix=pymvr.Matrix(0),
+                            )
+                        ]
+                    )
+                    assets_list.append((file_path, file_name))
+                    mvr_object = pymvr.SceneObject(
+                        name=obj["MVR Name"],
+                        uuid=obj["UUID"],
+                        matrix=pymvr.Matrix(0),
+                        geometries=geometries,
+                    )
+                    layer.child_list.scene_objects.append(mvr_object)
+
+        with tempfile.TemporaryDirectory(prefix="blenderdmx_mvr_") as temp_dir:
+            used_geometry_names = {}
+            if not export_fixtures_only:
+                for collection in layer_collections:
+                    layer = get_or_create_layer(
+                        collection.get("MVR Name", collection.name),
+                        collection.get("UUID", None),
+                    )
+                    add_objects_from_collection(
+                        layer, collection, temp_dir, used_geometry_names
+                    )
+
+            aux_data = pymvr.AUXData()
+            for class_item in dmx.classing:
+                if class_item.uuid and class_item.name:
+                    aux_data.classes.append(
+                        pymvr.Class(uuid=class_item.uuid, name=class_item.name)
+                    )
+
+            aux_collection = bpy.data.collections.get("AUXData")
+            if aux_collection:
+                for sym_collection in aux_collection.children:
+                    if sym_collection.get("MVR Class") == "Symdef":
+                        symdef = pymvr.Symdef(
+                            name=sym_collection.get("MVR Name", sym_collection.name),
+                            uuid=sym_collection.get("UUID", str(py_uuid.uuid4())),
+                            child_list=build_symdef_child_list(
+                                sym_collection,
+                                assets_list,
+                                temp_dir,
+                                used_geometry_names,
+                            ),
+                        )
+                        aux_data.symdefs.append(symdef)
+
+            scene = pymvr.Scene(layers=mvr_layers, aux_data=aux_data)
+            mvr.serialize_scene(scene)
+            mvr.files_list = list(set(assets_list))
+            mvr.write_mvr(file_name)
+            file_size = Path(file_name).stat().st_size
+
+    except Exception as e:
+        traceback.print_exception(e)
+        return SimpleNamespace(ok=False, error=str(e))
+
+    bpy.context.window_manager.dmx.pause_render = False  # re-enable render loop
+    print("INFO", "MVR scene exported in %.4f sec." % (time.time() - start_time))
+    return SimpleNamespace(ok=True, file_size=file_size)

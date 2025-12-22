@@ -2732,6 +2732,14 @@ class DMX_Fixture(PropertyGroup):
             if ies is not None:
                 light_obj.data.node_tree.nodes.remove(ies)
 
+    def _matrix_to_mvr_units(self, matrix_world):
+        matrix = [list(col) for col in matrix_world.col]
+        if len(matrix) >= 4 and len(matrix[3]) >= 3:
+            matrix[3][0] *= 1000.0
+            matrix[3][1] *= 1000.0
+            matrix[3][2] *= 1000.0
+        return matrix
+
     def to_mvr_fixture(self, universe_add=False):
         matrix = 0
         uuid_focus_point = None
@@ -2739,8 +2747,7 @@ class DMX_Fixture(PropertyGroup):
 
         for obj in self.objects:
             if obj.object.get("geometry_root", False):
-                m = obj.object.matrix_world
-                matrix = [list(col) for col in m.col]
+                matrix = self._matrix_to_mvr_units(obj.object.matrix_world)
             if "Target" in obj.name:
                 uuid_focus_point = obj.object.get("uuid", None)
 
@@ -2775,8 +2782,7 @@ class DMX_Fixture(PropertyGroup):
             if "Target" in obj.name:
                 matrix = None
                 uuid_ = None
-                m = obj.object.matrix_world
-                matrix = [list(col) for col in m.col]
+                matrix = self._matrix_to_mvr_units(obj.object.matrix_world)
                 uuid_ = obj.object.get("uuid", None)
                 if matrix is None or uuid_ is None:
                     DMX_Log.log.error("Matrix or uuid of a Target not defined")
