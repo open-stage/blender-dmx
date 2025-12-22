@@ -6,7 +6,7 @@
 
 https://blenderdmx.eu
 
-A DMX visualization tool inside <a href="https://blender.org">Blender</a>, designed to offer a free and easy solution for Lighting Designers. Device definition is based on <a href="https://gdtf-share.com">GDTF Specification</a>, utilizing the Fixture library on <a href="https://gdtf-share.com">GDTF Share</a>. GDTF import is based on <a href="https://github.com/open-stage/python-gdtf">pygdtf</a> - Python GDTF library, <a href="https://gdtf-share.com">MVR</a> scene import is based on <a href="https://github.com/open-stage/python-mvr">pymvr</a> - Python MVR library. For more GDTF/MVR resources and news see <a href="https://gdtf.eu">GDTF.eu</a>.
+A DMX visualization tool inside <a href="https://blender.org">Blender</a>, designed to offer a free and easy solution for Lighting Designers. Device definition is based on <a href="https://gdtf-share.com">GDTF Specification</a>, utilizing the Fixture library on <a href="https://gdtf-share.com">GDTF Share</a>. GDTF import is based on <a href="https://github.com/open-stage/python-gdtf">pygdtf</a> - Python GDTF library, <a href="https://gdtf-share.com">MVR</a> scene import and export is based on <a href="https://github.com/open-stage/python-mvr">pymvr</a> - Python MVR library. For more GDTF/MVR resources and news see <a href="https://gdtf.eu">GDTF.eu</a>.
 
 ![](https://i.ibb.co/rvpKYxB/render-eevee-7.png)
 
@@ -70,7 +70,7 @@ Thank you.
   title        = {pyGDTF: Python Library for General Device Type Format},
   author       = {{OpenStage}},
   year         = {2025},
-  version      = {1.3.0},
+  version      = {1.4.2},
   url          = {https://github.com/open-stage/python-gdtf}
 }
 
@@ -78,7 +78,7 @@ Thank you.
   title        = {pyMVR: Python Library for My Virtual Rig},
   author       = {{OpenStage}},
   year         = {2025},
-  version      = {1.0.5},
+  version      = {1.0.6},
   url          = {https://github.com/open-stage/python-mvr}
 }
 
@@ -102,7 +102,7 @@ please cite it as follows:
   title        = {BlenderDMX: Open Source Visualization and Programming with GDTF/MVR, and Networking for Blender},
   author       = {{OpenStage}},
   year         = {2025},
-  version      = {2.0.9},
+  version      = {2.1.0},
   url          = {https://blenderdmx.eu/},
   note         = {Source Code: https://github.com/open-stage/blender-dmx}
 }
