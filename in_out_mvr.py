@@ -229,7 +229,15 @@ class DMX_OT_Export_MVR(Operator, ExportHelper):
 
     selected_fixtures_only: BoolProperty(
         name=_("Export only selected fixtures"),
-        description=_("Export only selected fixtures"),
+        description=_(
+            "Export only selected fixtures (does not filter non-fixture objects)"
+        ),
+        default=False,
+    )
+
+    export_fixtures_only: BoolProperty(
+        name=_("Export fixtures only"),
+        description=_("Export fixtures only (skip all non-fixture objects)"),
         default=False,
     )
 
@@ -249,6 +257,7 @@ class DMX_OT_Export_MVR(Operator, ExportHelper):
         box = layout.column().box()
         box.prop(self, "export_focus_points")
         box.prop(self, "selected_fixtures_only")
+        box.prop(self, "export_fixtures_only")
 
     def execute(self, context):
         dmx = context.scene.dmx
@@ -257,6 +266,7 @@ class DMX_OT_Export_MVR(Operator, ExportHelper):
             self.filepath,
             export_focus_points=self.export_focus_points,
             selected_fixtures_only=self.selected_fixtures_only,
+            export_fixtures_only=self.export_fixtures_only,
         )
 
         if result.ok:

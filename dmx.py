@@ -20,6 +20,7 @@ import logging
 import os
 import re
 import sys
+import tempfile
 import time
 import traceback
 import uuid as py_uuid
@@ -57,7 +58,7 @@ from .i18n import DMX_Lang
 from .logging_setup import DMX_Log
 from .material import get_gobo_material, set_light_nodes
 from .mdns import DMX_Zeroconf
-from .mvr import load_mvr
+from .mvr import load_mvr, export_mvr as mvr_export_mvr
 from .mvr_objects import DMX_MVR_Class, DMX_MVR_Object
 from .mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server, DMX_MVR_X_WS_Client
 from .mvrxchange.mvr_xchange_blender import (
@@ -2226,78 +2227,19 @@ class DMX(PropertyGroup):
         return False
 
     def export_mvr(
-        self, file_name, export_focus_points=True, selected_fixtures_only=False
+        self,
+        file_name,
+        export_focus_points=True,
+        selected_fixtures_only=False,
+        export_fixtures_only=False,
     ):
-        start_time = time.time()
-        bpy.context.window_manager.dmx.pause_render = (
-            True  # this stops the render loop, to prevent slowness and crashes
+        return mvr_export_mvr(
+            self,
+            file_name,
+            export_focus_points=export_focus_points,
+            selected_fixtures_only=selected_fixtures_only,
+            export_fixtures_only=export_fixtures_only,
         )
-        dmx = bpy.context.scene.dmx
-        # reset 3D cursor to eliminate offset issues
-        bpy.context.scene.cursor.location = (0.0, 0.0, 0.0)
-        bpy.context.scene.cursor.rotation_euler = (0.0, 0.0, 0.0)
-
-        folder_path = self.get_addon_path()
-        folder_path = os.path.join(folder_path, "assets", "profiles")
-        universe_add = self.is_there_universe_zero()
-
-        try:
-            fixtures_list = []
-            mvr = pymvr.GeneralSceneDescriptionWriter()
-            mvr.serialize_user_data(pymvr.UserData())
-
-            layers = pymvr.Layers()
-
-            for dmx_fixture in dmx.fixtures:
-                if selected_fixtures_only and not dmx_fixture.is_selected():
-                    continue
-                fixture_layer_name = dmx_fixture.get("layer_name", "DMX")
-                fixture_layer_uuid = dmx_fixture.get("layer_uuid", None)
-                if fixture_layer_uuid is not None:
-                    use_layer = next(
-                        (l for l in layers if l.uuid == fixture_layer_uuid), None
-                    )
-                    if not use_layer:
-                        use_layer = pymvr.Layer(
-                            name=fixture_layer_name, uuid=fixture_layer_uuid
-                        )
-                        new_child_list = pymvr.ChildList()
-                        use_layer.child_list = new_child_list
-                        layers.append(use_layer)
-                else:  # no layer in fixture
-                    use_layer = next(
-                        (l for l in layers if l.name == fixture_layer_name), None
-                    )  # we should get "DMX" layer if exists
-                    if not use_layer:  # create new DMX layer
-                        use_layer = pymvr.Layer(name="DMX", uuid=str(py_uuid.uuid4()))
-                        new_child_list = pymvr.ChildList()
-                        use_layer.child_list = new_child_list
-                        layers.append(use_layer)
-
-                child_list = use_layer.child_list
-
-                fixture_object = dmx_fixture.to_mvr_fixture(universe_add=universe_add)
-                focus_point = dmx_fixture.focus_to_mvr_focus_point()
-                if export_focus_points and focus_point is not None:
-                    child_list.focus_points.append(focus_point)
-                child_list.fixtures.append(fixture_object)
-                if fixture_object.gdtf_spec:
-                    file_path = os.path.join(folder_path, fixture_object.gdtf_spec)
-                    fixtures_list.append((file_path, fixture_object.gdtf_spec))
-
-            scene = pymvr.Scene(layers=layers, aux_data=pymvr.AUXData())
-            mvr.serialize_scene(scene)
-            mvr.files_list = list(set(fixtures_list))
-            mvr.write_mvr(file_name)
-            file_size = Path(file_name).stat().st_size
-
-        except Exception as e:
-            traceback.print_exception(e)
-            return SimpleNamespace(ok=False, error=str(e))
-
-        bpy.context.window_manager.dmx.pause_render = False  # re-enable render loop
-        print("INFO", "MVR scene exported in %.4f sec." % (time.time() - start_time))
-        return SimpleNamespace(ok=True, file_size=file_size)
 
     def ensureUniverseExists(self, universe):
         # Allocate universes to be able to control devices
