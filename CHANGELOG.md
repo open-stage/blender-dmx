@@ -1,5 +1,9 @@
 ### Changelog
 
+### 2.1.0
+
+* Add MVR Export
+
 ### 2.0.19
 
 * Added translation using Weblate (Korean) [Hwanyong Lee]
