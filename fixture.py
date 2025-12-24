@@ -58,7 +58,6 @@ from .material import (
     set_light_nodes,
 )
 from .model import DMX_Model
-from .node_arranger import DMX_OT_ArrangeSelected
 from .osc_utils import DMX_OSC_Handlers
 from .color_utils import (
     add_rgb,
@@ -536,6 +535,7 @@ class DMX_Fixture(PropertyGroup):
         for obj in bpy.data.objects:
             obj.select_set(False)
         # clear possible existing selections in Blender
+        bpy.context.view_layer.objects.active = None
 
         # (Edit) Store objects positions
         old_pos = {obj.name: obj.object.location.copy() for obj in self.objects}
@@ -589,14 +589,7 @@ class DMX_Fixture(PropertyGroup):
         self["blender_control_recording"] = None
 
         # Create clean Collection
-        # (Blender creates the collection with selected objects/collections)
-        bpy.ops.collection.create(name=name)
-        self.collection = bpy.data.collections[name]
-
-        for c in self.collection.objects:
-            self.collection.objects.unlink(c)
-        for c in self.collection.children:
-            self.collection.children.unlink(c)
+        self.collection = bpy.data.collections.new(name)
 
         # Import and deep copy Fixture Model Collection
         gdtf_profile = DMX_GDTF_File.load_gdtf_profile(profile)
@@ -756,8 +749,9 @@ class DMX_Fixture(PropertyGroup):
                 if hasattr(constraint.target, "name"):
                     constraint.target = links[constraint.target.name]
 
+        # bpy.context.view_layer.update()
+        # Skip per-fixture depsgraph updates for import speed.
         # (Edit) Reload old positions and rotations
-        bpy.context.view_layer.update()
         for obj in self.objects:
             if obj.object.get("geometry_root", False):
                 if obj.name in old_pos:
@@ -867,21 +861,7 @@ class DMX_Fixture(PropertyGroup):
 
         self.clear()
         self.hide_gobo()
-        d = DMX_OT_ArrangeSelected()
-        for item in self.gobo_materials:
-            ntree = item.material.node_tree
-            d.process_tree(ntree)
-        for item in self.geometry_nodes:
-            ntree = item.node
-            d.process_tree(ntree)
-
-        for light in self.lights:  # CYCLES
-            light_obj = light.object
-            ntree = light_obj.data.node_tree
-            d.process_tree(ntree)
-        self.clear()
-
-        self.render()
+        # self.render()
 
     def process_channels(self, dmx_mode_channels, channels):
         for dmx_channel in dmx_mode_channels:

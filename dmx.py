@@ -67,7 +67,6 @@ from .mvrxchange.mvr_xchange_blender import (
     DMX_MVR_Xchange_Commit,
 )
 from .network import DMX_Network
-from .node_arranger import DMX_OT_ArrangeSelected
 from .osc import DMX_OSC
 from .osc_utils import DMX_OSC_Templates
 from .panels import classing as classing
@@ -898,7 +897,6 @@ class DMX(PropertyGroup):
         if file_data_version < 11:
             DMX_Log.log.info("Running migration 10→11")
             dmx = bpy.context.scene.dmx
-            d = DMX_OT_ArrangeSelected()
             count = len(dmx.fixtures)
             for fixture_idx, fixture_ in enumerate(dmx.fixtures):
                 fixture_.gobo_materials.clear()
@@ -938,17 +936,6 @@ class DMX(PropertyGroup):
                         gobo2.count = old_gobos.count
 
                 fixture_.hide_gobo()
-                for item in fixture_.gobo_materials:
-                    ntree = item.material.node_tree
-                    d.process_tree(ntree)
-                for item in fixture_.geometry_nodes:
-                    ntree = item.node
-                    d.process_tree(ntree)
-
-                for light in fixture_.lights:  # CYCLES
-                    light_obj = light.object
-                    ntree = light_obj.data.node_tree
-                    d.process_tree(ntree)
             if not hide_gobo_message:
                 temp_data = bpy.context.window_manager.dmx
                 message = "This show file has been made in older version of BlenderDMX. Most likely you need to re-edit fixtures: Fixtures → Edit, uncheck Re-address only, this will re-build the fixtures from their GDTF files. Sorry for the inconvenience."
