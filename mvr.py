@@ -679,8 +679,7 @@ def transform_objects(layers, mscale):
         if obj_collect is not None:
             global_mtx = get_matrix(mvr, parent_mtx)
             for obj in obj_collect.objects:
-                if obj.parent is None:
-                    obj.matrix_world = global_mtx @ obj.matrix_world.copy()
+                obj.matrix_world = global_mtx @ obj.matrix_world.copy()
                 create_transform_property(obj)
 
     def collect_objects(childlist, parent_mtx):
@@ -1073,7 +1072,11 @@ def load_mvr(
                 for col in collect.children:
                     col_name = col.get("MVR Name")
                     check_name = col.name[-3:].isdigit() and col.name[-4] == "."
-                    if check_name and col_name in data_collect:
+                    if (
+                        check_name
+                        and isinstance(col_name, str)
+                        and col_name in data_collect
+                    ):
                         clean_name = col.name.split(".")[0]
                         col.name = "%s %d" % (clean_name, cidx)
 
@@ -1105,7 +1108,7 @@ def load_mvr(
             if mvr_scene._package is not None:
                 mvr_scene._package.close()
 
-    DMX_Log.log.info(f"MVR scene loaded in {time.time() - start_time}.4f sec.")
+    print(f"INFO MVR scene loaded in {time.time() - start_time}.4f sec.")
 
 
 def export_mvr(
