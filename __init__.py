@@ -50,9 +50,12 @@ from .dmx_temp_data import DMX_TempData
 
 _ = DMX_Lang._
 
+_MSG_BUS_OWNER = object()
+
 
 @bpy.app.handlers.persistent
 def onLoadFile(scene):
+    bpy.msgbus.clear_by_owner(_MSG_BUS_OWNER)
     if "Scene" in bpy.data.scenes:
         if "DMX" in bpy.data.scenes["Scene"].collection.children:
             print("INFO", "File contains DMX show, linking...")
@@ -61,11 +64,10 @@ def onLoadFile(scene):
             bpy.context.scene.dmx.unlinkFile()
 
     # Selection callback
-    handle = object()
     subscribe_to = bpy.types.LayerObjects, "active"
     bpy.msgbus.subscribe_rna(
         key=subscribe_to,
-        owner=handle,
+        owner=_MSG_BUS_OWNER,
         args=(None,),
         notify=onActiveChanged,
         options={
@@ -214,6 +216,7 @@ def unregister():
 
     bpy.app.handlers.load_post.clear()
     bpy.app.handlers.undo_post.clear()
+    bpy.msgbus.clear_by_owner(_MSG_BUS_OWNER)
 
     clean_module_imports()
 
