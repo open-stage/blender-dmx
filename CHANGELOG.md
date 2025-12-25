@@ -1,5 +1,10 @@
 ### Changelog
 
+### 2.1.1
+
+* MVR Import: Fix group object import
+* Improve import efficiency
+
 ### 2.1.0
 
 * Add MVR Export

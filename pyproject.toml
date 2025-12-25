@@ -1,12 +1,12 @@
 [project]
 name = "blender-dmx"
-version = "2.1.0"
+version = "2.1.1"
 description = "Visualization & programming with GDTF&MVR, OSC, PSN, Networking"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-    "pygdtf>=1.3.1",
-    "pymvr>=1.0.5",
+    "pygdtf>=1.4.2",
+    "pymvr>=1.0.6",
 ]
 
 [dependency-groups]
