@@ -646,9 +646,12 @@ def process_mvr_object(
         for obj in active_collect.all_objects:
             if obj.parent is None and obj != parent_blender_object:
                 obj.parent = parent_blender_object
-                obj.matrix_parent_inverse = (
-                    parent_blender_object.matrix_world.inverted()
-                )
+                try:
+                    obj.matrix_parent_inverse = (
+                        parent_blender_object.matrix_world.inverted()
+                    )
+                except ValueError:
+                    obj.matrix_parent_inverse = Matrix.Identity(4)
 
     if focus_id:
         target = next(
@@ -1122,6 +1125,11 @@ def export_mvr(
     bpy.context.window_manager.dmx.pause_render = (
         True  # this stops the render loop, to prevent slowness and crashes
     )
+    try:
+        bpy.ops.object.select_all(action="DESELECT")
+        bpy.context.view_layer.objects.active = None
+    except RuntimeError:
+        pass
     # reset 3D cursor to eliminate offset issues
     bpy.context.scene.cursor.location = (0.0, 0.0, 0.0)
     bpy.context.scene.cursor.rotation_euler = (0.0, 0.0, 0.0)
