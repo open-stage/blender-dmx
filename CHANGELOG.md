@@ -1,5 +1,12 @@
 ### Changelog
 
+### 2.1.2
+
+* Update pygdtf to 1.4.3
+* Handle missing Share API Mode footprint
+* Handle missing matrix during MVR Import
+
+
 ### 2.1.1
 
 * MVR Import: Fix group object import
