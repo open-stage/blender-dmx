@@ -1304,6 +1304,11 @@ class DMX_Fixture(PropertyGroup):
                 dmx_value_fine = dmx_data[channel.dmx_break][channel.offsets[1]]
                 dmx_value_final = (dmx_value_coarse << 8) | dmx_value_fine
 
+            # Default to the channel's own attribute when fixture functions are disabled.
+            channel_function_attribute = channel.attribute
+            channel_function_physical_value = None
+            channel_set_wheel_slot = None
+
             skip_attr_search = False
             if "cached_channel" in channel:
                 cached_dmx = channel["cached_channel"].get("dmx_value")
