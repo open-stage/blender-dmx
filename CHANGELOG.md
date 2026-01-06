@@ -1,11 +1,16 @@
 ### Changelog
 
+### 2.1.3
+
+* Cache wm lookup, slow down re-render on network signals to 24fps
+* Fix Live DMX view for Blender 5
+* Fix variables when using default physical values
+
 ### 2.1.2
 
 * Update pygdtf to 1.4.3
 * Handle missing Share API Mode footprint
 * Handle missing matrix during MVR Import
-
 
 ### 2.1.1
 
@@ -38,7 +43,6 @@
 
 * Translated using Weblate (Spanish) [Francisco Serrador]
 * Fix selecting last color of a color wheel
-
 
 ### 2.0.15
 
