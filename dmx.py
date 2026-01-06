@@ -2571,11 +2571,12 @@ class DMX(PropertyGroup):
                 collection_info.inputs[0].default_value = collection
 
     def register_render_toggle(self, enable):
-        is_running = bpy.context.window_manager.dmx.render_running
+        self._wm_dmx = bpy.context.window_manager.dmx
+        is_running = self._wm_dmx.render_running
         if enable:
             if is_running:
                 return
-            bpy.context.window_manager.dmx.render_running = True
+            self._wm_dmx.render_running = True
             bpy.app.timers.register(self.run_render)
         else:
             if len(DMX_PSN._instances) > 0:
@@ -2585,14 +2586,14 @@ class DMX(PropertyGroup):
             if self.sacn_enabled:
                 return
             if is_running:
-                bpy.context.window_manager.dmx.render_running = False
+                self._wm_dmx.render_running = False
                 try:
                     bpy.app.timers.unregister(self.run_render)
                 except:
                     pass
 
     def run_render(self):
-        if not bpy.context.window_manager.dmx.render_running:
+        if not self._wm_dmx.render_running:
             return None
         self.render()
-        return 1.0 / 44.0  # run at the same speed as maximum DMX framerate
+        return 1.0 / 24
