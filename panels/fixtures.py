@@ -22,6 +22,7 @@ from bpy.props import BoolProperty, FloatVectorProperty, IntProperty, StringProp
 from bpy.types import Menu, Operator, Panel, UIList
 from bpy_extras.io_utils import ImportHelper
 from itertools import zip_longest
+from types import SimpleNamespace
 
 from ..fixture import DMX_Break
 from ..gdtf_file import DMX_GDTF_File
