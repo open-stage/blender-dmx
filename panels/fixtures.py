@@ -147,7 +147,7 @@ class DMX_OT_Fixture_Profiles(Operator):
 
     def execute(self, context):
         context.add_edit_panel.profile = self.profile
-        context.add_edit_panel.name = self.short_name
+        context.add_edit_panel.user_fixture_name = self.short_name
         return {"FINISHED"}
 
 
@@ -177,7 +177,7 @@ class DMX_Fixture_AddEdit:
         update=onProfile,
     )
 
-    name: StringProperty(name=_("Name"), default="Fixture")
+    user_fixture_name: StringProperty(name=_("Name"), default="Fixture")
 
     dmx_breaks: CollectionProperty(name="DMX Break", type=DMX_Break)
 
@@ -268,10 +268,10 @@ class DMX_Fixture_AddEdit:
         if self.units == 1:
             self.advanced_edit = True
         if self.advanced_edit:
-            col.prop(self, "name")
+            col.prop(self, "user_fixture_name")
         else:
-            if self.name != "*":
-                col.label(text=f"{self.name}")
+            if self.user_fixture_name != "*":
+                col.label(text=f"{self.user_fixture_name}")
 
         col.context_pointer_set("add_edit_panel", self)
         text_profile = _("GDTF Profile")
@@ -378,11 +378,11 @@ class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
         bpy.context.scene.cursor.location = (0.0, 0.0, 0.0)
         bpy.context.scene.cursor.rotation_euler = (0.0, 0.0, 0.0)
 
-        if self.name in bpy.data.collections:
-            self.report(
-                {"ERROR"}, _("Fixture named {} already exists").format(self.name)
-            )
-            return {"CANCELLED"}
+        # if self.name in bpy.data.collections:
+        #    self.report(
+        #        {"ERROR"}, _("Fixture named {} already exists").format(self.name)
+        #    )
+        #    return {"CANCELLED"}
         if not len(self.profile):
             self.report({"ERROR"}, _("No GDTF Profile selected."))
             return {"CANCELLED"}
@@ -392,10 +392,8 @@ class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
         dmx_breaks = self.dmx_breaks
         fixture_id = self.fixture_id
         for i in range(self.units):
-            DMX_Log.log.debug(f"Adding fixture {self.name}")
-            new_name = generate_fixture_name(self.name, i + 1)
+            DMX_Log.log.debug(f"Adding fixture {self.user_fixture_name}")
             dmx.addFixture(
-                new_name,
                 self.profile,
                 self.mode,
                 dmx_breaks,
@@ -403,6 +401,7 @@ class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
                 self.display_beams,
                 self.add_target,
                 fixture_id=fixture_id,
+                user_fixture_name=self.user_fixture_name,
             )
             fixture = dmx.fixtures[-1]
             DMX_Log.log.debug(f"Added fixture {fixture}")
@@ -427,7 +426,7 @@ class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
     def invoke(self, context, event):
         # fixtures_len = len(context.scene.dmx.fixtures)
         # self.name = generate_fixture_name("Fixture", fixtures_len + 1)
-        self.name = "Fixture"
+        self.user_fixture_name = "Fixture Name"
         self.units = 1
         DMX_Fixture_AddEdit.profile_list_items = []
         wm = context.window_manager
@@ -454,15 +453,14 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
         # Single fixture
         if len(selected) == 1:
             fixture = selected[0]
-            if self.name != fixture.name and self.name in bpy.data.collections:
-                self.report(
-                    {"ERROR"}, _("Fixture named {} already exists").format(self.name)
-                )
-                return {"CANCELLED"}
+            # if self.name != fixture.name and self.name in bpy.data.collections:
+            #    self.report(
+            #        {"ERROR"}, _("Fixture named {} already exists").format(self.name)
+            #    )
+            #    return {"CANCELLED"}
 
             if self.advanced_edit:
                 fixture.build(
-                    self.name,
                     self.profile,
                     self.mode,
                     self.dmx_breaks,
@@ -471,6 +469,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                     self.add_target,
                     uuid=fixture.uuid,
                     fixture_id=fixture.fixture_id,
+                    user_fixture_name=self.user_fixture_name,
                 )
                 context.window_manager.dmx.pause_render = False
             else:
@@ -504,21 +503,26 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
         else:
             dmx_breaks = self.dmx_breaks
             fixture_id = self.fixture_id
+            # for i, fixture in enumerate(selected):
+            # name = generate_fixture_name(self.name, i + 1)
+            # if name != fixture.name and name in bpy.data.collections:
+            #    self.report(
+            #        {"ERROR"},
+            #        _("Fixture named {} already exists".format(self.name)),
+            #    )
+            #    return {"CANCELLED"}
             for i, fixture in enumerate(selected):
-                name = generate_fixture_name(self.name, i + 1)
-                if name != fixture.name and name in bpy.data.collections:
-                    self.report(
-                        {"ERROR"},
-                        _("Fixture named {} already exists".format(self.name)),
-                    )
-                    return {"CANCELLED"}
-            for i, fixture in enumerate(selected):
-                name = (
-                    generate_fixture_name(self.name, i + 1)
-                    if (self.name != "*")
-                    else fixture.name
-                )
+                # name = (
+                #    generate_fixture_name(self.name, i + 1)
+                #    if (self.name != "*")
+                #    else fixture.name
+                # )
                 # fixture_id = f"{self.fixture_id}{i+1}" if (self.name != '*') else fixture.name
+                if self.user_fixture_name == "*":
+                    new_fixture_name = fixture.user_fixture_name
+                else:
+                    new_fixture_name = self.user_fixture_name
+
                 profile = self.profile if (self.profile != "") else fixture.profile
                 mode = self.mode if (self.mode != "") else fixture.mode
                 if not self.modify_address:
@@ -536,7 +540,6 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                     _fixture_id = fixture.fixture_id
                 if self.advanced_edit:
                     fixture.build(
-                        name,
                         profile,
                         mode,
                         dmx_breaks,
@@ -545,6 +548,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                         self.add_target,
                         uuid=fixture.uuid,
                         fixture_id=_fixture_id,
+                        user_fixture_name=new_fixture_name,
                     )
                 if self.modify_address:
                     for fixture_break, edit_break in zip(
@@ -581,8 +585,8 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
         # Single fixture edit
         if len(selected) == 1:
             fixture = selected[0]
-            self.name = fixture.name
             self.profile = fixture.profile
+            self.user_fixture_name = fixture.user_fixture_name
             self.dmx_breaks.clear()
             for dmx_break in fixture.dmx_breaks:
                 new_break = self.dmx_breaks.add()
@@ -609,7 +613,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             self.use_target = fixture.use_target
         # Multiple fixtures edit
         else:
-            self.name = "*"
+            self.user_fixture_name = "*"
             self.profile = ""
             self.dmx_breaks.clear()
             for selected_dmx_break in selected[0].dmx_breaks:
@@ -946,7 +950,7 @@ class DMX_UL_Fixtures(UIList):
         flt_neworder = []
 
         flt_flags = helper_funcs.filter_items_by_name(
-            self.filter_name, self.bitflag_filter_item, vgroups, "name"
+            self.filter_name, self.bitflag_filter_item, vgroups, "user_fixture_name"
         )
         if not flt_flags:
             flt_flags = [self.bitflag_filter_item] * len(vgroups)
@@ -965,7 +969,7 @@ class DMX_UL_Fixtures(UIList):
             ]
             flt_neworder = helper_funcs.sort_items_helper(_sort, lambda e: e[1], False)
         elif sorting_order == "NAME":
-            flt_neworder = helper_funcs.sort_items_by_name(vgroups, "name")
+            flt_neworder = helper_funcs.sort_items_by_name(vgroups, "user_fixture_name")
         elif sorting_order == "FIXTURE_ID":
             _sort = [
                 (idx, self.str_to_digit(vgroups[vg.name].fixture_id))
@@ -989,15 +993,22 @@ class DMX_UL_Fixtures(UIList):
         dmx = scene.dmx
 
         has_ies = len(item.ies_data) > 0
-        item_dmx_break = item.dmx_breaks[0]  # just get the first breake for now
+        item_dmx_break = item.dmx_breaks[0]  # just get the first break for now
         col = layout.column()
         col.context_pointer_set("fixture", item)
-        col.operator(
-            "dmx.fixture_item",
-            text=f"{item.name}{' 📈' if has_ies else ''} {'*' if item.dmx_cache_dirty else ''}",
-            depress=item.is_selected(),
-            icon="LOCKED" if item.ignore_movement_dmx else "OUTLINER_DATA_LIGHT",
-        )
+
+        if dmx.fixture_properties_editable:
+            col = layout.column()
+            col.label(text=f"{item.gdtf_long_name}")
+            col = layout.column()
+            col.prop(item, "user_fixture_name", text="")
+        else:
+            col.operator(
+                "dmx.fixture_item",
+                text=f"{item.user_fixture_name}{' 📈' if has_ies else ''} {'🖊' if item.dmx_cache_dirty else ''}",
+                depress=item.is_selected(),
+                icon="LOCKED" if item.ignore_movement_dmx else "OUTLINER_DATA_LIGHT",
+            )
         col.ui_units_x = 6
 
         if dmx.column_fixture_id:
@@ -1050,7 +1061,7 @@ class DMX_UL_Fixtures(UIList):
                 ]  # just get the first break for now
                 if overlapping:
                     break
-                if fixture.name == item.name:
+                if fixture.name == item.name:  # TODO user_fixture_name
                     continue
                 if fixture_dmx_break.universe == item_dmx_break.universe:
                     channels = set(
@@ -1124,14 +1135,3 @@ def pad_number(number):
     dmx = bpy.context.scene.dmx
     padding_len = len(str(len(dmx.fixtures))) + 1
     return f"{number:>0{padding_len}}"
-
-
-def generate_fixture_name(name, new_id):
-    dmx = bpy.context.scene.dmx
-    while True:
-        new_name = f"{name} {new_id:>04}"
-        if new_name in dmx.fixtures:
-            new_id += 1
-        else:
-            break
-    return new_name

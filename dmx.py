@@ -480,7 +480,7 @@ class DMX(PropertyGroup):
 
     data_version: IntProperty(
             name = "BlenderDMX data version, bump when changing RNA structure and provide migration script",
-            default = 12,
+            default = 13,
             )
 
     def get_fixture_by_index(self, index):
@@ -957,6 +957,14 @@ class DMX(PropertyGroup):
                 del fixture_["address"]
                 del fixture_["universe"]
 
+        if file_data_version < 13:
+            DMX_Log.log.info("Running migration 12→13")
+            dmx = bpy.context.scene.dmx
+
+            # we added proper fixture name
+            for fixture_ in dmx.fixtures:
+                fixture_.user_fixture_name = fixture_.name
+
         # add here another if statement for next migration condition... like:
         # if file_data_version < 6:
         # ...
@@ -991,7 +999,7 @@ class DMX(PropertyGroup):
                     if self.display_device_label == "NONE":
                         obj.show_name = False
                     elif self.display_device_label == "NAME":
-                        obj.name = f"{fixture_.name}"
+                        obj.name = f"{fixture_.user_fixture_name}"
                         obj.show_name = self.enable_device_label
                     elif self.display_device_label == "DMX":
                         obj.name = f"{fixture_.dmx_breaks[0].universe}.{fixture_.dmx_breaks[0].address}"
@@ -1044,7 +1052,7 @@ class DMX(PropertyGroup):
                     if self.display_device_label == "NONE":
                         obj.show_name = False
                     elif self.display_device_label == "NAME":
-                        obj.name = f"{fixture_.name}"
+                        obj.name = f"{fixture_.user_fixture_name}"
                         obj.show_name = True
                     elif self.display_device_label == "DMX":
                         obj.name = f"{fixture_.dmx_breaks[0].universe}.{fixture_.dmx_breaks[0].address}"
@@ -2020,7 +2028,6 @@ class DMX(PropertyGroup):
     # # Fixtures
     def addFixture(
         self,
-        name,
         profile,
         mode,
         dmx_breaks,
@@ -2035,6 +2042,7 @@ class DMX(PropertyGroup):
         fixture_id_numeric=0,
         unit_number=0,
         classing=None,
+        user_fixture_name="",
     ):
         # TODO: fix order of attributes to match fixture.build()
         dmx = bpy.context.scene.dmx
@@ -2042,7 +2050,6 @@ class DMX(PropertyGroup):
         new_fixture.uuid = str(py_uuid.uuid4())  # ensure clean uuid
         try:
             new_fixture.build(
-                name,
                 profile,
                 mode,
                 dmx_breaks,
@@ -2057,6 +2064,7 @@ class DMX(PropertyGroup):
                 fixture_id_numeric,
                 unit_number,
                 classing=classing,
+                user_fixture_name=user_fixture_name,
             )
         except Exception as e:
             DMX_Log.log.error(f"Error while adding fixture {e}")

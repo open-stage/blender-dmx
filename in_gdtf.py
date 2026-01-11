@@ -36,7 +36,6 @@ from bpy.types import PropertyGroup
 
 from .i18n import DMX_Lang
 from .panels import profiles as Profiles
-from .util import create_unique_fixture_name
 from .gdtf_file import DMX_GDTF_File
 from .logging_setup import DMX_Log
 
@@ -232,10 +231,7 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
                         new_break.channels_count = 0
 
                     for count in range(1, 1 + self.units):
-                        new_name = f"{profile.name} {count}"
-                        new_name = create_unique_fixture_name(new_name)
                         dmx.addFixture(
-                            new_name,
                             file.name,
                             dmx_mode.name,
                             self.dmx_breaks,
@@ -243,6 +239,7 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
                             self.display_beams,
                             self.add_target,
                             fixture_id=fixture_id,
+                            user_fixture_name=None,
                         )
                         fixture = dmx.fixtures[-1]
                         DMX_Log.log.debug(f"Added fixture {fixture}")

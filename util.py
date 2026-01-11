@@ -88,14 +88,16 @@ def split_text_on_spaces(text, max_line_length):
     return lines
 
 
-def create_unique_fixture_name(name):
+def generate_fixture_name(name):
     dmx = bpy.context.scene.dmx
+    new_id = 1
     while True:
-        if name in dmx.fixtures:
-            rand = random.randint(1000, 9999)
-            name = f"{name}-{rand}"
+        new_name = f"{name} {new_id:>04}"
+        if new_name in dmx.fixtures:
+            new_id += 1
         else:
-            return name
+            break
+    return new_name
 
 
 def sizeof_fmt(num, suffix="B"):
