@@ -756,6 +756,9 @@ class DMX_Fixture(PropertyGroup):
             elif obj.get("2d_symbol", None) == "all":
                 self.objects.add().name = "2D Symbol"
                 self.objects["2D Symbol"].object = links[obj.name]
+            elif obj.get("text_label", None) == "text_label":
+                self.objects.add().name = "Text Label"
+                self.objects["Text Label"].object = links[obj.name]
 
             # Link all other object to collection
             self.collection.objects.link(links[obj.name])
@@ -875,6 +878,11 @@ class DMX_Fixture(PropertyGroup):
             if "Target" in obj.name:
                 continue
             if obj.get("2d_symbol", None) == "all":
+                obj.hide_set(not bpy.context.scene.dmx.display_2D)
+                obj.hide_viewport = not bpy.context.scene.dmx.display_2D  # keyframing
+                obj.hide_render = not bpy.context.scene.dmx.display_2D
+                continue
+            if obj.get("text_label", None) == "text_label":
                 obj.hide_set(not bpy.context.scene.dmx.display_2D)
                 obj.hide_viewport = not bpy.context.scene.dmx.display_2D  # keyframing
                 obj.hide_render = not bpy.context.scene.dmx.display_2D
@@ -2433,6 +2441,8 @@ class DMX_Fixture(PropertyGroup):
                     obj.hide_render = not bpy.context.scene.dmx.display_pigtails
                 if obj.get("2d_symbol", None):
                     continue
+                if obj.get("text_label", None):
+                    continue
                 obj.hide_set(False)
                 obj.hide_viewport = False  # keyframing
                 obj.hide_render = False
@@ -2504,6 +2514,8 @@ class DMX_Fixture(PropertyGroup):
         if dmx.display_2D:
             for obj in self.collection.objects:
                 if obj.get("2d_symbol", None):
+                    continue
+                if obj.get("text_label", None):
                     continue
                 obj.hide_set(True)
                 obj.hide_viewport = True  # need for keyframing
