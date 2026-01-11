@@ -888,6 +888,29 @@ class DMX_GDTF:
             constraint_copyRotation.use_x = False
             constraint_copyRotation.use_y = False
 
+        # Text object for label:
+
+        # bpy.ops.object.text_add( enter_editmode=False, align="WORLD", location=(0, 0, 0), scale=(1, 1, 1))
+        bpy.ops.object.text_add()
+
+        obj = bpy.context.view_layer.objects.selected[0]
+
+        if obj is not None:
+            obj.users_collection[0].objects.unlink(obj)
+            obj["text_label"] = "text_label"
+            objs["text_label"] = obj
+            obj.show_in_front = True
+            text_data = obj.data
+            text_data.size = 0.08
+
+            constraint_copyLocation = obj.constraints.new(type="COPY_LOCATION")
+            constraint_copyRotation = obj.constraints.new(type="COPY_ROTATION")
+            constraint_copyLocation.target = base
+            constraint_copyRotation.target = base
+            constraint_copyRotation.use_z = True
+            constraint_copyRotation.use_x = False
+            constraint_copyRotation.use_y = False
+
         # Link objects to collection
         for name, obj in objs.items():
             collection.objects.link(obj)

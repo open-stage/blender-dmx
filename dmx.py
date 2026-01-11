@@ -318,7 +318,6 @@ class DMX(PropertyGroup):
         for cls in DMX.classes_setup:
             bpy.utils.register_class(cls)
 
-        # register key shortcuts
         wm = bpy.context.window_manager
         km = wm.keyconfigs.addon.keymaps.new(
             name="3D View Generic", space_type="VIEW_3D"
@@ -1006,6 +1005,8 @@ class DMX(PropertyGroup):
                     else:
                         if self.display_device_label == "NONE":
                             obj.show_name = False
+                        elif self.display_device_label == "3D_LABEL":
+                            obj.show_name = False
                         elif self.display_device_label == "NAME":
                             obj.name = f"{fixture_.user_fixture_name}"
                             obj.show_name = self.enable_device_label
@@ -1023,6 +1024,19 @@ class DMX(PropertyGroup):
                                 f"{fixture_.user_fixture_name} {fixture_.fixture_id}"
                             )
                             obj.show_name = self.enable_device_label
+
+                if obj.get("text_label", False):
+                    obj.data.body = (
+                        f"{fixture_.user_fixture_name} {fixture_.fixture_id or ''}"
+                    )
+                    if self.display_device_label == "3D_LABEL":
+                        obj.hide_set(False)
+                        obj.hide_viewport = False
+                        obj.hide_render = False
+                    else:
+                        obj.hide_set(True)
+                        obj.hide_viewport = True
+                        obj.hide_render = True
 
     def onDisplayPigtails(self, context):
         for fixture_ in self.fixtures:
@@ -1061,7 +1075,21 @@ class DMX(PropertyGroup):
                     if self.display_2D:
                         obj.name = "geometry root"
                         obj.show_name = False
-                if obj.get("2d_symbol", None) == "all":
+
+                if obj.get("text_label", False):
+                    obj.data.body = (
+                        f"{fixture_.user_fixture_name} {fixture_.fixture_id or ''}"
+                    )
+                    if self.display_device_label == "3D_LABEL":
+                        obj.hide_set(False)
+                        obj.hide_viewport = False
+                        obj.hide_render = False
+                    else:
+                        obj.hide_set(True)
+                        obj.hide_viewport = True
+                        obj.hide_render = True
+
+                elif obj.get("2d_symbol", None) == "all":
                     obj.hide_set(not self.display_2D)
                     obj.hide_viewport = not self.display_2D
                     obj.hide_render = not self.display_2D
@@ -1071,6 +1099,8 @@ class DMX(PropertyGroup):
                         obj.show_name = False
                     else:
                         if self.display_device_label == "NONE":
+                            obj.show_name = False
+                        if self.display_device_label == "3D_LABEL":
                             obj.show_name = False
                         elif self.display_device_label == "NAME":
                             obj.name = f"{fixture_.user_fixture_name}"
@@ -1085,10 +1115,9 @@ class DMX(PropertyGroup):
                             else:
                                 obj.show_name = False
                         elif self.display_device_label == "FIXTURE_NAME_ID":
-                            obj.name = (
-                                f"{fixture_.user_fixture_name} {fixture_.fixture_id}"
-                            )
+                            obj.name = f"{fixture_.user_fixture_name} {fixture_.fixture_id or ''}"
                             obj.show_name = True
+
                 else:
                     obj.hide_set(self.display_2D)
                     obj.hide_viewport = self.display_2D
@@ -1130,6 +1159,7 @@ class DMX(PropertyGroup):
                 ("DMX", _("DMX"), "DMX Address"),
                 ("FIXTURE_ID", _("Fixture ID"), "Fixture ID"),
                 ("FIXTURE_NAME_ID", _("Fixture Name + ID"), "Fixture Name + ID"),
+                ("3D_LABEL", _("3D Fixture Name + ID"), "3D Fixture Name + ID"),
         ],
         update = update_device_label)
 
