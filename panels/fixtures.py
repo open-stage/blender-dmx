@@ -1005,7 +1005,7 @@ class DMX_UL_Fixtures(UIList):
         else:
             col.operator(
                 "dmx.fixture_item",
-                text=f"{item.user_fixture_name}{' 📈' if has_ies else ''} {'🖊' if item.dmx_cache_dirty else ''}",
+                text=f"{item.user_fixture_name}{' 📈' if has_ies else ''}{' *' if item.dmx_cache_dirty else ''}",
                 depress=item.is_selected(),
                 icon="LOCKED" if item.ignore_movement_dmx else "OUTLINER_DATA_LIGHT",
             )
