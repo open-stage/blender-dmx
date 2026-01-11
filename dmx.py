@@ -995,22 +995,34 @@ class DMX(PropertyGroup):
     def onDisplayLabel(self, context):
         for fixture_ in self.fixtures:
             for obj in fixture_.collection.objects:
-                if obj.get("geometry_root", False):
-                    if self.display_device_label == "NONE":
+                if obj.get("2d_symbol", None) == "all":
+                    if not self.display_2D:
+                        obj.name = "2D symbol"
                         obj.show_name = False
-                    elif self.display_device_label == "NAME":
-                        obj.name = f"{fixture_.user_fixture_name}"
-                        obj.show_name = self.enable_device_label
-                    elif self.display_device_label == "DMX":
-                        obj.name = f"{fixture_.dmx_breaks[0].universe}.{fixture_.dmx_breaks[0].address}"
-                        obj.show_name = self.enable_device_label
-                    elif self.display_device_label == "FIXTURE_ID":
-                        if fixture_.fixture_id:
-                            obj.name = f"{fixture_.fixture_id}"
-                            obj.show_name = self.enable_device_label
-                        else:
+                if obj.get("geometry_root", False):
+                    if self.display_2D:
+                        obj.name = "geometry root"
+                        obj.show_name = False
+                    else:
+                        if self.display_device_label == "NONE":
                             obj.show_name = False
-                    break
+                        elif self.display_device_label == "NAME":
+                            obj.name = f"{fixture_.user_fixture_name}"
+                            obj.show_name = self.enable_device_label
+                        elif self.display_device_label == "DMX":
+                            obj.name = f"{fixture_.dmx_breaks[0].universe}.{fixture_.dmx_breaks[0].address}"
+                            obj.show_name = self.enable_device_label
+                        elif self.display_device_label == "FIXTURE_ID":
+                            if fixture_.fixture_id:
+                                obj.name = f"{fixture_.fixture_id}"
+                                obj.show_name = self.enable_device_label
+                            else:
+                                obj.show_name = False
+                        elif self.display_device_label == "FIXTURE_NAME_ID":
+                            obj.name = (
+                                f"{fixture_.user_fixture_name} {fixture_.fixture_id}"
+                            )
+                            obj.show_name = self.enable_device_label
 
     def onDisplayPigtails(self, context):
         for fixture_ in self.fixtures:
@@ -1045,24 +1057,38 @@ class DMX(PropertyGroup):
 
         for fixture_ in self.fixtures:
             for obj in fixture_.collection.objects:
+                if obj.get("geometry_root", False):
+                    if self.display_2D:
+                        obj.name = "geometry root"
+                        obj.show_name = False
                 if obj.get("2d_symbol", None) == "all":
                     obj.hide_set(not self.display_2D)
                     obj.hide_viewport = not self.display_2D
                     obj.hide_render = not self.display_2D
-                    if self.display_device_label == "NONE":
+
+                    if not self.display_2D:
+                        obj.name = "2D symbol"
                         obj.show_name = False
-                    elif self.display_device_label == "NAME":
-                        obj.name = f"{fixture_.user_fixture_name}"
-                        obj.show_name = True
-                    elif self.display_device_label == "DMX":
-                        obj.name = f"{fixture_.dmx_breaks[0].universe}.{fixture_.dmx_breaks[0].address}"
-                        obj.show_name = True
-                    elif self.display_device_label == "FIXTURE_ID":
-                        if fixture_.fixture_id:
-                            obj.name = f"{fixture_.fixture_id}"
-                            obj.show_name = True
-                        else:
+                    else:
+                        if self.display_device_label == "NONE":
                             obj.show_name = False
+                        elif self.display_device_label == "NAME":
+                            obj.name = f"{fixture_.user_fixture_name}"
+                            obj.show_name = True
+                        elif self.display_device_label == "DMX":
+                            obj.name = f"{fixture_.dmx_breaks[0].universe}.{fixture_.dmx_breaks[0].address}"
+                            obj.show_name = True
+                        elif self.display_device_label == "FIXTURE_ID":
+                            if fixture_.fixture_id:
+                                obj.name = f"{fixture_.fixture_id}"
+                                obj.show_name = True
+                            else:
+                                obj.show_name = False
+                        elif self.display_device_label == "FIXTURE_NAME_ID":
+                            obj.name = (
+                                f"{fixture_.user_fixture_name} {fixture_.fixture_id}"
+                            )
+                            obj.show_name = True
                 else:
                     obj.hide_set(self.display_2D)
                     obj.hide_viewport = self.display_2D
@@ -1103,6 +1129,7 @@ class DMX(PropertyGroup):
                 ("NAME", _("Name"), "Name"),
                 ("DMX", _("DMX"), "DMX Address"),
                 ("FIXTURE_ID", _("Fixture ID"), "Fixture ID"),
+                ("FIXTURE_NAME_ID", _("Fixture Name + ID"), "Fixture Name + ID"),
         ],
         update = update_device_label)
 
