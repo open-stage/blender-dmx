@@ -757,6 +757,7 @@ class DMX_Fixture(PropertyGroup):
                 self.objects.add().name = "2D Symbol"
                 self.objects["2D Symbol"].object = links[obj.name]
             elif obj.get("text_label", None) == "text_label":
+                obj.data = obj.data.copy()  # ensure unique data block for each
                 self.objects.add().name = "Text Label"
                 self.objects["Text Label"].object = links[obj.name]
 
