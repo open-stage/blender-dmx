@@ -1328,7 +1328,7 @@ def export_mvr(
             for layer in mvr_layers:
                 if uuid_ and layer.uuid == uuid_:
                     return layer
-                if not uuid_ and layer.name == name:
+                if layer.name == name:
                     return layer
             layer = pymvr.Layer(name=name, uuid=uuid_)
             layer.child_list = pymvr.ChildList()
