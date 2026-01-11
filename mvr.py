@@ -31,7 +31,6 @@ from mathutils import Matrix
 
 from .group import FixtureGroup
 from .logging_setup import DMX_Log
-from .util import create_unique_fixture_name
 from .color_utils import xyY2rgbaa
 
 auxData = {}
@@ -784,16 +783,12 @@ def add_mvr_fixture(
     fixture_matrix = get_matrix(fixture, mscale)
 
     if existing_fixture is not None:
-        # TODO: we should not rename the fixture on import unless if the user wants it
-        # but we must ensure that the name is unique in the collection
-        unique_name = create_unique_fixture_name(fixture.name)
         if isinstance(fixture.color, str):
             fixture.color = pymvr.Color(str_repr=fixture.color)
 
         color_rgb = xyY2rgbaa(fixture.color)
         gel_color = [c / 255 for c in color_rgb] + [1]
         existing_fixture.build(
-            unique_name,
             fixture.gdtf_spec,
             fixture.gdtf_mode or "",
             addresses,
@@ -808,16 +803,14 @@ def add_mvr_fixture(
             fixture_id_numeric=fixture.fixture_id_numeric,
             unit_number=fixture.unit_number,
             classing=fixture.classing,
+            user_fixture_name=fixture.name,
         )
     else:
-        unique_name = f"{fixture.name} {layer_idx}-{fixture_idx}"
-        unique_name = create_unique_fixture_name(unique_name)
         if isinstance(fixture.color, str):
             fixture.color = pymvr.Color(str_repr=fixture.color)
         color_rgb = xyY2rgbaa(fixture.color)
         gel_color = [c / 255 for c in color_rgb] + [1]
         dmx.addFixture(
-            unique_name,
             fixture.gdtf_spec,
             fixture.gdtf_mode or "",
             addresses,
@@ -832,6 +825,7 @@ def add_mvr_fixture(
             fixture_id_numeric=fixture.fixture_id_numeric,
             unit_number=fixture.unit_number,
             classing=fixture.classing,
+            user_fixture_name=fixture.name,
         )
 
     if parent_object is not None:

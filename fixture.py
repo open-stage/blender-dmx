@@ -57,6 +57,7 @@ from .material import (
     getGeometryNodes,
     set_light_nodes,
 )
+from .util import generate_fixture_name
 from .model import DMX_Model
 from .osc_utils import DMX_OSC_Handlers
 from .color_utils import (
@@ -413,6 +414,18 @@ class DMX_Fixture(PropertyGroup):
         type = DMX_Fixture_Channel
     )
 
+    user_fixture_name: StringProperty(
+        name = "Fixture name",
+        description="User definable fixture name, can be non-unique, is for MVR export and all UI",
+        default = "")
+
+    name: StringProperty(
+        name = "Collection name",
+        description="Not for the user",
+        default = "")
+    # this used to be the fixture name, we now only use it for the collection and we rename it
+    # if the gdtf_profile changes
+
     gdtf_long_name: StringProperty(
         name = "Fixture > Name",
         default = "")
@@ -515,7 +528,6 @@ class DMX_Fixture(PropertyGroup):
 
     def build(
         self,
-        name,
         profile,
         mode,
         dmx_breaks,
@@ -530,6 +542,7 @@ class DMX_Fixture(PropertyGroup):
         fixture_id_numeric=0,
         unit_number=0,
         classing="",
+        user_fixture_name="",
     ):
         bpy.ops.object.select_all(action="DESELECT")
         for obj in bpy.data.objects:
@@ -548,8 +561,7 @@ class DMX_Fixture(PropertyGroup):
             bpy.data.collections.remove(bpy.data.collections[self.name])
 
         # Data Properties
-        self.name = name
-        self.profile = profile
+
         self.mode = mode
         if fixture_id is not None:
             self.fixture_id = fixture_id
@@ -588,13 +600,24 @@ class DMX_Fixture(PropertyGroup):
         self["blender_control_playmode"] = None
         self["blender_control_recording"] = None
 
-        # Create clean Collection
-        self.collection = bpy.data.collections.new(name)
-
         # Import and deep copy Fixture Model Collection
         gdtf_profile = DMX_GDTF_File.load_gdtf_profile(profile)
         self.gdtf_long_name = gdtf_profile.long_name
         self.gdtf_manufacturer = gdtf_profile.manufacturer
+        if user_fixture_name is None:
+            user_fixture_name = gdtf_profile.name
+
+        self.user_fixture_name = user_fixture_name
+
+        regenerate_name = self.profile is not None and self.profile != profile
+
+        self.profile = profile
+
+        if self.name is None or regenerate_name:
+            self.name = generate_fixture_name(gdtf_profile.name)
+
+        # Create clean Collection
+        self.collection = bpy.data.collections.new(self.name)
 
         # Handle if dmx mode doesn't exist (maybe this is MVR import and GDTF files were replaced)
         # use mode[0] as default
@@ -2750,7 +2773,7 @@ class DMX_Fixture(PropertyGroup):
         ]
 
         return pymvr.Fixture(
-            name=self.name,
+            name=self.user_fixture_name,
             uuid=self.uuid,
             gdtf_spec=self.profile,
             gdtf_mode=self.mode,
@@ -2775,7 +2798,7 @@ class DMX_Fixture(PropertyGroup):
                 return pymvr.FocusPoint(
                     matrix=pymvr.Matrix(matrix),
                     uuid=uuid_,
-                    name=f"Target for {self.name}",
+                    name=f"Target for {self.user_fixture_name}",
                 )
 
     def follow_target_constraint_enable(self, enabled):
