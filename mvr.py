@@ -15,8 +15,10 @@
 # You should have received a copy of the GNU General Public License along
 # with this program. If not, see <https://www.gnu.org/licenses/>.
 
+import hashlib
 import json
 import os
+import re
 import tempfile
 import time
 from pathlib import Path
@@ -628,7 +630,7 @@ def process_mvr_object(
                 symbol_object,
                 symbol_type,
                 name=name,
-                uid=uid,
+                uid=symbol.uuid,
                 ref=symbol.symdef,
                 classing=classing,
             )
@@ -1159,25 +1161,63 @@ def export_mvr(
             context = bpy.context
             selected = list(context.selected_objects)
             active = context.view_layer.objects.active
-            bpy.ops.object.select_all(action="DESELECT")
-            obj.select_set(True)
-            context.view_layer.objects.active = obj
+            temp_collection = bpy.data.collections.new(
+                f"DMX_GLTF_TMP_{py_uuid.uuid4()}"
+            )
+            context.scene.collection.children.link(temp_collection)
+            temp_obj = obj.copy()
+            if obj.data is not None:
+                temp_obj.data = obj.data.copy()
+            temp_obj.parent = None
+            temp_obj.matrix_world = obj.matrix_world.copy()
+            temp_collection.objects.link(temp_obj)
             try:
-                bpy.ops.export_scene.gltf(
-                    filepath=file_path,
-                    export_format="GLB",
-                    export_selected=True,
+                temp_layer = context.view_layer.layer_collection.children.get(
+                    temp_collection.name
                 )
+                if temp_layer is not None:
+                    context.view_layer.active_layer_collection = temp_layer
+                try:
+                    bpy.ops.export_scene.gltf(
+                        filepath=file_path,
+                        export_format="GLB",
+                        use_active_collection=True,
+                    )
+                except TypeError:
+                    bpy.ops.export_scene.gltf(
+                        filepath=file_path,
+                        export_format="GLB",
+                        export_active_collection=True,
+                    )
             except TypeError:
                 bpy.ops.export_scene.gltf(
                     filepath=file_path,
                     export_format="GLB",
-                    use_selection=True,
                 )
-            bpy.ops.object.select_all(action="DESELECT")
-            for item in selected:
-                item.select_set(True)
-            context.view_layer.objects.active = active
+            finally:
+                try:
+                    temp_collection.objects.unlink(temp_obj)
+                except Exception:
+                    pass
+                try:
+                    if temp_obj.data is not None:
+                        bpy.data.meshes.remove(temp_obj.data)
+                except Exception:
+                    pass
+                try:
+                    bpy.data.objects.remove(temp_obj)
+                except Exception:
+                    pass
+                try:
+                    context.scene.collection.children.unlink(temp_collection)
+                    bpy.data.collections.remove(temp_collection)
+                except Exception:
+                    pass
+                bpy.ops.object.select_all(action="DESELECT")
+                for item in selected:
+                    item.select_set(True)
+                context.view_layer.objects.active = active
+                context.view_layer.update()
 
         def resolve_geometry_file(obj, temp_dir, used_names):
             file_name = obj.get("Reference", None)
@@ -1188,7 +1228,10 @@ def export_mvr(
             else:
                 obj_uuid = obj.get("UUID", None)
                 base_name = obj_uuid or obj.name
-            safe_name = base_name.replace(" ", "_")
+            safe_name = re.sub(r"[^A-Za-z0-9._-]+", "_", base_name)
+            if len(safe_name) > 120:
+                name_hash = hashlib.md5(safe_name.encode("utf-8")).hexdigest()[:8]
+                safe_name = f"{safe_name[:111]}_{name_hash}"
             file_name = f"{safe_name}.glb"
             if file_name in used_names:
                 used_names[file_name] += 1
@@ -1199,9 +1242,25 @@ def export_mvr(
             export_glb_object(obj, file_path)
             return file_name, file_path
 
-        def build_geometries(collection, files_list, temp_dir, used_names):
+        def is_invalid_symbol_uuid(uuid_value):
+            return (
+                not uuid_value or uuid_value == "00000000-0000-0000-0000-000000000000"
+            )
+
+        def unique_symbol_uuid(uuid_value, used_symbol_uuids):
+            candidate = uuid_value
+            if is_invalid_symbol_uuid(candidate) or candidate in used_symbol_uuids:
+                candidate = str(py_uuid.uuid4())
+            used_symbol_uuids.add(candidate)
+            return candidate
+
+        def build_geometries(
+            collection, files_list, temp_dir, used_names, used_symbol_uuids
+        ):
             geometries = pymvr.Geometries()
             geometry_objects = list({obj for obj in collection.all_objects})
+            symbol_entries = []
+            geometry_count = 0
             for obj in geometry_objects:
                 if obj.get("MVR Class") == "GroupObject":
                     continue
@@ -1212,13 +1271,14 @@ def export_mvr(
                     if not symdef_uuid and obj.instance_collection:
                         symdef_uuid = obj.instance_collection.get("UUID")
                     if symdef_uuid:
-                        geometries.symbol.append(
-                            pymvr.Symbol(
-                                uuid=obj.get("UUID", str(py_uuid.uuid4())),
-                                symdef=symdef_uuid,
-                                matrix=pymvr.Matrix(
-                                    matrix_world_to_mvr(obj.matrix_world)
-                                ),
+                        symbol_uuid = unique_symbol_uuid(
+                            obj.get("UUID"), used_symbol_uuids
+                        )
+                        symbol_entries.append(
+                            (
+                                symbol_uuid,
+                                symdef_uuid,
+                                pymvr.Matrix(matrix_world_to_mvr(obj.matrix_world)),
                             )
                         )
                         continue
@@ -1235,25 +1295,45 @@ def export_mvr(
                             )
                         )
                         files_list.append((file_path, file_name))
+                        geometry_count += 1
                 elif obj.type == "EMPTY" and obj.get("MVR Class") == "Symbol":
                     symdef_uuid = obj.get("Reference", None)
                     if symdef_uuid:
-                        geometries.symbol.append(
-                            pymvr.Symbol(
-                                uuid=obj.get("UUID", str(py_uuid.uuid4())),
-                                symdef=symdef_uuid,
-                                matrix=pymvr.Matrix(
-                                    matrix_world_to_mvr(obj.matrix_world)
-                                ),
+                        symbol_uuid = unique_symbol_uuid(
+                            obj.get("UUID"), used_symbol_uuids
+                        )
+                        symbol_entries.append(
+                            (
+                                symbol_uuid,
+                                symdef_uuid,
+                                pymvr.Matrix(matrix_world_to_mvr(obj.matrix_world)),
                             )
                         )
-            return geometries
+
+            scene_matrix = None
+            if len(symbol_entries) == 1 and geometry_count == 0:
+                # Preserve legacy pattern: matrix on SceneObject, identity on Symbol.
+                scene_matrix = symbol_entries[0][2]
+                symbol_entries = [
+                    (symbol_entries[0][0], symbol_entries[0][1], pymvr.Matrix(0))
+                ]
+
+            for symbol_uuid, symdef_uuid, symbol_matrix in symbol_entries:
+                geometries.symbol.append(
+                    pymvr.Symbol(
+                        uuid=symbol_uuid,
+                        symdef=symdef_uuid,
+                        matrix=symbol_matrix,
+                    )
+                )
+
+            return geometries, scene_matrix
 
         def extend_geometries_from_uuid(
-            uuid_value, geometries, files_list, temp_dir, used_names
+            uuid_value, geometries, files_list, temp_dir, used_names, used_symbol_uuids
         ):
             if not uuid_value:
-                return
+                return None
             for obj in bpy.data.objects:
                 if obj.get("UUID") != uuid_value:
                     continue
@@ -1266,15 +1346,20 @@ def export_mvr(
                     if not symdef_uuid and obj.instance_collection:
                         symdef_uuid = obj.instance_collection.get("UUID")
                     if symdef_uuid:
+                        symbol_uuid = unique_symbol_uuid(
+                            obj.get("UUID"), used_symbol_uuids
+                        )
+                        symbol_matrix = pymvr.Matrix(
+                            matrix_world_to_mvr(obj.matrix_world)
+                        )
                         geometries.symbol.append(
                             pymvr.Symbol(
-                                uuid=obj.get("UUID", str(py_uuid.uuid4())),
+                                uuid=symbol_uuid,
                                 symdef=symdef_uuid,
-                                matrix=pymvr.Matrix(
-                                    matrix_world_to_mvr(obj.matrix_world)
-                                ),
+                                matrix=symbol_matrix,
                             )
                         )
+                        return symbol_matrix
                     continue
                 if obj.type == "MESH":
                     file_name, file_path = resolve_geometry_file(
@@ -1288,8 +1373,11 @@ def export_mvr(
                             )
                         )
                         files_list.append((file_path, file_name))
+            return None
 
-        def build_symdef_child_list(collection, files_list, temp_dir, used_names):
+        def build_symdef_child_list(
+            collection, files_list, temp_dir, used_names, used_symbol_uuids
+        ):
             child_list = pymvr.SymdefChildList()
             symdef_objects = list({obj for obj in collection.all_objects})
             for obj in symdef_objects:
@@ -1313,9 +1401,12 @@ def export_mvr(
                 elif obj.type == "EMPTY" and obj.get("MVR Class") == "Symbol":
                     symdef_uuid = obj.get("Reference", None)
                     if symdef_uuid:
+                        symbol_uuid = unique_symbol_uuid(
+                            obj.get("UUID"), used_symbol_uuids
+                        )
                         child_list.symbol.append(
                             pymvr.Symbol(
-                                uuid=obj.get("UUID", str(py_uuid.uuid4())),
+                                uuid=symbol_uuid,
                                 symdef=symdef_uuid,
                                 matrix=pymvr.Matrix(
                                     matrix_world_to_mvr(obj.matrix_world)
@@ -1380,7 +1471,7 @@ def export_mvr(
 
             fixture_object = dmx_fixture.to_mvr_fixture(universe_add=universe_add)
             focus_point = dmx_fixture.focus_to_mvr_focus_point()
-            if export_focus_points and focus_point is not None:
+            if export_focus_points and focus_point is not None and fixture_object.focus:
                 child_list.focus_points.append(focus_point)
             child_list.fixtures.append(fixture_object)
             if fixture_object.gdtf_spec:
@@ -1404,7 +1495,12 @@ def export_mvr(
             )
 
         def add_objects_from_collection(
-            layer, collection, temp_dir, used_names, export_objects=True
+            layer,
+            collection,
+            temp_dir,
+            used_names,
+            used_symbol_uuids,
+            export_objects=True,
         ):
             for child in collection.children:
                 child_class = child.get("MVR Class")
@@ -1444,7 +1540,12 @@ def export_mvr(
                     group.child_list = pymvr.ChildList()
                     layer.child_list.group_objects.append(group)
                     add_objects_from_collection(
-                        group, child, temp_dir, used_names, export_objects=False
+                        group,
+                        child,
+                        temp_dir,
+                        used_names,
+                        used_symbol_uuids,
+                        export_objects=False,
                     )
                     continue
                 if child_class in mvr_class_map:
@@ -1456,25 +1557,32 @@ def export_mvr(
                     if not child.get("MVR Name"):
                         child["MVR Name"] = child.name
                     child_list = layer.child_list
-                    geometries = build_geometries(
-                        child, assets_list, temp_dir, used_names
+                    geometries, scene_matrix = build_geometries(
+                        child, assets_list, temp_dir, used_names, used_symbol_uuids
                     )
                     if (
                         not geometries.geometry3d
                         and not geometries.symbol
                         and child.get("UUID")
                     ):
-                        extend_geometries_from_uuid(
+                        scene_matrix = extend_geometries_from_uuid(
                             child.get("UUID"),
                             geometries,
                             assets_list,
                             temp_dir,
                             used_names,
+                            used_symbol_uuids,
                         )
+                    if (
+                        scene_matrix is not None
+                        and len(geometries.symbol) == 1
+                        and not geometries.geometry3d
+                    ):
+                        geometries.symbol[0].matrix = pymvr.Matrix(0)
                     mvr_object = mvr_cls(
                         name=child.get("MVR Name", child.name),
                         uuid=child.get("UUID", str(py_uuid.uuid4())),
-                        matrix=pymvr.Matrix(0),
+                        matrix=scene_matrix or pymvr.Matrix(0),
                         classing=child.get("classing", None),
                         geometries=geometries,
                     )
@@ -1490,13 +1598,20 @@ def export_mvr(
                         child_list.video_screens.append(mvr_object)
 
                     add_objects_from_collection(
-                        layer, child, temp_dir, used_names, export_objects=False
+                        layer,
+                        child,
+                        temp_dir,
+                        used_names,
+                        used_symbol_uuids,
+                        export_objects=False,
                     )
                     continue
 
                 if child_class is None and child.objects:
                     if is_fixture_collection(child):
-                        add_objects_from_collection(layer, child, temp_dir, used_names)
+                        add_objects_from_collection(
+                            layer, child, temp_dir, used_names, used_symbol_uuids
+                        )
                         continue
                     if not child.get("UUID"):
                         child["UUID"] = str(py_uuid.uuid4())
@@ -1504,24 +1619,34 @@ def export_mvr(
                         child["MVR Class"] = "SceneObject"
                     if not child.get("MVR Name"):
                         child["MVR Name"] = child.name
-                    geometries = build_geometries(
-                        child, assets_list, temp_dir, used_names
+                    geometries, scene_matrix = build_geometries(
+                        child, assets_list, temp_dir, used_names, used_symbol_uuids
                     )
                     mvr_object = pymvr.SceneObject(
                         name=child["MVR Name"],
                         uuid=child["UUID"],
-                        matrix=pymvr.Matrix(0),
+                        matrix=scene_matrix or pymvr.Matrix(0),
                         geometries=geometries,
                     )
                     layer.child_list.scene_objects.append(mvr_object)
 
                     add_objects_from_collection(
-                        layer, child, temp_dir, used_names, export_objects=False
+                        layer,
+                        child,
+                        temp_dir,
+                        used_names,
+                        used_symbol_uuids,
+                        export_objects=False,
                     )
                     continue
 
                 add_objects_from_collection(
-                    layer, child, temp_dir, used_names, export_objects=True
+                    layer,
+                    child,
+                    temp_dir,
+                    used_names,
+                    used_symbol_uuids,
+                    export_objects=True,
                 )
 
             if not export_objects:
@@ -1582,6 +1707,7 @@ def export_mvr(
 
         with tempfile.TemporaryDirectory(prefix="blenderdmx_mvr_") as temp_dir:
             used_geometry_names = {}
+            used_symbol_uuids = set()
             if not export_fixtures_only:
                 for collection in layer_collections:
                     layer = get_or_create_layer(
@@ -1589,7 +1715,11 @@ def export_mvr(
                         collection.get("UUID", None),
                     )
                     add_objects_from_collection(
-                        layer, collection, temp_dir, used_geometry_names
+                        layer,
+                        collection,
+                        temp_dir,
+                        used_geometry_names,
+                        used_symbol_uuids,
                     )
 
             aux_data = pymvr.AUXData()
@@ -1611,6 +1741,7 @@ def export_mvr(
                                 assets_list,
                                 temp_dir,
                                 used_geometry_names,
+                                used_symbol_uuids,
                             ),
                         )
                         aux_data.symdefs.append(symdef)

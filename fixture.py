@@ -2770,7 +2770,7 @@ class DMX_Fixture(PropertyGroup):
             if obj.object.get("geometry_root", False):
                 matrix = self._matrix_to_mvr_units(obj.object.matrix_world)
             if "Target" in obj.name:
-                uuid_focus_point = obj.object.get("uuid", None)
+                uuid_focus_point = obj.object.get("Target ID", None)
 
         r, g, b = list(self.gel_color_rgb)[:3]
         x, y, z = rgb2xyY(r, g, b)
@@ -2803,8 +2803,10 @@ class DMX_Fixture(PropertyGroup):
             if "Target" in obj.name:
                 matrix = None
                 uuid_ = None
+                uuid_ = obj.object.get("Target ID", None)
+                if uuid_ is None:
+                    return
                 matrix = self._matrix_to_mvr_units(obj.object.matrix_world)
-                uuid_ = obj.object.get("uuid", None)
                 if matrix is None or uuid_ is None:
                     DMX_Log.log.error("Matrix or uuid of a Target not defined")
                     return
