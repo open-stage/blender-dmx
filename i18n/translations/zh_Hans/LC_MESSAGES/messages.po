@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2025-11-30 11:56+0100\n"
-"PO-Revision-Date: 2025-08-26 03:02+0000\n"
+"PO-Revision-Date: 2026-01-14 04:23+0000\n"
 "Last-Translator: 大学没毕业 <ziweidao@foxmail.com>\n"
+"Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
+"projects/blenderdmx/main/zh_Hans/>\n"
 "Language: zh_Hans\n"
-"Language-Team: Chinese (Simplified Han script) "
-"<https://hosted.weblate.org/projects/blenderdmx/main/zh_Hans/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.15.2-dev\n"
 "Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
@@ -335,10 +336,10 @@ msgid ""
 msgstr ""
 
 msgid "Use Fixtures Physical Properties"
-msgstr ""
+msgstr "使用灯具物理属性"
 
 msgid "Use Channel Functions of this fixture"
-msgstr ""
+msgstr "使用此灯具的通道功能"
 
 msgid "DMX Universe"
 msgstr "DMX 域"
@@ -463,9 +464,8 @@ msgstr "请求最新版本"
 msgid "IP Address"
 msgstr "IP 地址"
 
-#, fuzzy
 msgid "Port"
-msgstr "导入"
+msgstr "端口"
 
 msgid "Connected"
 msgstr ""
@@ -523,13 +523,11 @@ msgstr "类别列表 i"
 msgid "Align selected fixtures to active fixture"
 msgstr "对齐所选灯具到活动灯具"
 
-#, fuzzy
 msgid "Distribute selected fixtures evenly"
-msgstr "编辑选定的灯具"
+msgstr "均匀分布所选灯具"
 
-#, fuzzy
 msgid "Distribute selected fixtures with gap"
-msgstr "编辑选定的灯具"
+msgstr "按间隔分布所选灯具"
 
 msgid "Align and Distribute"
 msgstr "对齐与分布"
@@ -742,15 +740,14 @@ msgstr "不跟踪目标"
 msgid "Do not follow the target"
 msgstr "不跟随目标"
 
-#, fuzzy
 msgid "Use Fixtures Channel Functions"
-msgstr "刷新连接"
+msgstr "使用灯具通道功能"
 
 msgid "Do Not Use Fixtures Physical Properties"
-msgstr ""
+msgstr "不使用灯具物理属性"
 
 msgid "Do not use Fixtures Channel Functions"
-msgstr ""
+msgstr "不使用灯具通道功能"
 
 msgid "Deselect All"
 msgstr "全部取消选择"
@@ -904,9 +901,8 @@ msgstr "Gobo2 调整"
 msgid "Strobe"
 msgstr "频闪"
 
-#, fuzzy
 msgid "PanMode"
-msgstr "模式"
+msgstr "平移模式"
 
 #, fuzzy
 msgid "TiltMode"
@@ -987,9 +983,8 @@ msgstr "尝试从 Blender 演出文件中删除 DMX"
 msgid "Beam diameter small"
 msgstr "光束直径小"
 
-#, fuzzy
 msgid "Set Eevee Cutoff distance on selected fixtures"
-msgstr "在选定的灯具上设置"
+msgstr "为所选灯具设置EEVEE截止距离"
 
 msgid "Beam diameter normal"
 msgstr "光束直径常规"
@@ -1699,4 +1694,3 @@ msgstr "域"
 
 #~ msgid "Export Focus Points as Targets"
 #~ msgstr "导入焦点作为目标"
-
