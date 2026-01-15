@@ -21,6 +21,7 @@ import traceback
 from types import SimpleNamespace
 import uuid as py_uuid
 from itertools import zip_longest
+from xml.etree import ElementTree
 
 import bpy
 import mathutils
@@ -512,6 +513,12 @@ class DMX_Fixture(PropertyGroup):
     classing: StringProperty(
         name = "Classing UUID",
         description = "Classing - logical grouping across different layers",
+        default = ""
+            )
+
+    mvr_connections_xml: StringProperty(
+        name = "MVR Connections XML",
+        description = "Raw MVR <Connections> XML for round-tripping",
         default = ""
             )
 
@@ -2785,6 +2792,20 @@ class DMX_Fixture(PropertyGroup):
             for index, dmx_break in enumerate(self.dmx_breaks)
         ]
 
+        connections = None
+        connections_xml = (self.mvr_connections_xml or "").strip()
+        if connections_xml:
+            try:
+                connections_node = ElementTree.fromstring(connections_xml)
+                if connections_node.tag != "Connections":
+                    connections_node = connections_node.find("Connections")
+                if connections_node is not None:
+                    connections = pymvr.Connections(xml_node=connections_node)
+            except Exception as exc:
+                DMX_Log.log.warning(
+                    f"Failed to parse MVR Connections XML for fixture {self.uuid}: {exc}"
+                )
+
         return pymvr.Fixture(
             name=self.user_fixture_name,
             uuid=self.uuid,
@@ -2796,6 +2817,7 @@ class DMX_Fixture(PropertyGroup):
             focus=uuid_focus_point,
             color=color,
             classing=self.classing,
+            connections=connections,
         )
 
     def focus_to_mvr_focus_point(self):

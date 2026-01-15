@@ -24,6 +24,7 @@ import time
 from pathlib import Path
 from types import SimpleNamespace
 import traceback
+from xml.etree import ElementTree
 
 import bpy
 import pymvr
@@ -67,6 +68,17 @@ def create_local_transform_property(obj):
     rotate = mtx_copy.transposed().to_3x3()
     trans_mtx = rotate[0][:] + rotate[1][:] + rotate[2][:] + translate[:]
     obj["MVR Local Transform"] = trans_mtx
+
+
+def serialize_connections_xml(connections):
+    if not connections or len(connections) == 0:
+        return ""
+    root = ElementTree.Element("Root")
+    connections.to_xml(root)
+    connections_node = root.find("Connections")
+    if connections_node is None:
+        return ""
+    return ElementTree.tostring(connections_node, encoding="unicode")
 
 
 def get_matrix(obj, mtx):
@@ -773,6 +785,7 @@ def add_mvr_fixture(
         for address in fixture.addresses.addresses
         if address.address > 0
     ]
+    connections_xml = serialize_connections_xml(fixture.connections)
     null_matrix = pymvr.Matrix([[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]])
     # ensure that fixture is not scaled to 0
     if fixture.matrix == null_matrix:
@@ -807,6 +820,8 @@ def add_mvr_fixture(
             classing=fixture.classing,
             user_fixture_name=fixture.name,
         )
+        existing_fixture.mvr_connections_xml = connections_xml
+        added_fixture = existing_fixture
     else:
         if isinstance(fixture.color, str):
             fixture.color = pymvr.Color(str_repr=fixture.color)
@@ -829,6 +844,9 @@ def add_mvr_fixture(
             classing=fixture.classing,
             user_fixture_name=fixture.name,
         )
+        added_fixture = dmx.findFixtureByUUID(fixture.uuid)
+        if added_fixture:
+            added_fixture.mvr_connections_xml = connections_xml
 
     if parent_object is not None:
         direct_fixture_children.append(
@@ -852,7 +870,6 @@ def add_mvr_fixture(
         dump.append(fixture.uuid)
         group.dump = json.dumps(dump)
 
-        added_fixture = dmx.findFixtureByUUID(fixture.uuid)
         if added_fixture:
             added_fixture["layer_name"] = layer_collection.name
             added_fixture["layer_uuid"] = layer_collection.get("UUID", None)
