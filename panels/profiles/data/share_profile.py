@@ -99,7 +99,7 @@ class DMX_Fixtures_Import_Gdtf_Profile(PropertyGroup):
             share_profile.rating = profile["rating"]
             for mode in profile["modes"]:
                 local_mode = share_profile.modes.add()
-                local_mode.name = mode["name"]
-                local_mode.footprint = mode["dmxfootprint"]
+                local_mode.name = mode["name"] or "Not Named"
+                local_mode.footprint = mode["dmxfootprint"] or 0
 
         print("INFO", "loading done")

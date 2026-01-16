@@ -70,7 +70,7 @@ Thank you.
   title        = {pyGDTF: Python Library for General Device Type Format},
   author       = {{OpenStage}},
   year         = {2025},
-  version      = {1.4.2},
+  version      = {1.4.3},
   url          = {https://github.com/open-stage/python-gdtf}
 }
 
@@ -102,7 +102,7 @@ please cite it as follows:
   title        = {BlenderDMX: Open Source Visualization and Programming with GDTF/MVR, and Networking for Blender},
   author       = {{OpenStage}},
   year         = {2025},
-  version      = {2.1.0},
+  version      = {2.1.2},
   url          = {https://blenderdmx.eu/},
   note         = {Source Code: https://github.com/open-stage/blender-dmx}
 }

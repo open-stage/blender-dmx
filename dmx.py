@@ -67,7 +67,6 @@ from .mvrxchange.mvr_xchange_blender import (
     DMX_MVR_Xchange_Commit,
 )
 from .network import DMX_Network
-from .node_arranger import DMX_OT_ArrangeSelected
 from .osc import DMX_OSC
 from .osc_utils import DMX_OSC_Templates
 from .panels import classing as classing
@@ -319,7 +318,6 @@ class DMX(PropertyGroup):
         for cls in DMX.classes_setup:
             bpy.utils.register_class(cls)
 
-        # register key shortcuts
         wm = bpy.context.window_manager
         km = wm.keyconfigs.addon.keymaps.new(
             name="3D View Generic", space_type="VIEW_3D"
@@ -481,7 +479,7 @@ class DMX(PropertyGroup):
 
     data_version: IntProperty(
             name = "BlenderDMX data version, bump when changing RNA structure and provide migration script",
-            default = 12,
+            default = 13,
             )
 
     def get_fixture_by_index(self, index):
@@ -898,7 +896,6 @@ class DMX(PropertyGroup):
         if file_data_version < 11:
             DMX_Log.log.info("Running migration 10→11")
             dmx = bpy.context.scene.dmx
-            d = DMX_OT_ArrangeSelected()
             count = len(dmx.fixtures)
             for fixture_idx, fixture_ in enumerate(dmx.fixtures):
                 fixture_.gobo_materials.clear()
@@ -938,17 +935,6 @@ class DMX(PropertyGroup):
                         gobo2.count = old_gobos.count
 
                 fixture_.hide_gobo()
-                for item in fixture_.gobo_materials:
-                    ntree = item.material.node_tree
-                    d.process_tree(ntree)
-                for item in fixture_.geometry_nodes:
-                    ntree = item.node
-                    d.process_tree(ntree)
-
-                for light in fixture_.lights:  # CYCLES
-                    light_obj = light.object
-                    ntree = light_obj.data.node_tree
-                    d.process_tree(ntree)
             if not hide_gobo_message:
                 temp_data = bpy.context.window_manager.dmx
                 message = "This show file has been made in older version of BlenderDMX. Most likely you need to re-edit fixtures: Fixtures → Edit, uncheck Re-address only, this will re-build the fixtures from their GDTF files. Sorry for the inconvenience."
@@ -969,6 +955,14 @@ class DMX(PropertyGroup):
                 new_break.channels_count = len(fixture_["channels"])
                 del fixture_["address"]
                 del fixture_["universe"]
+
+        if file_data_version < 13:
+            DMX_Log.log.info("Running migration 12→13")
+            dmx = bpy.context.scene.dmx
+
+            # we added proper fixture name
+            for fixture_ in dmx.fixtures:
+                fixture_.user_fixture_name = fixture_.name
 
         # add here another if statement for next migration condition... like:
         # if file_data_version < 6:
@@ -1000,22 +994,49 @@ class DMX(PropertyGroup):
     def onDisplayLabel(self, context):
         for fixture_ in self.fixtures:
             for obj in fixture_.collection.objects:
-                if obj.get("geometry_root", False):
-                    if self.display_device_label == "NONE":
+                if obj.get("2d_symbol", None) == "all":
+                    if not self.display_2D:
+                        obj.name = "2D symbol"
                         obj.show_name = False
-                    elif self.display_device_label == "NAME":
-                        obj.name = f"{fixture_.name}"
-                        obj.show_name = self.enable_device_label
-                    elif self.display_device_label == "DMX":
-                        obj.name = f"{fixture_.dmx_breaks[0].universe}.{fixture_.dmx_breaks[0].address}"
-                        obj.show_name = self.enable_device_label
-                    elif self.display_device_label == "FIXTURE_ID":
-                        if fixture_.fixture_id:
-                            obj.name = f"{fixture_.fixture_id}"
-                            obj.show_name = self.enable_device_label
-                        else:
+                if obj.get("geometry_root", False):
+                    if self.display_2D:
+                        obj.name = "geometry root"
+                        obj.show_name = False
+                    else:
+                        if self.display_device_label == "NONE":
                             obj.show_name = False
-                    break
+                        elif self.display_device_label == "3D_LABEL":
+                            obj.show_name = False
+                        elif self.display_device_label == "NAME":
+                            obj.name = f"{fixture_.user_fixture_name}"
+                            obj.show_name = self.enable_device_label
+                        elif self.display_device_label == "DMX":
+                            obj.name = f"{fixture_.dmx_breaks[0].universe}.{fixture_.dmx_breaks[0].address}"
+                            obj.show_name = self.enable_device_label
+                        elif self.display_device_label == "FIXTURE_ID":
+                            if fixture_.fixture_id:
+                                obj.name = f"{fixture_.fixture_id}"
+                                obj.show_name = self.enable_device_label
+                            else:
+                                obj.show_name = False
+                        elif self.display_device_label == "FIXTURE_NAME_ID":
+                            obj.name = (
+                                f"{fixture_.user_fixture_name} {fixture_.fixture_id}"
+                            )
+                            obj.show_name = self.enable_device_label
+
+                if obj.get("text_label", False):
+                    obj.data.body = (
+                        f"{fixture_.user_fixture_name} {fixture_.fixture_id or ''}"
+                    )
+                    if self.display_device_label == "3D_LABEL":
+                        obj.hide_set(False)
+                        obj.hide_viewport = False
+                        obj.hide_render = False
+                    else:
+                        obj.hide_set(True)
+                        obj.hide_viewport = True
+                        obj.hide_render = True
 
     def onDisplayPigtails(self, context):
         for fixture_ in self.fixtures:
@@ -1050,24 +1071,53 @@ class DMX(PropertyGroup):
 
         for fixture_ in self.fixtures:
             for obj in fixture_.collection.objects:
-                if obj.get("2d_symbol", None) == "all":
+                if obj.get("geometry_root", False):
+                    if self.display_2D:
+                        obj.name = "geometry root"
+                        obj.show_name = False
+
+                if obj.get("text_label", False):
+                    obj.data.body = (
+                        f"{fixture_.user_fixture_name} {fixture_.fixture_id or ''}"
+                    )
+                    if self.display_device_label == "3D_LABEL":
+                        obj.hide_set(False)
+                        obj.hide_viewport = False
+                        obj.hide_render = False
+                    else:
+                        obj.hide_set(True)
+                        obj.hide_viewport = True
+                        obj.hide_render = True
+
+                elif obj.get("2d_symbol", None) == "all":
                     obj.hide_set(not self.display_2D)
                     obj.hide_viewport = not self.display_2D
                     obj.hide_render = not self.display_2D
-                    if self.display_device_label == "NONE":
+
+                    if not self.display_2D:
+                        obj.name = "2D symbol"
                         obj.show_name = False
-                    elif self.display_device_label == "NAME":
-                        obj.name = f"{fixture_.name}"
-                        obj.show_name = True
-                    elif self.display_device_label == "DMX":
-                        obj.name = f"{fixture_.dmx_breaks[0].universe}.{fixture_.dmx_breaks[0].address}"
-                        obj.show_name = True
-                    elif self.display_device_label == "FIXTURE_ID":
-                        if fixture_.fixture_id:
-                            obj.name = f"{fixture_.fixture_id}"
-                            obj.show_name = True
-                        else:
+                    else:
+                        if self.display_device_label == "NONE":
                             obj.show_name = False
+                        if self.display_device_label == "3D_LABEL":
+                            obj.show_name = False
+                        elif self.display_device_label == "NAME":
+                            obj.name = f"{fixture_.user_fixture_name}"
+                            obj.show_name = True
+                        elif self.display_device_label == "DMX":
+                            obj.name = f"{fixture_.dmx_breaks[0].universe}.{fixture_.dmx_breaks[0].address}"
+                            obj.show_name = True
+                        elif self.display_device_label == "FIXTURE_ID":
+                            if fixture_.fixture_id:
+                                obj.name = f"{fixture_.fixture_id}"
+                                obj.show_name = True
+                            else:
+                                obj.show_name = False
+                        elif self.display_device_label == "FIXTURE_NAME_ID":
+                            obj.name = f"{fixture_.user_fixture_name} {fixture_.fixture_id or ''}"
+                            obj.show_name = True
+
                 else:
                     obj.hide_set(self.display_2D)
                     obj.hide_viewport = self.display_2D
@@ -1108,6 +1158,8 @@ class DMX(PropertyGroup):
                 ("NAME", _("Name"), "Name"),
                 ("DMX", _("DMX"), "DMX Address"),
                 ("FIXTURE_ID", _("Fixture ID"), "Fixture ID"),
+                ("FIXTURE_NAME_ID", _("Fixture Name + ID"), "Fixture Name + ID"),
+                ("3D_LABEL", _("3D Fixture Name + ID"), "3D Fixture Name + ID"),
         ],
         update = update_device_label)
 
@@ -2033,7 +2085,6 @@ class DMX(PropertyGroup):
     # # Fixtures
     def addFixture(
         self,
-        name,
         profile,
         mode,
         dmx_breaks,
@@ -2048,6 +2099,7 @@ class DMX(PropertyGroup):
         fixture_id_numeric=0,
         unit_number=0,
         classing=None,
+        user_fixture_name="",
     ):
         # TODO: fix order of attributes to match fixture.build()
         dmx = bpy.context.scene.dmx
@@ -2055,7 +2107,6 @@ class DMX(PropertyGroup):
         new_fixture.uuid = str(py_uuid.uuid4())  # ensure clean uuid
         try:
             new_fixture.build(
-                name,
                 profile,
                 mode,
                 dmx_breaks,
@@ -2070,6 +2121,7 @@ class DMX(PropertyGroup):
                 fixture_id_numeric,
                 unit_number,
                 classing=classing,
+                user_fixture_name=user_fixture_name,
             )
         except Exception as e:
             DMX_Log.log.error(f"Error while adding fixture {e}")
@@ -2584,11 +2636,12 @@ class DMX(PropertyGroup):
                 collection_info.inputs[0].default_value = collection
 
     def register_render_toggle(self, enable):
-        is_running = bpy.context.window_manager.dmx.render_running
+        self._wm_dmx = bpy.context.window_manager.dmx
+        is_running = self._wm_dmx.render_running
         if enable:
             if is_running:
                 return
-            bpy.context.window_manager.dmx.render_running = True
+            self._wm_dmx.render_running = True
             bpy.app.timers.register(self.run_render)
         else:
             if len(DMX_PSN._instances) > 0:
@@ -2598,14 +2651,14 @@ class DMX(PropertyGroup):
             if self.sacn_enabled:
                 return
             if is_running:
-                bpy.context.window_manager.dmx.render_running = False
+                self._wm_dmx.render_running = False
                 try:
                     bpy.app.timers.unregister(self.run_render)
                 except:
                     pass
 
     def run_render(self):
-        if not bpy.context.window_manager.dmx.render_running:
+        if not self._wm_dmx.render_running:
             return None
         self.render()
-        return 1.0 / 44.0  # run at the same speed as maximum DMX framerate
+        return 1.0 / 24

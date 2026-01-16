@@ -514,7 +514,12 @@ class DMX_PT_Programmer(Panel):
         if len(selected_fixtures) == 0:
             selected_fixture_label = _("Nothing selected")
         elif len(selected_fixtures) == 1:
-            selected_fixture_label = selected_fixtures[0].name
+            my_id = f"{selected_fixtures[0].fixture_id or selected_fixtures[0].custom_id or selected_fixtures[0].unit_number or selected_fixtures[0].fixture_id_numeric}"
+            my_addr = f"{selected_fixtures[0].dmx_breaks[0].universe}/{selected_fixtures[0].dmx_breaks[0].address}"
+            selected_fixture_label = (
+                f"{selected_fixtures[0].user_fixture_name}: {my_id} - {my_addr}"
+            )
+
             selected_fixture_class = selected_fixtures[0]
         else:
             profiles = []

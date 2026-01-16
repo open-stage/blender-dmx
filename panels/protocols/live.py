@@ -16,6 +16,7 @@
 # with this program. If not, see <https://www.gnu.org/licenses/>.
 
 from bpy.types import Panel, UIList
+import bpy
 
 from ...data import DMX_Data
 from ...i18n import DMX_Lang
@@ -48,27 +49,35 @@ class DMX_PT_DMX_LiveDMX(Panel):
         layout = self.layout
         dmx = context.scene.dmx
         selected_universe = dmx.get_selected_live_dmx_universe()
-        if selected_universe is None:  # this should not happen
+        if selected_universe is None:
             raise ValueError(
                 "Missing selected universe, as if DMX base class is empty..."
             )
 
         row = layout.row()
         row.prop(dmx, "selected_live_dmx", text=_("Source"))
+
         row = layout.row()
         col = row.column()
         col.label(text=f"{selected_universe.id}")
         col.ui_units_x = 2
         col = row.column()
-        row.label(text=f"{selected_universe.name}")
+        col.label(text=f"{selected_universe.name}")
         col = row.column()
-        row.label(text=f"{selected_universe.input}")
-        layout.template_list(
-            "DMX_UL_LiveDMX_items",
-            "",
-            dmx,
-            "dmx_values",
-            dmx,
-            "dmx_value_index",
-            type="GRID",
-        )
+        col.label(text=f"{selected_universe.input}")
+
+        if bpy.app.version < (5, 0, 0):
+            layout.template_list(
+                "DMX_UL_LiveDMX_items",
+                "",
+                dmx,
+                "dmx_values",
+                dmx,
+                "dmx_value_index",
+                type="GRID",
+            )
+        else:
+            # Blender 5: use grid_flow for a grid-like UI
+            flow = layout.grid_flow(row_major=True, columns=8, even_columns=True)
+            for index, item in enumerate(dmx.dmx_values):
+                flow.label(text=f"{index + 1}: {DMX_Data._live_view_data[index]}")

@@ -21,6 +21,7 @@ import traceback
 from types import SimpleNamespace
 import uuid as py_uuid
 from itertools import zip_longest
+from xml.etree import ElementTree
 
 import bpy
 import mathutils
@@ -57,8 +58,8 @@ from .material import (
     getGeometryNodes,
     set_light_nodes,
 )
+from .util import generate_fixture_name
 from .model import DMX_Model
-from .node_arranger import DMX_OT_ArrangeSelected
 from .osc_utils import DMX_OSC_Handlers
 from .color_utils import (
     add_rgb,
@@ -414,6 +415,18 @@ class DMX_Fixture(PropertyGroup):
         type = DMX_Fixture_Channel
     )
 
+    user_fixture_name: StringProperty(
+        name = "Fixture name",
+        description="User definable fixture name, can be non-unique, is for MVR export and all UI",
+        default = "")
+
+    name: StringProperty(
+        name = "Collection name",
+        description="Not for the user",
+        default = "")
+    # this used to be the fixture name, we now only use it for the collection and we rename it
+    # if the gdtf_profile changes
+
     gdtf_long_name: StringProperty(
         name = "Fixture > Name",
         default = "")
@@ -503,6 +516,24 @@ class DMX_Fixture(PropertyGroup):
         default = ""
             )
 
+    mvr_connections_xml: StringProperty(
+        name = "MVR Connections XML",
+        description = "Raw MVR <Connections> XML for round-tripping",
+        default = ""
+            )
+
+    mvr_protocols_xml: StringProperty(
+        name = "MVR Protocols XML",
+        description = "Raw MVR <Protocols> XML for round-tripping",
+        default = ""
+            )
+
+    mvr_addresses_networks_xml: StringProperty(
+        name = "MVR Addresses Networks XML",
+        description = "Raw MVR <Addresses> Network XML for round-tripping",
+        default = ""
+            )
+
     dmx_breaks:  CollectionProperty(
             name = "DMX Break",
             type = DMX_Break)
@@ -516,7 +547,6 @@ class DMX_Fixture(PropertyGroup):
 
     def build(
         self,
-        name,
         profile,
         mode,
         dmx_breaks,
@@ -531,11 +561,13 @@ class DMX_Fixture(PropertyGroup):
         fixture_id_numeric=0,
         unit_number=0,
         classing="",
+        user_fixture_name="",
     ):
         bpy.ops.object.select_all(action="DESELECT")
         for obj in bpy.data.objects:
             obj.select_set(False)
         # clear possible existing selections in Blender
+        bpy.context.view_layer.objects.active = None
 
         # (Edit) Store objects positions
         old_pos = {obj.name: obj.object.location.copy() for obj in self.objects}
@@ -548,8 +580,7 @@ class DMX_Fixture(PropertyGroup):
             bpy.data.collections.remove(bpy.data.collections[self.name])
 
         # Data Properties
-        self.name = name
-        self.profile = profile
+
         self.mode = mode
         if fixture_id is not None:
             self.fixture_id = fixture_id
@@ -588,20 +619,24 @@ class DMX_Fixture(PropertyGroup):
         self["blender_control_playmode"] = None
         self["blender_control_recording"] = None
 
-        # Create clean Collection
-        # (Blender creates the collection with selected objects/collections)
-        bpy.ops.collection.create(name=name)
-        self.collection = bpy.data.collections[name]
-
-        for c in self.collection.objects:
-            self.collection.objects.unlink(c)
-        for c in self.collection.children:
-            self.collection.children.unlink(c)
-
         # Import and deep copy Fixture Model Collection
         gdtf_profile = DMX_GDTF_File.load_gdtf_profile(profile)
         self.gdtf_long_name = gdtf_profile.long_name
         self.gdtf_manufacturer = gdtf_profile.manufacturer
+        if user_fixture_name is None:
+            user_fixture_name = gdtf_profile.name
+
+        self.user_fixture_name = user_fixture_name
+
+        regenerate_name = self.profile is not None and self.profile != profile
+
+        self.profile = profile
+
+        if self.name is None or regenerate_name:
+            self.name = generate_fixture_name(gdtf_profile.name)
+
+        # Create clean Collection
+        self.collection = bpy.data.collections.new(self.name)
 
         # Handle if dmx mode doesn't exist (maybe this is MVR import and GDTF files were replaced)
         # use mode[0] as default
@@ -740,6 +775,10 @@ class DMX_Fixture(PropertyGroup):
             elif obj.get("2d_symbol", None) == "all":
                 self.objects.add().name = "2D Symbol"
                 self.objects["2D Symbol"].object = links[obj.name]
+            elif obj.get("text_label", None) == "text_label":
+                obj.data = obj.data.copy()  # ensure unique data block for each
+                self.objects.add().name = "Text Label"
+                self.objects["Text Label"].object = links[obj.name]
 
             # Link all other object to collection
             self.collection.objects.link(links[obj.name])
@@ -756,8 +795,9 @@ class DMX_Fixture(PropertyGroup):
                 if hasattr(constraint.target, "name"):
                     constraint.target = links[constraint.target.name]
 
+        # bpy.context.view_layer.update()
+        # Skip per-fixture depsgraph updates for import speed.
         # (Edit) Reload old positions and rotations
-        bpy.context.view_layer.update()
         for obj in self.objects:
             if obj.object.get("geometry_root", False):
                 if obj.name in old_pos:
@@ -862,26 +902,17 @@ class DMX_Fixture(PropertyGroup):
                 obj.hide_viewport = not bpy.context.scene.dmx.display_2D  # keyframing
                 obj.hide_render = not bpy.context.scene.dmx.display_2D
                 continue
+            if obj.get("text_label", None) == "text_label":
+                obj.hide_set(not bpy.context.scene.dmx.display_2D)
+                obj.hide_viewport = not bpy.context.scene.dmx.display_2D  # keyframing
+                obj.hide_render = not bpy.context.scene.dmx.display_2D
+                continue
 
             obj.hide_select = not bpy.context.scene.dmx.select_geometries
 
         self.clear()
         self.hide_gobo()
-        d = DMX_OT_ArrangeSelected()
-        for item in self.gobo_materials:
-            ntree = item.material.node_tree
-            d.process_tree(ntree)
-        for item in self.geometry_nodes:
-            ntree = item.node
-            d.process_tree(ntree)
-
-        for light in self.lights:  # CYCLES
-            light_obj = light.object
-            ntree = light_obj.data.node_tree
-            d.process_tree(ntree)
-        self.clear()
-
-        self.render()
+        # self.render()
 
     def process_channels(self, dmx_mode_channels, channels):
         for dmx_channel in dmx_mode_channels:
@@ -1323,6 +1354,11 @@ class DMX_Fixture(PropertyGroup):
             if channel.offsets_bytes > 1:
                 dmx_value_fine = dmx_data[channel.dmx_break][channel.offsets[1]]
                 dmx_value_final = (dmx_value_coarse << 8) | dmx_value_fine
+
+            # Default to the channel's own attribute when fixture functions are disabled.
+            channel_function_attribute = channel.attribute
+            channel_function_physical_value = None
+            channel_set_wheel_slot = None
 
             skip_attr_search = False
             if "cached_channel" in channel:
@@ -2425,6 +2461,8 @@ class DMX_Fixture(PropertyGroup):
                     obj.hide_render = not bpy.context.scene.dmx.display_pigtails
                 if obj.get("2d_symbol", None):
                     continue
+                if obj.get("text_label", None):
+                    continue
                 obj.hide_set(False)
                 obj.hide_viewport = False  # keyframing
                 obj.hide_render = False
@@ -2496,6 +2534,8 @@ class DMX_Fixture(PropertyGroup):
         if dmx.display_2D:
             for obj in self.collection.objects:
                 if obj.get("2d_symbol", None):
+                    continue
+                if obj.get("text_label", None):
                     continue
                 obj.hide_set(True)
                 obj.hide_viewport = True  # need for keyframing
@@ -2749,7 +2789,7 @@ class DMX_Fixture(PropertyGroup):
             if obj.object.get("geometry_root", False):
                 matrix = self._matrix_to_mvr_units(obj.object.matrix_world)
             if "Target" in obj.name:
-                uuid_focus_point = obj.object.get("uuid", None)
+                uuid_focus_point = obj.object.get("Target ID", None)
 
         r, g, b = list(self.gel_color_rgb)[:3]
         x, y, z = rgb2xyY(r, g, b)
@@ -2764,17 +2804,64 @@ class DMX_Fixture(PropertyGroup):
             for index, dmx_break in enumerate(self.dmx_breaks)
         ]
 
+        connections = None
+        connections_xml = (self.mvr_connections_xml or "").strip()
+        if connections_xml:
+            try:
+                connections_node = ElementTree.fromstring(connections_xml)
+                if connections_node.tag != "Connections":
+                    connections_node = connections_node.find("Connections")
+                if connections_node is not None:
+                    connections = pymvr.Connections(xml_node=connections_node)
+            except Exception as exc:
+                DMX_Log.log.warning(
+                    f"Failed to parse MVR Connections XML for fixture {self.uuid}: {exc}"
+                )
+
+        protocols = None
+        protocols_xml = (self.mvr_protocols_xml or "").strip()
+        if protocols_xml:
+            try:
+                protocols_node = ElementTree.fromstring(protocols_xml)
+                if protocols_node.tag != "Protocols":
+                    protocols_node = protocols_node.find("Protocols")
+                if protocols_node is not None:
+                    protocols = pymvr.Protocols(xml_node=protocols_node)
+            except Exception as exc:
+                DMX_Log.log.warning(
+                    f"Failed to parse MVR Protocols XML for fixture {self.uuid}: {exc}"
+                )
+
+        networks = []
+        networks_xml = (self.mvr_addresses_networks_xml or "").strip()
+        if networks_xml:
+            try:
+                addresses_node = ElementTree.fromstring(networks_xml)
+                if addresses_node.tag != "Addresses":
+                    addresses_node = addresses_node.find("Addresses")
+                if addresses_node is not None:
+                    networks = [
+                        pymvr.Network(xml_node=i)
+                        for i in addresses_node.findall("Network")
+                    ]
+            except Exception as exc:
+                DMX_Log.log.warning(
+                    f"Failed to parse MVR Addresses Network XML for fixture {self.uuid}: {exc}"
+                )
+
         return pymvr.Fixture(
-            name=self.name,
+            name=self.user_fixture_name,
             uuid=self.uuid,
             gdtf_spec=self.profile,
             gdtf_mode=self.mode,
             fixture_id=self.fixture_id,
-            addresses=pymvr.Addresses(addresses=new_addresses),
+            addresses=pymvr.Addresses(addresses=new_addresses, networks=networks),
             matrix=pymvr.Matrix(matrix),
             focus=uuid_focus_point,
             color=color,
             classing=self.classing,
+            connections=connections,
+            protocols=protocols,
         )
 
     def focus_to_mvr_focus_point(self):
@@ -2782,15 +2869,17 @@ class DMX_Fixture(PropertyGroup):
             if "Target" in obj.name:
                 matrix = None
                 uuid_ = None
+                uuid_ = obj.object.get("Target ID", None)
+                if uuid_ is None:
+                    return
                 matrix = self._matrix_to_mvr_units(obj.object.matrix_world)
-                uuid_ = obj.object.get("uuid", None)
                 if matrix is None or uuid_ is None:
                     DMX_Log.log.error("Matrix or uuid of a Target not defined")
                     return
                 return pymvr.FocusPoint(
                     matrix=pymvr.Matrix(matrix),
                     uuid=uuid_,
-                    name=f"Target for {self.name}",
+                    name=f"Target for {self.user_fixture_name}",
                 )
 
     def follow_target_constraint_enable(self, enabled):
