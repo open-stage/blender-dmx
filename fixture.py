@@ -522,6 +522,12 @@ class DMX_Fixture(PropertyGroup):
         default = ""
             )
 
+    mvr_addresses_networks_xml: StringProperty(
+        name = "MVR Addresses Networks XML",
+        description = "Raw MVR <Addresses> Network XML for round-tripping",
+        default = ""
+            )
+
     dmx_breaks:  CollectionProperty(
             name = "DMX Break",
             type = DMX_Break)
@@ -2806,13 +2812,30 @@ class DMX_Fixture(PropertyGroup):
                     f"Failed to parse MVR Connections XML for fixture {self.uuid}: {exc}"
                 )
 
+        networks = []
+        networks_xml = (self.mvr_addresses_networks_xml or "").strip()
+        if networks_xml:
+            try:
+                addresses_node = ElementTree.fromstring(networks_xml)
+                if addresses_node.tag != "Addresses":
+                    addresses_node = addresses_node.find("Addresses")
+                if addresses_node is not None:
+                    networks = [
+                        pymvr.Network(xml_node=i)
+                        for i in addresses_node.findall("Network")
+                    ]
+            except Exception as exc:
+                DMX_Log.log.warning(
+                    f"Failed to parse MVR Addresses Network XML for fixture {self.uuid}: {exc}"
+                )
+
         return pymvr.Fixture(
             name=self.user_fixture_name,
             uuid=self.uuid,
             gdtf_spec=self.profile,
             gdtf_mode=self.mode,
             fixture_id=self.fixture_id,
-            addresses=pymvr.Addresses(addresses=new_addresses),
+            addresses=pymvr.Addresses(addresses=new_addresses, networks=networks),
             matrix=pymvr.Matrix(matrix),
             focus=uuid_focus_point,
             color=color,
