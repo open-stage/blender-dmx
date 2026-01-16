@@ -522,6 +522,12 @@ class DMX_Fixture(PropertyGroup):
         default = ""
             )
 
+    mvr_protocols_xml: StringProperty(
+        name = "MVR Protocols XML",
+        description = "Raw MVR <Protocols> XML for round-tripping",
+        default = ""
+            )
+
     mvr_addresses_networks_xml: StringProperty(
         name = "MVR Addresses Networks XML",
         description = "Raw MVR <Addresses> Network XML for round-tripping",
@@ -2812,6 +2818,20 @@ class DMX_Fixture(PropertyGroup):
                     f"Failed to parse MVR Connections XML for fixture {self.uuid}: {exc}"
                 )
 
+        protocols = None
+        protocols_xml = (self.mvr_protocols_xml or "").strip()
+        if protocols_xml:
+            try:
+                protocols_node = ElementTree.fromstring(protocols_xml)
+                if protocols_node.tag != "Protocols":
+                    protocols_node = protocols_node.find("Protocols")
+                if protocols_node is not None:
+                    protocols = pymvr.Protocols(xml_node=protocols_node)
+            except Exception as exc:
+                DMX_Log.log.warning(
+                    f"Failed to parse MVR Protocols XML for fixture {self.uuid}: {exc}"
+                )
+
         networks = []
         networks_xml = (self.mvr_addresses_networks_xml or "").strip()
         if networks_xml:
@@ -2841,6 +2861,7 @@ class DMX_Fixture(PropertyGroup):
             color=color,
             classing=self.classing,
             connections=connections,
+            protocols=protocols,
         )
 
     def focus_to_mvr_focus_point(self):
