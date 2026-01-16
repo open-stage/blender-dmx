@@ -1019,6 +1019,11 @@ def load_mvr(
         new_class.name = "Focus Points"
         new_class.uuid = str(py_uuid.uuid4())
 
+    # Pre-create symdef collections by UUID so nested symbols resolve regardless of order.
+    for symdef in symdefs:
+        if symdef.uuid not in data_collect:
+            data_collect.new(symdef.uuid)
+
     for aux_idx, symdef in enumerate(symdefs):
         if aux_dir and symdef.name in aux_dir.children:
             aux_collection = aux_dir.children.get(symdef.name)
