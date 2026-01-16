@@ -820,7 +820,6 @@ def add_mvr_fixture(
             classing=fixture.classing,
             user_fixture_name=fixture.name,
         )
-        existing_fixture.mvr_connections_xml = connections_xml
         added_fixture = existing_fixture
     else:
         if isinstance(fixture.color, str):
@@ -845,8 +844,9 @@ def add_mvr_fixture(
             user_fixture_name=fixture.name,
         )
         added_fixture = dmx.findFixtureByUUID(fixture.uuid)
-        if added_fixture:
-            added_fixture.mvr_connections_xml = connections_xml
+
+    if added_fixture:
+        added_fixture.mvr_connections_xml = connections_xml
 
     if parent_object is not None:
         direct_fixture_children.append(
