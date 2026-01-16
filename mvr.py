@@ -446,9 +446,12 @@ def get_child_list(
                 create_transform_property(group_empty)
                 if parent_blender_object is not None:
                     group_empty.parent = parent_blender_object
-                    group_empty.matrix_parent_inverse = (
-                        parent_blender_object.matrix_world.inverted()
-                    )
+                    try:
+                        group_empty.matrix_parent_inverse = (
+                            parent_blender_object.matrix_world.inverted()
+                        )
+                    except ValueError:
+                        group_empty.matrix_parent_inverse = Matrix.Identity(4)
                 group_collection.objects.link(group_empty)
                 get_child_list(
                     dmx,
