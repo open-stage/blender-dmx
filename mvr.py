@@ -81,6 +81,16 @@ def serialize_connections_xml(connections):
     return ElementTree.tostring(connections_node, encoding="unicode")
 
 
+def serialize_addresses_networks_xml(addresses):
+    if not addresses or len(addresses.networks) == 0:
+        return ""
+    root = ElementTree.Element("Root")
+    addresses_node = ElementTree.SubElement(root, "Addresses")
+    for network in addresses.networks:
+        network.to_xml(addresses_node)
+    return ElementTree.tostring(addresses_node, encoding="unicode")
+
+
 def get_matrix(obj, mtx):
     mtx_data = obj.matrix.matrix
     check_float = any(isinstance(i, float) for i in set().union(sum(mtx_data, [])))
@@ -786,6 +796,7 @@ def add_mvr_fixture(
         if address.address > 0
     ]
     connections_xml = serialize_connections_xml(fixture.connections)
+    networks_xml = serialize_addresses_networks_xml(fixture.addresses)
     null_matrix = pymvr.Matrix([[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]])
     # ensure that fixture is not scaled to 0
     if fixture.matrix == null_matrix:
@@ -847,6 +858,7 @@ def add_mvr_fixture(
 
     if added_fixture:
         added_fixture.mvr_connections_xml = connections_xml
+        added_fixture.mvr_addresses_networks_xml = networks_xml
 
     if parent_object is not None:
         direct_fixture_children.append(
