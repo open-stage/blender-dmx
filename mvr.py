@@ -126,6 +126,25 @@ def trans_matrix(trans_mtx):
     return trans_matrix
 
 
+def ensure_unique_uuid(node, import_globals):
+    if node is None or isinstance(node, pymvr.Symdef):
+        return
+    if getattr(node, "_dmx_uuid_fixed", False):
+        import_globals.seen_uuids.add(node.uuid)
+        return
+    if node.uuid in import_globals.seen_uuids:
+        new_uuid = str(py_uuid.uuid4())
+        DMX_Log.log.info(
+            f"Duplicate UUID detected during import: {node.uuid} -> {new_uuid}"
+        )
+        node.uuid = new_uuid
+        setattr(node, "_dmx_uuid_fixed", True)
+        import_globals.seen_uuids.add(new_uuid)
+        return
+    import_globals.seen_uuids.add(node.uuid)
+    setattr(node, "_dmx_uuid_fixed", True)
+
+
 def check_existing(node, collection, mscale):
     cls_name = node.__class__.__name__
     existing = any(col.get("UUID") == node.uuid for col in collection.children)
@@ -195,6 +214,7 @@ def get_child_list(
 
     if hasattr(child_list, "trusses") and child_list.trusses:
         for truss_idx, truss_obj in enumerate(child_list.trusses):
+            ensure_unique_uuid(truss_obj, import_globals)
             existing = check_existing(truss_obj, layer_collection, mscale)
 
             if fixture_group is None:
@@ -231,6 +251,7 @@ def get_child_list(
     # TODO: reuse
     if hasattr(child_list, "projectors") and child_list.projectors:
         for projector_idx, projector_obj in enumerate(child_list.projectors):
+            ensure_unique_uuid(projector_obj, import_globals)
             existing = check_existing(projector_obj, layer_collection, mscale)
 
             if not existing and import_globals.import_projectors:
@@ -261,6 +282,7 @@ def get_child_list(
                 )
     if hasattr(child_list, "supports") and child_list.supports:
         for projector_idx, projector_obj in enumerate(child_list.supports):
+            ensure_unique_uuid(projector_obj, import_globals)
             existing = check_existing(projector_obj, layer_collection, mscale)
 
             if not existing and import_globals.import_supports:
@@ -292,6 +314,7 @@ def get_child_list(
 
     if hasattr(child_list, "video_screens") and child_list.video_screens:
         for projector_idx, projector_obj in enumerate(child_list.video_screens):
+            ensure_unique_uuid(projector_obj, import_globals)
             existing = check_existing(projector_obj, layer_collection, mscale)
 
             if not existing and import_globals.import_video_screens:
@@ -323,6 +346,7 @@ def get_child_list(
 
     if hasattr(child_list, "scene_objects") and child_list.scene_objects:
         for projector_idx, projector_obj in enumerate(child_list.scene_objects):
+            ensure_unique_uuid(projector_obj, import_globals)
             existing = check_existing(projector_obj, layer_collection, mscale)
 
             if not existing and import_globals.import_scene_objects:
@@ -354,6 +378,7 @@ def get_child_list(
 
     if hasattr(child_list, "fixtures") and child_list.fixtures:
         for fixture_idx, fixture in enumerate(child_list.fixtures):
+            ensure_unique_uuid(fixture, import_globals)
             focus_points = []
             if fixture.focus is not None:
                 focus_points.extend(
@@ -392,6 +417,7 @@ def get_child_list(
 
     if hasattr(child_list, "group_objects") and child_list.group_objects:
         for group_idx, group in enumerate(child_list.group_objects):
+            ensure_unique_uuid(group, import_globals)
             if hasattr(group, "child_list") and group.child_list:
                 layergroup_idx = f"{layer_index}-{group_idx}"
                 group_name = group.name or "Group"
@@ -626,6 +652,9 @@ def process_mvr_object(
             ):
                 collection.children.link(active_collect)
 
+    if not symdef_id and active_collect is not None:
+        objectData.setdefault(uid, active_collect)
+
     for idx, geometry in enumerate(geometrys):
         file = geometry.file_name
         extract_mvr_object(file, mvr_scene, folder, import_globals)
@@ -643,8 +672,6 @@ def process_mvr_object(
     for idx, symbol in enumerate(symbols):
         symbol_type = symbol.__class__.__name__
         symbol_mtx = get_matrix(symbol, context_matrix)
-        if not symdef_id:
-            symbol_mtx = get_matrix(mvr_object, symbol_mtx)
         symbol_collect = data_collect.get(symbol.symdef)
         if symbol_collect:
             if not len(name):
@@ -734,7 +761,8 @@ def transform_objects(layers, mscale):
             transform_matrix(fixture, parent_mtx)
         for group in childlist.group_objects:
             if hasattr(group, "child_list") and group.child_list:
-                collect_objects(group.child_list, parent_mtx)
+                group_mtx = get_matrix(group, parent_mtx)
+                collect_objects(group.child_list, group_mtx)
 
     for layer in layers:
         if hasattr(layer, "child_list") and layer.child_list:
@@ -961,6 +989,7 @@ def load_mvr(
 ):
     import_globals = SimpleNamespace(
         extracted={},
+        seen_uuids=set(),
         import_focus_points=import_focus_points,
         import_fixtures=import_fixtures,
         import_trusses=import_trusses,
