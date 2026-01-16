@@ -876,8 +876,10 @@ class DMX_GDTF:
             obj["2d_symbol"] = "all"
             objs["2d_symbol"] = obj
             obj.show_in_front = True
-            obj.active_material.grease_pencil.show_stroke = True
-
+            try:
+                obj.active_material.grease_pencil.show_stroke = True
+            except:
+                pass
             # svg.data.layers[...].frames[0].strokes[0]
             # add constraints
             constraint_copyLocation = obj.constraints.new(type="COPY_LOCATION")
