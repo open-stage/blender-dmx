@@ -1,5 +1,26 @@
 ### Changelog
 
+### 2.1.4
+
+* Add option for device label as 3D Text
+* Add Name + Fixture ID to 2D Label to allow proper device labels
+* Rework Fixture Name to be not dependent on Blender's requirements for unique
+  name
+* Fix broken fixture edit - add missing import
+* Handle issues with SVG loading
+* More strings translated to Chinese (Simplified Han script) by 大学没毕业
+* MVR Import:
+    * Handle MVR files with duplicated UUIDs
+    * Handle non-invertible parent matrices
+    * Traverse down nested symbols
+    * Ensure correct object symbol scaling
+* MVR Import/Export:
+    * Store protocols for round-tripping
+    * Store networks for round-tripping
+    * Store connections for round-tripping
+    * Improve GLB export
+    * Ensure layers with same name are exported only once
+
 ### 2.1.3
 
 * Cache wm lookup, slow down re-render on network signals to 24fps
