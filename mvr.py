@@ -111,6 +111,8 @@ def get_matrix(obj, mtx):
             scaled[3][0] *= MVR_UNIT_SCALE
             scaled[3][1] *= MVR_UNIT_SCALE
             scaled[3][2] *= MVR_UNIT_SCALE
+        if len(scaled) >= 4 and len(scaled[3]) >= 4:
+            scaled[3][3] = 1.0
         obj_mtx = Matrix(scaled).transposed()
         global_matrix = obj_mtx @ mtx
     else:
