@@ -882,23 +882,62 @@ def add_mvr_fixture(
             fixture.color = pymvr.Color(str_repr=fixture.color)
         color_rgb = xyY2rgbaa(fixture.color)
         gel_color = [c / 255 for c in color_rgb] + [1]
-        dmx.addFixture(
-            fixture.gdtf_spec,
-            fixture.gdtf_mode or "",
-            addresses,
-            gel_color,
-            True,
-            add_target,
-            position=fixture_matrix,
-            focus_point=focus_point,
-            uuid=fixture.uuid,
-            fixture_id=fixture.fixture_id,
-            custom_id=fixture.custom_id,
-            fixture_id_numeric=fixture.fixture_id_numeric,
-            unit_number=fixture.unit_number,
-            classing=fixture.classing,
-            user_fixture_name=fixture.name,
-        )
+        try:
+            dmx.addFixture(
+                fixture.gdtf_spec,
+                fixture.gdtf_mode or "",
+                addresses,
+                gel_color,
+                True,
+                add_target,
+                position=fixture_matrix,
+                focus_point=focus_point,
+                uuid=fixture.uuid,
+                fixture_id=fixture.fixture_id,
+                custom_id=fixture.custom_id,
+                fixture_id_numeric=fixture.fixture_id_numeric,
+                unit_number=fixture.unit_number,
+                classing=fixture.classing,
+                user_fixture_name=fixture.name,
+                show_error=False,
+            )
+        except:
+            fixture.gdtf_spec = "BlenderDMX@LED_PAR_64@ver6.gdtf"
+
+            dmx.addFixture(
+                fixture.gdtf_spec,
+                fixture.gdtf_mode or "",
+                addresses,
+                gel_color,
+                True,
+                add_target,
+                position=fixture_matrix,
+                focus_point=focus_point,
+                uuid=fixture.uuid,
+                fixture_id=fixture.fixture_id,
+                custom_id=fixture.custom_id,
+                fixture_id_numeric=fixture.fixture_id_numeric,
+                unit_number=fixture.unit_number,
+                classing=fixture.classing,
+                user_fixture_name=fixture.name,
+            )
+            dmx.addFixture(
+                fixture.gdtf_spec,
+                fixture.gdtf_mode or "",
+                addresses,
+                gel_color,
+                True,
+                add_target,
+                position=fixture_matrix,
+                focus_point=focus_point,
+                uuid=fixture.uuid,
+                fixture_id=fixture.fixture_id,
+                custom_id=fixture.custom_id,
+                fixture_id_numeric=fixture.fixture_id_numeric,
+                unit_number=fixture.unit_number,
+                classing=fixture.classing,
+                user_fixture_name=fixture.name,
+            )
         added_fixture = dmx.findFixtureByUUID(fixture.uuid)
 
     if added_fixture:

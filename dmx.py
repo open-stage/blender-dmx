@@ -2100,6 +2100,7 @@ class DMX(PropertyGroup):
         unit_number=0,
         classing=None,
         user_fixture_name="",
+        show_error=True,
     ):
         # TODO: fix order of attributes to match fixture.build()
         dmx = bpy.context.scene.dmx
@@ -2126,13 +2127,16 @@ class DMX(PropertyGroup):
         except Exception as e:
             DMX_Log.log.error(f"Error while adding fixture {e}")
             dmx.fixtures.remove(len(dmx.fixtures) - 1)
-            ShowMessageBox(
-                f"{e}",
-                "Error while adding a fixture, see console for more details",
-                "ERROR",
-            )
             traceback.print_exception(e)
             DMX_Log.log.exception(e)
+            if show_error:
+                ShowMessageBox(
+                    f"{e}",
+                    "Error while adding a fixture, see console for more details",
+                    "ERROR",
+                )
+            else:
+                raise Exception("Error parsing fixture data")
 
     def removeFixture(self, fixture):
         try:
