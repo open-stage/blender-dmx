@@ -148,7 +148,12 @@ class DMX_OP_MVR_X_Export(Operator):
         ADDON_PATH = dmx.get_addon_path()
         uuid = str(py_uuid.uuid4()).upper()
         path = os.path.join(ADDON_PATH, "assets", "mvrs", f"{uuid}.mvr")
-        result = dmx.export_mvr(path)
+        result = dmx.export_mvr(
+            path,
+            export_focus_points=mvr_x.export_focus_points,
+            selected_fixtures_only=mvr_x.selected_fixtures_only,
+            export_fixtures_only=mvr_x.export_fixtures_only,
+        )
         DMX_Log.log.info(path)
         if result.ok:
             commit = SimpleNamespace(
@@ -474,10 +479,14 @@ class DMX_PT_DMX_MVR_X(Panel):
                 row.enabled = not dmx.mvrx_enabled and not mvr_x.new_group_bool
 
         if dmx.mvrx_enabled or dmx.mvrx_socket_client_enabled:
-            row = layout.row()
-            row.operator(
+            box = layout.column().box()
+            box.operator(
                 "dmx.mvr_x_export", text=_("Share current version"), icon="EXPORT"
             )
+            box.prop(mvr_x, "export_focus_points")
+            box.prop(mvr_x, "selected_fixtures_only")
+            box.prop(mvr_x, "export_fixtures_only")
+
             row = layout.row()
             row.operator(
                 "dmx.load_and_share_mvr", text=_("Pick and Share MVR"), icon="FILE"

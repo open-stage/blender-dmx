@@ -173,3 +173,23 @@ class DMX_MVR_Xchange(PropertyGroup):
     new_mvr_x_group_string: StringProperty(
         name=_("Group"), description=_("Group"), default="WorkGroup", update=edit_group
     )
+
+    export_focus_points: BoolProperty(
+        name=_("Export Targets as MVR Focus Points"),
+        description=_("Export Targets as MVR Focus Points"),
+        default=True,
+    )
+
+    selected_fixtures_only: BoolProperty(
+        name=_("Export only selected fixtures"),
+        description=_(
+            "Export only selected fixtures (does not filter non-fixture objects)"
+        ),
+        default=False,
+    )
+
+    export_fixtures_only: BoolProperty(
+        name=_("Export fixtures only"),
+        description=_("Export fixtures only (skip all non-fixture objects)"),
+        default=False,
+    )
