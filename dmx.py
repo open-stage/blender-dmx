@@ -2101,6 +2101,7 @@ class DMX(PropertyGroup):
         classing=None,
         user_fixture_name="",
         show_error=True,
+        use_high_mesh=False,
     ):
         # TODO: fix order of attributes to match fixture.build()
         dmx = bpy.context.scene.dmx
@@ -2123,6 +2124,7 @@ class DMX(PropertyGroup):
                 unit_number,
                 classing=classing,
                 user_fixture_name=user_fixture_name,
+                use_high_mesh=use_high_mesh,
             )
         except Exception as e:
             DMX_Log.log.error(f"Error while adding fixture {e}")
@@ -2236,6 +2238,7 @@ class DMX(PropertyGroup):
         import_projectors=True,
         import_supports=True,
         import_video_screens=True,
+        use_high_mesh=False,
     ):
         bpy.context.window_manager.dmx.pause_render = (
             True  # this stops the render loop, to prevent slowness and crashes
@@ -2255,6 +2258,7 @@ class DMX(PropertyGroup):
             import_projectors=import_projectors,
             import_supports=import_supports,
             import_video_screens=import_video_screens,
+            use_high_mesh=use_high_mesh,
         )
 
         bpy.context.window_manager.dmx.pause_render = False  # re-enable render loop

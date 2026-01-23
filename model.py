@@ -29,14 +29,18 @@ class DMX_Model:
     #   This collection is then deep-copied by the Fixture class
     #   to create a fixture collection.
     @staticmethod
-    def getFixtureModelCollection(profile, dmx_mode, display_beams, add_target):
+    def getFixtureModelCollection(
+        profile, dmx_mode, display_beams, add_target, use_high_mesh
+    ):
         collections = bpy.data.collections
 
         # Make sure the profile was passed as an argument, otherwise return None
         if profile is None:
             return None
 
-        name = DMX_GDTF.getName(profile, dmx_mode, display_beams, add_target)
+        name = DMX_GDTF.getName(
+            profile, dmx_mode, display_beams, add_target, use_high_mesh
+        )
         # If the fixture collection was already imported for this model
         # just return it
         if name in collections:
@@ -46,7 +50,7 @@ class DMX_Model:
         # Otherwise, build it from profile
         try:
             new_collection = DMX_GDTF.buildCollection(
-                profile, dmx_mode, display_beams, add_target
+                profile, dmx_mode, display_beams, add_target, use_high_mesh
             )
         except Exception as e:
             DMX_Log.log.error(f"Error {e}")

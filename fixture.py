@@ -543,6 +543,11 @@ class DMX_Fixture(PropertyGroup):
         description = _("Use Channel Functions of this fixture"),
         default = True)
 
+    use_high_mesh: BoolProperty(
+        name = _("Use High Quality Models"),
+        description = _("Use high quality mesh files if present"),
+        default = False)
+
     # fmt: on
 
     def build(
@@ -562,6 +567,7 @@ class DMX_Fixture(PropertyGroup):
         unit_number=0,
         classing="",
         user_fixture_name="",
+        use_high_mesh=False,
     ):
         bpy.ops.object.select_all(action="DESELECT")
         for obj in bpy.data.objects:
@@ -598,6 +604,7 @@ class DMX_Fixture(PropertyGroup):
         self.gel_color_rgb = [int(255 * i) for i in gel_color[:3]]
         self.display_beams = display_beams
         self.add_target = add_target
+        self.use_high_mesh = use_high_mesh
 
         # (Edit) Clear links and channel cache
         self.lights.clear()
@@ -644,7 +651,11 @@ class DMX_Fixture(PropertyGroup):
             self.mode = gdtf_profile.dmx_modes[0].name
 
         model_collection = DMX_Model.getFixtureModelCollection(
-            gdtf_profile, self.mode, self.display_beams, self.add_target
+            gdtf_profile,
+            self.mode,
+            self.display_beams,
+            self.add_target,
+            self.use_high_mesh,
         )
 
         dmx_mode = gdtf_profile.dmx_modes.get_mode_by_name(mode)

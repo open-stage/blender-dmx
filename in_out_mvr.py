@@ -160,6 +160,12 @@ class DMX_OT_Import_MVR(Operator, ImportHelper):
         default=True,
     )
 
+    use_high_mesh: BoolProperty(
+        name=_("Use GDTF High Quality Models"),
+        description=_("Use high quality mesh files if present"),
+        default=False,
+    )
+
     def draw(self, context):
         dmx = context.scene.dmx
         if not dmx.collection:
@@ -176,6 +182,9 @@ class DMX_OT_Import_MVR(Operator, ImportHelper):
         box = layout.column().box()
         row1 = box.row()
         row1.prop(self, "import_fixtures")
+        row7 = box.row()
+        row7.prop(self, "use_high_mesh")
+        row7.enabled = self.import_fixtures
         row2 = box.row()
         row2.prop(self, "import_focus_points")
         row2.enabled = self.import_fixtures
@@ -205,6 +214,7 @@ class DMX_OT_Import_MVR(Operator, ImportHelper):
                 import_supports=self.import_supports,
                 import_projectors=self.import_projectors,
                 import_video_screens=self.import_video_screens,
+                use_high_mesh=self.use_high_mesh,
             )
         return {"FINISHED"}
 

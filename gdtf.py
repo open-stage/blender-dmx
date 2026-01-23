@@ -201,16 +201,26 @@ class DMX_GDTF:
         return obj
 
     @staticmethod
-    def loadModel(profile, model):
+    def loadModel(profile, model, use_high_mesh):
         dmx = bpy.context.scene.dmx
         current_path = dmx.get_addon_path()
+        high = "_high" if use_high_mesh else ""
         extract_to_folder_path = os.path.join(
-            current_path, "assets", "models", profile.fixture_type_id
+            current_path,
+            "assets",
+            "models",
+            profile.fixture_type_id,
         )
         obj_dimension = Vector((model.length, model.width, model.height))
 
         if model.file.extension.lower() == "3ds":
-            inside_zip_path = f"models/3ds/{model.file.name}.{model.file.extension}"
+            inside_zip_path = (
+                f"models/3ds{high}/{model.file.name}.{model.file.extension}"
+            )
+
+            if inside_zip_path not in profile._package.namelist():
+                inside_zip_path = f"models/3ds/{model.file.name}.{model.file.extension}"
+
             profile._package.extract(inside_zip_path, extract_to_folder_path)
             file_name = os.path.join(extract_to_folder_path, inside_zip_path)
             try:
@@ -226,7 +236,15 @@ class DMX_GDTF:
                 traceback.print_exception(e)
                 bpy.ops.mesh.primitive_cube_add(size=0.1)
         else:
-            inside_zip_path = f"models/gltf/{model.file.name}.{model.file.extension}"
+            inside_zip_path = (
+                f"models/gltf{high}/{model.file.name}.{model.file.extension}"
+            )
+
+            if inside_zip_path not in profile._package.namelist():
+                inside_zip_path = (
+                    f"models/gltf/{model.file.name}.{model.file.extension}"
+                )
+
             profile._package.extract(inside_zip_path, extract_to_folder_path)
             file_name = os.path.join(extract_to_folder_path, inside_zip_path)
             bpy.ops.import_scene.gltf(filepath=file_name)
@@ -308,10 +326,10 @@ class DMX_GDTF:
         return obj
 
     @staticmethod
-    def buildCollection(profile, mode, display_beams, add_target):
+    def buildCollection(profile, mode, display_beams, add_target, use_high_mesh):
         # Create model collection
         collection = bpy.data.collections.new(
-            DMX_GDTF.getName(profile, mode, display_beams, add_target)
+            DMX_GDTF.getName(profile, mode, display_beams, add_target, use_high_mesh)
         )
         objs = {}
         # Get root geometry reference from the selected DMX Mode
@@ -385,7 +403,7 @@ class DMX_GDTF:
                 and model.primitive_type.value != "Pigtail"
             ):
                 try:
-                    obj = DMX_GDTF.loadModel(profile, model)
+                    obj = DMX_GDTF.loadModel(profile, model, use_high_mesh)
                 except Exception as e:
                     DMX_Log.log.error(f"Error importing 3D model: {profile.name} {e}")
                     DMX_Log.log.exception(e)
@@ -916,9 +934,9 @@ class DMX_GDTF:
         return collection
 
     @staticmethod
-    def getName(profile, dmx_mode, display_beams, add_target):
+    def getName(profile, dmx_mode, display_beams, add_target, use_high_mesh):
         revision = profile.revisions[-1].text if len(profile.revisions) else ""
-        name = f"{profile.manufacturer}, {profile.name}, {dmx_mode}, {revision}, {'with_beams' if display_beams else 'without_beams'}, {'with_target' if add_target else 'without_target'}"
+        name = f"{profile.manufacturer}, {profile.name}, {dmx_mode}, {revision}, {'with_beams' if display_beams else 'without_beams'}, {'with_target' if add_target else 'without_target'} {'high_mesh' if use_high_mesh else 'normal_mesh'}"
         # base64 encode the name as collections seems to have length limit
         # which causes collections not to be cached, thus slowing imports down
         name = hashlib.shake_256(name.encode()).hexdigest(5)

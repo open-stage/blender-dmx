@@ -875,6 +875,7 @@ def add_mvr_fixture(
             unit_number=fixture.unit_number,
             classing=fixture.classing,
             user_fixture_name=fixture.name,
+            use_high_mesh=import_globals.use_high_mesh,
         )
         added_fixture = existing_fixture
     else:
@@ -900,6 +901,7 @@ def add_mvr_fixture(
                 classing=fixture.classing,
                 user_fixture_name=fixture.name,
                 show_error=False,
+                use_high_mesh=import_globals.use_high_mesh,
             )
         except:
             fixture.gdtf_spec = "BlenderDMX@LED_PAR_64@ver6.gdtf"
@@ -920,6 +922,7 @@ def add_mvr_fixture(
                 unit_number=fixture.unit_number,
                 classing=fixture.classing,
                 user_fixture_name=fixture.name,
+                use_high_mesh=import_globals.use_high_mesh,
             )
             dmx.addFixture(
                 fixture.gdtf_spec,
@@ -937,6 +940,7 @@ def add_mvr_fixture(
                 unit_number=fixture.unit_number,
                 classing=fixture.classing,
                 user_fixture_name=fixture.name,
+                use_high_mesh=import_globals.use_high_mesh,
             )
         added_fixture = dmx.findFixtureByUUID(fixture.uuid)
 
@@ -1030,6 +1034,7 @@ def load_mvr(
     import_projectors,
     import_supports,
     import_video_screens,
+    use_high_mesh,
 ):
     import_globals = SimpleNamespace(
         extracted={},
@@ -1041,6 +1046,7 @@ def load_mvr(
         import_projectors=import_projectors,
         import_supports=import_supports,
         import_video_screens=import_video_screens,
+        use_high_mesh=use_high_mesh,
     )
 
     bpy.ops.object.select_all(action="DESELECT")
@@ -1227,7 +1233,7 @@ def load_mvr(
             if mvr_scene._package is not None:
                 mvr_scene._package.close()
 
-    print(f"INFO MVR scene loaded in {time.time() - start_time}.4f sec.")
+    print("INFO", f"MVR scene loaded in {time.time() - start_time}.4f sec.")
 
 
 def export_mvr(
