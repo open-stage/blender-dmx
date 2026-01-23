@@ -134,6 +134,12 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
         default=True,
     )
 
+    use_high_mesh: BoolProperty(
+        name=_("Use High Quality Models"),
+        description=_("Use high quality mesh files if present"),
+        default=False,
+    )
+
     increment_address: BoolProperty(
         name=_("Increment DMX address"),
         description=_("Increment DMX address"),
@@ -185,6 +191,7 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
         box.prop(self, "gel_color")
         box.prop(self, "display_beams")
         box.prop(self, "add_target")
+        box.prop(self, "use_high_mesh")
         box.prop(self, "increment_address")
         box.prop(self, "increment_fixture_id")
 
@@ -240,6 +247,7 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
                             self.add_target,
                             fixture_id=fixture_id,
                             user_fixture_name=None,
+                            use_high_mesh=self.use_high_mesh,
                         )
                         fixture = dmx.fixtures[-1]
                         DMX_Log.log.debug(f"Added fixture {fixture}")

@@ -206,6 +206,12 @@ class DMX_Fixture_AddEdit:
         default=True,
     )
 
+    use_high_mesh: BoolProperty(
+        name=_("Use High Quality Models"),
+        description=_("Use high quality mesh files if present"),
+        default=False,
+    )
+
     advanced_edit: BoolProperty(
         name=_("Advanced edit"),
         description="Re-build fixture structure during Advanced edit",
@@ -357,6 +363,7 @@ class DMX_Fixture_AddEdit:
                 self, "display_beams"
             )  #     Allow not to create and draw Beams (faster, only for emitter views)
             col.prop(self, "add_target")  #     Should a target be added to the fixture
+            col.prop(self, "use_high_mesh")  #     Use high mesh models
             col.prop(
                 self, "gel_color"
             )  #     This works when both adding AND when editing
@@ -402,6 +409,7 @@ class DMX_OT_Fixture_Add(DMX_Fixture_AddEdit, Operator):
                 self.add_target,
                 fixture_id=fixture_id,
                 user_fixture_name=self.user_fixture_name,
+                use_high_mesh=self.use_high_mesh,
             )
             fixture = dmx.fixtures[-1]
             DMX_Log.log.debug(f"Added fixture {fixture}")
@@ -470,6 +478,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                     uuid=fixture.uuid,
                     fixture_id=fixture.fixture_id,
                     user_fixture_name=self.user_fixture_name,
+                    use_high_mesh=self.use_high_mesh,
                 )
                 context.window_manager.dmx.pause_render = False
             else:
@@ -549,6 +558,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
                         uuid=fixture.uuid,
                         fixture_id=_fixture_id,
                         user_fixture_name=new_fixture_name,
+                        use_high_mesh=self.use_high_mesh,
                     )
                 if self.modify_address:
                     for fixture_break, edit_break in zip(
@@ -607,6 +617,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             self.advanced_edit = False
             self.display_beams = fixture.display_beams
             self.add_target = fixture.add_target
+            self.use_high_mesh = fixture.use_high_mesh
             self.units = 0
             self.fixture_id = fixture.fixture_id
             self.use_fixtures_channel_functions = fixture.use_fixtures_channel_functions
@@ -627,6 +638,7 @@ class DMX_OT_Fixture_Edit(Operator, DMX_Fixture_AddEdit):
             self.units = 0
             self.display_beams = True
             self.add_target = True
+            self.use_high_mesh = False
             self.advanced_edit = False
             self.fixture_id = selected[0].fixture_id
             self.use_fixtures_channel_functions = selected[
