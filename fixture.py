@@ -921,11 +921,16 @@ class DMX_Fixture(PropertyGroup):
             new_channel.name_ = dmx_channel.name
             new_channel.geometry = dmx_channel.geometry
             new_channel.dmx_break = dmx_channel.dmx_break
-            if dmx_channel.offset is not None:
+            is_virtual = False
+            if dmx_channel.offset is None:
+                # we detect virtual channels by no offset
+                is_virtual = True
+
+            if not is_virtual:
                 new_channel.offsets = tuple((dmx_channel.offset + [0])[:2])
                 new_channel.offsets_bytes = len(dmx_channel.offset)
             else:
-                # virtual channels are 8 bit now
+                # virtual channels are 8 bit for now
                 new_channel.offsets = (0, 0)
                 new_channel.offsets_bytes = 1
 
@@ -956,14 +961,16 @@ class DMX_Fixture(PropertyGroup):
 
                     # virtual channels have byte count 4 which is too much for blender int
                     # and we treat them as 8 bit only anyways
-                    if channel_function.dmx_from.byte_count > 2:
+                    # if channel_function.dmx_from.byte_count > 2:
+                    if is_virtual:
                         new_channel_function.dmx_from = (
                             channel_function.dmx_from.get_value()
                         )
                     else:
                         new_channel_function.dmx_from = channel_function.dmx_from.value
 
-                    if channel_function.dmx_to.byte_count > 2:
+                    # if channel_function.dmx_to.byte_count > 2:
+                    if is_virtual:
                         new_channel_function.dmx_to = (
                             channel_function.dmx_to.get_value()
                         )
@@ -980,12 +987,14 @@ class DMX_Fixture(PropertyGroup):
                     for channel_set in channel_function.channel_sets:
                         new_channel_set = new_channel_function.channel_sets.add()
                         new_channel_set.name_ = channel_set.name or ""
-                        if channel_set.dmx_from.byte_count > 2:
+                        # if channel_set.dmx_from.byte_count > 2:
+                        if is_virtual:
                             new_channel_set.dmx_from = channel_set.dmx_from.get_value()
                         else:
                             new_channel_set.dmx_from = channel_set.dmx_from.value
 
-                        if channel_set.dmx_to.byte_count > 2:
+                        # if channel_set.dmx_to.byte_count > 2:
+                        if is_virtual:
                             new_channel_set.dmx_to = channel_set.dmx_to.get_value()
                         else:
                             new_channel_set.dmx_to = channel_set.dmx_to.value

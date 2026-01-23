@@ -2588,6 +2588,7 @@ class DMX(PropertyGroup):
     def generate_default_channel_functions(self):
         self.default_channel_functions.clear()
         defaults = [
+            ["Dimmer", 0, 1],
             ["Zoom", 0, 120],
             ["Playmode", 0, 0],
             ["Recording", 0, 0],
