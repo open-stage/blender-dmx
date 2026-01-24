@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-11-30 11:56+0100\n"
+"POT-Creation-Date: 2026-01-24 10:26+0100\n"
 "PO-Revision-Date: 2025-10-24 19:02+0000\n"
 "Last-Translator: \"David D.\" <dadu042@users.noreply.hosted.weblate.org>\n"
 "Language: fr_FR\n"
@@ -89,6 +89,14 @@ msgstr "Nom"
 
 msgid "DMX"
 msgstr "DMX"
+
+#, fuzzy
+msgid "Fixture Name + ID"
+msgstr "Nom du projecteur"
+
+#, fuzzy
+msgid "3D Fixture Name + ID"
+msgstr "Nom du projecteur"
 
 msgid "Allow Selecting Geometries"
 msgstr ""
@@ -362,6 +370,12 @@ msgstr ""
 msgid "Use Channel Functions of this fixture"
 msgstr ""
 
+msgid "Use High Quality Models"
+msgstr ""
+
+msgid "Use high quality mesh files if present"
+msgstr ""
+
 msgid "DMX Universe"
 msgstr "Univers DMX"
 
@@ -428,12 +442,26 @@ msgstr "Importer écrans vidéo"
 msgid "Import Supports"
 msgstr "Importer supports"
 
+msgid "Use GDTF High Quality Models"
+msgstr ""
+
 msgid "Export Targets as MVR Focus Points"
 msgstr "Exporter cibles en tant que points de focalisation MVR"
 
 #, fuzzy
 msgid "Export only selected fixtures"
 msgstr "Supprimer projecteur"
+
+#, fuzzy
+msgid "Export only selected fixtures (does not filter non-fixture objects)"
+msgstr "Supprimer projecteur d'un fichier local"
+
+#, fuzzy
+msgid "Export fixtures only"
+msgstr "Importer projecteurs"
+
+msgid "Export fixtures only (skip all non-fixture objects)"
+msgstr ""
 
 msgid "Enable PSN Input"
 msgstr "Activer l’entrée PSN"
@@ -617,10 +645,6 @@ msgstr "DMX : ajout luminaire"
 #, fuzzy
 msgid "Add fixtures to the show"
 msgstr "Projecteurs DMX importés"
-
-#, python-brace-format
-msgid "Fixture named {} already exists"
-msgstr ""
 
 msgid "No GDTF Profile selected."
 msgstr "Pas de profil GDTF sélectionné."
@@ -1779,4 +1803,7 @@ msgstr "Univers"
 
 #~ msgid "Export Focus Points as Targets"
 #~ msgstr "Importer du fichier"
+
+#~ msgid "Fixture named {} already exists"
+#~ msgstr ""
 

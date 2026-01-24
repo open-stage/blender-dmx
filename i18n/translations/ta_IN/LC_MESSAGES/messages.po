@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-11-30 11:56+0100\n"
+"POT-Creation-Date: 2026-01-24 10:26+0100\n"
 "PO-Revision-Date: 2025-06-26 20:08+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language: ta_IN\n"
@@ -87,6 +87,14 @@ msgstr "பெயர்"
 
 msgid "DMX"
 msgstr "டி.எம்.எக்ச்"
+
+#, fuzzy
+msgid "Fixture Name + ID"
+msgstr "பொருத்தப்பட்ட பெயர்"
+
+#, fuzzy
+msgid "3D Fixture Name + ID"
+msgstr "பொருத்தப்பட்ட பெயர்"
 
 msgid "Allow Selecting Geometries"
 msgstr "வடிவவியலைத் தேர்ந்தெடுப்பதை அனுமதிக்கவும்"
@@ -362,6 +370,12 @@ msgstr ""
 msgid "Use Channel Functions of this fixture"
 msgstr ""
 
+msgid "Use High Quality Models"
+msgstr ""
+
+msgid "Use high quality mesh files if present"
+msgstr ""
+
 msgid "DMX Universe"
 msgstr "டி.எம்.எக்ச் யுனிவர்ச்"
 
@@ -435,6 +449,9 @@ msgstr "எம்.வி.ஆர் காட்சியை இறக்கு�
 msgid "Import Supports"
 msgstr "இறக்குமதி"
 
+msgid "Use GDTF High Quality Models"
+msgstr ""
+
 #, fuzzy
 msgid "Export Targets as MVR Focus Points"
 msgstr "எம்.வி.ஆர் கவனம் புள்ளிகளிலிருந்து இலக்குகளை உருவாக்கவும்"
@@ -442,6 +459,17 @@ msgstr "எம்.வி.ஆர் கவனம் புள்ளிகளி�
 #, fuzzy
 msgid "Export only selected fixtures"
 msgstr "தேர்ந்தெடுக்கப்பட்ட சாதனங்களில் அமைக்கவும்"
+
+#, fuzzy
+msgid "Export only selected fixtures (does not filter non-fixture objects)"
+msgstr "கீஃப்ரேம் மட்டுமே தேர்ந்தெடுக்கப்பட்ட சாதனங்கள் (ஆட்டோக்கிங் அல்ல)"
+
+#, fuzzy
+msgid "Export fixtures only"
+msgstr "சாதனங்கள்"
+
+msgid "Export fixtures only (skip all non-fixture objects)"
+msgstr ""
 
 msgid "Enable PSN Input"
 msgstr "PSN உள்ளீட்டை இயக்கவும்"
@@ -639,10 +667,6 @@ msgstr "டி.எம்.எக்ச்: பொருத்துதலைச�
 
 msgid "Add fixtures to the show"
 msgstr "நிகழ்ச்சியில் சாதனங்களைச் சேர்க்கவும்"
-
-#, python-brace-format
-msgid "Fixture named {} already exists"
-msgstr "{} ஏற்கனவே உள்ளது"
 
 msgid "No GDTF Profile selected."
 msgstr "சி.டி.டி.எஃப் சுயவிவரம் எதுவும் தேர்ந்தெடுக்கப்படவில்லை."
@@ -1600,4 +1624,7 @@ msgstr "பிரபஞ்சங்கள்"
 
 #~ msgid "Export Focus Points as Targets"
 #~ msgstr "கவனம் புள்ளிகளை இலக்குகளாக இறக்குமதி செய்யுங்கள்"
+
+#~ msgid "Fixture named {} already exists"
+#~ msgstr "{} ஏற்கனவே உள்ளது"
 

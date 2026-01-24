@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-11-30 11:56+0100\n"
+"POT-Creation-Date: 2026-01-24 10:26+0100\n"
 "PO-Revision-Date: 2024-12-17 21:00+0000\n"
 "Last-Translator: Fede Pre <fede0379@live.com>\n"
 "Language: it_IT\n"
@@ -87,6 +87,14 @@ msgstr "Nome"
 
 msgid "DMX"
 msgstr "DMX"
+
+#, fuzzy
+msgid "Fixture Name + ID"
+msgstr "Nome dispositivo"
+
+#, fuzzy
+msgid "3D Fixture Name + ID"
+msgstr "Nome dispositivo"
 
 msgid "Allow Selecting Geometries"
 msgstr "Consenti la selezione delle geometrie"
@@ -362,6 +370,12 @@ msgstr ""
 msgid "Use Channel Functions of this fixture"
 msgstr ""
 
+msgid "Use High Quality Models"
+msgstr ""
+
+msgid "Use high quality mesh files if present"
+msgstr ""
+
 msgid "DMX Universe"
 msgstr "Universo DMX"
 
@@ -435,6 +449,9 @@ msgstr "Importa Scena MVR"
 msgid "Import Supports"
 msgstr "Importa commit"
 
+msgid "Use GDTF High Quality Models"
+msgstr ""
+
 #, fuzzy
 msgid "Export Targets as MVR Focus Points"
 msgstr "Crea Obiettivi da Punti Focus MVR"
@@ -442,6 +459,17 @@ msgstr "Crea Obiettivi da Punti Focus MVR"
 #, fuzzy
 msgid "Export only selected fixtures"
 msgstr "Imposta sui dispositivi selezionati"
+
+#, fuzzy
+msgid "Export only selected fixtures (does not filter non-fixture objects)"
+msgstr "Aggiungi keyframe solo per le luci selezionate (non per auto keyframe)"
+
+#, fuzzy
+msgid "Export fixtures only"
+msgstr "Dispositivi"
+
+msgid "Export fixtures only (skip all non-fixture objects)"
+msgstr ""
 
 msgid "Enable PSN Input"
 msgstr "Abilita Ingresso PSN"
@@ -639,10 +667,6 @@ msgstr "DMX: Aggiungi Dispositivo"
 
 msgid "Add fixtures to the show"
 msgstr "Aggiungi Dispositivi allo spettacolo"
-
-#, python-brace-format
-msgid "Fixture named {} already exists"
-msgstr "Il dispositivo denominato {} esiste già"
 
 msgid "No GDTF Profile selected."
 msgstr "Nessun Profilo GDTF selezionato."
@@ -1779,4 +1803,7 @@ msgstr "Universi"
 
 #~ msgid "Export Focus Points as Targets"
 #~ msgstr "Importa Punti Focus come Obiettivi"
+
+#~ msgid "Fixture named {} already exists"
+#~ msgstr "Il dispositivo denominato {} esiste già"
 

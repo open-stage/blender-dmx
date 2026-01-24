@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-11-30 11:56+0100\n"
+"POT-Creation-Date: 2026-01-24 10:26+0100\n"
 "PO-Revision-Date: 2025-08-23 04:02+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language: de_DE\n"
@@ -87,6 +87,14 @@ msgstr "Name"
 
 msgid "DMX"
 msgstr "DMX"
+
+#, fuzzy
+msgid "Fixture Name + ID"
+msgstr "Leuchtenname"
+
+#, fuzzy
+msgid "3D Fixture Name + ID"
+msgstr "Leuchtenname"
 
 msgid "Allow Selecting Geometries"
 msgstr "Auswahl von Geometrien erlauben"
@@ -360,6 +368,12 @@ msgstr "Verwendung von Leuchten Physikalische Eigenschaften"
 msgid "Use Channel Functions of this fixture"
 msgstr "Kanalfunktionen dieser Leuchte verwenden"
 
+msgid "Use High Quality Models"
+msgstr ""
+
+msgid "Use high quality mesh files if present"
+msgstr ""
+
 msgid "DMX Universe"
 msgstr "DMX-Universum"
 
@@ -427,11 +441,25 @@ msgstr "Videobildschirme importieren"
 msgid "Import Supports"
 msgstr "Stützen importieren"
 
+msgid "Use GDTF High Quality Models"
+msgstr ""
+
 msgid "Export Targets as MVR Focus Points"
 msgstr "Ziele als MVR-Fokuspunkte exportieren"
 
 msgid "Export only selected fixtures"
 msgstr "Nur ausgewählte Leuchten exportieren"
+
+#, fuzzy
+msgid "Export only selected fixtures (does not filter non-fixture objects)"
+msgstr "Nur ausgewählte Leuchten als Keyframes verwenden (nicht für Autokeying)"
+
+#, fuzzy
+msgid "Export fixtures only"
+msgstr "Leuchten importieren"
+
+msgid "Export fixtures only (skip all non-fixture objects)"
+msgstr ""
 
 msgid "Enable PSN Input"
 msgstr "PSN Eingabe aktivieren"
@@ -605,10 +633,6 @@ msgstr "DMX: Leuchte hinzufügen"
 
 msgid "Add fixtures to the show"
 msgstr "Leuchten zur Show hinzufügen"
-
-#, python-brace-format
-msgid "Fixture named {} already exists"
-msgstr "Leuchte mit dem Namen {} existiert bereits"
 
 msgid "No GDTF Profile selected."
 msgstr "Kein GDTF-Profil ausgewählt."
@@ -1712,4 +1736,7 @@ msgstr "Universen"
 
 #~ msgid "Export Focus Points as Targets"
 #~ msgstr "Importieren Sie Fokuspunkte als Ziele"
+
+#~ msgid "Fixture named {} already exists"
+#~ msgstr "Leuchte mit dem Namen {} existiert bereits"
 

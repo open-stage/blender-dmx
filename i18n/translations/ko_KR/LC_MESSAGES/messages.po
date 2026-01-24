@@ -1,4 +1,4 @@
-# Translations template for PROJECT.
+# Korean (South Korea) translations for PROJECT.
 # Copyright (C) 2025 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
@@ -7,17 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-11-30 11:56+0100\n"
+"POT-Creation-Date: 2026-01-24 10:26+0100\n"
 "PO-Revision-Date: 2025-12-13 06:00+0000\n"
 "Last-Translator: Hwanyong Lee <hwan@ajou.ac.kr>\n"
-"Language-Team: Korean <https://hosted.weblate.org/projects/blenderdmx/main/"
-"ko/>\n"
 "Language: ko_KR\n"
+"Language-Team: Korean "
+"<https://hosted.weblate.org/projects/blenderdmx/main/ko/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.15-dev\n"
 "Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
@@ -88,6 +87,14 @@ msgstr "이름"
 
 msgid "DMX"
 msgstr "DMX"
+
+#, fuzzy
+msgid "Fixture Name + ID"
+msgstr "Fixture ID"
+
+#, fuzzy
+msgid "3D Fixture Name + ID"
+msgstr "Fixture ID"
 
 msgid "Allow Selecting Geometries"
 msgstr "형상 선택 허용"
@@ -341,6 +348,12 @@ msgstr ""
 msgid "Use Channel Functions of this fixture"
 msgstr ""
 
+msgid "Use High Quality Models"
+msgstr ""
+
+msgid "Use high quality mesh files if present"
+msgstr ""
+
 msgid "DMX Universe"
 msgstr ""
 
@@ -406,10 +419,22 @@ msgstr ""
 msgid "Import Supports"
 msgstr ""
 
+msgid "Use GDTF High Quality Models"
+msgstr ""
+
 msgid "Export Targets as MVR Focus Points"
 msgstr ""
 
 msgid "Export only selected fixtures"
+msgstr ""
+
+msgid "Export only selected fixtures (does not filter non-fixture objects)"
+msgstr ""
+
+msgid "Export fixtures only"
+msgstr ""
+
+msgid "Export fixtures only (skip all non-fixture objects)"
 msgstr ""
 
 msgid "Enable PSN Input"
@@ -583,10 +608,6 @@ msgid "DMX: Add Fixture"
 msgstr ""
 
 msgid "Add fixtures to the show"
-msgstr ""
-
-#, python-brace-format
-msgid "Fixture named {} already exists"
 msgstr ""
 
 msgid "No GDTF Profile selected."
@@ -1422,3 +1443,7 @@ msgstr ""
 
 msgid "Universes"
 msgstr ""
+
+#~ msgid "Fixture named {} already exists"
+#~ msgstr ""
+

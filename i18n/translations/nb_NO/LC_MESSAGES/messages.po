@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-11-30 11:56+0100\n"
+"POT-Creation-Date: 2026-01-24 10:26+0100\n"
 "PO-Revision-Date: 2023-04-02 13:37+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language: nb_NO\n"
@@ -88,6 +88,13 @@ msgid "Name"
 msgstr "Navn"
 
 msgid "DMX"
+msgstr ""
+
+#, fuzzy
+msgid "Fixture Name + ID"
+msgstr "Filnavn"
+
+msgid "3D Fixture Name + ID"
 msgstr ""
 
 msgid "Allow Selecting Geometries"
@@ -353,6 +360,12 @@ msgstr ""
 msgid "Use Channel Functions of this fixture"
 msgstr ""
 
+msgid "Use High Quality Models"
+msgstr ""
+
+msgid "Use high quality mesh files if present"
+msgstr ""
+
 msgid "DMX Universe"
 msgstr "DMX-univers"
 
@@ -425,10 +438,23 @@ msgstr "Importer fra deling"
 msgid "Import Supports"
 msgstr "Importer fra deling"
 
+msgid "Use GDTF High Quality Models"
+msgstr ""
+
 msgid "Export Targets as MVR Focus Points"
 msgstr ""
 
 msgid "Export only selected fixtures"
+msgstr ""
+
+msgid "Export only selected fixtures (does not filter non-fixture objects)"
+msgstr ""
+
+#, fuzzy
+msgid "Export fixtures only"
+msgstr "GDTF-profil"
+
+msgid "Export fixtures only (skip all non-fixture objects)"
 msgstr ""
 
 msgid "Enable PSN Input"
@@ -616,10 +642,6 @@ msgid "DMX: Add Fixture"
 msgstr ""
 
 msgid "Add fixtures to the show"
-msgstr ""
-
-#, python-brace-format
-msgid "Fixture named {} already exists"
 msgstr ""
 
 #, fuzzy
@@ -1786,4 +1808,7 @@ msgstr ""
 
 #~ msgid "Export Focus Points as Targets"
 #~ msgstr "Importer fra deling"
+
+#~ msgid "Fixture named {} already exists"
+#~ msgstr ""
 

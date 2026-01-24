@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-11-30 11:56+0100\n"
+"POT-Creation-Date: 2026-01-24 10:26+0100\n"
 "PO-Revision-Date: 2025-09-08 22:01+0000\n"
 "Last-Translator: Alex Nadzharov <anadjarov@gmail.com>\n"
 "Language: ru_RU\n"
@@ -88,6 +88,14 @@ msgstr "Название"
 
 msgid "DMX"
 msgstr "DMX"
+
+#, fuzzy
+msgid "Fixture Name + ID"
+msgstr "Название устройства"
+
+#, fuzzy
+msgid "3D Fixture Name + ID"
+msgstr "Название устройства"
 
 msgid "Allow Selecting Geometries"
 msgstr "Разрешить выбор геометрии"
@@ -357,6 +365,12 @@ msgstr "Использовать физические свойства приб�
 msgid "Use Channel Functions of this fixture"
 msgstr "Использовать функции каналов этого прибора"
 
+msgid "Use High Quality Models"
+msgstr ""
+
+msgid "Use high quality mesh files if present"
+msgstr ""
+
 msgid "DMX Universe"
 msgstr "Вселенная DMX"
 
@@ -430,6 +444,9 @@ msgstr "Импорт сцены MVR"
 msgid "Import Supports"
 msgstr "Импортировать коммит"
 
+msgid "Use GDTF High Quality Models"
+msgstr ""
+
 #, fuzzy
 msgid "Export Targets as MVR Focus Points"
 msgstr "Создать цели из точек фокусировки MVR"
@@ -437,6 +454,17 @@ msgstr "Создать цели из точек фокусировки MVR"
 #, fuzzy
 msgid "Export only selected fixtures"
 msgstr "Установить на выбранных приборах"
+
+#, fuzzy
+msgid "Export only selected fixtures (does not filter non-fixture objects)"
+msgstr "Только ключевые кадры выбранных приборов (не для автокеинга)"
+
+#, fuzzy
+msgid "Export fixtures only"
+msgstr "Приспособления"
+
+msgid "Export fixtures only (skip all non-fixture objects)"
+msgstr ""
 
 msgid "Enable PSN Input"
 msgstr "Включить вход PSN"
@@ -631,10 +659,6 @@ msgstr "DMX: Добавить прибор"
 
 msgid "Add fixtures to the show"
 msgstr "Добавить приборы в шоу"
-
-#, python-brace-format
-msgid "Fixture named {} already exists"
-msgstr "Прибор с именем {} уже существует"
 
 msgid "No GDTF Profile selected."
 msgstr "Профиль GDTF не выбран."
@@ -1529,4 +1553,7 @@ msgstr "Вселенные"
 
 #~ msgid "Export Focus Points as Targets"
 #~ msgstr "Импортировать точки фокусировки в качестве целей"
+
+#~ msgid "Fixture named {} already exists"
+#~ msgstr "Прибор с именем {} уже существует"
 
