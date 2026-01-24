@@ -1,6 +1,6 @@
 [project]
 name = "blender-dmx"
-version = "2.1.4"
+version = "2.1.5"
 description = "Visualization & programming with GDTF&MVR, OSC, PSN, Networking"
 readme = "README.md"
 requires-python = ">=3.13"

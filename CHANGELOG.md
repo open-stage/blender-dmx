@@ -1,5 +1,14 @@
 ### Changelog
 
+### 2.1.5
+
+* Update translation strings
+* Allow to use high quality mesh from GDTF
+* Enhance detection of virtual channels
+* Update primitive model for conventional and PAR64
+* Add MVR export options to MVR xchange
+* Handle faulty GDTF files during MVR import
+
 ### 2.1.4
 
 * Add option for device label as 3D Text
