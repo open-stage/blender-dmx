@@ -13,7 +13,7 @@ wheels = [
 
 [[package]]
 name = "blender-dmx"
-version = "2.1.1"
+version = "2.1.4"
 source = { virtual = "." }
 dependencies = [
     { name = "pygdtf" },
@@ -31,7 +31,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "pygdtf", specifier = ">=1.4.2" },
+    { name = "pygdtf", specifier = ">=1.4.3" },
     { name = "pymvr", specifier = ">=1.0.6" },
 ]
 
@@ -134,10 +134,10 @@ wheels = [
 
 [[package]]
 name = "pygdtf"
-version = "1.4.2"
+version = "1.4.3"
 source = { registry = "https://pypi.org/simple" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f7/b6/93218113df1abd7f11ec82d7c506ae929ae574b9ee5aade6e3c471a4e0e3/pygdtf-1.4.2-py3-none-any.whl", hash = "sha256:5de126619888df3f85709db6bb52dd74d9d6cb48290aab616cd4e86280b8c3b3", size = 52563, upload-time = "2025-12-21T22:56:18.492Z" },
+    { url = "https://files.pythonhosted.org/packages/0b/36/4e5564fa022540e45abb048212d0075b571f16bef53a91ad006b12c4e822/pygdtf-1.4.3-py3-none-any.whl", hash = "sha256:83ae9235de1eb46895a421ae3639c381f1a59f068a9c48b82ae9a504d144f777", size = 53376, upload-time = "2026-01-03T17:56:21.304Z" },
 ]
 
 [[package]]
