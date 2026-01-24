@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-11-30 11:56+0100\n"
+"POT-Creation-Date: 2026-01-24 10:26+0100\n"
 "PO-Revision-Date: 2024-11-09 10:00+0000\n"
 "Last-Translator: HuangHai <deathblood@qq.com>\n"
 "Language: lzh\n"
@@ -85,6 +85,12 @@ msgid "Name"
 msgstr ""
 
 msgid "DMX"
+msgstr ""
+
+msgid "Fixture Name + ID"
+msgstr ""
+
+msgid "3D Fixture Name + ID"
 msgstr ""
 
 msgid "Allow Selecting Geometries"
@@ -339,6 +345,12 @@ msgstr ""
 msgid "Use Channel Functions of this fixture"
 msgstr ""
 
+msgid "Use High Quality Models"
+msgstr ""
+
+msgid "Use high quality mesh files if present"
+msgstr ""
+
 msgid "DMX Universe"
 msgstr ""
 
@@ -404,10 +416,22 @@ msgstr ""
 msgid "Import Supports"
 msgstr ""
 
+msgid "Use GDTF High Quality Models"
+msgstr ""
+
 msgid "Export Targets as MVR Focus Points"
 msgstr ""
 
 msgid "Export only selected fixtures"
+msgstr ""
+
+msgid "Export only selected fixtures (does not filter non-fixture objects)"
+msgstr ""
+
+msgid "Export fixtures only"
+msgstr ""
+
+msgid "Export fixtures only (skip all non-fixture objects)"
 msgstr ""
 
 msgid "Enable PSN Input"
@@ -581,10 +605,6 @@ msgid "DMX: Add Fixture"
 msgstr ""
 
 msgid "Add fixtures to the show"
-msgstr ""
-
-#, python-brace-format
-msgid "Fixture named {} already exists"
 msgstr ""
 
 msgid "No GDTF Profile selected."
@@ -1515,5 +1535,8 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid "Export Focus Points as Targets"
+#~ msgstr ""
+
+#~ msgid "Fixture named {} already exists"
 #~ msgstr ""
 

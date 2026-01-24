@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-11-30 11:56+0100\n"
+"POT-Creation-Date: 2026-01-24 10:26+0100\n"
 "PO-Revision-Date: 2025-04-16 06:01+0000\n"
 "Last-Translator: polarwood <polarwood@users.noreply.hosted.weblate.org>\n"
 "Language: tr_TR\n"
@@ -87,6 +87,14 @@ msgstr "İsim"
 
 msgid "DMX"
 msgstr "DMX"
+
+#, fuzzy
+msgid "Fixture Name + ID"
+msgstr "Fikstür Kimliği"
+
+#, fuzzy
+msgid "3D Fixture Name + ID"
+msgstr "Fikstür Kimliği"
 
 msgid "Allow Selecting Geometries"
 msgstr "Geometrilerin Seçilmesine İzin Ver"
@@ -362,6 +370,12 @@ msgstr ""
 msgid "Use Channel Functions of this fixture"
 msgstr ""
 
+msgid "Use High Quality Models"
+msgstr ""
+
+msgid "Use high quality mesh files if present"
+msgstr ""
+
 msgid "DMX Universe"
 msgstr "DMX Evreni"
 
@@ -433,6 +447,9 @@ msgstr "İçe Aktarılanlar"
 msgid "Import Supports"
 msgstr "İçe Aktarılanlar"
 
+msgid "Use GDTF High Quality Models"
+msgstr ""
+
 #, fuzzy
 msgid "Export Targets as MVR Focus Points"
 msgstr "MVR Odak Noktalarından Hedef Oluştur"
@@ -440,6 +457,19 @@ msgstr "MVR Odak Noktalarından Hedef Oluştur"
 #, fuzzy
 msgid "Export only selected fixtures"
 msgstr "Seçili fikstürleri düzenle"
+
+#, fuzzy
+msgid "Export only selected fixtures (does not filter non-fixture objects)"
+msgstr ""
+"Yalnızca seçili armatürlerin anahtar karesi (otomatik anahtarlama için "
+"değil)"
+
+#, fuzzy
+msgid "Export fixtures only"
+msgstr "Fikstürler"
+
+msgid "Export fixtures only (skip all non-fixture objects)"
+msgstr ""
 
 msgid "Enable PSN Input"
 msgstr "PSN Girişini Etkinleştir"
@@ -633,10 +663,6 @@ msgstr "DMX: Fikstür Ekle"
 
 msgid "Add fixtures to the show"
 msgstr "Gösteriye fikstürler ekleyin"
-
-#, python-brace-format
-msgid "Fixture named {} already exists"
-msgstr "{} adlı fikstür zaten mevcut"
 
 msgid "No GDTF Profile selected."
 msgstr "Hiçbir GDTF Profili seçilmedi."
@@ -1784,4 +1810,7 @@ msgstr ""
 
 #~ msgid "Export Focus Points as Targets"
 #~ msgstr "Odak Noktalarını Hedef Olarak İçeri Aktar"
+
+#~ msgid "Fixture named {} already exists"
+#~ msgstr "{} adlı fikstür zaten mevcut"
 

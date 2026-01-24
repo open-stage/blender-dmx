@@ -7,17 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-11-30 11:56+0100\n"
+"POT-Creation-Date: 2026-01-24 10:26+0100\n"
 "PO-Revision-Date: 2026-01-14 14:11+0000\n"
 "Last-Translator: 大学没毕业 <ziweidao@foxmail.com>\n"
-"Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
-"projects/blenderdmx/main/zh_Hans/>\n"
 "Language: zh_Hans\n"
+"Language-Team: Chinese (Simplified Han script) "
+"<https://hosted.weblate.org/projects/blenderdmx/main/zh_Hans/>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.15.2-dev\n"
 "Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
@@ -88,6 +87,14 @@ msgstr "名称"
 
 msgid "DMX"
 msgstr "DMX"
+
+#, fuzzy
+msgid "Fixture Name + ID"
+msgstr "固定装置名称"
+
+#, fuzzy
+msgid "3D Fixture Name + ID"
+msgstr "固定装置名称"
 
 msgid "Allow Selecting Geometries"
 msgstr "允许选择几何体"
@@ -341,6 +348,12 @@ msgstr "使用灯具物理属性"
 msgid "Use Channel Functions of this fixture"
 msgstr "使用此灯具的通道功能"
 
+msgid "Use High Quality Models"
+msgstr ""
+
+msgid "Use high quality mesh files if present"
+msgstr ""
+
 msgid "DMX Universe"
 msgstr "DMX 域"
 
@@ -411,11 +424,25 @@ msgstr "导入 MVR 场景"
 msgid "Import Supports"
 msgstr "导入确认"
 
+msgid "Use GDTF High Quality Models"
+msgstr ""
+
 msgid "Export Targets as MVR Focus Points"
 msgstr "导出目标作为 MVR 焦点"
 
 msgid "Export only selected fixtures"
 msgstr "仅导出选定的灯具"
+
+#, fuzzy
+msgid "Export only selected fixtures (does not filter non-fixture objects)"
+msgstr "仅给选定的灯具打关键帧(不适用于自动关键帧)"
+
+#, fuzzy
+msgid "Export fixtures only"
+msgstr "导入灯具"
+
+msgid "Export fixtures only (skip all non-fixture objects)"
+msgstr ""
 
 msgid "Enable PSN Input"
 msgstr "开启 PSN 输入"
@@ -596,10 +623,6 @@ msgstr "DMX: 添加灯具"
 
 msgid "Add fixtures to the show"
 msgstr "为演出添加灯具"
-
-#, python-brace-format
-msgid "Fixture named {} already exists"
-msgstr "灯具名称 {} 已存在"
 
 msgid "No GDTF Profile selected."
 msgstr "未选择 GDTF 配置."
@@ -1694,3 +1717,7 @@ msgstr "域"
 
 #~ msgid "Export Focus Points as Targets"
 #~ msgstr "导入焦点作为目标"
+
+#~ msgid "Fixture named {} already exists"
+#~ msgstr "灯具名称 {} 已存在"
+

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-11-30 11:56+0100\n"
+"POT-Creation-Date: 2026-01-24 10:26+0100\n"
 "PO-Revision-Date: 2025-06-05 17:01+0000\n"
 "Last-Translator: Bernat Rubiol Brusau <rubiolbernat@gmail.com>\n"
 "Language: ca_ES\n"
@@ -87,6 +87,14 @@ msgstr "Nom"
 
 msgid "DMX"
 msgstr "DMX"
+
+#, fuzzy
+msgid "Fixture Name + ID"
+msgstr "ID del Fixture"
+
+#, fuzzy
+msgid "3D Fixture Name + ID"
+msgstr "ID del Fixture"
 
 msgid "Allow Selecting Geometries"
 msgstr "Permet la selecció de geometries"
@@ -350,6 +358,12 @@ msgstr ""
 msgid "Use Channel Functions of this fixture"
 msgstr ""
 
+msgid "Use High Quality Models"
+msgstr ""
+
+msgid "Use high quality mesh files if present"
+msgstr ""
+
 msgid "DMX Universe"
 msgstr "Univers DMX"
 
@@ -418,12 +432,26 @@ msgstr ""
 msgid "Import Supports"
 msgstr "Importacions"
 
+msgid "Use GDTF High Quality Models"
+msgstr ""
+
 msgid "Export Targets as MVR Focus Points"
 msgstr ""
 
 #, fuzzy
 msgid "Export only selected fixtures"
 msgstr "Dispositius seleccionats"
+
+#, fuzzy
+msgid "Export only selected fixtures (does not filter non-fixture objects)"
+msgstr "Dispositius seleccionats"
+
+#, fuzzy
+msgid "Export fixtures only"
+msgstr "Dispositius"
+
+msgid "Export fixtures only (skip all non-fixture objects)"
+msgstr ""
 
 msgid "Enable PSN Input"
 msgstr ""
@@ -608,10 +636,6 @@ msgstr "DMX: Afegeix dispositiu"
 
 msgid "Add fixtures to the show"
 msgstr "Afegir dispositius al show"
-
-#, python-brace-format
-msgid "Fixture named {} already exists"
-msgstr ""
 
 msgid "No GDTF Profile selected."
 msgstr ""
@@ -1482,5 +1506,8 @@ msgstr "Universos"
 #~ msgstr "Compartit amb mi:"
 
 #~ msgid "Export Focus Points as Targets"
+#~ msgstr ""
+
+#~ msgid "Fixture named {} already exists"
 #~ msgstr ""
 

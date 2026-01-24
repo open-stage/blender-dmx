@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-11-30 11:56+0100\n"
+"POT-Creation-Date: 2026-01-24 10:26+0100\n"
 "PO-Revision-Date: 2025-11-27 05:02+0000\n"
 "Last-Translator: Francisco Serrador <fserrador@gmail.com>\n"
 "Language: es_ES\n"
@@ -87,6 +87,14 @@ msgstr "Nombre"
 
 msgid "DMX"
 msgstr "DMX"
+
+#, fuzzy
+msgid "Fixture Name + ID"
+msgstr "Nombre del accesorio"
+
+#, fuzzy
+msgid "3D Fixture Name + ID"
+msgstr "Nombre del accesorio"
 
 msgid "Allow Selecting Geometries"
 msgstr "Permitir selección de geometrías"
@@ -360,6 +368,12 @@ msgstr "Utiliza Propiedades Físicas de Accesorios"
 msgid "Use Channel Functions of this fixture"
 msgstr "Utilizar Funciones de Canal de este accesorio"
 
+msgid "Use High Quality Models"
+msgstr ""
+
+msgid "Use high quality mesh files if present"
+msgstr ""
+
 msgid "DMX Universe"
 msgstr "Universo DMX"
 
@@ -430,11 +444,27 @@ msgstr "Importar desde compartir"
 msgid "Import Supports"
 msgstr "Importaciones"
 
+msgid "Use GDTF High Quality Models"
+msgstr ""
+
 msgid "Export Targets as MVR Focus Points"
 msgstr "Exportar Destinos como Puntos de Foco MVR"
 
 msgid "Export only selected fixtures"
 msgstr "Exportar solo accesorios seleccionados"
+
+#, fuzzy
+msgid "Export only selected fixtures (does not filter non-fixture objects)"
+msgstr ""
+"Accesorios seleccionados solo para fotogramas clave (no para clave "
+"automática)"
+
+#, fuzzy
+msgid "Export fixtures only"
+msgstr "Importar Accesorios"
+
+msgid "Export fixtures only (skip all non-fixture objects)"
+msgstr ""
 
 msgid "Enable PSN Input"
 msgstr "Habilitar Entrada PSN"
@@ -613,10 +643,6 @@ msgstr "DMX: Añadir accesorio"
 
 msgid "Add fixtures to the show"
 msgstr "Añade accesorio a la muestra"
-
-#, python-brace-format
-msgid "Fixture named {} already exists"
-msgstr "Ya existe el accesorio nombrado con {}"
 
 msgid "No GDTF Profile selected."
 msgstr "Ningún Perfil GDTF seleccionado."
@@ -1559,4 +1585,7 @@ msgstr ""
 
 #~ msgid "Export Focus Points as Targets"
 #~ msgstr ""
+
+#~ msgid "Fixture named {} already exists"
+#~ msgstr "Ya existe el accesorio nombrado con {}"
 
