@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-24 10:26+0100\n"
-"PO-Revision-Date: 2025-12-01 12:00+0000\n"
+"PO-Revision-Date: 2026-01-25 13:49+0000\n"
 "Last-Translator: vanous <petr+weblate@linuks.cz>\n"
+"Language-Team: Czech <https://hosted.weblate.org/projects/blenderdmx/main/"
+"cs/>\n"
 "Language: cs_CZ\n"
-"Language-Team: Czech "
-"<https://hosted.weblate.org/projects/blenderdmx/main/cs/>\n"
-"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
+"X-Generator: Weblate 5.16-dev\n"
 "Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
@@ -88,13 +89,11 @@ msgstr "Název"
 msgid "DMX"
 msgstr "DMX"
 
-#, fuzzy
 msgid "Fixture Name + ID"
-msgstr "Jméno světla"
+msgstr "Jméno světla + ID"
 
-#, fuzzy
 msgid "3D Fixture Name + ID"
-msgstr "Jméno světla"
+msgstr "3D Jméno světla + ID"
 
 msgid "Allow Selecting Geometries"
 msgstr "Povolit výběr geometrií"
@@ -361,10 +360,10 @@ msgid "Use Channel Functions of this fixture"
 msgstr "Využívat Kanálové Funkce tohoto svítidla"
 
 msgid "Use High Quality Models"
-msgstr ""
+msgstr "Použít Modely Vyšší Kvality"
 
 msgid "Use high quality mesh files if present"
-msgstr ""
+msgstr "Použít Modely Vyšší Kvality pokud jsou k dispozici"
 
 msgid "DMX Universe"
 msgstr "DMX Univers"
@@ -434,7 +433,7 @@ msgid "Import Supports"
 msgstr "Importovat Nosiče Konstrukcí"
 
 msgid "Use GDTF High Quality Models"
-msgstr ""
+msgstr "Použít GDTF Modely Vyšší Kvality"
 
 msgid "Export Targets as MVR Focus Points"
 msgstr "Exportovat Cíle jako MVR Fokusovací Body"
@@ -442,16 +441,14 @@ msgstr "Exportovat Cíle jako MVR Fokusovací Body"
 msgid "Export only selected fixtures"
 msgstr "Exportovat pouze označená svítidla"
 
-#, fuzzy
 msgid "Export only selected fixtures (does not filter non-fixture objects)"
-msgstr "Keyframe pouze vybraná svítidla (ne při autokeying)"
+msgstr "Exportovat pouze vybraná svítidla (nefiltruje ostatní objekty)"
 
-#, fuzzy
 msgid "Export fixtures only"
-msgstr "Importovat Svítidla"
+msgstr "Exportovat Pouze Svítidla"
 
 msgid "Export fixtures only (skip all non-fixture objects)"
-msgstr ""
+msgstr "Exportovat Pouze Svítidla (přeskočí ostatní objekty)"
 
 msgid "Enable PSN Input"
 msgstr "Povolit PSN Vstup"
@@ -1710,4 +1707,3 @@ msgstr "DMX Universe"
 
 #~ msgid "Fixture named {} already exists"
 #~ msgstr "Svítidlo s názvem {} již existuje"
-
