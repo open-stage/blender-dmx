@@ -986,7 +986,9 @@ class DMX_Fixture(PropertyGroup):
                             channel_function.dmx_to.get_value()
                         )
                     else:
-                        new_channel_function.dmx_to = channel_function.dmx_to.value
+                        new_channel_function.dmx_to = min(
+                            channel_function.dmx_to.value, 65535
+                        )  # TODO: fix this properly, here we trim to 16bit, to prevent crash with 24/32bit channels
 
                     new_channel_function.physical_from = (
                         channel_function.physical_from.value
