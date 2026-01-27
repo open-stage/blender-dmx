@@ -100,7 +100,10 @@ class client(Thread):
         self.send(
             mvrx_message.craft_packet(
                 mvrx_message.create_message(
-                    "MVR_REQUEST", uuid=commit.station_uuid, file_uuid=commit_uuid, app_uuid = self.application_uuid
+                    "MVR_REQUEST",
+                    uuid=commit.station_uuid,
+                    file_uuid=commit_uuid,
+                    app_uuid=self.application_uuid,
                 )
             )
         )

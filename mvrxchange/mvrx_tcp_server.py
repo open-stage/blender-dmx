@@ -180,7 +180,9 @@ class server(Thread):
                     mvrx_message.create_message("MVR_LEAVE_RET", uuid=self.uuid)
                 )
             )
-            station_uuid = json_data.get("StationUUID") or json_data.get("FromStationUUID")
+            station_uuid = json_data.get("StationUUID") or json_data.get(
+                "FromStationUUID"
+            )
             if station_uuid:
                 dmx.toggle_join_MVR_Client(station_uuid, False)
             # NOTE: this is sending the JOIN/LEAVE 2x, because the subscribe

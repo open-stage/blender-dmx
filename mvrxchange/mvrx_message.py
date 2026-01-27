@@ -130,7 +130,13 @@ class mvrx_message:
 
     @staticmethod
     def create_message(
-        message, commits=None, uuid=None, file_uuid=None, ok=None, nok_reason=None, app_uuid = None,
+        message,
+        commits=None,
+        uuid=None,
+        file_uuid=None,
+        ok=None,
+        nok_reason=None,
+        app_uuid=None,
     ):
         if message == "MVR_JOIN_RET":
             response = mvrx_message.join_message_ret.copy()
