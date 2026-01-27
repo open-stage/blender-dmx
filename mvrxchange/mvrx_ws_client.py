@@ -141,7 +141,7 @@ class WebSocketClient(threading.Thread):
         commit_uuid = commit.commit_uuid
         self.send(
             mvrx_message.create_message(
-                "MVR_REQUEST", uuid=commit.station_uuid, file_uuid=commit_uuid
+                "MVR_REQUEST", uuid=commit.station_uuid, file_uuid=commit_uuid, app_uuid=self.application_uuid
             )
         )
 

@@ -93,7 +93,9 @@ class mvrx_message:
     request_message = {
         "Type": "MVR_REQUEST",
         "FileUUID": "",
+        "StationUUID": "",
         "FromStationUUID": [],
+        "FromStationsUUID": [],
     }
 
     request_message_ret = {"Type": "MVR_REQUEST_RET", "OK": False, "Message": ""}
@@ -110,6 +112,7 @@ class mvrx_message:
 
     leave_message = {
         "Type": "MVR_LEAVE",
+        "StationUUID": "",
         "FromStationUUID": "",
     }
 
@@ -127,7 +130,7 @@ class mvrx_message:
 
     @staticmethod
     def create_message(
-        message, commits=None, uuid=None, file_uuid=None, ok=None, nok_reason=None
+        message, commits=None, uuid=None, file_uuid=None, ok=None, nok_reason=None, app_uuid = None,
     ):
         if message == "MVR_JOIN_RET":
             response = mvrx_message.join_message_ret.copy()
@@ -158,10 +161,15 @@ class mvrx_message:
         elif message == "MVR_REQUEST":
             response = mvrx_message.request_message.copy()
             response["FileUUID"] = file_uuid
+            response["StationUUID"] = app_uuid
             response[
                 "FromStationUUID"
             ] = []  # the response seems to stay in memory, reset it
             response["FromStationUUID"].append(uuid)
+            response[
+                "FromStationsUUID"
+            ] = []  # the response seems to stay in memory, reset it
+            response["FromStationsUUID"].append(uuid)
             return response
         elif message == "MVR_JOIN":
             response = mvrx_message.join_message.copy()
@@ -172,6 +180,7 @@ class mvrx_message:
             return response
         elif message == "MVR_LEAVE":
             response = mvrx_message.leave_message.copy()
+            response["StationUUID"] = uuid
             response["FromStationUUID"] = uuid
             return response
         elif message == "MVR_REQUEST_RET":
