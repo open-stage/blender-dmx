@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-24 10:26+0100\n"
-"PO-Revision-Date: 2026-01-28 15:55+0000\n"
+"PO-Revision-Date: 2026-01-28 21:29+0000\n"
 "Last-Translator: 大学没毕业 <ziweidao@foxmail.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/blenderdmx/main/zh_Hans/>\n"
@@ -403,9 +403,8 @@ msgstr "从 MVR 焦点创建目标"
 msgid "Import Fixtures"
 msgstr "导入灯具"
 
-#, fuzzy
 msgid "Import Trusses"
-msgstr "导入"
+msgstr "导入桁架"
 
 #, fuzzy
 msgid "Import Scene Objects"
@@ -415,16 +414,15 @@ msgstr "导入 MVR 场景"
 msgid "Import Projectors"
 msgstr "导入项目数据"
 
-#, fuzzy
 msgid "Import Video Screens"
-msgstr "导入 MVR 场景"
+msgstr "导入视频屏幕"
 
 #, fuzzy
 msgid "Import Supports"
 msgstr "导入确认"
 
 msgid "Use GDTF High Quality Models"
-msgstr ""
+msgstr "使用GDTF高品质模型"
 
 msgid "Export Targets as MVR Focus Points"
 msgstr "导出目标作为 MVR 焦点"
@@ -432,16 +430,14 @@ msgstr "导出目标作为 MVR 焦点"
 msgid "Export only selected fixtures"
 msgstr "仅导出选定的灯具"
 
-#, fuzzy
 msgid "Export only selected fixtures (does not filter non-fixture objects)"
-msgstr "仅给选定的灯具打关键帧(不适用于自动关键帧)"
+msgstr "仅导出选定的灯具（不会滤去非灯具对象）"
 
-#, fuzzy
 msgid "Export fixtures only"
-msgstr "导入灯具"
+msgstr "仅导出灯具"
 
 msgid "Export fixtures only (skip all non-fixture objects)"
-msgstr ""
+msgstr "仅导出灯具（跳过所有非灯具对象）"
 
 msgid "Enable PSN Input"
 msgstr "开启 PSN 输入"
@@ -900,7 +896,7 @@ msgid "Color Wheel3"
 msgstr "色轮3"
 
 msgid "Color Macro1"
-msgstr ""
+msgstr "颜色宏1"
 
 msgid "Color Temperature"
 msgstr "色温"
@@ -926,9 +922,8 @@ msgstr "频闪"
 msgid "PanMode"
 msgstr "平移模式"
 
-#, fuzzy
 msgid "TiltMode"
-msgstr "倾斜"
+msgstr "俯仰模式"
 
 msgid "PanTiltMode"
 msgstr "平移俯仰模式"
@@ -1229,7 +1224,7 @@ msgid "Fixture name"
 msgstr "灯具名称"
 
 msgid "Manufacturer and fixture name"
-msgstr "固定装置制造商与名称"
+msgstr "灯具制造商与名称"
 
 msgid "Manufacturer"
 msgstr "制造商"
@@ -1274,7 +1269,7 @@ msgid "Import from Share"
 msgstr "从Share导入"
 
 msgid "Import fixture from GDTF Share"
-msgstr "从GDTF Share导入装置"
+msgstr "从GDTF Share导入灯具"
 
 msgid "Update GDTF Share index"
 msgstr "更新GDTF Share索引"
@@ -1283,10 +1278,10 @@ msgid "Update data index of GDTF Share"
 msgstr "更新GDTF Share的数据索引"
 
 msgid "Delete fixture"
-msgstr "删除装置"
+msgstr "删除灯具"
 
 msgid "Delete fixture from local filesystem"
-msgstr "从本地文件系统中删除装置"
+msgstr "从本地文件系统中删除灯具"
 
 msgid "Refresh files listing"
 msgstr "刷新文件列表"
@@ -1301,13 +1296,13 @@ msgid "You must Allow Online access for this to work:"
 msgstr "您必须允许联机访问才能使其工作:"
 
 msgid "Fixture details"
-msgstr "装置详情"
+msgstr "灯具详情"
 
 msgid "Local Fixture files"
 msgstr "本地灯具文件"
 
 msgid "Local Fixture details"
-msgstr "本地装置详情"
+msgstr "本地灯具详情"
 
 msgid "Profiles"
 msgstr "配置文件"
@@ -1357,9 +1352,8 @@ msgstr "下载"
 msgid "Fetch commit"
 msgstr "导入确认"
 
-#, fuzzy
 msgid "Websocket Download"
-msgstr "下载"
+msgstr "Web接口下载"
 
 msgid "Download commit"
 msgstr "下载提交"
