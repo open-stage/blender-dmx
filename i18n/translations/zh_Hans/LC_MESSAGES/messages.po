@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-24 10:26+0100\n"
-"PO-Revision-Date: 2026-01-14 14:11+0000\n"
+"PO-Revision-Date: 2026-01-28 15:55+0000\n"
 "Last-Translator: 大学没毕业 <ziweidao@foxmail.com>\n"
+"Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
+"projects/blenderdmx/main/zh_Hans/>\n"
 "Language: zh_Hans\n"
-"Language-Team: Chinese (Simplified Han script) "
-"<https://hosted.weblate.org/projects/blenderdmx/main/zh_Hans/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.16-dev\n"
 "Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
@@ -88,13 +89,11 @@ msgstr "名称"
 msgid "DMX"
 msgstr "DMX"
 
-#, fuzzy
 msgid "Fixture Name + ID"
-msgstr "固定装置名称"
+msgstr "灯具名称 + ID"
 
-#, fuzzy
 msgid "3D Fixture Name + ID"
-msgstr "固定装置名称"
+msgstr "3D灯具名称 + ID"
 
 msgid "Allow Selecting Geometries"
 msgstr "允许选择几何体"
@@ -349,10 +348,10 @@ msgid "Use Channel Functions of this fixture"
 msgstr "使用此灯具的通道功能"
 
 msgid "Use High Quality Models"
-msgstr ""
+msgstr "使用高品质模型"
 
 msgid "Use high quality mesh files if present"
-msgstr ""
+msgstr "如果有则使用高品质网格文件"
 
 msgid "DMX Universe"
 msgstr "DMX 域"
@@ -1227,7 +1226,7 @@ msgid "DMX Footprint"
 msgstr "DMX 脚注"
 
 msgid "Fixture name"
-msgstr "固定装置名称"
+msgstr "灯具名称"
 
 msgid "Manufacturer and fixture name"
 msgstr "固定装置制造商与名称"
@@ -1720,4 +1719,3 @@ msgstr "域"
 
 #~ msgid "Fixture named {} already exists"
 #~ msgstr "灯具名称 {} 已存在"
-
