@@ -106,7 +106,7 @@ class DMX_MT_Fixture_Profiles(Menu):
                 text=f"{profile['name']} {'@' if revision_name else ''} {revision_name}",
             )
             op.profile = profile["filename"]
-            op.short_name = profile["short_name"]
+            op.short_name = profile["short_name"] or profile["name"]
 
 
 class DMX_MT_Fixture_Mode(Menu):
@@ -147,7 +147,7 @@ class DMX_OT_Fixture_Profiles(Operator):
 
     def execute(self, context):
         context.add_edit_panel.profile = self.profile
-        context.add_edit_panel.user_fixture_name = self.short_name
+        context.add_edit_panel.user_fixture_name = self.short_name or self.name
         return {"FINISHED"}
 
 
