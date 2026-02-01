@@ -1247,8 +1247,11 @@ class DMX(PropertyGroup):
 
     def onVolumeEnabled(self, context):
         if self.volume is not None:
-            if "DMX_Volume" in bpy.context.view_layer:
+            try:
                 self.volume.hide_set(not self.volume_enabled)
+            except Exception as e:
+                traceback.print_exception(e)
+                DMX_Log.log.exception(e)
 
     volume_enabled: BoolProperty(
         name = _("Enable Volume Scatter"),
