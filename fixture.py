@@ -1060,11 +1060,39 @@ class DMX_Fixture(PropertyGroup):
                                     DMX_Log.log.info(
                                         ("Set DMX data", channel.attribute, value)
                                     )
-                                    DMX_Data.set(
-                                        dmx_break.universe,
-                                        dmx_break.address + channel.offsets[0] - 1,
-                                        value,
-                                    )
+                                    if attribute == "Pan" or attribute == "Tilt":
+                                        hi = (value >> 8) & 0xFF
+                                        lo = value & 0xFF
+                                        if channel.offsets_bytes == 2:
+                                            DMX_Data.set(
+                                                dmx_break.universe,
+                                                dmx_break.address
+                                                + channel.offsets[0]
+                                                - 1,
+                                                hi,
+                                            )
+                                            DMX_Data.set(
+                                                dmx_break.universe,
+                                                dmx_break.address
+                                                + channel.offsets[1]
+                                                - 1,
+                                                lo,
+                                            )
+                                        else:
+                                            DMX_Data.set(
+                                                dmx_break.universe,
+                                                dmx_break.address
+                                                + channel.offsets[0]
+                                                - 1,
+                                                value,
+                                            )
+                                    else:
+                                        DMX_Data.set(
+                                            dmx_break.universe,
+                                            dmx_break.address + channel.offsets[0] - 1,
+                                            value,
+                                        )
+
                     else:
                         for dmx_break in self.dmx_breaks:
                             if dmx_break.dmx_break == channel.dmx_break:
@@ -1076,13 +1104,36 @@ class DMX_Fixture(PropertyGroup):
                                         value,
                                     )
                                 )
-                                DMX_Data.set(
-                                    dmx_break.universe,
-                                    dmx_break.address + channel.offsets[0] - 1,
-                                    value,
-                                )
+                                if attribute == "Pan" or attribute == "Tilt":
+                                    hi = (value >> 8) & 0xFF
+                                    lo = value & 0xFF
+                                    if channel.offsets_bytes == 2:
+                                        DMX_Data.set(
+                                            dmx_break.universe,
+                                            dmx_break.address + channel.offsets[0] - 1,
+                                            hi,
+                                        )
+                                        DMX_Data.set(
+                                            dmx_break.universe,
+                                            dmx_break.address + channel.offsets[1] - 1,
+                                            lo,
+                                        )
+                                    else:
+                                        DMX_Data.set(
+                                            dmx_break.universe,
+                                            dmx_break.address + channel.offsets[0] - 1,
+                                            value,
+                                        )
+                                else:
+                                    DMX_Data.set(
+                                        dmx_break.universe,
+                                        dmx_break.address + channel.offsets[0] - 1,
+                                        value,
+                                    )
             for vchannel in self.virtual_channels:
                 if vchannel.attribute == attribute:
+                    if attribute == "Pan" or attribute == "Tilt":
+                        value = (value >> 8) & 0xFF
                     if len(temp_data.active_subfixtures) > 0:
                         if any(
                             vchannel.geometry == g.name
@@ -2455,13 +2506,28 @@ class DMX_Fixture(PropertyGroup):
                 dmx_break.universe, dmx_break.address, dmx_break.channels_count
             )
 
-            for idx, d in enumerate(data, 1):
-                for channel in self.channels:
-                    if (
-                        channel.dmx_break == dmx_break.dmx_break
-                        and channel.offsets[0] == idx
-                    ):
-                        params[channel.attribute] = d
+            # Filter channels belonging to this DMX break
+            channels_for_break = [
+                ch for ch in self.channels if ch.dmx_break == dmx_break.dmx_break
+            ]
+
+            for channel in channels_for_break:
+                start_idx = channel.offsets[0] - 1  # 1-based -> 0-based
+
+                if channel.attribute in ("Pan", "Tilt"):
+                    # Always produce a 16-bit value
+                    if 0 <= start_idx < len(data):
+                        hi = data[start_idx]
+                        lo = 0
+                        if channel.offsets_bytes == 2 and start_idx + 1 < len(data):
+                            lo = data[start_idx + 1]
+                        value = (hi << 8) | lo
+                        params[channel.attribute] = value
+                else:
+                    # All other channels: always 8-bit
+                    if 0 <= start_idx < len(data):
+                        params[channel.attribute] = data[start_idx]
+
         return params
 
     def select(self, select_target=False):
