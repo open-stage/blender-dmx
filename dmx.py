@@ -480,7 +480,7 @@ class DMX(PropertyGroup):
 
     data_version: IntProperty(
             name = "BlenderDMX data version, bump when changing RNA structure and provide migration script",
-            default = 13,
+            default = 14,
             )
 
     def get_fixture_by_index(self, index):
@@ -964,6 +964,14 @@ class DMX(PropertyGroup):
             # we added proper fixture name
             for fixture_ in dmx.fixtures:
                 fixture_.user_fixture_name = fixture_.name
+
+        if file_data_version < 14:
+            DMX_Log.log.info("Make sure to reimport GDTF files")
+            temp_data = bpy.context.window_manager.dmx
+            message = "This show file has been made in older version of BlenderDMX. Most likely you need to re-edit fixtures: Fixtures → Edit, uncheck Re-address only, this will re-build the fixtures from their GDTF files. Sorry for the inconvenience."
+            temp_data.migration_message = message
+            ShowMessageBox(message=message, title="Updating info!", icon="ERROR")
+            bpy.types.VIEW3D_HT_tool_header.prepend(draw_top_message)
 
         # add here another if statement for next migration condition... like:
         # if file_data_version < 6:

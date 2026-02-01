@@ -210,8 +210,8 @@ class DMX_Fixture_Channel_Function(PropertyGroup):
         default = 1)
     mm_offsets: IntVectorProperty(
         name = "ModeMaster offsets",
-        size = 2,
-        default = (0,0))
+        size = 4,
+        default = (0,0,0,0))
     mm_offsets_bytes: IntProperty(
         name = "ModeMaster Bytes",
         default = 1)
@@ -229,6 +229,16 @@ class DMX_Fixture_Channel(PropertyGroup):
         )
 
     def get_function_attribute_data(self, dmx_value, dmx_data, skip_mode_master=False):
+        def _normalize_dmx_value(value, source_bits, target_bits):
+            if source_bits <= 0 or target_bits <= 0:
+                return 0
+            target_max = (1 << target_bits) - 1
+            if source_bits == target_bits:
+                return max(0, min(int(value), target_max))
+            source_max = (1 << source_bits) - 1
+            scaled = round(int(value) * target_max / source_max)
+            return max(0, min(scaled, target_max))
+
         wheel_slot = None
         for ch_f in self.channel_functions:
             # get a function which contains dmx from/to encapsulating our current dmx value
@@ -242,15 +252,36 @@ class DMX_Fixture_Channel(PropertyGroup):
                         ch_f.mm_offsets[0], None
                     )
                     if mm_dmx_value_coarse is not None:
-                        mm_dmx_value_fine = None
                         mm_dmx_value_final = mm_dmx_value_coarse
                         if ch_f.mm_offsets_bytes > 1:
-                            mm_dmx_value_fine = dmx_data[ch_f.mm_dmx_break][
-                                ch_f.mm_offsets[1]
+                            offsets_full = [
+                                offset
+                                for offset in ch_f.mm_offsets[: ch_f.mm_offsets_bytes]
+                                if offset > 0
                             ]
-                            mm_dmx_value_final = (
-                                mm_dmx_value_coarse << 8
-                            ) | mm_dmx_value_fine
+                            if offsets_full:
+                                # Build the full multi-byte DMX value, then scale down
+                                # to 16-bit so it matches the stored mode range scale.
+                                raw_value = 0
+                                for offset in offsets_full:
+                                    raw_value = (raw_value << 8) | dmx_data[
+                                        ch_f.mm_dmx_break
+                                    ].get(offset, 0)
+                                source_bits = len(offsets_full) * 8
+                                if source_bits > 16:
+                                    mm_dmx_value_final = _normalize_dmx_value(
+                                        raw_value, source_bits, 16
+                                    )
+                                else:
+                                    mm_dmx_value_final = raw_value
+                            else:
+                                # Fallback for classic 16-bit (coarse+fine).
+                                mm_dmx_value_fine = dmx_data[ch_f.mm_dmx_break].get(
+                                    ch_f.mm_offsets[1], 0
+                                )
+                                mm_dmx_value_final = (
+                                    mm_dmx_value_coarse << 8
+                                ) | mm_dmx_value_fine
 
                         DMX_Log.log.debug(
                             ("mm_dmx_value", mm_dmx_value_final, mode_from, mode_to)
@@ -301,8 +332,8 @@ class DMX_Fixture_Channel(PropertyGroup):
 
     offsets: IntVectorProperty(
         name = "DMX Channel offset",
-        size = 2,
-        default = (0,0))
+        size = 4,
+        default = (0,0,0,0))
     offsets_bytes: IntProperty(
         name = "Bytes",
         default = 1)
@@ -938,11 +969,12 @@ class DMX_Fixture(PropertyGroup):
                 is_virtual = True
 
             if not is_virtual:
-                new_channel.offsets = tuple((dmx_channel.offset + [0])[:2])
+                offsets_full = (dmx_channel.offset + [0, 0, 0, 0])[:4]
+                new_channel.offsets = tuple(offsets_full)
                 new_channel.offsets_bytes = len(dmx_channel.offset)
             else:
                 # virtual channels are 8 bit for now
-                new_channel.offsets = (0, 0)
+                new_channel.offsets = (0, 0, 0, 0)
                 new_channel.offsets_bytes = 1
 
             # blender programmer cannot control white, set it to 0
@@ -1027,6 +1059,8 @@ class DMX_Fixture(PropertyGroup):
                             ch_function.mm_dmx_break = ch.dmx_break
                             ch_function.mm_offsets = ch.offsets
                             ch_function.mm_offsets_bytes = ch.offsets_bytes
+                            # mm_offsets holds up to 4 ordered offsets; use
+                            # mm_offsets_bytes to read the valid prefix.
             if not modemasters_exist:
                 # create some caching of dmx channel data
                 # we ignore channels with mode dependencies
@@ -1150,6 +1184,16 @@ class DMX_Fixture(PropertyGroup):
                         DMX_Data.set_virtual(self.name, attribute, None, value)
 
     def render(self, skip_cache=False, current_frame=None):
+        def _normalize_dmx_value(value, source_bits, target_bits):
+            if source_bits <= 0 or target_bits <= 0:
+                return 0
+            target_max = (1 << target_bits) - 1
+            if source_bits == target_bits:
+                return max(0, min(int(value), target_max))
+            source_max = (1 << source_bits) - 1
+            scaled = round(int(value) * target_max / source_max)
+            return max(0, min(scaled, target_max))
+
         if bpy.context.window_manager.dmx.pause_render:
             # do not run render loop when paused
             return
@@ -1399,7 +1443,7 @@ class DMX_Fixture(PropertyGroup):
             if geometry not in tilt_cont_rotating_geometries.keys():
                 tilt_cont_rotating_geometries[geometry] = [None]
 
-            if not channel.offsets:
+            if channel.offsets_bytes <= 0 or channel.offsets[0] <= 0:
                 # if channel has no address, we cannot continue
                 DMX_Log.log.error(
                     (
@@ -1425,8 +1469,30 @@ class DMX_Fixture(PropertyGroup):
             dmx_value_fine = None
             dmx_value_final = dmx_value_coarse
             if channel.offsets_bytes > 1:
-                dmx_value_fine = dmx_data[channel.dmx_break][channel.offsets[1]]
-                dmx_value_final = (dmx_value_coarse << 8) | dmx_value_fine
+                offsets_full = [
+                    offset
+                    for offset in channel.offsets[: channel.offsets_bytes]
+                    if offset > 0
+                ]
+                if len(offsets_full) > 1:
+                    raw_value = 0
+                    for offset in offsets_full:
+                        raw_value = (raw_value << 8) | dmx_data[channel.dmx_break].get(
+                            offset, 0
+                        )
+                    dmx_value_fine = dmx_data[channel.dmx_break].get(offsets_full[1], 0)
+                    source_bits = len(offsets_full) * 8
+                    if source_bits > 16:
+                        dmx_value_final = _normalize_dmx_value(
+                            raw_value, source_bits, 16
+                        )
+                    else:
+                        dmx_value_final = raw_value
+                else:
+                    dmx_value_fine = dmx_data[channel.dmx_break].get(
+                        channel.offsets[1], 0
+                    )
+                    dmx_value_final = (dmx_value_coarse << 8) | dmx_value_fine
 
             # Default to the channel's own attribute when fixture functions are disabled.
             channel_function_attribute = channel.attribute
@@ -2654,11 +2720,15 @@ class DMX_Fixture(PropertyGroup):
         for dmx_break in self.dmx_breaks:
             for channel in self.channels:
                 if channel.dmx_break == dmx_break.dmx_break:
-                    for byte, offset in enumerate(channel.offsets):
+                    for byte, offset in enumerate(
+                        channel.offsets[: channel.offsets_bytes]
+                    ):
                         DMX_Data.set(
                             dmx_break.universe,
                             dmx_break.address + offset - 1,
-                            channel.defaults[byte],
+                            channel.defaults[byte]
+                            if byte < len(channel.defaults)
+                            else 0,
                         )
         self.render()
 
