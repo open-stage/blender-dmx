@@ -1,5 +1,19 @@
 ### Changelog
 
+### 2.1.6
+
+* Fix volumetric beam toggle
+* Rename BlenderDMX fixture profiles to new set of names
+* Use fixture name if fixture short name is not available
+* Ensure correct MVR-xchange protocol data commands when requesting a commit
+* Channels resolution:
+    * Pan/Tilt control from local Programmer is now 16bit for precise
+      positioning
+    * Expand the dmx channel size to deal with 24/32bit channels, update pygdtf
+      to 1.4.4
+* Translated using Weblate (Chinese (Simplified Han script)) [大学没毕业]
+* Translated using Weblate (Czech)
+
 ### 2.1.5
 
 * Update translation strings
