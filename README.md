@@ -70,7 +70,7 @@ Thank you.
   title        = {pyGDTF: Python Library for General Device Type Format},
   author       = {{OpenStage}},
   year         = {2025},
-  version      = {1.4.3},
+  version      = {1.4.4},
   url          = {https://github.com/open-stage/python-gdtf}
 }
 
