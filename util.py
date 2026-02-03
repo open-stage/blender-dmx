@@ -106,3 +106,8 @@ def sizeof_fmt(num, suffix="B"):
             return f"{num:3.1f}{unit}{suffix}"
         num /= 1024.0
     return f"{num:.1f}Yi{suffix}"
+
+
+def one_float_to_u16(f: float) -> int:
+    f = max(-1.0, min(1.0, f))
+    return int((f * 0.5 + 0.5) * 65535 + 0.5)

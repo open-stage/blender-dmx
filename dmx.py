@@ -28,6 +28,7 @@ from datetime import datetime
 from pathlib import Path
 from threading import Timer
 from types import SimpleNamespace
+from .util import one_float_to_u16
 
 import bpy
 import bpy.utils.previews
@@ -479,7 +480,7 @@ class DMX(PropertyGroup):
 
     data_version: IntProperty(
             name = "BlenderDMX data version, bump when changing RNA structure and provide migration script",
-            default = 13,
+            default = 14,
             )
 
     def get_fixture_by_index(self, index):
@@ -964,6 +965,14 @@ class DMX(PropertyGroup):
             for fixture_ in dmx.fixtures:
                 fixture_.user_fixture_name = fixture_.name
 
+        if file_data_version < 14:
+            DMX_Log.log.info("Make sure to reimport GDTF files")
+            temp_data = bpy.context.window_manager.dmx
+            message = "This show file has been made in older version of BlenderDMX. Most likely you need to re-edit fixtures: Fixtures → Edit, uncheck Re-address only, this will re-build the fixtures from their GDTF files. Sorry for the inconvenience."
+            temp_data.migration_message = message
+            ShowMessageBox(message=message, title="Updating info!", icon="ERROR")
+            bpy.types.VIEW3D_HT_tool_header.prepend(draw_top_message)
+
         # add here another if statement for next migration condition... like:
         # if file_data_version < 6:
         # ...
@@ -1247,8 +1256,11 @@ class DMX(PropertyGroup):
 
     def onVolumeEnabled(self, context):
         if self.volume is not None:
-            if "DMX_Volume" in bpy.context.view_layer:
+            try:
                 self.volume.hide_set(not self.volume_enabled)
+            except Exception as e:
+                traceback.print_exception(e)
+                DMX_Log.log.exception(e)
 
     volume_enabled: BoolProperty(
         name = _("Enable Volume Scatter"),
@@ -1593,7 +1605,7 @@ class DMX(PropertyGroup):
             if fixture_.collection is None:
                 continue
             if fixture_.is_selected():
-                fixture_.setDMX({"Tilt": int((self.programmer_tilt * 128) + 128)})
+                fixture_.setDMX({"Tilt": one_float_to_u16(self.programmer_tilt)})
         self.render()
 
     def onProgrammerTiltRotate(self, context):
@@ -1609,7 +1621,7 @@ class DMX(PropertyGroup):
             if fixture_.collection is None:
                 continue
             if fixture_.is_selected():
-                fixture_.setDMX({"Pan": int((self.programmer_pan * 128) + 128)})
+                fixture_.setDMX({"Pan": one_float_to_u16(self.programmer_pan)})
         self.render()
 
     def onProgrammerPanRotate(self, context):
@@ -1814,8 +1826,8 @@ class DMX(PropertyGroup):
 
     programmer_pan: FloatProperty(
         name = "Programmer Pan",
-        min = -1.0,
-        max = 1.0,
+        min = -1,
+        max = 1,
         default = 0.0,
         update = onProgrammerPan)
 
@@ -1828,8 +1840,8 @@ class DMX(PropertyGroup):
 
     programmer_tilt: FloatProperty(
         name = "Programmer Tilt",
-        min = -1.0,
-        max = 1.0,
+        min = -1,
+        max = 1,
         default = 0.0,
         update = onProgrammerTilt)
 
@@ -2053,9 +2065,9 @@ class DMX(PropertyGroup):
         #    rgb = cmy_to_rgb([data['ColorAdd_C'], data['ColorAdd_M'], data['ColorAdd_Y']])
         #    self.programmer_color = (1/256*rgb[0], 1/256*rgb[1], 1/256*rgb[2], 255)
         if "Pan" in data:
-            self.programmer_pan = (data["Pan"] - 128) / 128.0
+            self.programmer_pan = (data["Pan"] / 65535.0) * 2.0 - 1.0
         if "Tilt" in data:
-            self.programmer_tilt = (data["Tilt"] - 128) / 128.0
+            self.programmer_tilt = (data["Tilt"] / 65535.0) * 2.0 - 1.0
         if "PanRotate" in data:
             self.programmer_pan_rotate = int(data["PanRotate"])
         if "TiltRotate" in data:
