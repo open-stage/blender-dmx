@@ -825,7 +825,7 @@ class DMX_GDTF:
                         obj["geometry_type"] = "axis"
                         axis_objects.append(obj)
                 for channel in virtual_channels:
-                    if attribute == channel.attribute and channel.geometry == obj.get(
+                    if attribute == channel.attribute.str_link and channel.geometry == obj.get(
                         "original_name", "None"
                     ):
                         obj["mobile_type"] = "head" if attribute == "Tilt" else "yoke"
