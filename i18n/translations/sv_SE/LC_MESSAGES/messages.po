@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-24 10:26+0100\n"
-"PO-Revision-Date: 2026-03-13 19:41+0000\n"
+"PO-Revision-Date: 2026-03-13 19:53+0000\n"
 "Last-Translator: Daniel Nylander <daniel@danielnylander.se>\n"
 "Language-Team: Swedish <https://hosted.weblate.org/projects/blenderdmx/main/"
 "sv/>\n"
@@ -24,7 +24,7 @@ msgid "File doesn't exist"
 msgstr "Filen finns inte"
 
 msgid "Fixture ID"
-msgstr "Fixtur-id"
+msgstr "Armatur-id"
 
 msgid "Unit Number"
 msgstr "Enhetsnummer"
@@ -123,10 +123,10 @@ msgid "Display 'fake' beam cone"
 msgstr "Visa \"falsk\" strålkon"
 
 msgid "Selected fixtures"
-msgstr "Valda fixturer"
+msgstr "Valda armaturer"
 
 msgid "All fixtures"
-msgstr "Alla fixturer"
+msgstr "Alla armaturer"
 
 msgid "Beam Lens Diameter in Cycles"
 msgstr "Strållinsens diameter i Cycles"
@@ -211,8 +211,8 @@ msgstr "Aktivera OSC-utdata"
 
 msgid "Enables Open Sound Control protocol to send fixture selection to a console"
 msgstr ""
-"Aktiverar Open Sound Control-protokoll för att skicka val av fixturer "
-"till en konsol"
+"Aktiverar Open Sound Control-protokoll för att skicka val av armaturer till "
+"en konsol"
 
 msgid "OSC Target address"
 msgstr "OSC-måladress"
@@ -270,7 +270,7 @@ msgid "Order by"
 msgstr "Sortera efter"
 
 msgid "Fixture sorting order"
-msgstr "Sorteringsordning för fixturer"
+msgstr "Sorteringsordning för armaturer"
 
 msgid "Laser collision collection"
 msgstr "Laserkollisionssamling"
@@ -313,7 +313,7 @@ msgstr ""
 "Nyckelbildruta bara för valda armaturer (inte för automatisk nyckelbildruta)"
 
 msgid "Add keyframes with changes only for selected fixtures"
-msgstr "Lägg till nyckelbilder med ändringar endast för valda fixturer"
+msgstr "Lägg till nyckelbilder med ändringar endast för valda armaturer"
 
 msgid "MVR-xchange"
 msgstr "MVR-xchange"
@@ -322,7 +322,7 @@ msgid "DMX Data"
 msgstr "DMX-data"
 
 msgid "Fixture"
-msgstr "Fixtur"
+msgstr "Armatur"
 
 msgid "Gap"
 msgstr "Avstånd"
@@ -337,10 +337,10 @@ msgid "Source"
 msgstr "Källa"
 
 msgid "Subfixtures"
-msgstr "Underfixturer"
+msgstr "Underarmaturer"
 
 msgid "Active Subfixtures"
-msgstr "Aktiva underfixturer"
+msgstr "Aktiva underarmaturer"
 
 msgid "Pan Rotate"
 msgstr "Panorera"
@@ -398,13 +398,13 @@ msgid "Increment Fixture ID"
 msgstr "Öka armatur-ID"
 
 msgid "Increment Fixture ID if numeric"
-msgstr "Inkrementera fixtur-ID om det är numeriskt"
+msgstr "Inkrementera armatur-ID om det är numeriskt"
 
 msgid ""
 "The Fixture ID is an identifier of this fixture that can be used to "
 "activate / select them for programming."
 msgstr ""
-"Fixtur-ID är en identifierare för den här fixturen som kan användas för "
+"Armatur-ID är en identifierare för den här armaturen som kan användas för "
 "att aktivera/välja den för programmering."
 
 msgid "Units"
@@ -552,7 +552,7 @@ msgid "Classes"
 msgstr "Klasser"
 
 msgid "Align selected fixtures to active fixture"
-msgstr "Justera valda fixturer till aktiv fixtur"
+msgstr "Justera valda armaturer till aktiv armatur"
 
 msgid "Distribute selected fixtures evenly"
 msgstr "Fördela valda armaturer jämnt"
@@ -569,10 +569,10 @@ msgstr "Aktivt objekt: {}"
 
 #, python-brace-format
 msgid "Selected fixtures: {}"
-msgstr "Valda fixturer: {}"
+msgstr "Valda armaturer: {}"
 
 msgid "DMX > Fixture Menu"
-msgstr "DMX > Fixturmeny"
+msgstr "DMX > Armaturmeny"
 
 msgid "Add"
 msgstr "Lägg till"
@@ -584,28 +584,28 @@ msgid "Remove"
 msgstr "Ta bort"
 
 msgid "DMX > Fixture > Add > Manufacturers"
-msgstr "DMX > Fixtur > Lägg till > Tillverkare"
+msgstr "DMX > Armatur > Lägg till > Tillverkare"
 
 msgid "DMX > Fixture > Add > Profiles"
-msgstr "DMX > Fixtur > Lägg till > Profiler"
+msgstr "DMX > Armatur > Lägg till > Profiler"
 
 msgid "DMX > Fixture > Add > Mode"
-msgstr "DMX > Fixtur > Lägg till > Läge"
+msgstr "DMX > Armatur > Lägg till > Läge"
 
 msgid "DMX > Fixture > Add > Manufacturers > Profiles"
-msgstr "DMX > Fixtur > Lägg till > Tillverkare > Profiler"
+msgstr "DMX > Armatur > Lägg till > Tillverkare > Profiler"
 
 msgid "Profile"
 msgstr "Profil"
 
 msgid "Fixture GDTF Profile"
-msgstr "Fixturens GDTF-profil"
+msgstr "Armaturens GDTF-profil"
 
 msgid "Mode"
 msgstr "Läge"
 
 msgid "Fixture GDTF Mode"
-msgstr "Fixturens GDTF-läge"
+msgstr "Armaturens GDTF-läge"
 
 msgid "DMX Mode"
 msgstr "DMX-läge"
@@ -623,10 +623,10 @@ msgid "GDTF Profile"
 msgstr "GDTF-profil"
 
 msgid "DMX: Add Fixture"
-msgstr "DMX: Lägg till fixtur"
+msgstr "DMX: Lägg till armatur"
 
 msgid "Add fixtures to the show"
-msgstr "Lägg till fixturer till showen"
+msgstr "Lägg till armaturer till showen"
 
 msgid "No GDTF Profile selected."
 msgstr "Ingen GDTF-profil vald."
@@ -635,16 +635,16 @@ msgid "No DMX Mode selected."
 msgstr "Inget DMX-läge har valts."
 
 msgid "DMX: Edit Fixture"
-msgstr "DMX: Redigera fixtur"
+msgstr "DMX: Redigera armatur"
 
 msgid "Edit selected fixtures"
-msgstr "Redigera valda fixturer"
+msgstr "Redigera valda armaturer"
 
 msgid "DMX > Fixture > Remove"
-msgstr "DMX > Fixtur > Ta bort"
+msgstr "DMX > Armatur > Ta bort"
 
 msgid "Remove selected fixtures from Scene"
-msgstr "Ta bort valda fixturer från scenen"
+msgstr "Ta bort valda armaturer från scenen"
 
 msgid "Remove IES Files"
 msgstr "Ta bort IES-filer"
@@ -653,10 +653,10 @@ msgid "Import IES File"
 msgstr "Importera IES-fil"
 
 msgid "Select Previous Fixture"
-msgstr "Välj föregående fixtur"
+msgstr "Välj föregående armatur"
 
 msgid "Select Next Fixture"
-msgstr "Välj nästa fixtur"
+msgstr "Välj nästa armatur"
 
 msgid "Select Previous Target"
 msgstr "Välj föregående mål"
@@ -665,16 +665,16 @@ msgid "Select Next Target"
 msgstr "Välj nästa mål"
 
 msgid "DMX > Fixture > Item"
-msgstr "DMX > Fixtur > Objekt"
+msgstr "DMX > Armatur > Objekt"
 
 msgid "Select Fixture"
-msgstr "Välj fixtur"
+msgstr "Välj armatur"
 
 msgid "Remove fixture"
-msgstr "Ta bort fixtur"
+msgstr "Ta bort armatur"
 
 msgid "Fixtures"
-msgstr "Fixturer"
+msgstr "Armaturer"
 
 msgid "F ID"
 msgstr "F ID"
@@ -716,7 +716,7 @@ msgid "DMX > Group > Create"
 msgstr "DMX > Grupp > Skapa"
 
 msgid "Create DMX group from selected fixtures"
-msgstr "Skapa DMX-grupp från valda fixturer"
+msgstr "Skapa DMX-grupp från valda armaturer"
 
 msgid "Group Name"
 msgstr "Gruppnamn"
@@ -779,19 +779,19 @@ msgid "Deselect All"
 msgstr "Avmarkera alla"
 
 msgid "Deselect every fixture in the Scene"
-msgstr "Avmarkera alla fixturer i scenen"
+msgstr "Avmarkera alla armaturer i scenen"
 
 msgid "Select All"
 msgstr "Välj alla"
 
 msgid "Select every fixture in the Scene"
-msgstr "Välj varje fixtur i scenen"
+msgstr "Välj varje armatur i scenen"
 
 msgid "Select Visible (only filtered)"
 msgstr "Välj synliga (endast filtrerade)"
 
 msgid "Select every fixture which is visible in the fixtures list"
-msgstr "Välj varje fixtur som är synlig i fixturlistan"
+msgstr "Välj varje armatur som är synlig i armaturlistan"
 
 msgid "Invert selection"
 msgstr "Invertera markering"
@@ -806,7 +806,7 @@ msgid "Clear"
 msgstr "Töm"
 
 msgid "Clear all DMX values to default and update fixtures"
-msgstr "Återställ alla DMX-värden till standardvärden och uppdatera fixturerna"
+msgstr "Återställ alla DMX-värden till standardvärden och uppdatera armaturerna"
 
 msgid "Apply"
 msgstr "Tillämpa"
@@ -830,10 +830,10 @@ msgid "Reset targets"
 msgstr "Återställ mål"
 
 msgid "Reset position of target of selected fixtures"
-msgstr "Återställ positionen för målet för valda fixturer"
+msgstr "Återställ positionen för målet för valda armaturer"
 
 msgid "Select Fixtures"
-msgstr "Välj fixturer"
+msgstr "Välj armaturer"
 
 msgid "Select base/body of every selected fixture"
 msgstr "Välj bas/kropp för varje vald armatur"
@@ -842,13 +842,13 @@ msgid "Select Targets"
 msgstr "Välj mål"
 
 msgid "Select target from every fixture element selected"
-msgstr "Välj mål från varje valt fixturelement"
+msgstr "Välj mål från varje valt armaturelement"
 
 msgid "Select Camera"
 msgstr "Välj kamera"
 
 msgid "Select camera of the selected fixture"
-msgstr "Välj kamera för den valda fixturen"
+msgstr "Välj kamera för den valda armaturen"
 
 msgid "Programmer"
 msgstr "Programmerare"
@@ -945,16 +945,16 @@ msgid "Add a Keyframe with the current DMX data"
 msgstr "Lägg till en nyckelbild med aktuella DMX-data"
 
 msgid "DMX > Recorder > Delete Keyframes for all fixtures"
-msgstr "DMX > Inspelare > Ta bort nyckelbilder för alla fixturer"
+msgstr "DMX > Inspelare > Ta bort nyckelbilder för alla armaturer"
 
 msgid "Deletes all keyframes from all fixtures"
-msgstr "Tar bort alla nyckelbilder från alla fixturer"
+msgstr "Tar bort alla nyckelbilder från alla armaturer"
 
 msgid "DMX > Recorder > Delete All Keyframes from selected fixtures"
-msgstr "DMX > Inspelare > Ta bort alla nyckelbilder från valda fixturer"
+msgstr "DMX > Inspelare > Ta bort alla nyckelbilder från valda armaturer"
 
 msgid "Deletes all keyframes from selected fixtures"
-msgstr "Tar bort alla nyckelbilder från valda fixturer"
+msgstr "Tar bort alla nyckelbilder från valda armaturer"
 
 msgid "Keyframe Recorder"
 msgstr "Nyckelbildsinspelare"
@@ -966,10 +966,10 @@ msgid "Delete Keyframes"
 msgstr "Ta bort nyckelbilder"
 
 msgid "Delete from selected fixtures"
-msgstr "Ta bort från valda fixturer"
+msgstr "Ta bort från valda armaturer"
 
 msgid "Delete from all fixtures"
-msgstr "Ta bort från alla fixturer"
+msgstr "Ta bort från alla armaturer"
 
 msgid "Objects with #bdmx drivers"
 msgstr "Objekt med #bdmx-drivare"
@@ -1003,7 +1003,7 @@ msgstr ""
 "orsaka problem."
 
 msgid "Really remove all fixtures and DMX from blend file?"
-msgstr "Verkligen ta bort alla fixturer och DMX från blend-filen?"
+msgstr "Verkligen ta bort alla armaturer och DMX från blend-filen?"
 
 msgid "Try to remove DMX from the Blender showfile"
 msgstr "Försök att ta bort DMX från Blenders scenfil"
@@ -1033,7 +1033,7 @@ msgid "Create Volume Box"
 msgstr "Skapa volymbox"
 
 msgid "Set on selected fixtures"
-msgstr "Ställ in på utvalda fixturer"
+msgstr "Ställ in på utvalda armaturer"
 
 msgid "Viewport"
 msgstr "Visningsområde"
@@ -1160,13 +1160,13 @@ msgid "Select visible"
 msgstr "Välj synliga"
 
 msgid "Select visible subfixtures"
-msgstr "Välj synliga underfixturer"
+msgstr "Välj synliga underarmaturer"
 
 msgid "Clear selection"
 msgstr "Töm markering"
 
 msgid "Clear subfixture selection"
-msgstr "Töm val av underfixturer"
+msgstr "Töm val av underarmaturer"
 
 msgid "Get GDTF Share account and fill it into BlenderDMX addon preferences."
 msgstr ""
@@ -1227,7 +1227,7 @@ msgid ""
 "fixture names."
 msgstr ""
 "Det korta namnet på DMX-profilen, med versaler, används som förslag till "
-"fixturnamn."
+"armaturnamn."
 
 msgid "Filename"
 msgstr "Filnamn"
@@ -1239,10 +1239,10 @@ msgid "DMX Footprint"
 msgstr "DMX-fotavtryck"
 
 msgid "Fixture name"
-msgstr "Fixturens namn"
+msgstr "Armaturens namn"
 
 msgid "Manufacturer and fixture name"
-msgstr "Tillverkarens och fixturens namn"
+msgstr "Tillverkarens och armaturens namn"
 
 msgid "Manufacturer"
 msgstr "Tillverkare"
@@ -1287,7 +1287,7 @@ msgid "Import from Share"
 msgstr "Importera från utdelning"
 
 msgid "Import fixture from GDTF Share"
-msgstr "Importera fixtur från GDTF Share"
+msgstr "Importera armatur från GDTF Share"
 
 msgid "Update GDTF Share index"
 msgstr "Uppdatera GDTF-utdelningsindex"
@@ -1296,10 +1296,10 @@ msgid "Update data index of GDTF Share"
 msgstr "Uppdatera dataindex för GDTF-utdelning"
 
 msgid "Delete fixture"
-msgstr "Ta bort fixtur"
+msgstr "Ta bort armatur"
 
 msgid "Delete fixture from local filesystem"
-msgstr "Ta bort fixturen från det lokala filsystemet"
+msgstr "Ta bort armaturen från det lokala filsystemet"
 
 msgid "Refresh files listing"
 msgstr "Uppdatera fillistan"
@@ -1314,13 +1314,13 @@ msgid "You must Allow Online access for this to work:"
 msgstr "Du måste tillåta onlineåtkomst för att detta ska fungera:"
 
 msgid "Fixture details"
-msgstr "Detaljer om fixturen"
+msgstr "Detaljer om armaturen"
 
 msgid "Local Fixture files"
-msgstr "Lokala fixturfiler"
+msgstr "Lokala armaturfiler"
 
 msgid "Local Fixture details"
-msgstr "Lokal fixturinformation"
+msgstr "Lokal armaturinformation"
 
 msgid "Profiles"
 msgstr "Profiler"
@@ -1425,16 +1425,16 @@ msgid "Removing a tracker"
 msgstr "Tar bort en spårare"
 
 msgid "Link Fixture to Tracker"
-msgstr "Länka fixtur till spårare"
+msgstr "Länka armatur till spårare"
 
 msgid "Link fixture to a tracker"
-msgstr "Länka fixturen till en spårare"
+msgstr "Länka armaturen till en spårare"
 
 msgid "Unlink Fixture from Tracker"
-msgstr "Avlänka fixtur från spårare"
+msgstr "Avlänka armatur från spårare"
 
 msgid "Unlink fixture from a tracker"
-msgstr "Koppla loss fixturen från en spårare"
+msgstr "Koppla loss armaturen från en spårare"
 
 msgid "Tracker Followers"
 msgstr "Tracker-följare"
