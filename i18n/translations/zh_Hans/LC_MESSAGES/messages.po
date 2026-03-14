@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-24 10:26+0100\n"
-"PO-Revision-Date: 2026-01-28 21:29+0000\n"
+"PO-Revision-Date: 2026-03-14 06:22+0000\n"
 "Last-Translator: 大学没毕业 <ziweidao@foxmail.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/blenderdmx/main/zh_Hans/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.16-dev\n"
+"X-Generator: Weblate 5.17-dev\n"
 "Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
@@ -712,9 +712,8 @@ msgstr "从选定的灯具创建 DMX 组"
 msgid "Group Name"
 msgstr "组名称"
 
-#, fuzzy
 msgid "Replace DMX group fixtures with selected ones"
-msgstr "从选定的灯具创建 DMX 组"
+msgstr "用选定的灯具替换 DMX 组灯具"
 
 msgid "DMX > Group > Rename"
 msgstr "DMX > 组 > 重命名"
@@ -879,12 +878,11 @@ msgstr "倾斜旋转"
 msgid "Zoom"
 msgstr "变焦"
 
-#, fuzzy
 msgid "Playmode"
-msgstr "模式"
+msgstr "播放模式"
 
 msgid "Recording"
-msgstr ""
+msgstr "录制"
 
 msgid "Color Wheel1"
 msgstr "色轮1"
@@ -905,13 +903,13 @@ msgid "Iris"
 msgstr "虹膜"
 
 msgid "Gobo1"
-msgstr "图案片 1"
+msgstr "图案片1"
 
 msgid "Gobo1 Adjust"
 msgstr "图案片1调整"
 
 msgid "Gobo2"
-msgstr "图案片 2"
+msgstr "图案片2"
 
 msgid "Gobo2 Adjust"
 msgstr "图案片2调整"
@@ -1372,12 +1370,11 @@ msgstr "启用群组： {group}"
 msgid "New group:"
 msgstr "新组："
 
-#, fuzzy
 msgid "Share current version"
-msgstr "请求最新版本"
+msgstr "分享当前版本"
 
 msgid "Pick and Share MVR"
-msgstr ""
+msgstr "选取并分享 MVR"
 
 #, python-brace-format
 msgid "Shared by me ({defined_station_name}):"
