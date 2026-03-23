@@ -71,6 +71,13 @@ def is_default_Y(Y):
     return math.isclose(Y, 100.0, rel_tol=0.0001)
 
 
+def is_default_white(xyY):
+    x = xyY.x
+    y = xyY.y
+    Y = xyY.Y
+    return is_default_x(x) and is_default_y(y) and is_default_Y(Y)
+
+
 def xyY2rgbaa(xyY):
     """As blender needs RGBA, which we later strip anyways, we just add 100 for Alpha"""
     x = xyY.x

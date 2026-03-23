@@ -30,7 +30,7 @@ from mathutils import Matrix, Vector
 
 from .logging_setup import DMX_Log
 from .util import sanitize_obj_name
-from .color_utils import xyY2rgbaa
+from .color_utils import xyY2rgbaa, is_default_white
 
 
 class DMX_GDTF:
@@ -89,18 +89,31 @@ class DMX_GDTF:
             for wheel in profile.wheels
             if wheel.name == color_wheel_name
         ]
-
         if not attr_color_wheels:
             return result
-
         for index, (attribute_name, wheel) in enumerate(attr_color_wheels):
             colors = []
             for slot in wheel.wheel_slots:
+                slot_filter = next(
+                    (
+                        w_filter
+                        for w_filter in profile.filters
+                        if w_filter.name == slot.filter.str_link
+                    ),
+                    None,
+                )
+                if slot_filter is not None:
+                    if not is_default_white(slot_filter.color):
+                        slot_color = slot_filter.color
+                    else:
+                        slot_color = slot.color
+                else:
+                    slot_color = slot.color
                 try:
-                    color = xyY2rgbaa(slot.color)
+                    slot_color = xyY2rgbaa(slot_color)
                 except Exception as e:
-                    color = (0, 0, 0, 1)
-                colors.append(color)
+                    slot_color = (0, 0, 0, 1)
+                colors.append(slot_color)
             result[attribute_name] = colors
 
         return result
