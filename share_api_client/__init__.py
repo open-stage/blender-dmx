@@ -18,6 +18,7 @@
 import json
 import os
 from threading import Thread
+from types import SimpleNamespace
 
 import requests
 
@@ -74,12 +75,14 @@ class GdtfShareApi:
 
     def get_list(self):
         result = self.make_call(method="GET", slug="getList.php")
-        print("INFO", "result status", result, result.status)
         if result.status:
-            self.data = result.result.json()
-            self.save_json_file(self.data.get("list", []), self.data_file)
-            self.data = self.data.get("list", [])
-            return result
+            this_data = result.result.json()
+            if len(this_data.get("list", [])) > 0:
+                self.save_json_file(this_data.get("list", []), self.data_file)
+                self.data = this_data.get("list", [])
+                return result
+            else:
+                return Result(False, SimpleNamespace(status_code=500))
         return result
 
     def login(self):
