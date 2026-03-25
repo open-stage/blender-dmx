@@ -1766,20 +1766,34 @@ class DMX_Fixture(PropertyGroup):
                 r, g, b, dimmer, use_playmode, use_recording, current_frame
             )
 
-        colorwheel_color = None
+        colorwheel_colors = []
 
         if color1 is not None and color1 > 1:
-            colorwheel_color = self.get_colorwheel_color(color1, "Color1")
+            wheel_color = self.get_colorwheel_color(color1, "Color1")
+            if wheel_color is not None:
+                colorwheel_colors.append(wheel_color[:3])
         if color2 is not None and color2 > 1:
-            colorwheel_color = self.get_colorwheel_color(color2, "Color2")
+            wheel_color = self.get_colorwheel_color(color2, "Color2")
+            if wheel_color is not None:
+                colorwheel_colors.append(wheel_color[:3])
         if color3 is not None and color3 > 1:
-            colorwheel_color = self.get_colorwheel_color(color3, "Color3")
+            wheel_color = self.get_colorwheel_color(color3, "Color3")
+            if wheel_color is not None:
+                colorwheel_colors.append(wheel_color[:3])
         if color4 is not None and color4 > 1:
-            colorwheel_color = self.get_colorwheel_color(color4, "ColorMacro1")
+            wheel_color = self.get_colorwheel_color(color4, "ColorMacro1")
+            if wheel_color is not None:
+                colorwheel_colors.append(wheel_color[:3])
+
+        colorwheel_color = None
+        if colorwheel_colors:
+            colorwheel_color = [255, 255, 255]
+            for wheel_color in colorwheel_colors:
+                colorwheel_color = apply_rgb_filter(colorwheel_color, wheel_color)
 
         DMX_Log.log.debug(
             (
-                f"Color wheel, slot: {color1=}, {color2=}, {color3=}, {color4=} {colorwheel_color=}"
+                f"Color wheel, slot: {color1=}, {color2=}, {color3=}, {color4=} {colorwheel_colors=} {colorwheel_color=}"
             )
         )
         color_temperature = None
