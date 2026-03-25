@@ -161,30 +161,60 @@ def rgb2xyY(R, G, B):
     return (x, y, Y)
 
 
-def xyY2rgba(xyz):
-    """Unused for now"""
-    rgb = xyY2rgbaa(xyz)
-    lowest = min(rgb)
-    alpha = (255 - lowest) / 255
-    red = (rgb[0] - lowest) / alpha
-    green = (rgb[1] - lowest) / alpha
-    blue = (rgb[2] - lowest) / alpha
-    return (int(red), int(green), int(blue), int(alpha * 100))
+def _clamp_u8(value):
+    return max(0, min(255, int(round(value))))
 
 
-# def clamp(n, small=0, large=255):
-#    return max(small, min(n, large))
+def _srgb_channel_to_linear(channel):
+    value = max(0.0, min(1.0, channel / 255.0))
+    if value <= 0.04045:
+        return value / 12.92
+    return ((value + 0.055) / 1.055) ** 2.4
 
 
-def add_rgb(color1, color2):
-    if all(255 == i for i in color1):
-        return color2
-    if all(255 == i for i in color2):
-        return color1
-    r = max(color1[0], color2[0])
-    g = max(color1[1], color2[1])
-    b = max(color1[2], color2[2])
-    return [r, g, b]
+def _linear_channel_to_srgb(channel):
+    value = max(0.0, min(1.0, channel))
+    if value <= 0.0031308:
+        return _clamp_u8(value * 12.92 * 255.0)
+    return _clamp_u8(((1.055 * (value ** (1 / 2.4))) - 0.055) * 255.0)
+
+
+def _rgb_to_linear(rgb):
+    return [_srgb_channel_to_linear(channel) for channel in rgb[:3]]
+
+
+def _linear_to_rgb(rgb):
+    return [_linear_channel_to_srgb(channel) for channel in rgb[:3]]
+
+
+def mix_rgb_emitters(*colors):
+    """Bounded additive mixing for multiple light emitters in linear RGB."""
+    mixed = [0.0, 0.0, 0.0]
+    for color in colors:
+        if color is None:
+            continue
+        linear = _rgb_to_linear(color)
+        for index, channel in enumerate(linear):
+            # Screen blending in linear space keeps the result bounded while
+            # still producing additive-looking color mixing such as red + green -> yellow.
+            mixed[index] = 1.0 - ((1.0 - mixed[index]) * (1.0 - channel))
+    return _linear_to_rgb(mixed)
+
+
+def apply_rgb_filter(rgb, filter_rgb):
+    """Apply a subtractive color filter using per-channel transmission."""
+    if rgb is None:
+        return None
+    if filter_rgb is None:
+        return list(rgb[:3])
+
+    rgb_linear = _rgb_to_linear(rgb)
+    filter_linear = _rgb_to_linear(filter_rgb)
+    filtered = [
+        rgb_channel * filter_channel
+        for rgb_channel, filter_channel in zip(rgb_linear, filter_linear)
+    ]
+    return _linear_to_rgb(filtered)
 
 
 def color_to_rgb(base_color, colors, index):
@@ -210,44 +240,22 @@ def colors_to_rgb(colors):
     magenta_rgb = color_to_rgb([255, 0, 255], colors, 10)
     yellow_rgb = color_to_rgb([255, 255, 0], colors, 11)
 
-    red = max(
-        amber_rgb[0],
-        lime_rgb[0],
-        colors[0],
-        white_rgb[0],
-        wwhite_rgb[0],
-        cwhite_rgb[0],
-        uv_rgb[0],
-        cyan_rgb[0],
-        magenta_rgb[0],
-        yellow_rgb[0],
-    )
-    green = max(
-        amber_rgb[1],
-        lime_rgb[1],
-        colors[1],
-        white_rgb[1],
-        wwhite_rgb[1],
-        cwhite_rgb[1],
-        uv_rgb[1],
-        cyan_rgb[1],
-        magenta_rgb[1],
-        yellow_rgb[1],
-    )
-    blue = max(
-        amber_rgb[2],
-        lime_rgb[2],
-        colors[2],
-        white_rgb[2],
-        wwhite_rgb[2],
-        cwhite_rgb[2],
-        uv_rgb[2],
-        cyan_rgb[2],
-        magenta_rgb[2],
-        yellow_rgb[2],
-    )
+    emitters = [
+        [colors[0], 0, 0],
+        [0, colors[1], 0],
+        [0, 0, colors[2]],
+        white_rgb,
+        wwhite_rgb,
+        cwhite_rgb,
+        amber_rgb,
+        lime_rgb,
+        uv_rgb,
+        cyan_rgb,
+        magenta_rgb,
+        yellow_rgb,
+    ]
 
-    return [red, green, blue]
+    return mix_rgb_emitters(*emitters)
 
 
 # https://andi-siess.de/rgb-to-color-temperature/
