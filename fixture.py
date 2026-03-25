@@ -62,11 +62,10 @@ from .util import generate_fixture_name
 from .model import DMX_Model
 from .osc_utils import DMX_OSC_Handlers
 from .color_utils import (
-    add_rgb,
+    apply_rgb_filter,
     cmy_to_rgb,
     colors_to_rgb,
     kelvin_table,
-    kelvin_to_rgb,
     rgb2xyY,
 )
 
@@ -2160,10 +2159,10 @@ class DMX_Fixture(PropertyGroup):
         rgb = colors_to_rgb(colors)
         DMX_Log.log.info(("color change for geometry", geometry, colors, rgb))
         if colorwheel_color is not None:
-            rgb = add_rgb(rgb, colorwheel_color[:3])
+            rgb = apply_rgb_filter(rgb, colorwheel_color[:3])
         if color_temperature is not None:
-            rgb = add_rgb(rgb, color_temperature[:3])
-        rgb = add_rgb(self.gel_color_rgb, rgb)
+            rgb = apply_rgb_filter(rgb, color_temperature[:3])
+        rgb = apply_rgb_filter(rgb, self.gel_color_rgb)
         rgb = [c / 255.0 for c in rgb]
         DMX_Log.log.info(("color change for geometry", geometry, colors, rgb))
 
@@ -2219,23 +2218,12 @@ class DMX_Fixture(PropertyGroup):
         return rgb
 
     def updateCMY(self, cmy, colorwheel_color, color_temperature, current_frame):
-        rgb = [0, 0, 0]
         rgb = cmy_to_rgb(cmy)
-        if all([c == 255 for c in rgb]) and (
-            colorwheel_color is not None or color_temperature is not None
-        ):
-            rgb = [
-                0,
-                0,
-                0,
-            ]  # without this, default white would always be overwriting ctc
-
         if colorwheel_color is not None:
-            rgb = add_rgb(rgb, colorwheel_color)
+            rgb = apply_rgb_filter(rgb, colorwheel_color[:3])
         if color_temperature is not None:
-            rgb = add_rgb(rgb, color_temperature[:3])
-        if not all([c == 255 for c in self.gel_color_rgb]):
-            rgb = add_rgb(self.gel_color_rgb, rgb)
+            rgb = apply_rgb_filter(rgb, color_temperature[:3])
+        rgb = apply_rgb_filter(rgb, self.gel_color_rgb)
 
         rgb = [c / 255.0 for c in rgb]
 
