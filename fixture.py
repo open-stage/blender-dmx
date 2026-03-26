@@ -977,7 +977,14 @@ class DMX_Fixture(PropertyGroup):
                 new_channel.offsets_bytes = 1
 
             # blender programmer cannot control white, set it to 0
-            if "ColorAdd_W" in dmx_channel.attribute.str_link:
+
+            if dmx_channel.attribute.str_link in [
+                "ColorAdd_W",
+                "ColorAdd_GY",
+                "ColorAdd_WW",
+                "ColorAdd_CW",
+                "ColorAdd_RY",
+            ]:
                 new_channel.defaults = (0, 0)
             else:
                 fine_default = 0
