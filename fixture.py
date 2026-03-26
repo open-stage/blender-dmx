@@ -2179,6 +2179,13 @@ class DMX_Fixture(PropertyGroup):
         ]  # replace None with 0, can happen if someone maps colors across geometries...
         rgb = colors_to_rgb(colors)
         DMX_Log.log.info(("color change for geometry", geometry, colors, rgb))
+        if not any(colors) and any(
+            filter_color is not None
+            for filter_color in (colorwheel_color, color_temperature)
+        ):
+            # Color wheels/macros and CTC should still produce visible output even
+            # when DMX leaves additive emitters at zero.
+            rgb = [255, 255, 255]
         if colorwheel_color is not None:
             rgb = apply_rgb_filter(rgb, colorwheel_color[:3])
         if color_temperature is not None:
