@@ -670,6 +670,7 @@ class DMX(PropertyGroup):
         self.ensure_directories_exist()
         Timer(1, self.copy_default_profiles_to_user_folder, ()).start()
         self.check_python_version()
+        self.check_library_versions()
         self.check_blender_version()
         self.print_extension_version()
 
@@ -704,6 +705,13 @@ class DMX(PropertyGroup):
             )
             return
         DMX_Log.log.info(f"Python version: {sys.version} ✅")
+
+    def check_library_versions(self):
+        import pygdtf
+        import pymvr
+
+        DMX_Log.log.info(f"pymvr version: {pymvr.__version__}")
+        DMX_Log.log.info(f"pygdtf version: {pygdtf.__version__}")
 
     def check_blender_version(self):
         if not bpy.app.version >= (3, 4):

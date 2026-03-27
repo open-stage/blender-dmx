@@ -294,8 +294,29 @@ def set_light_nodes(light):
     mix.name = "IrisMix"
     mix.inputs[0].default_value = 1
 
+    # When no gobo or iris is active, bypass the full modulation chain and use a
+    # plain white mask. This keeps the "open" beam identical to fixtures without
+    # gobos instead of relying on the gobo/iris nodes to be perfectly neutral.
+    gobo_inactive = light_obj.data.node_tree.nodes.new("ShaderNodeRGB")
+    gobo_inactive.name = "GoboInactive"
+    gobo_inactive.outputs[0].default_value = (1.0, 1.0, 1.0, 1.0)
+
+    gobo_active_mix = light_obj.data.node_tree.nodes.new(SHADER_NODE_MIX)
+    gobo_active_mix.data_type = "RGBA"
+    gobo_active_mix.blend_type = "MIX"
+    gobo_active_mix.name = "GoboActiveMix"
+    gobo_active_mix.inputs[0].default_value = 1
+
     light_obj.data.node_tree.links.new(gobos_mix.outputs["Result"], mix.inputs["A"])
-    light_obj.data.node_tree.links.new(mix.outputs["Result"], emission.inputs[0])
+    light_obj.data.node_tree.links.new(
+        mix.outputs["Result"], gobo_active_mix.inputs["A"]
+    )
+    light_obj.data.node_tree.links.new(
+        gobo_inactive.outputs[0], gobo_active_mix.inputs["B"]
+    )
+    light_obj.data.node_tree.links.new(
+        gobo_active_mix.outputs["Result"], emission.inputs[0]
+    )
 
     # set iris up
     iris_geometry_node = light_obj.data.node_tree.nodes.new("ShaderNodeNewGeometry")

@@ -62,11 +62,10 @@ from .util import generate_fixture_name
 from .model import DMX_Model
 from .osc_utils import DMX_OSC_Handlers
 from .color_utils import (
-    add_rgb,
+    apply_rgb_filter,
     cmy_to_rgb,
     colors_to_rgb,
     kelvin_table,
-    kelvin_to_rgb,
     rgb2xyY,
 )
 
@@ -978,7 +977,14 @@ class DMX_Fixture(PropertyGroup):
                 new_channel.offsets_bytes = 1
 
             # blender programmer cannot control white, set it to 0
-            if "ColorAdd_W" in dmx_channel.attribute.str_link:
+
+            if dmx_channel.attribute.str_link in [
+                "ColorAdd_W",
+                "ColorAdd_GY",
+                "ColorAdd_WW",
+                "ColorAdd_CW",
+                "ColorAdd_RY",
+            ]:
                 new_channel.defaults = (0, 0)
             else:
                 fine_default = 0
@@ -1767,20 +1773,34 @@ class DMX_Fixture(PropertyGroup):
                 r, g, b, dimmer, use_playmode, use_recording, current_frame
             )
 
-        colorwheel_color = None
+        colorwheel_colors = []
 
-        if color1 is not None and color1 != 1:
-            colorwheel_color = self.get_colorwheel_color(color1, "Color1")
-        if color2 is not None and color2 != 1:
-            colorwheel_color = self.get_colorwheel_color(color2, "Color2")
-        if color3 is not None and color3 != 1:
-            colorwheel_color = self.get_colorwheel_color(color3, "Color3")
-        if color4 is not None and color4 != 1:
-            colorwheel_color = self.get_colorwheel_color(color4, "ColorMacro1")
+        if color1 is not None and color1 > 1:
+            wheel_color = self.get_colorwheel_color(color1, "Color1")
+            if wheel_color is not None:
+                colorwheel_colors.append(wheel_color[:3])
+        if color2 is not None and color2 > 1:
+            wheel_color = self.get_colorwheel_color(color2, "Color2")
+            if wheel_color is not None:
+                colorwheel_colors.append(wheel_color[:3])
+        if color3 is not None and color3 > 1:
+            wheel_color = self.get_colorwheel_color(color3, "Color3")
+            if wheel_color is not None:
+                colorwheel_colors.append(wheel_color[:3])
+        if color4 is not None and color4 > 1:
+            wheel_color = self.get_colorwheel_color(color4, "ColorMacro1")
+            if wheel_color is not None:
+                colorwheel_colors.append(wheel_color[:3])
+
+        colorwheel_color = None
+        if colorwheel_colors:
+            colorwheel_color = [255, 255, 255]
+            for wheel_color in colorwheel_colors:
+                colorwheel_color = apply_rgb_filter(colorwheel_color, wheel_color)
 
         DMX_Log.log.debug(
             (
-                f"Color wheel, slot: {color1=}, {color2=}, {color3=}, {color4=} {colorwheel_color=}"
+                f"Color wheel, slot: {color1=}, {color2=}, {color3=}, {color4=} {colorwheel_colors=} {colorwheel_color=}"
             )
         )
         color_temperature = None
@@ -2159,11 +2179,18 @@ class DMX_Fixture(PropertyGroup):
         ]  # replace None with 0, can happen if someone maps colors across geometries...
         rgb = colors_to_rgb(colors)
         DMX_Log.log.info(("color change for geometry", geometry, colors, rgb))
+        if not any(colors) and any(
+            filter_color is not None
+            for filter_color in (colorwheel_color, color_temperature)
+        ):
+            # Color wheels/macros and CTC should still produce visible output even
+            # when DMX leaves additive emitters at zero.
+            rgb = [255, 255, 255]
         if colorwheel_color is not None:
-            rgb = add_rgb(rgb, colorwheel_color[:3])
+            rgb = apply_rgb_filter(rgb, colorwheel_color[:3])
         if color_temperature is not None:
-            rgb = add_rgb(rgb, color_temperature[:3])
-        rgb = add_rgb(self.gel_color_rgb, rgb)
+            rgb = apply_rgb_filter(rgb, color_temperature[:3])
+        rgb = apply_rgb_filter(rgb, self.gel_color_rgb)
         rgb = [c / 255.0 for c in rgb]
         DMX_Log.log.info(("color change for geometry", geometry, colors, rgb))
 
@@ -2219,23 +2246,12 @@ class DMX_Fixture(PropertyGroup):
         return rgb
 
     def updateCMY(self, cmy, colorwheel_color, color_temperature, current_frame):
-        rgb = [0, 0, 0]
         rgb = cmy_to_rgb(cmy)
-        if all([c == 255 for c in rgb]) and (
-            colorwheel_color is not None or color_temperature is not None
-        ):
-            rgb = [
-                0,
-                0,
-                0,
-            ]  # without this, default white would always be overwriting ctc
-
         if colorwheel_color is not None:
-            rgb = add_rgb(rgb, colorwheel_color)
+            rgb = apply_rgb_filter(rgb, colorwheel_color[:3])
         if color_temperature is not None:
-            rgb = add_rgb(rgb, color_temperature[:3])
-        if not all([c == 255 for c in self.gel_color_rgb]):
-            rgb = add_rgb(self.gel_color_rgb, rgb)
+            rgb = apply_rgb_filter(rgb, color_temperature[:3])
+        rgb = apply_rgb_filter(rgb, self.gel_color_rgb)
 
         rgb = [c / 255.0 for c in rgb]
 
@@ -2301,7 +2317,7 @@ class DMX_Fixture(PropertyGroup):
         return zoom
 
     def get_colorwheel_color(self, color, attribute):
-        if not len(self["slot_colors"]) or color == 0 or color == 1:
+        if not len(self["slot_colors"]) or color < 2:
             return
         if attribute not in self["slot_colors"]:
             return
@@ -2781,20 +2797,31 @@ class DMX_Fixture(PropertyGroup):
         size = light_obj.data.get("beam_radius", 0.01)
         light_obj.data.shadow_soft_size = size
 
+    def _is_gobo_slot_active(self, slot):
+        if slot is None:
+            return False
+        # Slot 1 is the open slot. Any later slot is an actual gobo.
+        return slot > 1
+
+    def _is_iris_active(self, iris):
+        if iris is None:
+            return False
+
+        # The render path maps a fully open iris to 0 on the "Iris Size" node,
+        # so treat that neutral/open state as inactive here as well.
+        if 0 <= iris <= 255:
+            return (12 - (iris * 12)) != 0
+
+        return iris != 0
+
     def hide_gobo_geometry(self, gobo1, gobo2, iris, current_frame=None):
-        hide = True
-
-        if gobo1[0] is not None:
-            if gobo1[0] != 0:
-                hide = False
-
-        if gobo2[0] is not None:
-            if gobo2[0] != 0:
-                hide = False
-
-        if iris is not None:
-            if iris != 0:
-                hide = False
+        hide = not any(
+            (
+                self._is_gobo_slot_active(gobo1[0]),
+                self._is_gobo_slot_active(gobo2[0]),
+                self._is_iris_active(iris),
+            )
+        )
         if hasattr(self, "collection"):
             if hasattr(self.collection, "objects"):
                 for obj in self.collection.objects:
@@ -2813,6 +2840,13 @@ class DMX_Fixture(PropertyGroup):
                 )  # make the beam large if no gobo is used
             else:
                 self.set_spot_diameter_to_point(light_obj)
+            gobo_active_mix = light_obj.data.node_tree.nodes.get("GoboActiveMix")
+            if gobo_active_mix is not None:
+                gobo_active_mix.inputs["Factor"].default_value = 1 if hide else 0
+                if current_frame and self.dmx_cache_dirty:
+                    gobo_active_mix.inputs["Factor"].keyframe_insert(
+                        data_path="default_value", frame=current_frame
+                    )
             if current_frame and self.dmx_cache_dirty:
                 light_obj.data.keyframe_insert(
                     data_path="shadow_soft_size", frame=current_frame
