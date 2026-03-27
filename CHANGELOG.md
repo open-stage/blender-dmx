@@ -1,5 +1,28 @@
 ### Changelog
 
+### 2.1.7
+
+* Ensure undistored beam output when no iris and no gobo are used
+* Improve colormixing:
+    * Emitter mixing: additive-style mixing in linear RGB, bounded with screen
+      blending. This is now used for RGB/RGBW/RGBA/RGBAL/...
+    * Filter mixing: multiplicative transmission in linear RGB. This is now
+      used for color wheel, CMY result, CTC/CTO/CTB, and gel.
+    * Make color wheels work when RGB is at 0
+    * Set non RGB to default to 0 - makes RGBA, RGBL fixtures color mixing to
+      work when controlling only from Blender's color picker
+    * Multiple colorwheels are now mixed together
+    * Improve color wheel slot handling
+    * Use color data from filter if linked to a wheel slot
+* Fix some not working virtual channels
+* Adjust GDTF Share data receiving to keep fixtures list intact if server
+  returns empty list
+* Add info to startup about pygdtf and pymvr versions
+* Update translations
+    * Swedish - Daniel Nylander
+    * Chinese (Simplified Han script) - 大学没毕业
+    * Spanish - Francisco Serrador
+
 ### 2.1.6
 
 * Fix volumetric beam toggle
