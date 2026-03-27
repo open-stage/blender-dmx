@@ -2797,20 +2797,31 @@ class DMX_Fixture(PropertyGroup):
         size = light_obj.data.get("beam_radius", 0.01)
         light_obj.data.shadow_soft_size = size
 
+    def _is_gobo_slot_active(self, slot):
+        if slot is None:
+            return False
+        # Slot 1 is the open slot. Any later slot is an actual gobo.
+        return slot > 1
+
+    def _is_iris_active(self, iris):
+        if iris is None:
+            return False
+
+        # The render path maps a fully open iris to 0 on the "Iris Size" node,
+        # so treat that neutral/open state as inactive here as well.
+        if 0 <= iris <= 255:
+            return (12 - (iris * 12)) != 0
+
+        return iris != 0
+
     def hide_gobo_geometry(self, gobo1, gobo2, iris, current_frame=None):
-        hide = True
-
-        if gobo1[0] is not None:
-            if gobo1[0] != 0:
-                hide = False
-
-        if gobo2[0] is not None:
-            if gobo2[0] != 0:
-                hide = False
-
-        if iris is not None:
-            if iris != 0:
-                hide = False
+        hide = not any(
+            (
+                self._is_gobo_slot_active(gobo1[0]),
+                self._is_gobo_slot_active(gobo2[0]),
+                self._is_iris_active(iris),
+            )
+        )
         if hasattr(self, "collection"):
             if hasattr(self.collection, "objects"):
                 for obj in self.collection.objects:
@@ -2829,6 +2840,13 @@ class DMX_Fixture(PropertyGroup):
                 )  # make the beam large if no gobo is used
             else:
                 self.set_spot_diameter_to_point(light_obj)
+            gobo_active_mix = light_obj.data.node_tree.nodes.get("GoboActiveMix")
+            if gobo_active_mix is not None:
+                gobo_active_mix.inputs["Factor"].default_value = 1 if hide else 0
+                if current_frame and self.dmx_cache_dirty:
+                    gobo_active_mix.inputs["Factor"].keyframe_insert(
+                        data_path="default_value", frame=current_frame
+                    )
             if current_frame and self.dmx_cache_dirty:
                 light_obj.data.keyframe_insert(
                     data_path="shadow_soft_size", frame=current_frame
