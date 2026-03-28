@@ -8,1435 +8,1466 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-24 10:26+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
-"Language: id\n"
+"PO-Revision-Date: 2026-03-29 08:09+0000\n"
+"Last-Translator: Arif Budiman <arifpedia@gmail.com>\n"
+"Language-Team: Indonesian <https://hosted.weblate.org/projects/blenderdmx/"
+"main/id/>\n"
+"Language: id_ID\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.17-dev\n"
 "Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
-msgstr ""
+msgstr "Berkas tidak ada"
 
 msgid "Fixture ID"
-msgstr ""
+msgstr "ID Fixture"
 
 msgid "Unit Number"
-msgstr ""
+msgstr "Nomor Unit"
 
 msgid "Custom ID"
-msgstr ""
+msgstr "ID Kustom"
 
 msgid "DMX Address"
-msgstr ""
+msgstr "Alamat DMX"
 
 msgid "Position"
-msgstr ""
+msgstr "Posisi"
 
 msgid "Rotation"
-msgstr ""
+msgstr "Rotasi"
 
 msgid "Footprint"
-msgstr ""
+msgstr "Jejak"
 
 msgid "Physical Properties"
-msgstr ""
+msgstr "Properti Fisik"
 
 msgid "DMX Collection"
-msgstr ""
+msgstr "Koleksi DMX"
 
 msgid "Selected PSN Server"
-msgstr ""
+msgstr "Server PSN yang Dipilih"
 
 msgid "The selected element on the PSN server list"
-msgstr ""
+msgstr "Elemen yang dipilih pada daftar server PSN"
 
 msgid "Class List i"
-msgstr ""
+msgstr "Daftar Kelas i"
 
 msgid "The selected element on the class list"
-msgstr ""
+msgstr "Elemen yang dipilih pada daftar kelas"
 
 msgid "Universe"
-msgstr ""
+msgstr "Universe"
 
 msgid "Editable"
-msgstr ""
+msgstr "Dapat Diedit"
 
 msgid "Display Pigtails"
-msgstr ""
+msgstr "Tampilkan Pigtails"
 
 msgid "Display 2D View"
-msgstr ""
+msgstr "Tampilkan Tampilan 2D"
 
 msgid "Display Device Label"
-msgstr ""
+msgstr "Tampilkan Label Perangkat"
 
 msgid "Device Label"
-msgstr ""
+msgstr "Label Perangkat"
 
 msgid "None"
-msgstr ""
+msgstr "Tidak ada"
 
 msgid "Name"
-msgstr ""
+msgstr "Nama"
 
 msgid "DMX"
-msgstr ""
+msgstr "DMX"
 
 msgid "Fixture Name + ID"
-msgstr ""
+msgstr "Nama Fixture + ID"
 
 msgid "3D Fixture Name + ID"
-msgstr ""
+msgstr "Nama Fixture 3D + ID"
 
 msgid "Allow Selecting Geometries"
-msgstr ""
+msgstr "Izinkan Memilih Geometri"
 
 msgid "Logging Level"
-msgstr ""
+msgstr "Tingkat Logging"
 
 msgid "Critical"
-msgstr ""
+msgstr "Kritis"
 
 msgid "Error"
-msgstr ""
+msgstr "Kesalahan"
 
 msgid "Warning"
-msgstr ""
+msgstr "Peringatan"
 
 msgid "Info"
-msgstr ""
+msgstr "Info"
 
 msgid "Debug"
-msgstr ""
+msgstr "Debug"
 
 msgid "Simple beam"
-msgstr ""
+msgstr "Sinar sederhana"
 
 msgid "Display 'fake' beam cone"
-msgstr ""
+msgstr "Tampilkan kerucut sinar 'palsu'"
 
 msgid "Selected fixtures"
-msgstr ""
+msgstr "Fixture yang dipilih"
 
 msgid "All fixtures"
-msgstr ""
+msgstr "Semua fixture"
 
 msgid "Beam Lens Diameter in Cycles"
-msgstr ""
+msgstr "Diameter Lensa Sinar dalam Siklus"
 
 msgid ""
 "Beam diameter is reduced to minimum when projecting gobos to prevent blur"
 " on gobo edge"
 msgstr ""
+"Diameter sinar dikurangi ke minimum saat memproyeksikan gobo untuk mencegah "
+"blur pada tepi gobo"
 
 msgid "Reduced"
-msgstr ""
+msgstr "Dikurangi"
 
 msgid "Full width"
-msgstr ""
+msgstr "Lebar penuh"
 
 msgid "Custom per each beam"
-msgstr ""
+msgstr "Kustom per setiap sinar"
 
 msgid "Disable Beam Outlines"
-msgstr ""
+msgstr "Nonaktifkan Garis Luar Sinar"
 
 msgid "Enable Volume Scatter"
-msgstr ""
+msgstr "Aktifkan Volume Scatter"
 
 msgid "Noise Scale"
-msgstr ""
+msgstr "Skala Noise"
 
 msgid "Volume Noise Scale"
-msgstr ""
+msgstr "Skala Noise Volume"
 
 msgid "Density"
-msgstr ""
+msgstr "Kerapatan"
 
 msgid "Volume Scatter Density"
-msgstr ""
+msgstr "Kerapatan Volume Scatter"
 
 msgid "Multiply beams intensity"
-msgstr ""
+msgstr "Kalikan intensitas sinar"
 
 msgid "Number of universes"
-msgstr ""
+msgstr "Jumlah universe"
 
 msgid "The number of universes set on the panel"
-msgstr ""
+msgstr "Jumlah universe yang ditetapkan pada panel"
 
 msgid "Universe List Item"
-msgstr ""
+msgstr "Item Daftar Universe"
 
 msgid "The selected element on the universe list"
-msgstr ""
+msgstr "Elemen yang dipilih pada daftar universe"
 
 msgid "IPv4 Address for ArtNet signal"
-msgstr ""
+msgstr "Alamat IPv4 untuk sinyal ArtNet"
 
 msgid "The network card/interface to listen for ArtNet DMX data"
-msgstr ""
+msgstr "Kartu jaringan/antarmuka untuk mendengarkan data DMX ArtNet"
 
 msgid "Enable Art-Net Input"
-msgstr ""
+msgstr "Aktifkan Input Art-Net"
 
 msgid ""
 "Enables the input of DMX data throught Art-Net on the selected network "
 "interface"
 msgstr ""
+"Mengaktifkan input data DMX melalui Art-Net pada antarmuka jaringan yang "
+"dipilih"
 
 msgid "Enable sACN Input"
-msgstr ""
+msgstr "Aktifkan Input sACN"
 
 msgid ""
 "Enables the input of DMX data throught sACN on all detected network "
 "interfaces"
 msgstr ""
+"Mengaktifkan input data DMX melalui sACN pada semua antarmuka jaringan yang "
+"terdeteksi"
 
 msgid "Enable OSC Output"
-msgstr ""
+msgstr "Aktifkan Output OSC"
 
 msgid "Enables Open Sound Control protocol to send fixture selection to a console"
 msgstr ""
+"Mengaktifkan protokol Open Sound Control untuk mengirim pilihan fixture ke "
+"konsol"
 
 msgid "OSC Target address"
-msgstr ""
+msgstr "Alamat Target OSC"
 
 msgid ""
 "Address of the host where you want to send the OSC signal. Address ending"
 " on .255 is a broadcast address to all hosts on the network"
 msgstr ""
+"Alamat host tempat Anda ingin mengirim sinyal OSC. Alamat yang diakhiri "
+"dengan .255 adalah alamat siaran ke semua host di jaringan"
 
 msgid "OSC Target port"
-msgstr ""
+msgstr "Port Target OSC"
 
 msgid "Port number of the host where you want to send the OSC signal"
-msgstr ""
+msgstr "Nomor port host tempat Anda ingin mengirim sinyal OSC"
 
 msgid "Enable Local MVR-xchange"
-msgstr ""
+msgstr "Aktifkan MVR-xchange Lokal"
 
 msgid "Enables MVR-xchange sharing and discovery"
-msgstr ""
+msgstr "Mengaktifkan berbagi dan penemuan MVR-xchange"
 
 msgid "Enable Group Registration"
-msgstr ""
+msgstr "Aktifkan Registrasi Grup"
 
 msgid "Join or start the new group"
-msgstr ""
+msgstr "Bergabung atau mulai grup baru"
 
 msgid "Enable Internet MVR-xchange"
-msgstr ""
+msgstr "Aktifkan MVR-xchange Internet"
 
 msgid "Enables Internet based MVR-xchange sharing and discovery"
-msgstr ""
+msgstr "Mengaktifkan berbagi dan penemuan MVR-xchange berbasis Internet"
 
 msgid "Use per-project Station UUID"
-msgstr ""
+msgstr "Gunakan UUID Stasiun per-proyek"
 
 msgid "Generates a random UUID for every blend file"
-msgstr ""
+msgstr "Menghasilkan UUID acak untuk setiap berkas blend"
 
 msgid "Art-Net Status"
-msgstr ""
+msgstr "Status Art-Net"
 
 msgid "sACN Status"
-msgstr ""
+msgstr "Status sACN"
 
 msgid "Group List i"
-msgstr ""
+msgstr "Daftar Grup i"
 
 msgid "The selected element on the group list"
-msgstr ""
+msgstr "Elemen yang dipilih pada daftar grup"
 
 msgid "Order by"
-msgstr ""
+msgstr "Urutkan berdasarkan"
 
 msgid "Fixture sorting order"
-msgstr ""
+msgstr "Urutan pengurutan fixture"
 
 msgid "Laser collision collection"
-msgstr ""
+msgstr "Koleksi tabrakan laser"
 
 msgid ""
 "Laser beams are projected onto objects in this collection. The beam stops"
 " at the first object colliding with the beam."
 msgstr ""
+"Sinar laser diproyeksikan ke objek dalam koleksi ini. Sinar berhenti pada "
+"objek pertama yang bertabrakan dengan sinar."
 
 msgid ""
 "The renderer is paused during MVR import and in 2D view. This checkbox "
 "allows to re-enable it in case of some failure during import, which would"
 " leave it paused"
 msgstr ""
+"Renderer dijeda selama impor MVR dan dalam tampilan 2D. Kotak centang ini "
+"memungkinkan untuk mengaktifkannya kembali jika terjadi kegagalan selama "
+"impor, yang akan membuatnya tetap dijeda"
 
 msgid "Pause renderer"
-msgstr ""
+msgstr "Jeda renderer"
 
 msgid "Manufacturers"
-msgstr ""
+msgstr "Produsen"
 
 msgid "Imports"
-msgstr ""
+msgstr "Impor"
 
 msgid "Add to selection"
-msgstr ""
+msgstr "Tambahkan ke pilihan"
 
 msgid "Remove from selection"
-msgstr ""
+msgstr "Hapus dari pilihan"
 
 msgid "When selecting a group, remove from existing selection"
-msgstr ""
+msgstr "Saat memilih grup, hapus dari pilihan yang ada"
 
 msgid "Keyframe only selected fixtures (not for autokeying)"
-msgstr ""
+msgstr "Keyframe hanya fixture yang dipilih (tidak untuk autokeying)"
 
 msgid "Add keyframes with changes only for selected fixtures"
-msgstr ""
+msgstr "Tambahkan keyframe dengan perubahan hanya untuk fixture yang dipilih"
 
 msgid "MVR-xchange"
-msgstr ""
+msgstr "MVR-xchange"
 
 msgid "DMX Data"
-msgstr ""
+msgstr "Data DMX"
 
 msgid "Fixture"
-msgstr ""
+msgstr "Fixture"
 
 msgid "Gap"
-msgstr ""
+msgstr "Jarak antar"
 
 msgid "Diameter"
-msgstr ""
+msgstr "Diameter"
 
 msgid "Rotate"
-msgstr ""
+msgstr "Rotasi"
 
 msgid "Source"
-msgstr ""
+msgstr "Sumber"
 
 msgid "Subfixtures"
-msgstr ""
+msgstr "Subfixture"
 
 msgid "Active Subfixtures"
-msgstr ""
+msgstr "Subfixture Aktif"
 
 msgid "Pan Rotate"
-msgstr ""
+msgstr "Rotasi Pan"
 
 msgid "Tilt Rotate"
-msgstr ""
+msgstr "Rotasi Tilt"
 
 msgid "Custom Cutoff Distance"
-msgstr ""
+msgstr "Jarak Cutoff Kustom"
 
 msgid ""
 "Distance at which the influence of the light will be set to 0. Value "
 "bigger then 23 will break gobo rendering in Eevee Next."
 msgstr ""
+"Jarak di mana pengaruh cahaya akan diatur ke 0. Nilai lebih besar dari 23 "
+"akan merusak rendering gobo di Eevee Next."
 
 msgid "Use Fixtures Physical Properties"
-msgstr ""
+msgstr "Gunakan Properti Fisik Fixture"
 
 msgid "Use Channel Functions of this fixture"
-msgstr ""
+msgstr "Gunakan Fungsi Channel dari fixture ini"
 
 msgid "Use High Quality Models"
-msgstr ""
+msgstr "Gunakan Model Berkualitas Tinggi"
 
 msgid "Use high quality mesh files if present"
-msgstr ""
+msgstr "Gunakan berkas mesh berkualitas tinggi jika ada"
 
 msgid "DMX Universe"
-msgstr ""
+msgstr "Universe DMX"
 
 msgid "Address"
-msgstr ""
+msgstr "Alamat"
 
 msgid "Gel Color"
-msgstr ""
+msgstr "Warna Gel"
 
 msgid "Display beams"
-msgstr ""
+msgstr "Tampilkan sinar"
 
 msgid "Display beam projection and cone"
-msgstr ""
+msgstr "Tampilkan proyeksi sinar dan kerucut"
 
 msgid "Add Target"
-msgstr ""
+msgstr "Tambahkan Target"
 
 msgid "Add target for beam to follow"
-msgstr ""
+msgstr "Tambahkan target untuk diikuti sinar"
 
 msgid "Increment DMX address"
-msgstr ""
+msgstr "Naikkan alamat DMX"
 
 msgid "Increment Fixture ID"
-msgstr ""
+msgstr "Naikkan ID Fixture"
 
 msgid "Increment Fixture ID if numeric"
-msgstr ""
+msgstr "Naikkan ID Fixture jika numerik"
 
 msgid ""
 "The Fixture ID is an identifier of this fixture that can be used to "
 "activate / select them for programming."
 msgstr ""
+"ID Fixture adalah pengenal dari fixture ini yang dapat digunakan untuk "
+"mengaktifkan / memilihnya untuk pemrograman."
 
 msgid "Units"
-msgstr ""
+msgstr "Unit"
 
 msgid "How many units of this light to add"
-msgstr ""
+msgstr "Berapa banyak unit lampu ini yang akan ditambahkan"
 
 msgid "Import Focus Points as Targets"
-msgstr ""
+msgstr "Impor Titik Fokus sebagai Target"
 
 msgid "Create Targets from MVR Focus Points"
-msgstr ""
+msgstr "Buat Target dari Titik Fokus MVR"
 
 msgid "Import Fixtures"
-msgstr ""
+msgstr "Impor Fixture"
 
 msgid "Import Trusses"
-msgstr ""
+msgstr "Impor Truss"
 
 msgid "Import Scene Objects"
-msgstr ""
+msgstr "Impor Objek Adegan"
 
 msgid "Import Projectors"
-msgstr ""
+msgstr "Impor Proyektor"
 
 msgid "Import Video Screens"
-msgstr ""
+msgstr "Impor Layar Video"
 
 msgid "Import Supports"
-msgstr ""
+msgstr "Impor Penyangga"
 
 msgid "Use GDTF High Quality Models"
-msgstr ""
+msgstr "Gunakan Model Berkualitas Tinggi GDTF"
 
 msgid "Export Targets as MVR Focus Points"
-msgstr ""
+msgstr "Ekspor Target sebagai Titik Fokus MVR"
 
 msgid "Export only selected fixtures"
-msgstr ""
+msgstr "Ekspor hanya fixture yang dipilih"
 
 msgid "Export only selected fixtures (does not filter non-fixture objects)"
-msgstr ""
+msgstr "Ekspor hanya fixture yang dipilih (tidak memfilter objek non-fixture)"
 
 msgid "Export fixtures only"
-msgstr ""
+msgstr "Ekspor hanya fixture"
 
 msgid "Export fixtures only (skip all non-fixture objects)"
-msgstr ""
+msgstr "Ekspor hanya fixture (lewati semua objek non-fixture)"
 
 msgid "Enable PSN Input"
-msgstr ""
+msgstr "Aktifkan Input PSN"
 
 msgid "Enables PosiStageNet input"
-msgstr ""
+msgstr "Mengaktifkan input PosiStageNet"
 
 msgid "IPv4 Address for PSN signal"
-msgstr ""
+msgstr "Alamat IPv4 untuk sinyal PSN"
 
 msgid "The network card/interface to listen for PSN data"
-msgstr ""
+msgstr "Kartu jaringan/antarmuka untuk mendengarkan data PSN"
 
 msgid "PSN Target port"
-msgstr ""
+msgstr "Port Target PSN"
 
 msgid "File UUID"
-msgstr ""
+msgstr "UUID Berkas"
 
 msgid "Comment"
-msgstr ""
+msgstr "Komentar"
 
 msgid "File Name"
-msgstr ""
+msgstr "Nama Berkas"
 
 msgid "Station UUID"
-msgstr ""
+msgstr "UUID Stasiun"
 
 msgid "File Size"
-msgstr ""
+msgstr "Ukuran Berkas"
 
 msgid "Time of info"
-msgstr ""
+msgstr "Waktu info"
 
 msgid "Time of saving"
-msgstr ""
+msgstr "Waktu penyimpanan"
 
 msgid "Subscribed to"
-msgstr ""
+msgstr "Berlangganan ke"
 
 msgid "We requested latest file without UUID"
-msgstr ""
+msgstr "Kami meminta berkas terbaru tanpa UUID"
 
 msgid "IP Address"
-msgstr ""
+msgstr "Alamat IP"
 
 msgid "Port"
-msgstr ""
+msgstr "Port"
 
 msgid "Connected"
-msgstr ""
+msgstr "Terhubung"
 
 msgid "Last Seen Time"
-msgstr ""
+msgstr "Waktu Terakhir Terlihat"
 
 msgid "Station Name"
-msgstr ""
+msgstr "Nama Stasiun"
 
 msgid "MVR-xchange group"
-msgstr ""
+msgstr "Grup MVR-xchange"
 
 msgid "Provider"
-msgstr ""
+msgstr "Penyedia"
 
 msgid "Commits"
-msgstr ""
+msgstr "Commit"
 
 msgid "Icon ID"
-msgstr ""
+msgstr "ID Ikon"
 
 msgid "New Group:"
-msgstr ""
+msgstr "Grup Baru:"
 
 msgid "MVR-xchange Clients"
-msgstr ""
+msgstr "Klien MVR-xchange"
 
 msgid "Existing Groups"
-msgstr ""
+msgstr "Grup yang Ada"
 
 msgid "Websocket Commits"
-msgstr ""
+msgstr "Commit Websocket"
 
 msgid "Message"
-msgstr ""
+msgstr "Pesan"
 
 msgid "IPv4 Address for MVR-xchange"
-msgstr ""
+msgstr "Alamat IPv4 untuk MVR-xchange"
 
 msgid "The network card/interface for MVR-xchange"
-msgstr ""
+msgstr "Kartu jaringan/antarmuka untuk MVR-xchange"
 
 msgid "Group"
-msgstr ""
+msgstr "Grup"
 
 msgid "Classes"
-msgstr ""
+msgstr "Kelas"
 
 msgid "Align selected fixtures to active fixture"
-msgstr ""
+msgstr "Sejajarkan fixture yang dipilih ke fixture aktif"
 
 msgid "Distribute selected fixtures evenly"
-msgstr ""
+msgstr "Sebarkan fixture yang dipilih secara merata"
 
 msgid "Distribute selected fixtures with gap"
-msgstr ""
+msgstr "Sebarkan fixture yang dipilih dengan jarak"
 
 msgid "Align and Distribute"
-msgstr ""
+msgstr "Sejajarkan dan Sebarkan"
 
 #, python-brace-format
 msgid "Active object: {}"
-msgstr ""
+msgstr "Objek aktif: {}"
 
 #, python-brace-format
 msgid "Selected fixtures: {}"
-msgstr ""
+msgstr "Fixture yang dipilih: {}"
 
 msgid "DMX > Fixture Menu"
-msgstr ""
+msgstr "DMX > Menu Fixture"
 
 msgid "Add"
-msgstr ""
+msgstr "Tambah"
 
 msgid "Edit"
-msgstr ""
+msgstr "Edit"
 
 msgid "Remove"
-msgstr ""
+msgstr "Hapus"
 
 msgid "DMX > Fixture > Add > Manufacturers"
-msgstr ""
+msgstr "DMX > Fixture > Tambah > Produsen"
 
 msgid "DMX > Fixture > Add > Profiles"
-msgstr ""
+msgstr "DMX > Fixture > Tambah > Profil"
 
 msgid "DMX > Fixture > Add > Mode"
-msgstr ""
+msgstr "DMX > Fixture > Tambah > Mode"
 
 msgid "DMX > Fixture > Add > Manufacturers > Profiles"
-msgstr ""
+msgstr "DMX > Fixture > Tambah > Produsen > Profil"
 
 msgid "Profile"
-msgstr ""
+msgstr "Profil"
 
 msgid "Fixture GDTF Profile"
-msgstr ""
+msgstr "Profil GDTF Fixture"
 
 msgid "Mode"
-msgstr ""
+msgstr "Mode"
 
 msgid "Fixture GDTF Mode"
-msgstr ""
+msgstr "Mode GDTF Fixture"
 
 msgid "DMX Mode"
-msgstr ""
+msgstr "Mode DMX"
 
 msgid "Advanced edit"
-msgstr ""
+msgstr "Edit lanjutan"
 
 msgid "Modify DMX address"
-msgstr ""
+msgstr "Ubah alamat DMX"
 
 msgid "Modify Fixture ID"
-msgstr ""
+msgstr "Ubah ID Fixture"
 
 msgid "GDTF Profile"
-msgstr ""
+msgstr "Profil GDTF"
 
 msgid "DMX: Add Fixture"
-msgstr ""
+msgstr "DMX: Tambah Fixture"
 
 msgid "Add fixtures to the show"
-msgstr ""
+msgstr "Tambahkan fixture ke pertunjukan"
 
 msgid "No GDTF Profile selected."
-msgstr ""
+msgstr "Tidak ada Profil GDTF yang dipilih."
 
 msgid "No DMX Mode selected."
-msgstr ""
+msgstr "Tidak ada Mode DMX yang dipilih."
 
 msgid "DMX: Edit Fixture"
-msgstr ""
+msgstr "DMX: Edit Fixture"
 
 msgid "Edit selected fixtures"
-msgstr ""
+msgstr "Edit fixture yang dipilih"
 
 msgid "DMX > Fixture > Remove"
-msgstr ""
+msgstr "DMX > Fixture > Hapus"
 
 msgid "Remove selected fixtures from Scene"
-msgstr ""
+msgstr "Hapus fixture yang dipilih dari Adegan"
 
 msgid "Remove IES Files"
-msgstr ""
+msgstr "Hapus Berkas IES"
 
 msgid "Import IES File"
-msgstr ""
+msgstr "Impor Berkas IES"
 
 msgid "Select Previous Fixture"
-msgstr ""
+msgstr "Pilih Fixture Sebelumnya"
 
 msgid "Select Next Fixture"
-msgstr ""
+msgstr "Pilih Fixture Berikutnya"
 
 msgid "Select Previous Target"
-msgstr ""
+msgstr "Pilih Target Sebelumnya"
 
 msgid "Select Next Target"
-msgstr ""
+msgstr "Pilih Target Berikutnya"
 
 msgid "DMX > Fixture > Item"
-msgstr ""
+msgstr "DMX > Fixture > Item"
 
 msgid "Select Fixture"
-msgstr ""
+msgstr "Pilih Fixture"
 
 msgid "Remove fixture"
-msgstr ""
+msgstr "Hapus fixture"
 
 msgid "Fixtures"
-msgstr ""
+msgstr "Fixture"
 
 msgid "F ID"
-msgstr ""
+msgstr "F ID"
 
 msgid "Unit #"
-msgstr ""
+msgstr "Unit #"
 
 msgid "F ID #"
-msgstr ""
+msgstr "F ID #"
 
 msgid "Cst ID"
-msgstr ""
+msgstr "ID Kst"
 
 msgid "Uni"
-msgstr ""
+msgstr "Uni"
 
 msgid "Addr"
-msgstr ""
+msgstr "Alamat"
 
 msgid "Uni.Addr"
-msgstr ""
+msgstr "Uni.Alamat"
 
 msgid "Foot"
-msgstr ""
+msgstr "Jejak"
 
 msgid "DMX > Group Menu"
-msgstr ""
+msgstr "DMX > Menu Grup"
 
 msgid "Create"
-msgstr ""
+msgstr "Buat"
 
 msgid "Update"
-msgstr ""
+msgstr "Perbarui"
 
 msgid "Rename"
-msgstr ""
+msgstr "Ubah Nama"
 
 msgid "DMX > Group > Create"
-msgstr ""
+msgstr "DMX > Grup > Buat"
 
 msgid "Create DMX group from selected fixtures"
-msgstr ""
+msgstr "Buat grup DMX dari fixture yang dipilih"
 
 msgid "Group Name"
-msgstr ""
+msgstr "Nama Grup"
 
 msgid "Replace DMX group fixtures with selected ones"
-msgstr ""
+msgstr "Ganti fixture grup DMX dengan yang dipilih"
 
 msgid "DMX > Group > Rename"
-msgstr ""
+msgstr "DMX > Grup > Ubah Nama"
 
 msgid "Rename selected DMX group"
-msgstr ""
+msgstr "Ubah nama grup DMX yang dipilih"
 
 msgid "DMX > Group > Remove"
-msgstr ""
+msgstr "DMX > Grup > Hapus"
 
 msgid "Remove selected DMX group"
-msgstr ""
+msgstr "Hapus grup DMX yang dipilih"
 
 msgid "Groups"
-msgstr ""
+msgstr "Grup"
 
 msgid "Reset Colors"
-msgstr ""
+msgstr "Atur Ulang Warna"
 
 msgid "Lock Movement"
-msgstr ""
+msgstr "Kunci Pergerakan"
 
 msgid "Ignore pan/tilt DMX data"
-msgstr ""
+msgstr "Abaikan data DMX pan/tilt"
 
 msgid "Unlock Movement"
-msgstr ""
+msgstr "Buka Kunci Pergerakan"
 
 msgid "Allow pan/tilt DMX data"
-msgstr ""
+msgstr "Izinkan data DMX pan/tilt"
 
 msgid "Track Target"
-msgstr ""
+msgstr "Lacak Target"
 
 msgid "Follow the target"
-msgstr ""
+msgstr "Ikuti target"
 
 msgid "Do Not Track Target"
-msgstr ""
+msgstr "Jangan Lacak Target"
 
 msgid "Do not follow the target"
-msgstr ""
+msgstr "Jangan ikuti target"
 
 msgid "Use Fixtures Channel Functions"
-msgstr ""
+msgstr "Gunakan Fungsi Channel Fixture"
 
 msgid "Do Not Use Fixtures Physical Properties"
-msgstr ""
+msgstr "Jangan Gunakan Properti Fisik Fixture"
 
 msgid "Do not use Fixtures Channel Functions"
-msgstr ""
+msgstr "Jangan Gunakan Fungsi Channel Fixture"
 
 msgid "Deselect All"
-msgstr ""
+msgstr "Batalkan Semua Pilihan"
 
 msgid "Deselect every fixture in the Scene"
-msgstr ""
+msgstr "Batalkan pilihan semua fixture dalam Adegan"
 
 msgid "Select All"
-msgstr ""
+msgstr "Pilih Semua"
 
 msgid "Select every fixture in the Scene"
-msgstr ""
+msgstr "Pilih semua fixture dalam Adegan"
 
 msgid "Select Visible (only filtered)"
-msgstr ""
+msgstr "Pilih yang Terlihat (hanya yang difilter)"
 
 msgid "Select every fixture which is visible in the fixtures list"
-msgstr ""
+msgstr "Pilih semua fixture yang terlihat dalam daftar fixture"
 
 msgid "Invert selection"
-msgstr ""
+msgstr "Balikkan pilihan"
 
 msgid "Invert the selection"
-msgstr ""
+msgstr "Balikkan pilihan"
 
 msgid "Select every other light"
-msgstr ""
+msgstr "Pilih setiap lampu lainnya"
 
 msgid "Clear"
-msgstr ""
+msgstr "Bersihkan"
 
 msgid "Clear all DMX values to default and update fixtures"
-msgstr ""
+msgstr "Bersihkan semua nilai DMX ke bawaan dan perbarui fixture"
 
 msgid "Apply"
-msgstr ""
+msgstr "Terapkan"
 
 msgid "Apply these values manually when render is paused"
-msgstr ""
+msgstr "Terapkan nilai ini secara manual saat render dijeda"
 
 msgid "Targets to zero"
-msgstr ""
+msgstr "Target ke nol"
 
 msgid "Set Targets' position to 0 of the Scene"
-msgstr ""
+msgstr "Atur posisi Target ke 0 dalam Adegan"
 
 msgid "Center View to Selected"
-msgstr ""
+msgstr "Pusatkan Tampilan ke yang Dipilih"
 
 msgid "Set View to center on selected objects"
-msgstr ""
+msgstr "Atur Tampilan ke pusat pada objek yang dipilih"
 
 msgid "Reset targets"
-msgstr ""
+msgstr "Atur ulang target"
 
 msgid "Reset position of target of selected fixtures"
-msgstr ""
+msgstr "Atur ulang posisi target dari fixture yang dipilih"
 
 msgid "Select Fixtures"
-msgstr ""
+msgstr "Pilih Fixture"
 
 msgid "Select base/body of every selected fixture"
-msgstr ""
+msgstr "Pilih dasar/tubuh dari setiap fixture yang dipilih"
 
 msgid "Select Targets"
-msgstr ""
+msgstr "Pilih Target"
 
 msgid "Select target from every fixture element selected"
-msgstr ""
+msgstr "Pilih target dari setiap elemen fixture yang dipilih"
 
 msgid "Select Camera"
-msgstr ""
+msgstr "Pilih Kamera"
 
 msgid "Select camera of the selected fixture"
-msgstr ""
+msgstr "Pilih kamera dari fixture yang dipilih"
 
 msgid "Programmer"
-msgstr ""
+msgstr "Programmer"
 
 msgid "Nothing selected"
-msgstr ""
+msgstr "Tidak ada yang dipilih"
 
 #, python-brace-format
 msgid "{} selected"
-msgstr ""
+msgstr "{} dipilih"
 
 msgid "Bodies"
-msgstr ""
+msgstr "Tubuh"
 
 msgid "Targets"
-msgstr ""
+msgstr "Target"
 
 msgid "Camera"
-msgstr ""
+msgstr "Kamera"
 
 msgid "Dimmer"
-msgstr ""
+msgstr "Dimmer"
 
 msgid "Pan"
-msgstr ""
+msgstr "Pan"
 
 msgid "Tilt"
-msgstr ""
+msgstr "Tilt"
 
 msgid "Pan Rotation"
-msgstr ""
+msgstr "Rotasi Pan"
 
 msgid "Tilt Rotation"
-msgstr ""
+msgstr "Rotasi Tilt"
 
 msgid "Zoom"
-msgstr ""
+msgstr "Zoom"
 
 msgid "Playmode"
-msgstr ""
+msgstr "Mode Putar"
 
 msgid "Recording"
-msgstr ""
+msgstr "Perekaman"
 
 msgid "Color Wheel1"
-msgstr ""
+msgstr "Roda Warna1"
 
 msgid "Color Wheel2"
-msgstr ""
+msgstr "Roda Warna2"
 
 msgid "Color Wheel3"
-msgstr ""
+msgstr "Roda Warna3"
 
 msgid "Color Macro1"
-msgstr ""
+msgstr "Makro Warna1"
 
 msgid "Color Temperature"
-msgstr ""
+msgstr "Suhu Warna"
 
 msgid "Iris"
-msgstr ""
+msgstr "Iris"
 
 msgid "Gobo1"
-msgstr ""
+msgstr "Gobo1"
 
 msgid "Gobo1 Adjust"
-msgstr ""
+msgstr "Penyesuaian Gobo1"
 
 msgid "Gobo2"
-msgstr ""
+msgstr "Gobo2"
 
 msgid "Gobo2 Adjust"
-msgstr ""
+msgstr "Penyesuaian Gobo2"
 
 msgid "Strobe"
-msgstr ""
+msgstr "Strobe"
 
 msgid "PanMode"
-msgstr ""
+msgstr "Mode Pan"
 
 msgid "TiltMode"
-msgstr ""
+msgstr "Mode Tilt"
 
 msgid "PanTiltMode"
-msgstr ""
+msgstr "Mode PanTilt"
 
 msgid "Clear All"
-msgstr ""
+msgstr "Bersihkan Semua"
 
 msgid "DMX > Recorder > Add Keyframe"
-msgstr ""
+msgstr "DMX > Perekam > Tambah Keyframe"
 
 msgid "Add a Keyframe with the current DMX data"
-msgstr ""
+msgstr "Tambahkan Keyframe dengan data DMX saat ini"
 
 msgid "DMX > Recorder > Delete Keyframes for all fixtures"
-msgstr ""
+msgstr "DMX > Perekam > Hapus Keyframe untuk semua fixture"
 
 msgid "Deletes all keyframes from all fixtures"
-msgstr ""
+msgstr "Menghapus semua keyframe dari semua fixture"
 
 msgid "DMX > Recorder > Delete All Keyframes from selected fixtures"
-msgstr ""
+msgstr "DMX > Perekam > Hapus Semua Keyframe dari fixture yang dipilih"
 
 msgid "Deletes all keyframes from selected fixtures"
-msgstr ""
+msgstr "Menghapus semua keyframe dari fixture yang dipilih"
 
 msgid "Keyframe Recorder"
-msgstr ""
+msgstr "Perekam Keyframe"
 
 msgid "Add Keyframe"
-msgstr ""
+msgstr "Tambah Keyframe"
 
 msgid "Delete Keyframes"
-msgstr ""
+msgstr "Hapus Keyframe"
 
 msgid "Delete from selected fixtures"
-msgstr ""
+msgstr "Hapus dari fixture yang dipilih"
 
 msgid "Delete from all fixtures"
-msgstr ""
+msgstr "Hapus dari semua fixture"
 
 msgid "Objects with #bdmx drivers"
-msgstr ""
+msgstr "Objek dengan driver #bdmx"
 
 msgid "Enable Keying - Disable Playback"
-msgstr ""
+msgstr "Aktifkan Keying - Nonaktifkan Playback"
 
 msgid "Enable disabled bdmx drivers"
-msgstr ""
+msgstr "Aktifkan driver bdmx yang dinonaktifkan"
 
 msgid "Disable Keying - Enable Playback"
-msgstr ""
+msgstr "Nonaktifkan Keying - Aktifkan Playback"
 
 msgid "Disable bdmx drivers"
-msgstr ""
+msgstr "Nonaktifkan driver bdmx"
 
 msgid "DMX > Setup > New Show"
-msgstr ""
+msgstr "DMX > Setup > Pertunjukan Baru"
 
 msgid "Clear any existing DMX data and create a new show."
-msgstr ""
+msgstr "Hapus semua data DMX yang ada dan buat pertunjukan baru."
 
 msgid "Do at your own risk. Manual edits or deletes can cause issues"
 msgstr ""
+"Lakukan dengan risiko Anda sendiri. Edit atau hapus manual dapat menyebabkan "
+"masalah"
 
 msgid "Manually editing or deleting geometries of GDTF devices may cause issues."
 msgstr ""
+"Mengedit atau menghapus geometri perangkat GDTF secara manual dapat "
+"menyebabkan masalah."
 
 msgid "Really remove all fixtures and DMX from blend file?"
-msgstr ""
+msgstr "Benar-benar hapus semua fixture dan DMX dari berkas blend?"
 
 msgid "Try to remove DMX from the Blender showfile"
-msgstr ""
+msgstr "Coba hapus DMX dari berkas pertunjukan Blender"
 
 msgid "Beam diameter small"
-msgstr ""
+msgstr "Diameter sinar kecil"
 
 msgid "Set Eevee Cutoff distance on selected fixtures"
-msgstr ""
+msgstr "Atur jarak Cutoff Eevee pada fixture yang dipilih"
 
 msgid "Beam diameter normal"
-msgstr ""
+msgstr "Diameter sinar normal"
 
 msgid "DMX > Setup > Create/Update Volume Box"
-msgstr ""
+msgstr "DMX > Setup > Buat/Perbarui Kotak Volume"
 
 msgid "Create/Update a Box on the scene bounds with a Volume Scatter shader"
-msgstr ""
+msgstr "Buat/Perbarui Kotak pada batas adegan dengan shader Volume Scatter"
 
 msgid "Beam Volume"
-msgstr ""
+msgstr "Volume Sinar"
 
 msgid "Update Volume Box"
-msgstr ""
+msgstr "Perbarui Kotak Volume"
 
 msgid "Create Volume Box"
-msgstr ""
+msgstr "Buat Kotak Volume"
 
 msgid "Set on selected fixtures"
-msgstr ""
+msgstr "Atur pada fixture yang dipilih"
 
 msgid "Viewport"
-msgstr ""
+msgstr "Tampilan"
 
 msgid "Background Color"
-msgstr ""
+msgstr "Warna Latar Belakang"
 
 msgid "Extras"
-msgstr ""
+msgstr "Ekstra"
 
 msgid "Clear Project data"
-msgstr ""
+msgstr "Hapus data Proyek"
 
 msgid "Copy (import) old data from addon folder"
-msgstr ""
+msgstr "Salin (impor) data lama dari folder addon"
 
 msgid "Remove DMX from blend file"
-msgstr ""
+msgstr "Hapus DMX dari berkas blend"
 
 msgid "Import"
-msgstr ""
+msgstr "Impor"
 
 msgid "Import GDTF Profile"
-msgstr ""
+msgstr "Impor Profil GDTF"
 
 msgid "Import MVR Scene"
-msgstr ""
+msgstr "Impor Adegan MVR"
 
 msgid "Import Project data"
-msgstr ""
+msgstr "Impor Data Proyek"
 
 msgid "Export"
-msgstr ""
+msgstr "Ekspor"
 
 msgid "Export Project data"
-msgstr ""
+msgstr "Ekspor Data Proyek"
 
 msgid "Export MVR"
-msgstr ""
+msgstr "Ekspor MVR"
 
 msgid "Show logging directory"
-msgstr ""
+msgstr "Tampilkan direktori log"
 
 msgid "Logging"
-msgstr ""
+msgstr "Pencatatan"
 
 msgid "Log filter"
-msgstr ""
+msgstr "Filter log"
 
 msgid "Setup"
-msgstr ""
+msgstr "Pengaturan"
 
 msgid "Error! Blender 3.4 or higher required."
-msgstr ""
+msgstr "Kesalahan! Blender 3.4 atau lebih tinggi diperlukan."
 
 msgid "Create New Show"
-msgstr ""
+msgstr "Buat Pertunjukan Baru"
 
 msgid "Import Custom Data"
-msgstr ""
+msgstr "Impor Data Kustom"
 
 msgid ""
 "Unzip previously exported custom data from a zip file. This will "
 "overwrite current data!"
 msgstr ""
+"Ekstrak data kustom yang diekspor sebelumnya dari berkas zip. Ini akan "
+"menimpa data saat ini!"
 
 msgid "File Path"
-msgstr ""
+msgstr "Jalur Berkas"
 
 msgid "Files"
-msgstr ""
+msgstr "Berkas"
 
 msgid "Incorrect file name!"
-msgstr ""
+msgstr "Nama berkas salah!"
 
 #, python-brace-format
 msgid "Data imported from: {}"
-msgstr ""
+msgstr "Data diimpor dari: {}"
 
 msgid "Export Custom Data"
-msgstr ""
+msgstr "Ekspor Data Kustom"
 
 msgid "Zip and Export custom data from BlenderDMX addon directory."
-msgstr ""
+msgstr "Zip dan Ekspor data kustom dari direktori addon BlenderDMX."
 
 #, python-brace-format
 msgid "Data exported to: {}"
-msgstr ""
+msgstr "Data diekspor ke: {}"
 
 msgid "Really delete all custom data from the addon directory?"
-msgstr ""
+msgstr "Benar-benar hapus semua data kustom dari direktori addon?"
 
 msgid "Clear custom data from BlenderDMX addon directory."
-msgstr ""
+msgstr "Hapus data kustom dari direktori addon BlenderDMX."
 
 msgid "Data cleared"
-msgstr ""
+msgstr "Data dihapus"
 
 msgid "Copy data from addon to user directory"
-msgstr ""
+msgstr "Salin data dari addon ke direktori pengguna"
 
 msgid ""
 "Copy custom data from BlenderDMX addon directory to BlenderDMX extension "
 "user directory."
 msgstr ""
+"Salin data kustom dari direktori addon BlenderDMX ke direktori pengguna "
+"ekstensi BlenderDMX."
 
 msgid "Data copied"
-msgstr ""
+msgstr "Data disalin"
 
 msgid "Reload BlenderDMX addon"
-msgstr ""
+msgstr "Muat ulang addon BlenderDMX"
 
 msgid "Reload the addon, useful during development"
-msgstr ""
+msgstr "Muat ulang addon, berguna selama pengembangan"
 
 msgid "Addon reloaded"
-msgstr ""
+msgstr "Addon dimuat ulang"
 
 msgid "Select visible"
-msgstr ""
+msgstr "Pilih yang terlihat"
 
 msgid "Select visible subfixtures"
-msgstr ""
+msgstr "Pilih subfixture yang terlihat"
 
 msgid "Clear selection"
-msgstr ""
+msgstr "Hapus pilihan"
 
 msgid "Clear subfixture selection"
-msgstr ""
+msgstr "Hapus pilihan subfixture"
 
 msgid "Get GDTF Share account and fill it into BlenderDMX addon preferences."
-msgstr ""
+msgstr "Dapatkan akun GDTF Share dan isi ke preferensi addon BlenderDMX."
 
 msgid "GDTF Share API credentials missing"
-msgstr ""
+msgstr "Kredensial API GDTF Share hilang"
 
 #, python-brace-format
 msgid "Downloading {}"
-msgstr ""
+msgstr "Mengunduh {}"
 
 msgid "GDTF Share Download"
-msgstr ""
+msgstr "Unduhan GDTF Share"
 
 #, python-brace-format
 msgid "Share index updated. Status code was: {}"
-msgstr ""
+msgstr "Indeks Share diperbarui. Kode status adalah: {}"
 
 msgid "GDTF Share updated"
-msgstr ""
+msgstr "GDTF Share diperbarui"
 
 #, python-brace-format
 msgid "Error while updating Share index. Error code was: {}"
-msgstr ""
+msgstr "Kesalahan saat memperbarui indeks Share. Kode kesalahan adalah: {}"
 
 msgid "GDTF Share update error"
-msgstr ""
+msgstr "Kesalahan pembaruan GDTF Share"
 
 #, python-brace-format
 msgid "File downloaded correctly. Status code was: {}"
-msgstr ""
+msgstr "Berkas berhasil diunduh. Kode status adalah: {}"
 
 msgid "GDTF file downloaded"
-msgstr ""
+msgstr "Berkas GDTF diunduh"
 
 #, python-brace-format
 msgid "Error downloading GDTF file. Error code was: {}"
-msgstr ""
+msgstr "Kesalahan mengunduh berkas GDTF. Kode kesalahan adalah: {}"
 
 msgid "GDTF Share download error"
-msgstr ""
+msgstr "Kesalahan unduhan GDTF Share"
 
 msgid "The name of the DMX profile."
-msgstr ""
+msgstr "Nama profil DMX."
 
 msgid "Channel count"
-msgstr ""
+msgstr "Jumlah channel"
 
 msgid "Number of channels"
-msgstr ""
+msgstr "Jumlah channel"
 
 msgid "Short Name"
-msgstr ""
+msgstr "Nama Singkat"
 
 msgid ""
 "The short name of the DMX profile, all caps, used as suggestion for "
 "fixture names."
 msgstr ""
+"Nama singkat profil DMX, semua huruf besar, digunakan sebagai saran untuk "
+"nama fixture."
 
 msgid "Filename"
-msgstr ""
+msgstr "Nama Berkas"
 
 msgid "Mode name"
-msgstr ""
+msgstr "Nama mode"
 
 msgid "DMX Footprint"
-msgstr ""
+msgstr "Jejak DMX"
 
 msgid "Fixture name"
-msgstr ""
+msgstr "Nama Fixture"
 
 msgid "Manufacturer and fixture name"
-msgstr ""
+msgstr "Nama produsen dan fixture"
 
 msgid "Manufacturer"
-msgstr ""
+msgstr "Produsen"
 
 msgid "Manufacturer name"
-msgstr ""
+msgstr "Nama produsen"
 
 msgid "Revision"
-msgstr ""
+msgstr "Revisi"
 
 msgid "Revision text"
-msgstr ""
+msgstr "Teks revisi"
 
 msgid "Uploaded by"
-msgstr ""
+msgstr "Diupload oleh"
 
 msgid "File uploaded by"
-msgstr ""
+msgstr "Berkas diupload oleh"
 
 msgid "Created by"
-msgstr ""
+msgstr "Dibuat oleh"
 
 msgid "File created by"
-msgstr ""
+msgstr "Berkas dibuat oleh"
 
 msgid "Rating"
-msgstr ""
+msgstr "Peringkat"
 
 msgid "Revision ID"
-msgstr ""
+msgstr "ID Revisi"
 
 msgid "File identifier in the GDTF Share"
-msgstr ""
+msgstr "Pengenal berkas di GDTF Share"
 
 msgid "DMX Modes"
-msgstr ""
+msgstr "Mode DMX"
 
 msgid "DMX Mode Name"
-msgstr ""
+msgstr "Nama Mode DMX"
 
 msgid "Import from Share"
-msgstr ""
+msgstr "Impor dari Share"
 
 msgid "Import fixture from GDTF Share"
-msgstr ""
+msgstr "Impor fixture dari GDTF Share"
 
 msgid "Update GDTF Share index"
-msgstr ""
+msgstr "Perbarui indeks GDTF Share"
 
 msgid "Update data index of GDTF Share"
-msgstr ""
+msgstr "Perbarui indeks data GDTF Share"
 
 msgid "Delete fixture"
-msgstr ""
+msgstr "Hapus fixture"
 
 msgid "Delete fixture from local filesystem"
-msgstr ""
+msgstr "Hapus fixture dari sistem berkas lokal"
 
 msgid "Refresh files listing"
-msgstr ""
+msgstr "Segarkan daftar berkas"
 
 msgid "Update list of local files"
-msgstr ""
+msgstr "Perbarui daftar berkas lokal"
 
 msgid "GDTF Share"
-msgstr ""
+msgstr "GDTF Share"
 
 msgid "You must Allow Online access for this to work:"
-msgstr ""
+msgstr "Anda harus Mengizinkan akses Online agar ini berfungsi:"
 
 msgid "Fixture details"
-msgstr ""
+msgstr "Detail fixture"
 
 msgid "Local Fixture files"
-msgstr ""
+msgstr "Berkas Fixture lokal"
 
 msgid "Local Fixture details"
-msgstr ""
+msgstr "Detail Fixture lokal"
 
 msgid "Profiles"
-msgstr ""
+msgstr "Profil"
 
 msgid "Art-Net"
-msgstr ""
+msgstr "Art-Net"
 
 msgid "IPv4"
-msgstr ""
+msgstr "IPv4"
 
 #, python-brace-format
 msgid "Art-Net set for {} universe(s)"
-msgstr ""
+msgstr "Art-Net diatur untuk {} universe"
 
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 msgid "Live DMX"
-msgstr ""
+msgstr "DMX Langsung"
 
 msgid "Refresh"
-msgstr ""
+msgstr "Segarkan"
 
 msgid "Refresh connection"
-msgstr ""
+msgstr "Segarkan koneksi"
 
 msgid "Request latest version"
-msgstr ""
+msgstr "Minta versi terbaru"
 
 msgid "Sends the Request message"
-msgstr ""
+msgstr "Mengirim pesan Permintaan"
 
 msgid "Import commit into active scene"
-msgstr ""
+msgstr "Impor commit ke adegan aktif"
 
 msgid "Import commit"
-msgstr ""
+msgstr "Impor commit"
 
 msgid "Export MVR to MVR-xchange"
-msgstr ""
+msgstr "Ekspor MVR ke MVR-xchange"
 
 msgid "Download"
-msgstr ""
+msgstr "Unduh"
 
 msgid "Fetch commit"
-msgstr ""
+msgstr "Ambil commit"
 
 msgid "Websocket Download"
-msgstr ""
+msgstr "Unduhan Websocket"
 
 msgid "Download commit"
-msgstr ""
+msgstr "Unduh commit"
 
 msgid "Delete"
-msgstr ""
+msgstr "Hapus"
 
 msgid "Remove Shared Commit"
-msgstr ""
+msgstr "Hapus Commit yang Dibagikan"
 
 #, python-brace-format
 msgid "Enable Group: {group}"
-msgstr ""
+msgstr "Aktifkan Grup: {group}"
 
 msgid "New group:"
-msgstr ""
+msgstr "Grup baru:"
 
 msgid "Share current version"
-msgstr ""
+msgstr "Bagikan versi saat ini"
 
 msgid "Pick and Share MVR"
-msgstr ""
+msgstr "Pilih dan Bagikan MVR"
 
 #, python-brace-format
 msgid "Shared by me ({defined_station_name}):"
-msgstr ""
+msgstr "Dibagikan oleh saya ({defined_station_name}):"
 
 msgid "Stations in the group:"
-msgstr ""
+msgstr "Stasiun dalam grup:"
 
 msgid "Shared by the station:"
-msgstr ""
+msgstr "Dibagikan oleh stasiun:"
 
 msgid "Shared by the server:"
-msgstr ""
+msgstr "Dibagikan oleh server:"
 
 msgid "OSC"
-msgstr ""
+msgstr "OSC"
 
 msgid "Protocols"
-msgstr ""
+msgstr "Protokol"
 
 msgid "Add Tracker"
-msgstr ""
+msgstr "Tambahkan Pelacak"
 
 msgid "Adding a tracker"
-msgstr ""
+msgstr "Menambahkan pelacak"
 
 msgid "Remove Tracker"
-msgstr ""
+msgstr "Hapus Pelacak"
 
 msgid "Removing a tracker"
-msgstr ""
+msgstr "Menghapus pelacak"
 
 msgid "Link Fixture to Tracker"
-msgstr ""
+msgstr "Hubungkan Fixture ke Pelacak"
 
 msgid "Link fixture to a tracker"
-msgstr ""
+msgstr "Hubungkan fixture ke pelacak"
 
 msgid "Unlink Fixture from Tracker"
-msgstr ""
+msgstr "Putuskan Fixture dari Pelacak"
 
 msgid "Unlink fixture from a tracker"
-msgstr ""
+msgstr "Putuskan fixture dari pelacak"
 
 msgid "Tracker Followers"
-msgstr ""
+msgstr "Pengikut Pelacak"
 
 msgid "Link followers to a tracker"
-msgstr ""
+msgstr "Hubungkan pengikut ke pelacak"
 
 msgid "PSN"
-msgstr ""
+msgstr "PSN"
 
 msgid "Add Tracking Target"
-msgstr ""
+msgstr "Tambahkan Target Pelacakan"
 
 msgid "Remove Followers Target"
-msgstr ""
+msgstr "Hapus Target Pengikut"
 
 msgid "Remove target"
-msgstr ""
+msgstr "Hapus target"
 
 msgid "Add Followers Target"
-msgstr ""
+msgstr "Tambahkan Target Pengikut"
 
 msgid "Add target"
-msgstr ""
+msgstr "Tambahkan target"
 
 msgid "sACN"
-msgstr ""
+msgstr "sACN"
 
 #, python-brace-format
 msgid "sACN set for {} universe(s)"
-msgstr ""
+msgstr "sACN diatur untuk {} universe"
 
 msgid "DMX > Universe Menu"
-msgstr ""
+msgstr "DMX > Menu Universe"
 
 msgid "Universes"
-msgstr ""
+msgstr "Universe"
