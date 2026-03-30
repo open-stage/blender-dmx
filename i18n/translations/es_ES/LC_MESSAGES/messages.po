@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-24 10:26+0100\n"
-"PO-Revision-Date: 2026-02-16 17:09+0000\n"
-"Last-Translator: Francisco Serrador <fserrador@gmail.com>\n"
+"PO-Revision-Date: 2026-03-30 17:09+0000\n"
+"Last-Translator: eulalio <eulalio@disroot.org>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/blenderdmx/main/"
 "es/>\n"
 "Language: es_ES\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.16\n"
+"X-Generator: Weblate 5.17-dev\n"
 "Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
@@ -218,13 +218,12 @@ msgstr ""
 msgid "OSC Target address"
 msgstr "Dirección Destino OSC"
 
-#, fuzzy
 msgid ""
 "Address of the host where you want to send the OSC signal. Address ending"
 " on .255 is a broadcast address to all hosts on the network"
 msgstr ""
-"Dirección del host donde desea enviar la señal OSC. Dirección finalizando"
-" en .255 es una dirección broadcast a todos los hosts en la red"
+"Dirección del host donde desea enviar la señal OSC. Dirección que termina en "
+".255 es una dirección de difusión a todos los hosts de la red"
 
 msgid "OSC Target port"
 msgstr "Puerto de OSC Destino"
@@ -369,10 +368,10 @@ msgid "Use Channel Functions of this fixture"
 msgstr "Utilizar Funciones de Canal de este accesorio"
 
 msgid "Use High Quality Models"
-msgstr ""
+msgstr "Utilice Modelos De Alta Calidad"
 
 msgid "Use high quality mesh files if present"
-msgstr ""
+msgstr "Use archivos de malla de alta calidad si están presentes"
 
 msgid "DMX Universe"
 msgstr "Universo DMX"
@@ -436,16 +435,14 @@ msgstr "Importar Objetos de Escena"
 msgid "Import Projectors"
 msgstr "Importar Proyectores"
 
-#, fuzzy
 msgid "Import Video Screens"
-msgstr "Importar desde compartir"
+msgstr "Importar Pantallas de Video"
 
-#, fuzzy
 msgid "Import Supports"
-msgstr "Importaciones"
+msgstr "Soportes de Importación"
 
 msgid "Use GDTF High Quality Models"
-msgstr ""
+msgstr "Utilice Modelos GDTF de Alta Calidad"
 
 msgid "Export Targets as MVR Focus Points"
 msgstr "Exportar Destinos como Puntos de Foco MVR"
@@ -453,15 +450,13 @@ msgstr "Exportar Destinos como Puntos de Foco MVR"
 msgid "Export only selected fixtures"
 msgstr "Exportar solo accesorios seleccionados"
 
-#, fuzzy
 msgid "Export only selected fixtures (does not filter non-fixture objects)"
 msgstr ""
-"Accesorios seleccionados solo para fotogramas clave (no para clave "
-"automática)"
+"Exportar solo los accesorios seleccionados (no filtra los objetos que no son "
+"accesorios)"
 
-#, fuzzy
 msgid "Export fixtures only"
-msgstr "Importar Accesorios"
+msgstr "Exportar solo accesorios"
 
 msgid "Export fixtures only (skip all non-fixture objects)"
 msgstr ""
@@ -742,9 +737,8 @@ msgstr "Nombre de Grupo"
 msgid "Replace DMX group fixtures with selected ones"
 msgstr "Sustituye accesorios de grupo DMX con unos seleccionados"
 
-#, fuzzy
 msgid "DMX > Group > Rename"
-msgstr "Nombre del modo DMX"
+msgstr "DMX > Grupo > Renombrar"
 
 msgid "Rename selected DMX group"
 msgstr "Renombra grupo DMX seleccionado"
@@ -752,9 +746,8 @@ msgstr "Renombra grupo DMX seleccionado"
 msgid "DMX > Group > Remove"
 msgstr "DMX > Grupo > Retirar"
 
-#, fuzzy
 msgid "Remove selected DMX group"
-msgstr "Remover de la selección"
+msgstr "Eliminar el grupo DMX seleccionado"
 
 msgid "Groups"
 msgstr "Grupos"
@@ -766,25 +759,25 @@ msgid "Lock Movement"
 msgstr "Bloquear Movimiento"
 
 msgid "Ignore pan/tilt DMX data"
-msgstr ""
+msgstr "Ignorar datos DMX de pan/tilt"
 
 msgid "Unlock Movement"
-msgstr ""
+msgstr "Desbloquear Movimiento"
 
 msgid "Allow pan/tilt DMX data"
-msgstr ""
+msgstr "Permitir datos DMX pan/tilt"
 
 msgid "Track Target"
-msgstr ""
+msgstr "Objetivo de Seguimiento"
 
 msgid "Follow the target"
-msgstr ""
+msgstr "Sigue el objetivo"
 
 msgid "Do Not Track Target"
-msgstr ""
+msgstr "No Rastrear El Objetivo"
 
 msgid "Do not follow the target"
-msgstr ""
+msgstr "No seguir el objetivo"
 
 msgid "Use Fixtures Channel Functions"
 msgstr "Utilizar Funciones de Canal de Accesorios"
@@ -796,7 +789,7 @@ msgid "Do not use Fixtures Channel Functions"
 msgstr "No utilizar Funciones de Canal Accesorios"
 
 msgid "Deselect All"
-msgstr ""
+msgstr "Deseleccionar Todo"
 
 msgid "Deselect every fixture in the Scene"
 msgstr "No seleccionar cada accesorio en la Escena"
