@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-24 10:26+0100\n"
-"PO-Revision-Date: 2026-03-30 17:09+0000\n"
+"PO-Revision-Date: 2026-04-01 17:09+0000\n"
 "Last-Translator: eulalio <eulalio@disroot.org>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/blenderdmx/main/"
 "es/>\n"
@@ -852,13 +852,13 @@ msgid "Select base/body of every selected fixture"
 msgstr "Selecciona base/cuerpo de cada accesorio seleccionado"
 
 msgid "Select Targets"
-msgstr ""
+msgstr "Seleccionar Objetivos"
 
 msgid "Select target from every fixture element selected"
 msgstr "Selecciona destino desde cada elemento accesorio seleccionado"
 
 msgid "Select Camera"
-msgstr ""
+msgstr "Seleccionar Cámara"
 
 msgid "Select camera of the selected fixture"
 msgstr "Selecciona cámara del accesorio seleccionado"
@@ -885,8 +885,9 @@ msgstr "Cámara"
 msgid "Dimmer"
 msgstr "Regulador de intensidad"
 
+#, fuzzy
 msgid "Pan"
-msgstr ""
+msgstr "Pan"
 
 msgid "Tilt"
 msgstr "Inclinación"
@@ -897,27 +898,31 @@ msgstr "Rotación panorámica"
 msgid "Tilt Rotation"
 msgstr "Rotación de inclinación"
 
-msgid "Zoom"
-msgstr ""
-
 #, fuzzy
+msgid "Zoom"
+msgstr "Zoom"
+
 msgid "Playmode"
-msgstr "Modo"
+msgstr "Modo de uso"
 
 msgid "Recording"
-msgstr ""
+msgstr "Grabación"
 
+#, fuzzy
 msgid "Color Wheel1"
-msgstr ""
+msgstr "Color Wheel1"
 
+#, fuzzy
 msgid "Color Wheel2"
-msgstr ""
+msgstr "Color Wheel2"
 
+#, fuzzy
 msgid "Color Wheel3"
-msgstr ""
+msgstr "Color Wheel3"
 
+#, fuzzy
 msgid "Color Macro1"
-msgstr ""
+msgstr "Color Macro1"
 
 msgid "Color Temperature"
 msgstr ""
