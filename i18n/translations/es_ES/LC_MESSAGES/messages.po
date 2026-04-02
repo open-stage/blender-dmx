@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-24 10:26+0100\n"
-"PO-Revision-Date: 2026-04-01 17:09+0000\n"
+"PO-Revision-Date: 2026-04-02 18:09+0000\n"
 "Last-Translator: eulalio <eulalio@disroot.org>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/blenderdmx/main/"
 "es/>\n"
@@ -936,32 +936,36 @@ msgstr ""
 msgid "Gobo1 Adjust"
 msgstr ""
 
+#, fuzzy
 msgid "Gobo2"
-msgstr ""
+msgstr "Gobo2"
 
 msgid "Gobo2 Adjust"
-msgstr ""
+msgstr "Ajuste de Gobo2"
 
 msgid "Strobe"
 msgstr "Estroboscópico"
 
+#, fuzzy
 msgid "PanMode"
-msgstr ""
+msgstr "PanMode"
 
+#, fuzzy
 msgid "TiltMode"
-msgstr ""
+msgstr "TiltMode"
 
+#, fuzzy
 msgid "PanTiltMode"
-msgstr ""
+msgstr "PanTiltMode"
 
 msgid "Clear All"
 msgstr "Vaciar todo"
 
 msgid "DMX > Recorder > Add Keyframe"
-msgstr ""
+msgstr "DMX > Grabadora > Agregar fotograma clave"
 
 msgid "Add a Keyframe with the current DMX data"
-msgstr ""
+msgstr "Agregar un fotograma clave con los datos DMX actuales"
 
 msgid "DMX > Recorder > Delete Keyframes for all fixtures"
 msgstr "DMX > Grabador > Borra Marcos para todos los accesorios"
@@ -976,13 +980,13 @@ msgid "Deletes all keyframes from selected fixtures"
 msgstr "Borra todos los marcos desde accesorios seleccionados"
 
 msgid "Keyframe Recorder"
-msgstr ""
+msgstr "Grabador de Fotogramas Clave"
 
 msgid "Add Keyframe"
-msgstr ""
+msgstr "Añadir Fotograma clave"
 
 msgid "Delete Keyframes"
-msgstr ""
+msgstr "Eliminar Fotogramas clave"
 
 msgid "Delete from selected fixtures"
 msgstr "Borra desde accesorios seleccionados"
@@ -1009,40 +1013,46 @@ msgid "DMX > Setup > New Show"
 msgstr ""
 
 msgid "Clear any existing DMX data and create a new show."
-msgstr ""
+msgstr "Borrar cualquier dato DMX existente y crear una nueva obra."
 
 msgid "Do at your own risk. Manual edits or deletes can cause issues"
 msgstr ""
+"Hágalo bajo su reponsabilidad. Las ediciones o eliminaciones manuales pueden "
+"causar problemas"
 
 msgid "Manually editing or deleting geometries of GDTF devices may cause issues."
 msgstr ""
+"Editar o eliminar manualmente las geometrías de los dispositivos GDTF puede "
+"causar problemas."
 
 msgid "Really remove all fixtures and DMX from blend file?"
 msgstr "¿Realmente retiro todos los accesorios y DMX desde archivo mezclado?"
 
 msgid "Try to remove DMX from the Blender showfile"
-msgstr ""
+msgstr "Intentar eliminar DMX del archivo de presentación de Blender"
 
 msgid "Beam diameter small"
-msgstr ""
+msgstr "Diámetro del haz pequeño"
 
 msgid "Set Eevee Cutoff distance on selected fixtures"
 msgstr "Establece distancia de Corte Eevee en accesorios seleccionados"
 
 msgid "Beam diameter normal"
-msgstr ""
+msgstr "Diámetro del haz normal"
 
 msgid "DMX > Setup > Create/Update Volume Box"
-msgstr ""
+msgstr "DMX > Configuración > Crear/Actualizar Cuadro de volumen"
 
 msgid "Create/Update a Box on the scene bounds with a Volume Scatter shader"
 msgstr ""
+"Crear/actualizar un Cuadro en los límites de la escena con un sombreador de "
+"dispersión de volumen"
 
 msgid "Beam Volume"
-msgstr ""
+msgstr "Volumen del Haz"
 
 msgid "Update Volume Box"
-msgstr ""
+msgstr "Caja de Volumen de Actualización"
 
 msgid "Create Volume Box"
 msgstr ""
