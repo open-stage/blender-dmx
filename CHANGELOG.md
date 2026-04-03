@@ -1,5 +1,15 @@
 ### Changelog
 
+### 2.1.8
+
+* Improve ChannelFunctions parsing in pygdtf
+* Improve MVR export in pymvr
+* Update pygdtf to v1.4.5
+* Update pymvr to 1.0.7
+* Updated translations:
+    - Spanish - eulalio
+    - Indonesian - Arif Budiman
+
 ### 2.1.7
 
 * Ensure undistored beam output when no iris and no gobo are used
