@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-24 10:26+0100\n"
-"PO-Revision-Date: 2026-04-02 18:09+0000\n"
+"PO-Revision-Date: 2026-04-04 17:09+0000\n"
 "Last-Translator: eulalio <eulalio@disroot.org>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/blenderdmx/main/"
 "es/>\n"
@@ -1089,34 +1089,34 @@ msgid "Import MVR Scene"
 msgstr ""
 
 msgid "Import Project data"
-msgstr ""
+msgstr "Importar Datos del proyecto"
 
 msgid "Export"
-msgstr ""
+msgstr "Exportar"
 
 msgid "Export Project data"
-msgstr ""
+msgstr "Exportar Datos del proyecto"
 
 msgid "Export MVR"
-msgstr ""
+msgstr "Exportar MVR"
 
 msgid "Show logging directory"
-msgstr ""
+msgstr "Mostrar directorio de registro"
 
 msgid "Logging"
-msgstr ""
+msgstr "Registro"
 
 msgid "Log filter"
-msgstr ""
+msgstr "Filtro de registro"
 
 msgid "Setup"
-msgstr ""
+msgstr "Configuración"
 
 msgid "Error! Blender 3.4 or higher required."
-msgstr ""
+msgstr "¡Error! es necesario Blender 3.4 o posterior."
 
 msgid "Create New Show"
-msgstr ""
+msgstr "Crear nueva muestra"
 
 msgid "Import Custom Data"
 msgstr ""
@@ -1154,32 +1154,35 @@ msgstr ""
 
 msgid "Clear custom data from BlenderDMX addon directory."
 msgstr ""
+"Borre los datos personalizados del directorio de complementos de BlenderDMX."
 
 msgid "Data cleared"
-msgstr ""
+msgstr "Datos borrados"
 
 msgid "Copy data from addon to user directory"
-msgstr ""
+msgstr "Copia datos del complemento al directorio de usuarios"
 
 msgid ""
 "Copy custom data from BlenderDMX addon directory to BlenderDMX extension "
 "user directory."
 msgstr ""
+"Copia datos personalizados del directorio de complementos de BlenderDMX al "
+"directorio de usuarios de la extensión de BlenderDMX."
 
 msgid "Data copied"
-msgstr ""
+msgstr "Datos copiados"
 
 msgid "Reload BlenderDMX addon"
-msgstr ""
+msgstr "Complemento Reload BlenderDMX"
 
 msgid "Reload the addon, useful during development"
-msgstr ""
+msgstr "Recarga el complemento, útil durante el desarrollo"
 
 msgid "Addon reloaded"
-msgstr ""
+msgstr "Complemento recargado"
 
 msgid "Select visible"
-msgstr ""
+msgstr "Seleccionar visible"
 
 msgid "Select visible subfixtures"
 msgstr "Selecciona subaccesorios visibles"
@@ -1315,7 +1318,7 @@ msgid "Import fixture from GDTF Share"
 msgstr "Importar un accesorio desde GDTF Compartido"
 
 msgid "Update GDTF Share index"
-msgstr ""
+msgstr "Actualizar el índice de recursos compartidos GDTF"
 
 msgid "Update data index of GDTF Share"
 msgstr ""
