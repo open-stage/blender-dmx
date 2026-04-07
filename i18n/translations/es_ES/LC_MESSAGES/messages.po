@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-24 10:26+0100\n"
-"PO-Revision-Date: 2026-04-04 17:09+0000\n"
+"PO-Revision-Date: 2026-04-07 17:09+0000\n"
 "Last-Translator: eulalio <eulalio@disroot.org>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/blenderdmx/main/"
 "es/>\n"
@@ -1367,34 +1367,34 @@ msgid "Status"
 msgstr ""
 
 msgid "Live DMX"
-msgstr ""
+msgstr "DMX en vivo"
 
 msgid "Refresh"
-msgstr ""
+msgstr "Actualizar"
 
 msgid "Refresh connection"
-msgstr ""
+msgstr "Actualizar conexión"
 
 msgid "Request latest version"
-msgstr ""
+msgstr "Pedir la última versión"
 
 msgid "Sends the Request message"
-msgstr ""
+msgstr "Envía el mensaje de solicitud"
 
 msgid "Import commit into active scene"
-msgstr ""
+msgstr "Importar confirmación a la escena activa"
 
 msgid "Import commit"
-msgstr ""
+msgstr "Importar confirmación"
 
 msgid "Export MVR to MVR-xchange"
-msgstr ""
+msgstr "Exportar MVR a MVR-xchange"
 
 msgid "Download"
-msgstr ""
+msgstr "Descargar"
 
 msgid "Fetch commit"
-msgstr ""
+msgstr "Buscar confirmación"
 
 msgid "Websocket Download"
 msgstr ""
@@ -1429,28 +1429,29 @@ msgid "Stations in the group:"
 msgstr ""
 
 msgid "Shared by the station:"
-msgstr ""
+msgstr "Compartido por la estación:"
 
 msgid "Shared by the server:"
-msgstr ""
+msgstr "Compartido por el servidor:"
 
+#, fuzzy
 msgid "OSC"
-msgstr ""
+msgstr "OSC"
 
 msgid "Protocols"
-msgstr ""
+msgstr "Protocolos"
 
 msgid "Add Tracker"
-msgstr ""
+msgstr "Añadir Rastreador"
 
 msgid "Adding a tracker"
-msgstr ""
+msgstr "Agregando un rastreador"
 
 msgid "Remove Tracker"
-msgstr ""
+msgstr "Eliminar Rastreador"
 
 msgid "Removing a tracker"
-msgstr ""
+msgstr "Eliminando Rastreador"
 
 msgid "Link Fixture to Tracker"
 msgstr "Enlazar accesorio a Seguimiento"
@@ -1465,7 +1466,7 @@ msgid "Unlink fixture from a tracker"
 msgstr "Desenlaza accesorio desde un seguimiento"
 
 msgid "Tracker Followers"
-msgstr ""
+msgstr "Seguidores de rastreadores"
 
 msgid "Link followers to a tracker"
 msgstr ""
