@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-24 10:26+0100\n"
-"PO-Revision-Date: 2026-04-07 17:09+0000\n"
+"PO-Revision-Date: 2026-04-08 18:09+0000\n"
 "Last-Translator: eulalio <eulalio@disroot.org>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/blenderdmx/main/"
 "es/>\n"
@@ -460,6 +460,7 @@ msgstr "Exportar solo accesorios"
 
 msgid "Export fixtures only (skip all non-fixture objects)"
 msgstr ""
+"Exportar solo accesorios (omitir todos los objetos que no sean accesorios)"
 
 msgid "Enable PSN Input"
 msgstr "Habilitar Entrada PSN"
@@ -476,9 +477,8 @@ msgstr "La tarjeta de red/interfaz para escuchar datos de PSN"
 msgid "PSN Target port"
 msgstr "Puerto destino PSN"
 
-#, fuzzy
 msgid "File UUID"
-msgstr "Identificación del accesorio"
+msgstr "UUID de Archivo"
 
 msgid "Comment"
 msgstr "Comentario"
@@ -487,9 +487,8 @@ msgstr "Comentario"
 msgid "File Name"
 msgstr "Nombre del archivo"
 
-#, fuzzy
 msgid "Station UUID"
-msgstr "ID de la revisión"
+msgstr "Estación UUID"
 
 msgid "File Size"
 msgstr "Tamaño de Archivo"
@@ -506,9 +505,8 @@ msgstr "Suscrito a"
 msgid "We requested latest file without UUID"
 msgstr "Solicitamos el último archivo sin UUID"
 
-#, fuzzy
 msgid "IP Address"
-msgstr "Dirección DMX"
+msgstr "Dirección IP"
 
 msgid "Port"
 msgstr "Puerto"
@@ -1469,7 +1467,7 @@ msgid "Tracker Followers"
 msgstr "Seguidores de rastreadores"
 
 msgid "Link followers to a tracker"
-msgstr ""
+msgstr "Vínculo de seguidores a un rastreador"
 
 msgid "PSN"
 msgstr ""
@@ -1499,8 +1497,9 @@ msgstr ""
 msgid "DMX > Universe Menu"
 msgstr ""
 
+#, fuzzy
 msgid "Universes"
-msgstr ""
+msgstr "Universos"
 
 #~ msgid "Sort by"
 #~ msgstr ""
