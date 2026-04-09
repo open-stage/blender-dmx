@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-24 10:26+0100\n"
-"PO-Revision-Date: 2026-04-08 18:09+0000\n"
+"PO-Revision-Date: 2026-04-09 20:09+0000\n"
 "Last-Translator: eulalio <eulalio@disroot.org>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/blenderdmx/main/"
 "es/>\n"
@@ -811,16 +811,16 @@ msgid "Invert the selection"
 msgstr ""
 
 msgid "Select every other light"
-msgstr ""
+msgstr "Seleccione cualquier otra luz"
 
 msgid "Clear"
-msgstr ""
+msgstr "Limpiar"
 
 msgid "Clear all DMX values to default and update fixtures"
 msgstr "Purgar todos los valores DMX para predeterminado y actualizar accesorios"
 
 msgid "Apply"
-msgstr ""
+msgstr "Aplicar"
 
 msgid "Apply these values manually when render is paused"
 msgstr "Aplica estos valores manualmente cuando analizador esté pausado"
@@ -829,16 +829,16 @@ msgid "Targets to zero"
 msgstr "Destinos a cero"
 
 msgid "Set Targets' position to 0 of the Scene"
-msgstr ""
+msgstr "Establecer la posición de los objetivos en 0 de la escena"
 
 msgid "Center View to Selected"
 msgstr "Vista Central para Seleccionado"
 
 msgid "Set View to center on selected objects"
-msgstr ""
+msgstr "Establecer la vista al centro en objetos seleccionados"
 
 msgid "Reset targets"
-msgstr ""
+msgstr "Restablecer objetivos"
 
 msgid "Reset position of target of selected fixtures"
 msgstr "Restablecer posición de destino de accesorios seleccionados"
