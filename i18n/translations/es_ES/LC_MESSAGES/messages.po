@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-24 10:26+0100\n"
-"PO-Revision-Date: 2026-04-09 20:09+0000\n"
+"PO-Revision-Date: 2026-04-11 08:35+0000\n"
 "Last-Translator: eulalio <eulalio@disroot.org>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/blenderdmx/main/"
 "es/>\n"
@@ -993,22 +993,22 @@ msgid "Delete from all fixtures"
 msgstr "Borra desde todos los accesorios"
 
 msgid "Objects with #bdmx drivers"
-msgstr ""
+msgstr "Objetos con conductores #bdmx"
 
 msgid "Enable Keying - Disable Playback"
-msgstr ""
+msgstr "Deshabilitar codificación - Habilitar Reproducción"
 
 msgid "Enable disabled bdmx drivers"
-msgstr ""
+msgstr "Habilitar controladores bdmx deshabilitados"
 
 msgid "Disable Keying - Enable Playback"
-msgstr ""
+msgstr "Deshabilitar codificación - Habilitar Reproducción"
 
 msgid "Disable bdmx drivers"
-msgstr ""
+msgstr "Deshabilitar controladores bdmx"
 
 msgid "DMX > Setup > New Show"
-msgstr ""
+msgstr "DMX > Configuración > Nueva obra"
 
 msgid "Clear any existing DMX data and create a new show."
 msgstr "Borrar cualquier dato DMX existente y crear una nueva obra."
