@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-24 10:26+0100\n"
-"PO-Revision-Date: 2026-04-11 08:35+0000\n"
+"PO-Revision-Date: 2026-04-12 16:09+0000\n"
 "Last-Translator: eulalio <eulalio@disroot.org>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/blenderdmx/main/"
 "es/>\n"
@@ -1073,18 +1073,17 @@ msgstr ""
 msgid "Copy (import) old data from addon folder"
 msgstr ""
 
-#, fuzzy
 msgid "Remove DMX from blend file"
-msgstr "Remover de la selección"
+msgstr "Eliminar DMX del archivo blend"
 
 msgid "Import"
-msgstr ""
+msgstr "Importar"
 
 msgid "Import GDTF Profile"
-msgstr ""
+msgstr "Importar Perfil GDTF"
 
 msgid "Import MVR Scene"
-msgstr ""
+msgstr "Importar MVR Scene"
 
 msgid "Import Project data"
 msgstr "Importar Datos del proyecto"
@@ -1117,25 +1116,27 @@ msgid "Create New Show"
 msgstr "Crear nueva muestra"
 
 msgid "Import Custom Data"
-msgstr ""
+msgstr "Importar datos personalizados"
 
 msgid ""
 "Unzip previously exported custom data from a zip file. This will "
 "overwrite current data!"
 msgstr ""
+"Desactivar datos personalizados exportados previamente desde un archivo zip. "
+"¡Esto sobreescribirá los datos actuales!"
 
 msgid "File Path"
-msgstr ""
+msgstr "Trayectoria de archivo"
 
 msgid "Files"
-msgstr ""
+msgstr "Archivos"
 
 msgid "Incorrect file name!"
-msgstr ""
+msgstr "¡Nombre de archivo incorrecto!"
 
 #, python-brace-format
 msgid "Data imported from: {}"
-msgstr ""
+msgstr "Datos importados de: {}"
 
 msgid "Export Custom Data"
 msgstr ""
