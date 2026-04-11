@@ -54,14 +54,14 @@ _MSG_BUS_OWNER = object()
 
 
 @bpy.app.handlers.persistent
-def onLoadFile(scene):
+def onLoadFile(dummy): # dummy is the filepath or None
     bpy.msgbus.clear_by_owner(_MSG_BUS_OWNER)
-    if "Scene" in bpy.data.scenes:
-        if "DMX" in bpy.data.scenes["Scene"].collection.children:
-            print("INFO", "File contains DMX show, linking...")
-            bpy.context.scene.dmx.linkFile()
-        else:
-            bpy.context.scene.dmx.unlinkFile()
+    scene = bpy.context.scene
+    if scene and "DMX" in scene.collection.children:
+        print("INFO", "File contains DMX show, linking (haha new code)...")
+        bpy.context.scene.dmx.linkFile()
+    else:
+        bpy.context.scene.dmx.unlinkFile()
 
     # Selection callback
     subscribe_to = bpy.types.LayerObjects, "active"
