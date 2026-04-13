@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-24 10:26+0100\n"
-"PO-Revision-Date: 2026-04-12 16:09+0000\n"
+"PO-Revision-Date: 2026-04-14 16:09+0000\n"
 "Last-Translator: eulalio <eulalio@disroot.org>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/blenderdmx/main/"
 "es/>\n"
@@ -1352,18 +1352,20 @@ msgstr "Detalles de accesorio local"
 msgid "Profiles"
 msgstr ""
 
+#, fuzzy
 msgid "Art-Net"
-msgstr ""
+msgstr "Art-Net"
 
+#, fuzzy
 msgid "IPv4"
-msgstr ""
+msgstr "IPv4"
 
 #, python-brace-format
 msgid "Art-Net set for {} universe(s)"
-msgstr ""
+msgstr "Configuración Art-Net por {} universo(s)"
 
 msgid "Status"
-msgstr ""
+msgstr "Estado"
 
 msgid "Live DMX"
 msgstr "DMX en vivo"
@@ -1396,23 +1398,23 @@ msgid "Fetch commit"
 msgstr "Buscar confirmación"
 
 msgid "Websocket Download"
-msgstr ""
+msgstr "Descarga de Websocket"
 
 msgid "Download commit"
-msgstr ""
+msgstr "Descargar commit"
 
 msgid "Delete"
-msgstr ""
+msgstr "Borrar"
 
 msgid "Remove Shared Commit"
-msgstr ""
+msgstr "Eliminar Confirmación compartida"
 
 #, python-brace-format
 msgid "Enable Group: {group}"
-msgstr ""
+msgstr "Habilitar Grupo: {group}"
 
 msgid "New group:"
-msgstr ""
+msgstr "Nuevo grupo:"
 
 msgid "Share current version"
 msgstr ""
