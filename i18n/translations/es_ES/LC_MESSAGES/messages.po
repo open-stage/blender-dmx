@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-24 10:26+0100\n"
-"PO-Revision-Date: 2026-04-14 16:09+0000\n"
+"PO-Revision-Date: 2026-04-16 17:09+0000\n"
 "Last-Translator: eulalio <eulalio@disroot.org>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/blenderdmx/main/"
 "es/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17-dev\n"
+"X-Generator: Weblate 5.17.1-dev\n"
 "Generated-By: Babel 2.17.0\n"
 
 msgid "File doesn't exist"
@@ -425,9 +425,8 @@ msgstr "Crea Destinos desde Puntos de Foco MVR"
 msgid "Import Fixtures"
 msgstr "Importar Accesorios"
 
-#, fuzzy
 msgid "Import Trusses"
-msgstr "Importaciones"
+msgstr "Trusses de Importación"
 
 msgid "Import Scene Objects"
 msgstr "Importar Objetos de Escena"
@@ -793,22 +792,22 @@ msgid "Deselect every fixture in the Scene"
 msgstr "No seleccionar cada accesorio en la Escena"
 
 msgid "Select All"
-msgstr ""
+msgstr "Seleccionar Todo"
 
 msgid "Select every fixture in the Scene"
 msgstr "Seleccionar cada accesorio en la Escena"
 
 msgid "Select Visible (only filtered)"
-msgstr ""
+msgstr "Seleccionar Visible (solo filtrado)"
 
 msgid "Select every fixture which is visible in the fixtures list"
 msgstr "Selecciona cada accesorio el cual es visible en el listado de accesorios"
 
 msgid "Invert selection"
-msgstr ""
+msgstr "Invertir selección"
 
 msgid "Invert the selection"
-msgstr ""
+msgstr "Invertir la selección"
 
 msgid "Select every other light"
 msgstr "Seleccione cualquier otra luz"
@@ -1417,17 +1416,17 @@ msgid "New group:"
 msgstr "Nuevo grupo:"
 
 msgid "Share current version"
-msgstr ""
+msgstr "Compartir la versión actual"
 
 msgid "Pick and Share MVR"
-msgstr ""
+msgstr "Elige y comparte MVR"
 
 #, python-brace-format
 msgid "Shared by me ({defined_station_name}):"
-msgstr ""
+msgstr "Compartido por mí ({defined_station_name}):"
 
 msgid "Stations in the group:"
-msgstr ""
+msgstr "Estaciones en el grupo:"
 
 msgid "Shared by the station:"
 msgstr "Compartido por la estación:"
@@ -1476,10 +1475,10 @@ msgid "PSN"
 msgstr ""
 
 msgid "Add Tracking Target"
-msgstr ""
+msgstr "Agregar Objetivo de Seguimiento"
 
 msgid "Remove Followers Target"
-msgstr ""
+msgstr "Eliminar Seguidores Objetivo"
 
 msgid "Remove target"
 msgstr ""
