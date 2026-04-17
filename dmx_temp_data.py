@@ -148,7 +148,7 @@ class DMX_TempData(PropertyGroup):
         name=_("Custom Cutoff Distance"),
         default=23,
         description=_(
-            "Distance at which the influence of the light will be set to 0. Value bigger then 23 will break gobo rendering in Eevee Next."
+            "Distance at which the influence of the light will be set to 0. Value bigger then 23 will break gobo rendering in Eevee Next. Select desired fixtures and press the button to apply the value."
         ),
     )
 

@@ -390,10 +390,12 @@ class DMX(PropertyGroup):
 
     column_fixture_footprint: BoolProperty(
         name = _("Footprint"),
+        description = _("Display DMX Footprint. Exclamation mark (!) is indicating overlap."),
         default = False)
 
     column_fixture_physical_properties: BoolProperty(
         name = _("Physical Properties"),
+        description = _("Use Channel Functions of this fixture"),
         default = False)
 
     collection: PointerProperty(
@@ -1164,11 +1166,13 @@ class DMX(PropertyGroup):
 
     enable_device_label: BoolProperty(
         name = _("Display Device Label"),
+        description = _("Shows a label with Device name/DMX address/Fixture + ID above the device in 2D or 3D."),
         default = False,
         update = onDisplayLabel)
 
     display_device_label: EnumProperty(
         name = _("Device Label"),
+        description = _("Shows a label with Device name/DMX address/Fixture + ID above the device in 2D or 3D."),
         default = "NAME",
         items= [
                 ("NONE", _("None"), "Do not display any label"),
@@ -1308,6 +1312,7 @@ class DMX(PropertyGroup):
 
     beam_intensity_multiplier: FloatProperty(
         name = _("Multiply beams intensity"),
+        description = _("Allows to make beams more (value bigger then 1) or less (value smaller then 1) bright to quickly test various intensity settings."),
         default = 1,
         min=0.001,
         update = onMultiplyIntensity

@@ -242,6 +242,7 @@ class DMX_PT_Setup_Volume(Panel):
         selected = dmx.selectedFixtures()
         enabled = len(selected) > 0
 
+        box = layout.column().box()
         row = box.row()
         col1 = row.column()
         col1.prop(dmx, "beam_intensity_multiplier")
