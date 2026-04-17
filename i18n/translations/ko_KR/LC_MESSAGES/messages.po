@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-24 10:26+0100\n"
+"POT-Creation-Date: 2026-04-17 20:03+0200\n"
 "PO-Revision-Date: 2025-12-13 06:00+0000\n"
 "Last-Translator: Hwanyong Lee <hwan@ajou.ac.kr>\n"
 "Language: ko_KR\n"
@@ -17,7 +17,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 msgid "File doesn't exist"
 msgstr "파일이 존재하지 않음"
@@ -43,7 +43,13 @@ msgstr "회전"
 msgid "Footprint"
 msgstr "풋프린트"
 
+msgid "Display DMX Footprint. Exclamation mark (!) is indicating overlap."
+msgstr ""
+
 msgid "Physical Properties"
+msgstr ""
+
+msgid "Use Channel Functions of this fixture"
 msgstr ""
 
 msgid "DMX Collection"
@@ -76,6 +82,11 @@ msgstr "2D 보기 표시"
 msgid "Display Device Label"
 msgstr "장치 레이블 보기"
 
+msgid ""
+"Shows a label with Device name/DMX address/Fixture + ID above the device "
+"in 2D or 3D."
+msgstr ""
+
 msgid "Device Label"
 msgstr "장치 레이블"
 
@@ -98,6 +109,9 @@ msgstr "Fixture ID"
 
 msgid "Allow Selecting Geometries"
 msgstr "형상 선택 허용"
+
+msgid "Manually editing or deleting geometries of GDTF devices may cause issues."
+msgstr ""
 
 msgid "Logging Level"
 msgstr "로그 수준"
@@ -165,6 +179,11 @@ msgid "Volume Scatter Density"
 msgstr ""
 
 msgid "Multiply beams intensity"
+msgstr ""
+
+msgid ""
+"Allows to make beams more (value bigger then 1) or less (value smaller "
+"then 1) bright to quickly test various intensity settings."
 msgstr ""
 
 msgid "Number of universes"
@@ -339,13 +358,11 @@ msgstr ""
 
 msgid ""
 "Distance at which the influence of the light will be set to 0. Value "
-"bigger then 23 will break gobo rendering in Eevee Next."
+"bigger then 23 will break gobo rendering in Eevee Next. Select desired "
+"fixtures and press the button to apply the value."
 msgstr ""
 
 msgid "Use Fixtures Physical Properties"
-msgstr ""
-
-msgid "Use Channel Functions of this fixture"
 msgstr ""
 
 msgid "Use High Quality Models"
@@ -977,9 +994,6 @@ msgstr ""
 msgid "Do at your own risk. Manual edits or deletes can cause issues"
 msgstr ""
 
-msgid "Manually editing or deleting geometries of GDTF devices may cause issues."
-msgstr ""
-
 msgid "Really remove all fixtures and DMX from blend file?"
 msgstr ""
 
@@ -990,6 +1004,11 @@ msgid "Beam diameter small"
 msgstr ""
 
 msgid "Set Eevee Cutoff distance on selected fixtures"
+msgstr ""
+
+msgid ""
+"Distance at which the influence of the light will be set to 0. Value "
+"bigger then 23 will break gobo rendering in Eevee Next."
 msgstr ""
 
 msgid "Beam diameter normal"

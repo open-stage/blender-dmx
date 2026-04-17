@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-24 10:26+0100\n"
+"POT-Creation-Date: 2026-04-17 20:03+0200\n"
 "PO-Revision-Date: 2025-09-08 22:01+0000\n"
 "Last-Translator: Alex Nadzharov <anadjarov@gmail.com>\n"
 "Language: ru_RU\n"
@@ -18,7 +18,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 msgid "File doesn't exist"
 msgstr "Файл не существует"
@@ -44,8 +44,14 @@ msgstr "Вращение"
 msgid "Footprint"
 msgstr "Планшет"
 
+msgid "Display DMX Footprint. Exclamation mark (!) is indicating overlap."
+msgstr ""
+
 msgid "Physical Properties"
 msgstr "Физические свойства"
+
+msgid "Use Channel Functions of this fixture"
+msgstr "Использовать функции каналов этого прибора"
 
 msgid "DMX Collection"
 msgstr "Коллекция DMX"
@@ -77,6 +83,11 @@ msgstr "Отобразить 2D-вид"
 msgid "Display Device Label"
 msgstr "Отобразить метку устройства"
 
+msgid ""
+"Shows a label with Device name/DMX address/Fixture + ID above the device "
+"in 2D or 3D."
+msgstr ""
+
 msgid "Device Label"
 msgstr "Метка устройства"
 
@@ -99,6 +110,11 @@ msgstr "Название устройства"
 
 msgid "Allow Selecting Geometries"
 msgstr "Разрешить выбор геометрии"
+
+msgid "Manually editing or deleting geometries of GDTF devices may cause issues."
+msgstr ""
+"Ручное редактирование или удаление геометрии устройств GDTF может вызвать"
+" проблемы."
 
 msgid "Logging Level"
 msgstr "Уровень регистрации"
@@ -169,6 +185,11 @@ msgstr "Громкость Плотность рассеяния"
 
 msgid "Multiply beams intensity"
 msgstr "Интенсивность множественных лучей"
+
+msgid ""
+"Allows to make beams more (value bigger then 1) or less (value smaller "
+"then 1) bright to quickly test various intensity settings."
+msgstr ""
 
 msgid "Number of universes"
 msgstr "Количество вселенных"
@@ -352,18 +373,17 @@ msgstr "Наклон, поворот"
 msgid "Custom Cutoff Distance"
 msgstr "Настраиваемое расстояние отсечки"
 
+#, fuzzy
 msgid ""
 "Distance at which the influence of the light will be set to 0. Value "
-"bigger then 23 will break gobo rendering in Eevee Next."
+"bigger then 23 will break gobo rendering in Eevee Next. Select desired "
+"fixtures and press the button to apply the value."
 msgstr ""
 "Расстояние, на котором влияние света будет установлено на 0. Значение "
 "больше 23 нарушит рендеринг гобо в Eevee Next."
 
 msgid "Use Fixtures Physical Properties"
 msgstr "Использовать физические свойства приборов"
-
-msgid "Use Channel Functions of this fixture"
-msgstr "Использовать функции каналов этого прибора"
 
 msgid "Use High Quality Models"
 msgstr ""
@@ -1040,11 +1060,6 @@ msgstr ""
 "Действуйте на свой страх и риск. Ручное редактирование или удаление может"
 " вызвать проблемы"
 
-msgid "Manually editing or deleting geometries of GDTF devices may cause issues."
-msgstr ""
-"Ручное редактирование или удаление геометрии устройств GDTF может вызвать"
-" проблемы."
-
 msgid "Really remove all fixtures and DMX from blend file?"
 msgstr "Действительно удалить все приборы и DMX из файла смешивания?"
 
@@ -1056,6 +1071,13 @@ msgstr "Диаметр луча маленький"
 
 msgid "Set Eevee Cutoff distance on selected fixtures"
 msgstr "Установите расстояние отсечки Eevee на выбранных приборах"
+
+msgid ""
+"Distance at which the influence of the light will be set to 0. Value "
+"bigger then 23 will break gobo rendering in Eevee Next."
+msgstr ""
+"Расстояние, на котором влияние света будет установлено на 0. Значение "
+"больше 23 нарушит рендеринг гобо в Eevee Next."
 
 msgid "Beam diameter normal"
 msgstr "Диаметр луча нормальный"

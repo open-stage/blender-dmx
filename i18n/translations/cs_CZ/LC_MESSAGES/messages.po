@@ -7,18 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-24 10:26+0100\n"
+"POT-Creation-Date: 2026-04-17 20:03+0200\n"
 "PO-Revision-Date: 2026-01-25 13:49+0000\n"
 "Last-Translator: vanous <petr+weblate@linuks.cz>\n"
-"Language-Team: Czech <https://hosted.weblate.org/projects/blenderdmx/main/"
-"cs/>\n"
 "Language: cs_CZ\n"
+"Language-Team: Czech "
+"<https://hosted.weblate.org/projects/blenderdmx/main/cs/>\n"
+"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
-"X-Generator: Weblate 5.16-dev\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 msgid "File doesn't exist"
 msgstr "Soubor neexistuje"
@@ -44,8 +43,14 @@ msgstr "Rotace"
 msgid "Footprint"
 msgstr "Stopa"
 
+msgid "Display DMX Footprint. Exclamation mark (!) is indicating overlap."
+msgstr ""
+
 msgid "Physical Properties"
 msgstr "Fyzické Vlastnosti"
+
+msgid "Use Channel Functions of this fixture"
+msgstr "Využívat Kanálové Funkce tohoto svítidla"
 
 msgid "DMX Collection"
 msgstr "DMX Kolekce"
@@ -77,6 +82,11 @@ msgstr "Zobrazit 2D pohled"
 msgid "Display Device Label"
 msgstr "Zobrazit Štítek zařízení"
 
+msgid ""
+"Shows a label with Device name/DMX address/Fixture + ID above the device "
+"in 2D or 3D."
+msgstr ""
+
 msgid "Device Label"
 msgstr "Štítek zařízení"
 
@@ -97,6 +107,9 @@ msgstr "3D Jméno světla + ID"
 
 msgid "Allow Selecting Geometries"
 msgstr "Povolit výběr geometrií"
+
+msgid "Manually editing or deleting geometries of GDTF devices may cause issues."
+msgstr "Manuální editace nebo mazání geometrií GDTF zařízení může způsobit potíže."
 
 msgid "Logging Level"
 msgstr "Úroveň logování"
@@ -167,6 +180,11 @@ msgstr "Hustota mlhy"
 
 msgid "Multiply beams intensity"
 msgstr "Násobit intenzitu beamů"
+
+msgid ""
+"Allows to make beams more (value bigger then 1) or less (value smaller "
+"then 1) bright to quickly test various intensity settings."
+msgstr ""
 
 msgid "Number of universes"
 msgstr "Počet universů"
@@ -346,18 +364,17 @@ msgstr "Tilt Rotace"
 msgid "Custom Cutoff Distance"
 msgstr "Uživatelská Mezní Vzdálenost"
 
+#, fuzzy
 msgid ""
 "Distance at which the influence of the light will be set to 0. Value "
-"bigger then 23 will break gobo rendering in Eevee Next."
+"bigger then 23 will break gobo rendering in Eevee Next. Select desired "
+"fixtures and press the button to apply the value."
 msgstr ""
 "Vzdálenost, při kterém bude vliv světla nastaven na 0. Hodnota větší, než"
 " 23 pokazí renderování gob v Eevee Next."
 
 msgid "Use Fixtures Physical Properties"
 msgstr "Používat Fyzické Vlastnosti Svítidla"
-
-msgid "Use Channel Functions of this fixture"
-msgstr "Využívat Kanálové Funkce tohoto svítidla"
 
 msgid "Use High Quality Models"
 msgstr "Použít Modely Vyšší Kvality"
@@ -990,9 +1007,6 @@ msgstr "Vyčistí existující DMX data a vytvoří novou show."
 msgid "Do at your own risk. Manual edits or deletes can cause issues"
 msgstr "Na Vlastní Nebezpečí. Manuální editace nebo mazání může způsobit potíže"
 
-msgid "Manually editing or deleting geometries of GDTF devices may cause issues."
-msgstr "Manuální editace nebo mazání geometrií GDTF zařízení může způsobit potíže."
-
 msgid "Really remove all fixtures and DMX from blend file?"
 msgstr "Opravdu odebrat všechna svítidla a DMX z blend souboru?"
 
@@ -1004,6 +1018,13 @@ msgstr "Malý průměr paprsku"
 
 msgid "Set Eevee Cutoff distance on selected fixtures"
 msgstr "Nastavit mezní vzdálenost na vybraných svítidlech"
+
+msgid ""
+"Distance at which the influence of the light will be set to 0. Value "
+"bigger then 23 will break gobo rendering in Eevee Next."
+msgstr ""
+"Vzdálenost, při kterém bude vliv světla nastaven na 0. Hodnota větší, než"
+" 23 pokazí renderování gob v Eevee Next."
 
 msgid "Beam diameter normal"
 msgstr "Normální průměr paprsku"
@@ -1707,3 +1728,4 @@ msgstr "DMX Universe"
 
 #~ msgid "Fixture named {} already exists"
 #~ msgstr "Svítidlo s názvem {} již existuje"
+

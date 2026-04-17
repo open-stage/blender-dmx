@@ -7,18 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-24 10:26+0100\n"
+"POT-Creation-Date: 2026-04-17 20:03+0200\n"
 "PO-Revision-Date: 2026-04-09 20:09+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
-"Language-Team: German <https://hosted.weblate.org/projects/blenderdmx/main/"
-"de/>\n"
 "Language: de_DE\n"
+"Language-Team: German "
+"<https://hosted.weblate.org/projects/blenderdmx/main/de/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17-dev\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 msgid "File doesn't exist"
 msgstr "Datei existiert nicht"
@@ -44,8 +43,14 @@ msgstr "Drehung"
 msgid "Footprint"
 msgstr "Fußabdruck"
 
+msgid "Display DMX Footprint. Exclamation mark (!) is indicating overlap."
+msgstr ""
+
 msgid "Physical Properties"
 msgstr "Physikalische Eigenschaften"
+
+msgid "Use Channel Functions of this fixture"
+msgstr "Kanalfunktionen dieser Leuchte verwenden"
 
 msgid "DMX Collection"
 msgstr "DMX-Sammlung"
@@ -77,6 +82,11 @@ msgstr "2D-Ansicht anzeigen"
 msgid "Display Device Label"
 msgstr "Anzeige Geräte Label"
 
+msgid ""
+"Shows a label with Device name/DMX address/Fixture + ID above the device "
+"in 2D or 3D."
+msgstr ""
+
 msgid "Device Label"
 msgstr "Gerätebezeichnung"
 
@@ -99,6 +109,11 @@ msgstr "Leuchtenname"
 
 msgid "Allow Selecting Geometries"
 msgstr "Auswahl von Geometrien erlauben"
+
+msgid "Manually editing or deleting geometries of GDTF devices may cause issues."
+msgstr ""
+"Das manuelle Bearbeiten oder Löschen von Geometrien von GDTF-Geräten kann"
+" zu Problemen führen."
 
 msgid "Logging Level"
 msgstr "Protokollierungsstufe"
@@ -169,6 +184,11 @@ msgstr "Volumenstreuungsdichte"
 
 msgid "Multiply beams intensity"
 msgstr "Intensität der Strahlen vervielfachen"
+
+msgid ""
+"Allows to make beams more (value bigger then 1) or less (value smaller "
+"then 1) bright to quickly test various intensity settings."
+msgstr ""
 
 msgid "Number of universes"
 msgstr "Anzahl der Universen"
@@ -356,18 +376,17 @@ msgstr "Neigungsdrehung"
 msgid "Custom Cutoff Distance"
 msgstr "\"Benutzerdefinierte Abschaltentfernung\""
 
+#, fuzzy
 msgid ""
 "Distance at which the influence of the light will be set to 0. Value "
-"bigger then 23 will break gobo rendering in Eevee Next."
+"bigger then 23 will break gobo rendering in Eevee Next. Select desired "
+"fixtures and press the button to apply the value."
 msgstr ""
 "Entfernung, bei dem der Lichteinfluss auf 0 gesetzt wird. Ein Wert über "
 "23 unterbricht das Gobo-Rendering in Eevee Next."
 
 msgid "Use Fixtures Physical Properties"
 msgstr "Verwendung von Leuchten Physikalische Eigenschaften"
-
-msgid "Use Channel Functions of this fixture"
-msgstr "Kanalfunktionen dieser Leuchte verwenden"
 
 msgid "Use High Quality Models"
 msgstr "Qualitativ hochwertige Modelle verwenden"
@@ -1007,11 +1026,6 @@ msgstr ""
 "Auf eigene Gefahr. Manuelle Änderungen oder Löschungen können zu "
 "Problemen führen"
 
-msgid "Manually editing or deleting geometries of GDTF devices may cause issues."
-msgstr ""
-"Das manuelle Bearbeiten oder Löschen von Geometrien von GDTF-Geräten kann"
-" zu Problemen führen."
-
 msgid "Really remove all fixtures and DMX from blend file?"
 msgstr "Wirklich alle Leuchten und DMX aus der Blend-Datei entfernen?"
 
@@ -1023,6 +1037,13 @@ msgstr "Strahldurchmesser klein"
 
 msgid "Set Eevee Cutoff distance on selected fixtures"
 msgstr "Eevee-Abschaltabstand für ausgewählte Leuchten einstellen"
+
+msgid ""
+"Distance at which the influence of the light will be set to 0. Value "
+"bigger then 23 will break gobo rendering in Eevee Next."
+msgstr ""
+"Entfernung, bei dem der Lichteinfluss auf 0 gesetzt wird. Ein Wert über "
+"23 unterbricht das Gobo-Rendering in Eevee Next."
 
 msgid "Beam diameter normal"
 msgstr "Strahldurchmesser normel"
@@ -1740,3 +1761,4 @@ msgstr "Universen"
 
 #~ msgid "Fixture named {} already exists"
 #~ msgstr "Leuchte mit dem Namen {} existiert bereits"
+

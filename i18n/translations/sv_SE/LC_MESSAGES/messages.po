@@ -7,18 +7,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-24 10:26+0100\n"
+"POT-Creation-Date: 2026-04-17 20:03+0200\n"
 "PO-Revision-Date: 2026-03-15 07:09+0000\n"
 "Last-Translator: Daniel Nylander <daniel@danielnylander.se>\n"
-"Language-Team: Swedish <https://hosted.weblate.org/projects/blenderdmx/main/"
-"sv/>\n"
 "Language: sv_SE\n"
+"Language-Team: Swedish "
+"<https://hosted.weblate.org/projects/blenderdmx/main/sv/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17-dev\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 msgid "File doesn't exist"
 msgstr "Filen finns inte"
@@ -44,8 +43,14 @@ msgstr "Rotation"
 msgid "Footprint"
 msgstr "Fotavtryck"
 
+msgid "Display DMX Footprint. Exclamation mark (!) is indicating overlap."
+msgstr ""
+
 msgid "Physical Properties"
 msgstr "Fysiska egenskaper"
+
+msgid "Use Channel Functions of this fixture"
+msgstr "Använd kanalfunktionerna för denna armatur"
 
 msgid "DMX Collection"
 msgstr "DMX-samling"
@@ -77,6 +82,11 @@ msgstr "Visa 2D-vy"
 msgid "Display Device Label"
 msgstr "Visa enhetsetikett"
 
+msgid ""
+"Shows a label with Device name/DMX address/Fixture + ID above the device "
+"in 2D or 3D."
+msgstr ""
+
 msgid "Device Label"
 msgstr "Enhetsetikett"
 
@@ -97,6 +107,11 @@ msgstr "3D-armaturnamn + ID"
 
 msgid "Allow Selecting Geometries"
 msgstr "Tillåt val av geometrier"
+
+msgid "Manually editing or deleting geometries of GDTF devices may cause issues."
+msgstr ""
+"Manuell redigering eller borttagning av geometrier för GDTF-enheter kan "
+"orsaka problem."
 
 msgid "Logging Level"
 msgstr "Loggningsnivå"
@@ -168,6 +183,11 @@ msgstr "Volymspridningsdensitet"
 msgid "Multiply beams intensity"
 msgstr "Multiplicera strålens intensitet"
 
+msgid ""
+"Allows to make beams more (value bigger then 1) or less (value smaller "
+"then 1) bright to quickly test various intensity settings."
+msgstr ""
+
 msgid "Number of universes"
 msgstr "Antal universum"
 
@@ -211,8 +231,8 @@ msgstr "Aktivera OSC-utdata"
 
 msgid "Enables Open Sound Control protocol to send fixture selection to a console"
 msgstr ""
-"Aktiverar Open Sound Control-protokoll för att skicka val av armaturer till "
-"en konsol"
+"Aktiverar Open Sound Control-protokoll för att skicka val av armaturer "
+"till en konsol"
 
 msgid "OSC Target address"
 msgstr "OSC-måladress"
@@ -310,7 +330,8 @@ msgstr "När du väljer en grupp, ta bort från befintligt urval"
 
 msgid "Keyframe only selected fixtures (not for autokeying)"
 msgstr ""
-"Nyckelbildruta bara för valda armaturer (inte för automatisk nyckelbildruta)"
+"Nyckelbildruta bara för valda armaturer (inte för automatisk "
+"nyckelbildruta)"
 
 msgid "Add keyframes with changes only for selected fixtures"
 msgstr "Lägg till nyckelbilder med ändringar endast för valda armaturer"
@@ -351,18 +372,17 @@ msgstr "Tilta"
 msgid "Custom Cutoff Distance"
 msgstr "Anpassat avgränsningsavstånd"
 
+#, fuzzy
 msgid ""
 "Distance at which the influence of the light will be set to 0. Value "
-"bigger then 23 will break gobo rendering in Eevee Next."
+"bigger then 23 will break gobo rendering in Eevee Next. Select desired "
+"fixtures and press the button to apply the value."
 msgstr ""
-"Avstånd där ljusets påverkan sätts till 0. Värde större än 23 bryter gobo-"
-"rendering i Eevee Next. Använd 0 för Blenders standard."
+"Avstånd där ljusets påverkan sätts till 0. Värde större än 23 bryter "
+"gobo-rendering i Eevee Next. Använd 0 för Blenders standard."
 
 msgid "Use Fixtures Physical Properties"
 msgstr "Använd armaturens fysiska egenskaper"
-
-msgid "Use Channel Functions of this fixture"
-msgstr "Använd kanalfunktionerna för denna armatur"
 
 msgid "Use High Quality Models"
 msgstr "Använd högkvalitativa modeller"
@@ -404,8 +424,8 @@ msgid ""
 "The Fixture ID is an identifier of this fixture that can be used to "
 "activate / select them for programming."
 msgstr ""
-"Armatur-ID är en identifierare för den här armaturen som kan användas för "
-"att aktivera/välja den för programmering."
+"Armatur-ID är en identifierare för den här armaturen som kan användas för"
+" att aktivera/välja den för programmering."
 
 msgid "Units"
 msgstr "Enheter"
@@ -997,11 +1017,6 @@ msgstr ""
 "Gör det på egen risk. Manuella redigeringar eller borttagningar kan "
 "orsaka problem"
 
-msgid "Manually editing or deleting geometries of GDTF devices may cause issues."
-msgstr ""
-"Manuell redigering eller borttagning av geometrier för GDTF-enheter kan "
-"orsaka problem."
-
 msgid "Really remove all fixtures and DMX from blend file?"
 msgstr "Verkligen ta bort alla armaturer och DMX från blend-filen?"
 
@@ -1013,6 +1028,13 @@ msgstr "Liten stråldiameter"
 
 msgid "Set Eevee Cutoff distance on selected fixtures"
 msgstr "Ställ in Eevee-avgränsningsavstånd på valda armaturer"
+
+msgid ""
+"Distance at which the influence of the light will be set to 0. Value "
+"bigger then 23 will break gobo rendering in Eevee Next."
+msgstr ""
+"Avstånd där ljusets påverkan sätts till 0. Värde större än 23 bryter "
+"gobo-rendering i Eevee Next. Använd 0 för Blenders standard."
 
 msgid "Beam diameter normal"
 msgstr "Normal stråldiameter"
@@ -1170,7 +1192,8 @@ msgstr "Töm val av underarmaturer"
 
 msgid "Get GDTF Share account and fill it into BlenderDMX addon preferences."
 msgstr ""
-"Hämta GDTF Share-konto och fyll i det i BlenderDMX-tilläggets inställningar."
+"Hämta GDTF Share-konto och fyll i det i BlenderDMX-tilläggets "
+"inställningar."
 
 msgid "GDTF Share API credentials missing"
 msgstr "API-autentiseringsuppgifter för GDTF Share saknas"
@@ -1769,3 +1792,4 @@ msgstr "Universum"
 
 #~ msgid "Fixture named {} already exists"
 #~ msgstr "Fixtur med namnet {} finns redan"
+

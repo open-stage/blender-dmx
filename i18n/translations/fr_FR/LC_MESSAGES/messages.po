@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-01-24 10:26+0100\n"
+"POT-Creation-Date: 2026-04-17 20:03+0200\n"
 "PO-Revision-Date: 2025-10-24 19:02+0000\n"
 "Last-Translator: \"David D.\" <dadu042@users.noreply.hosted.weblate.org>\n"
 "Language: fr_FR\n"
@@ -17,7 +17,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 msgid "File doesn't exist"
 msgstr "Le fichier n'existe pas"
@@ -44,8 +44,14 @@ msgstr "Rotation"
 msgid "Footprint"
 msgstr "Empreinte"
 
+msgid "Display DMX Footprint. Exclamation mark (!) is indicating overlap."
+msgstr ""
+
 msgid "Physical Properties"
 msgstr "Propriétés Physiques"
+
+msgid "Use Channel Functions of this fixture"
+msgstr ""
 
 msgid "DMX Collection"
 msgstr "Collection DMX"
@@ -78,6 +84,11 @@ msgstr "Afficher Vue 2D"
 msgid "Display Device Label"
 msgstr ""
 
+msgid ""
+"Shows a label with Device name/DMX address/Fixture + ID above the device "
+"in 2D or 3D."
+msgstr ""
+
 msgid "Device Label"
 msgstr ""
 
@@ -100,6 +111,11 @@ msgstr "Nom du projecteur"
 
 msgid "Allow Selecting Geometries"
 msgstr ""
+
+msgid "Manually editing or deleting geometries of GDTF devices may cause issues."
+msgstr ""
+"La modification ou la suppression manuelle de géométries des "
+"périphériques GDTF peut causer des problèmes."
 
 #, fuzzy
 msgid "Logging Level"
@@ -170,6 +186,11 @@ msgid "Volume Scatter Density"
 msgstr "Densité diffusion volume"
 
 msgid "Multiply beams intensity"
+msgstr ""
+
+msgid ""
+"Allows to make beams more (value bigger then 1) or less (value smaller "
+"then 1) bright to quickly test various intensity settings."
 msgstr ""
 
 msgid "Number of universes"
@@ -361,13 +382,11 @@ msgstr ""
 
 msgid ""
 "Distance at which the influence of the light will be set to 0. Value "
-"bigger then 23 will break gobo rendering in Eevee Next."
+"bigger then 23 will break gobo rendering in Eevee Next. Select desired "
+"fixtures and press the button to apply the value."
 msgstr ""
 
 msgid "Use Fixtures Physical Properties"
-msgstr ""
-
-msgid "Use Channel Functions of this fixture"
 msgstr ""
 
 msgid "Use High Quality Models"
@@ -1027,11 +1046,6 @@ msgstr ""
 "Faites à vos propres risques. Les modifications ou suppressions manuelles"
 " peuvent causer des problèmes"
 
-msgid "Manually editing or deleting geometries of GDTF devices may cause issues."
-msgstr ""
-"La modification ou la suppression manuelle de géométries des "
-"périphériques GDTF peut causer des problèmes."
-
 #, fuzzy
 msgid "Really remove all fixtures and DMX from blend file?"
 msgstr "Supprimer projecteur d'un fichier local"
@@ -1045,6 +1059,11 @@ msgstr "Diamètre faisceau petit"
 #, fuzzy
 msgid "Set Eevee Cutoff distance on selected fixtures"
 msgstr "Supprimer projecteur"
+
+msgid ""
+"Distance at which the influence of the light will be set to 0. Value "
+"bigger then 23 will break gobo rendering in Eevee Next."
+msgstr ""
 
 msgid "Beam diameter normal"
 msgstr "Diamètre faisceau normal"
