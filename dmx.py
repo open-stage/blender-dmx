@@ -1191,6 +1191,7 @@ class DMX(PropertyGroup):
 
     select_geometries: BoolProperty(
         name = _("Allow Selecting Geometries"),
+        description = _( "Manually editing or deleting geometries of GDTF devices may cause issues."),
         default = False,
         update = onSelectGeometries)
 
