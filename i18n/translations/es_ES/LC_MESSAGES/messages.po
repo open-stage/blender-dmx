@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-01-24 10:26+0100\n"
-"PO-Revision-Date: 2026-04-16 17:09+0000\n"
+"PO-Revision-Date: 2026-04-17 17:55+0000\n"
 "Last-Translator: eulalio <eulalio@disroot.org>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/blenderdmx/main/"
 "es/>\n"
@@ -922,16 +922,18 @@ msgid "Color Macro1"
 msgstr "Color Macro1"
 
 msgid "Color Temperature"
-msgstr ""
+msgstr "Temperatura de Color"
 
+#, fuzzy
 msgid "Iris"
-msgstr ""
+msgstr "Iris"
 
+#, fuzzy
 msgid "Gobo1"
-msgstr ""
+msgstr "Gobo1"
 
 msgid "Gobo1 Adjust"
-msgstr ""
+msgstr "Ajuste de Gobo1"
 
 #, fuzzy
 msgid "Gobo2"
@@ -1052,13 +1054,14 @@ msgid "Update Volume Box"
 msgstr "Caja de Volumen de Actualización"
 
 msgid "Create Volume Box"
-msgstr ""
+msgstr "Crear Caja de Volumen"
 
 msgid "Set on selected fixtures"
 msgstr "Establecer en accesorios seleccionados"
 
+#, fuzzy
 msgid "Viewport"
-msgstr ""
+msgstr "Vista"
 
 msgid "Background Color"
 msgstr ""
