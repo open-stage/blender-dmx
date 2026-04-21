@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-04-17 20:03+0200\n"
-"PO-Revision-Date: 2026-04-17 17:55+0000\n"
+"PO-Revision-Date: 2026-04-21 18:09+0000\n"
 "Last-Translator: eulalio <eulalio@disroot.org>\n"
+"Language-Team: Spanish <https://hosted.weblate.org/projects/blenderdmx/main/"
+"es/>\n"
 "Language: es_ES\n"
-"Language-Team: Spanish "
-"<https://hosted.weblate.org/projects/blenderdmx/main/es/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.17.1-dev\n"
 "Generated-By: Babel 2.18.0\n"
 
 msgid "File doesn't exist"
@@ -1084,16 +1085,17 @@ msgid "Viewport"
 msgstr "Vista"
 
 msgid "Background Color"
-msgstr ""
+msgstr "Color de fondo"
 
+#, fuzzy
 msgid "Extras"
-msgstr ""
+msgstr "Extra"
 
 msgid "Clear Project data"
-msgstr ""
+msgstr "Borrar datos del proyecto"
 
 msgid "Copy (import) old data from addon folder"
-msgstr ""
+msgstr "Copiar (importar) datos antiguos de la carpeta de complementos"
 
 msgid "Remove DMX from blend file"
 msgstr "Eliminar DMX del archivo blend"
@@ -1161,17 +1163,21 @@ msgid "Data imported from: {}"
 msgstr "Datos importados de: {}"
 
 msgid "Export Custom Data"
-msgstr ""
+msgstr "Exportar los datos personalizados"
 
 msgid "Zip and Export custom data from BlenderDMX addon directory."
 msgstr ""
+"Comprima y exporte datos personalizados desde el directorio de complementos "
+"de BlenderDMX."
 
 #, python-brace-format
 msgid "Data exported to: {}"
-msgstr ""
+msgstr "Datos exportados a: {}"
 
 msgid "Really delete all custom data from the addon directory?"
 msgstr ""
+"¿Realmente eliminas todos los datos personalizados del directorio de "
+"complementos?"
 
 msgid "Clear custom data from BlenderDMX addon directory."
 msgstr ""
@@ -1495,8 +1501,9 @@ msgstr "Seguidores de rastreadores"
 msgid "Link followers to a tracker"
 msgstr "Vínculo de seguidores a un rastreador"
 
+#, fuzzy
 msgid "PSN"
-msgstr ""
+msgstr "PSN"
 
 msgid "Add Tracking Target"
 msgstr "Agregar Objetivo de Seguimiento"
@@ -1505,23 +1512,24 @@ msgid "Remove Followers Target"
 msgstr "Eliminar Seguidores Objetivo"
 
 msgid "Remove target"
-msgstr ""
+msgstr "Eliminar objetivo"
 
 msgid "Add Followers Target"
-msgstr ""
+msgstr "Añadir Seguidores Objetivo"
 
 msgid "Add target"
-msgstr ""
+msgstr "Añadir Objetivo"
 
+#, fuzzy
 msgid "sACN"
-msgstr ""
+msgstr "sACN"
 
 #, python-brace-format
 msgid "sACN set for {} universe(s)"
-msgstr ""
+msgstr "Establecer sACN para {} universo(s)"
 
 msgid "DMX > Universe Menu"
-msgstr ""
+msgstr "DMX > Menú Universo"
 
 #, fuzzy
 msgid "Universes"
@@ -1625,4 +1633,3 @@ msgstr "Universos"
 
 #~ msgid "Fixture named {} already exists"
 #~ msgstr "Ya existe el accesorio nombrado con {}"
-
