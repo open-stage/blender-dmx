@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-04-17 20:03+0200\n"
-"PO-Revision-Date: 2026-04-23 18:09+0000\n"
+"PO-Revision-Date: 2026-04-25 15:20+0000\n"
 "Last-Translator: eulalio <eulalio@disroot.org>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/blenderdmx/main/"
 "es/>\n"
@@ -1366,13 +1366,13 @@ msgid "Refresh files listing"
 msgstr ""
 
 msgid "Update list of local files"
-msgstr ""
+msgstr "Actualizar la lista de archivos locales"
 
 msgid "GDTF Share"
-msgstr ""
+msgstr "Compartir GDTF"
 
 msgid "You must Allow Online access for this to work:"
-msgstr ""
+msgstr "Debe permitir el acceso en línea para que esto funcione:"
 
 msgid "Fixture details"
 msgstr "Detalles de accesorio"
@@ -1384,7 +1384,7 @@ msgid "Local Fixture details"
 msgstr "Detalles de accesorio local"
 
 msgid "Profiles"
-msgstr ""
+msgstr "Perfiles"
 
 #, fuzzy
 msgid "Art-Net"
