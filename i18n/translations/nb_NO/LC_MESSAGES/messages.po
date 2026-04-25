@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-17 20:03+0200\n"
+"POT-Creation-Date: 2026-04-25 17:21+0200\n"
 "PO-Revision-Date: 2023-04-02 13:37+0000\n"
 "Last-Translator: Allan Nordhøy <epost@anotheragency.no>\n"
 "Language: nb_NO\n"
@@ -200,6 +200,13 @@ msgid "Universe List Item"
 msgstr "DMX-univers"
 
 msgid "The selected element on the universe list"
+msgstr ""
+
+#, fuzzy
+msgid "Show All Universes"
+msgstr "DMX-univers"
+
+msgid "Show every allocated universe instead of only used ones"
 msgstr ""
 
 msgid "IPv4 Address for ArtNet signal"
@@ -1531,7 +1538,35 @@ msgstr ""
 msgid "DMX > Universe Menu"
 msgstr "DMX-univers"
 
+#, fuzzy
+msgid "Add Universe"
+msgstr "DMX-univers"
+
+msgid "Allocate and select a specific DMX universe"
+msgstr ""
+
+#, fuzzy
+msgid "Universe ID"
+msgstr "DMX-univers"
+
+msgid "Universe number to create or select"
+msgstr ""
+
+msgid "Input"
+msgstr ""
+
+#, fuzzy
+msgid "Input source of the universe"
+msgstr "DMX-univers"
+
+msgid "Patched"
+msgstr ""
+
 msgid "Universes"
+msgstr ""
+
+#, python-brace-format
+msgid "Visible: {} / Allocated: {}"
 msgstr ""
 
 #~ msgid ""

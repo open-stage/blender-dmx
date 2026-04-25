@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-17 20:03+0200\n"
+"POT-Creation-Date: 2026-04-25 17:21+0200\n"
 "PO-Revision-Date: 2026-03-14 06:22+0000\n"
 "Last-Translator: 大学没毕业 <ziweidao@foxmail.com>\n"
 "Language: zh_Hans\n"
@@ -195,6 +195,13 @@ msgstr "域列表项目"
 
 msgid "The selected element on the universe list"
 msgstr "域列表中选定的元素"
+
+#, fuzzy
+msgid "Show All Universes"
+msgstr "域"
+
+msgid "Show every allocated universe instead of only used ones"
+msgstr ""
 
 msgid "IPv4 Address for ArtNet signal"
 msgstr "ArtNet 信号的 IPv4 地址"
@@ -1471,8 +1478,37 @@ msgstr "{} 域的 sACN 设置"
 msgid "DMX > Universe Menu"
 msgstr "DMX > 域菜单"
 
+#, fuzzy
+msgid "Add Universe"
+msgstr "DMX 域"
+
+msgid "Allocate and select a specific DMX universe"
+msgstr ""
+
+#, fuzzy
+msgid "Universe ID"
+msgstr "域"
+
+msgid "Universe number to create or select"
+msgstr ""
+
+msgid "Input"
+msgstr ""
+
+#, fuzzy
+msgid "Input source of the universe"
+msgstr "域的数目"
+
+#, fuzzy
+msgid "Patched"
+msgstr "更新"
+
 msgid "Universes"
 msgstr "域"
+
+#, python-brace-format
+msgid "Visible: {} / Allocated: {}"
+msgstr ""
 
 #~ msgid "Message Box"
 #~ msgstr "信息框"

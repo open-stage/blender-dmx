@@ -7,17 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-17 20:03+0200\n"
+"POT-Creation-Date: 2026-04-25 17:21+0200\n"
 "PO-Revision-Date: 2026-04-25 15:20+0000\n"
 "Last-Translator: eulalio <eulalio@disroot.org>\n"
-"Language-Team: Spanish <https://hosted.weblate.org/projects/blenderdmx/main/"
-"es/>\n"
 "Language: es_ES\n"
+"Language-Team: Spanish "
+"<https://hosted.weblate.org/projects/blenderdmx/main/es/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17.1-dev\n"
 "Generated-By: Babel 2.18.0\n"
 
 msgid "File doesn't exist"
@@ -87,8 +86,8 @@ msgid ""
 "Shows a label with Device name/DMX address/Fixture + ID above the device "
 "in 2D or 3D."
 msgstr ""
-"Muestra una etiqueta con el nombre del dispositivo/dirección DMX/Accesorio + "
-"ID sobre el dispositivo en 2D o 3D."
+"Muestra una etiqueta con el nombre del dispositivo/dirección "
+"DMX/Accesorio + ID sobre el dispositivo en 2D o 3D."
 
 msgid "Device Label"
 msgstr "Etiqueta del dispositivo"
@@ -191,9 +190,9 @@ msgid ""
 "Allows to make beams more (value bigger then 1) or less (value smaller "
 "then 1) bright to quickly test various intensity settings."
 msgstr ""
-"Permite hacer que los haces sean más brillantes (valor mayor que 1) o menos "
-"brillantes (valor menor que 1) para probar rápidamente varios ajustes de "
-"intensidad."
+"Permite hacer que los haces sean más brillantes (valor mayor que 1) o "
+"menos brillantes (valor menor que 1) para probar rápidamente varios "
+"ajustes de intensidad."
 
 msgid "Number of universes"
 msgstr "Número de universos"
@@ -206,6 +205,13 @@ msgstr "Elemento del listado de universo"
 
 msgid "The selected element on the universe list"
 msgstr "El elemento seleccionado en el listado de universo"
+
+#, fuzzy
+msgid "Show All Universes"
+msgstr "Universos"
+
+msgid "Show every allocated universe instead of only used ones"
+msgstr ""
 
 msgid "IPv4 Address for ArtNet signal"
 msgstr "Dirección IPv4 para señal ArtNet"
@@ -385,8 +391,8 @@ msgid ""
 "bigger then 23 will break gobo rendering in Eevee Next. Select desired "
 "fixtures and press the button to apply the value."
 msgstr ""
-"Distancia en la cual la influencia de la luz será fijada a 0. Un valor mayor "
-"que 23 romperá la representación de gobos en Eevee. Seleccione los "
+"Distancia en la cual la influencia de la luz será fijada a 0. Un valor "
+"mayor que 23 romperá la representación de gobos en Eevee. Seleccione los "
 "accesorios deseados y presione el botón para aplicar el valor."
 
 msgid "Use Fixtures Physical Properties"
@@ -1172,8 +1178,8 @@ msgstr "Exportar los datos personalizados"
 
 msgid "Zip and Export custom data from BlenderDMX addon directory."
 msgstr ""
-"Comprima y exporte datos personalizados desde el directorio de complementos "
-"de BlenderDMX."
+"Comprima y exporte datos personalizados desde el directorio de "
+"complementos de BlenderDMX."
 
 #, python-brace-format
 msgid "Data exported to: {}"
@@ -1537,8 +1543,37 @@ msgid "DMX > Universe Menu"
 msgstr "DMX > Menú Universo"
 
 #, fuzzy
+msgid "Add Universe"
+msgstr "Universo DMX"
+
+msgid "Allocate and select a specific DMX universe"
+msgstr ""
+
+#, fuzzy
+msgid "Universe ID"
+msgstr "Universo"
+
+msgid "Universe number to create or select"
+msgstr ""
+
+msgid "Input"
+msgstr ""
+
+#, fuzzy
+msgid "Input source of the universe"
+msgstr "Número de universos"
+
+#, fuzzy
+msgid "Patched"
+msgstr "Actualizar"
+
+#, fuzzy
 msgid "Universes"
 msgstr "Universos"
+
+#, python-brace-format
+msgid "Visible: {} / Allocated: {}"
+msgstr ""
 
 #~ msgid "Sort by"
 #~ msgstr ""
@@ -1638,3 +1673,4 @@ msgstr "Universos"
 
 #~ msgid "Fixture named {} already exists"
 #~ msgstr "Ya existe el accesorio nombrado con {}"
+

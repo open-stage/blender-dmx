@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-17 20:03+0200\n"
+"POT-Creation-Date: 2026-04-25 17:21+0200\n"
 "PO-Revision-Date: 2025-06-26 20:08+0000\n"
 "Last-Translator: Anonymous <noreply@weblate.org>\n"
 "Language: ta_IN\n"
@@ -199,6 +199,13 @@ msgstr "யுனிவர்ச் பட்டியல் உருப்ப�
 
 msgid "The selected element on the universe list"
 msgstr "பிரபஞ்ச பட்டியலில் தேர்ந்தெடுக்கப்பட்ட உறுப்பு"
+
+#, fuzzy
+msgid "Show All Universes"
+msgstr "பிரபஞ்சங்கள்"
+
+msgid "Show every allocated universe instead of only used ones"
+msgstr ""
 
 msgid "IPv4 Address for ArtNet signal"
 msgstr "ஆர்ட்நெட் சிக்னலுக்கான ஐபிவி 4 முகவரி"
@@ -1572,8 +1579,37 @@ msgstr "}} யுனிவர்ச் (கள்) க்கான SACN தொ�
 msgid "DMX > Universe Menu"
 msgstr "டி.எம்.எக்ச்> யுனிவர்ச் பட்டியல்"
 
+#, fuzzy
+msgid "Add Universe"
+msgstr "டி.எம்.எக்ச் யுனிவர்ச்"
+
+msgid "Allocate and select a specific DMX universe"
+msgstr ""
+
+#, fuzzy
+msgid "Universe ID"
+msgstr "அண்டம்"
+
+msgid "Universe number to create or select"
+msgstr ""
+
+msgid "Input"
+msgstr ""
+
+#, fuzzy
+msgid "Input source of the universe"
+msgstr "பிரபஞ்சங்களின் எண்ணிக்கை"
+
+#, fuzzy
+msgid "Patched"
+msgstr "புதுப்பிப்பு"
+
 msgid "Universes"
 msgstr "பிரபஞ்சங்கள்"
+
+#, python-brace-format
+msgid "Visible: {} / Allocated: {}"
+msgstr ""
 
 #~ msgid "Trackers Item"
 #~ msgstr ""

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-17 20:03+0200\n"
+"POT-Creation-Date: 2026-04-25 17:21+0200\n"
 "PO-Revision-Date: 2025-10-24 19:02+0000\n"
 "Last-Translator: \"David D.\" <dadu042@users.noreply.hosted.weblate.org>\n"
 "Language: fr_FR\n"
@@ -205,6 +205,13 @@ msgstr "Univers"
 
 msgid "The selected element on the universe list"
 msgstr "L’élément sélectionné sur la liste univers"
+
+#, fuzzy
+msgid "Show All Universes"
+msgstr "Univers"
+
+msgid "Show every allocated universe instead of only used ones"
+msgstr ""
 
 msgid "IPv4 Address for ArtNet signal"
 msgstr "Adresse IPv4 pour le signal ArtNet"
@@ -1532,8 +1539,37 @@ msgstr "sACN défini pour {} univer(s)"
 msgid "DMX > Universe Menu"
 msgstr "DMX > Menu Univers"
 
+#, fuzzy
+msgid "Add Universe"
+msgstr "Univers DMX"
+
+msgid "Allocate and select a specific DMX universe"
+msgstr ""
+
+#, fuzzy
+msgid "Universe ID"
+msgstr "Univers"
+
+msgid "Universe number to create or select"
+msgstr ""
+
+msgid "Input"
+msgstr ""
+
+#, fuzzy
+msgid "Input source of the universe"
+msgstr "Nombre d'univers"
+
+#, fuzzy
+msgid "Patched"
+msgstr "Mettre à jour"
+
 msgid "Universes"
 msgstr "Univers"
+
+#, python-brace-format
+msgid "Visible: {} / Allocated: {}"
+msgstr ""
 
 #~ msgid ""
 #~ "Get API key from GDTF Share "

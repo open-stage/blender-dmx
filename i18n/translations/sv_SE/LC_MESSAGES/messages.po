@@ -7,17 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-17 20:03+0200\n"
+"POT-Creation-Date: 2026-04-25 17:21+0200\n"
 "PO-Revision-Date: 2026-04-18 18:09+0000\n"
 "Last-Translator: bittin1ddc447d824349b2 <bittin@reimu.nl>\n"
-"Language-Team: Swedish <https://hosted.weblate.org/projects/blenderdmx/main/"
-"sv/>\n"
 "Language: sv_SE\n"
+"Language-Team: Swedish "
+"<https://hosted.weblate.org/projects/blenderdmx/main/sv/>\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17.1-dev\n"
 "Generated-By: Babel 2.18.0\n"
 
 msgid "File doesn't exist"
@@ -87,8 +86,8 @@ msgid ""
 "Shows a label with Device name/DMX address/Fixture + ID above the device "
 "in 2D or 3D."
 msgstr ""
-"Visar en etikett med enhetsnamn/DMX-adress/fixtur + ID ovanför enheten i 2D "
-"eller 3D."
+"Visar en etikett med enhetsnamn/DMX-adress/fixtur + ID ovanför enheten i "
+"2D eller 3D."
 
 msgid "Device Label"
 msgstr "Enhetsetikett"
@@ -190,8 +189,8 @@ msgid ""
 "Allows to make beams more (value bigger then 1) or less (value smaller "
 "then 1) bright to quickly test various intensity settings."
 msgstr ""
-"Tillåter att göra balkar mer (värde större än 1) eller mindre (värde mindre "
-"än 1) ljus för att snabbt testa olika intensitetsinställningar."
+"Tillåter att göra balkar mer (värde större än 1) eller mindre (värde "
+"mindre än 1) ljus för att snabbt testa olika intensitetsinställningar."
 
 msgid "Number of universes"
 msgstr "Antal universum"
@@ -204,6 +203,13 @@ msgstr "Universumlistobjekt"
 
 msgid "The selected element on the universe list"
 msgstr "Det valda elementet på universumlistan"
+
+#, fuzzy
+msgid "Show All Universes"
+msgstr "Universum"
+
+msgid "Show every allocated universe instead of only used ones"
+msgstr ""
 
 msgid "IPv4 Address for ArtNet signal"
 msgstr "IPv4-adress för ArtNet-signal"
@@ -383,8 +389,8 @@ msgid ""
 "fixtures and press the button to apply the value."
 msgstr ""
 "Avståndet vid vilket ljusets inverkan sätts till 0. Värde större än 23 "
-"avbryter gobo-renderingen i Eevee Next. Välj önskade fixturer och tryck på "
-"knappen för att tillämpa värdet."
+"avbryter gobo-renderingen i Eevee Next. Välj önskade fixturer och tryck "
+"på knappen för att tillämpa värdet."
 
 msgid "Use Fixtures Physical Properties"
 msgstr "Använd armaturens fysiska egenskaper"
@@ -1498,8 +1504,37 @@ msgstr "sACN inställd för {} universum"
 msgid "DMX > Universe Menu"
 msgstr "DMX > Meny för universum"
 
+#, fuzzy
+msgid "Add Universe"
+msgstr "DMX-universum"
+
+msgid "Allocate and select a specific DMX universe"
+msgstr ""
+
+#, fuzzy
+msgid "Universe ID"
+msgstr "Universum"
+
+msgid "Universe number to create or select"
+msgstr ""
+
+msgid "Input"
+msgstr ""
+
+#, fuzzy
+msgid "Input source of the universe"
+msgstr "Antal universum"
+
+#, fuzzy
+msgid "Patched"
+msgstr "Uppdatera"
+
 msgid "Universes"
 msgstr "Universum"
+
+#, python-brace-format
+msgid "Visible: {} / Allocated: {}"
+msgstr ""
 
 #~ msgid ""
 #~ "Get API key from GDTF Share "
@@ -1797,3 +1832,4 @@ msgstr "Universum"
 
 #~ msgid "Fixture named {} already exists"
 #~ msgstr "Fixtur med namnet {} finns redan"
+

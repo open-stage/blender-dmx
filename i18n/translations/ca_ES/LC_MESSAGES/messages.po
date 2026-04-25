@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-17 20:03+0200\n"
+"POT-Creation-Date: 2026-04-25 17:21+0200\n"
 "PO-Revision-Date: 2025-06-05 17:01+0000\n"
 "Last-Translator: Bernat Rubiol Brusau <rubiolbernat@gmail.com>\n"
 "Language: ca_ES\n"
@@ -199,6 +199,13 @@ msgstr "Element de la llista d'universos"
 
 msgid "The selected element on the universe list"
 msgstr "L'element seleccionat a la llista d'universos"
+
+#, fuzzy
+msgid "Show All Universes"
+msgstr "Universos"
+
+msgid "Show every allocated universe instead of only used ones"
+msgstr ""
 
 msgid "IPv4 Address for ArtNet signal"
 msgstr "Adreça IPv4 per a la senyal ArtNet"
@@ -1497,8 +1504,37 @@ msgstr ""
 msgid "DMX > Universe Menu"
 msgstr ""
 
+#, fuzzy
+msgid "Add Universe"
+msgstr "Univers DMX"
+
+msgid "Allocate and select a specific DMX universe"
+msgstr ""
+
+#, fuzzy
+msgid "Universe ID"
+msgstr "Univers"
+
+msgid "Universe number to create or select"
+msgstr ""
+
+msgid "Input"
+msgstr ""
+
+#, fuzzy
+msgid "Input source of the universe"
+msgstr "Nombre d'universos"
+
+#, fuzzy
+msgid "Patched"
+msgstr "Actualitza"
+
 msgid "Universes"
 msgstr "Universos"
+
+#, python-brace-format
+msgid "Visible: {} / Allocated: {}"
+msgstr ""
 
 #~ msgid "Connect to a selected station"
 #~ msgstr "Connecta't a una estació seleccionada"

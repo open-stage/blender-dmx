@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-17 20:03+0200\n"
+"POT-Creation-Date: 2026-04-25 17:21+0200\n"
 "PO-Revision-Date: 2025-04-16 06:01+0000\n"
 "Last-Translator: polarwood <polarwood@users.noreply.hosted.weblate.org>\n"
 "Language: tr_TR\n"
@@ -199,6 +199,13 @@ msgstr "Evren Liste Öğesi"
 
 msgid "The selected element on the universe list"
 msgstr "Evren listesinde seçili eleman"
+
+#, fuzzy
+msgid "Show All Universes"
+msgstr "Evren"
+
+msgid "Show every allocated universe instead of only used ones"
+msgstr ""
 
 msgid "IPv4 Address for ArtNet signal"
 msgstr "ArtNet sinyali için IPv4 Adresi"
@@ -1533,7 +1540,36 @@ msgstr ""
 msgid "DMX > Universe Menu"
 msgstr ""
 
+#, fuzzy
+msgid "Add Universe"
+msgstr "DMX Evreni"
+
+msgid "Allocate and select a specific DMX universe"
+msgstr ""
+
+#, fuzzy
+msgid "Universe ID"
+msgstr "Evren"
+
+msgid "Universe number to create or select"
+msgstr ""
+
+msgid "Input"
+msgstr ""
+
+#, fuzzy
+msgid "Input source of the universe"
+msgstr "Evren sayısı"
+
+#, fuzzy
+msgid "Patched"
+msgstr "Güncelleme"
+
 msgid "Universes"
+msgstr ""
+
+#, python-brace-format
+msgid "Visible: {} / Allocated: {}"
 msgstr ""
 
 #~ msgid ""

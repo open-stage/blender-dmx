@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-17 20:03+0200\n"
+"POT-Creation-Date: 2026-04-25 17:21+0200\n"
 "PO-Revision-Date: 2023-12-02 14:06+0000\n"
 "Last-Translator: bass python <pythonbass@gmail.com>\n"
 "Language: ar_AA\n"
@@ -204,6 +204,13 @@ msgid "Universe List Item"
 msgstr "الأكوان"
 
 msgid "The selected element on the universe list"
+msgstr ""
+
+#, fuzzy
+msgid "Show All Universes"
+msgstr "الأكوان"
+
+msgid "Show every allocated universe instead of only used ones"
 msgstr ""
 
 msgid "IPv4 Address for ArtNet signal"
@@ -1607,8 +1614,36 @@ msgstr ""
 msgid "DMX > Universe Menu"
 msgstr "عالم دي إم إكس"
 
+#, fuzzy
+msgid "Add Universe"
+msgstr "عالم دي إم إكس"
+
+msgid "Allocate and select a specific DMX universe"
+msgstr ""
+
+#, fuzzy
+msgid "Universe ID"
+msgstr "الأكوان"
+
+msgid "Universe number to create or select"
+msgstr ""
+
+msgid "Input"
+msgstr ""
+
+#, fuzzy
+msgid "Input source of the universe"
+msgstr "عدد القنوات"
+
+msgid "Patched"
+msgstr ""
+
 msgid "Universes"
 msgstr "الأكوان"
+
+#, python-brace-format
+msgid "Visible: {} / Allocated: {}"
+msgstr ""
 
 #~ msgid "Message Box"
 #~ msgstr "مربع الرسالة"

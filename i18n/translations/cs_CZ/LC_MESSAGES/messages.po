@@ -7,17 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-17 20:03+0200\n"
+"POT-Creation-Date: 2026-04-25 17:21+0200\n"
 "PO-Revision-Date: 2026-04-18 18:09+0000\n"
 "Last-Translator: vanous <petr+weblate@linuks.cz>\n"
-"Language-Team: Czech <https://hosted.weblate.org/projects/blenderdmx/main/"
-"cs/>\n"
 "Language: cs_CZ\n"
+"Language-Team: Czech "
+"<https://hosted.weblate.org/projects/blenderdmx/main/cs/>\n"
+"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
-"X-Generator: Weblate 5.17.1-dev\n"
 "Generated-By: Babel 2.18.0\n"
 
 msgid "File doesn't exist"
@@ -87,8 +86,8 @@ msgid ""
 "Shows a label with Device name/DMX address/Fixture + ID above the device "
 "in 2D or 3D."
 msgstr ""
-"Zobrazit popisek s Název zařízení/DMX Adresou/Fixture + ID nad zařízením ve "
-"2D nebo 3D."
+"Zobrazit popisek s Název zařízení/DMX Adresou/Fixture + ID nad zařízením "
+"ve 2D nebo 3D."
 
 msgid "Device Label"
 msgstr "Štítek zařízení"
@@ -188,8 +187,8 @@ msgid ""
 "Allows to make beams more (value bigger then 1) or less (value smaller "
 "then 1) bright to quickly test various intensity settings."
 msgstr ""
-"Umožní nastavení vyšší (hodnota větší než 1) nebo nižší (hodnota menší než "
-"1) intenzity paprsků pro test intenzit."
+"Umožní nastavení vyšší (hodnota větší než 1) nebo nižší (hodnota menší "
+"než 1) intenzity paprsků pro test intenzit."
 
 msgid "Number of universes"
 msgstr "Počet universů"
@@ -202,6 +201,13 @@ msgstr "Vybraný universe"
 
 msgid "The selected element on the universe list"
 msgstr "Vybraný univers v seznamu universů"
+
+#, fuzzy
+msgid "Show All Universes"
+msgstr "DMX Universe"
+
+msgid "Show every allocated universe instead of only used ones"
+msgstr ""
 
 msgid "IPv4 Address for ArtNet signal"
 msgstr "IPv4 Adresa pro ArtNet signál"
@@ -374,9 +380,9 @@ msgid ""
 "bigger then 23 will break gobo rendering in Eevee Next. Select desired "
 "fixtures and press the button to apply the value."
 msgstr ""
-"Vzdálenost, při kterém bude vliv světla nastaven na 0. Hodnota větší, než 23 "
-"pokazí renderování gob v Eevee Next. Vyberte zařízení a stiskněte tlačítko "
-"pro aplikování hodnoty."
+"Vzdálenost, při kterém bude vliv světla nastaven na 0. Hodnota větší, než"
+" 23 pokazí renderování gob v Eevee Next. Vyberte zařízení a stiskněte "
+"tlačítko pro aplikování hodnoty."
 
 msgid "Use Fixtures Physical Properties"
 msgstr "Používat Fyzické Vlastnosti Svítidla"
@@ -1486,8 +1492,37 @@ msgstr "sACN nastaveno pro {} univers(y)"
 msgid "DMX > Universe Menu"
 msgstr "DMX Univers Menu"
 
+#, fuzzy
+msgid "Add Universe"
+msgstr "DMX Univers"
+
+msgid "Allocate and select a specific DMX universe"
+msgstr ""
+
+#, fuzzy
+msgid "Universe ID"
+msgstr "Univers"
+
+msgid "Universe number to create or select"
+msgstr ""
+
+msgid "Input"
+msgstr ""
+
+#, fuzzy
+msgid "Input source of the universe"
+msgstr "Počet universů"
+
+#, fuzzy
+msgid "Patched"
+msgstr "Aktualizovat"
+
 msgid "Universes"
 msgstr "DMX Universe"
+
+#, python-brace-format
+msgid "Visible: {} / Allocated: {}"
+msgstr ""
 
 #~ msgid "Select DMX Universe"
 #~ msgstr "Zvolte DMX Universe"
@@ -1733,3 +1768,4 @@ msgstr "DMX Universe"
 
 #~ msgid "Fixture named {} already exists"
 #~ msgstr "Svítidlo s názvem {} již existuje"
+

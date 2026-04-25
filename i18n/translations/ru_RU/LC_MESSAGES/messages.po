@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-17 20:03+0200\n"
+"POT-Creation-Date: 2026-04-25 17:21+0200\n"
 "PO-Revision-Date: 2025-09-08 22:01+0000\n"
 "Last-Translator: Alex Nadzharov <anadjarov@gmail.com>\n"
 "Language: ru_RU\n"
@@ -202,6 +202,13 @@ msgstr "Элемент списка вселенных"
 
 msgid "The selected element on the universe list"
 msgstr "Выбранный элемент в списке вселенных"
+
+#, fuzzy
+msgid "Show All Universes"
+msgstr "Вселенные"
+
+msgid "Show every allocated universe instead of only used ones"
+msgstr ""
 
 msgid "IPv4 Address for ArtNet signal"
 msgstr "Адрес IPv4 для сигнала ArtNet"
@@ -1546,8 +1553,37 @@ msgstr "sACN установлен для {} вселенной(й)"
 msgid "DMX > Universe Menu"
 msgstr "DMX > Меню вселенной"
 
+#, fuzzy
+msgid "Add Universe"
+msgstr "Вселенная DMX"
+
+msgid "Allocate and select a specific DMX universe"
+msgstr ""
+
+#, fuzzy
+msgid "Universe ID"
+msgstr "Вселенная"
+
+msgid "Universe number to create or select"
+msgstr ""
+
+msgid "Input"
+msgstr ""
+
+#, fuzzy
+msgid "Input source of the universe"
+msgstr "Количество вселенных"
+
+#, fuzzy
+msgid "Patched"
+msgstr "Обновить"
+
 msgid "Universes"
 msgstr "Вселенные"
+
+#, python-brace-format
+msgid "Visible: {} / Allocated: {}"
+msgstr ""
 
 #~ msgid "Connect to a selected station"
 #~ msgstr "Подключение к выбранной станции"
