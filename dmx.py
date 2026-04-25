@@ -150,6 +150,7 @@ class DMX(PropertyGroup):
         panels_protocols.DMX_PT_DMX,
         panels_universes.DMX_UL_Universe,
         panels_universes.DMX_MT_Universe,
+        panels_universes.DMX_OP_Universe_Add,
         panels_universes.DMX_PT_DMX_Universes,
         panels_live.DMX_PT_DMX_LiveDMX,
         panels_artnet.DMX_PT_DMX_ArtNet,
@@ -454,6 +455,38 @@ class DMX(PropertyGroup):
         for universe in self.universes:
             data.append((str(universe.id), universe.name, str(universe.input), "", universe.id))
         return data
+
+    def get_used_universe_ids(self):
+        used_universe_ids = set()
+        for fixture_ in self.fixtures:
+            for dmx_break in fixture_.dmx_breaks:
+                used_universe_ids.add(dmx_break.universe)
+        return used_universe_ids
+
+    def get_visible_universe_indices(self):
+        visible_indices = []
+        used_universe_ids = self.get_used_universe_ids()
+
+        for index, universe in enumerate(self.universes):
+            if self.universes_show_all:
+                visible_indices.append(index)
+                continue
+
+            if universe.id in used_universe_ids:
+                visible_indices.append(index)
+
+        return visible_indices
+
+    def get_selected_universe(self):
+        if self.universes and self.universe_list_i < len(self.universes):
+            visible_indices = self.get_visible_universe_indices()
+            if self.universes_show_all or self.universe_list_i in visible_indices:
+                return self.universes[self.universe_list_i]
+
+            if visible_indices:
+                return self.universes[visible_indices[0]]
+
+        return None
 
     def get_selected_live_dmx_universe(self):
         selected_universe = None
@@ -1351,6 +1384,12 @@ class DMX(PropertyGroup):
         name = _("Universe List Item"),
         description=_("The selected element on the universe list"),
         default = 0
+        )
+
+    universes_show_all : BoolProperty(
+        name = _("Show All Universes"),
+        description=_("Show every allocated universe instead of only used ones"),
+        default = False
         )
 
     # # DMX > ArtNet > Network Cards
