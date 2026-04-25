@@ -1,5 +1,17 @@
 ### Changelog
 
+### 2.1.9
+
+* Fix hardcoded expectation for a scene named "Scene" when loading - Phillip Dykman
+* Improve Universes displaying and adding
+* Small menu adjustments
+* Translations updates:
+    * Spanish - eulalio
+    * Czech - vanous
+    * Swedish - bittin1ddc447d824349b2
+    * Chinese - Pront
+    * German - Ettore Atalan
+
 ### 2.1.8
 
 * Improve ChannelFunctions parsing in pygdtf

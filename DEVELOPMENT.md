@@ -54,3 +54,10 @@ possible, with the git folder being the source of the data for Blender:
   ./config/blender/4.4/extensions/user\_default, there will be a folder
   open\_stage\_blender\_dmx. Remove this folder and make a symlink of your
   local git folder to open\_stage\_blender\_dmx.
+
+Be careful - if you uninstall the addon from Blender, Blender might delete the
+directory.
+
+With this development setup, when adding/editing fixtures, the Universe and DMX
+Address fields are lagging for some 3-5 seconds after being changed. This does
+not happen if the addon directory is not symlinked.
