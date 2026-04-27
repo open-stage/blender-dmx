@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-04-25 17:21+0200\n"
-"PO-Revision-Date: 2026-04-09 20:09+0000\n"
+"PO-Revision-Date: 2026-04-28 21:09+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
+"Language-Team: German <https://hosted.weblate.org/projects/blenderdmx/main/"
+"de/>\n"
 "Language: de_DE\n"
-"Language-Team: German "
-"<https://hosted.weblate.org/projects/blenderdmx/main/de/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.17.1-dev\n"
 "Generated-By: Babel 2.18.0\n"
 
 msgid "File doesn't exist"
@@ -202,9 +203,8 @@ msgstr "Universum Listenelement"
 msgid "The selected element on the universe list"
 msgstr "Das ausgewählte Element in der Universumsliste"
 
-#, fuzzy
 msgid "Show All Universes"
-msgstr "Universen"
+msgstr "Alle Universen anzeigen"
 
 msgid "Show every allocated universe instead of only used ones"
 msgstr ""
@@ -481,9 +481,8 @@ msgstr "Nur ausgewählte Leuchten exportieren"
 msgid "Export only selected fixtures (does not filter non-fixture objects)"
 msgstr "Nur ausgewählte Leuchten als Keyframes verwenden (nicht für Autokeying)"
 
-#, fuzzy
 msgid "Export fixtures only"
-msgstr "Leuchten importieren"
+msgstr "Nur Leuchten exportieren"
 
 msgid "Export fixtures only (skip all non-fixture objects)"
 msgstr ""
@@ -1517,9 +1516,8 @@ msgstr "sACN für {} Universum(e) eingestellt"
 msgid "DMX > Universe Menu"
 msgstr "DMX > Universen"
 
-#, fuzzy
 msgid "Add Universe"
-msgstr "DMX-Universum"
+msgstr "Universum hinzufügen"
 
 msgid "Allocate and select a specific DMX universe"
 msgstr ""
@@ -1797,4 +1795,3 @@ msgstr ""
 
 #~ msgid "Fixture named {} already exists"
 #~ msgstr "Leuchte mit dem Namen {} existiert bereits"
-
