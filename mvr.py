@@ -1137,6 +1137,7 @@ def load_mvr(
             layer_collection = data_collect.new(layer.name)
             create_mvr_props(layer_collection, layer_class, layer.name, layer.uuid)
             layer_collect.children.link(layer_collection)
+        dmx.ensure_mvr_layer(layer.name or "Layer", layer.uuid, layer_collection)
 
         group_name = layer.name or "Layer"
         fixture_group = FixtureGroup(group_name, layer.uuid)
@@ -1152,12 +1153,6 @@ def load_mvr(
             fixture_group,
             layer,
         )
-
-        if (
-            len(layer_collection.all_objects) == 0
-            and layer_collection.name in layer_collect.children
-        ):
-            layer_collect.children.unlink(layer_collection)
 
     transform_objects(layers, mscale)
     perform_direct_parenting(dmx)
@@ -1557,8 +1552,35 @@ def export_mvr(
                 if collection.get("MVR Class") == "Layer":
                     yield collection
 
-        layer_collections = list(iter_layer_collections())
-        if not layer_collections:
+        explicit_layer_items = list(dmx.mvr_layers)
+        explicit_layer_keys = set()
+        layer_collections = []
+
+        for layer_item in explicit_layer_items:
+            layer_name = layer_item.name
+            layer_uuid = layer_item.uuid
+            layer_collection = layer_item.collection
+            if layer_collection is not None and not layer_name:
+                layer_name = layer_collection.get("MVR Name", layer_collection.name)
+            if layer_collection is not None and not layer_uuid:
+                layer_uuid = layer_collection.get("UUID", None)
+            if not layer_name and not layer_uuid:
+                continue
+            get_or_create_layer(layer_name or "Layer", layer_uuid)
+            explicit_layer_keys.add((layer_uuid, layer_name))
+            if layer_collection is not None:
+                layer_collections.append((layer_uuid, layer_name, layer_collection))
+
+        for collection in iter_layer_collections():
+            collection_uuid = collection.get("UUID", None)
+            collection_name = collection.get("MVR Name", collection.name)
+            collection_key = (collection_uuid, collection_name)
+            if collection_key in explicit_layer_keys:
+                continue
+            get_or_create_layer(collection_name, collection_uuid)
+            layer_collections.append((collection_uuid, collection_name, collection))
+
+        if not mvr_layers:
             root_collection = bpy.context.scene.collection
             if not root_collection.get("UUID"):
                 root_collection["UUID"] = str(py_uuid.uuid4())
@@ -1566,12 +1588,17 @@ def export_mvr(
                 root_collection["MVR Class"] = "Layer"
             if not root_collection.get("MVR Name"):
                 root_collection["MVR Name"] = root_collection.name
-            layer_collections = [root_collection]
-        for collection in layer_collections:
             get_or_create_layer(
-                collection.get("MVR Name", collection.name),
-                collection.get("UUID", None),
+                root_collection.get("MVR Name", root_collection.name),
+                root_collection.get("UUID", None),
             )
+            layer_collections = [
+                (
+                    root_collection.get("UUID", None),
+                    root_collection.get("MVR Name", root_collection.name),
+                    root_collection,
+                )
+            ]
 
         for dmx_fixture in dmx.fixtures:
             if selected_fixtures_only and not dmx_fixture.is_selected():
@@ -1835,10 +1862,10 @@ def export_mvr(
             used_geometry_names = {}
             used_symbol_uuids = set()
             if not export_fixtures_only:
-                for collection in layer_collections:
+                for layer_uuid, layer_name, collection in layer_collections:
                     layer = get_or_create_layer(
-                        collection.get("MVR Name", collection.name),
-                        collection.get("UUID", None),
+                        layer_name or collection.get("MVR Name", collection.name),
+                        layer_uuid or collection.get("UUID", None),
                     )
                     add_objects_from_collection(
                         layer,
