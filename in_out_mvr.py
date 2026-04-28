@@ -251,6 +251,12 @@ class DMX_OT_Export_MVR(Operator, ExportHelper):
         default=False,
     )
 
+    export_active_layer_only: BoolProperty(
+        name=_("Export active MVR layer only"),
+        description=_("Export only the currently selected MVR layer"),
+        default=False,
+    )
+
     def draw(self, context):
         dmx = context.scene.dmx
         if not dmx.collection:
@@ -268,6 +274,7 @@ class DMX_OT_Export_MVR(Operator, ExportHelper):
         box.prop(self, "export_focus_points")
         box.prop(self, "selected_fixtures_only")
         box.prop(self, "export_fixtures_only")
+        box.prop(self, "export_active_layer_only")
 
     def execute(self, context):
         dmx = context.scene.dmx
@@ -277,6 +284,7 @@ class DMX_OT_Export_MVR(Operator, ExportHelper):
             export_focus_points=self.export_focus_points,
             selected_fixtures_only=self.selected_fixtures_only,
             export_fixtures_only=self.export_fixtures_only,
+            export_active_layer_only=self.export_active_layer_only,
         )
 
         if result.ok:

@@ -2424,6 +2424,7 @@ class DMX(PropertyGroup):
         export_focus_points=True,
         selected_fixtures_only=False,
         export_fixtures_only=False,
+        export_active_layer_only=False,
     ):
         return mvr_export_mvr(
             self,
@@ -2431,6 +2432,7 @@ class DMX(PropertyGroup):
             export_focus_points=export_focus_points,
             selected_fixtures_only=selected_fixtures_only,
             export_fixtures_only=export_fixtures_only,
+            export_active_layer_only=export_active_layer_only,
         )
 
     def ensureUniverseExists(self, universe):

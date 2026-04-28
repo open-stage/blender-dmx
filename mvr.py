@@ -1237,6 +1237,7 @@ def export_mvr(
     export_focus_points=True,
     selected_fixtures_only=False,
     export_fixtures_only=False,
+    export_active_layer_only=False,
 ):
     start_time = time.time()
     bpy.context.window_manager.dmx.pause_render = (
@@ -1260,6 +1261,23 @@ def export_mvr(
         mvr_layers = pymvr.Layers()
         mvr = pymvr.GeneralSceneDescriptionWriter()
         mvr.serialize_user_data(pymvr.UserData())
+        active_layer_item = None
+        if export_active_layer_only:
+            if 0 <= dmx.mvr_layer_list_i < len(dmx.mvr_layers):
+                active_layer_item = dmx.mvr_layers[dmx.mvr_layer_list_i]
+            if active_layer_item is None:
+                return SimpleNamespace(
+                    ok=False, error="No active MVR layer selected for export"
+                )
+
+        def is_matching_layer(layer_item, uuid_value, name_value):
+            if layer_item is None:
+                return True
+            if layer_item.uuid and uuid_value == layer_item.uuid:
+                return True
+            if not uuid_value and name_value and layer_item.name == name_value:
+                return True
+            return False
 
         def matrix_world_to_mvr(matrix_world):
             matrix = [list(col) for col in matrix_world.col]
@@ -1560,6 +1578,8 @@ def export_mvr(
             layer_name = layer_item.name
             layer_uuid = layer_item.uuid
             layer_collection = layer_item.collection
+            if active_layer_item is not None and layer_item != active_layer_item:
+                continue
             if layer_collection is not None and not layer_name:
                 layer_name = layer_collection.get("MVR Name", layer_collection.name)
             if layer_collection is not None and not layer_uuid:
@@ -1574,13 +1594,17 @@ def export_mvr(
         for collection in iter_layer_collections():
             collection_uuid = collection.get("UUID", None)
             collection_name = collection.get("MVR Name", collection.name)
+            if not is_matching_layer(
+                active_layer_item, collection_uuid, collection_name
+            ):
+                continue
             collection_key = (collection_uuid, collection_name)
             if collection_key in explicit_layer_keys:
                 continue
             get_or_create_layer(collection_name, collection_uuid)
             layer_collections.append((collection_uuid, collection_name, collection))
 
-        if not mvr_layers:
+        if not mvr_layers and not export_active_layer_only:
             root_collection = bpy.context.scene.collection
             if not root_collection.get("UUID"):
                 root_collection["UUID"] = str(py_uuid.uuid4())
@@ -1605,6 +1629,10 @@ def export_mvr(
                 continue
             fixture_layer_name = dmx_fixture.get("layer_name", "DMX")
             fixture_layer_uuid = dmx_fixture.get("layer_uuid", None)
+            if not is_matching_layer(
+                active_layer_item, fixture_layer_uuid, fixture_layer_name
+            ):
+                continue
             if fixture_layer_uuid is not None:
                 use_layer = next(
                     (l for l in mvr_layers if l.uuid == fixture_layer_uuid), None
@@ -1806,21 +1834,51 @@ def export_mvr(
                 return
 
             for obj in collection.objects:
-                if obj.get("MVR Class") or obj.get("geometry_root"):
+                obj_mvr_class = obj.get("MVR Class")
+                if obj_mvr_class not in {None, "SceneObject", "Symbol"} or obj.get(
+                    "geometry_root"
+                ):
                     continue
                 if obj.get("geometry_type"):
                     continue
-                if obj.type == "EMPTY" and obj.get("MVR Class") == "GroupObject":
+                if obj.type not in {"MESH", "EMPTY"}:
                     continue
-                if obj.type != "MESH":
-                    continue
-                set_local_transform(obj)
                 if not obj.get("UUID"):
                     obj["UUID"] = str(py_uuid.uuid4())
-                if not obj.get("MVR Class"):
+                if not obj_mvr_class:
                     obj["MVR Class"] = "SceneObject"
                 if not obj.get("MVR Name"):
                     obj["MVR Name"] = obj.name
+                set_local_transform(obj)
+                if obj.type == "EMPTY" and obj.data is None:
+                    geometries = pymvr.Geometries()
+                    scene_matrix = None
+                    symdef_uuid = obj.get("Reference")
+                    if not symdef_uuid and obj.instance_collection:
+                        symdef_uuid = obj.instance_collection.get("UUID")
+                    if symdef_uuid:
+                        symbol_uuid = unique_symbol_uuid(
+                            obj.get("UUID"), used_symbol_uuids
+                        )
+                        scene_matrix = pymvr.Matrix(
+                            matrix_world_to_mvr(obj.matrix_world)
+                        )
+                        geometries.symbol.append(
+                            pymvr.Symbol(
+                                uuid=symbol_uuid,
+                                symdef=symdef_uuid,
+                                matrix=pymvr.Matrix(0),
+                            )
+                        )
+                        mvr_object = pymvr.SceneObject(
+                            name=obj["MVR Name"],
+                            uuid=obj["UUID"],
+                            matrix=scene_matrix,
+                            geometries=geometries,
+                        )
+                        layer.child_list.scene_objects.append(mvr_object)
+                    continue
+
                 obj_uuid = obj["UUID"]
                 obj_collection = next(
                     (
