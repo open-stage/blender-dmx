@@ -50,6 +50,14 @@ def _selected_fixture_objects(dmx):
     return fixture_objects
 
 
+def _mvr_layer_collections(dmx):
+    collections = []
+    for layer in dmx.mvr_layers:
+        if layer.collection is not None:
+            collections.append(layer.collection)
+    return collections
+
+
 def _fixture_members(layer_item, dmx):
     fixtures = []
     for fixture in dmx.fixtures:
@@ -301,6 +309,7 @@ class DMX_OT_MVR_Layer_Assign_Selected(Operator):
 
         layer_collection = layer.collection
         fixture_objects = _selected_fixture_objects(dmx)
+        mvr_layer_collections = _mvr_layer_collections(dmx)
 
         for fixture in dmx.fixtures:
             if fixture.is_selected():
@@ -313,9 +322,14 @@ class DMX_OT_MVR_Layer_Assign_Selected(Operator):
             obj["layer_name"] = layer.name
             obj["layer_uuid"] = layer.uuid
             if layer_collection is not None and not any(
-                existing == obj for existing in layer_collection.all_objects
+                existing == obj for existing in layer_collection.objects
             ):
                 layer_collection.objects.link(obj)
+            for old_layer_collection in mvr_layer_collections:
+                if old_layer_collection == layer_collection:
+                    continue
+                if any(existing == obj for existing in old_layer_collection.objects):
+                    old_layer_collection.objects.unlink(obj)
 
         return {"FINISHED"}
 
