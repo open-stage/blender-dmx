@@ -1,5 +1,15 @@
 ### Changelog
 
+### 2.2.0
+
+* Initial MVR Class management
+* Initial explicit MVR Layer management
+* Allow to export active layer only
+* Translated using Weblate
+    * Czech - vanous
+    * Swedish - bittin1ddc447d824349b2
+    * German - Ettore Atalan
+
 ### 2.1.9
 
 * Fix hardcoded expectation for a scene named "Scene" when loading - Phillip Dykman
