@@ -60,7 +60,7 @@ from .logging_setup import DMX_Log
 from .material import get_gobo_material, set_light_nodes
 from .mdns import DMX_Zeroconf
 from .mvr import load_mvr, export_mvr as mvr_export_mvr
-from .mvr_objects import DMX_MVR_Class, DMX_MVR_Object
+from .mvr_objects import DMX_MVR_Class, DMX_MVR_Layer, DMX_MVR_Object
 from .mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server, DMX_MVR_X_WS_Client
 from .mvrxchange.mvr_xchange_blender import (
     DMX_MVR_Xchange,
@@ -74,6 +74,7 @@ from .panels import classing as classing
 from .panels import distribute as distribute
 from .panels import fixtures as fixtures
 from .panels import groups as groups
+from .panels import layers as layers
 from .panels import profiles as Profiles
 from .panels import programmer as programmer
 from .panels import recorder as recorder
@@ -125,6 +126,7 @@ class DMX(PropertyGroup):
         DMX_MVR_Object,
         DMX_Group,
         DMX_MVR_Class,
+        DMX_MVR_Layer,
         DMX_Universe,
         DMX_Value,
         setup.DMX_PT_Setup,
@@ -192,7 +194,21 @@ class DMX(PropertyGroup):
         groups.DMX_OT_Group_Remove,
         groups.DMX_PT_Groups,
         classing.DMX_UL_Class,
+        classing.DMX_OT_Class_Create,
+        classing.DMX_OT_Class_Remove,
+        classing.DMX_OT_Class_Rename,
+        classing.DMX_OT_Class_Select,
+        classing.DMX_OT_Class_Assign_Selected,
+        classing.DMX_OT_Class_Unassign_Selected,
         classing.DMX_PT_Classes,
+        layers.DMX_UL_MVR_Layer,
+        layers.DMX_OT_MVR_Layer_Create,
+        layers.DMX_OT_MVR_Layer_Remove,
+        layers.DMX_OT_MVR_Layer_Rename,
+        layers.DMX_OT_MVR_Layer_Select,
+        layers.DMX_OT_MVR_Layer_Assign_Selected,
+        layers.DMX_OT_MVR_Layer_Unassign_Selected,
+        layers.DMX_PT_MVR_Layers,
         subfixtures.DMX_PT_Subfixtures,
         subfixtures.DMX_UL_Subfixture,
         subfixtures.DMX_OT_Subfixture_Clear,
@@ -437,6 +453,18 @@ class DMX(PropertyGroup):
         description=_("The selected element on the class list"),
         default = 0,
         )
+
+    mvr_layers: CollectionProperty(
+        name="DMX MVR Layers",
+        type=DMX_MVR_Layer,
+    )
+
+    mvr_layer_list_i: IntProperty(
+        name=_("MVR Layer List i"),
+        description=_("The selected element on the MVR layer list"),
+        default=0,
+    )
+
     universes: CollectionProperty(
         name = "DMX Groups",
         type = DMX_Universe)
@@ -2293,6 +2321,45 @@ class DMX(PropertyGroup):
                 return class_.uuid
         return None
 
+    def find_mvr_layer_by_uuid(self, uuid):
+        for layer in self.mvr_layers:
+            if layer.uuid == uuid:
+                return layer
+        return None
+
+    def find_mvr_layer_by_name(self, name):
+        for layer in self.mvr_layers:
+            if layer.name == name:
+                return layer
+        return None
+
+    def ensure_mvr_layer(self, name, uuid=None, collection=None):
+        layer = None
+        if uuid:
+            layer = self.find_mvr_layer_by_uuid(uuid)
+        if layer is None and name:
+            layer = self.find_mvr_layer_by_name(name)
+        if layer is None:
+            layer = self.mvr_layers.add()
+            layer.uuid = uuid or str(py_uuid.uuid4())
+        elif uuid and not layer.uuid:
+            layer.uuid = uuid
+
+        if name:
+            layer.name = name
+        if collection is not None:
+            layer.collection = collection
+        if not layer.uuid:
+            layer.uuid = str(py_uuid.uuid4())
+
+        if layer.collection is not None:
+            if not layer.collection.get("UUID"):
+                layer.collection["UUID"] = layer.uuid
+            layer.collection["MVR Class"] = "Layer"
+            layer.collection["MVR Name"] = layer.name or layer.collection.name
+
+        return layer
+
     def addMVR(
         self,
         file_name,
@@ -2357,6 +2424,7 @@ class DMX(PropertyGroup):
         export_focus_points=True,
         selected_fixtures_only=False,
         export_fixtures_only=False,
+        export_active_layer_only=False,
     ):
         return mvr_export_mvr(
             self,
@@ -2364,6 +2432,7 @@ class DMX(PropertyGroup):
             export_focus_points=export_focus_points,
             selected_fixtures_only=selected_fixtures_only,
             export_fixtures_only=export_fixtures_only,
+            export_active_layer_only=export_active_layer_only,
         )
 
     def ensureUniverseExists(self, universe):

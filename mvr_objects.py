@@ -61,3 +61,61 @@ class DMX_MVR_Class(PropertyGroup):
                 fixture.collection.hide_render = not enabled
 
     enabled: BoolProperty(name="Enabled", default=True, update=onEnable)
+
+
+class DMX_MVR_Layer(PropertyGroup):
+    name: StringProperty(name="Name", description="Name", default="")
+
+    collection: PointerProperty(name="Collection of objects", type=Collection)
+
+    uuid: StringProperty(name="UUID", description="Unique ID, used for MVR", default="")
+
+    def onEnable(self, context):
+        enabled = self.enabled
+        scene = bpy.context.scene
+        dmx = scene.dmx
+
+        def set_object_visibility(obj):
+            if obj is None:
+                return
+            obj.hide_set(not enabled)
+            obj.hide_viewport = not enabled
+            obj.hide_render = not enabled
+
+        def set_collection_visibility(collection):
+            if collection is None:
+                return
+            collection.hide_viewport = not enabled
+            collection.hide_render = not enabled
+
+        if self.collection is not None:
+            set_collection_visibility(self.collection)
+            for obj in self.collection.all_objects:
+                set_object_visibility(obj)
+
+        for fixture in dmx.fixtures:
+            fixture_layer_uuid = fixture.get("layer_uuid", None)
+            fixture_layer_name = fixture.get("layer_name", "")
+            if (self.uuid and fixture_layer_uuid == self.uuid) or (
+                not fixture_layer_uuid and fixture_layer_name == self.name
+            ):
+                set_collection_visibility(getattr(fixture, "collection", None))
+
+        fixture_objects = set()
+        for fixture in dmx.fixtures:
+            if getattr(fixture, "collection", None) is None:
+                continue
+            for obj in getattr(fixture.collection, "objects", []):
+                fixture_objects.add(obj)
+
+        for obj in scene.objects:
+            if obj in fixture_objects:
+                continue
+            obj_layer_uuid = obj.get("layer_uuid", None)
+            obj_layer_name = obj.get("layer_name", "")
+            if (self.uuid and obj_layer_uuid == self.uuid) or (
+                not obj_layer_uuid and obj_layer_name == self.name
+            ):
+                set_object_visibility(obj)
+
+    enabled: BoolProperty(name="Enabled", default=True, update=onEnable)
