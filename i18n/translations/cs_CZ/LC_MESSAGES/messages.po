@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-04-25 17:21+0200\n"
-"PO-Revision-Date: 2026-04-18 18:09+0000\n"
+"PO-Revision-Date: 2026-04-30 17:21+0000\n"
 "Last-Translator: vanous <petr+weblate@linuks.cz>\n"
+"Language-Team: Czech <https://hosted.weblate.org/projects/blenderdmx/main/"
+"cs/>\n"
 "Language: cs_CZ\n"
-"Language-Team: Czech "
-"<https://hosted.weblate.org/projects/blenderdmx/main/cs/>\n"
-"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=((n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2);\n"
+"X-Generator: Weblate 5.17.1\n"
 "Generated-By: Babel 2.18.0\n"
 
 msgid "File doesn't exist"
@@ -202,12 +203,11 @@ msgstr "Vybraný universe"
 msgid "The selected element on the universe list"
 msgstr "Vybraný univers v seznamu universů"
 
-#, fuzzy
 msgid "Show All Universes"
-msgstr "DMX Universe"
+msgstr "Zobrazit Všechny Universy"
 
 msgid "Show every allocated universe instead of only used ones"
-msgstr ""
+msgstr "Zobrazit všechny alokované universy místo pouze využitých"
 
 msgid "IPv4 Address for ArtNet signal"
 msgstr "IPv4 Adresa pro ArtNet signál"
@@ -1492,37 +1492,33 @@ msgstr "sACN nastaveno pro {} univers(y)"
 msgid "DMX > Universe Menu"
 msgstr "DMX Univers Menu"
 
-#, fuzzy
 msgid "Add Universe"
-msgstr "DMX Univers"
+msgstr "Přidat Univers"
 
 msgid "Allocate and select a specific DMX universe"
-msgstr ""
+msgstr "Alokovat a vybrat specifikovaný DMX univers"
 
-#, fuzzy
 msgid "Universe ID"
-msgstr "Univers"
+msgstr "Univers ID"
 
 msgid "Universe number to create or select"
-msgstr ""
+msgstr "Číslo Universu pro vytvoření nebo selekci"
 
 msgid "Input"
-msgstr ""
+msgstr "Vstup"
 
-#, fuzzy
 msgid "Input source of the universe"
-msgstr "Počet universů"
+msgstr "Vstupní zdroj unversu"
 
-#, fuzzy
 msgid "Patched"
-msgstr "Aktualizovat"
+msgstr "Patchováno"
 
 msgid "Universes"
 msgstr "DMX Universe"
 
 #, python-brace-format
 msgid "Visible: {} / Allocated: {}"
-msgstr ""
+msgstr "Zobrazené: {} / Alokované: {}"
 
 #~ msgid "Select DMX Universe"
 #~ msgstr "Zvolte DMX Universe"
@@ -1768,4 +1764,3 @@ msgstr ""
 
 #~ msgid "Fixture named {} already exists"
 #~ msgstr "Svítidlo s názvem {} již existuje"
-
