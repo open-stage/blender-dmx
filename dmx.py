@@ -59,7 +59,7 @@ from .i18n import DMX_Lang
 from .logging_setup import DMX_Log
 from .material import get_gobo_material, set_light_nodes
 from .mdns import DMX_Zeroconf
-from .mvr import load_mvr, export_mvr as mvr_export_mvr
+from .mvr import load_mvr, load_mvr_steps, export_mvr as mvr_export_mvr
 from .mvr_objects import DMX_MVR_Class, DMX_MVR_Layer, DMX_MVR_Object
 from .mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server, DMX_MVR_X_WS_Client
 from .mvrxchange.mvr_xchange_blender import (
@@ -2372,14 +2372,6 @@ class DMX(PropertyGroup):
         import_video_screens=True,
         use_high_mesh=False,
     ):
-        bpy.context.window_manager.dmx.pause_render = (
-            True  # this stops the render loop, to prevent slowness and crashes
-        )
-
-        # reset 3D cursor to eliminate offset issues
-        bpy.context.scene.cursor.location = (0.0, 0.0, 0.0)
-        bpy.context.scene.cursor.rotation_euler = (0.0, 0.0, 0.0)
-
         load_mvr(
             self,
             file_name,
@@ -2392,10 +2384,38 @@ class DMX(PropertyGroup):
             import_video_screens=import_video_screens,
             use_high_mesh=use_high_mesh,
         )
-
-        bpy.context.window_manager.dmx.pause_render = False  # re-enable render loop
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
         DMX_GDTF_File.get_manufacturers_list()
+
+    def addMVR_steps(
+        self,
+        file_name,
+        import_focus_points=True,
+        import_fixtures=True,
+        import_trusses=True,
+        import_scene_objects=True,
+        import_projectors=True,
+        import_supports=True,
+        import_video_screens=True,
+        use_high_mesh=False,
+        *,
+        progress_cb=None,
+        should_stop=None,
+    ):
+        return load_mvr_steps(
+            self,
+            file_name,
+            import_focus_points=import_focus_points,
+            import_fixtures=import_fixtures,
+            import_trusses=import_trusses,
+            import_scene_objects=import_scene_objects,
+            import_projectors=import_projectors,
+            import_supports=import_supports,
+            import_video_screens=import_video_screens,
+            use_high_mesh=use_high_mesh,
+            progress_cb=progress_cb,
+            should_stop=should_stop,
+        )
 
     def clean_up_empty_mvr_collections(self, collections):
         for collection in collections.children:
