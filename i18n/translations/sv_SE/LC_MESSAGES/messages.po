@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-04-25 17:21+0200\n"
-"PO-Revision-Date: 2026-04-30 17:21+0000\n"
+"PO-Revision-Date: 2026-05-03 15:09+0000\n"
 "Last-Translator: bittin1ddc447d824349b2 <bittin@reimu.nl>\n"
 "Language-Team: Swedish <https://hosted.weblate.org/projects/blenderdmx/main/"
 "sv/>\n"
@@ -209,7 +209,7 @@ msgid "Show All Universes"
 msgstr "Visa alla universum"
 
 msgid "Show every allocated universe instead of only used ones"
-msgstr ""
+msgstr "Visa alla allokerade universum istället för bara använda"
 
 msgid "IPv4 Address for ArtNet signal"
 msgstr "IPv4-adress för ArtNet-signal"
@@ -1504,37 +1504,33 @@ msgstr "sACN inställd för {} universum"
 msgid "DMX > Universe Menu"
 msgstr "DMX > Meny för universum"
 
-#, fuzzy
 msgid "Add Universe"
-msgstr "DMX-universum"
+msgstr "Lägg till universum"
 
 msgid "Allocate and select a specific DMX universe"
-msgstr ""
+msgstr "Allokera och välj ett specifikt DMX-universum"
 
-#, fuzzy
 msgid "Universe ID"
-msgstr "Universum"
+msgstr "Universum-ID"
 
 msgid "Universe number to create or select"
-msgstr ""
+msgstr "Universumnummer att skapa eller välja"
 
 msgid "Input"
-msgstr ""
+msgstr "Ingångskälla"
 
-#, fuzzy
 msgid "Input source of the universe"
-msgstr "Antal universum"
+msgstr "Universums ingångskälla"
 
-#, fuzzy
 msgid "Patched"
-msgstr "Uppdatera"
+msgstr "Uppdaterad"
 
 msgid "Universes"
 msgstr "Universum"
 
 #, python-brace-format
 msgid "Visible: {} / Allocated: {}"
-msgstr ""
+msgstr "Synlig: {} / Allokerad: {}"
 
 #~ msgid ""
 #~ "Get API key from GDTF Share "
