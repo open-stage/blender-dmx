@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-04-25 17:21+0200\n"
-"PO-Revision-Date: 2026-03-29 08:09+0000\n"
+"PO-Revision-Date: 2026-05-07 08:12+0000\n"
 "Last-Translator: Arif Budiman <arifpedia@gmail.com>\n"
+"Language-Team: Indonesian <https://hosted.weblate.org/projects/blenderdmx/"
+"main/id/>\n"
 "Language: id_ID\n"
-"Language-Team: Indonesian "
-"<https://hosted.weblate.org/projects/blenderdmx/main/id/>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.17.1\n"
 "Generated-By: Babel 2.18.0\n"
 
 msgid "File doesn't exist"
@@ -45,6 +46,7 @@ msgstr "Jejak"
 
 msgid "Display DMX Footprint. Exclamation mark (!) is indicating overlap."
 msgstr ""
+"Tampilkan DMX Footprint. Tanda seru (!) menandakan adanya tumpang tindih."
 
 msgid "Physical Properties"
 msgstr "Properti Fisik"
@@ -86,6 +88,8 @@ msgid ""
 "Shows a label with Device name/DMX address/Fixture + ID above the device "
 "in 2D or 3D."
 msgstr ""
+"Menampilkan label berisi nama perangkat/alamat DMX/Fixture + ID di atas "
+"perangkat dalam tampilan 2D atau 3D."
 
 msgid "Device Label"
 msgstr "Label Perangkat"
@@ -187,6 +191,9 @@ msgid ""
 "Allows to make beams more (value bigger then 1) or less (value smaller "
 "then 1) bright to quickly test various intensity settings."
 msgstr ""
+"Memungkinkan untuk membuat sorotan lebih terang (nilai lebih besar dari 1) "
+"atau lebih redup (nilai lebih kecil dari 1) untuk menguji berbagai "
+"pengaturan intensitas secara cepat."
 
 msgid "Number of universes"
 msgstr "Jumlah universe"
@@ -200,12 +207,13 @@ msgstr "Item Daftar Universe"
 msgid "The selected element on the universe list"
 msgstr "Elemen yang dipilih pada daftar universe"
 
-#, fuzzy
 msgid "Show All Universes"
-msgstr "Universe"
+msgstr "Tampilkan Semua Universe"
 
 msgid "Show every allocated universe instead of only used ones"
 msgstr ""
+"Menampilkan setiap universe yang dialokasikan, bukan hanya yang sedang "
+"digunakan"
 
 msgid "IPv4 Address for ArtNet signal"
 msgstr "Alamat IPv4 untuk sinyal ArtNet"
@@ -378,14 +386,14 @@ msgstr "Rotasi Tilt"
 msgid "Custom Cutoff Distance"
 msgstr "Jarak Cutoff Kustom"
 
-#, fuzzy
 msgid ""
 "Distance at which the influence of the light will be set to 0. Value "
 "bigger then 23 will break gobo rendering in Eevee Next. Select desired "
 "fixtures and press the button to apply the value."
 msgstr ""
-"Jarak di mana pengaruh cahaya akan diatur ke 0. Nilai lebih besar dari 23"
-" akan merusak rendering gobo di Eevee Next."
+"Jarak di mana pengaruh cahaya akan diatur ke 0. Nilai lebih besar dari 23 "
+"akan merusak rendering gobo di Eevee Next. Pilih fixture yang diinginkan "
+"lalu tekan tombol untuk menerapkan nilai tersebut."
 
 msgid "Use Fixtures Physical Properties"
 msgstr "Gunakan Properti Fisik Fixture"
@@ -1497,35 +1505,30 @@ msgstr "sACN diatur untuk {} universe"
 msgid "DMX > Universe Menu"
 msgstr "DMX > Menu Universe"
 
-#, fuzzy
 msgid "Add Universe"
-msgstr "Universe DMX"
+msgstr "Tambah Universe"
 
 msgid "Allocate and select a specific DMX universe"
-msgstr ""
+msgstr "Mengalokasikan dan memilih universe DMX tertentu"
 
-#, fuzzy
 msgid "Universe ID"
-msgstr "Universe"
+msgstr "ID Universe"
 
 msgid "Universe number to create or select"
-msgstr ""
+msgstr "Nomor universe yang akan dibuat atau dipilih"
 
 msgid "Input"
-msgstr ""
+msgstr "Input"
 
-#, fuzzy
 msgid "Input source of the universe"
-msgstr "Jumlah universe"
+msgstr "Sumber input dari universe"
 
-#, fuzzy
 msgid "Patched"
-msgstr "Perbarui"
+msgstr "Terpasang"
 
 msgid "Universes"
 msgstr "Universe"
 
 #, python-brace-format
 msgid "Visible: {} / Allocated: {}"
-msgstr ""
-
+msgstr "Terlihat: {} / Dialokasikan: {}"
