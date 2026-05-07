@@ -42,6 +42,30 @@ direct_fixture_children = []
 MVR_UNIT_SCALE = 0.001
 
 
+def _noop_progress():
+    return None
+
+
+def _should_stop_import(import_globals):
+    callback = getattr(import_globals, "should_stop", None)
+    return bool(callback and callback())
+
+
+def _reset_import_state(viewlayer, mvr_scene=None, imported_layers=None):
+    auxData.clear()
+    objectData.clear()
+    direct_fixture_children.clear()
+    if imported_layers is not None:
+        imported_layers.clear()
+    if viewlayer is not None:
+        viewlayer.update()
+    if mvr_scene is not None and hasattr(mvr_scene, "_package"):
+        package = getattr(mvr_scene, "_package", None)
+        if package is not None:
+            package.close()
+    bpy.context.window_manager.dmx.pause_render = False
+
+
 def create_mvr_props(mvr_obj, cls, name="", uid=False, ref=None, classing=None):
     mvr_obj["MVR Class"] = cls
     if len(name):
@@ -195,7 +219,47 @@ def check_existing(node, collection, mscale):
     return False
 
 
-def get_child_list(
+def _count_child_list_units(child_list):
+    if not child_list:
+        return 0
+
+    count = 0
+    node_categories = (
+        "trusses",
+        "projectors",
+        "supports",
+        "video_screens",
+        "scene_objects",
+        "fixtures",
+        "group_objects",
+    )
+    for category in node_categories:
+        nodes = getattr(child_list, category, None) or []
+        for node in nodes:
+            count += 1
+            if hasattr(node, "child_list") and node.child_list:
+                count += _count_child_list_units(node.child_list)
+    return count
+
+
+def _stage_progress(stage_start, stage_end, completed, total):
+    if total <= 0:
+        return stage_end
+    return stage_start + ((stage_end - stage_start) * (completed / total))
+
+
+def _yield_import_step(kind, node=None, *, name=None):
+    node_name = name
+    if node_name is None and node is not None:
+        node_name = getattr(node, "name", None)
+    return {
+        "kind": kind,
+        "name": node_name or kind,
+        "node_type": node.__class__.__name__ if node is not None else kind,
+    }
+
+
+def get_child_list_steps(
     dmx,
     mscale,
     mvr_scene,
@@ -234,9 +298,10 @@ def get_child_list(
                     layer_collection,
                     parent_blender_object,
                 )
+            yield _yield_import_step("truss", truss_obj)
 
             if hasattr(truss_obj, "child_list") and truss_obj.child_list:
-                get_child_list(
+                yield from get_child_list_steps(
                     dmx,
                     mscale,
                     mvr_scene,
@@ -250,7 +315,6 @@ def get_child_list(
                     parent_blender_object,
                 )
 
-    # TODO: reuse
     if hasattr(child_list, "projectors") and child_list.projectors:
         for projector_idx, projector_obj in enumerate(child_list.projectors):
             ensure_unique_uuid(projector_obj, import_globals)
@@ -267,9 +331,10 @@ def get_child_list(
                     layer_collection,
                     parent_blender_object,
                 )
+            yield _yield_import_step("projector", projector_obj)
 
             if hasattr(projector_obj, "child_list") and projector_obj.child_list:
-                get_child_list(
+                yield from get_child_list_steps(
                     dmx,
                     mscale,
                     mvr_scene,
@@ -282,99 +347,103 @@ def get_child_list(
                     projector_obj,
                     parent_blender_object,
                 )
+
     if hasattr(child_list, "supports") and child_list.supports:
-        for projector_idx, projector_obj in enumerate(child_list.supports):
-            ensure_unique_uuid(projector_obj, import_globals)
-            existing = check_existing(projector_obj, layer_collection, mscale)
+        for support_idx, support_obj in enumerate(child_list.supports):
+            ensure_unique_uuid(support_obj, import_globals)
+            existing = check_existing(support_obj, layer_collection, mscale)
 
             if not existing and import_globals.import_supports:
                 process_mvr_object(
                     context,
                     mvr_scene,
-                    projector_obj,
-                    projector_idx,
+                    support_obj,
+                    support_idx,
                     mscale,
                     import_globals,
                     layer_collection,
                     parent_blender_object,
                 )
+            yield _yield_import_step("support", support_obj)
 
-            if hasattr(projector_obj, "child_list") and projector_obj.child_list:
-                get_child_list(
+            if hasattr(support_obj, "child_list") and support_obj.child_list:
+                yield from get_child_list_steps(
                     dmx,
                     mscale,
                     mvr_scene,
-                    projector_obj.child_list,
+                    support_obj.child_list,
                     layer_index,
                     folder_path,
                     import_globals,
                     layer_collection,
                     fixture_group,
-                    projector_obj,
+                    support_obj,
                     parent_blender_object,
                 )
 
     if hasattr(child_list, "video_screens") and child_list.video_screens:
-        for projector_idx, projector_obj in enumerate(child_list.video_screens):
-            ensure_unique_uuid(projector_obj, import_globals)
-            existing = check_existing(projector_obj, layer_collection, mscale)
+        for video_idx, video_obj in enumerate(child_list.video_screens):
+            ensure_unique_uuid(video_obj, import_globals)
+            existing = check_existing(video_obj, layer_collection, mscale)
 
             if not existing and import_globals.import_video_screens:
                 process_mvr_object(
                     context,
                     mvr_scene,
-                    projector_obj,
-                    projector_idx,
+                    video_obj,
+                    video_idx,
                     mscale,
                     import_globals,
                     layer_collection,
                     parent_blender_object,
                 )
+            yield _yield_import_step("video screen", video_obj)
 
-            if hasattr(projector_obj, "child_list") and projector_obj.child_list:
-                get_child_list(
+            if hasattr(video_obj, "child_list") and video_obj.child_list:
+                yield from get_child_list_steps(
                     dmx,
                     mscale,
                     mvr_scene,
-                    projector_obj.child_list,
+                    video_obj.child_list,
                     layer_index,
                     folder_path,
                     import_globals,
                     layer_collection,
                     fixture_group,
-                    projector_obj,
+                    video_obj,
                     parent_blender_object,
                 )
 
     if hasattr(child_list, "scene_objects") and child_list.scene_objects:
-        for projector_idx, projector_obj in enumerate(child_list.scene_objects):
-            ensure_unique_uuid(projector_obj, import_globals)
-            existing = check_existing(projector_obj, layer_collection, mscale)
+        for object_idx, scene_obj in enumerate(child_list.scene_objects):
+            ensure_unique_uuid(scene_obj, import_globals)
+            existing = check_existing(scene_obj, layer_collection, mscale)
 
             if not existing and import_globals.import_scene_objects:
                 process_mvr_object(
                     context,
                     mvr_scene,
-                    projector_obj,
-                    projector_idx,
+                    scene_obj,
+                    object_idx,
                     mscale,
                     import_globals,
                     layer_collection,
                     parent_blender_object,
                 )
+            yield _yield_import_step("scene object", scene_obj)
 
-            if hasattr(projector_obj, "child_list") and projector_obj.child_list:
-                get_child_list(
+            if hasattr(scene_obj, "child_list") and scene_obj.child_list:
+                yield from get_child_list_steps(
                     dmx,
                     mscale,
                     mvr_scene,
-                    projector_obj.child_list,
+                    scene_obj.child_list,
                     layer_index,
                     folder_path,
                     import_globals,
                     layer_collection,
                     fixture_group,
-                    projector_obj,
+                    scene_obj,
                     parent_blender_object,
                 )
 
@@ -401,9 +470,10 @@ def get_child_list(
                     parent_object,
                     layer_collection,
                 )
+            yield _yield_import_step("fixture", fixture)
 
             if hasattr(fixture, "child_list") and fixture.child_list:
-                get_child_list(
+                yield from get_child_list_steps(
                     dmx,
                     mscale,
                     mvr_scene,
@@ -426,7 +496,7 @@ def get_child_list(
                 group_name = (
                     "%s %d" % (group_name, group_idx) if group_idx >= 1 else group_name
                 )
-                fixture_group = FixtureGroup(group_name, group.uuid)
+                child_fixture_group = FixtureGroup(group_name, group.uuid)
                 group_collection = bpy.data.collections.new(group_name)
                 create_mvr_props(
                     group_collection,
@@ -455,7 +525,8 @@ def get_child_list(
                     except ValueError:
                         group_empty.matrix_parent_inverse = Matrix.Identity(4)
                 group_collection.objects.link(group_empty)
-                get_child_list(
+                yield _yield_import_step("group", group, name=group_name)
+                yield from get_child_list_steps(
                     dmx,
                     mscale,
                     mvr_scene,
@@ -464,13 +535,44 @@ def get_child_list(
                     folder_path,
                     import_globals,
                     group_collection,
-                    fixture_group,
+                    child_fixture_group,
                     group,
                     group_empty,
                 )
+            else:
+                yield _yield_import_step("group", group)
 
     for obj in viewlayer.active_layer_collection.collection.all_objects:
         obj.select_set(True)
+
+
+def get_child_list(
+    dmx,
+    mscale,
+    mvr_scene,
+    child_list,
+    layer_index,
+    folder_path,
+    import_globals,
+    layer_collection,
+    fixture_group=None,
+    parent_object=None,
+    parent_blender_object=None,
+):
+    for _ in get_child_list_steps(
+        dmx,
+        mscale,
+        mvr_scene,
+        child_list,
+        layer_index,
+        folder_path,
+        import_globals,
+        layer_collection,
+        fixture_group,
+        parent_object,
+        parent_blender_object,
+    ):
+        pass
 
 
 def process_mvr_object(
@@ -1036,6 +1138,36 @@ def load_mvr(
     import_video_screens,
     use_high_mesh,
 ):
+    for _ in load_mvr_steps(
+        dmx,
+        file_name,
+        import_focus_points=import_focus_points,
+        import_fixtures=import_fixtures,
+        import_trusses=import_trusses,
+        import_scene_objects=import_scene_objects,
+        import_projectors=import_projectors,
+        import_supports=import_supports,
+        import_video_screens=import_video_screens,
+        use_high_mesh=use_high_mesh,
+    ):
+        pass
+
+
+def load_mvr_steps(
+    dmx,
+    file_name,
+    import_focus_points,
+    import_fixtures,
+    import_trusses,
+    import_scene_objects,
+    import_projectors,
+    import_supports,
+    import_video_screens,
+    use_high_mesh,
+    *,
+    progress_cb=None,
+    should_stop=None,
+):
     import_globals = SimpleNamespace(
         extracted={},
         seen_uuids=set(),
@@ -1047,13 +1179,9 @@ def load_mvr(
         import_supports=import_supports,
         import_video_screens=import_video_screens,
         use_high_mesh=use_high_mesh,
+        should_stop=should_stop,
     )
-
-    bpy.ops.object.select_all(action="DESELECT")
-    for obj in bpy.data.objects:
-        obj.select_set(False)
-    # clear possible existing selections in Blender
-
+    progress_cb = progress_cb or _noop_progress
     imported_layers = []
     context = bpy.context
     start_time = time.time()
@@ -1063,172 +1191,258 @@ def load_mvr(
     scene_collect = context.scene.collection
     view_collect = viewlayer.layer_collection
     layer_collect = view_collect.collection
-    mvr_scene = pymvr.GeneralSceneDescription(file_name)
-    aux_dir = scene_collect.children.get("AUXData")
-    dmx = bpy.context.scene.dmx
-    current_path = dmx.get_addon_path()
-    folder_path = os.path.join(current_path, "assets", "profiles")
-    media_folder_path = os.path.join(current_path, "assets", "models", "mvr")
-    extract_mvr_textures(mvr_scene, media_folder_path)
-    if hasattr(mvr_scene, "scene") and mvr_scene.scene:
-        auxdata = mvr_scene.scene.aux_data
-        layers = mvr_scene.scene.layers
-    else:
-        auxdata = None
-        layers = []
+    mvr_scene = None
 
-    if auxdata is not None:
-        classes = auxdata.classes
-        symdefs = auxdata.symdefs
-    else:
-        classes = []
-        symdefs = []
+    bpy.context.window_manager.dmx.pause_render = True
 
-    for ob in viewlayer.objects.selected:
-        ob.select_set(False)
+    try:
+        bpy.context.scene.cursor.location = (0.0, 0.0, 0.0)
+        bpy.context.scene.cursor.rotation_euler = (0.0, 0.0, 0.0)
+        bpy.ops.object.select_all(action="DESELECT")
+        for obj in bpy.data.objects:
+            obj.select_set(False)
+        progress_cb(0.02, "Preparing import")
+        yield {"progress": 0.02, "message": "Preparing import"}
 
-    for _class in classes:
-        if _class.name not in dmx.classing:
-            new_class = dmx.classing.add()
-            new_class.name = _class.name
-            new_class.uuid = _class.uuid
+        if _should_stop_import(import_globals):
+            return
 
-    if "Focus Points" not in dmx.classing:
-        new_class = dmx.classing.add()
-        new_class.name = "Focus Points"
-        new_class.uuid = str(py_uuid.uuid4())
+        progress_cb(0.08, "Parsing MVR package")
+        mvr_scene = pymvr.GeneralSceneDescription(file_name)
+        yield {"progress": 0.08, "message": "Parsing MVR package"}
 
-    # Pre-create symdef collections by UUID so nested symbols resolve regardless of order.
-    for symdef in symdefs:
-        if symdef.uuid not in data_collect:
-            data_collect.new(symdef.uuid)
+        aux_dir = scene_collect.children.get("AUXData")
+        dmx = bpy.context.scene.dmx
+        current_path = dmx.get_addon_path()
+        folder_path = os.path.join(current_path, "assets", "profiles")
+        media_folder_path = os.path.join(current_path, "assets", "models", "mvr")
+        extract_mvr_textures(mvr_scene, media_folder_path)
 
-    for aux_idx, symdef in enumerate(symdefs):
-        if aux_dir and symdef.name in aux_dir.children:
-            aux_collection = aux_dir.children.get(symdef.name)
-        elif symdef.name in data_collect:
-            aux_collection = data_collect.get(symdef.name)
+        if hasattr(mvr_scene, "scene") and mvr_scene.scene:
+            auxdata = mvr_scene.scene.aux_data
+            layers = mvr_scene.scene.layers
         else:
-            aux_collection = data_collect.new(symdef.name)
+            auxdata = None
+            layers = []
 
-        auxData.setdefault(symdef.uuid, aux_collection)
-        process_mvr_object(
-            context, mvr_scene, symdef, aux_idx, mscale, import_globals, aux_collection
+        if auxdata is not None:
+            classes = auxdata.classes
+            symdefs = auxdata.symdefs
+        else:
+            classes = []
+            symdefs = []
+
+        for ob in viewlayer.objects.selected:
+            ob.select_set(False)
+
+        for _class in classes:
+            if _class.name not in dmx.classing:
+                new_class = dmx.classing.add()
+                new_class.name = _class.name
+                new_class.uuid = _class.uuid
+
+        if "Focus Points" not in dmx.classing:
+            new_class = dmx.classing.add()
+            new_class.name = "Focus Points"
+            new_class.uuid = str(py_uuid.uuid4())
+
+        progress_cb(0.18, "Preparing symbol definitions")
+        yield {"progress": 0.18, "message": "Preparing symbol definitions"}
+
+        for symdef in symdefs:
+            if symdef.uuid not in data_collect:
+                data_collect.new(symdef.uuid)
+
+        total_symdef_units = len(symdefs) + sum(
+            _count_child_list_units(getattr(symdef, "child_list", None))
+            for symdef in symdefs
         )
+        completed_symdef_units = 0
+        for aux_idx, symdef in enumerate(symdefs):
+            if _should_stop_import(import_globals):
+                return
 
-        if hasattr(symdef, "child_list") and symdef.child_list:
-            get_child_list(
-                dmx,
-                mscale,
+            if aux_dir and symdef.name in aux_dir.children:
+                aux_collection = aux_dir.children.get(symdef.name)
+            elif symdef.name in data_collect:
+                aux_collection = data_collect.get(symdef.name)
+            else:
+                aux_collection = data_collect.new(symdef.name)
+
+            auxData.setdefault(symdef.uuid, aux_collection)
+            process_mvr_object(
+                context,
                 mvr_scene,
-                symdef.child_list,
+                symdef,
                 aux_idx,
-                folder_path,
+                mscale,
                 import_globals,
                 aux_collection,
             )
+            completed_symdef_units += 1
+            progress = _stage_progress(
+                0.18, 0.38, completed_symdef_units, total_symdef_units
+            )
+            message = f"Importing symdef {aux_idx + 1}/{len(symdefs) or 1}: {symdef.name or symdef.uuid}"
+            progress_cb(progress, message)
+            yield {"progress": progress, "message": message}
 
-    for layer_idx, layer in enumerate(layers):
-        layer_class = layer.__class__.__name__
-        layer_collection = next(
-            (col for col in data_collect if col.get("UUID") == layer.uuid), False
+            if hasattr(symdef, "child_list") and symdef.child_list:
+                for step in get_child_list_steps(
+                    dmx,
+                    mscale,
+                    mvr_scene,
+                    symdef.child_list,
+                    aux_idx,
+                    folder_path,
+                    import_globals,
+                    aux_collection,
+                ):
+                    completed_symdef_units += 1
+                    progress = _stage_progress(
+                        0.18, 0.38, completed_symdef_units, total_symdef_units
+                    )
+                    message = f"Importing {step['node_type']}: {step['name']}"
+                    progress_cb(progress, message)
+                    yield {"progress": progress, "message": message}
+
+        total_layer_units = max(
+            1,
+            sum(
+                _count_child_list_units(getattr(layer, "child_list", None))
+                for layer in layers
+            ),
         )
-        if not layer_collection:
-            layer_collection = data_collect.new(layer.name)
-            create_mvr_props(layer_collection, layer_class, layer.name, layer.uuid)
-            layer_collect.children.link(layer_collection)
-        dmx.ensure_mvr_layer(layer.name or "Layer", layer.uuid, layer_collection)
+        completed_layer_units = 0
+        for layer_idx, layer in enumerate(layers):
+            if _should_stop_import(import_globals):
+                return
 
-        group_name = layer.name or "Layer"
-        fixture_group = FixtureGroup(group_name, layer.uuid)
-        get_child_list(
-            dmx,
-            mscale,
-            mvr_scene,
-            layer.child_list,
-            layer_idx,
-            folder_path,
-            import_globals,
-            layer_collection,
-            fixture_group,
-            layer,
+            layer_class = layer.__class__.__name__
+            layer_collection = next(
+                (col for col in data_collect if col.get("UUID") == layer.uuid), False
+            )
+            if not layer_collection:
+                layer_collection = data_collect.new(layer.name)
+                create_mvr_props(layer_collection, layer_class, layer.name, layer.uuid)
+                layer_collect.children.link(layer_collection)
+            dmx.ensure_mvr_layer(layer.name or "Layer", layer.uuid, layer_collection)
+
+            group_name = layer.name or "Layer"
+            fixture_group = FixtureGroup(group_name, layer.uuid)
+            progress = _stage_progress(
+                0.40, 0.80, completed_layer_units, total_layer_units
+            )
+            message = (
+                f"Preparing layer {layer_idx + 1}/{len(layers) or 1}: {group_name}"
+            )
+            progress_cb(progress, message)
+            yield {"progress": progress, "message": message}
+
+            for step in get_child_list_steps(
+                dmx,
+                mscale,
+                mvr_scene,
+                layer.child_list,
+                layer_idx,
+                folder_path,
+                import_globals,
+                layer_collection,
+                fixture_group,
+                layer,
+            ):
+                completed_layer_units += 1
+                progress = _stage_progress(
+                    0.40, 0.80, completed_layer_units, total_layer_units
+                )
+                message = f"Importing {step['node_type']}: {step['name']}"
+                progress_cb(progress, message)
+                yield {"progress": progress, "message": message}
+
+        if _should_stop_import(import_globals):
+            return
+
+        transform_objects(layers, mscale)
+        progress_cb(0.84, "Applying transforms")
+        yield {"progress": 0.84, "message": "Applying transforms"}
+
+        if _should_stop_import(import_globals):
+            return
+
+        perform_direct_parenting(dmx)
+        progress_cb(0.88, "Applying parenting")
+        yield {"progress": 0.88, "message": "Applying parenting"}
+
+        if auxData.items():
+            aux_type = auxdata.__class__.__name__
+            if "AUXData" in data_collect:
+                aux_directory = data_collect.get("AUXData")
+            else:
+                aux_directory = data_collect.new("AUXData")
+                create_mvr_props(aux_directory, aux_type)
+                layer_collect.children.link(aux_directory)
+            for uid, auxcollect in auxData.items():
+                try:
+                    if auxcollect and auxcollect.name not in aux_directory.children:
+                        aux_directory.children.link(auxcollect)
+                except Exception as e:
+                    traceback.print_exception(e)
+
+                sym_collect = data_collect.get(uid)
+                if sym_collect:
+                    sym_name = sym_collect.get("MVR Name", "")
+                    if sym_collect.name in layer_collect.children:
+                        layer_collect.children.unlink(sym_collect)
+                    elif sym_collect.name not in auxcollect.children:
+                        auxcollect.children.link(sym_collect)
+                        if sym_name in (None, "None"):
+                            sym_name = "None Layer"
+                    if sym_name:
+                        sym_collect.name = sym_name
+
+        for laycollect in layer_collect.children:
+            if laycollect.get("MVR Class") is not None:
+                imported_layers.append(laycollect)
+                for cidx, collect in enumerate(laycollect.children):
+                    for col in collect.children:
+                        col_name = col.get("MVR Name")
+                        check_name = col.name[-3:].isdigit() and col.name[-4] == "."
+                        if (
+                            check_name
+                            and isinstance(col_name, str)
+                            and col_name in data_collect
+                        ):
+                            clean_name = col.name.split(".")[0]
+                            col.name = "%s %d" % (clean_name, cidx)
+
+        for idx, collect in enumerate(imported_layers):
+            for obid, obj in enumerate(collect.all_objects):
+                obj_name = obj.name.split(".")[0]
+                if obj.is_instancer:
+                    transform = obj.get("Transform")
+                    if transform:
+                        obj.matrix_world = trans_matrix(transform)
+                    insta_name = "%s %d" % (obj_name, idx) if idx >= 1 else obj_name
+                    obj.name = "%s_%d" % (insta_name.split("_")[0], obid)
+                elif obj.name[-3:].isdigit() and obj.name[-4] == ".":
+                    obj.name = "%s %d" % (obj_name, obid)
+
+        for view in view_collect.children:
+            if view.name == "AUXData":
+                for childs in view.children:
+                    for collect in childs.children:
+                        collect.hide_viewport = True
+
+        progress_cb(0.96, "Finalizing import")
+        yield {"progress": 0.96, "message": "Finalizing import"}
+    finally:
+        _reset_import_state(
+            viewlayer, mvr_scene=mvr_scene, imported_layers=imported_layers
         )
 
-    transform_objects(layers, mscale)
-    perform_direct_parenting(dmx)
-
-    if auxData.items():
-        aux_type = auxdata.__class__.__name__
-        if "AUXData" in data_collect:
-            aux_directory = data_collect.get("AUXData")
-        else:
-            aux_directory = data_collect.new("AUXData")
-            create_mvr_props(aux_directory, aux_type)
-            layer_collect.children.link(aux_directory)
-        for uid, auxcollect in auxData.items():
-            try:
-                if auxcollect and auxcollect.name not in aux_directory.children:
-                    aux_directory.children.link(auxcollect)
-            except Exception as e:
-                traceback.print_exception(e)
-
-            sym_collect = data_collect.get(uid)
-            if sym_collect:
-                sym_name = sym_collect.get("MVR Name", "")
-                if sym_collect.name in layer_collect.children:
-                    layer_collect.children.unlink(sym_collect)
-                elif sym_collect.name not in auxcollect.children:
-                    auxcollect.children.link(sym_collect)
-                    if sym_name in (None, "None"):
-                        sym_name = "None Layer"
-                if sym_name:
-                    # TODO: check if this is correct. Was added to prevent breakage of imports from Production Assist
-                    sym_collect.name = sym_name
-
-    for laycollect in layer_collect.children:
-        if laycollect.get("MVR Class") is not None:
-            imported_layers.append(laycollect)
-            for cidx, collect in enumerate(laycollect.children):
-                for col in collect.children:
-                    col_name = col.get("MVR Name")
-                    check_name = col.name[-3:].isdigit() and col.name[-4] == "."
-                    if (
-                        check_name
-                        and isinstance(col_name, str)
-                        and col_name in data_collect
-                    ):
-                        clean_name = col.name.split(".")[0]
-                        col.name = "%s %d" % (clean_name, cidx)
-
-    for idx, collect in enumerate(imported_layers):
-        for obid, obj in enumerate(collect.all_objects):
-            obj_name = obj.name.split(".")[0]
-            if obj.is_instancer:
-                transform = obj.get("Transform")
-                if transform:
-                    obj.matrix_world = trans_matrix(transform)
-                insta_name = "%s %d" % (obj_name, idx) if idx >= 1 else obj_name
-                obj.name = "%s_%d" % (insta_name.split("_")[0], obid)
-            elif obj.name[-3:].isdigit() and obj.name[-4] == ".":
-                obj.name = "%s %d" % (obj_name, obid)
-
-    for view in view_collect.children:
-        if view.name == "AUXData":
-            for childs in view.children:
-                for collect in childs.children:
-                    collect.hide_viewport = True
-
-    auxData.clear()
-    objectData.clear()
-    direct_fixture_children.clear()
-    viewlayer.update()
-    imported_layers.clear()
-    if mvr_scene is not None:
-        if hasattr(mvr_scene, "_package"):
-            if mvr_scene._package is not None:
-                mvr_scene._package.close()
-
-    print("INFO", f"MVR scene loaded in {time.time() - start_time}.4f sec.")
+    progress_cb(1.0, "Import complete")
+    yield {"progress": 1.0, "message": "Import complete"}
+    print("INFO", f"MVR scene loaded in {time.time() - start_time:.4f} sec.")
 
 
 def export_mvr(

@@ -17,6 +17,7 @@
 
 import os
 import shutil
+import time
 import traceback
 from threading import Timer
 
@@ -38,6 +39,7 @@ from .i18n import DMX_Lang
 from .panels import profiles as Profiles
 from .gdtf_file import DMX_GDTF_File
 from .logging_setup import DMX_Log
+from .util import force_view3d_redraw, show_status_overlay
 
 _ = DMX_Lang._
 
@@ -196,6 +198,7 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
         box.prop(self, "increment_fixture_id")
 
     def execute(self, context):
+        started_at = time.monotonic()
         dmx = bpy.context.scene.dmx
         folder_path = dmx.get_addon_path()
         folder_path = os.path.join(folder_path, "assets", "profiles")
@@ -204,74 +207,111 @@ class DMX_OT_Import_GDTF(bpy.types.Operator, ImportHelper):
         address = self.address
         universe = self.universe
         fixture_id = self.fixture_id
-
-        for file in self.files:
-            if not file.name:
-                continue
-            file_path = os.path.join(self.directory, file.name)
-            DMX_Log.log.info(f"Importing GDTF Profile: {file_path}")
-            try:
-                shutil.copy(file_path, folder_path)
-                DMX_GDTF_File.add_to_data(file.name)
-            except shutil.SameFileError:
-                DMX_Log.log.debug(
-                    "Importing file which already existed in the profiles folder"
-                )
-
-            if self.patch:
+        file_count = len([file for file in self.files if file.name]) or 1
+        show_status_overlay(
+            f"Importing {file_count} GDTF file(s)",
+            progress=None,
+            status="running",
+            title="GDTF Import In Progress!",
+            hint="Please wait...",
+        )
+        force_view3d_redraw()
+        try:
+            for file in self.files:
+                if not file.name:
+                    continue
+                file_path = os.path.join(self.directory, file.name)
+                DMX_Log.log.info(f"Importing GDTF Profile: {file_path}")
                 try:
-                    profile = DMX_GDTF_File.load_gdtf_profile(file.name)
-                    dmx_mode = profile.dmx_modes[0]
-                    self.dmx_breaks.clear()
-                    for idx, dmx_break in enumerate(dmx_mode.dmx_breaks):
-                        new_break = self.dmx_breaks.add()
-                        new_break.dmx_break = dmx_break.dmx_break
-                        new_break.address = address
-                        new_break.universe = universe
-                        new_break.channels_count = dmx_break.channels_count
+                    shutil.copy(file_path, folder_path)
+                    DMX_GDTF_File.add_to_data(file.name)
+                except shutil.SameFileError:
+                    DMX_Log.log.debug(
+                        "Importing file which already existed in the profiles folder"
+                    )
 
-                    if not self.dmx_breaks:
-                        new_break = self.dmx_breaks.add()
-                        new_break.dmx_break = 1
-                        new_break.universe = universe
-                        new_break.address = address
-                        new_break.channels_count = 0
+                if self.patch:
+                    try:
+                        profile = DMX_GDTF_File.load_gdtf_profile(file.name)
+                        dmx_mode = profile.dmx_modes[0]
+                        self.dmx_breaks.clear()
+                        for idx, dmx_break in enumerate(dmx_mode.dmx_breaks):
+                            new_break = self.dmx_breaks.add()
+                            new_break.dmx_break = dmx_break.dmx_break
+                            new_break.address = address
+                            new_break.universe = universe
+                            new_break.channels_count = dmx_break.channels_count
 
-                    for count in range(1, 1 + self.units):
-                        dmx.addFixture(
-                            file.name,
-                            dmx_mode.name,
-                            self.dmx_breaks,
-                            self.gel_color,
-                            self.display_beams,
-                            self.add_target,
-                            fixture_id=fixture_id,
-                            user_fixture_name=None,
-                            use_high_mesh=self.use_high_mesh,
-                        )
-                        fixture = dmx.fixtures[-1]
-                        DMX_Log.log.debug(f"Added fixture {fixture}")
-                        if not fixture:
-                            continue
+                        if not self.dmx_breaks:
+                            new_break = self.dmx_breaks.add()
+                            new_break.dmx_break = 1
+                            new_break.universe = universe
+                            new_break.address = address
+                            new_break.channels_count = 0
 
-                        if self.increment_fixture_id:
-                            if fixture_id.isnumeric():
-                                fixture_id = str(int(fixture_id) + 1)
-                        if self.increment_address:
-                            # This will only increment correctly the address of the first break
-                            # Other breaks will have to be adjusted in the Fixtures list after import
-                            if (address + self.dmx_breaks[0].channels_count) > 512:
-                                universe += 1
-                                address = 1
-                                dmx.ensureUniverseExists(universe)
-                            else:
-                                address += self.dmx_breaks[0].channels_count
+                        for count in range(1, 1 + self.units):
+                            dmx.addFixture(
+                                file.name,
+                                dmx_mode.name,
+                                self.dmx_breaks,
+                                self.gel_color,
+                                self.display_beams,
+                                self.add_target,
+                                fixture_id=fixture_id,
+                                user_fixture_name=None,
+                                use_high_mesh=self.use_high_mesh,
+                            )
+                            fixture = dmx.fixtures[-1]
+                            DMX_Log.log.debug(f"Added fixture {fixture}")
+                            if not fixture:
+                                continue
 
-                except Exception as e:
-                    traceback.print_exception(e)
-        Profiles.DMX_Fixtures_Local_Profile.loadLocal()
-        DMX_GDTF_File.get_manufacturers_list()
-        return {"FINISHED"}
+                            if self.increment_fixture_id:
+                                if fixture_id.isnumeric():
+                                    fixture_id = str(int(fixture_id) + 1)
+                            if self.increment_address:
+                                # This will only increment correctly the address of the first break
+                                # Other breaks will have to be adjusted in the Fixtures list after import
+                                if (address + self.dmx_breaks[0].channels_count) > 512:
+                                    universe += 1
+                                    address = 1
+                                    dmx.ensureUniverseExists(universe)
+                                else:
+                                    address += self.dmx_breaks[0].channels_count
+
+                    except Exception as e:
+                        traceback.print_exception(e)
+            Profiles.DMX_Fixtures_Local_Profile.loadLocal()
+            DMX_GDTF_File.get_manufacturers_list()
+        except Exception as exc:
+            show_status_overlay(
+                str(exc),
+                progress=None,
+                status="error",
+                title="GDTF Import Failed",
+                hint="Click overlay to dismiss",
+                auto_hide_after=10.0,
+            )
+            bpy.ops.dmx.dismiss_status_overlay_modal("INVOKE_DEFAULT")
+            DMX_Log.log.exception("GDTF import failed")
+            self.report({"ERROR"}, f"GDTF import failed: {exc}")
+            return {"CANCELLED"}
+        else:
+            elapsed = max(0.0, time.monotonic() - started_at)
+            if self.patch:
+                message = f"Patched {self.units} unit(s) in {elapsed:.1f} sec"
+            else:
+                message = f"Imported {file_count} file(s) in {elapsed:.1f} sec"
+            show_status_overlay(
+                message,
+                progress=1.0,
+                status="complete",
+                title="GDTF Import Complete",
+                hint="Click overlay to dismiss",
+                auto_hide_after=10.0,
+            )
+            bpy.ops.dmx.dismiss_status_overlay_modal("INVOKE_DEFAULT")
+            return {"FINISHED"}
 
     def invoke(self, context, event):
         return self.invoke_popup(context)
