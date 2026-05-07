@@ -1,5 +1,13 @@
 ### Changelog
 
+### 2.2.1
+
+* Rework MVR import to progressive, allowing canceling during import
+* Translated using Weblate:
+    * Indonesian, Arif Budiman
+    * Chinese, Simplified Han script, 大学没毕业
+    * Swedish, bittin1ddc447d824349b2
+
 ### 2.2.0
 
 * Initial MVR Class management

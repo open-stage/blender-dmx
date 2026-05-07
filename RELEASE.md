@@ -4,6 +4,7 @@
 
 * Add changes to CHANGELOG.md
 * update blender_manifest.toml
+* update pyproject.toml
 * Check that ./assets/* doesn't include extra GDTF files or folders
 * Make sure that all used libraries are available via pypi.org
 
