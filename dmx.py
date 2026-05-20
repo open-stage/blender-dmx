@@ -298,6 +298,7 @@ class DMX(PropertyGroup):
         )
         DMX.custom_icons.load("GMA3", os.path.join(path, "ma.png"), "IMAGE")
         DMX.custom_icons.load("VW", os.path.join(path, "vw.png"), "IMAGE")
+        DMX.custom_icons.load("DR", os.path.join(path, "dr.png"), "IMAGE")
         DMX.custom_icons.load(
             "GDTF_FILE", os.path.join(path, "gdtf_file_icon_small.png"), "IMAGE"
         )
