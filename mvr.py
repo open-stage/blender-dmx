@@ -42,7 +42,7 @@ direct_fixture_children = []
 MVR_UNIT_SCALE = 0.001
 
 
-def _noop_progress():
+def _noop_progress(*args, **kwargs):
     return None
 
 
