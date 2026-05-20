@@ -1,5 +1,10 @@
 ### Changelog
 
+### 2.2.2
+
+* Add progressive MVR loading to MVR-xchange
+* Fix import in MVR-xchange
+
 ### 2.2.1
 
 * Rework MVR import to progressive, allowing canceling during import
