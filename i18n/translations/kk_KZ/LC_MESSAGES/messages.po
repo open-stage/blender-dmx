@@ -8,54 +8,56 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-04-25 17:21+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language: kk\n"
-"Language-Team: none\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"PO-Revision-Date: 2026-06-07 14:01+0000\n"
+"Last-Translator: Azamat Аituganov <ozomatik@gmail.com>\n"
+"Language-Team: Kazakh <https://hosted.weblate.org/projects/blenderdmx/main/"
+"kk/>\n"
+"Language: kk_KZ\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 2026.6\n"
 "Generated-By: Babel 2.18.0\n"
 
 msgid "File doesn't exist"
-msgstr ""
+msgstr "Ондай файл жоқ"
 
 msgid "Fixture ID"
 msgstr ""
 
 msgid "Unit Number"
-msgstr ""
+msgstr "Құрылғы нөмірі"
 
 msgid "Custom ID"
-msgstr ""
+msgstr "Арнаулы ID"
 
 msgid "DMX Address"
-msgstr ""
+msgstr "DMX адресі"
 
 msgid "Position"
-msgstr ""
+msgstr "Орналастыру"
 
 msgid "Rotation"
-msgstr ""
+msgstr "Айналдыру"
 
 msgid "Footprint"
-msgstr ""
+msgstr "Планшет"
 
 msgid "Display DMX Footprint. Exclamation mark (!) is indicating overlap."
 msgstr ""
 
 msgid "Physical Properties"
-msgstr ""
+msgstr "Физикалық қасиеттері"
 
 msgid "Use Channel Functions of this fixture"
-msgstr ""
+msgstr "Осы аспаптың арна функцияларын қолдану"
 
 msgid "DMX Collection"
-msgstr ""
+msgstr "DMX жинақтамасы"
 
 msgid "Selected PSN Server"
-msgstr ""
+msgstr "Таңдалған PSN сервер"
 
 msgid "The selected element on the PSN server list"
 msgstr ""
@@ -67,19 +69,19 @@ msgid "The selected element on the class list"
 msgstr ""
 
 msgid "Universe"
-msgstr ""
+msgstr "Ғалам"
 
 msgid "Editable"
-msgstr ""
+msgstr "Өңделмелі"
 
 msgid "Display Pigtails"
-msgstr ""
+msgstr "Пигтейлдерді көрсеткізу"
 
 msgid "Display 2D View"
-msgstr ""
+msgstr "2D кескінді көрсеткізу"
 
 msgid "Display Device Label"
-msgstr ""
+msgstr "Құрылғы таңбасын көрсеткізу"
 
 msgid ""
 "Shows a label with Device name/DMX address/Fixture + ID above the device "
@@ -87,58 +89,58 @@ msgid ""
 msgstr ""
 
 msgid "Device Label"
-msgstr ""
+msgstr "Құрылғы таңбасы"
 
 msgid "None"
-msgstr ""
+msgstr "Жоқ"
 
 msgid "Name"
-msgstr ""
+msgstr "Атауы"
 
 msgid "DMX"
-msgstr ""
+msgstr "DMX"
 
 msgid "Fixture Name + ID"
-msgstr ""
+msgstr "Аспап атауы + ID"
 
 msgid "3D Fixture Name + ID"
-msgstr ""
+msgstr "3D аспап атауы + ID"
 
 msgid "Allow Selecting Geometries"
-msgstr ""
+msgstr "Геометрия таңдауға рұқсат беру"
 
 msgid "Manually editing or deleting geometries of GDTF devices may cause issues."
 msgstr ""
 
 msgid "Logging Level"
-msgstr ""
+msgstr "Тіркеу деңгейі"
 
 msgid "Critical"
-msgstr ""
+msgstr "Критикалық"
 
 msgid "Error"
-msgstr ""
+msgstr "Қате"
 
 msgid "Warning"
-msgstr ""
+msgstr "Ескерту"
 
 msgid "Info"
-msgstr ""
+msgstr "Ақпарат"
 
 msgid "Debug"
-msgstr ""
+msgstr "Ретке келтіру"
 
 msgid "Simple beam"
-msgstr ""
+msgstr "Қарапайым сәуле"
 
 msgid "Display 'fake' beam cone"
-msgstr ""
+msgstr "\"Өтірік\" сәуле конусын бейнелеу"
 
 msgid "Selected fixtures"
-msgstr ""
+msgstr "Таңдалған аспаптар"
 
 msgid "All fixtures"
-msgstr ""
+msgstr "Барлық аспап"
 
 msgid "Beam Lens Diameter in Cycles"
 msgstr ""
@@ -149,28 +151,28 @@ msgid ""
 msgstr ""
 
 msgid "Reduced"
-msgstr ""
+msgstr "Кішірейтілді"
 
 msgid "Full width"
-msgstr ""
+msgstr "Толық ені"
 
 msgid "Custom per each beam"
-msgstr ""
+msgstr "Әр сәулеге арнаулы"
 
 msgid "Disable Beam Outlines"
-msgstr ""
+msgstr "Сәуле жиегін сөндіріп тастау"
 
 msgid "Enable Volume Scatter"
 msgstr ""
 
 msgid "Noise Scale"
-msgstr ""
+msgstr "Шуыл шкаласы"
 
 msgid "Volume Noise Scale"
-msgstr ""
+msgstr "Көлем шуылы шкаласы"
 
 msgid "Density"
-msgstr ""
+msgstr "Тығыздық"
 
 msgid "Volume Scatter Density"
 msgstr ""
@@ -184,10 +186,10 @@ msgid ""
 msgstr ""
 
 msgid "Number of universes"
-msgstr ""
+msgstr "Ғалам саны"
 
 msgid "The number of universes set on the panel"
-msgstr ""
+msgstr "Панельде орнатылған ғалам саны"
 
 msgid "Universe List Item"
 msgstr ""
@@ -196,19 +198,19 @@ msgid "The selected element on the universe list"
 msgstr ""
 
 msgid "Show All Universes"
-msgstr ""
+msgstr "Барлық ғаламды көрсету"
 
 msgid "Show every allocated universe instead of only used ones"
 msgstr ""
 
 msgid "IPv4 Address for ArtNet signal"
-msgstr ""
+msgstr "ArtNet сигналының IPv4 адресі"
 
 msgid "The network card/interface to listen for ArtNet DMX data"
 msgstr ""
 
 msgid "Enable Art-Net Input"
-msgstr ""
+msgstr "Art-Net кірісін қосу"
 
 msgid ""
 "Enables the input of DMX data throught Art-Net on the selected network "
@@ -216,7 +218,7 @@ msgid ""
 msgstr ""
 
 msgid "Enable sACN Input"
-msgstr ""
+msgstr "sACN кірісін қосу"
 
 msgid ""
 "Enables the input of DMX data throught sACN on all detected network "
@@ -479,13 +481,13 @@ msgid "Comment"
 msgstr ""
 
 msgid "File Name"
-msgstr ""
+msgstr "Файл атауы"
 
 msgid "Station UUID"
 msgstr ""
 
 msgid "File Size"
-msgstr ""
+msgstr "Файл көлемі"
 
 msgid "Time of info"
 msgstr ""
@@ -598,10 +600,10 @@ msgid "DMX > Fixture > Add > Manufacturers > Profiles"
 msgstr ""
 
 msgid "Profile"
-msgstr ""
+msgstr "Профиль"
 
 msgid "Fixture GDTF Profile"
-msgstr ""
+msgstr "GDTF аспабы профилі"
 
 msgid "Mode"
 msgstr ""
@@ -622,7 +624,7 @@ msgid "Modify Fixture ID"
 msgstr ""
 
 msgid "GDTF Profile"
-msgstr ""
+msgstr "GDTF профилі"
 
 msgid "DMX: Add Fixture"
 msgstr ""
@@ -1101,13 +1103,13 @@ msgid ""
 msgstr ""
 
 msgid "File Path"
-msgstr ""
+msgstr "Файл жолы"
 
 msgid "Files"
-msgstr ""
+msgstr "Файлдар"
 
 msgid "Incorrect file name!"
-msgstr ""
+msgstr "Файл атауы дұрыс емес!"
 
 #, python-brace-format
 msgid "Data imported from: {}"
@@ -1193,10 +1195,10 @@ msgstr ""
 
 #, python-brace-format
 msgid "File downloaded correctly. Status code was: {}"
-msgstr ""
+msgstr "Файл дұрыс жүктелді. Мәртебе коды: {}"
 
 msgid "GDTF file downloaded"
-msgstr ""
+msgstr "GDTF файл жүктелді"
 
 #, python-brace-format
 msgid "Error downloading GDTF file. Error code was: {}"
@@ -1223,7 +1225,7 @@ msgid ""
 msgstr ""
 
 msgid "Filename"
-msgstr ""
+msgstr "Файл атауы"
 
 msgid "Mode name"
 msgstr ""
@@ -1253,13 +1255,13 @@ msgid "Uploaded by"
 msgstr ""
 
 msgid "File uploaded by"
-msgstr ""
+msgstr "Файлды жүктеген"
 
 msgid "Created by"
 msgstr ""
 
 msgid "File created by"
-msgstr ""
+msgstr "Файлды жасаған"
 
 msgid "Rating"
 msgstr ""
@@ -1298,7 +1300,7 @@ msgid "Refresh files listing"
 msgstr ""
 
 msgid "Update list of local files"
-msgstr ""
+msgstr "Жергілікті файлдар тізімін жаңарту"
 
 msgid "GDTF Share"
 msgstr ""
@@ -1316,7 +1318,7 @@ msgid "Local Fixture details"
 msgstr ""
 
 msgid "Profiles"
-msgstr ""
+msgstr "Профильдер"
 
 msgid "Art-Net"
 msgstr ""
@@ -1799,4 +1801,3 @@ msgstr ""
 
 #~ msgid "Fixture named {} already exists"
 #~ msgstr ""
-
