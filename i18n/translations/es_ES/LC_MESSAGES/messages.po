@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-04-25 17:21+0200\n"
-"PO-Revision-Date: 2026-05-24 22:11+0000\n"
+"PO-Revision-Date: 2026-06-09 15:01+0000\n"
 "Last-Translator: Libre <6n0n1m0s@proton.me>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/blenderdmx/main/"
 "es/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.6.dev0\n"
+"X-Generator: Weblate 2026.6\n"
 "Generated-By: Babel 2.18.0\n"
 
 msgid "File doesn't exist"
@@ -153,8 +153,8 @@ msgid ""
 "Beam diameter is reduced to minimum when projecting gobos to prevent blur"
 " on gobo edge"
 msgstr ""
-"El diámetro del haz se reduce al mínimo al proyectar gobos para evitar "
-"que el borde del gobo se vea borroso."
+"El diámetro del haz se reduce al mínimo al proyectar gobos para evitar que "
+"el borde del gobo se vea borroso"
 
 msgid "Reduced"
 msgstr "Reducido"
@@ -720,7 +720,6 @@ msgstr "Unidad nº"
 msgid "F ID #"
 msgstr "F ID #"
 
-#, fuzzy
 msgid "Cst ID"
 msgstr "Cst ID"
 
@@ -932,19 +931,15 @@ msgstr "Modo de uso"
 msgid "Recording"
 msgstr "Grabación"
 
-#, fuzzy
 msgid "Color Wheel1"
-msgstr "Color Wheel1"
+msgstr "Color Rueda1"
 
-#, fuzzy
 msgid "Color Wheel2"
-msgstr "Color Wheel2"
+msgstr "Color Rueda2"
 
-#, fuzzy
 msgid "Color Wheel3"
-msgstr "Color Wheel3"
+msgstr "Color Rueda3"
 
-#, fuzzy
 msgid "Color Macro1"
 msgstr "Color Macro1"
 
@@ -971,15 +966,12 @@ msgstr "Ajuste de Gobo2"
 msgid "Strobe"
 msgstr "Estroboscópico"
 
-#, fuzzy
 msgid "PanMode"
 msgstr "PanMode"
 
-#, fuzzy
 msgid "TiltMode"
 msgstr "TiltMode"
 
-#, fuzzy
 msgid "PanTiltMode"
 msgstr "PanTiltMode"
 
@@ -1533,18 +1525,15 @@ msgstr "Establecer sACN para {} universo(s)"
 msgid "DMX > Universe Menu"
 msgstr "DMX > Menú Universo"
 
-#, fuzzy
 msgid "Add Universe"
 msgstr "Añadir Universo"
 
-#, fuzzy
 msgid "Allocate and select a specific DMX universe"
-msgstr "Asigne y seleccione un universo DMX específico."
+msgstr "Asigne y seleccione un universo DMX específico"
 
 msgid "Universe ID"
 msgstr "ID de Universo"
 
-#, fuzzy
 msgid "Universe number to create or select"
 msgstr "Número de universo para crear o seleccionar"
 
