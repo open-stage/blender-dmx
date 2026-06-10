@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-04-25 17:21+0200\n"
-"PO-Revision-Date: 2026-06-10 17:01+0000\n"
+"PO-Revision-Date: 2026-06-11 18:01+0000\n"
 "Last-Translator: António Oliveira <antonio.oliveira5487@gmail.com>\n"
 "Language-Team: Portuguese (Portugal) <https://hosted.weblate.org/projects/"
 "blenderdmx/main/pt_PT/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 2026.6\n"
+"X-Generator: Weblate 2026.7.dev0\n"
 "Generated-By: Babel 2.18.0\n"
 
 msgid "File doesn't exist"
@@ -420,7 +420,7 @@ msgid "Display beam projection and cone"
 msgstr "Exibir projeção e cone do feixe"
 
 msgid "Add Target"
-msgstr "Adicionar destino"
+msgstr "Adicionar Alvo"
 
 msgid "Add target for beam to follow"
 msgstr "Adicionar alvo para o feixe seguir"
@@ -502,13 +502,13 @@ msgid "IPv4 Address for PSN signal"
 msgstr "Endereço IPv4 para sinal PSN"
 
 msgid "The network card/interface to listen for PSN data"
-msgstr ""
+msgstr "A placa de rede/interface para escutar dados PSN"
 
 msgid "PSN Target port"
-msgstr ""
+msgstr "Porta alvo PSN"
 
 msgid "File UUID"
-msgstr ""
+msgstr "UUID do Ficheiro"
 
 msgid "Comment"
 msgstr "Comentário"
@@ -517,22 +517,22 @@ msgid "File Name"
 msgstr "Nome do Ficheiro"
 
 msgid "Station UUID"
-msgstr ""
+msgstr "UUID da Estação"
 
 msgid "File Size"
 msgstr "Tamanho do Ficheiro"
 
 msgid "Time of info"
-msgstr ""
+msgstr "Data da informação"
 
 msgid "Time of saving"
-msgstr ""
+msgstr "Data da gravação"
 
 msgid "Subscribed to"
-msgstr ""
+msgstr "Subscrito a"
 
 msgid "We requested latest file without UUID"
-msgstr ""
+msgstr "Requisitámos o ficheiro mais recente sem UUID"
 
 msgid "IP Address"
 msgstr "Endereço IP"
@@ -544,19 +544,19 @@ msgid "Connected"
 msgstr "Conectado"
 
 msgid "Last Seen Time"
-msgstr ""
+msgstr "Última Data de Visualização"
 
 msgid "Station Name"
-msgstr ""
+msgstr "Nome da Estação"
 
 msgid "MVR-xchange group"
-msgstr ""
+msgstr "Grupo MVR-xchange"
 
 msgid "Provider"
 msgstr "Provedor"
 
 msgid "Commits"
-msgstr ""
+msgstr "Commits"
 
 msgid "Icon ID"
 msgstr "ID do Ícone"
@@ -565,7 +565,7 @@ msgid "New Group:"
 msgstr "Grupo Novo:"
 
 msgid "MVR-xchange Clients"
-msgstr ""
+msgstr "Clientes MVR-xchange"
 
 msgid "Existing Groups"
 msgstr "Grupos Existentes"
@@ -654,67 +654,67 @@ msgid "Modify DMX address"
 msgstr "Modificar endereço DMX"
 
 msgid "Modify Fixture ID"
-msgstr ""
+msgstr "Modificar ID do Acessório"
 
 msgid "GDTF Profile"
 msgstr "Perfil GDTF"
 
 msgid "DMX: Add Fixture"
-msgstr ""
+msgstr "DMX: Adicionar Acessório"
 
 msgid "Add fixtures to the show"
-msgstr ""
+msgstr "Adicionar acessórios ao programa"
 
 msgid "No GDTF Profile selected."
-msgstr ""
+msgstr "Nenhum perfil GDTF selecionado."
 
 msgid "No DMX Mode selected."
-msgstr ""
+msgstr "Nenhum Modo DMX selecionado."
 
 msgid "DMX: Edit Fixture"
-msgstr ""
+msgstr "DMX: Editar Acessório"
 
 msgid "Edit selected fixtures"
-msgstr ""
+msgstr "Editar acessórios selecionados"
 
 msgid "DMX > Fixture > Remove"
-msgstr ""
+msgstr "DMX > Acessório > Remover"
 
 msgid "Remove selected fixtures from Scene"
-msgstr ""
+msgstr "Remove acessórios selecionados da Cena"
 
 msgid "Remove IES Files"
-msgstr ""
+msgstr "Remover Ficheiros IES"
 
 msgid "Import IES File"
-msgstr ""
+msgstr "Importar Ficheiros IES"
 
 msgid "Select Previous Fixture"
-msgstr ""
+msgstr "Selecionar Acessório Anterior"
 
 msgid "Select Next Fixture"
-msgstr ""
+msgstr "Selecionar Acessório Seguinte"
 
 msgid "Select Previous Target"
-msgstr ""
+msgstr "Selecionar Alvo Anterios"
 
 msgid "Select Next Target"
-msgstr ""
+msgstr "Selecionar Alvo Seguinte"
 
 msgid "DMX > Fixture > Item"
-msgstr ""
+msgstr "DMX > Acessório > Item"
 
 msgid "Select Fixture"
-msgstr ""
+msgstr "Selecionar Acessório"
 
 msgid "Remove fixture"
-msgstr ""
+msgstr "Remover acessório"
 
 msgid "Fixtures"
 msgstr "Dispositivos elétricos"
 
 msgid "F ID"
-msgstr ""
+msgstr "F ID"
 
 msgid "Unit #"
 msgstr "Unidade #"
@@ -735,7 +735,7 @@ msgid "Uni.Addr"
 msgstr "Uni.Addr"
 
 msgid "Foot"
-msgstr "Foot"
+msgstr "Pé"
 
 msgid "DMX > Group Menu"
 msgstr "DMX > Menu de Grupo"
@@ -971,7 +971,7 @@ msgid "TiltMode"
 msgstr "ModoDeInclinação"
 
 msgid "PanTiltMode"
-msgstr "ModoDePanorâmicaEInclinação"
+msgstr "ModoDePanorâmicaeInclinação"
 
 msgid "Clear All"
 msgstr "Limpar tudo"
@@ -1014,66 +1014,72 @@ msgid "Objects with #bdmx drivers"
 msgstr "Objetos com drivers #bdmx"
 
 msgid "Enable Keying - Disable Playback"
-msgstr ""
+msgstr "Ativar Digitação - Desativar Reprodução"
 
 msgid "Enable disabled bdmx drivers"
-msgstr ""
+msgstr "Ativar drivers bdmx desativados"
 
 msgid "Disable Keying - Enable Playback"
-msgstr ""
+msgstr "Desativar Digitação - Ativar Reprodução"
 
 msgid "Disable bdmx drivers"
-msgstr ""
+msgstr "Desativar drivers bdmx"
 
 msgid "DMX > Setup > New Show"
-msgstr ""
+msgstr "DMX > Configuração > Novo Programa"
 
 msgid "Clear any existing DMX data and create a new show."
-msgstr ""
+msgstr "Limpar quaisquer dados DMX e criar um programa novo."
 
 msgid "Do at your own risk. Manual edits or deletes can cause issues"
 msgstr ""
+"Faça por sua conta e risco. Edições ou eliminações manuais podem causar "
+"problemas"
 
 msgid "Really remove all fixtures and DMX from blend file?"
-msgstr ""
+msgstr "Quer mesmo remoer todos os acessórios e DMX do ficheiro blend?"
 
 msgid "Try to remove DMX from the Blender showfile"
-msgstr ""
+msgstr "Tente remover DMX do ficheiro de programa Blender"
 
 msgid "Beam diameter small"
-msgstr ""
+msgstr "Diâmetro do feixe pequeno"
 
 msgid "Set Eevee Cutoff distance on selected fixtures"
-msgstr ""
+msgstr "Definir distância de Corte Eevee em acessórios selecionados"
 
 msgid ""
 "Distance at which the influence of the light will be set to 0. Value "
 "bigger then 23 will break gobo rendering in Eevee Next."
 msgstr ""
+"Distância à qual a influência da luz é definida a 0. Valores maiores que 23 "
+"quebrarão renderização gobo em Eevee Next."
 
 msgid "Beam diameter normal"
-msgstr ""
+msgstr "Diâmetro de feixe normal"
 
 msgid "DMX > Setup > Create/Update Volume Box"
-msgstr ""
+msgstr "DMX > Configuração > Criar/Atualizar Caixa de Volume"
 
 msgid "Create/Update a Box on the scene bounds with a Volume Scatter shader"
 msgstr ""
+"Criar/Atualizar a Caixa nos limites da cena com um shader de Dispersão de "
+"Volume"
 
 msgid "Beam Volume"
-msgstr ""
+msgstr "Volume do Feixe"
 
 msgid "Update Volume Box"
-msgstr ""
+msgstr "Atualizar Volume da Caixa"
 
 msgid "Create Volume Box"
-msgstr ""
+msgstr "Criar Volume da Caixa"
 
 msgid "Set on selected fixtures"
-msgstr ""
+msgstr "Definir em acessórios selecionados"
 
 msgid "Viewport"
-msgstr ""
+msgstr "Área de visualização"
 
 msgid "Background Color"
 msgstr "Cor de Fundo"
@@ -1082,60 +1088,62 @@ msgid "Extras"
 msgstr "Extras"
 
 msgid "Clear Project data"
-msgstr ""
+msgstr "Limpar dados do Projeto"
 
 msgid "Copy (import) old data from addon folder"
-msgstr ""
+msgstr "Copiar (importar) dados antigos de uma pasta de addons"
 
 msgid "Remove DMX from blend file"
-msgstr ""
+msgstr "Remover DMX do ficheiro blend"
 
 msgid "Import"
 msgstr "Importar"
 
 msgid "Import GDTF Profile"
-msgstr ""
+msgstr "Importar Perfil GDTF"
 
 msgid "Import MVR Scene"
-msgstr ""
+msgstr "Importar Cena MVR"
 
 msgid "Import Project data"
-msgstr ""
+msgstr "Importar dados do Projeto"
 
 msgid "Export"
 msgstr "Exportar"
 
 msgid "Export Project data"
-msgstr ""
+msgstr "Exportar dados do Projeto"
 
 msgid "Export MVR"
-msgstr ""
+msgstr "Exportar MVR"
 
 msgid "Show logging directory"
-msgstr ""
+msgstr "Mostrar diretório de registos"
 
 msgid "Logging"
-msgstr ""
+msgstr "Registo"
 
 msgid "Log filter"
-msgstr ""
+msgstr "Filtro de registo"
 
 msgid "Setup"
-msgstr ""
+msgstr "Configuração"
 
 msgid "Error! Blender 3.4 or higher required."
-msgstr ""
+msgstr "Erro! Blender 3.4 ou superior necessário."
 
 msgid "Create New Show"
-msgstr ""
+msgstr "Criar Novo Programa"
 
 msgid "Import Custom Data"
-msgstr ""
+msgstr "Importar Dados Personalizados"
 
 msgid ""
 "Unzip previously exported custom data from a zip file. This will "
 "overwrite current data!"
 msgstr ""
+"Descomprime dados previamente exportados de um ficheiro zip. Isto irá "
+"sobrescrever os dados atuais!"
 
 msgid "File Path"
 msgstr "Diretório do ficheiro"
@@ -1144,75 +1152,82 @@ msgid "Files"
 msgstr "Ficheiros"
 
 msgid "Incorrect file name!"
-msgstr ""
+msgstr "Nome do ficheiro incorreto!"
 
 #, python-brace-format
 msgid "Data imported from: {}"
-msgstr ""
+msgstr "Dados importados de: {}"
 
 msgid "Export Custom Data"
-msgstr ""
+msgstr "Exportar Dados Personalizados"
 
 msgid "Zip and Export custom data from BlenderDMX addon directory."
 msgstr ""
+"Dar Zip e Exportar dados personalizados do diretório de addon BlenderDMX."
 
 #, python-brace-format
 msgid "Data exported to: {}"
-msgstr ""
+msgstr "Dados exportados para: {}"
 
 msgid "Really delete all custom data from the addon directory?"
 msgstr ""
+"Deseja realmente eliminar todos os dados personalizados do diretório de "
+"addons?"
 
 msgid "Clear custom data from BlenderDMX addon directory."
-msgstr ""
+msgstr "Limpar dados personalizados do diretório de addon BlenderDMX."
 
 msgid "Data cleared"
-msgstr ""
+msgstr "Dados limpos"
 
 msgid "Copy data from addon to user directory"
-msgstr ""
+msgstr "Dados copiados do diretório de addons para o do utilizador"
 
 msgid ""
 "Copy custom data from BlenderDMX addon directory to BlenderDMX extension "
 "user directory."
 msgstr ""
+"Copiar dados personalizados do addon BlenderDMX para o diretório de extensão "
+"BlenderDMX do utilizador."
 
 msgid "Data copied"
-msgstr ""
+msgstr "Dados copiados"
 
 msgid "Reload BlenderDMX addon"
-msgstr ""
+msgstr "Recarregar addon BlenderDMX"
 
 msgid "Reload the addon, useful during development"
-msgstr ""
+msgstr "Recarregar o addon, útil durante desenvolvimento"
 
 msgid "Addon reloaded"
-msgstr ""
+msgstr "Addon recarregado"
 
 msgid "Select visible"
-msgstr ""
+msgstr "Selecionar visíveis"
 
 msgid "Select visible subfixtures"
-msgstr ""
+msgstr "Selecionar sub-acessórios visíveis"
 
 msgid "Clear selection"
-msgstr ""
+msgstr "Limpar seleção"
 
 msgid "Clear subfixture selection"
-msgstr ""
+msgstr "Limpar seleção de sub-acessórios"
 
 msgid "Get GDTF Share account and fill it into BlenderDMX addon preferences."
 msgstr ""
+"Obter conta de Partilha GDTF e preenche-la para as preferências de addon "
+"BlenderDMX."
 
 msgid "GDTF Share API credentials missing"
-msgstr ""
+msgstr "Credenciais da API GDTF Share em falta"
 
 #, python-brace-format
 msgid "Downloading {}"
 msgstr "A descarregar {}"
 
 msgid "GDTF Share Download"
-msgstr ""
+msgstr "Descarregar GDTF Share"
 
 #, python-brace-format
 msgid "Share index updated. Status code was: {}"
@@ -1249,7 +1264,7 @@ msgid "Channel count"
 msgstr "Quantidade de Canais"
 
 msgid "Number of channels"
-msgstr ""
+msgstr "Número de canais"
 
 msgid "Short Name"
 msgstr "Nome curto"
@@ -1258,6 +1273,8 @@ msgid ""
 "The short name of the DMX profile, all caps, used as suggestion for "
 "fixture names."
 msgstr ""
+"O nome curto do perfil DMX, em maiúsculas, usado como sugestão para nomes de "
+"acessórios."
 
 msgid "Filename"
 msgstr "Nome do ficheiro"
@@ -1338,16 +1355,16 @@ msgid "Update list of local files"
 msgstr "Atualizar a lista dos ficheiros locais"
 
 msgid "GDTF Share"
-msgstr ""
+msgstr "GDTF Share"
 
 msgid "You must Allow Online access for this to work:"
-msgstr ""
+msgstr "Tem que permitir Acesso Online para isto funcionar:"
 
 msgid "Fixture details"
 msgstr "Pormenores do dispositivo elétrico"
 
 msgid "Local Fixture files"
-msgstr ""
+msgstr "Ficheiros de Acessórios locais"
 
 msgid "Local Fixture details"
 msgstr "Pormenores do dispositivo local"
@@ -1356,178 +1373,177 @@ msgid "Profiles"
 msgstr "Perfis"
 
 msgid "Art-Net"
-msgstr ""
+msgstr "Art-Net"
 
 msgid "IPv4"
 msgstr "IPv4"
 
 #, python-brace-format
 msgid "Art-Net set for {} universe(s)"
-msgstr ""
+msgstr "Art-Net definida para {} universo(s)"
 
 msgid "Status"
 msgstr "Estado"
 
 msgid "Live DMX"
-msgstr ""
+msgstr "DMX ao Vivo"
 
 msgid "Refresh"
 msgstr "Atualizar"
 
 msgid "Refresh connection"
-msgstr ""
+msgstr "Atualizar conexão"
 
 msgid "Request latest version"
-msgstr ""
+msgstr "Solicitar a versão mais recente"
 
 msgid "Sends the Request message"
-msgstr ""
+msgstr "Envia a mensagem de Pedido"
 
 msgid "Import commit into active scene"
-msgstr ""
+msgstr "Importar commit para a cena ativa"
 
 msgid "Import commit"
-msgstr ""
+msgstr "Importar commit"
 
 msgid "Export MVR to MVR-xchange"
-msgstr ""
+msgstr "Exportar MVR para MVR-xchange"
 
 msgid "Download"
 msgstr "Descarregar"
 
 msgid "Fetch commit"
-msgstr ""
+msgstr "Buscar commit"
 
 msgid "Websocket Download"
-msgstr ""
+msgstr "Descarregar Websocket"
 
 msgid "Download commit"
-msgstr ""
+msgstr "Descarregar commit"
 
 msgid "Delete"
 msgstr "Apagar"
 
 msgid "Remove Shared Commit"
-msgstr ""
+msgstr "Remover Commit Partilhado"
 
 #, python-brace-format
 msgid "Enable Group: {group}"
-msgstr ""
+msgstr "Ativar grupo: {group}"
 
 msgid "New group:"
 msgstr "Grupo novo:"
 
 msgid "Share current version"
-msgstr ""
+msgstr "Partilhar a versão atual"
 
 msgid "Pick and Share MVR"
-msgstr ""
+msgstr "Escolher e Partilhar MVR"
 
 #, python-brace-format
 msgid "Shared by me ({defined_station_name}):"
-msgstr ""
+msgstr "Partilhado por mim ({defined_station_name}):"
 
 msgid "Stations in the group:"
-msgstr ""
+msgstr "Estações no grupo:"
 
 msgid "Shared by the station:"
-msgstr ""
+msgstr "Partilhado pela estação:"
 
 msgid "Shared by the server:"
-msgstr ""
+msgstr "Partilhado pelo servidor:"
 
 msgid "OSC"
-msgstr ""
+msgstr "OSC"
 
 msgid "Protocols"
 msgstr "Protocolos"
 
 msgid "Add Tracker"
-msgstr ""
+msgstr "Adicionar Rastreador"
 
 msgid "Adding a tracker"
-msgstr ""
+msgstr "A adicionar um rastreador"
 
 msgid "Remove Tracker"
-msgstr ""
+msgstr "Remover Rastreador"
 
 msgid "Removing a tracker"
-msgstr ""
+msgstr "A remover um rastreador"
 
 msgid "Link Fixture to Tracker"
-msgstr ""
+msgstr "Ligar Acessório a um Rastreador"
 
 msgid "Link fixture to a tracker"
-msgstr ""
+msgstr "Ligar acessório a um rastreador"
 
 msgid "Unlink Fixture from Tracker"
-msgstr ""
+msgstr "Desvincular Acessório de Rastreador"
 
 msgid "Unlink fixture from a tracker"
-msgstr ""
+msgstr "Desvincular acessório de um rastreador"
 
 msgid "Tracker Followers"
-msgstr ""
+msgstr "Seguidores de Rastreadores"
 
 msgid "Link followers to a tracker"
-msgstr ""
+msgstr "Liga seguidores a um rastreador"
 
 msgid "PSN"
-msgstr ""
+msgstr "PSN"
 
 msgid "Add Tracking Target"
-msgstr ""
+msgstr "Adicionar Alvo de Rastreamento"
 
 msgid "Remove Followers Target"
-msgstr ""
+msgstr "Remover Seguidores do Alvo"
 
 msgid "Remove target"
 msgstr "Remover destino"
 
 msgid "Add Followers Target"
-msgstr ""
+msgstr "Adicionar Seguidores ao Alvo"
 
 msgid "Add target"
 msgstr "Adicionar destino"
 
 msgid "sACN"
-msgstr ""
+msgstr "sACN"
 
 #, python-brace-format
 msgid "sACN set for {} universe(s)"
-msgstr ""
+msgstr "sACN definido para {} universo(s)"
 
 msgid "DMX > Universe Menu"
-msgstr ""
+msgstr "DMX > Menu de Universo"
 
-#, fuzzy
 msgid "Add Universe"
-msgstr "Universo DMX"
+msgstr "Adicionar Universo"
 
 msgid "Allocate and select a specific DMX universe"
-msgstr ""
+msgstr "Aloca e seleciona um universo DMX específico"
 
 msgid "Universe ID"
 msgstr "ID do Universo"
 
 msgid "Universe number to create or select"
-msgstr ""
+msgstr "Número de universo a criar ou selecionar"
 
 msgid "Input"
 msgstr "Entrada"
 
 msgid "Input source of the universe"
-msgstr ""
+msgstr "Fonte de entrada do universo"
 
 msgid "Patched"
-msgstr ""
+msgstr "Corrigido"
 
 msgid "Universes"
 msgstr "Universos"
 
 #, python-brace-format
 msgid "Visible: {} / Allocated: {}"
-msgstr ""
+msgstr "Visível: {} / Alocado: {}"
 
 #~ msgid "Export Focus Points as Targets"
 #~ msgstr ""
