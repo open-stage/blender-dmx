@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-04-25 17:21+0200\n"
-"PO-Revision-Date: 2026-06-09 15:01+0000\n"
+"PO-Revision-Date: 2026-06-13 11:01+0000\n"
 "Last-Translator: Libre <6n0n1m0s@proton.me>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/blenderdmx/main/"
 "es/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.6\n"
+"X-Generator: Weblate 2026.7.dev0\n"
 "Generated-By: Babel 2.18.0\n"
 
 msgid "File doesn't exist"
@@ -729,7 +729,6 @@ msgstr "Uni"
 msgid "Addr"
 msgstr "Direc"
 
-#, fuzzy
 msgid "Uni.Addr"
 msgstr "Uni.Addr"
 
@@ -908,7 +907,6 @@ msgstr "Cámara"
 msgid "Dimmer"
 msgstr "Regulador de intensidad"
 
-#, fuzzy
 msgid "Pan"
 msgstr "Pan"
 
@@ -921,7 +919,6 @@ msgstr "Rotación panorámica"
 msgid "Tilt Rotation"
 msgstr "Rotación de inclinación"
 
-#, fuzzy
 msgid "Zoom"
 msgstr "Zoom"
 
@@ -949,14 +946,12 @@ msgstr "Temperatura de Color"
 msgid "Iris"
 msgstr "Iris"
 
-#, fuzzy
 msgid "Gobo1"
 msgstr "Gobo1"
 
 msgid "Gobo1 Adjust"
 msgstr "Ajuste de Gobo1"
 
-#, fuzzy
 msgid "Gobo2"
 msgstr "Gobo2"
 
@@ -1079,9 +1074,8 @@ msgstr "Crear Caja de Volumen"
 msgid "Set on selected fixtures"
 msgstr "Establecer en accesorios seleccionados"
 
-#, fuzzy
 msgid "Viewport"
-msgstr "Vista"
+msgstr "Vista panorámica"
 
 msgid "Background Color"
 msgstr "Color de fondo"
@@ -1379,7 +1373,6 @@ msgstr "Detalles de accesorio local"
 msgid "Profiles"
 msgstr "Perfiles"
 
-#, fuzzy
 msgid "Art-Net"
 msgstr "Art-Net"
 
