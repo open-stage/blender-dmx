@@ -8,15 +8,16 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-04-25 17:21+0200\n"
-"PO-Revision-Date: 2025-06-26 20:08+0000\n"
-"Last-Translator: Anonymous <noreply@weblate.org>\n"
+"PO-Revision-Date: 2026-06-24 14:01+0000\n"
+"Last-Translator: தமிழ்நேரம் <tamilneram247@gmail.com>\n"
+"Language-Team: Tamil <https://hosted.weblate.org/projects/blenderdmx/main/"
+"ta/>\n"
 "Language: ta_IN\n"
-"Language-Team: Tamil "
-"<https://hosted.weblate.org/projects/blenderdmx/main/ta/>\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 2026.7.dev0\n"
 "Generated-By: Babel 2.18.0\n"
 
 msgid "File doesn't exist"
@@ -45,12 +46,13 @@ msgstr "அமர்வகுதி"
 
 msgid "Display DMX Footprint. Exclamation mark (!) is indicating overlap."
 msgstr ""
+"டிஎம்எக்ச் கால்தடத்தைக் காட்டு. ஆச்சரியக்குறி (!) ஒன்றுடன் ஒன்று இருப்பதைக் குறிக்கிறது."
 
 msgid "Physical Properties"
-msgstr ""
+msgstr "உடல் பண்புகள்"
 
 msgid "Use Channel Functions of this fixture"
-msgstr ""
+msgstr "இந்த சாதனத்தின் சேனல் செயல்பாடுகளைப் பயன்படுத்தவும்"
 
 msgid "DMX Collection"
 msgstr "டி.எம்.எக்ச் சேகரிப்பு"
@@ -86,6 +88,8 @@ msgid ""
 "Shows a label with Device name/DMX address/Fixture + ID above the device "
 "in 2D or 3D."
 msgstr ""
+"2D அல்லது 3D இல் சாதனத்தின் மேல் சாதனத்தின் பெயர்/DMX முகவரி/Fixture + அடையாளம் கொண்ட "
+"லேபிளைக் காட்டுகிறது."
 
 msgid "Device Label"
 msgstr "சாதன சிட்டை"
@@ -99,19 +103,18 @@ msgstr "பெயர்"
 msgid "DMX"
 msgstr "டி.எம்.எக்ச்"
 
-#, fuzzy
 msgid "Fixture Name + ID"
-msgstr "பொருத்தப்பட்ட பெயர்"
+msgstr "ஃபிக்சர் பெயர் + அடையாளம்"
 
-#, fuzzy
 msgid "3D Fixture Name + ID"
-msgstr "பொருத்தப்பட்ட பெயர்"
+msgstr "3D ஃபிக்சர் பெயர் + அடையாளம்"
 
 msgid "Allow Selecting Geometries"
 msgstr "வடிவவியலைத் தேர்ந்தெடுப்பதை அனுமதிக்கவும்"
 
 msgid "Manually editing or deleting geometries of GDTF devices may cause issues."
 msgstr ""
+"GDTF சாதனங்களின் வடிவவியலை கைமுறையாக திருத்துவது அல்லது நீக்குவது சிக்கல்களை ஏற்படுத்தலாம்."
 
 msgid "Logging Level"
 msgstr "பதிவு நிலை"
@@ -187,6 +190,8 @@ msgid ""
 "Allows to make beams more (value bigger then 1) or less (value smaller "
 "then 1) bright to quickly test various intensity settings."
 msgstr ""
+"பல்வேறு செறிவு அமைப்புகளை விரைவாகச் சோதிக்க பீம்களை அதிகமாக (மதிப்பு 1 ஐ விட பெரியது) "
+"அல்லது குறைவாக (மதிப்பு சிறியதை விட சிறியது) பிரகாசமாக மாற்ற அனுமதிக்கிறது."
 
 msgid "Number of universes"
 msgstr "பிரபஞ்சங்களின் எண்ணிக்கை"
@@ -200,12 +205,12 @@ msgstr "யுனிவர்ச் பட்டியல் உருப்ப�
 msgid "The selected element on the universe list"
 msgstr "பிரபஞ்ச பட்டியலில் தேர்ந்தெடுக்கப்பட்ட உறுப்பு"
 
-#, fuzzy
 msgid "Show All Universes"
-msgstr "பிரபஞ்சங்கள்"
+msgstr "அனைத்து பிரபஞ்சங்களையும் காட்டு"
 
 msgid "Show every allocated universe instead of only used ones"
 msgstr ""
+"பயன்படுத்தப்பட்ட பிரபஞ்சங்களுக்குப் பதிலாக ஒதுக்கப்பட்ட ஒவ்வொரு பிரபஞ்சத்தையும் காட்டு"
 
 msgid "IPv4 Address for ArtNet signal"
 msgstr "ஆர்ட்நெட் சிக்னலுக்கான ஐபிவி 4 முகவரி"
@@ -258,33 +263,30 @@ msgstr "OSC இலக்கு துறைமுகம்"
 msgid "Port number of the host where you want to send the OSC signal"
 msgstr "நீங்கள் OSC சமிக்ஞையை அனுப்ப விரும்பும் ஓச்டின் துறைமுகம் எண்"
 
-#, fuzzy
 msgid "Enable Local MVR-xchange"
-msgstr "MVR-Xchange கண்டுபிடிப்பை இயக்கவும்"
+msgstr "உள்ளக MVR-எக்ச்சேஞ்சை இயக்கவும்"
 
-#, fuzzy
 msgid "Enables MVR-xchange sharing and discovery"
-msgstr "MVR-Xchange கண்டுபிடிப்பை செயல்படுத்துகிறது"
+msgstr "MVR-xchange பகிர்வு மற்றும் கண்டுபிடிப்பை இயக்குகிறது"
 
 msgid "Enable Group Registration"
-msgstr ""
+msgstr "குழுப் பதிவை இயக்கு"
 
 msgid "Join or start the new group"
-msgstr ""
+msgstr "புதிய குழுவில் சேரவும் அல்லது தொடங்கவும்"
 
-#, fuzzy
 msgid "Enable Internet MVR-xchange"
-msgstr "MVR-Xchange கண்டுபிடிப்பை இயக்கவும்"
+msgstr "இணைய எம்விஆர்-எக்ச்சேஞ்சை இயக்கவும்"
 
-#, fuzzy
 msgid "Enables Internet based MVR-xchange sharing and discovery"
-msgstr "MVR-Xchange கண்டுபிடிப்பை செயல்படுத்துகிறது"
+msgstr ""
+"இணைய அடிப்படையிலான MVR-எக்ச்சேஞ்ச் பகிர்வு மற்றும் கண்டுபிடிப்பை இயக்குகிறது"
 
 msgid "Use per-project Station UUID"
-msgstr ""
+msgstr "ஒவ்வொரு திட்டத்திற்கும் நிலையம் UUID ஐப் பயன்படுத்தவும்"
 
 msgid "Generates a random UUID for every blend file"
-msgstr ""
+msgstr "ஒவ்வொரு கலப்பு கோப்பிற்கும் சீரற்ற UUID ஐ உருவாக்குகிறது"
 
 msgid "Art-Net Status"
 msgstr "கலை-நிகர நிலை"
@@ -319,6 +321,9 @@ msgid ""
 "allows to re-enable it in case of some failure during import, which would"
 " leave it paused"
 msgstr ""
+"எம்விஆர் இறக்குமதியின் போதும் 2டி காட்சியிலும் ரெண்டரர் இடைநிறுத்தப்பட்டது. இந்த "
+"தேர்வுப்பெட்டி இறக்குமதியின் போது சில தோல்விகள் ஏற்பட்டால் அதை மீண்டும் இயக்க அனுமதிக்கிறது, "
+"அது இடைநிறுத்தப்படும்"
 
 msgid "Pause renderer"
 msgstr "இடைநிறுத்தம் வழங்குதல்"
@@ -336,14 +341,14 @@ msgid "Remove from selection"
 msgstr "தேர்விலிருந்து அகற்று"
 
 msgid "When selecting a group, remove from existing selection"
-msgstr ""
+msgstr "குழுவைத் தேர்ந்தெடுக்கும்போது, ஏற்கனவே உள்ள தேர்விலிருந்து அகற்றவும்"
 
 msgid "Keyframe only selected fixtures (not for autokeying)"
 msgstr "கீஃப்ரேம் மட்டுமே தேர்ந்தெடுக்கப்பட்ட சாதனங்கள் (ஆட்டோக்கிங் அல்ல)"
 
-#, fuzzy
 msgid "Add keyframes with changes only for selected fixtures"
-msgstr "தேர்ந்தெடுக்கப்பட்ட சாதனங்களிலிருந்து அனைத்து கீஃப்ரேம்களையும் நீக்குகிறது"
+msgstr ""
+"தேர்ந்தெடுக்கப்பட்ட சாதனங்களுக்கு மட்டும் மாற்றங்களுடன் கீஃப்ரேம்களைச் சேர்க்கவும்"
 
 msgid "MVR-xchange"
 msgstr "எம்.வி.ஆர்-xchange"
@@ -355,15 +360,13 @@ msgid "Fixture"
 msgstr "பொருத்துதல்"
 
 msgid "Gap"
-msgstr ""
+msgstr "இடைவெளி"
 
-#, fuzzy
 msgid "Diameter"
-msgstr "மங்கலான"
+msgstr "விட்டம்"
 
-#, fuzzy
 msgid "Rotate"
-msgstr "சுழற்சி"
+msgstr "சுழற்று"
 
 msgid "Source"
 msgstr "மூலம்"
@@ -374,31 +377,32 @@ msgstr "துணை வடிவங்கள்"
 msgid "Active Subfixtures"
 msgstr "செயலில் உள்ள துணை வடிவங்கள்"
 
-#, fuzzy
 msgid "Pan Rotate"
-msgstr "பான் சுழற்சி"
+msgstr "பான் சுழற்று"
 
-#, fuzzy
 msgid "Tilt Rotate"
-msgstr "சாய்வு சுழற்சி"
+msgstr "சாய்ந்து சுழற்று"
 
 msgid "Custom Cutoff Distance"
-msgstr ""
+msgstr "தனிப்பயன் வெட்டு தூரம்"
 
 msgid ""
 "Distance at which the influence of the light will be set to 0. Value "
 "bigger then 23 will break gobo rendering in Eevee Next. Select desired "
 "fixtures and press the button to apply the value."
 msgstr ""
+"ஒளியின் தாக்கம் 0 ஆக அமைக்கப்படும் தூரம். 23 ஐ விட பெரிய மதிப்பு ஈவி நெக்ச்ட் இல் கோபோ "
+"ரெண்டரிங்கை உடைக்கும். விரும்பிய சாதனங்களைத் தேர்ந்தெடுத்து மதிப்பைப் பயன்படுத்த பொத்தானை "
+"அழுத்தவும்."
 
 msgid "Use Fixtures Physical Properties"
-msgstr ""
+msgstr "ஃபிக்சர்ச் இயற்பியல் பண்புகளைப் பயன்படுத்தவும்"
 
 msgid "Use High Quality Models"
-msgstr ""
+msgstr "உயர்தர மாதிரிகளைப் பயன்படுத்தவும்"
 
 msgid "Use high quality mesh files if present"
-msgstr ""
+msgstr "உயர்தர மெச் கோப்புகள் இருந்தால் பயன்படுத்தவும்"
 
 msgid "DMX Universe"
 msgstr "டி.எம்.எக்ச் யுனிவர்ச்"
@@ -449,51 +453,43 @@ msgstr "கவனம் புள்ளிகளை இலக்குகளா�
 msgid "Create Targets from MVR Focus Points"
 msgstr "எம்.வி.ஆர் கவனம் புள்ளிகளிலிருந்து இலக்குகளை உருவாக்கவும்"
 
-#, fuzzy
 msgid "Import Fixtures"
-msgstr "சாதனங்கள்"
+msgstr "இறக்குமதி சாதனங்கள்"
 
-#, fuzzy
 msgid "Import Trusses"
-msgstr "இறக்குமதிகள்"
+msgstr "டிரச்களை இறக்குமதி செய்யுங்கள்"
 
-#, fuzzy
 msgid "Import Scene Objects"
-msgstr "எம்.வி.ஆர் காட்சியை இறக்குமதி செய்யுங்கள்"
+msgstr "காட்சிப் பொருள்களை இறக்குமதி வெற்றி"
 
-#, fuzzy
 msgid "Import Projectors"
-msgstr "திட்ட தரவை இறக்குமதி செய்யுங்கள்"
+msgstr "ப்ரொசெக்டர்களை இறக்குமதி வெற்றி"
 
-#, fuzzy
 msgid "Import Video Screens"
-msgstr "எம்.வி.ஆர் காட்சியை இறக்குமதி செய்யுங்கள்"
+msgstr "வீடியோ திரைகளை இறக்குமதி செய்யவும்"
 
-#, fuzzy
 msgid "Import Supports"
-msgstr "இறக்குமதி"
+msgstr "இறக்குமதி ஆதரவுகள்"
 
 msgid "Use GDTF High Quality Models"
-msgstr ""
+msgstr "GDTF உயர்தர மாடல்களைப் பயன்படுத்தவும்"
 
-#, fuzzy
 msgid "Export Targets as MVR Focus Points"
-msgstr "எம்.வி.ஆர் கவனம் புள்ளிகளிலிருந்து இலக்குகளை உருவாக்கவும்"
+msgstr "இலக்குகளை எம்விஆர் கவனம் பாயிண்ட்களாக ஏற்றுமதி செய்யவும்"
 
-#, fuzzy
 msgid "Export only selected fixtures"
-msgstr "தேர்ந்தெடுக்கப்பட்ட சாதனங்களில் அமைக்கவும்"
+msgstr "தேர்ந்தெடுக்கப்பட்ட சாதனங்களை மட்டும் ஏற்றுமதி செய்யவும்"
 
-#, fuzzy
 msgid "Export only selected fixtures (does not filter non-fixture objects)"
-msgstr "கீஃப்ரேம் மட்டுமே தேர்ந்தெடுக்கப்பட்ட சாதனங்கள் (ஆட்டோக்கிங் அல்ல)"
+msgstr ""
+"தேர்ந்தெடுக்கப்பட்ட சாதனங்களை மட்டும் ஏற்றுமதி செய்யுங்கள் (அமைப்பு அல்லாத பொருட்களை வடிகட்டாது)"
 
-#, fuzzy
 msgid "Export fixtures only"
-msgstr "சாதனங்கள்"
+msgstr "ஏற்றுமதி சாதனங்கள் மட்டுமே"
 
 msgid "Export fixtures only (skip all non-fixture objects)"
 msgstr ""
+"பொருத்துதல்களை மட்டும் ஏற்றுமதி செய்யவும் (அனைத்து பொருத்தப்படாத பொருட்களையும் தவிர்க்கவும்)"
 
 msgid "Enable PSN Input"
 msgstr "PSN உள்ளீட்டை இயக்கவும்"
@@ -510,117 +506,95 @@ msgstr "பிஎச்என் தரவைக் கேட்க பிணை
 msgid "PSN Target port"
 msgstr "பி.எச்.என் இலக்கு துறைமுகம்"
 
-#, fuzzy
 msgid "File UUID"
-msgstr "பொருத்தப்பட்ட ஐடி"
+msgstr "UUID கோப்பு"
 
-#, fuzzy
 msgid "Comment"
-msgstr "பூட்டு இயக்கம்"
+msgstr "கருத்து"
 
-#, fuzzy
 msgid "File Name"
-msgstr "கோப்புப்பெயர்"
+msgstr "கோப்பு பெயர்"
 
-#, fuzzy
 msgid "Station UUID"
-msgstr "திருத்த ஐடி"
+msgstr "நிலையம் UUID"
 
-#, fuzzy
 msgid "File Size"
-msgstr "கோப்புகள்"
+msgstr "கோப்பு அளவு"
 
 msgid "Time of info"
-msgstr ""
+msgstr "செய்தி நேரம்"
 
 msgid "Time of saving"
-msgstr ""
+msgstr "சேமிக்கும் நேரம்"
 
 msgid "Subscribed to"
-msgstr ""
+msgstr "குழுசேர்ந்தார்"
 
-#, fuzzy
 msgid "We requested latest file without UUID"
-msgstr "அண்மைக் கால பதிப்பைக் கோருங்கள்"
+msgstr "UUID இல்லாத அண்மைக் கால கோப்பைக் கோரினோம்"
 
-#, fuzzy
 msgid "IP Address"
-msgstr "முகவரி"
+msgstr "ஐபி முகவரி"
 
-#, fuzzy
 msgid "Port"
-msgstr "இறக்குமதி"
+msgstr "துறைமுகம்"
 
 msgid "Connected"
-msgstr ""
+msgstr "இணைக்கப்பட்டது"
 
 msgid "Last Seen Time"
-msgstr ""
+msgstr "கடைசியாக பார்த்த நேரம்"
 
-#, fuzzy
 msgid "Station Name"
-msgstr "குறுகிய பெயர்"
+msgstr "நிலையத்தின் பெயர்"
 
-#, fuzzy
 msgid "MVR-xchange group"
-msgstr "எம்.வி.ஆர்-xchange"
+msgstr "எம்விஆர்-எக்ச்சேஞ்ச் குழு"
 
-#, fuzzy
 msgid "Provider"
-msgstr "சுயவிவரம்"
+msgstr "வழங்குநர்"
 
-#, fuzzy
 msgid "Commits"
-msgstr "இறக்குமதி"
+msgstr "உறுதியளிக்கிறது"
 
-#, fuzzy
 msgid "Icon ID"
-msgstr "திருத்த ஐடி"
+msgstr "படவுரு அடையாளம்"
 
 msgid "New Group:"
-msgstr ""
+msgstr "புதிய குழு:"
 
-#, fuzzy
 msgid "MVR-xchange Clients"
-msgstr "MVR-Xchange கிளையனுடன் இணைகிறது"
+msgstr "எம்விஆர்-எக்ச்சேஞ்ச் கிளையண்ட்கள்"
 
 msgid "Existing Groups"
-msgstr ""
+msgstr "தற்போதுள்ள குழுக்கள்"
 
-#, fuzzy
 msgid "Websocket Commits"
-msgstr "இறக்குமதி"
+msgstr "வெப்சாக்கெட் கமிட்கள்"
 
 msgid "Message"
-msgstr ""
+msgstr "செய்தி"
 
-#, fuzzy
 msgid "IPv4 Address for MVR-xchange"
-msgstr "பிஎச்என் சமிக்ஞைக்கான ஐபிவி 4 முகவரி"
+msgstr "MVR-xchangeக்கான IPv4 முகவரி"
 
-#, fuzzy
 msgid "The network card/interface for MVR-xchange"
-msgstr "பிஎச்என் தரவைக் கேட்க பிணைய அட்டை/இடைமுகம்"
+msgstr "MVR-xchangeக்கான பிணைய அட்டை/இடைமுகம்"
 
-#, fuzzy
 msgid "Group"
-msgstr "குழு பெயர்"
+msgstr "குழு"
 
-#, fuzzy
 msgid "Classes"
-msgstr "வகுப்பு பட்டியல் i"
+msgstr "வகுப்புகள்"
 
-#, fuzzy
 msgid "Align selected fixtures to active fixture"
-msgstr "ஒரு டிராக்கருக்கு இணைப்பு பொருத்துதல்"
+msgstr "தேர்ந்தெடுக்கப்பட்ட சாதனங்களை செயலில் உள்ள பொருத்தத்திற்கு சீரமைக்கவும்"
 
-#, fuzzy
 msgid "Distribute selected fixtures evenly"
-msgstr "தேர்ந்தெடுக்கப்பட்ட சாதனங்களைத் திருத்தவும்"
+msgstr "தேர்ந்தெடுக்கப்பட்ட சாதனங்களை சமமாக விநியோகிக்கவும்"
 
-#, fuzzy
 msgid "Distribute selected fixtures with gap"
-msgstr "தேர்ந்தெடுக்கப்பட்ட சாதனங்களைத் திருத்தவும்"
+msgstr "தேர்ந்தெடுக்கப்பட்ட சாதனங்களை இடைவெளியுடன் விநியோகிக்கவும்"
 
 msgid "Align and Distribute"
 msgstr "சீரமைத்து விநியோகிக்கவும்"
@@ -675,13 +649,11 @@ msgstr "டி.எம்.எக்ச் பயன்முறை"
 msgid "Advanced edit"
 msgstr "மேம்பட்ட திருத்து"
 
-#, fuzzy
 msgid "Modify DMX address"
-msgstr "டி.எம்.எக்ச் முகவரி"
+msgstr "DMX முகவரியை மாற்றவும்"
 
-#, fuzzy
 msgid "Modify Fixture ID"
-msgstr "பொருத்தப்பட்ட ஐடி"
+msgstr "ஃபிக்சர் ஐடியை மாற்றவும்"
 
 msgid "GDTF Profile"
 msgstr "GDTF சுயவிவரம்"
@@ -710,13 +682,11 @@ msgstr "Dmx> figuter> அகற்று"
 msgid "Remove selected fixtures from Scene"
 msgstr "தேர்ந்தெடுக்கப்பட்ட சாதனங்களை காட்சியில் இருந்து அகற்று"
 
-#, fuzzy
 msgid "Remove IES Files"
-msgstr "பொருத்துதலை அகற்று"
+msgstr "IES கோப்புகளை அகற்று"
 
-#, fuzzy
 msgid "Import IES File"
-msgstr "GDTF சுயவிவரத்தை இறக்குமதி செய்க"
+msgstr "IES கோப்பை இறக்குமதி செய்யவும்"
 
 msgid "Select Previous Fixture"
 msgstr "முந்தைய பொருத்தத்தைத் தேர்ந்தெடுக்கவும்"
@@ -787,29 +757,23 @@ msgstr "தேர்ந்தெடுக்கப்பட்ட சாதன�
 msgid "Group Name"
 msgstr "குழு பெயர்"
 
-#, fuzzy
 msgid "Replace DMX group fixtures with selected ones"
-msgstr "தேர்ந்தெடுக்கப்பட்ட சாதனங்களிலிருந்து டி.எம்.எக்ச் குழுவை உருவாக்கவும்"
+msgstr "தேர்ந்தெடுக்கப்பட்டவற்றுடன் DMX குழு சாதனங்களை மாற்றவும்"
 
-#, fuzzy
 msgid "DMX > Group > Rename"
-msgstr "Dmx> குழு> உருவாக்கு"
+msgstr "DMX > குழு > மறுபெயரிடுங்கள்"
 
-#, fuzzy
 msgid "Rename selected DMX group"
-msgstr "தேர்ந்தெடுக்கப்பட்ட சாதனங்களை காட்சியில் இருந்து அகற்று"
+msgstr "தேர்ந்தெடுக்கப்பட்ட DMX குழுவிற்கு மறுபெயரிடவும்"
 
-#, fuzzy
 msgid "DMX > Group > Remove"
-msgstr "Dmx> குழு> உருவாக்கு"
+msgstr "DMX > குழு > அகற்று"
 
-#, fuzzy
 msgid "Remove selected DMX group"
-msgstr "தேர்ந்தெடுக்கப்பட்ட சாதனங்களை காட்சியில் இருந்து அகற்று"
+msgstr "தேர்ந்தெடுக்கப்பட்ட DMX குழுவை அகற்று"
 
-#, fuzzy
 msgid "Groups"
-msgstr "குழு பட்டியல் i"
+msgstr "குழுக்கள்"
 
 msgid "Reset Colors"
 msgstr "வண்ணங்களை மீட்டமைக்கவும்"
@@ -826,31 +790,26 @@ msgstr "இயக்கத்தைத் திறக்கவும்"
 msgid "Allow pan/tilt DMX data"
 msgstr "பான்/டில்ட் டிஎம்எக்ச் தரவை அனுமதிக்கவும்"
 
-#, fuzzy
 msgid "Track Target"
-msgstr "கண்காணிப்பு இலக்கைச் சேர்க்கவும்"
+msgstr "இலக்கைக் கண்காணிக்கவும்"
 
-#, fuzzy
 msgid "Follow the target"
-msgstr "பின்தொடர்பவர்களின் இலக்கைச் சேர்க்கவும்"
+msgstr "இலக்கைப் பின்பற்றுங்கள்"
 
-#, fuzzy
 msgid "Do Not Track Target"
-msgstr "கண்காணிப்பு இலக்கைச் சேர்க்கவும்"
+msgstr "இலக்கைக் கண்காணிக்க வேண்டாம்"
 
-#, fuzzy
 msgid "Do not follow the target"
-msgstr "பின்தொடர்பவர்களின் இலக்கைச் சேர்க்கவும்"
+msgstr "இலக்கை பின்பற்ற வேண்டாம்"
 
-#, fuzzy
 msgid "Use Fixtures Channel Functions"
-msgstr "இணைப்பைப் புதுப்பிக்கவும்"
+msgstr "Fixtures சேனல் செயல்பாடுகளைப் பயன்படுத்தவும்"
 
 msgid "Do Not Use Fixtures Physical Properties"
-msgstr ""
+msgstr "ஃபிக்சர்ச் இயற்பியல் பண்புகளைப் பயன்படுத்த வேண்டாம்"
 
 msgid "Do not use Fixtures Channel Functions"
-msgstr ""
+msgstr "Fixtures சேனல் செயல்பாடுகளைப் பயன்படுத்த வேண்டாம்"
 
 msgid "Deselect All"
 msgstr "அனைத்தையும் தேர்வு செய்யுங்கள்"
@@ -941,9 +900,9 @@ msgstr "நிரலி (device), நிரலர் (person)"
 msgid "Nothing selected"
 msgstr "எதுவும் தேர்ந்தெடுக்கப்படவில்லை"
 
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "{} selected"
-msgstr "}} தேர்ந்தெடுக்கப்பட்டது"
+msgstr "{} தேர்ந்தெடுக்கப்பட்டது"
 
 msgid "Bodies"
 msgstr "உடல்கள்"
@@ -972,27 +931,23 @@ msgstr "சாய்வு சுழற்சி"
 msgid "Zoom"
 msgstr "பெரிதாக்கு"
 
-#, fuzzy
 msgid "Playmode"
-msgstr "பயன்முறை"
+msgstr "பிளேமோடு"
 
 msgid "Recording"
-msgstr ""
+msgstr "பதிவு செய்தல்"
 
-#, fuzzy
 msgid "Color Wheel1"
 msgstr "வண்ண சக்கரம்"
 
-#, fuzzy
 msgid "Color Wheel2"
 msgstr "வண்ண சக்கரம்"
 
-#, fuzzy
 msgid "Color Wheel3"
-msgstr "வண்ண சக்கரம்"
+msgstr "வண்ண சக்கரம் 3"
 
 msgid "Color Macro1"
-msgstr ""
+msgstr "வண்ண மேக்ரோ1"
 
 msgid "Color Temperature"
 msgstr "வண்ண வெப்பநிலை"
@@ -1004,27 +959,25 @@ msgid "Gobo1"
 msgstr "கோபோ 1"
 
 msgid "Gobo1 Adjust"
-msgstr ""
+msgstr "Gobo1 சரி"
 
 msgid "Gobo2"
 msgstr "கோபோ 2"
 
 msgid "Gobo2 Adjust"
-msgstr ""
+msgstr "Gobo2 சரி"
 
 msgid "Strobe"
 msgstr "ச்ட்ரோப்"
 
-#, fuzzy
 msgid "PanMode"
-msgstr "பயன்முறை"
+msgstr "PanMode"
 
-#, fuzzy
 msgid "TiltMode"
-msgstr "சாய்"
+msgstr "டில்ட்மோட்"
 
 msgid "PanTiltMode"
-msgstr ""
+msgstr "PanTiltMode"
 
 msgid "Clear All"
 msgstr "அனைத்தையும் அழிக்கவும்"
@@ -1089,6 +1042,7 @@ msgstr ""
 
 msgid "Do at your own risk. Manual edits or deletes can cause issues"
 msgstr ""
+"உங்கள் சொந்த ஆபத்தில் செய்யுங்கள். கைமுறை திருத்தங்கள் அல்லது நீக்குதல்கள் சிக்கல்களை ஏற்படுத்தலாம்"
 
 msgid "Really remove all fixtures and DMX from blend file?"
 msgstr ""
@@ -1101,14 +1055,15 @@ msgstr "பிளெண்டர் சோஃபைலில் இருந்�
 msgid "Beam diameter small"
 msgstr "பீம் விட்டம் சிறியது"
 
-#, fuzzy
 msgid "Set Eevee Cutoff distance on selected fixtures"
-msgstr "தேர்ந்தெடுக்கப்பட்ட சாதனங்களில் அமைக்கவும்"
+msgstr "தேர்ந்தெடுக்கப்பட்ட சாதனங்களில் ஈவி கட்ஆஃப் தூரத்தை அமைக்கவும்"
 
 msgid ""
 "Distance at which the influence of the light will be set to 0. Value "
 "bigger then 23 will break gobo rendering in Eevee Next."
 msgstr ""
+"ஒளியின் தாக்கம் 0 ஆக அமைக்கப்படும் தூரம். 23 ஐ விட பெரிய மதிப்பு ஈவி நெக்ச்ட் இல் கோபோ "
+"ரெண்டரிங்கை உடைக்கும்."
 
 msgid "Beam diameter normal"
 msgstr "பீம் விட்டம் இயல்பானது"
@@ -1225,9 +1180,8 @@ msgstr ""
 msgid "Data exported to: {}"
 msgstr "தரவு ஏற்றுமதி: {}"
 
-#, fuzzy
 msgid "Really delete all custom data from the addon directory?"
-msgstr "BlenderDMX ADDON கோப்பகத்திலிருந்து தனிப்பயன் தரவை அழிக்கவும்."
+msgstr "addon கோப்பகத்திலிருந்து எல்லா தனிப்பயன் தரவையும் உண்மையில் நீக்கவா?"
 
 msgid "Clear custom data from BlenderDMX addon directory."
 msgstr "BlenderDMX ADDON கோப்பகத்திலிருந்து தனிப்பயன் தரவை அழிக்கவும்."
@@ -1455,65 +1409,58 @@ msgstr "அண்மைக் கால பதிப்பைக் கோரு
 msgid "Sends the Request message"
 msgstr "கோரிக்கை செய்தியை அனுப்புகிறது"
 
-#, fuzzy
 msgid "Import commit into active scene"
-msgstr "எம்.வி.ஆர் காட்சியை இறக்குமதி செய்யுங்கள்"
+msgstr "செயலில் உள்ள காட்சியை இறக்குமதி செய்யவும்"
 
 msgid "Import commit"
 msgstr "இறக்குமதி"
 
-#, fuzzy
 msgid "Export MVR to MVR-xchange"
-msgstr "MVR-Xchange கிளையனுடன் இணைகிறது"
+msgstr "MVR-க்கு MVR-க்கு ஏற்றுமதி செய்யவும்"
 
 msgid "Download"
 msgstr "பதிவிறக்கம்"
 
-#, fuzzy
 msgid "Fetch commit"
-msgstr "இறக்குமதி"
+msgstr "உறுதி எடுக்கவும்"
 
-#, fuzzy
 msgid "Websocket Download"
-msgstr "பதிவிறக்கம்"
+msgstr "வெப்சாக்கெட் பதிவிறக்கம்"
 
 msgid "Download commit"
 msgstr "பதிவிறக்கவும்"
 
-#, fuzzy
 msgid "Delete"
-msgstr "பொருத்துதலை நீக்கு"
+msgstr "நீக்கு"
 
-#, fuzzy
 msgid "Remove Shared Commit"
-msgstr "இலக்கை அகற்று"
+msgstr "பகிரப்பட்ட பொறுப்பை அகற்று"
 
 #, python-brace-format
 msgid "Enable Group: {group}"
-msgstr ""
+msgstr "குழுவை இயக்கு: {group}"
 
 msgid "New group:"
-msgstr ""
+msgstr "புதிய குழு:"
 
-#, fuzzy
 msgid "Share current version"
-msgstr "அண்மைக் கால பதிப்பைக் கோருங்கள்"
+msgstr "தற்போதைய பதிப்பைப் பகிரவும்"
 
 msgid "Pick and Share MVR"
-msgstr ""
+msgstr "எம்விஆரைத் தேர்ந்தெடுத்து பகிரவும்"
 
 #, python-brace-format
 msgid "Shared by me ({defined_station_name}):"
-msgstr ""
+msgstr "நான் பகிர்ந்தது ({defined_station_name}):"
 
 msgid "Stations in the group:"
-msgstr ""
+msgstr "குழுவில் உள்ள நிலையங்கள்:"
 
 msgid "Shared by the station:"
-msgstr ""
+msgstr "நிலையத்தால் பகிரப்பட்டது:"
 
 msgid "Shared by the server:"
-msgstr ""
+msgstr "சர்வரால் பகிரப்பட்டது:"
 
 msgid "OSC"
 msgstr "Osc"
@@ -1572,44 +1519,40 @@ msgstr "இலக்கைச் சேர்"
 msgid "sACN"
 msgstr "சாக்ன்"
 
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "sACN set for {} universe(s)"
-msgstr "}} யுனிவர்ச் (கள்) க்கான SACN தொகுப்பு"
+msgstr "{} பிரபஞ்சம்(களுக்கு) sACN அமைக்கப்பட்டது"
 
 msgid "DMX > Universe Menu"
 msgstr "டி.எம்.எக்ச்> யுனிவர்ச் பட்டியல்"
 
-#, fuzzy
 msgid "Add Universe"
-msgstr "டி.எம்.எக்ச் யுனிவர்ச்"
+msgstr "பிரபஞ்சத்தைச் சேர்க்கவும்"
 
 msgid "Allocate and select a specific DMX universe"
-msgstr ""
+msgstr "குறிப்பிட்ட DMX பிரபஞ்சத்தை ஒதுக்கித் தேர்ந்தெடுக்கவும்"
 
-#, fuzzy
 msgid "Universe ID"
-msgstr "அண்டம்"
+msgstr "யுனிவர்ச் அடையாளம்"
 
 msgid "Universe number to create or select"
-msgstr ""
+msgstr "உருவாக்க அல்லது தேர்ந்தெடுக்க பிரபஞ்ச எண்"
 
 msgid "Input"
-msgstr ""
+msgstr "உள்ளீடு"
 
-#, fuzzy
 msgid "Input source of the universe"
-msgstr "பிரபஞ்சங்களின் எண்ணிக்கை"
+msgstr "பிரபஞ்சத்தின் உள்ளீட்டு சான்று"
 
-#, fuzzy
 msgid "Patched"
-msgstr "புதுப்பிப்பு"
+msgstr "ஒட்டப்பட்டது"
 
 msgid "Universes"
 msgstr "பிரபஞ்சங்கள்"
 
 #, python-brace-format
 msgid "Visible: {} / Allocated: {}"
-msgstr ""
+msgstr "தெரியும்: {} / ஒதுக்கப்பட்டது: {}"
 
 #~ msgid "Trackers Item"
 #~ msgstr ""
@@ -1682,4 +1625,3 @@ msgstr ""
 
 #~ msgid "Fixture named {} already exists"
 #~ msgstr "{} ஏற்கனவே உள்ளது"
-
