@@ -27,7 +27,6 @@ import uuid as py_uuid
 from datetime import datetime
 from pathlib import Path
 from threading import Timer
-from types import SimpleNamespace
 from .util import one_float_to_u16
 
 import bpy
@@ -48,9 +47,6 @@ from bpy.types import Collection, Object, PropertyGroup
 from . import fixture
 from . import param as param
 from . import tracker as tracker
-from .acn import DMX_sACN
-from .psn import DMX_PSN
-from .artnet import DMX_ArtNet
 from .blender_utils import copy_blender_profiles, get_application_version
 from .data import DMX_Data, DMX_Value
 from .gdtf_file import DMX_GDTF_File
@@ -58,18 +54,8 @@ from .group import DMX_Group
 from .i18n import DMX_Lang
 from .logging_setup import DMX_Log
 from .material import get_gobo_material, set_light_nodes
-from .mdns import DMX_Zeroconf
 from .mvr import load_mvr, load_mvr_steps, export_mvr as mvr_export_mvr
 from .mvr_objects import DMX_MVR_Class, DMX_MVR_Layer, DMX_MVR_Object
-from .mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server, DMX_MVR_X_WS_Client
-from .mvrxchange.mvr_xchange_blender import (
-    DMX_MVR_Xchange,
-    DMX_MVR_Xchange_Client,
-    DMX_MVR_Xchange_Commit,
-)
-from .network import DMX_Network
-from .osc import DMX_OSC
-from .osc_utils import DMX_OSC_Templates
 from .panels import classing as classing
 from .panels import distribute as distribute
 from .panels import fixtures as fixtures
@@ -80,13 +66,8 @@ from .panels import programmer as programmer
 from .panels import recorder as recorder
 from .panels import setup as setup
 from .panels import subfixtures as subfixtures
-from .panels.protocols import artnet as panels_artnet
 from .panels.protocols import live as panels_live
-from .panels.protocols import mvr as panels_mvr
-from .panels.protocols import osc as panels_osc
 from .panels.protocols import protocols as panels_protocols
-from .panels.protocols import psn as panels_psn
-from .panels.protocols import sacn as panels_sacn
 from .panels.protocols import universes as panels_universes
 from .preferences import DMX_Preferences, DMX_Regenrate_UUID
 from .universe import DMX_Universe
@@ -130,13 +111,6 @@ class DMX(PropertyGroup):
         DMX_Universe,
         DMX_Value,
         setup.DMX_PT_Setup,
-        panels_mvr.DMX_OP_MVR_Download,
-        panels_mvr.DMX_OP_MVR_WS_Download,
-        panels_mvr.DMX_OP_MVR_Import,
-        panels_mvr.DMX_OP_MVR_WS_Import,
-        DMX_MVR_Xchange_Commit,
-        DMX_MVR_Xchange_Client,
-        DMX_MVR_Xchange,
         DMX_Regenrate_UUID,
         DMX_Preferences,
         subfixtures.DMX_Subfixture,
@@ -155,8 +129,6 @@ class DMX(PropertyGroup):
         panels_universes.DMX_OP_Universe_Add,
         panels_universes.DMX_PT_DMX_Universes,
         panels_live.DMX_PT_DMX_LiveDMX,
-        panels_artnet.DMX_PT_DMX_ArtNet,
-        panels_sacn.DMX_PT_DMX_sACN,
         setup.DMX_OT_Setup_Volume_Create,
         setup.DMX_PT_Setup_Volume,
         setup.DMX_PT_Setup_Viewport,
@@ -238,27 +210,7 @@ class DMX(PropertyGroup):
         distribute.DMX_OP_DistributeWithGapOperator,
         distribute.DMX_OP_DistributeEvenlyOperator,
         distribute.DMX_OP_DistributeCircle,
-        panels_osc.DMX_PT_DMX_OSC,
-        panels_psn.DMX_UL_Tracker,
-        panels_psn.DMX_OP_DMX_Tracker_Add,
-        panels_psn.DMX_OP_DMX_Tracker_Remove,
-        panels_psn.DMX_PT_DMX_Trackers,
-        panels_psn.DMX_OT_Tracker_Followers,
-        panels_psn.DMX_OT_Tracker_Followers_Add_Target,
-        panels_psn.DMX_OT_Tracker_Followers_Remove_Target,
-        panels_psn.DMX_UL_Tracker_Followers,
-        panels_psn.DMX_OP_Unlink_Fixture_Tracker,
-        panels_psn.DMX_OP_Link_Fixture_Tracker,
         fixtures.DMX_UL_Fixtures,
-        panels_mvr.DMX_PT_DMX_MVR_X,
-        panels_mvr.DMX_UL_MVR_Commit,
-        panels_mvr.DMX_UL_MVR_WS_Commit,
-        panels_mvr.DMX_OP_MVR_Request,
-        panels_mvr.DMX_OP_MVR_WS_Refresh,
-        panels_mvr.DMX_OP_MVR_X_Export,
-        panels_mvr.DMX_UL_MVR_Shared_Commit,
-        panels_mvr.DMX_UL_MVR_Stations,
-        panels_mvr.DMX_OP_MVR_RemoveSharedCommit,
         fixtures.DMX_OT_Fixture_ForceRemove,
         fixtures.DMX_OT_Fixture_SelectNext,
         fixtures.DMX_OT_Fixture_SelectPrevious,
@@ -429,12 +381,12 @@ class DMX(PropertyGroup):
         type = fixture.DMX_Fixture)
 
     trackers: CollectionProperty(
-        name = "PSN Servers",
+        name = "Trackers",
         type = tracker.DMX_Tracker)
 
     trackers_i : IntProperty(
-        name = _("Selected PSN Server"),
-        description=_("The selected element on the PSN server list"),
+        name = _("Selected Tracker"),
+        description=_("The selected element on the tracker list"),
         default = 0
         )
 
@@ -644,7 +596,6 @@ class DMX(PropertyGroup):
 
         # Create a DMX universe
         self.addUniverse()
-        self.generate_project_uuid()
         self.generate_default_channel_functions()
 
         # Link addon to file
@@ -689,33 +640,6 @@ class DMX(PropertyGroup):
         # Allocate universes data
         DMX_Data.setup(self.universes_n)
 
-        # make sure that selection of ip address points to an item in enum
-        dmx = bpy.context.scene.dmx
-        if not len(dmx.artnet_ipaddr):
-            if len(DMX_Network.cards(None, None)):
-                dmx.artnet_ipaddr = DMX_Network.cards(None, None)[0][0]
-            else:
-                DMX_Log.log.warning("No network card detected")
-                return
-
-        # Reset network status
-        dmx = bpy.context.scene.dmx
-        dmx.artnet_enabled = False
-        dmx.artnet_status = "offline"
-        dmx.sacn_enabled = False
-        dmx.sacn_status = "offline"
-        dmx.osc_enabled = False
-        dmx.mvrx_enabled = False
-        dmx.mvrx_socket_client_enabled = False
-
-        for tracker_item in dmx.trackers:
-            tracker_item.enabled = False
-            if not len(tracker_item.ip_address):
-                if len(DMX_Network.cards(None, None)):
-                    tracker_item.ip_address = DMX_Network.cards(None, None)[0][0]
-                else:
-                    DMX_Log.log.warning("No network card detected")
-
         # Rebuild group runtime dictionary (evaluating if this is gonna stay here)
         # DMX_Group.runtime = {}
         # for group in self.groups:
@@ -737,7 +661,6 @@ class DMX(PropertyGroup):
 
         Profiles.DMX_Fixtures_Local_Profile.loadLocal()
         DMX_GDTF_File.get_manufacturers_list()
-        Profiles.DMX_Fixtures_Import_Gdtf_Profile.loadShare()
         self.logging_level = "ERROR"  # setting default logging level
 
     # Unlink Add-on from file
@@ -1418,186 +1341,9 @@ class DMX(PropertyGroup):
         default = False
         )
 
-    # # DMX > ArtNet > Network Cards
-    artnet_ipaddr : EnumProperty(
-        name = _("IPv4 Address for ArtNet signal"),
-        description=_("The network card/interface to listen for ArtNet DMX data"),
-        items = DMX_Network.cards
-    )
-
     # fmt: on
 
-    # zeroconf - mvr-xchange
-
-    def onZeroconfEnableDiscovery(self, context):
-        clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
-        clients.clear()
-        shared_commits = bpy.context.window_manager.dmx.mvr_xchange.shared_commits
-        shared_commits.clear()
-        if self.zeroconf_enabled:
-            DMX_Log.log.info("Enable mdns discovery")
-            DMX_Zeroconf.enable_discovery()
-        else:
-            self.mvrx_enabled = False
-            DMX_MVR_X_Server.disable()
-            DMX_Log.log.info("disable mdns")
-            DMX_Zeroconf.disable_server()
-            DMX_Log.log.info("Disable mdns discovery")
-            DMX_Zeroconf.close()
-            DMX_Log.log.info("disabled all")
-
-    def onMVR_xchange_enable(self, context):
-        if self.mvrx_enabled:
-            DMX_MVR_X_Server.enable()  # start the MVR-xchange TCP server for incoming connections
-            DMX_MVR_X_Server._instance.server.get_port()
-            DMX_Zeroconf.disable_server()
-            DMX_Zeroconf.enable_server(
-                bpy.context.window_manager.dmx.mvr_xchange.mvr_x_group,
-                DMX_MVR_X_Server.get_port(),
-            )  # start mdns server and advertise the TCP MVR server
-        else:
-            DMX_Log.log.info("leave client")
-            DMX_Zeroconf.disable_server()
-            clients = context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
-            service_name = bpy.context.window_manager.dmx.mvr_xchange.mvr_x_group
-            for client in clients:
-                if client.subscribed and client.service_name == service_name:
-                    client.subscribed = False
-            DMX_MVR_X_Server.disable()
-
-    def onMVR_client_join(self, client, join):
-        tcp_client = DMX_MVR_X_Client(client)
-        if join:
-            tcp_client.join()
-        else:
-            tcp_client.leave()
-
-    def onMVR_xchange_socket_enable(self, context):
-        shared_commits = bpy.context.window_manager.dmx.mvr_xchange.shared_commits
-        shared_commits.clear()
-        ws_commits = bpy.context.window_manager.dmx.mvr_xchange.websocket_commits
-        ws_commits.clear()
-        if self.mvrx_socket_client_enabled:
-            DMX_Log.log.info("joining server")
-            url = self.mvr_x_ws_url
-            DMX_Log.log.debug(url)
-            if url:
-                DMX_MVR_X_WS_Client.join(
-                    url
-                )  # start MVR-xchange WS client connection and send MVR_JOIN message
-        else:
-            DMX_Log.log.info("leave server")
-            DMX_MVR_X_WS_Client.leave()
-            DMX_Log.log.info("disable server")
-            DMX_MVR_X_WS_Client.disable()
-
-    # OSC functionality
-
-    def onOscEnable(self, context):
-        if self.osc_enabled:
-            DMX_OSC.enable()
-            DMX_OSC_Templates.read()
-        else:
-            DMX_OSC.disable()
-
-    # # DMX > sACN > Enable
-    def onsACNEnable(self, context):
-        if self.sacn_enabled:
-            DMX_sACN.enable()
-            self.register_render_toggle(True)
-        else:
-            self.register_render_toggle(False)
-            DMX_sACN.disable()
-
-    # # DMX > ArtNet > Enable
-
-    def onArtNetEnable(self, context):
-        if self.artnet_enabled:
-            DMX_ArtNet.enable()
-            self.register_render_toggle(True)
-        else:
-            self.register_render_toggle(False)
-            DMX_ArtNet.disable()
-
     # fmt: off
-    artnet_enabled : BoolProperty(
-        name = _("Enable Art-Net Input"),
-        description=_("Enables the input of DMX data throught Art-Net on the selected network interface"),
-        default = False,
-        update = onArtNetEnable
-    )
-
-    sacn_enabled : BoolProperty(
-        name = _("Enable sACN Input"),
-        description=_("Enables the input of DMX data throught sACN on all detected network interfaces"),
-        default = False,
-        update = onsACNEnable
-    )
-
-    osc_enabled : BoolProperty(
-        name = _("Enable OSC Output"),
-        description=_("Enables Open Sound Control protocol to send fixture selection to a console"),
-        default = False,
-        update = onOscEnable
-    )
-
-    osc_target_address : StringProperty(
-        name = _("OSC Target address"),
-        description=_("Address of the host where you want to send the OSC signal. Address ending on .255 is a broadcast address to all hosts on the network"),
-        default="0.0.0.0"
-    )
-
-    osc_target_port : IntProperty(
-        name = _("OSC Target port"),
-        description=_("Port number of the host where you want to send the OSC signal"),
-        default=42000
-    )
-
-    zeroconf_enabled : BoolProperty(
-        name = _("Enable Local MVR-xchange"),
-        description=_("Enables MVR-xchange sharing and discovery"),
-        default = False,
-        update = onZeroconfEnableDiscovery
-    )
-
-    project_application_uuid: StringProperty(
-        default=str(py_uuid.uuid4()),
-        name="Per project application UUID",
-        description="Used for example for MVR xchange",
-    )
-
-    mvrx_enabled : BoolProperty(
-        name = _("Enable Group Registration"),
-        description=_("Join or start the new group"),
-        default = False,
-        update = onMVR_xchange_enable
-    )
-
-    mvrx_socket_client_enabled : BoolProperty(
-        name = _("Enable Internet MVR-xchange"),
-        description=_("Enables Internet based MVR-xchange sharing and discovery"),
-        default = False,
-        update = onMVR_xchange_socket_enable
-    )
-
-    mvr_x_ws_url: StringProperty(name="URL", description="URL", default="")
-
-    mvrx_per_project_station_uuid : BoolProperty(
-        name = _("Use per-project Station UUID"),
-        description=_("Generates a random UUID for every blend file"),
-        default = True,
-    )
-    # # DMX > ArtNet > Status
-
-    artnet_status : EnumProperty(
-        name = _("Art-Net Status"),
-        items = DMX_ArtNet.status()
-    )
-    sacn_status : StringProperty(
-        name = _("sACN Status"),
-        default = "offline"
-    )
-
     # # Groups > List
 
     def onGroupList(self, context):
@@ -2460,210 +2206,6 @@ class DMX(PropertyGroup):
             self.addUniverse()
         self.universes_n = len(self.universes)
 
-    def createMVR_Client(
-        self,
-        station_uuid="",
-        station_name="",
-        service_name="",
-        ip_address="",
-        port=0,
-        provider="",
-    ):
-        prefs = bpy.context.preferences.addons[__package__].preferences
-        application_uuid = prefs.application_uuid  # must never be 0
-        if self.mvrx_per_project_station_uuid:
-            application_uuid = self.project_application_uuid
-        application_uuid = application_uuid.upper()
-
-        if application_uuid == station_uuid:
-            DMX_Log.log.info(
-                "This is myself, do not register as an MVR-xchange station"
-            )
-            return
-
-        clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
-        for client in clients:
-            if client.station_uuid == station_uuid:
-                return  # client already in the list
-
-        if ip_address == "":
-            return
-
-        client = clients.add()
-        client.station_name = station_name or ""
-        client.station_uuid = station_uuid
-        client.service_name = service_name
-        client.provider = provider or ""
-        now = int(datetime.now().timestamp())
-        client.last_seen = now
-        client.ip_address = ip_address
-        client.port = port
-        if provider:
-            client.provider = provider
-
-    def removeMVR_Client(
-        self, station_uuid, station_name, service_name, ip_addres, port
-    ):
-        clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
-        for idx, client in enumerate(clients):
-            if client.station_uuid == station_uuid:
-                clients.remove(idx)
-                break
-
-    def updateMVR_Client(
-        self,
-        station_uuid,
-        station_name=None,
-        service_name=None,
-        ip_address=None,
-        port=None,
-        provider=None,
-    ):
-        clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
-        updated = False
-
-        for client in clients:
-            if client.station_uuid == station_uuid:
-                if station_name:
-                    client.station_name = station_name
-                now = int(datetime.now().timestamp())
-                client.last_seen = now
-                if ip_address:
-                    client.ip_address = ip_address
-                if port:
-                    client.port = port
-                if provider:
-                    client.provider = provider
-                if service_name:
-                    client.service_name = service_name
-                updated = True
-                break
-        if not updated:
-            self.createMVR_Client(
-                station_uuid, station_name, service_name, ip_address, port
-            )
-
-    def toggle_join_MVR_Client(
-        self,
-        station_uuid,
-        event=True,
-    ):
-        clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
-
-        for client in clients:
-            if client.station_uuid == station_uuid:
-                if client.subscribed != event:
-                    client.subscribed = event
-                return
-
-    def createMVR_Commits(self, commits, station_uuid):
-        clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
-        for client in clients:
-            if client.station_uuid == station_uuid:
-                # client.commits.clear()
-
-                for commit in commits:
-                    skip = False
-                    if "FileName" in commit:
-                        filename = commit["FileName"]
-                    else:
-                        filename = commit["Comment"]
-                    if not len(filename):
-                        filename = commit["FileUUID"]
-
-                    for existing_commit in client.commits:
-                        if existing_commit.commit_uuid == commit["FileUUID"]:
-                            skip = True
-                            continue
-                    if not skip:
-                        now = int(datetime.now().timestamp())
-                        client.last_seen = now
-                        new_commit = client.commits.add()
-                        new_commit.station_uuid = station_uuid
-                        new_commit.comment = commit["Comment"]
-                        new_commit.commit_uuid = commit["FileUUID"]
-                        new_commit.file_size = commit["FileSize"]
-                        new_commit.file_name = filename
-                        new_commit.timestamp = now
-
-    def createMVR_WS_Commits(self, commits, station_uuid):
-        stored_commits = bpy.context.window_manager.dmx.mvr_xchange.websocket_commits
-
-        for commit in commits:
-            skip = False
-            if "FileName" in commit:
-                filename = commit["FileName"]
-            else:
-                filename = commit["Comment"]
-            if not len(filename):
-                filename = commit["FileUUID"]
-
-            for existing_commit in stored_commits:
-                if existing_commit.commit_uuid == commit["FileUUID"]:
-                    skip = True
-                    continue
-            if not skip:
-                now = int(datetime.now().timestamp())
-                new_commit = stored_commits.add()
-                new_commit.station_uuid = station_uuid
-                new_commit.comment = commit["Comment"]
-                new_commit.commit_uuid = commit["FileUUID"]
-                new_commit.file_size = commit["FileSize"]
-                new_commit.file_name = filename
-                new_commit.timestamp = now
-
-    def createMVR_Shared_Commit(self, commit):
-        commits = bpy.context.window_manager.dmx.mvr_xchange.shared_commits
-        now = int(datetime.now().timestamp())
-        new_commit = commits.add()
-        new_commit.comment = commit.comment
-        new_commit.commit_uuid = commit.file_uuid
-        new_commit.file_size = commit.file_size
-        new_commit.file_name = commit.file_name
-        new_commit.timestamp = now
-
-        if DMX_MVR_X_WS_Client._instance is not None:
-            DMX_MVR_X_WS_Client._instance.client.send_commit(new_commit)
-
-        mvr_x = bpy.context.window_manager.dmx.mvr_xchange
-        service_name = mvr_x.mvr_x_group
-        clients = mvr_x.mvr_xchange_clients
-
-        for client in clients:
-            if client.subscribed and client.service_name == service_name:
-                tcp_client = DMX_MVR_X_Client(client)
-                tcp_client.send_commit(new_commit)
-
-    def fetched_mvr_downloaded_file(self, commit):
-        clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
-        now = int(datetime.now().timestamp())
-        for client in clients:
-            if client.station_uuid == commit.station_uuid:
-                for c_commit in client.commits:
-                    if c_commit.commit_uuid == commit.commit_uuid:
-                        c_commit.timestamp_saved = now
-
-    def request_failed_mvr_downloaded_file(self, commit):
-        clients = bpy.context.window_manager.dmx.mvr_xchange.mvr_xchange_clients
-        for client in clients:
-            if client.station_uuid == commit.station_uuid:
-                for c_commit in client.commits:
-                    if c_commit.commit_uuid == commit.commit_uuid:
-                        c_commit.timestamp_saved = -1
-
-    def fetched_mvr_downloaded_ws_file(self, commit):
-        websocket_commits = bpy.context.window_manager.dmx.mvr_xchange.websocket_commits
-        now = int(datetime.now().timestamp())
-        for c_commit in websocket_commits:
-            if c_commit.commit_uuid == commit.commit_uuid:
-                c_commit.timestamp_saved = now
-
-    def request_failed_mvr_downloaded_ws_file(self, commit):
-        websocket_commits = bpy.context.window_manager.dmx.mvr_xchange.websocket_commits
-        for c_commit in websocket_commits:
-            if c_commit.commit_uuid == commit.commit_uuid:
-                c_commit.timestamp_saved = -1
-
     # # Groups
 
     def createGroup(self, name):
@@ -2738,9 +2280,6 @@ class DMX(PropertyGroup):
     def removeUniverse(self, i):
         DMX_Universe.remove(self, i)
 
-    def generate_project_uuid(self):
-        self.project_application_uuid = str(py_uuid.uuid4())
-
     def generate_default_channel_functions(self):
         self.default_channel_functions.clear()
         defaults = [
@@ -2795,30 +2334,6 @@ class DMX(PropertyGroup):
                 collection_info = nodes.node.nodes["Collection Info"]
                 collection = bpy.context.window_manager.dmx.collections_list
                 collection_info.inputs[0].default_value = collection
-
-    def register_render_toggle(self, enable):
-        self._wm_dmx = bpy.context.window_manager.dmx
-        is_running = self._wm_dmx.render_running
-        if enable:
-            if is_running:
-                return
-            self._wm_dmx.render_running = True
-            bpy.app.timers.register(self.run_render)
-        else:
-            if len(DMX_PSN._instances) > 0:
-                return
-            if self.artnet_enabled:
-                return
-            if self.sacn_enabled:
-                return
-            if is_running:
-                self._wm_dmx.render_running = False
-                try:
-                    bpy.app.timers.unregister(self.run_render)
-                except:
-                    pass
-
-    def run_render(self):
         if not self._wm_dmx.render_running:
             return None
         self.render()

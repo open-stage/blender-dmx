@@ -20,85 +20,9 @@ from bpy.types import Panel
 
 from ....i18n import DMX_Lang
 from ....icon import DMX_Icon
-from .operator import DMX_OP_Import_Fixture_Update_Share, DMX_OP_Update_Local_Fixtures
+from .operator import DMX_OP_Update_Local_Fixtures
 
 _ = DMX_Lang._
-
-
-class DMX_PT_Fixtures_Import(Panel):
-    bl_label = _("GDTF Share")
-    bl_idname = "DMX_PT_Fixtures_Import"
-    bl_parent_id = "DMX_PT_Profiles"
-    bl_space_type = "VIEW_3D"
-    bl_region_type = "UI"
-    bl_category = "DMX"
-    bl_context = "objectmode"
-    # bl_parent_id = "DMX_PT_Patch"
-    bl_options = {"DEFAULT_CLOSED"}
-
-    def draw(self, context):
-        layout = self.layout
-        imports = context.window_manager.dmx.imports
-        if not bpy.app.online_access:
-            row = layout.row()
-            row.label(text=_("You must Allow Online access for this to work:"))
-            prefs = context.preferences
-            system = prefs.system
-            row = layout.row()
-            row.prop(system, "use_online_access", text="Allow Online Access")
-            return
-
-        layout.template_list(
-            "DMX_UL_Share_Fixtures",
-            "",
-            imports,
-            "share_profiles",
-            imports,
-            "selected_share_fixture",
-            rows=8,
-        )
-
-        layout.operator(DMX_OP_Import_Fixture_Update_Share.bl_idname, icon=DMX_Icon.URL)
-
-
-class DMX_PT_Fixtures_Import_Profile_Detail(Panel):
-    bl_label = _("Fixture details")
-    bl_idname = "DMX_PT_Fixtures_Import_Profile_Detail"
-    bl_space_type = "VIEW_3D"
-    bl_parent_id = "DMX_PT_Profiles"
-    bl_region_type = "UI"
-    bl_category = "DMX"
-    bl_context = "objectmode"
-    bl_parent_id = "DMX_PT_Fixtures_Import"
-    # bl_options = {'DEFAULT_CLOSED'}
-
-    def draw(self, context):
-        if not bpy.app.online_access:
-            return
-        layout = self.layout
-        imports = context.window_manager.dmx.imports
-        profiles = imports.share_profiles
-        selected = imports.selected_share_fixture
-        if not profiles:
-            return
-        fixture = profiles[selected]
-
-        col = layout.column()
-        col.emboss = "NONE"
-        col.prop(fixture, "manufacturer")
-        col.prop(fixture, "fixture")
-        col.prop(fixture, "revision")
-        col.prop(fixture, "uploader")
-        col.prop(fixture, "creator")
-        col.prop(fixture, "rating")
-        layout.template_list(
-            "DMX_UL_Share_Fixtures_Dmx_Modes",
-            "",
-            fixture,
-            "modes",
-            imports,
-            "selected_mode",
-        )
 
 
 class DMX_PT_Fixtures_Local_Fixtures(Panel):

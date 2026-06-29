@@ -20,7 +20,6 @@ from bpy.props import BoolProperty, StringProperty
 from bpy.types import Menu, Operator, Panel
 
 from ..i18n import DMX_Lang
-from ..osc_utils import DMX_OSC_Handlers
 
 _ = DMX_Lang._
 # Operators #
@@ -171,7 +170,6 @@ class DMX_OT_Programmer_DeselectAll(Operator):
     def execute(self, context):
         bpy.ops.object.select_all(action="DESELECT")
 
-        DMX_OSC_Handlers.fixture_clear()
         bpy.context.scene.dmx.updatePreviewVolume()
         return {"FINISHED"}
 

@@ -60,7 +60,6 @@ from .material import (
 )
 from .util import generate_fixture_name
 from .model import DMX_Model
-from .osc_utils import DMX_OSC_Handlers
 from .color_utils import (
     apply_rgb_filter,
     cmy_to_rgb,
@@ -2669,7 +2668,6 @@ class DMX_Fixture(PropertyGroup):
                     for target in targets:
                         target.select_set(True)
 
-        DMX_OSC_Handlers.fixture_selection(self)
         dmx.updatePreviewVolume()
         self.sync_fixture_selection()
 

@@ -29,7 +29,6 @@ from bpy.types import PropertyGroup
 
 from .i18n import DMX_Lang
 from .logging_setup import DMX_Log
-from .mvrxchange.mvr_xchange_blender import DMX_MVR_Xchange
 from .panels import profiles as Profiles
 from .panels import subfixtures
 
@@ -100,8 +99,6 @@ class DMX_TempData(PropertyGroup):
         description=_("Add keyframes with changes only for selected fixtures"),
         default=False,
     )
-
-    mvr_xchange: PointerProperty(name=_("MVR-xchange"), type=DMX_MVR_Xchange)
 
     def onUpdateLoggingFilter(self, context):
         DMX_Log.update_filters()

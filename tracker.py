@@ -19,18 +19,13 @@ import uuid
 
 import bpy
 from bpy.props import (
-    BoolProperty,
     CollectionProperty,
-    EnumProperty,
-    IntProperty,
     PointerProperty,
     StringProperty,
 )
 from bpy.types import Collection, Object, PropertyGroup
 
 from .i18n import DMX_Lang
-from .network import DMX_Network
-from .psn import DMX_PSN
 
 _ = DMX_Lang._
 
@@ -40,27 +35,6 @@ class DMX_Tracker_Object(PropertyGroup):
 
 
 class DMX_Tracker(PropertyGroup):
-    def onPsnEnable(self, context):
-        if self.enabled:
-            DMX_PSN.enable(self)
-        else:
-            DMX_PSN.disable(self)
-
-    enabled: BoolProperty(
-        name=_("Enable PSN Input"),
-        description=_("Enables PosiStageNet input"),
-        default=False,
-        update=onPsnEnable,
-    )
-
-    ip_address: EnumProperty(
-        name=_("IPv4 Address for PSN signal"),
-        description=_("The network card/interface to listen for PSN data"),
-        items=DMX_Network.cards,
-    )
-
-    ip_port: IntProperty(name=_("PSN Target port"), description=_(""), default=56565)
-
     uuid: StringProperty(
         name="UUID",
         description="Unique ID, used for identification",
@@ -106,7 +80,6 @@ class DMX_Tracker(PropertyGroup):
         dmx = bpy.context.scene.dmx
         tracker_idx = DMX_Tracker.get_tracker_idx(uuid)
         tracker = DMX_Tracker.get_tracker(uuid)
-        tracker.enabled = False
         for fixture in dmx.fixtures:
             for obj in fixture.objects:
                 if obj.name == "Target":
@@ -144,32 +117,13 @@ class DMX_Tracker(PropertyGroup):
                 return tracker
 
     def render(self, current_frame=None):
-        data = DMX_PSN.get_data(self.uuid)
-        for idx, slot_data in enumerate(data):
-            if idx > 10:  # hardcoded number of PSN slots
-                return
-            if list(self["position"][idx]) == list(slot_data):
-                return
-
-            x, y, z = slot_data
-            self["position"][idx] = list(data)
-
-            for obj_idx, obj in enumerate(self.collection.objects):
-                if obj_idx == idx:
-                    if x is not None:
-                        obj.location.x = x
-                    if y is not None:
-                        obj.location.y = y
-                    if z is not None:
-                        obj.location.z = z
-                    if current_frame:
-                        obj.keyframe_insert(data_path="location", frame=current_frame)
+        return
 
 
 def generate_tracker_name(new_id):
     dmx = bpy.context.scene.dmx
     while True:
-        name = f"PSN Server {new_id:>03}"
+        name = f"Tracker {new_id:>03}"
         if name in dmx.trackers or name in dmx.collection.children:
             new_id += 1
         else:

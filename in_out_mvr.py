@@ -16,17 +16,12 @@
 # with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import os
-import shutil
 import time
-from types import SimpleNamespace
-import uuid as py_uuid
 from pathlib import Path
 import json
 
 import bpy
 from bpy_extras.io_utils import ExportHelper, ImportHelper
-
-from .logging_setup import DMX_Log
 
 from bpy_extras.io_utils import poll_file_object_drop
 
@@ -36,8 +31,9 @@ from bpy.props import BoolProperty, CollectionProperty, StringProperty
 from bpy.types import Operator
 
 from .i18n import DMX_Lang
-from .panels import profiles as Profiles
 from .gdtf_file import DMX_GDTF_File
+from .logging_setup import DMX_Log
+from .panels import profiles as Profiles
 from .util import (
     clear_status_overlay,
     force_view3d_redraw,
@@ -64,67 +60,6 @@ def _deserialize_mvr_filepaths(serialized):
     except json.JSONDecodeError:
         return []
     return [path for path in filepaths if path]
-
-
-class DMX_OT_LoadShare_MVR(Operator, ImportHelper):
-    """Load and Share My Virtual Rig file via MVR-xchange"""
-
-    bl_idname = "dmx.load_and_share_mvr"
-    bl_label = "Select MVR to Share"
-    bl_options = {"PRESET", "UNDO"}
-
-    filename_ext = ".mvr"
-    filter_glob: StringProperty(default="*.mvr", options={"HIDDEN"})
-
-    def execute(self, context):
-        scene = context.scene
-        dmx = scene.dmx
-        if self.filepath:
-            print("INFO", f"Processing MVR file: {self.filepath}")
-            ADDON_PATH = dmx.get_addon_path()
-            uuid = str(py_uuid.uuid4()).upper()
-            new_file = os.path.join(ADDON_PATH, "assets", "mvrs", f"{uuid}.mvr")
-            shutil.copy(self.filepath, new_file)
-
-            mvr_x = context.window_manager.dmx.mvr_xchange
-            comment = mvr_x.commit_message
-            if comment == "":
-                comment = "File shared"
-            file = Path(self.filepath)
-            commit = SimpleNamespace(
-                file_size=file.stat().st_size,
-                file_uuid=uuid,
-                file_name=file.stem,
-                comment=comment,
-            )
-            dmx.createMVR_Shared_Commit(commit)
-        return {"FINISHED"}
-
-
-class DMX_OT_SaveShared_MVR(Operator, ExportHelper):
-    """Save the MVR file received via MVR-xchange"""
-
-    bl_idname = "dmx.mvr_save_file"
-    bl_label = "Save MVR"
-    bl_options = {"PRESET", "UNDO"}
-
-    filename_ext = ".mvr"
-    uuid: StringProperty(options={"HIDDEN"})
-
-    def execute(self, context):
-        scene = context.scene
-        dmx = scene.dmx
-
-        if self.filepath and self.uuid:
-            print("INFO", f"Processing MVR file: {self.uuid} {self.filepath}")
-            ADDON_PATH = dmx.get_addon_path()
-            mvr_file = os.path.join(ADDON_PATH, "assets", "mvrs", f"{self.uuid}.mvr")
-            try:
-                shutil.copy(mvr_file, self.filepath)
-            except Exception as e:
-                DMX_Log.log.error(f"Error copying MVR file: {e}")
-
-        return {"FINISHED"}
 
 
 class DMX_OT_Import_MVR(Operator, ImportHelper):
@@ -578,8 +513,6 @@ def menu_func_import(self, context):
 
 
 def register():
-    bpy.utils.register_class(DMX_OT_SaveShared_MVR)
-    bpy.utils.register_class(DMX_OT_LoadShare_MVR)
     bpy.utils.register_class(DMX_OT_Import_MVR)
     bpy.utils.register_class(DMX_OT_Import_MVR_Modal)
     bpy.utils.register_class(DMX_OT_Dismiss_Status_Overlay_Modal)
@@ -596,6 +529,4 @@ def unregister():
     bpy.utils.unregister_class(DMX_OT_Dismiss_Status_Overlay_Modal)
     bpy.utils.unregister_class(DMX_OT_Import_MVR_Modal)
     bpy.utils.unregister_class(DMX_OT_Import_MVR)
-    bpy.utils.unregister_class(DMX_OT_LoadShare_MVR)
-    bpy.utils.unregister_class(DMX_OT_SaveShared_MVR)
     bpy.utils.unregister_class(DMX_OT_Export_MVR)

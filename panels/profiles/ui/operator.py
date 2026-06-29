@@ -15,6 +15,8 @@
 # You should have received a copy of the GNU General Public License along
 # with this program. If not, see <https://www.gnu.org/licenses/>.
 
+import bpy
+import os
 
 from bpy.props import IntProperty
 from bpy.types import Operator
@@ -25,33 +27,6 @@ from ....panels import profiles as Profiles
 
 _ = DMX_Lang._
 
-# Import Fixtures
-
-
-class DMX_OP_Import_Fixture_From_Share(Operator):
-    bl_label = _("Import from Share")
-    bl_description = _("Import fixture from GDTF Share")
-    bl_idname = "dmx.import_fixture_from_share"
-    bl_options = {"UNDO"}
-
-    index: IntProperty()
-
-    def execute(self, context):
-        Profiles.controller.DMX_Fixtures_Manager.import_from_share(self, self.index)
-        return {"FINISHED"}
-
-
-class DMX_OP_Import_Fixture_Update_Share(Operator):
-    bl_label = _("Update GDTF Share index")
-    bl_description = _("Update data index of GDTF Share")
-    bl_idname = "dmx.import_fixture_update_share"
-    bl_options = {"UNDO"}
-
-    def execute(self, context):
-        Profiles.controller.DMX_Fixtures_Manager.update_share_index(self)
-        return {"FINISHED"}
-
-
 class DMX_OP_Delete_Local_Fixture(Operator):
     bl_label = _("Delete fixture")
     bl_description = _("Delete fixture from local filesystem")
@@ -61,7 +36,13 @@ class DMX_OP_Delete_Local_Fixture(Operator):
     index: IntProperty()
 
     def execute(self, context):
-        Profiles.controller.DMX_Fixtures_Manager.delete_local_fixture(self, self.index)
+        profiles = bpy.context.window_manager.dmx.imports.local_profiles
+        profile = profiles[self.index]
+        dir_path = bpy.context.scene.dmx.get_addon_path()
+        file_path = os.path.join(dir_path, "assets", "profiles", profile.filename)
+        os.remove(file_path)
+        DMX_GDTF_File.remove_from_data(profile.filename)
+        Profiles.DMX_Fixtures_Local_Profile.loadLocal()
         DMX_GDTF_File.get_manufacturers_list()
         return {"FINISHED"}
 

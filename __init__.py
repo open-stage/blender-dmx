@@ -33,13 +33,8 @@ import bpy
 from bpy.props import PointerProperty
 
 from . import fixture as fixture
-from .acn import DMX_sACN
-from .artnet import DMX_ArtNet
 from .data import DMX_Data
 from .i18n import DMX_Lang
-from .mdns import DMX_Zeroconf
-from .mvrx_protocol import DMX_MVR_X_Client, DMX_MVR_X_Server, DMX_MVR_X_WS_Client
-from .osc import DMX_OSC
 from .panels import profiles as Profiles
 from .gdtf_file import DMX_GDTF_File
 
@@ -73,14 +68,6 @@ def onLoadFile(dummy):  # dummy is the filepath or None
             "PERSISTENT",
         },
     )
-
-    # Stop Networking
-    DMX_ArtNet.disable()
-    DMX_sACN.disable()
-    DMX_OSC.disable()
-    DMX_MVR_X_Server.disable()
-    DMX_Zeroconf.close()
-    DMX_MVR_X_WS_Client.disable()
 
     # register a "bdmx" namespace to get current value of a DMX channel,
     # the syntax is #bdmx(universe, channel(s)), where the channel can be
@@ -165,13 +152,6 @@ def register():
 
 def unregister():
     DMX_GDTF_File.write_cache()
-    # Stop ArtNet
-    DMX_ArtNet.disable()
-    DMX_sACN.disable()
-    DMX_OSC.disable()
-    DMX_MVR_X_Server.disable()
-    DMX_Zeroconf.close()
-    DMX_MVR_X_WS_Client.disable()
 
     try:
         in_out_mvr.unregister()

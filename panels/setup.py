@@ -345,11 +345,6 @@ class DMX_PT_Setup_Extras(Panel):
             "wm.url_open", text="User Guide Online", icon="HELP"
         ).url = "https://blenderdmx.eu/docs/faq/"
 
-        box = layout.column().box()
-        row = box.row()
-        row.prop(dmx, "mvrx_per_project_station_uuid")
-
-
 class DMX_PT_Setup_Import(Panel):
     bl_label = _("Import")
     bl_idname = "DMX_PT_Setup_Import"
@@ -437,7 +432,6 @@ class DMX_PT_Setup_Logging(Panel):
         row = layout.row()
         row.label(text=_("Log filter"))
         row = layout.row(align=True)
-        row.prop(context.window_manager.dmx, "logging_filter_mvr_xchange", toggle=True)
         row.prop(context.window_manager.dmx, "logging_filter_dmx_in", toggle=True)
         row.prop(context.window_manager.dmx, "logging_filter_fixture", toggle=True)
         row = layout.row()
