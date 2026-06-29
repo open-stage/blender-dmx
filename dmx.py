@@ -356,6 +356,7 @@ class DMX(PropertyGroup):
             "dmx.fixture_previous_target", "LEFT_ARROW", "PRESS", ctrl=True, shift=True
         )
         DMX._keymaps.append((km, kmi))
+
     def unregister():
         # unregister keymaps
         for km, kmi in DMX._keymaps:

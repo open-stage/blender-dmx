@@ -180,6 +180,8 @@ def copy_blender_profiles():
                 if not os.path.exists(dest_path):
                     shutil.copy(file, profiles_path_user)
                     DMX_GDTF_File.add_to_data(os.path.basename(file))
+
+
 def get_extension_manifest():
     import toml
 
