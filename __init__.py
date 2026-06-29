@@ -27,7 +27,6 @@
 #    "category": "Lighting",
 # }
 
-import sys
 from threading import Timer
 
 import bpy
@@ -129,21 +128,6 @@ def onActiveChanged(*args):
 
 
 #
-# Hot-Reload
-#
-
-
-def clean_module_imports():
-    modules = dict(sys.modules)
-    for name in modules.keys():
-        if name == __name__:
-            continue
-        if name.startswith(__name__):
-            del sys.modules[name]
-    return None
-
-
-#
 # Blender Add-On
 #
 
@@ -217,8 +201,6 @@ def unregister():
     bpy.app.handlers.load_post.clear()
     bpy.app.handlers.undo_post.clear()
     bpy.msgbus.clear_by_owner(_MSG_BUS_OWNER)
-
-    clean_module_imports()
 
 
 if __name__ == "__main__":

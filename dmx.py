@@ -181,7 +181,6 @@ class DMX(PropertyGroup):
         setup.DMX_OT_Clear_Custom_Data,
         setup.DMX_OT_Copy_Custom_Data,
         setup.DMX_OT_Setup_RemoveDMX,
-        setup.DMX_OT_Reload_Addon,
         setup.DMX_OT_Setup_EnableSelectGeometries,
         fixtures.DMX_OT_IES_Import,
         fixtures.DMX_OT_IES_Remove,
@@ -357,9 +356,6 @@ class DMX(PropertyGroup):
             "dmx.fixture_previous_target", "LEFT_ARROW", "PRESS", ctrl=True, shift=True
         )
         DMX._keymaps.append((km, kmi))
-        kmi = km.keymap_items.new("dmx.reload_addon", "R", "PRESS", ctrl=True, alt=True)
-        DMX._keymaps.append((km, kmi))
-
     def unregister():
         # unregister keymaps
         for km, kmi in DMX._keymaps:

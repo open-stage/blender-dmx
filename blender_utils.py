@@ -16,10 +16,8 @@
 # with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import glob
-import importlib
 import os
 import shutil
-import sys
 from types import SimpleNamespace
 
 import bpy
@@ -182,21 +180,6 @@ def copy_blender_profiles():
                 if not os.path.exists(dest_path):
                     shutil.copy(file, profiles_path_user)
                     DMX_GDTF_File.add_to_data(os.path.basename(file))
-
-
-def reload_addon():
-    try:
-        module = sys.modules.get(__package__)
-        if not module:
-            raise Exception("DMX module could not be loaded")
-        module.unregister()
-        importlib.reload(module)
-        module.register()
-    except Exception as e:
-        return SimpleNamespace(ok=False, error=str(e))
-    return SimpleNamespace(ok=True, error="")
-
-
 def get_extension_manifest():
     import toml
 

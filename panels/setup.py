@@ -24,8 +24,6 @@ from bpy.types import Operator, Panel
 from .. import blender_utils as blender_utils
 from ..gdtf_file import DMX_GDTF_File
 from ..i18n import DMX_Lang
-from ..in_gdtf import DMX_OT_Import_GDTF
-from ..in_out_mvr import DMX_OT_Export_MVR, DMX_OT_Import_MVR
 from ..material import getVolumeScatterMaterial
 from ..panels import profiles as Profiles
 from ..util import getSceneRect, split_text_on_spaces
@@ -614,53 +612,6 @@ class DMX_OT_Copy_Custom_Data(Operator):
 
         if result.ok:
             self.report({"INFO"}, _("Data copied"))
-        else:
-            self.report({"ERROR"}, result.error)
-
-        return {"FINISHED"}
-
-    def invoke(self, context, event):
-        wm = context.window_manager
-        return wm.invoke_props_dialog(self)
-
-
-class DMX_OT_Reload_Addon(Operator):
-    bl_label = _("Reload BlenderDMX addon")
-    bl_idname = "dmx.reload_addon"
-    bl_description = _("Reload the addon, useful during development")
-    bl_options = {"UNDO"}
-
-    def execute(self, context):
-        dmx = context.scene.dmx
-
-        try:
-            bpy.utils.unregister_class(DMX_OT_Import_GDTF)
-            bpy.utils.unregister_class(DMX_OT_Import_MVR)
-            bpy.utils.unregister_class(DMX_OT_Export_MVR)
-        except Exception:
-            ...
-
-        for cls in dmx.classes:
-            try:
-                bpy.utils.unregister_class(cls)
-            except Exception:
-                ...
-
-        for cls in dmx.classes_base:
-            try:
-                bpy.utils.unregister_class(cls)
-            except Exception:
-                ...
-        for cls in dmx.classes_setup:
-            try:
-                bpy.utils.unregister_class(cls)
-            except Exception:
-                ...
-
-        result = blender_utils.reload_addon()
-
-        if result.ok:
-            self.report({"INFO"}, _("Addon reloaded"))
         else:
             self.report({"ERROR"}, result.error)
 
