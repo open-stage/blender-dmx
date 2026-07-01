@@ -22,7 +22,7 @@
 #    "version": (1, 7, 5),
 #    "blender": (3, 4, 0),
 #    "location": "3D View > DMX",
-#    "doc_url": "https://blenderdmx.eu/docs/faq/",
+#    "doc_url": "https://blenderdmx.eu/docs/help/extension",
 #    "tracker_url": "https://github.com/open-stage/blender-dmx/issues",
 #    "category": "Lighting",
 # }

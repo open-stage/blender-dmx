@@ -252,7 +252,7 @@ class DMX_PT_Setup_Volume(Panel):
         col2 = row.column()
         col2.operator(
             "wm.url_open", text="", icon="HELP"
-        ).url = "https://blenderdmx.eu/docs/setup/#beam-lens-diameter-in-cycles"
+        ).url = "https://blenderdmx.eu/docs/help/extension"
 
         if bpy.context.scene.dmx.reduced_beam_diameter_in_cycles == "CUSTOM":
             row0 = box.row()
@@ -277,7 +277,7 @@ class DMX_PT_Setup_Volume(Panel):
         col2 = row.column()
         col2.operator(
             "wm.url_open", text="", icon="HELP"
-        ).url = "https://blenderdmx.eu/docs/laser/"
+        ).url = "https://blenderdmx.eu/docs/help/extension"
 
 
 class DMX_PT_Setup_Viewport(Panel):
@@ -343,7 +343,10 @@ class DMX_PT_Setup_Extras(Panel):
         )
         layout.operator(
             "wm.url_open", text="User Guide Online", icon="HELP"
-        ).url = "https://blenderdmx.eu/docs/faq/"
+        ).url = "https://blenderdmx.eu/docs/help/extension"
+        layout.operator(
+            "wm.url_open", text="ArtNet, sACN, Net… Setup Docs Online", icon="HELP"
+        ).url = "https://blenderdmx.eu/docs/help/extension"
 
 class DMX_PT_Setup_Import(Panel):
     bl_label = _("Import")
@@ -471,7 +474,7 @@ class DMX_PT_Setup(Panel):
             layout.operator("dmx.new_show", text=_("Create New Show"), icon="LIGHT")
             layout.operator(
                 "wm.url_open", text="User Guide Online", icon="HELP"
-            ).url = "https://blenderdmx.eu/docs/faq/"
+            ).url = "https://blenderdmx.eu/docs/help/extension"
             row = layout.row()
             row.template_icon_view(
                 context.scene, "blender_dmx_logo_enum", show_labels=False, scale=10
