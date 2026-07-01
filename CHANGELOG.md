@@ -1,5 +1,9 @@
 ### Changelog
 
+### 2.2.4
+
+* Adjusted code for extension store
+
 ### 2.2.3
 
 * Adjusted code for extension store
