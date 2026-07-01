@@ -25,8 +25,6 @@ from bpy_extras.io_utils import ExportHelper, ImportHelper
 
 from bpy_extras.io_utils import poll_file_object_drop
 
-from threading import Timer
-
 from bpy.props import BoolProperty, CollectionProperty, StringProperty
 from bpy.types import Operator
 
@@ -35,6 +33,7 @@ from .gdtf_file import DMX_GDTF_File
 from .logging_setup import DMX_Log
 from .panels import profiles as Profiles
 from .util import (
+    ensure_dmx_collection_later,
     clear_status_overlay,
     force_view3d_redraw,
     is_status_overlay_dismissible,
@@ -44,12 +43,6 @@ from .util import (
 )
 
 _ = DMX_Lang._
-
-
-def createDMXcollection():
-    dmx = bpy.context.scene.dmx
-    if not dmx.collection:
-        bpy.context.scene.dmx.new()
 
 
 def _deserialize_mvr_filepaths(serialized):
@@ -126,7 +119,7 @@ class DMX_OT_Import_MVR(Operator, ImportHelper):
     def draw(self, context):
         dmx = context.scene.dmx
         if not dmx.collection:
-            Timer(0.5, createDMXcollection, ()).start()
+            ensure_dmx_collection_later(0.5)
         layout = self.layout
         layout.use_property_split = True
         layout.use_property_decorate = False
@@ -222,7 +215,7 @@ class DMX_OT_Export_MVR(Operator, ExportHelper):
     def draw(self, context):
         dmx = context.scene.dmx
         if not dmx.collection:
-            Timer(0.5, createDMXcollection, ()).start()
+            ensure_dmx_collection_later(0.5)
         layout = self.layout
         layout.use_property_split = True
         layout.use_property_decorate = False

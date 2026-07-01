@@ -27,8 +27,6 @@
 #    "category": "Lighting",
 # }
 
-from threading import Timer
-
 import bpy
 from bpy.props import PointerProperty
 
@@ -147,7 +145,7 @@ def register():
     bpy.app.handlers.save_pre.append(onSavePre)
     bpy.app.handlers.undo_post.append(onUndo)
 
-    Timer(1, onRegister, ()).start()
+    bpy.app.timers.register(onRegister, first_interval=1.0)
 
 
 def unregister():
