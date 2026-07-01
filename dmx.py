@@ -26,7 +26,6 @@ import traceback
 import uuid as py_uuid
 from datetime import datetime
 from pathlib import Path
-from threading import Timer
 from types import SimpleNamespace
 from .util import one_float_to_u16
 
@@ -729,7 +728,9 @@ class DMX(PropertyGroup):
         self.ensure_application_uuid()
         # enable in extension
         self.ensure_directories_exist()
-        Timer(1, self.copy_default_profiles_to_user_folder, ()).start()
+        bpy.app.timers.register(
+            self.copy_default_profiles_to_user_folder, first_interval=1.0
+        )
         self.check_python_version()
         self.check_library_versions()
         self.check_blender_version()
