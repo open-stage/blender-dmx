@@ -336,6 +336,9 @@ class DMX_GDTF:
                 obj = ob
                 break
 
+        if obj.animation_data:
+            obj.animation_data.action = None
+            obj.animation_data_clear()
         return obj
 
     @staticmethod

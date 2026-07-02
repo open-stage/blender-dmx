@@ -17,6 +17,7 @@
 
 import logging
 import os
+import json
 import uuid as py_uuid
 from datetime import datetime
 from pathlib import Path
@@ -98,8 +99,18 @@ class DMX_OP_MVR_Import(Operator):
                     ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid.upper()}.mvr"
                 )
                 DMX_Log.log.info(path)
-                dmx.addMVR(path)
-                break
+                return bpy.ops.dmx.import_mvr_modal(
+                    "INVOKE_DEFAULT",
+                    filepaths_json=json.dumps([path]),
+                    import_focus_points=True,
+                    import_fixtures=True,
+                    import_trusses=True,
+                    import_scene_objects=True,
+                    import_supports=True,
+                    import_projectors=True,
+                    import_video_screens=True,
+                    use_high_mesh=False,
+                )
         return {"FINISHED"}
 
 
@@ -123,8 +134,18 @@ class DMX_OP_MVR_WS_Import(Operator):
                     ADDON_PATH, "assets", "mvrs", f"{commit.commit_uuid}.mvr"
                 )
                 DMX_Log.log.info(path)
-                dmx.addMVR(path)
-                break
+                return bpy.ops.dmx.import_mvr_modal(
+                    "INVOKE_DEFAULT",
+                    filepaths_json=json.dumps([path]),
+                    import_focus_points=True,
+                    import_fixtures=True,
+                    import_trusses=True,
+                    import_scene_objects=True,
+                    import_supports=True,
+                    import_projectors=True,
+                    import_video_screens=True,
+                    use_high_mesh=False,
+                )
         return {"FINISHED"}
 
 

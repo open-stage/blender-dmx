@@ -24,6 +24,7 @@ import blf
 
 _status_overlay_handler = None
 _status_overlay_hide_timer_registered = False
+_ensure_dmx_collection_timer_registered = False
 _status_overlay_state = {
     "visible": False,
     "title": "MVR Import",
@@ -181,6 +182,33 @@ def ensure_status_overlay():
         _status_overlay_handler = bpy.types.SpaceView3D.draw_handler_add(
             _status_overlay_draw, (), "WINDOW", "POST_PIXEL"
         )
+
+
+def _ensure_dmx_collection_timer():
+    global _ensure_dmx_collection_timer_registered
+
+    try:
+        scene = getattr(bpy.context, "scene", None)
+        dmx = getattr(scene, "dmx", None) if scene is not None else None
+        if dmx and not dmx.collection:
+            dmx.new()
+    finally:
+        _ensure_dmx_collection_timer_registered = False
+    return None
+
+
+def ensure_dmx_collection_later(first_interval=0.5):
+    global _ensure_dmx_collection_timer_registered
+
+    scene = getattr(bpy.context, "scene", None)
+    dmx = getattr(scene, "dmx", None) if scene is not None else None
+    if dmx and dmx.collection:
+        return
+    if _ensure_dmx_collection_timer_registered:
+        return
+
+    bpy.app.timers.register(_ensure_dmx_collection_timer, first_interval=first_interval)
+    _ensure_dmx_collection_timer_registered = True
 
 
 def show_status_overlay(

@@ -62,6 +62,8 @@ class DMX_MVR_Xchange_Client(PropertyGroup):
             self.icon_id = "BLENDER_DMX"
         elif any("Vectorworks" in x for x in [self.provider, self.station_name]):
             self.icon_id = "VW"
+        elif any("DMXRouter" in x for x in [self.provider, self.station_name]):
+            self.icon_id = "DR"
         return
 
     def onSubscribe(self, context):

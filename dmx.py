@@ -26,7 +26,6 @@ import traceback
 import uuid as py_uuid
 from datetime import datetime
 from pathlib import Path
-from threading import Timer
 from types import SimpleNamespace
 from .util import one_float_to_u16
 
@@ -181,7 +180,6 @@ class DMX(PropertyGroup):
         setup.DMX_OT_Clear_Custom_Data,
         setup.DMX_OT_Copy_Custom_Data,
         setup.DMX_OT_Setup_RemoveDMX,
-        setup.DMX_OT_Reload_Addon,
         setup.DMX_OT_Setup_EnableSelectGeometries,
         fixtures.DMX_OT_IES_Import,
         fixtures.DMX_OT_IES_Remove,
@@ -298,6 +296,7 @@ class DMX(PropertyGroup):
         )
         DMX.custom_icons.load("GMA3", os.path.join(path, "ma.png"), "IMAGE")
         DMX.custom_icons.load("VW", os.path.join(path, "vw.png"), "IMAGE")
+        DMX.custom_icons.load("DR", os.path.join(path, "dr.png"), "IMAGE")
         DMX.custom_icons.load(
             "GDTF_FILE", os.path.join(path, "gdtf_file_icon_small.png"), "IMAGE"
         )
@@ -355,8 +354,6 @@ class DMX(PropertyGroup):
         kmi = km.keymap_items.new(
             "dmx.fixture_previous_target", "LEFT_ARROW", "PRESS", ctrl=True, shift=True
         )
-        DMX._keymaps.append((km, kmi))
-        kmi = km.keymap_items.new("dmx.reload_addon", "R", "PRESS", ctrl=True, alt=True)
         DMX._keymaps.append((km, kmi))
 
     def unregister():
@@ -731,7 +728,9 @@ class DMX(PropertyGroup):
         self.ensure_application_uuid()
         # enable in extension
         self.ensure_directories_exist()
-        Timer(1, self.copy_default_profiles_to_user_folder, ()).start()
+        bpy.app.timers.register(
+            self.copy_default_profiles_to_user_folder, first_interval=1.0
+        )
         self.check_python_version()
         self.check_library_versions()
         self.check_blender_version()
