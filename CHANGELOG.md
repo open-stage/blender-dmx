@@ -1,5 +1,15 @@
 ### Changelog
 
+### 2.3.0
+
+* Rename to BlenderDMX in the BlenderDMX.eu repository
+* Remove 3D animation data during GDTF files import
+* Translated using Weblate:
+    - Tamil: தமிழ்நேரம்
+    - Spanish: Libre
+    - Portuguese: António Oliveira
+    - Kazakh: Azamat Аituganov
+
 ### 2.2.2
 
 * Add progressive MVR loading to MVR-xchange
