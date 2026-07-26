@@ -2071,25 +2071,20 @@ class DMX_Fixture(PropertyGroup):
         DMX_Log.log.info(
             ("set dimmer, shutter, strobe", dimmer, shutter, strobe, geometry)
         )
-        # 1. Blindagem contra 'NoneType' (Caso o GDTF não tenha Dimmer ou Shutter)
         if dimmer is None:
-            dimmer = 1.0  # Assume intensidade máxima se não houver canal de dimmer
+            dimmer = 1.0 
         if shutter is None:
-            shutter = 1.0  # Assume passagem livre se não houver obturador
+            shutter = 1.0 
 
-        # 2. Tratamento matemático seguro do Shutter
-    # Se o shutter for maior que 0.1, consideramos que está aberto.
         shutter_multiplier = 1 if shutter > 0.1 else 0
-        dimmer = dimmer * shutter_multiplier
+        dimmer = round((dimmer * shutter_multiplier),2)
 
-    # 3. Tratamento matemático do Strobe (Prevenindo divisão por zero e bug do módulo)
         fps = bpy.context.scene.render.fps
         max_strobe = fps / 2.0
         if strobe == 0 or strobe is None:  
             strobe = None
         elif strobe > max_strobe:
-            strobe = max_strobe # get a discreet value from channel function
-            
+            strobe = round(max_strobe)           
         dmx = bpy.context.scene.dmx
         if geometry is not None:
             geometry = geometry.replace(" ", "_")
