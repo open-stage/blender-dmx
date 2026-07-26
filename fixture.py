@@ -2084,6 +2084,7 @@ class DMX_Fixture(PropertyGroup):
 
     # 3. Tratamento matemático do Strobe (Prevenindo divisão por zero e bug do módulo)
         fps = bpy.context.scene.render.fps
+        max_strobe = fps / 2.0
         if strobe == 0 or strobe is None:  
             strobe = None
         else:
