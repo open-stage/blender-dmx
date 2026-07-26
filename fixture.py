@@ -2087,11 +2087,7 @@ class DMX_Fixture(PropertyGroup):
         max_strobe = fps / 2.0
         if strobe == 0 or strobe is None:  
             strobe = None
-        else:
-        # TETO DE FREQUÊNCIA: Limita o strobe a (FPS / 2) para a matemática do Driver nunca quebrar.
-        # Ex: Em 30 fps, o máximo permitido na conta será 15 Hz.
-            max_strobe = fps / 2.0
-        if strobe > max_strobe:
+        elif strobe > max_strobe:
             strobe = max_strobe # get a discreet value from channel function
             
         dmx = bpy.context.scene.dmx
