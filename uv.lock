@@ -13,7 +13,7 @@ wheels = [
 
 [[package]]
 name = "blender-dmx"
-version = "2.1.7"
+version = "2.3.0"
 source = { virtual = "." }
 dependencies = [
     { name = "pygdtf" },
@@ -31,8 +31,8 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "pygdtf", specifier = ">=1.4.3" },
-    { name = "pymvr", specifier = ">=1.0.6" },
+    { name = "pygdtf", specifier = ">=1.4.5" },
+    { name = "pymvr", specifier = ">=1.0.7" },
 ]
 
 [package.metadata.requires-dev]
@@ -134,18 +134,18 @@ wheels = [
 
 [[package]]
 name = "pygdtf"
-version = "1.4.4"
+version = "1.4.5"
 source = { registry = "https://pypi.org/simple" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/9d/30/fd2ff89c7dd95535c63413c4d650b0587182fa9d2ebe546c4b93998ccdf8/pygdtf-1.4.4-py3-none-any.whl", hash = "sha256:7f652b4dd6b50af4d885dbe2224f8028a69262d61cdddbac1af0a1b0be1a5fc1", size = 53979, upload-time = "2026-02-01T18:26:19.916Z" },
+    { url = "https://files.pythonhosted.org/packages/f9/b4/ba4c8b3bcfb4c50b6edf4cbf0207dc26d9faa062077e68b5afe60cb58ef0/pygdtf-1.4.5-py3-none-any.whl", hash = "sha256:852c206a04e978b142be259967676f9acf450328aa43c94b69f8a343369fa447", size = 54367, upload-time = "2026-03-31T18:09:06.196Z" },
 ]
 
 [[package]]
 name = "pymvr"
-version = "1.0.6"
+version = "1.0.7"
 source = { registry = "https://pypi.org/simple" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/61/02/e2437384ea377349950b3a0c8acd9985d5df9dbf1fd7065bd15afcce980b/pymvr-1.0.6-py3-none-any.whl", hash = "sha256:bd45b56702e574774744389e0e0acfedcc18d68419007ba195f606b15ee901c8", size = 15395, upload-time = "2025-12-22T21:38:28.442Z" },
+    { url = "https://files.pythonhosted.org/packages/12/43/8e5ab72d8ba792f719463b888c1fc20fd5cb8bfdd2d067c55b1e0a9b506f/pymvr-1.0.7-py3-none-any.whl", hash = "sha256:1387c17971b3ed59f1e1284cdeea20f189d93e94f7a8da1b5a3617c5f024a1fb", size = 15418, upload-time = "2026-04-03T07:45:57.969Z" },
 ]
 
 [[package]]
