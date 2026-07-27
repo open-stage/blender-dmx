@@ -2074,6 +2074,8 @@ class DMX_Fixture(PropertyGroup):
         if strobe == 0:  # prevent division by zero
             strobe = None
             shutter = 0
+        elif strobe is not None:
+            strobe = min(strobe, bpy.context.scene.render.fps / 2)
 
         dimmer = dimmer * round(shutter)  # get a discreet value from channel function
         dmx = bpy.context.scene.dmx
@@ -2094,7 +2096,7 @@ class DMX_Fixture(PropertyGroup):
                         strength_input.driver_remove("default_value")
                         if strobe is not None:
                             driver = strength_input.driver_add("default_value").driver
-                            driver.expression = f"1 if (frame % ({bpy.context.scene.render.fps} / {strobe})) < 1 else 0 * {dimmer}"
+                            driver.expression = f"(1 if (frame % ({bpy.context.scene.render.fps} / {strobe})) < 1 else 0) * {dimmer}"
                         else:
                             strength_input.default_value = dimmer
 
@@ -2105,7 +2107,7 @@ class DMX_Fixture(PropertyGroup):
                     strength_input.driver_remove("default_value")
                     if strobe is not None:
                         driver = strength_input.driver_add("default_value").driver
-                        driver.expression = f"1 if (frame % ({bpy.context.scene.render.fps} / {strobe})) < 1 else 0 * {dimmer}"
+                        driver.expression = f"(1 if (frame % ({bpy.context.scene.render.fps} / {strobe})) < 1 else 0) * {dimmer}"
                     else:
                         strength_input.default_value = dimmer
 
