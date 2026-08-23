@@ -297,6 +297,7 @@ def get_child_list_steps(
                     import_globals,
                     layer_collection,
                     parent_blender_object,
+                    mvr_layer_collection=layer_collection,
                 )
             yield _yield_import_step("truss", truss_obj)
 
@@ -330,6 +331,7 @@ def get_child_list_steps(
                     import_globals,
                     layer_collection,
                     parent_blender_object,
+                    mvr_layer_collection=layer_collection,
                 )
             yield _yield_import_step("projector", projector_obj)
 
@@ -363,6 +365,7 @@ def get_child_list_steps(
                     import_globals,
                     layer_collection,
                     parent_blender_object,
+                    mvr_layer_collection=layer_collection,
                 )
             yield _yield_import_step("support", support_obj)
 
@@ -396,6 +399,7 @@ def get_child_list_steps(
                     import_globals,
                     layer_collection,
                     parent_blender_object,
+                    mvr_layer_collection=layer_collection,
                 )
             yield _yield_import_step("video screen", video_obj)
 
@@ -429,6 +433,7 @@ def get_child_list_steps(
                     import_globals,
                     layer_collection,
                     parent_blender_object,
+                    mvr_layer_collection=layer_collection,
                 )
             yield _yield_import_step("scene object", scene_obj)
 
@@ -584,6 +589,7 @@ def process_mvr_object(
     import_globals,
     group_collect,
     parent_blender_object=None,
+    mvr_layer_collection=None,
 ):
     uid = mvr_object.uuid
     name = mvr_object.name
@@ -694,6 +700,58 @@ def process_mvr_object(
         dmx_mvr_object.uuid = mvr_object.uuid
         dmx_mvr_object.object_type = mvr_object.__class__.__name__
         dmx_mvr_object.collection = bpy.data.collections.new(mvr_object.uuid)
+
+    # Some MVR object types can carry both a Symbol and a GDTF reference. A
+    # GDTF is the authoritative representation in that case. Import it as a
+    # regular BlenderDMX fixture and only use the Symbol path below when no
+    # usable GDTF is present.
+    gdtf_spec = (getattr(mvr_object, "gdtf_spec", None) or "").strip()
+    if gdtf_spec:
+        gdtf_object = SimpleNamespace(
+            name=name,
+            uuid=uid,
+            gdtf_spec=gdtf_spec,
+            gdtf_mode=getattr(mvr_object, "gdtf_mode", None),
+            matrix=mvr_object.matrix,
+            classing=classing,
+            addresses=pymvr.Addresses(),
+            color=pymvr.Color(str_repr="0.312712,0.329008,100.000000"),
+            connections=None,
+            protocols=None,
+            fixture_id="",
+            custom_id=0,
+            fixture_id_numeric=0,
+            unit_number=0,
+            focus=None,
+        )
+        added_fixture = add_mvr_fixture(
+            dmx,
+            mscale,
+            mvr_scene,
+            os.path.join(current_path, "assets", "profiles"),
+            gdtf_object,
+            mvr_idx,
+            0,
+            [],
+            import_globals,
+            fallback_profile=None,
+        )
+        if added_fixture is not None:
+            layer = mvr_layer_collection or group_collect
+            added_fixture["layer_name"] = layer.name
+            added_fixture["layer_uuid"] = layer.get("UUID", None)
+            if parent_blender_object is not None:
+                root_object = next(
+                    (
+                        fixture_object.object
+                        for fixture_object in added_fixture.objects
+                        if fixture_object.name == "Root"
+                    ),
+                    None,
+                )
+                if root_object is not None:
+                    root_object.parent = parent_blender_object
+            return
 
     if isinstance(mvr_object, pymvr.Symbol):
         symbols.append(mvr_object)
@@ -905,6 +963,7 @@ def add_mvr_fixture(
     fixture_group=None,
     parent_object=None,
     layer_collection=None,
+    fallback_profile="BlenderDMX@RysyParLED@version7.gdtf",
 ):
     """Add fixture to the scene"""
 
@@ -926,7 +985,9 @@ def add_mvr_fixture(
         DMX_Log.log.error(
             f"{fixture.gdtf_spec} not in mvr_scene._package.namelist, using a generic PAR"
         )
-        fixture.gdtf_spec = "BlenderDMX@RysyParLED@version7.gdtf"
+        if fallback_profile is None:
+            return None
+        fixture.gdtf_spec = fallback_profile
     for address in fixture.addresses.addresses:
         dmx.ensureUniverseExists(address.universe)
 
@@ -1006,7 +1067,12 @@ def add_mvr_fixture(
                 use_high_mesh=import_globals.use_high_mesh,
             )
         except:
-            fixture.gdtf_spec = "BlenderDMX@RysyParLED@version7.gdtf"
+            if fallback_profile is None:
+                DMX_Log.log.exception(
+                    f"Unable to import GDTF for MVR object {fixture.name}"
+                )
+                return None
+            fixture.gdtf_spec = fallback_profile
 
             dmx.addFixture(
                 fixture.gdtf_spec,
@@ -1096,6 +1162,8 @@ def add_mvr_fixture(
                 import_globals,
                 focus_fixture.collection,
             )
+
+    return added_fixture
 
 
 def perform_direct_parenting(dmx):
