@@ -1,4 +1,4 @@
-# Copyright (C) 2020 Hugo Aboud, Sebastian, vanous
+# Copyright (C) 2024 Sebastian, vanous
 #
 # This file is part of BlenderDMX.
 #
@@ -1343,7 +1343,6 @@ class DMX(PropertyGroup):
         )
 
     # fmt: on
-
     # fmt: off
     # # Groups > List
 

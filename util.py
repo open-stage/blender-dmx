@@ -1,4 +1,4 @@
-# Copyright (C) 2020 Hugo Aboud, Kaspars Jaudzems, vanous
+# Copyright (C) 2020 Hugo Aboud, vanous
 #
 # This file is part of BlenderDMX.
 #
@@ -207,9 +207,7 @@ def ensure_dmx_collection_later(first_interval=0.5):
     if _ensure_dmx_collection_timer_registered:
         return
 
-    bpy.app.timers.register(
-        _ensure_dmx_collection_timer, first_interval=first_interval
-    )
+    bpy.app.timers.register(_ensure_dmx_collection_timer, first_interval=first_interval)
     _ensure_dmx_collection_timer_registered = True
 
 

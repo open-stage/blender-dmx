@@ -1,4 +1,20 @@
 #!/bin/env python3
+# Copyright (C) 2024 vanous
+#
+# This file is part of BlenderDMX.
+#
+# BlenderDMX is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation, either version 3 of the License, or (at your option)
+# any later version.
+#
+# BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <https://www.gnu.org/licenses/>.
 
 from __future__ import annotations
 
@@ -25,7 +41,7 @@ class PrintStatementParser(ast.NodeVisitor):
 
     def visit_Call(self, node: ast.Call) -> None:
         if isinstance(node.func, ast.Name) and node.func.id == "print":
-            if isinstance(node.args[0], ast.Constant):
+            if node.args and isinstance(node.args[0], ast.Constant):
                 if node.args[0].value == "INFO":
                     return
             st = Print(node.lineno, node.col_offset, node.func.id, "called")
@@ -38,17 +54,17 @@ def check_file(filename: str) -> int:
         with open(filename, "rb") as f:
             ast_obj = ast.parse(f.read(), filename=filename)
     except SyntaxError:
-        print(f"{filename} - Could not parse ast")
-        print()
-        print("\t" + traceback.format_exc().replace("\n", "\n\t"))
-        print()
+        print("INFO", f"{filename} - Could not parse ast")
+        print("INFO")
+        print("INFO", "\t" + traceback.format_exc().replace("\n", "\n\t"))
+        print("INFO")
         return 1
 
     visitor = PrintStatementParser()
     visitor.visit(ast_obj)
 
     for bp in visitor.prints:
-        print(f"{filename}:{bp.line}:{bp.col}: {bp.name} {bp.reason}")
+        print("INFO", f"{filename}:{bp.line}:{bp.col}: {bp.name} {bp.reason}")
 
     return int(bool(visitor.prints))
 

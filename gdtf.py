@@ -1,4 +1,4 @@
-# Copyright (C) 2020 Hugo Aboud, Kaspars Jaudzems, Lily Hopkins, Sebastian, shueja-personal, vanous
+# Copyright (C) 2021 Hugo Aboud, Lily Hopkins, Sebastian, shueja-personal, vanous
 #
 # This file is part of BlenderDMX.
 #

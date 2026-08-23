@@ -27,6 +27,7 @@ from ....panels import profiles as Profiles
 
 _ = DMX_Lang._
 
+
 class DMX_OP_Delete_Local_Fixture(Operator):
     bl_label = _("Delete fixture")
     bl_description = _("Delete fixture from local filesystem")

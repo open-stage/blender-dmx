@@ -1,4 +1,4 @@
-# Copyright (C) 2020 Hugo Aboud, Kaspars Jaudzems, vanous
+# Copyright (C) 2020 Hugo Aboud, vanous
 #
 # This file is part of BlenderDMX.
 #
@@ -347,6 +347,7 @@ class DMX_PT_Setup_Extras(Panel):
         layout.operator(
             "wm.url_open", text="ArtNet, sACN, Net… Setup Docs Online", icon="HELP"
         ).url = "https://blenderdmx.eu/docs/help/extension"
+
 
 class DMX_PT_Setup_Import(Panel):
     bl_label = _("Import")
