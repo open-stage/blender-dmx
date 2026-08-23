@@ -1,3 +1,20 @@
+# Copyright (C) 2023 Hugo Aboud, vanous
+#
+# This file is part of BlenderDMX.
+#
+# BlenderDMX is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation, either version 3 of the License, or (at your option)
+# any later version.
+#
+# BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <https://www.gnu.org/licenses/>.
+
 import os
 import re
 import shutil
@@ -32,34 +49,36 @@ if branch_name is None:
 set_version = read_version()
 # branch_name = "release_v1.0.3"
 branch_version = branch_name[9:]
-print(branch_name)
+print("INFO", branch_name)
 
 release_name = branch_name
 if re.match(r"^release_v\d+\.\d+\.\d+$", branch_name):
     print(
-        'Warning: This is not a release branch. The branch should be named "release_vX.Y.Z".'
+        "INFO",
+        'Warning: This is not a release branch. The branch should be named "release_vX.Y.Z".',
     )
     release_name = branch_name[8:]
 
 
 if set_version != branch_version:
     if len(sys.argv) > 1:  # any command line argument will do to skip version check
-        print("Continue for local testing")
+        print("INFO", "Continue for local testing")
     else:
         print(
-            f"Branch version {branch_version} and add-on version {set_version} do not match. Exit!"
+            "INFO",
+            f"Branch version {branch_version} and add-on version {set_version} do not match. Exit!",
         )
         sys.exit()
 
 zip_name = "blenderDMX_" + release_name
 
-print("---------")
-print("branch name: " + branch_name)
-print("release name: " + release_name)
-print("zip name: " + zip_name + ".zip")
-print("---------")
+print("INFO", "---------")
+print("INFO", "branch name: " + branch_name)
+print("INFO", "release name: " + release_name)
+print("INFO", "zip name: " + zip_name + ".zip")
+print("INFO", "---------")
 
-print("Resetting build directory...")
+print("INFO", "Resetting build directory...")
 if os.path.exists(BUILD_DIR):
     shutil.rmtree(BUILD_DIR)
 os.mkdir(BUILD_DIR)
@@ -70,7 +89,7 @@ ignore = ignore_patterns(
     "*.pyc", "__pycache__", ".mypy_cache", ".pytest_cache", "data.json"
 )
 
-print("Copying dependencies to build directory...")
+print("INFO", "Copying dependencies to build directory...")
 copytree("assets", BUILD_DIR + "/dmx/assets", ignore=ignore)
 copytree("io_scene_3ds", BUILD_DIR + "/dmx/io_scene_3ds", ignore=ignore)
 copytree("panels", BUILD_DIR + "/dmx/panels", ignore=ignore)
@@ -87,25 +106,25 @@ copytree("async_timeout", BUILD_DIR + "/dmx/async_timeout", ignore=ignore)
 copytree("preferences", BUILD_DIR + "/dmx/preferences", ignore=ignore)
 copytree("i18n", BUILD_DIR + "/dmx/i18n", ignore=ignore)
 
-print("Copying source to build directory...")
+print("INFO", "Copying source to build directory...")
 for filename in os.listdir("."):
     if filename.endswith(".py"):
         shutil.copy2(filename, BUILD_DIR + "/dmx")
 
-print("Copying metadata to build directory...")
+print("INFO", "Copying metadata to build directory...")
 shutil.copy2("CHANGELOG.md", BUILD_DIR + "/dmx")
 shutil.copy2("LICENSE", BUILD_DIR + "/dmx")
 shutil.copy2("README.md", BUILD_DIR + "/dmx")
 
-print("Zipping release...")
+print("INFO", "Zipping release...")
 shutil.make_archive(zip_name, "zip", BUILD_DIR)
 
 if len(sys.argv) > 1:  # any command line argument will do to skip version check
     if sys.argv[1] == "github":
-        print("Keeping the build directory")
+        print("INFO", "Keeping the build directory")
         sys.exit()
 
-print("Clearing build directory...")
+print("INFO", "Clearing build directory...")
 shutil.rmtree(BUILD_DIR)
 
-print("Build successfull! Have a great release!")
+print("INFO", "Build successfull! Have a great release!")
