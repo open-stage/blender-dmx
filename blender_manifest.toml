@@ -26,11 +26,12 @@ wheels = [
   "wheels/io_scene_3ds-2.8.6-py3-none-any.whl",
   "wheels/toml-0.10.2-py2.py3-none-any.whl",
   "wheels/websocket_client-1.8.0-py3-none-any.whl",
+  "wheels/sinette-0.1.0-py3-none-any.whl",
 ]
 
 [permissions]
 files = "Import GDTF devices. Import/Export MVR scenes and project data"
-network = "For GDTF Share, sACN, Art-Net, OSC, PSN, MVR-xchange"
+network = "For GDTF Share, sACN, Sinette, Art-Net, OSC, PSN, MVR-xchange"
 
 [build]
 paths_exclude_pattern = [
@@ -61,4 +62,3 @@ paths_exclude_pattern = [
   "i18n/babel.cfg",
   "i18n/messages.pot",
 ]
-

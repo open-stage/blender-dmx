@@ -19,6 +19,7 @@ import os
 import re
 import shutil
 import sys
+import zipfile
 from shutil import copytree, ignore_patterns
 
 from pygit2 import Repository
@@ -97,6 +98,7 @@ copytree("pygdtf", BUILD_DIR + "/dmx/pygdtf", ignore=ignore)
 copytree("pypsn", BUILD_DIR + "/dmx/pypsn", ignore=ignore)
 copytree("pymvr", BUILD_DIR + "/dmx/pymvr", ignore=ignore)
 copytree("sacn", BUILD_DIR + "/dmx/sacn", ignore=ignore)
+copytree("sinette", BUILD_DIR + "/dmx/sinette", ignore=ignore)
 copytree("ifaddr", BUILD_DIR + "/dmx/ifaddr", ignore=ignore)
 copytree("oscpy", BUILD_DIR + "/dmx/oscpy", ignore=ignore)
 copytree("share_api_client", BUILD_DIR + "/dmx/share_api_client", ignore=ignore)
