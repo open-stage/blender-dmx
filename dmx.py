@@ -48,6 +48,7 @@ from . import fixture
 from . import param as param
 from . import tracker as tracker
 from .acn import DMX_sACN
+from .sinette import DMX_Sinette
 from .psn import DMX_PSN
 from .artnet import DMX_ArtNet
 from .blender_utils import copy_blender_profiles, get_application_version
@@ -86,6 +87,7 @@ from .panels.protocols import osc as panels_osc
 from .panels.protocols import protocols as panels_protocols
 from .panels.protocols import psn as panels_psn
 from .panels.protocols import sacn as panels_sacn
+from .panels.protocols import sinette as panels_sinette
 from .panels.protocols import universes as panels_universes
 from .preferences import DMX_Preferences, DMX_Regenrate_UUID
 from .universe import DMX_Universe
@@ -156,6 +158,7 @@ class DMX(PropertyGroup):
         panels_live.DMX_PT_DMX_LiveDMX,
         panels_artnet.DMX_PT_DMX_ArtNet,
         panels_sacn.DMX_PT_DMX_sACN,
+        panels_sinette.DMX_PT_DMX_Sinette,
         setup.DMX_OT_Setup_Volume_Create,
         setup.DMX_PT_Setup_Volume,
         setup.DMX_PT_Setup_Viewport,
@@ -703,6 +706,8 @@ class DMX(PropertyGroup):
         dmx.artnet_status = "offline"
         dmx.sacn_enabled = False
         dmx.sacn_status = "offline"
+        dmx.sinette_enabled = False
+        dmx.sinette_status = "offline"
         dmx.osc_enabled = False
         dmx.mvrx_enabled = False
         dmx.mvrx_socket_client_enabled = False
@@ -1510,6 +1515,14 @@ class DMX(PropertyGroup):
             self.register_render_toggle(False)
             DMX_sACN.disable()
 
+    def onSinetteEnable(self, context):
+        if self.sinette_enabled:
+            DMX_Sinette.enable()
+            self.register_render_toggle(True)
+        else:
+            self.register_render_toggle(False)
+            DMX_Sinette.disable()
+
     # # DMX > ArtNet > Enable
 
     def onArtNetEnable(self, context):
@@ -1533,6 +1546,13 @@ class DMX(PropertyGroup):
         description=_("Enables the input of DMX data throught sACN on all detected network interfaces"),
         default = False,
         update = onsACNEnable
+    )
+
+    sinette_enabled : BoolProperty(
+        name = _("Enable Sinette Input"),
+        description = _("Enables the input of DMX data through Sinette"),
+        default = False,
+        update = onSinetteEnable
     )
 
     osc_enabled : BoolProperty(
@@ -1596,6 +1616,11 @@ class DMX(PropertyGroup):
     )
     sacn_status : StringProperty(
         name = _("sACN Status"),
+        default = "offline"
+    )
+
+    sinette_status : StringProperty(
+        name = _("Sinette Status"),
         default = "offline"
     )
 
@@ -2811,6 +2836,8 @@ class DMX(PropertyGroup):
             if self.artnet_enabled:
                 return
             if self.sacn_enabled:
+                return
+            if self.sinette_enabled:
                 return
             if is_running:
                 self._wm_dmx.render_running = False

@@ -22,6 +22,7 @@ network_options_list = (
     ("BLENDERDMX", "BlenderDMX", "Set DMX buffer from the Programmer"),
     ("ARTNET", "ArtNet", "Read DMX buffer from ArtNet"),
     ("sACN", "sACN", "Read DMX buffer from sACN"),
+    ("Sinette", "Sinette", "Read DMX buffer from Sinette"),
 )
 
 
