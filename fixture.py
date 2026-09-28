@@ -804,7 +804,12 @@ class DMX_Fixture(PropertyGroup):
                 self.objects.add()
                 self.objects[-1].name = "Target"
                 self.objects["Target"].object = links[obj.name]
-                self.objects["Target"].object["uuid"] = str(py_uuid.uuid4())
+                temp_uuid = str(py_uuid.uuid4())
+                self.objects["Target"].object["uuid"] = temp_uuid
+                self.objects["Target"].object["Target ID"] = temp_uuid
+                # one of these UUIDs is duplicate but as they are used also for the PSN trackers,
+                # we are being careful here.
+
             elif base is not None and base.name == obj.name:
                 self.objects.add()
                 self.objects[-1].name = "Root"
@@ -2984,6 +2989,8 @@ class DMX_Fixture(PropertyGroup):
                 matrix = self._matrix_to_mvr_units(obj.object.matrix_world)
             if "Target" in obj.name:
                 uuid_focus_point = obj.object.get("Target ID", None)
+                if uuid_focus_point is None:
+                    uuid_focus_point = obj.object.get("uuid", None)
 
         r, g, b = list(self.gel_color_rgb)[:3]
         x, y, z = rgb2xyY(r, g, b)
@@ -3064,6 +3071,10 @@ class DMX_Fixture(PropertyGroup):
                 matrix = None
                 uuid_ = None
                 uuid_ = obj.object.get("Target ID", None)
+                if uuid_ is None:
+                    uuid_ = obj.object.get("uuid", None)
+                    # fallback for older blender files
+
                 if uuid_ is None:
                     return
                 matrix = self._matrix_to_mvr_units(obj.object.matrix_world)
