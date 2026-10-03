@@ -154,6 +154,7 @@ class DMX(PropertyGroup):
         panels_universes.DMX_UL_Universe,
         panels_universes.DMX_MT_Universe,
         panels_universes.DMX_OP_Universe_Add,
+        panels_universes.DMX_OP_Universe_Remove,
         panels_universes.DMX_PT_DMX_Universes,
         panels_live.DMX_PT_DMX_LiveDMX,
         panels_artnet.DMX_PT_DMX_ArtNet,
