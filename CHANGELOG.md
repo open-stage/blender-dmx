@@ -1,5 +1,20 @@
 ### Changelog
 
+### 2.3.1
+
+* Added translation using Weblate (Ukrainian) [Ahha]
+* Add option to remove a Universe, use Blender style UI for universe
+  adding/removing
+* Fix Focus Point on Blender created data, fix UUID assignment, for correct MVR
+  export
+* Set SO_REUSEPORT on the Art-Net socket so a console on the same machine can
+  share port 6454
+* Initial support for Sinette protocol - a very simple plain data receiver
+  added
+* Use non-fixture GDTF data during import from MVR
+* Fix emitter dimmer while strobing, cap strobe to fps/2 thanks to
+  @EricNakamura in #363
+
 ### 2.3.0
 
 * Rename to BlenderDMX in the BlenderDMX.eu repository
