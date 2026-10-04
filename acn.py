@@ -1,4 +1,4 @@
-# Copyright (C) 2022 Hugo Aboud, Kaspars Jaudzems, Mark Steward, vanous
+# Copyright (C) 2023 Mark Steward, vanous
 #
 # This file is part of BlenderDMX.
 #

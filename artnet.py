@@ -1,4 +1,4 @@
-# Copyright (C) 2020 Hugo Aboud, Kaspars Jaudzems, Michael Wigard, vanous
+# Copyright (C) 2021 Hugo Aboud, Kaspars Jaudzems, Michael Wigard, vanous
 #
 # This file is part of BlenderDMX.
 #
@@ -26,6 +26,11 @@ from socket import (
     SOL_SOCKET,
     socket,
 )
+
+try:
+    from socket import SO_REUSEPORT
+except ImportError:  # Windows
+    SO_REUSEPORT = None
 
 import bpy
 
@@ -105,6 +110,12 @@ class DMX_ArtNet(threading.Thread):
         self._socket = socket(AF_INET, SOCK_DGRAM)
         self._socket.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
         self._socket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
+        if SO_REUSEPORT is not None:
+            # On macOS and the BSDs a wildcard UDP port is shared only when
+            # every socket sets SO_REUSEPORT; without it a console already
+            # bound to 6454 on the same machine (QLC+, Qt sets it) makes
+            # this bind fail with EADDRINUSE.
+            self._socket.setsockopt(SOL_SOCKET, SO_REUSEPORT, 1)
         try:
             self._socket.bind((ip_addr, ARTNET_PORT))
         except OSError as e:

@@ -32,6 +32,7 @@ from bpy.props import PointerProperty
 
 from . import fixture as fixture
 from .acn import DMX_sACN
+from .sinette import DMX_Sinette
 from .artnet import DMX_ArtNet
 from .data import DMX_Data
 from .i18n import DMX_Lang
@@ -75,6 +76,7 @@ def onLoadFile(dummy):  # dummy is the filepath or None
     # Stop Networking
     DMX_ArtNet.disable()
     DMX_sACN.disable()
+    DMX_Sinette.disable()
     DMX_OSC.disable()
     DMX_MVR_X_Server.disable()
     DMX_Zeroconf.close()
@@ -166,6 +168,7 @@ def unregister():
     # Stop ArtNet
     DMX_ArtNet.disable()
     DMX_sACN.disable()
+    DMX_Sinette.disable()
     DMX_OSC.disable()
     DMX_MVR_X_Server.disable()
     DMX_Zeroconf.close()

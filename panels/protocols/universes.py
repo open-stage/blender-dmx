@@ -19,6 +19,7 @@ import bpy
 from bpy.props import EnumProperty, IntProperty
 from bpy.types import Menu, Operator, Panel, UIList
 
+from ...data import DMX_Data
 from ...i18n import DMX_Lang
 from ...universe import network_options_list
 
@@ -70,12 +71,39 @@ class DMX_OP_Universe_Add(Operator):
 
     def invoke(self, context, event):
         dmx = context.scene.dmx
-        universe = dmx.get_selected_universe()
-        if universe is not None:
-            self.universe_id = universe.id
-            self.input = universe.input
+        self.universe_id = len(dmx.universes)
         wm = context.window_manager
         return wm.invoke_props_dialog(self)
+
+
+class DMX_OP_Universe_Remove(Operator):
+    bl_label = _("Remove Universe")
+    bl_idname = "dmx.remove_universe"
+    bl_description = _("Remove the selected DMX universe")
+    bl_options = {"UNDO"}
+
+    def execute(self, context):
+        dmx = context.scene.dmx
+        index = dmx.universe_list_i
+        if index < 0 or index >= len(dmx.universes):
+            return {"CANCELLED"}
+
+        replacement = max(0, index - 1)
+        for fixture in dmx.fixtures:
+            for dmx_break in fixture.dmx_breaks:
+                if dmx_break.universe == index:
+                    dmx_break.universe = replacement
+                elif dmx_break.universe > index:
+                    dmx_break.universe -= 1
+
+        dmx.removeUniverse(index)
+        for universe_index, universe in enumerate(dmx.universes):
+            universe.id = universe_index
+
+        dmx.universes_n = len(dmx.universes)
+        dmx.universe_list_i = min(index, len(dmx.universes) - 1)
+        DMX_Data.setup(dmx.universes_n)
+        return {"FINISHED"}
 
 
 class DMX_UL_Universe(UIList):
@@ -129,13 +157,16 @@ class DMX_PT_DMX_Universes(Panel):
         )
 
         row = layout.row()
-        row.operator("dmx.add_universe", text=_("Add Universe"), icon="ADD")
-
-        layout.template_list(
-            "DMX_UL_Universe", "", dmx, "universes", dmx, "universe_list_i"
+        row.template_list(
+            "DMX_UL_Universe", "", dmx, "universes", dmx, "universe_list_i", rows=4
         )
+        controls = row.column(align=True)
+        controls.operator("dmx.add_universe", text="", icon="ADD")
+        controls.operator("dmx.remove_universe", text="", icon="REMOVE")
 
         universe = dmx.get_selected_universe()
         if universe is not None:
-            layout.prop(universe, "name")
-            layout.prop(universe, "input")
+            box = layout.box()
+            box.label(text=f"{_('Universe')} {universe.id}")
+            box.prop(universe, "name")
+            box.prop(universe, "input")

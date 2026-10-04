@@ -24,3 +24,8 @@ python -m pip wheel pygdtf
 
 git tag vX.Y.Z
 git push vX.Y.Z
+
+On Github, create a release, add description and include the build zip
+artifact.  On BlenderDMX.eu site, you must push some change, for example
+release news blog post, but anything else is fine too, so the api/repo is
+re-generated and pulls the Github releases.

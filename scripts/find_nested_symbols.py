@@ -1,4 +1,20 @@
 #!/usr/bin/env python3
+# Copyright (C) 2025 vanous
+#
+# This file is part of BlenderDMX.
+#
+# BlenderDMX is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation, either version 3 of the License, or (at your option)
+# any later version.
+#
+# BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <https://www.gnu.org/licenses/>.
 
 import argparse
 import os
@@ -26,7 +42,7 @@ def check_for_nested_symbols(mvr_file_path):
             if hasattr(symdef, "symbol") and len(symdef.symbol) > 0:
                 return True
     except Exception as e:
-        print(f"Could not process file {mvr_file_path}: {e}", file=sys.stderr)
+        print("INFO", f"Could not process file {mvr_file_path}: {e}", file=sys.stderr)
         return False
     return False
 
@@ -46,10 +62,12 @@ def main():
     search_dir = Path(args.directory)
 
     if not search_dir.is_dir():
-        print(f"Error: '{search_dir}' is not a valid directory.", file=sys.stderr)
+        print(
+            "INFO", f"Error: '{search_dir}' is not a valid directory.", file=sys.stderr
+        )
         sys.exit(1)
 
-    print(f"Searching for .mvr files in '{search_dir}'...")
+    print("INFO", f"Searching for .mvr files in '{search_dir}'...")
 
     found_files = []
     for mvr_file in search_dir.rglob("*.mvr"):
@@ -57,11 +75,11 @@ def main():
             found_files.append(mvr_file)
 
     if found_files:
-        print("\nFound MVR files with nested symbols:")
+        print("INFO", "\nFound MVR files with nested symbols:")
         for f in found_files:
-            print(f"- {f}")
+            print("INFO", f"- {f}")
     else:
-        print("\nNo MVR files with nested symbols were found.")
+        print("INFO", "\nNo MVR files with nested symbols were found.")
 
 
 if __name__ == "__main__":

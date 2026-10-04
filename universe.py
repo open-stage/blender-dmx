@@ -1,4 +1,4 @@
-# Copyright (C) 2020 Hugo Aboud, Kaspars Jaudzems, vanous
+# Copyright (C) 2021 Hugo Aboud, vanous
 #
 # This file is part of BlenderDMX.
 #
@@ -22,6 +22,7 @@ network_options_list = (
     ("BLENDERDMX", "BlenderDMX", "Set DMX buffer from the Programmer"),
     ("ARTNET", "ArtNet", "Read DMX buffer from ArtNet"),
     ("sACN", "sACN", "Read DMX buffer from sACN"),
+    ("Sinette", "Sinette", "Read DMX buffer from Sinette"),
 )
 
 

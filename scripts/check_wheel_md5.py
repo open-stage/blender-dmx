@@ -1,3 +1,20 @@
+# Copyright (C) 2025 vanous
+#
+# This file is part of BlenderDMX.
+#
+# BlenderDMX is free software: you can redistribute it and/or modify it
+# under the terms of the GNU General Public License as published by the Free
+# Software Foundation, either version 3 of the License, or (at your option)
+# any later version.
+#
+# BlenderDMX is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+# more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program. If not, see <https://www.gnu.org/licenses/>.
+
 from pathlib import Path
 import hashlib
 import requests
@@ -58,8 +75,8 @@ for file in files:
     if result is False:
         failed.append(f"{filename}: Local hash: {local_md5}, Remote hash: {remote_md5}")
 if failed:
-    print("Local and remote hash do not match:\n", "\n".join(failed))
+    print("INFO", "Local and remote hash do not match:\n", "\n".join(failed))
     sys.exit(1)  # non-zero -> CI fails
 else:
-    print("All checks passed")
+    print("INFO", "All checks passed")
     sys.exit(0)

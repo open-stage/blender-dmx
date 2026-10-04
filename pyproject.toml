@@ -1,12 +1,13 @@
 [project]
 name = "blender-dmx"
-version = "2.2.2"
+version = "2.3.0"
 description = "Visualization & programming with GDTF&MVR, OSC, PSN, Networking"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "pygdtf>=1.4.5",
     "pymvr>=1.0.7",
+    "ruff>=0.15.8",
 ]
 
 [dependency-groups]
@@ -15,5 +16,5 @@ dev = [
     "isort>=6.0.0",
     "pip>=25.0",
     "pre-commit>=4.1.0",
-    "ruff>=0.14.7",
+    "ruff>=0.16.0",
 ]

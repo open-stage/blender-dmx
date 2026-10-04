@@ -1,4 +1,4 @@
-# Copyright (C) 2020 Hugo Aboud, vanous
+# Copyright (C) 2021 Hugo Aboud, vanous
 #
 # This file is part of BlenderDMX.
 #

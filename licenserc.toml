@@ -1,9 +1,12 @@
-headerPath = "gpl-header.txt"
+[header]
+path = "gpl-header.txt"
 
+[files]
 excludes = [
     # Test files
     "*.toml",
     "*.md",
+    ".github/**",
     ".github/",
     "*.whl",
     "*.lock",
@@ -12,9 +15,9 @@ excludes = [
 ]
 
 [git]
-attrs = 'auto'
+file_attrs = 'auto'
 ignore = 'auto'
 
-[properties]
-projectName = "BlenderDMX"
-
+[props]
+inception_year = 2020
+project_name = "BlenderDMX"
