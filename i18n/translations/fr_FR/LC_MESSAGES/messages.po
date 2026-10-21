@@ -8,16 +8,17 @@ msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2026-04-25 17:21+0200\n"
-"PO-Revision-Date: 2025-10-24 19:02+0000\n"
+"PO-Revision-Date: 2026-10-22 17:56+0000\n"
 "Last-Translator: \"David D.\" <dadu042@users.noreply.hosted.weblate.org>\n"
 "Language: fr_FR\n"
-"Language-Team: French "
-"<https://hosted.weblate.org/projects/blenderdmx/main/fr/>\n"
+"Language-Team: French <https://hosted.weblate.org/projects/blenderdmx/main/"
+"fr/>\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
+"X-Generator: Weblate 2026.11.dev0\n"
 
 msgid "File doesn't exist"
 msgstr "Le fichier n'existe pas"
@@ -624,17 +625,17 @@ msgid "Remove"
 msgstr "Retirer"
 
 msgid "DMX > Fixture > Add > Manufacturers"
-msgstr ""
+msgstr "DMX > Fixation > Ajouter > Fabricants"
 
 msgid "DMX > Fixture > Add > Profiles"
-msgstr ""
+msgstr "DMX > Fixation > Ajouter > Profils"
 
 #, fuzzy
 msgid "DMX > Fixture > Add > Mode"
 msgstr "Projecteurs DMX importés"
 
 msgid "DMX > Fixture > Add > Manufacturers > Profiles"
-msgstr ""
+msgstr "DMX > Fixation > Ajouter > Fabricants > Profils"
 
 msgid "Profile"
 msgstr "Profil"
@@ -763,13 +764,13 @@ msgid "DMX > Group > Create"
 msgstr "DMX > Groupe > Créer"
 
 msgid "Create DMX group from selected fixtures"
-msgstr ""
+msgstr "Créer un groupe DMX à partir des montages sélectionnés"
 
 msgid "Group Name"
 msgstr "Nom groupe"
 
 msgid "Replace DMX group fixtures with selected ones"
-msgstr ""
+msgstr "Remplacer les montages de groupe DMX par ceux sélectionnés"
 
 msgid "DMX > Group > Rename"
 msgstr "DMX > Groupe > Renommer"
@@ -802,13 +803,13 @@ msgid "Allow pan/tilt DMX data"
 msgstr "Autoriser données DMX pan/incli"
 
 msgid "Track Target"
-msgstr ""
+msgstr "Cible de suivi"
 
 msgid "Follow the target"
 msgstr "Suivre la cible"
 
 msgid "Do Not Track Target"
-msgstr ""
+msgstr "Ne pas suivre la cible"
 
 msgid "Do not follow the target"
 msgstr "Ne pas suivre la cible"
@@ -838,10 +839,10 @@ msgid "Select every fixture in the Scene"
 msgstr "Supprimer projecteur d'un fichier local"
 
 msgid "Select Visible (only filtered)"
-msgstr ""
+msgstr "Sélection visible (uniquement filtré)"
 
 msgid "Select every fixture which is visible in the fixtures list"
-msgstr ""
+msgstr "Sélectionne chaque luminaire visible dans la liste des luminaires"
 
 msgid "Invert selection"
 msgstr "Inverser sélection"
@@ -1861,4 +1862,3 @@ msgstr ""
 
 #~ msgid "Fixture named {} already exists"
 #~ msgstr ""
-
