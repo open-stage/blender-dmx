@@ -265,7 +265,9 @@ class DMX_GDTF:
         objs = list(bpy.context.selected_objects)
 
         # if the model is made up of multiple parts we must join them
-        obj = DMX_GDTF.join_parts_apply_transforms(objs)
+        obj = DMX_GDTF.join_parts_apply_transforms(
+            objs, bake_parent_transforms=model.file.extension.lower() != "3ds"
+        )
 
         # we should not set rotation to 0, models might be pre-rotated
         # obj.rotation_euler = Euler((0, 0, 0), 'XYZ')
@@ -294,7 +296,7 @@ class DMX_GDTF:
         return obj
 
     @staticmethod
-    def join_parts_apply_transforms(objs):
+    def join_parts_apply_transforms(objs, bake_parent_transforms=False):
         """This ensures that glbs made of multiple parts are used as a single object.
         It feels convoluted but without this and all particular steps, some fixture files
         do not load correctly. Surely there is better way.
@@ -308,17 +310,30 @@ class DMX_GDTF:
         #    bpy.ops.object.join()
         #    objs = list(bpy.context.selected_objects)
 
+        # The glTF importer represents node transforms as an object hierarchy.
+        # matrix_basis only contains the transform relative to the parent, so
+        # using it here drops transforms stored on ancestor nodes. Capture the
+        # evaluated world transform before detaching each mesh and bake it into
+        # the vertices instead.
+        bpy.context.view_layer.update()
+
         join = 0
         single = None
         for ob in objs:
-            mb = ob.matrix_basis  # apply some transforms
+            mb = ob.matrix_world.copy() if bake_parent_transforms else ob.matrix_basis.copy()
             if ob.type == "MESH" and ob.data.vertices.items():
                 ob.select_set(True)  # objects for merging must be selected
                 join += 1
                 bpy.context.view_layer.objects.active = ob
                 single = ob
-                if hasattr(ob.data, "transform"):  # glb files
+                if hasattr(ob.data, "transform"):
+                    if bake_parent_transforms and ob.data.users > 1:
+                        ob.data = ob.data.copy()
                     ob.data.transform(mb)
+                if bake_parent_transforms:
+                    # The world transform is now in the mesh data. Remove the
+                    # hierarchy so it cannot be applied again by Blender.
+                    ob.parent = None
             ob.matrix_basis.identity()
 
         if join > 0:
