@@ -320,7 +320,11 @@ class DMX_GDTF:
         join = 0
         single = None
         for ob in objs:
-            mb = ob.matrix_world.copy() if bake_parent_transforms else ob.matrix_basis.copy()
+            mb = (
+                ob.matrix_world.copy()
+                if bake_parent_transforms
+                else ob.matrix_basis.copy()
+            )
             if ob.type == "MESH" and ob.data.vertices.items():
                 ob.select_set(True)  # objects for merging must be selected
                 join += 1
