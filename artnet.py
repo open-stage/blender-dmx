@@ -166,10 +166,12 @@ class DMX_ArtNet(threading.Thread):
     def handle_ArtPoll(self):
         """ArtPoll is a message to find out which other ArtNet devices are in the network.
         Sends an ArtPollReply message as an answer."""
+        if self._stopped:
+            return
         self._socket.sendto(self.build_ArtPollReply(), ("<broadcast>", ARTNET_PORT))
 
     def handleArtNet(self, data):
-        # Once asked to stop, leave Blender's data alone.
+        # Do not start processing another packet after stop.
         if self._stopped:
             return
         packet = ArtnetPacket.build(data)
@@ -314,11 +316,9 @@ class DMX_ArtNet(threading.Thread):
             DMX_Log.log.info("Stopping ArtNet client...")
             dmx.artnet_status = "stop"
             DMX_ArtNet._thread.stop()
-            # Blender waits for running threads before it quits, and frees
-            # the scene this one reads, so it must have ended here.
-            DMX_ArtNet._thread.join(timeout=STOP_CHECK_SECONDS * 4)
-            if DMX_ArtNet._thread.is_alive():
-                DMX_Log.log.error("ArtNet client did not stop")
+            # The receiver can access Blender data while handling a packet.
+            # Do not let Blender free the scene until the thread has ended.
+            DMX_ArtNet._thread.join()
             DMX_ArtNet._thread = None
             dmx.artnet_status = "offline"
             DMX_Log.log.info("DONE")
