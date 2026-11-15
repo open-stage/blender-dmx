@@ -1,4 +1,4 @@
-# Copyright (C) 2021 Hugo Aboud, Kaspars Jaudzems, Michael Wigard, vanous
+# Copyright (C) 2021 Cristian Deluxe, Hugo Aboud, Kaspars Jaudzems, Michael Wigard, vanous
 #
 # This file is part of BlenderDMX.
 #
@@ -19,7 +19,6 @@ import struct
 import threading
 from socket import (
     AF_INET,
-    SHUT_RDWR,
     SO_BROADCAST,
     SO_REUSEADDR,
     SOCK_DGRAM,
@@ -100,6 +99,10 @@ class ArtnetPacket:
         return packet
 
 
+# How often the receiving thread checks whether it should stop, in seconds.
+STOP_CHECK_SECONDS = 0.5
+
+
 class DMX_ArtNet(threading.Thread):
     _thread = None
 
@@ -123,19 +126,17 @@ class DMX_ArtNet(threading.Thread):
             self._dmx.artnet_status = "socket_error"
             raise ValueError("Socket opening error")
 
-        # self._socket.settimeout(30)
+        # Wake up regularly to see whether we were asked to stop: shutting the
+        # socket down doesn't wake a blocked recv() on macOS, where it fails
+        # with ENOTCONN on an unconnected UDP socket.
+        self._socket.settimeout(STOP_CHECK_SECONDS)
         self._stopped = False
         # Used with the universe number to determine the Art-Net Port-Address
         self.net = 0
         self.subnet = 0
 
     def stop(self):
-        try:
-            self._socket.shutdown(SHUT_RDWR)
-        except Exception as e:
-            DMX_Log.log.error(f"Error while stopping {e}")
-            self._stopped = True
-            raise ValueError("Socket closing error")
+        # run() sees this within STOP_CHECK_SECONDS and closes the socket.
         self._stopped = True
 
     def run(self):
@@ -143,6 +144,8 @@ class DMX_ArtNet(threading.Thread):
             data = b""
             try:
                 data = self._socket.recv(1024)
+            except TimeoutError:
+                continue
             except Exception as e:
                 DMX_Log.log.error(e)
             if len(data) < 8:
@@ -155,19 +158,22 @@ class DMX_ArtNet(threading.Thread):
             elif opcode == ArtnetPacket.opcode_ArtPoll:
                 self.handle_ArtPoll()
             # DMX_Log.log.debug(packet)
-            # self._socket.close()
+        # The status is left to disable(), on Blender's main thread: this
+        # thread may still be running while Blender frees the scene on quit.
         DMX_Log.log.info("Closing socket...")
-        self._dmx.artnet_status = "socket_close"
         self._socket.close()
-        self._dmx.artnet_status = "offline"
-        self._stopped = True
 
     def handle_ArtPoll(self):
         """ArtPoll is a message to find out which other ArtNet devices are in the network.
         Sends an ArtPollReply message as an answer."""
+        if self._stopped:
+            return
         self._socket.sendto(self.build_ArtPollReply(), ("<broadcast>", ARTNET_PORT))
 
     def handleArtNet(self, data):
+        # Do not start processing another packet after stop.
+        if self._stopped:
+            return
         packet = ArtnetPacket.build(data)
         if not packet:
             return
@@ -309,11 +315,10 @@ class DMX_ArtNet(threading.Thread):
         if DMX_ArtNet._thread:
             DMX_Log.log.info("Stopping ArtNet client...")
             dmx.artnet_status = "stop"
-            try:
-                DMX_ArtNet._thread.stop()
-                DMX_ArtNet._thread.join()
-            except Exception as e:
-                DMX_Log.log.exception(e)
+            DMX_ArtNet._thread.stop()
+            # The receiver can access Blender data while handling a packet.
+            # Do not let Blender free the scene until the thread has ended.
+            DMX_ArtNet._thread.join()
             DMX_ArtNet._thread = None
             dmx.artnet_status = "offline"
             DMX_Log.log.info("DONE")
