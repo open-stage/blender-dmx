@@ -124,6 +124,10 @@ class DMX_PT_Subfixtures(Panel):
         col3.operator("dmx.clear_subfixtures", icon="CHECKBOX_DEHLT", text="")
 
 
+class DMX_Active_Subfixture(PropertyGroup):
+    name: StringProperty()
+
+
 class DMX_Subfixture(PropertyGroup):
     name: StringProperty()
 

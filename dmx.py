@@ -112,6 +112,7 @@ class DMX(PropertyGroup):
     classes_base = (
         param.DMX_Param,
         param.DMX_Model_Param,
+        fixture.DMX_Manufacturer,
         fixture.DMX_Fixture_Object,
         fixture.DMX_Fixture_Image,
         fixture.DMX_Emitter_Material,
@@ -140,6 +141,7 @@ class DMX(PropertyGroup):
         DMX_MVR_Xchange,
         DMX_Regenrate_UUID,
         DMX_Preferences,
+        subfixtures.DMX_Active_Subfixture,
         subfixtures.DMX_Subfixture,
     )
 

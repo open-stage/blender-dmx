@@ -27,6 +27,7 @@ from bpy.props import (
 )
 from bpy.types import PropertyGroup
 
+from . import fixture
 from .i18n import DMX_Lang
 from .logging_setup import DMX_Log
 from .mvrxchange.mvr_xchange_blender import DMX_MVR_Xchange
@@ -77,7 +78,9 @@ class DMX_TempData(PropertyGroup):
         default=False,
     )
 
-    manufacturers: CollectionProperty(name=_("Manufacturers"), type=PropertyGroup)
+    manufacturers: CollectionProperty(
+        name=_("Manufacturers"), type=fixture.DMX_Manufacturer
+    )
 
     imports: PointerProperty(name=_("Imports"), type=Profiles.DMX_Fixtures_Imports)
 
@@ -132,7 +135,7 @@ class DMX_TempData(PropertyGroup):
     )
 
     active_subfixtures: CollectionProperty(
-        name=_("Active Subfixtures"), type=PropertyGroup
+        name=_("Active Subfixtures"), type=subfixtures.DMX_Active_Subfixture
     )
 
     active_subfixture_i: IntProperty(default=-1)
