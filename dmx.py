@@ -373,9 +373,8 @@ class DMX(PropertyGroup):
             for cls in DMX.classes:
                 bpy.utils.unregister_class(cls)
             DMX.linkedToFile = False
-        else:
-            for cls in DMX.classes_setup:
-                bpy.utils.unregister_class(cls)
+        for cls in DMX.classes_setup:
+            bpy.utils.unregister_class(cls)
 
     # Blender RNA Properties
     # fmt: off
