@@ -1,5 +1,15 @@
 ### Changelog
 
+### 2.3.2
+
+* Translated using Weblate (French)
+* Added translation using Weblate (Slovenian) [Katja Štefanič]
+* Wait for the Art-Net receiver to stop before going offline
+* Handle class registration and prevent blender crash
+* Stop the Art-Net receiver reliably, so Blender quits on macOS [Jaan Pullerits]
+* Handle new readonly name of PropertyGroup base class
+* Apply transforms to glbs when loading
+
 ### 2.3.1
 
 * Added translation using Weblate (Ukrainian) [Ahha]
