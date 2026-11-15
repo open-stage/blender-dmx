@@ -36,6 +36,12 @@ from .panels import subfixtures
 _ = DMX_Lang._
 
 
+class DMX_TempName(PropertyGroup):
+    # A list item holding only a name. Blender 5.3 makes "name" read-only on
+    # items of the bare PropertyGroup type, so lists need a type of their own.
+    name: StringProperty()
+
+
 class DMX_TempData(PropertyGroup):
     filtered_subfixtures = []
 
@@ -77,7 +83,7 @@ class DMX_TempData(PropertyGroup):
         default=False,
     )
 
-    manufacturers: CollectionProperty(name=_("Manufacturers"), type=PropertyGroup)
+    manufacturers: CollectionProperty(name=_("Manufacturers"), type=DMX_TempName)
 
     imports: PointerProperty(name=_("Imports"), type=Profiles.DMX_Fixtures_Imports)
 
@@ -132,7 +138,7 @@ class DMX_TempData(PropertyGroup):
     )
 
     active_subfixtures: CollectionProperty(
-        name=_("Active Subfixtures"), type=PropertyGroup
+        name=_("Active Subfixtures"), type=DMX_TempName
     )
 
     active_subfixture_i: IntProperty(default=-1)

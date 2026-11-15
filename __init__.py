@@ -44,7 +44,7 @@ from .gdtf_file import DMX_GDTF_File
 
 from . import in_gdtf, in_out_mvr
 from .dmx import DMX
-from .dmx_temp_data import DMX_TempData
+from .dmx_temp_data import DMX_TempData, DMX_TempName
 
 _ = DMX_Lang._
 
@@ -152,6 +152,7 @@ def register():
     for cls in Profiles.classes:
         bpy.utils.register_class(cls)
 
+    bpy.utils.register_class(DMX_TempName)
     bpy.utils.register_class(DMX_TempData)
     bpy.types.WindowManager.dmx = PointerProperty(type=DMX_TempData)
 
@@ -195,6 +196,7 @@ def unregister():
 
     # Unregister addon main class
     bpy.utils.unregister_class(DMX_TempData)
+    bpy.utils.unregister_class(DMX_TempName)
     bpy.utils.unregister_class(DMX)
 
     # Append handlers
